@@ -30,6 +30,7 @@ public class BusinessLogic
         //
     }
 
+
     private string _connectionstring = string.Empty;
     private string _user = string.Empty;
     private string StartDt;
