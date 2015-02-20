@@ -1,0 +1,5 @@
+C:\MyStuff\Dev\TROYPLUS\TroyPlusTool\bin\TroyPlusTool.dll
+C:\MyStuff\Dev\TROYPLUS\TroyPlusTool\bin\TroyPlusTool.pdb
+C:\MyStuff\Dev\TROYPLUS\TroyPlusTool\obj\Debug\TroyPlusTool.csprojResolveAssemblyReference.cache
+C:\MyStuff\Dev\TROYPLUS\TroyPlusTool\obj\Debug\TroyPlusTool.dll
+C:\MyStuff\Dev\TROYPLUS\TroyPlusTool\obj\Debug\TroyPlusTool.pdb

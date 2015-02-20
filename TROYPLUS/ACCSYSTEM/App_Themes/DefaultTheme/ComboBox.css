@@ -1,0 +1,57 @@
+﻿.ajax__combobox_inputcontainer 
+{
+}
+.ajax__combobox_textboxcontainer
+{
+	font-size:10px;
+    font-family:'Trebuchet MS';
+    width:100%;
+    height:15px;
+}
+.ajax__combobox_textboxcontainer input
+{
+	font-size:10px;
+    font-family:'Trebuchet MS';
+    width:100%;
+    height:15px;
+}
+.ajax__combobox_buttoncontainer
+{
+	font-size:10px;
+    font-family:'Trebuchet MS';
+    width:100%;
+    height:15px;
+}
+.ajax__combobox_buttoncontainer button
+{
+    background-image: url(<%=WebResource("AjaxControlToolkit.ComboBox.arrow-down.gif")%>);
+    background-position: center;
+    background-repeat: no-repeat;
+    border-color: ButtonFace;
+    height: 15px;
+    width: 15px;
+    font-size:10px;
+    font-family:'Trebuchet MS';
+}
+.ajax__combobox_itemlist
+{
+    margin: 0px;
+    padding: 0px;
+    cursor: default;
+    list-style-type: none;
+    text-align: left;
+    border: solid 1px ButtonShadow;
+    background-color: Window;
+    color: WindowText;
+    font-size:10px;
+    font-family:'Trebuchet MS';
+}
+.ajax__combobox_itemlist li
+{
+    white-space: nowrap;
+    width: 100%;
+    padding: 0 3px 0 2px;
+    font-size:10px;
+    font-family:'Trebuchet MS';
+}
+

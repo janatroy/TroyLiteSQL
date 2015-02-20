@@ -1,0 +1,103 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="SimplePage.master.cs" Inherits="SimplePage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>TROY-PLUS</title>
+    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" type="text/javascript">
+
+        function ChangeSize() {
+            var lpageContent = document.getElementById('innerContentId');
+            if (document.getElementById('innerContentId') != null) {
+                if ((document.documentElement.clientHeight - 165) > 400)
+                    lpageContent.style.height = document.documentElement.clientHeight - 200;
+            }
+        }
+
+        
+        
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+    <div class="container">
+        <!-- Container Div -->
+        <div class="">
+            <!-- Inner Div -->
+            <div id="dateDtl">
+                <table align="left" cellspacing="2px" cellpadding="0" border="0" style="margin-top: 0px;">
+                    <tr>
+                        <td style="padding-left: 5px">
+                            <div runat="server" id="divIP">
+                                MAC Address :
+                                <asp:Label ID="lblIP" runat="server"></asp:Label>
+                                <asp:HiddenField ID="hdMAC" runat="server" Value="0" />
+                                <asp:HiddenField ID="hdIsInternetExplorer" runat="server" Value="False" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- Header Div -->
+            <div class="spacer">
+            </div>
+            <div class="innerContent" style="height: 100%" id="innerContentId">
+                <!-- Login Div -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tr id="rowTab" visible="false" runat="server">
+                        <td>
+                            <asp:ContentPlaceHolder ID="cplhTab" runat="server">
+                            </asp:ContentPlaceHolder>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:UpdateProgress runat="server" ID="uProcess1">
+                                <ProgressTemplate>
+                                    <progresstemplate>        
+                                                <div id="divLoading" class="divCenter" >
+                                                    <img id="imgLoading" src="App_Themes/DefaultTheme/Images/main-loader.gif" align="absmiddle" vspace="0" hspace="0" style="vertical-align:middle" />                                                      
+                                                </div>     
+                                            </progresstemplate>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</ProgressTemplate>
+                            </asp:UpdateProgress>
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <ContentTemplate>
+                                    <asp:ContentPlaceHolder ID="cplhControlPanel" runat="server">
+                                    </asp:ContentPlaceHolder>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Login Div -->
+                <!-- <div class="infoDiv">
+                <div class="infoDivInner">
+                    <div class="info1">
+                        &nbsp;
+                    </div>
+                    <div class="info2">
+                        &nbsp;
+                    </div>
+                    <div class="info3">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            </div>-->
+                <!-- Footer 
+            <div class="spacer1">
+                &nbsp;
+            </div>-->
+            </div>
+            <!-- Footer -->
+            <!-- Inner Div -->
+            <!-- Container Div -->
+        </div>
+    </div>
+    </form>
+</body>
+</html>

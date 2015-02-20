@@ -1,0 +1,1420 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="PageMaster.master.cs" EnableTheming="true"
+    Inherits="PageMaster" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Register TagPrefix="cc1" Namespace="ACCSYSTEM" %>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>TROY-PLUS</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+    <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/NewTheme/navmenu.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/DefaultTheme/ComboBox.css" rel="Stylesheet" type="text/css" />
+    <link href="App_Themes/DefaultTheme/bootstrap.css" rel="Stylesheet" type="text/css" />
+    <link href="chosen/chosen.css" rel="stylesheet" type="text/css" />
+
+    <script src="Scripts/jquery-1.6.3.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript" src="Scripts/calendar_eu.js"></script>
+    <script language="javascript" type="text/javascript" src="Scripts/JScript.js"></script>
+    <script src="Scripts/chrome.js" type="text/javascript"></script>
+    <script type="text/javascript" src="Scripts/jquery.js"></script>
+    <script type="text/javascript" src="Scripts/Selectyze.jquery.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-1.4.1.min.js"></script>
+
+    <script src="chosen/jquery-1.6.1.min.js" type="text/javascript"></script>
+    <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
+    <script src="chosen/chosen.proto.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //debugger;
+            var ddl = $(".chzn-select");
+            $(".chzn-select").chosen();
+            $(".chzn-select-deselect").chosen({ allow_single_deselect: true });
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+
+
+
+
+
+
+        //set bottom of page location
+        var td = document.getElementById("innerContentId");
+
+        if (td != null) {
+            td.style.height = window.screen.availHeight - window.screenTop - 200 + 15;
+            alert(td.style.height);
+        }
+
+        window.onload = ChangeSize;
+        //window.onresize = ChangeSize;
+        function ChangeSize() {
+            var lpageContent = document.getElementById('innerContentId');
+
+            if (document.getElementById('innerContentId') != null) {
+
+                lpageContent.style.height = window.screen.availHeight - window.screenTop - 200 + 35;
+
+            }
+
+        }
+
+        function Maximize() {
+            window.innerWidth = screen.width;
+            window.innerHeight = screen.height;
+            window.screenX = 0;
+            window.screenY = 0;
+            alwaysLowered = false;
+        }
+
+        function LogOut() {
+
+            var conf = confirm("Are you sure you want to Log out?");
+
+            if (!conf)
+                return window.event.returnValue = false;
+            else {
+                var link = document.getElementById("ctl00_lnkLogout");
+                link.click();
+                return true;
+            }
+
+        }
+
+
+        $(document).ready(function () {
+            $(".Mainmenu11").children().css("left", "-95px");
+            $(".Mainmenu11").children().children().children().css("left", "-158px");
+
+            $(".Mainmenu10").children().css("left", "-59px");
+            $(".Mainmenu10").children().children().children().css("left", "-150px");
+            $(".Mainmenu10").children().children().children().children().children().css("left", "-150px");
+
+            $(".Mainmenu9").children().css("left", "-59px");
+            $(".Mainmenu9").children().children().children().css("left", "-173px");
+
+            $(".Mainmenu8").children().css("left", "-59px");
+            $(".Mainmenu8").children().children().children().css("left", "-150px");
+            $(".Mainmenu8").children().children().children().children().children().css("left", "-150px");
+        });
+
+        $(document).ready(function () {
+            //$("#Menu1 ul li:nth-child(9) ul").css({ position: 'absolute', left: '-86px' });
+            //$("#Menu1 ul li:nth-child(9) ul ul").css({ position: 'absolute', left: '-180px' });
+            //$("#Menu1 ul li:nth-child(10) ul").css({ position: 'absolute', left: '-86px' });
+            //$("#Menu1 ul li:nth-child(10) ul ul").css({ position: 'absolute', left: '-180px' });
+            //$("#Menu1 ul li:nth-child(11) ul").css({ position: 'absolute', left: '-86px' });
+            //$("#Menu1 ul li:nth-child(11) ul ul").css({ position: 'absolute', left: '-180px' });
+            //$(".level1 li:nth-child(3) a img").css("margin-left", "1px");
+            //$(".level1 li:nth-child(4) a img").css("margin-left", "1px");
+            //$(".level1 li:nth-child(7) a img").css("margin-left", "1px");
+            //$(".level1 li:nth-child(8) a img").css("margin-left", "1px");
+        });
+
+    </script>
+</head>
+<body onload="ChangeSize();">
+    <form id="aspnetForm" runat="server">
+        <%-- <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="6000"
+            OnAsyncPostBackError="ScriptManager1_AsyncPostBackError">
+        </asp:ScriptManager>--%>
+        <asp:ToolkitScriptManager ID="ScriptManager1" runat="server"></asp:ToolkitScriptManager>
+        <div class="container">
+            <!-- Container Div -->
+            <div class="innertube">
+                <!-- Inner Div -->
+                <table align="center" style="width: 1001px" cellspacing="0px" cellpadding="0" border="0" style="margin-top: 0px; margin-bottom: 0px">
+                    <tr>
+                        <td>
+                            <div class="headerBackNew">
+                                <!-- Header Div -->
+                                <div class="headernewBkg">
+                                    <div id="Div5">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td style="width: 3%"></td>
+                                                <td style="width: 27%" align="left">
+                                                    <%--<asp:ImageButton  ID="Image1" runat="server"  Height="35" Width="220"/>--%>
+                                                    <asp:Image ID="Image1" runat="server" />
+                                                    <%--<img id="Image1" width="220" Height="35" runat="server" alt="#"></img>--%>
+                                                </td>
+                                                <td style="width: 1%"></td>
+                                                <td align="right">
+                                                    <table align="right">
+                                                        <tr>
+                                                            <td>
+                                                                <div runat="server" id="divIP">
+                                                                    <asp:HiddenField ID="hdMAC" runat="server" Value="0" />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <%--<asp:Panel ID="pnlSearch" runat="server" Width="80px">--%>
+                                                                <asp:Button ID="CmdSales" runat="server" Text="" EnableTheming="false" CssClass="SalesBtn"
+                                                                    OnClick="CmdSales_Click" ToolTip="New Sale" Width="15px" Height="13px" />
+                                                                <%--<img src="App_Themes/NewTheme/images/SalNew.png" width="15" alt="#"></img>--%>
+                                                                <%--</asp:Panel>--%>
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton runat="server" ID="LinkButton2" Text="New Sale" OnClick="CmdSales_Click" ForeColor="#0099CC" Font-Bold="True"></asp:LinkButton>
+                                                                <%--<asp:Label ID="Label1" runat="server" Text="New Sale" ForeColor="#0099CC" Font-Bold="True"></asp:Label>--%>
+                                                            </td>
+                                                            <td>
+                                                                <%--<asp:Panel ID="Panel1" runat="server" Width="80px">--%>
+                                                                <asp:Button ID="CmdPurchase" runat="server" Text="" OnClick="CmdPurchase_click" EnableTheming="false"
+                                                                    CssClass="PurchaseBtn" ToolTip="New Purchase" Width="15px" Height="13px" />
+                                                                <%--<img src="App_Themes/NewTheme/images/PurNew.png" width="15" alt="#"></img>--%>
+                                                                <%--</asp:Panel>--%>
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton runat="server" ID="LinkButton1" Text="New Purchase" OnClick="CmdPurchase_click" ForeColor="#0099CC" Font-Bold="True"></asp:LinkButton>
+                                                                <%--<asp:Label ID="Label5" runat="server" Text="New Purchase" ForeColor="#0099CC" Font-Bold="True"></asp:Label>--%>
+                                                            </td>
+                                                            <td>
+                                                                <%--<asp:Panel ID="Panel2" runat="server" Width="80px">--%>
+                                                                <asp:Button ID="CmdProduct" runat="server" Text="" OnClick="CmdProduct_click" EnableTheming="false"
+                                                                    CssClass="ProdBtn" ToolTip="New Product" Width="15px" Height="13px" />
+                                                                <%--<img src="App_Themes/NewTheme/images/ProNew.png" width="15" alt="#"></img>--%>
+                                                                <%--</asp:Panel>--%>
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton runat="server" ID="LinkButton3" Text="New Product" OnClick="CmdProduct_click" ForeColor="#0099CC" Font-Bold="True"></asp:LinkButton>
+                                                                <%--<asp:Label ID="Label6" runat="server" Text="New Product" ForeColor="#0099CC" Font-Bold="True"></asp:Label>--%>
+                                                            </td>
+                                                            <td>
+                                                                <%--<asp:Panel ID="Panel3" runat="server" Width="80px">--%>
+                                                                <asp:Button ID="CmdExp" runat="server" Text="" OnClick="CmdExp_click" EnableTheming="false"
+                                                                    CssClass="ExpenseBtn" ToolTip="New Expense" Width="15px" Height="13px" />
+                                                                <%--<img src="App_Themes/NewTheme/images/ExpNew.png" width="15" alt="#"></img>--%>
+                                                                <%--</asp:Panel>--%>
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton runat="server" ID="Exp" Text="New Expense" OnClick="CmdExp_click" ForeColor="#0099CC" Font-Bold="True"></asp:LinkButton>
+                                                                <%--<asp:Label ID="Label7" runat="server" Text="New Expense" Click="CmdExp_click"  ForeColor="#0099CC" Font-Bold="True"></asp:Label>--%>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="9" align="right">
+                                                                <table align="right">
+                                                                    <tr>
+                                                                        <td align="left" valign="top" class="welcome">Welcome &nbsp;
+                                            
+                                            
+                                                                        </td>
+                                                                        <td>
+                                                                            <img src="App_Themes/NewTheme/images/usericon.png" width="12" alt="#"></img>
+                                                                            &nbsp;
+                                                                        </td>
+                                                                        <td align="left" valign="top" class="welcome">
+                                                                            <asp:Label runat="server" ID="lblUser1"></asp:Label>
+                                                                        </td>
+                                                                        <td align="left" valign="top">&nbsp; - &nbsp;
+                                                                        <asp:Label runat="server" ID="lblCompCode"></asp:Label>
+                                                                            &nbsp; - &nbsp;
+                                                                        <asp:Label runat="server" ID="lbldatetimenew"></asp:Label>
+                                                                            &nbsp;
+                                                                        </td>
+                                                                        <td align="left" valign="top">
+                                                                            <img src="App_Themes/NewTheme/images/logoutbtn.png" width="14" alt="#"></img>
+                                                                        </td>
+                                                                        <td align="left" valign="top">&nbsp;
+                                                                        </td>
+                                                                        <td align="left" valign="top" class="logout">
+                                                                            <a href="#" onclick="return LogOut();" style="color: #0099CC">Logout</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <%--<table border="0" align="right" cellpadding="0" cellspacing="0">
+                                    <%--<asp:Label ID="ltcomp" runat="server" CssClass="PaddLeft2px" Width="50px" Text="Company"></asp:Label>:--%>
+
+                                    <%--</table>--%>
+                                </div>
+                                <%--<div class="Menu1" id="chromemenu" style="width:1001px;">
+                                <asp:Menu ClientIDMode="Static" RenderingMode="List" ID="Menu1" Orientation="Horizontal" runat="server" BackColor="#E3EAEB"
+                                    DynamicHorizontalOffset="2" Font-Names="Verdana">
+                                    <DynamicHoverStyle BackColor="#666666" ForeColor="White" />
+                                    <DynamicMenuItemStyle VerticalPadding="0px" />
+                                    <DynamicMenuStyle BackColor="#E3EAEB" />
+                                    <DynamicSelectedStyle BackColor="#1C5E55" />
+                                    <Items>
+                                        <asp:MenuItem ImageUrl="App_Themes/NewTheme/Images/Leads.png">
+                                            <asp:MenuItem Text="Master Data" Value="Master Data">
+                                                <asp:MenuItem Text="Lead Reference" Value="Lead Reference" />
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">
+                                                <asp:MenuItem Text="Lead Management" Value="Lead Management"  NavigateUrl="~/LeadMgmt.aspx"/>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Lead Management" Value="Lead Management" />
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/InventoryMain.png">
+                                            <asp:MenuItem Text="Master Data" Value="Master Data">
+                                                <asp:MenuItem Text="Product Category" Value="Product Category" NavigateUrl="~/CategryMaster.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Brand" Value="Brand" NavigateUrl="~/BrandMaster.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Products" Value="Products" NavigateUrl="~/ProductMaster.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">--%>
+                                <%--<asp:MenuItem Text="Normal Purchase/Sales" Value="Normal Purchase/Sales"></asp:MenuItem>
+                                                <asp:MenuItem Text="Manual Sales" Value="Manual Sales"></asp:MenuItem>
+                                                <asp:MenuItem Text="Internal Transfer Sales/Purchase" Value="Internal Transfer Sales/Purchase">
+                                                </asp:MenuItem>
+                                                <asp:MenuItem Text="Delivery Note Sales/Purchase" Value="Delivery Note Sales/Purchase">
+                                                </asp:MenuItem>
+                                                <asp:MenuItem Text="Sales Return" Value="Sales Return"></asp:MenuItem>
+                                                <asp:MenuItem Text="Purchase Return" Value="Purchase Return"></asp:MenuItem>--%>
+                                <%--<asp:MenuItem Text="Sales" Value="Sales" NavigateUrl="~/CustomerSales.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Purchase" Value="Purchase" NavigateUrl="~/Purchase.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Inventory Reconciliation" Value="Inventory Reconciliation" NavigateUrl="~/PhysicalStockForm.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Opening Stock" Value="Opening Stock" NavigateUrl="~/OpeningStock.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Current Stock" Value="Current Stock" NavigateUrl="~/StockReport.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Stock Ledger" Value="Stock Ledger"></asp:MenuItem>
+                                                <asp:MenuItem Text="Reconciliation" Value="Reconciliation"></asp:MenuItem>
+                                                <asp:MenuItem Text="Ageing" Value="Ageing"></asp:MenuItem>
+                                                <asp:MenuItem Text="Stock Level" Value="Stock Level"></asp:MenuItem>
+                                                <asp:MenuItem Text="Obsolute item list" Value="Obsolute item list"></asp:MenuItem>
+                                                <asp:MenuItem Text="Stock Comprehency" Value="Stock Comprehency"></asp:MenuItem>
+                                                <asp:MenuItem Text="Daily sales" Value="Daily sales"></asp:MenuItem>
+                                                <asp:MenuItem Text="Sales Summary" Value="Sales Summary"></asp:MenuItem>
+                                                <asp:MenuItem Text="Sales Comprehency" Value="Sales Comprehency"></asp:MenuItem>
+                                                <asp:MenuItem Text="Missing DC" Value="Missing DC"></asp:MenuItem>
+                                                <asp:MenuItem Text="Sales TurnOver" Value="Sales TurnOver"></asp:MenuItem>
+                                                <asp:MenuItem Text="Total Sales" Value="Total Sales"></asp:MenuItem>
+                                                <asp:MenuItem Text="Zero/1 rs sales" Value="Zero/1 rs sales"></asp:MenuItem>
+                                                <asp:MenuItem Text="Purchase Summary" Value="Purchase Summary"></asp:MenuItem>
+                                                <asp:MenuItem Text="Purchase Comprehency" Value="Purchase Comprehency"></asp:MenuItem>
+                                                <asp:MenuItem Text="Bulk rate Updation" Value="Bulk rate Updation" NavigateUrl="~/BulkProductUpd.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/AccountMain.png">
+                                            <asp:MenuItem Text="Master Data" Value="Master Data">
+                                                <asp:MenuItem Text="Customers" Value="Customers" NavigateUrl="~/CustomerInfo.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Suppliers" Value="Suppliers" NavigateUrl="~/SupplierInfo.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Bank" Value="Bank" NavigateUrl="~/BankInfo.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Expense Types" Value="Expense Types" NavigateUrl="~/ExpenseInfo.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Groups" Value="Groups" NavigateUrl="~/Groupinfo.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Ledgers" Value="Ledgers" NavigateUrl="~/LedgerInfo.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Transaction" Value="Transaction">
+                                                <asp:MenuItem Text="Payments to Customer" Value="Payments to Customer" NavigateUrl="~/CustomerPayment.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Receipts from customer" Value="Receipts from customer" NavigateUrl="~/CustReceipt.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Payments to supplier" Value="Payments to supplier" NavigateUrl="~/SuppPayment.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Receipts from supplier" Value="Receipts from supplier" NavigateUrl="~/SupplierReceipt.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Bank Deposit" Value="Bank Deposit" NavigateUrl="~/BankPayment.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Bank WithDrawals" Value="Bank WithDrawals" NavigateUrl="~/BankReceipt.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Expense payments" Value="Expense payments" NavigateUrl="~/ExpPayment.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Credit / Debit Note" Value="Credit / Debit Note" NavigateUrl="~/CreditDebitNote.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Bank reconciliation" Value="Bank reconciliation" NavigateUrl="~/BankRecon.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Cheque Book" Value="Cheque Book" NavigateUrl="~/ChequeBook.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Journals" Value="Journals" NavigateUrl="~/MultipleJournal.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                    
+                                            <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Trial Balance" Value="Trial Balance"></asp:MenuItem>
+                                                <asp:MenuItem Text="Balance Sheet" Value="Balance Sheet"></asp:MenuItem>
+                                                <asp:MenuItem Text="Profit and Loss" Value="Profit and Loss"></asp:MenuItem>
+                                                <asp:MenuItem Text="Outstanding" Value="Outstanding"></asp:MenuItem>
+                                                <asp:MenuItem Text="Outstanding Ageing" Value="Outstanding Ageing"></asp:MenuItem>
+                                                <asp:MenuItem Text="Bank reconciliation" Value="Bank reconciliation"></asp:MenuItem>
+                                                <asp:MenuItem Text="Bank Statement" Value="Bank Statement"></asp:MenuItem>
+                                                <asp:MenuItem Text="Cash Account" Value="Cash Account"></asp:MenuItem>
+                                                <asp:MenuItem Text="Sales Tax" Value="Sales Tax"></asp:MenuItem>
+                                                <asp:MenuItem Text="Day Book" Value="Day Book"></asp:MenuItem>
+                                                <asp:MenuItem Text="Ledger" Value="Ledger"></asp:MenuItem>
+                                                <asp:MenuItem Text="Cheque Management" Value="Cheque Management"></asp:MenuItem>
+                                                <asp:MenuItem Text="Vat summary" Value="Vat summary"></asp:MenuItem>
+                                                <asp:MenuItem Text="Vat reconciliation" Value="Vat reconciliation"></asp:MenuItem>
+                                                <asp:MenuItem Text="CST summary" Value="CST summary"></asp:MenuItem>
+                        
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/Timesheet.png">
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">
+                                                <asp:MenuItem Text="Time Sheet Entries" Value="Time Sheet Entries"  NavigateUrl="~/TimeSheet.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Time Sheet Approvals" Value="Time Sheet Entries"></asp:MenuItem>
+                                            </asp:MenuItem>
+
+                                             <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Time Sheet" Value="Time Sheet"></asp:MenuItem>                   
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/HirePurchase.png">
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">
+                                                <asp:MenuItem Text="Hire Purchase" Value="Hire Purchase" NavigateUrl="~/HirePurchase.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Hire Purchase Outstanding" Value="Hire Purchase Outstanding"></asp:MenuItem>
+                                                <asp:MenuItem Text="Hire Purchase" Value="Hire Purchase"></asp:MenuItem>
+                                            </asp:MenuItem>
+
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/Manufacturing.png">
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">
+                                                <asp:MenuItem Text="Manufacturing / Transfer Definitions" Value="Manufacturing / Transfer Definitions" NavigateUrl="~/CreateFormula.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Manufacturing / Transfers" Value="Manufacturing / Transfers" NavigateUrl="~/FormulaExecution.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSeperator.png" ImageUrl="App_Themes/NewTheme/Images/Commission.png">
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">
+                                                <asp:MenuItem Text="Commission Mangement" Value="Commission Mangement" NavigateUrl="~/CommissionMngmt.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                             <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Commission" Value="Commission"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/Projects.png">
+                                            <asp:MenuItem Text="Master Data" Value="Master Data">
+                                                <asp:MenuItem Text="Task Status" Value="Task Status" NavigateUrl="~/TaskStatus.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Task Types" Value="Task Types" NavigateUrl="~/TaskTypes.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">
+                                                <asp:MenuItem Text="Work Entries" Value="Work Entries" NavigateUrl="~/WorkManagementEntry.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Work Updates" Value="Work Updates" NavigateUrl="~/WorkUpdates.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Work Closure" Value="Work Closure" NavigateUrl="~/WorkClosure.aspx"></asp:MenuItem>
+
+                                                <asp:MenuItem Text="Projects" Value="Projects" NavigateUrl="~/ProjectEntry.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Tasks" Value="Tasks" NavigateUrl="~/TaskEntry.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Task Updates" Value="Task Updates" NavigateUrl="~/TaskUpdates.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                             <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Work Management" Value="Work Management"></asp:MenuItem>                        
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/EmployeePayroll.png">
+                                            <asp:MenuItem Text="Master Data" Value="Master Data">
+                                                <asp:MenuItem Text="Business Partner" Value="Business Partner" NavigateUrl="~/EmployeeMaster.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Transactions" Value="Transactions">
+                                                <asp:MenuItem Text="Employee Attendance" Value="Employee Attendance" NavigateUrl="~/EmployeeAttendance.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Leave Type" Value="Leave Type" NavigateUrl="~/AdminLeaveType.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="HR Admin Settings" Value="HR Admin Settings" NavigateUrl="~/HRAdminSettings.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="HR Admin Holiday" Value="HR Admin Holiday" NavigateUrl="~/HRAdminHoliday.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Reports" Value="Reports">
+                                                <asp:MenuItem Text="Executive wise sales" Value="Executive wise sales"></asp:MenuItem>                        
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/SecurityMain.png">
+                                            <asp:MenuItem Text="Trans lock" Value="Trans lock">
+                                                <asp:MenuItem Text="Date level locking" Value="Date level locking" NavigateUrl="~/ReconDate.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Password" Value="Password">
+                                                <asp:MenuItem Text="Change Password" Value="Change Password" NavigateUrl="~/ChangePassword.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Users" Value="Users">
+                                                <asp:MenuItem Text="Users & Roles" Value="Users & Roles" NavigateUrl="~/UserOptions.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Audit" Value="Audit">
+                                                <asp:MenuItem Text="Audit Reporting" Value="Audit Reporting" NavigateUrl="~/ToolReports.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                        <asp:MenuItem SeparatorImageUrl="App_Themes/NewTheme/Images/MenuSpe.png" ImageUrl="App_Themes/NewTheme/Images/Configuration.png">
+                                            <asp:MenuItem Text="Backup" Value="Backup">
+                                                <asp:MenuItem Text="Data Backup" Value="Data Backup" NavigateUrl="~/DataBackupAndRestore.aspx"></asp:MenuItem>
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="SMS" Value="SMS">
+                                                <asp:MenuItem Text="Text Message Definitions" Value="Text Message Definitions" NavigateUrl="~/SMSText.aspx"></asp:MenuItem>                        
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Config" Value="Config">
+                                                <asp:MenuItem Text="Basic Settings" Value="Basic Settings" NavigateUrl="~/companyinfo.aspx"></asp:MenuItem>
+                                                <asp:MenuItem Text="Email / SMS Config" Value="Email / SMS Config" NavigateUrl="~/EmailSMSConfig.aspx"></asp:MenuItem>                        
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Year End Process" Value="Year End Process">
+                                                <asp:MenuItem Text="Year End Updation" Value="Year End Updation" NavigateUrl="~/NewDBCreation.aspx"></asp:MenuItem>                        
+                                            </asp:MenuItem>
+                                            <asp:MenuItem Text="Mode" Value="Mode">
+                                                <asp:MenuItem Text="Online & Offline" Value="Online & Offline" NavigateUrl="~/Configuration.aspx"></asp:MenuItem>                        
+                                            </asp:MenuItem>
+                                        </asp:MenuItem>
+                                    </Items>
+                                    <StaticHoverStyle BackColor="#666666" ForeColor="White" />
+                                    <StaticMenuItemStyle HorizontalPadding="0px" VerticalPadding="2px" />
+                                    <StaticSelectedStyle BackColor="#1C5E55" />
+                                </asp:Menu>
+                            </div>--%>
+                                <div class="menu2" id="chromemenu" style="width: 1001px;">
+                                    <ul id="custom-nav-menu">
+                                        <li class="color Mainmenu1"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyDashboard.png" /></a>
+
+                                        </li>
+                                        <li class="color Mainmenu2"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroySales.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Master Data</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./PriceListCategoryMap.aspx" runat="server" id="A17">Customer Category</a></li>
+                                                        <li class="color submenumenu"><a href="./CustomerInfo.aspx" runat="server" id="lnkCustomerInfo">Customers</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Transactions</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./CustomerSales.aspx" runat="server" id="lnkCustomerSales">Sales Invoice</a></li>
+                                                        <li class="color submenumenu"><a href="./CustReceipt.aspx" runat="server" id="lnkCustomerReceipt">Receipts from Customer</a></li>
+                                                        <li class="color submenumenu"><a href="./CustomerPayment.aspx" runat="server" id="lnkCustomerPayment">Payments to Customer</a></li>
+                                                        <li class="color submenumenu"><a href="./HirePurchase.aspx" runat="server" id="lnkHirePurchaseNew">Hire Sales</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Salesreport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=420,top=230,resizable=yes, scrollbars=yes');">Daily sales</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('SalesSummaryReport.aspx ','Summary', 'toolbar=no,status=yes,menu=no,location=no,resizable=yes,height=310,width=550,left=425,top=220, scrollbars=yes');">Sales Summary</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlSales.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=555,width=805,resizable=yes,left=210,top=100, scrollbars=yes');">Sales Comprehency</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlSal.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=270,width=500,left=425,top=220, scrollbars=yes');">Sales TurnOver</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlTotalSales.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=320,width=500,left=425,top=220, scrollbars=yes');">Total Sales</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlZeroSales.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=290,width=500,left=425,top=220, scrollbars=yes');">Zero/1 rs sales</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="color Mainmenu3"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyPurchase.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Master Data</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./SupplierInfo.aspx" runat="server" id="lnkSupplierInfo">Suppliers</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Transactions</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./Purchase.aspx" runat="server" id="lnkSupplierPurchase">Purchase Invoice</a></li>
+                                                        <li class="color submenumenu"><a href="./SuppPayment.aspx" runat="server" id="lnkSupplierPayment">Payments to supplier</a></li>
+                                                        <li class="color submenumenu"><a href="./SupplierReceipt.aspx" runat="server" id="lnkSupplierReceipt">Receipts from supplier</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('PurchaseSummaryReport.aspx ','Summary', 'toolbar=no,status=yes,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');">Purchase Summary</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlPurchase.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=570,width=805,resizable=yes,left=210,top=100, scrollbars=yes');">Purchase Comprehency</a></li>
+                                                        <%-- <li class="color submenumenu"><a href="#" onclick="Popup=window.open('PurchaseVatCstSummaryReport.aspx','VatSummary', 'toolbar=no,status=no,menu=no,location=no,height=570,width=805,resizable=yes,left=210,top=100, scrollbars=yes');">Purchase Comprehency</a></li>--%>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="color Mainmenu4"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyInventory.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Master Data</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./CategryMaster.aspx" runat="server" id="lnkCategoryMast">Product Category</a></li>
+                                                        <li class="color submenumenu"><a href="./BrandMaster.aspx" runat="server" id="lnkBrandMast">Brand</a></li>
+                                                        <li class="color submenumenu"><a href="./PriceList.aspx" runat="server" id="A18">Manage Price Lists</a></li>
+                                                        <li class="color submenumenu"><a href="./ProdMaster.aspx" runat="server" id="lnkProductMast">Manage Products</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Transactions</a>
+                                                    <ul>
+
+                                                        <li class="color submenumenu"><a href="./OpeningStock.aspx" runat="server" id="lnkOpeningStock">Opening Stock</a></li>
+                                                        <li class="color submenumenu"><a href="./PhysicalStockForm.aspx" runat="server" id="lnkRPS">Inventory Reconciliation</a></li>
+
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
+                                                    <ul>
+                                                        <%--<li class="color submenumenu"><a href="#">Inventory</a><ul>--%>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('StockReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=180,width=500,left=415,top=270, scrollbars=yes');">Current Stock</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('StockListReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,height=280,width=670,left=350,top=220 ,resizable=yes, scrollbars=yes');">Stock Ledger</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('StockReconReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,height=180,width=500,left=415,top=270,resizable=yes, scrollbars=yes');">Reconciliation</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('StockAgeingReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Ageing</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlStockLevel.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=250,width=500,left=415,top=260 ,resizable=yes, scrollbars=yes');">Stock Level</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlAbsolute.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=230,width=500,left=415,top=235, scrollbars=yes');">Obsolete item list</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlStock.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=450,width=600,left=380,top=140, scrollbars=no');">Stock Comprehency</a></li>
+                                                        <%--</ul>
+                                    </li>
+                                    <%--<li class="color submenumenu"><a href="#">Sales</a><ul>
+                                    
+                                    </ul></li>
+                                    <li class="color submenumenu"><a href="#">Purchase</a><ul>
+                                    
+                                    </ul></li>--%>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="color Mainmenu5"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyBanking.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Master Data</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./BankInfo.aspx" runat="server" id="lnkBankInfo">Bank</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Transactions</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./BankPayment.aspx" runat="server" id="lnkBankDeposit">Deposits</a></li>
+                                                        <li class="color submenumenu"><a href="./BankReceipt.aspx" runat="server" id="lnkBankReceipt">WithDrawals</a></li>
+                                                        <li class="color submenumenu"><a href="./BankRecon.aspx" runat="server" id="lnkBankRec">Bank reconciliation</a></li>
+                                                        <li class="color submenumenu"><a href="./ChequeBook.aspx" runat="server" id="lnkChequeBook">Cheque Book</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#">Reports</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="color Mainmenu6"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyFinancials.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Master Data</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./ExpenseInfo.aspx" runat="server" id="lnkExpenseInfo">Expense Heads</a></li>
+                                                        <li class="color submenumenu"><a href="./Groupinfo.aspx" runat="server" id="lnkGroupInfo">Groups</a></li>
+                                                        <li class="color submenumenu"><a href="./LedgerInfo.aspx" runat="server" id="lnkLedgerInfo">Ledgers</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Transactions</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./CreditDebitNote.aspx" runat="server" id="lnkCreditDebitNote">Credit / Debit Note</a></li>
+                                                        <li class="color submenumenu"><a href="./MultipleJournal.aspx" runat="server" id="lnkMultipleInfo">Journals</a></li>
+                                                        <li class="color submenumenu"><a href="./ExpPayment.aspx" runat="server" id="lnkExpensePayment">Expense payments</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Trialbalance.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=220,width=500,left=425,top=220, scrollbars=yes');">Trial Balance</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('BalanceSheet.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Balance Sheet</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProfitAndLossReport.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=230,width=500,left=425,top=220, scrollbars=yes');">Profit and Loss</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('CashAccountReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=210,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Cash Account</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlSalesTax.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=340,width=500,left=425,top=220, scrollbars=yes');">Sales Tax</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('DayBookReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Day Book</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('LedgerReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=340,width=500,left=425,top=220, scrollbars=yes');">Ledger</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Salesreport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=420,top=230,resizable=yes, scrollbars=yes');">Bank reconciliation</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('BankStatementReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=260,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Bank Statement</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('OutstandingReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=330,width=500,left=425,top=220, scrollbars=yes');">Outstanding</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('OutStandingMasterReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=350,width=700,left=350,top=220, scrollbars=yes');">Outstanding Ageing</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('VATSumaryReport.aspx','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=220,width=500,left=425,top=220, scrollbars=yes');">Vat summary</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('VATReconReport.aspx','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=1000,width=900,left=210,top=10, scrollbars=yes');">Vat reconciliation</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('CSTSumaryReport.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=230,width=500,left=425,top=220, scrollbars=yes');">CST summary</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="color Mainmenu7"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroySalesleads.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Master Data</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./LeadReference.aspx" runat="server" id="A2">Define Drop-down Lists</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Transactions</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./LeadMgmt.aspx" runat="server" id="lnkLeadManagement">Manage Leads</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExcelLeadManagement.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,height=380,width=480,left=405,top=220 ,resizable=yes, scrollbars=no');">Lead Management</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="color Mainmenu8"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyHumanResources.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#">Master Data<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./EmployeeMaster.aspx" runat="server" id="lnkEmployeeMast">Employee Master</a></li>
+                                                        <li class="color submenumenu"><a href="./HRAdminSettings.aspx" runat="server" id="A10">Administration</a></li>
+                                                        <li class="color submenumenu"><a href="./AdminLeaveType.aspx" runat="server" id="A9">Leave Types</a></li>
+                                                        <li class="color submenumenu"><a href="./HRAdminHoliday.aspx" runat="server" id="A11">Holidays Declaration</a></li>
+                                                        <li class="color submenumenu"><a href="./HRAdminPayComponent.aspx" runat="server" id="A15">Pay Fixation</a></li>
+                                                        <li class="color submenumenu"><a href="./HRAdminEmployeeRoleList.aspx" runat="server" id="A23">Define Employee Role</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#">Transactions<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                    <ul style="left: -170px !important">
+                                                        <li class="color submenumenu"><a href="#">Employee Maintenance <span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>&nbsp;&nbsp;</a>
+                                                            <ul>
+                                                                <li class="color submenumenu"><a href="./EmployeeAttendance.aspx" runat="server" id="A12">Attendance</a></li>
+                                                                <li class="color submenumenu"><a href="./EmployeeLeave.aspx" runat="server" id="A13">Leave Requests</a></li>
+                                                                <li class="color submenumenu"><a href="./EmployeeLeaveApproval.aspx" runat="server" id="A14">Leave Approval</a></li>
+                                                                <li class="color submenumenu"><a href="./EmployeePermission.aspx" runat="server" id="A21">Permission Requests</a></li>
+                                                                <li class="color submenumenu"><a href="./EmployeePermissionApproval.aspx" runat="server" id="A22">Permission Approval</a></li>
+                                                                <li class="color submenumenu"><a href="./EmployeePayroll.aspx" runat="server" id="A16">Payroll</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="color submenumenu"><a href="#">Time Sheet<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>&nbsp;&nbsp;</a>
+                                                            <ul>
+                                                                <li class="color submenumenu"><a href="./TimeSheet.aspx" runat="server" id="lnkTimeSheet">Time Sheet Entries</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#">Reports</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <%-- <li class="color Mainmenu3"><a href="#"><img src="App_Themes/NewTheme/Images/TroyAccounts.png" /></a>
+                                    <ul> 
+                                    <li class="color submenumenu"><a href="#">Master Data</a>
+                                    <ul><li class="color submenumenu"><a href="./CustomerInfo.aspx" runat="server" id="lnkCustomerInfo">Customer</a></li>
+                                    <li class="color submenumenu"><a href="./SupplierInfo.aspx" runat="server" id="lnkSupplierInfo">Supplier</a></li>
+                                    <li class="color submenumenu"><a href="./BankInfo.aspx" runat="server" id="lnkBankInfo">Bank</a></li>
+                                    <li class="color submenumenu"><a href="./ExpenseInfo.aspx" runat="server" id="lnkExpenseInfo">Expense Heads</a></li>
+                                    <li class="color submenumenu"><a href="./Groupinfo.aspx" runat="server" id="lnkGroupInfo">Groups</a></li>
+                                    <li class="color submenumenu"><a href="./LedgerInfo.aspx" runat="server" id="lnkLedgerInfo">Ledgers</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Transactions</a>
+                                    <ul><li class="color submenumenu"><a href="./CustomerPayment.aspx" runat="server" id="lnkCustomerPayment">Payments to Customer</a></li>
+                                    <li class="color submenumenu"><a href="./CustReceipt.aspx" runat="server" id="lnkCustomerReceipt">Receipts from customer</a></li>
+                                    <li class="color submenumenu"><a href="./SuppPayment.aspx" runat="server" id="lnkSupplierPayment">Payments to supplier</a></li>
+                                    <li class="color submenumenu"><a href="./SupplierReceipt.aspx" runat="server" id="lnkSupplierReceipt">Receipts from supplier</a></li>
+                                    <li class="color submenumenu"><a href="./BankPayment.aspx" runat="server" id="lnkBankDeposit">Bank Deposit</a></li>
+                                    <li class="color submenumenu"><a href="./BankReceipt.aspx" runat="server" id="lnkBankReceipt">Bank WithDrawals</a></li>
+                                    <li class="color submenumenu"><a href="./ExpPayment.aspx" runat="server" id="lnkExpensePayment">Expense payments</a></li>
+                                    <li class="color submenumenu"><a href="./CreditDebitNote.aspx" runat="server" id="lnkCreditDebitNote">Credit / Debit Note</a></li>
+                                    <li class="color submenumenu"><a href="./BankRecon.aspx" runat="server" id="lnkBankRec">Bank reconciliation</a></li>
+                                    <li class="color submenumenu"><a href="./ChequeBook.aspx" runat="server" id="lnkChequeBook">Cheque Book</a></li>
+                                    <li class="color submenumenu"><a href="./MultipleJournal.aspx" runat="server" id="lnkMultipleInfo">Journals</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Reports</a>
+                                    <ul><li class="color submenumenu"><a href="#">Accounts</a><ul>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Trialbalance.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=220,width=500,left=425,top=220, scrollbars=yes');">Trial Balance</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('BalanceSheet.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Balance Sheet</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProfitAndLossReport.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=230,width=500,left=425,top=220, scrollbars=yes');">Profit and Loss</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('CashAccountReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=210,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Cash Account</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlSalesTax.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=340,width=500,left=425,top=220, scrollbars=yes');">Sales Tax</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('DayBookReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Day Book</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('LedgerReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=340,width=500,left=425,top=220, scrollbars=yes');">Ledger</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Salesreport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=420,top=230,resizable=yes, scrollbars=yes');">Bank reconciliation</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('BankStatementReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=260,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Bank Statement</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Outstanding</a><ul>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('OutstandingReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=200,width=500,left=425,top=220, scrollbars=yes');">Outstanding</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('OutStandingMasterReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=350,width=700,left=350,top=220, scrollbars=yes');">Outstanding Ageing</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Cheque Management</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('VATSumaryReport.aspx','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=220,width=500,left=425,top=220, scrollbars=yes');">Vat summary</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('VATReconReport.aspx','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=1000,width=900,left=210,top=10, scrollbars=yes');">Vat reconciliation</a></li>
+                                    <li class="color submenumenu"><a href="#" onclick="Popup=window.open('CSTSumaryReport.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=230,width=500,left=425,top=220, scrollbars=yes');">CST summary</a></li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    </li> --%>
+                                        <%--<li class="color Mainmenu4"><a href="#"><img src="App_Themes/NewTheme/Images/TroyTimesheet.png" /></a>
+                                    <ul> 
+                                    <li class="color submenumenu"><a href="#">Transactions</a>
+                                    <ul><li class="color submenumenu"><a href="./TimeSheet.aspx" runat="server" id="lnkTimeSheet">Time Sheet Entries</a></li>
+                                    <li class="color submenumenu"><a href="./TimeSheetApproval.aspx" runat="server" id="lnkTimeSheetApproval">Time Sheet Approvals</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Reports</a>
+                                    <ul><li class="color submenumenu"><a href="#">Time Sheet</a></li></ul>
+                                    </li>
+                                    </ul>
+                                    </li> --%>
+                                        <%--<li class="color Mainmenu5"><a href="#"><img src="App_Themes/NewTheme/Images/TroyHirePurchase.png" /></a>
+                                    <ul> 
+                                    <li class="color submenumenu"><a href="#">Transactions</a>
+                                    <ul><li class="color submenumenu"><a href="./HirePurchase.aspx" runat="server" id="lnkHirePurchaseNew">Hire Purchase</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Reports</a>
+                                    <ul><li class="color submenumenu"><a href="#">Hire Purchase Outstanding</a></li>
+                                    <li class="color submenumenu"><a href="#">Hire Purchase</a></li></ul>
+                                    </li>
+                                    </ul>--%>
+                                        <%--</li> --%>
+                                        <li class="color Mainmenu9"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyManufacturing.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#">Master Data<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./CreateFormula.aspx" runat="server" id="lnkTransferDefn">Define Product Specification</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#">Transactions<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./FormulaExecution.aspx" runat="server" id="lnkTransferExecution">Manufacturing Process&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <%--<li class="color Mainmenu7"><a href="#"><img src="App_Themes/NewTheme/Images/TroyCommission.png" /></a>
+                                    <ul> 
+                                    <li class="color submenumenu"><a href="#">Transactions</a>
+                                    <ul><li class="color submenumenu"><a href="./CommissionMngmt.aspx" runat="server" id="lnkCommissionMngmt">Commission Management</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Reports</a>
+                                    <ul><li class="color submenumenu"><a href="#">Commission</a></li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    </li> --%>
+                                        <li class="color Mainmenu10"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyProjects.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu"><a href="#">Master Data<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./TaskStatus.aspx" runat="server" id="A3">Define Status of Tasks</a></li>
+                                                        <li class="color submenumenu"><a href="./TaskTypes.aspx" runat="server" id="A4">Define Types of Tasks</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#">Transactions<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="./ProjectEntry.aspx" runat="server" id="A5">Manage Projects</a></li>
+                                                        <li class="color submenumenu"><a href="#">Manage Tasks<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                            <ul>
+                                                                <li class="color submenumenu"><a href="./TaskEntry.aspx" runat="server" id="A6">Create Tasks</a></li>
+                                                                <li class="color submenumenu"><a href="./TaskUpdates.aspx" runat="server" id="A7">Update Tasks</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#" id="lnkprojectreport" runat="server">Reports <span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProjectReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Project Report</a>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <%--<li class="color Mainmenu9"><a href="#"><img src="App_Themes/NewTheme/Images/TroyEmployeesPayroll.png" /></a>
+                                    <ul> 
+                                    <li class="color submenumenu"><a href="#">Master Data</a>
+                                    <ul><li class="color submenumenu"><a href="./EmployeeMaster.aspx" runat="server" id="lnkEmployeeMast">Business Partner</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Transactions</a>
+                                    <ul><li class="color submenumenu"><a href="./EmployeeAttendance.aspx" runat="server" id="A8">Employee Attendance</a></li>
+                                        <li class="color submenumenu"><a href="./AdminLeaveType.aspx" runat="server" id="A9">Leave Type</a></li>
+                                        <li class="color submenumenu"><a href="./HRAdminSettings.aspx" runat="server" id="A10">HR Admin Settings</a></li>
+                                        <li class="color submenumenu"><a href="./HRAdminHoliday.aspx" runat="server" id="A11">HR Admin Holiday</a></li>
+                                        <li class="color submenumenu"><a href="./HRAdminPayComponent.aspx" runat="server" id="A15">HR Admin Pay Component</a></li>
+                                        <li class="color submenumenu"><a href="./EmployeeLeave.aspx" runat="server" id="A12">Employee Leave</a></li>
+                                        <li class="color submenumenu"><a href="./EmployeeLeaveApproval.aspx" runat="server" id="A13">Employee Leave Approval</a></li>
+                                        <li class="color submenumenu"><a href="./EmployeePayroll.aspx" runat="server" id="A14">Employee Payroll</a></li>
+                                        <li class="color submenumenu"><a href="./HRAdminEmployeeRoleList.aspx" runat="server" id="A16">HR Admin Employee RoleList</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Reports</a>
+                                    <ul><li class="color submenumenu"><a href="#">Executive wise sales</a></li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    </li> --%>
+                                        <%--<li class="color Mainmenu10"><a href="#"><img src="App_Themes/NewTheme/Images/TroySecurity.png" /></a>
+                                    <ul> 
+                                    <li class="color submenumenu"><a href="#">Trans lock</a>
+                                    <ul><li class="color submenumenu"><a href="./ReconDate.aspx" runat="server" id="lnkReconDate">Date level locking</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Password</a>
+                                    <ul><li class="color submenumenu"><a href="./ChangePassword.aspx" runat="server" id="lnkChangePassword">Change Password</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Users</a>
+                                    <ul><li class="color submenumenu"><a href="./UserOptions.aspx" runat="server" id="lnkuserlock">User Access Control Settings</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="color submenumenu"><a href="#">Audit</a>
+                                    <ul><li class="color submenumenu"><a href="./ToolReports.aspx" runat="server" id="A2">Audit Reporting</a></li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    </li> --%>
+                                        <li class="color Mainmenu11"><a href="#">
+                                            <img src="App_Themes/NewTheme/Images/TroyAdministration.png" /></a>
+
+                                            <ul>
+                                                <li class="color submenumenu"><a href="./companyinfo.aspx" runat="server" id="lnkCompanyinfo">General Settings</a>
+                                                </li>
+                                                <li class="color submenumenu"><a href="./Config.aspx" runat="server" id="A19">Define Recipients of Email And SMS</a></li>
+                                                <%--<li class="color submenumenu"><a href="./NewDBCreation.aspx" runat="server" id="A1">Year End Process</a></li>--%>
+                                                <li class="color submenumenu"><a href="./DBYearEnd.aspx" runat="server" id="A20">Year End</a></li>
+                                                <%--<li class="color submenumenu"><a href="./Configuration.aspx" runat="server" id="lnkConfiguration">Online & Offline Mode</a></li>--%>
+                                                <li class="color submenumenu"><a href="./UserOptions.aspx" runat="server" id="lnkuserlock">User Access Control Settings</a></li>
+                                                <li class="color submenumenu"><a href="#">Security<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span> </a>
+                                                    <ul style="left: -170px !important">
+                                                        <li class="color submenumenu"><a href="#">Password Administration <span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>&nbsp;&nbsp;</a>                                                            
+                                                            <ul>
+                                                                <li class="color submenumenu"><a href="./ResetPassword.aspx">Reset Password</a></li>
+                                                                <li class="color submenumenu"><a href="./ChangePassword.aspx" runat="server" id="lnkChangePassword">Change Password</a></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="color submenumenu"><a href="./ToolReports.aspx" runat="server" id="A8">Audit Log</a></li>
+                                                        <li class="color submenumenu"><a href="./ReconDate.aspx" runat="server" id="lnkReconDate">Lock Transactions</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span> License</a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#">License Administration&nbsp;&nbsp;&nbsp;</a></li>
+                                                        <li class="color submenumenu"><a href="#">License Agreement&nbsp;&nbsp;&nbsp;</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <%--<div style="width:994px;">container content</div>--%>
+                                </div>
+                                <%--<div class="menu" id="chromemenu">
+                                <ul>
+                                    <li><a href="#" rel="dropmenu1">
+                                        <img src="App_Themes/NewTheme/images/CustomerMenu.png" width="86" height="70" alt=""
+                                            border="0" /></a></li>
+                                    <li><a href="#" rel="dropmenu2">
+                                        <img src="App_Themes/NewTheme/images/SubplierMenu.png" width="86" height="70" alt="" /></a></li>
+                                    <li><a href="#" rel="dropmenu3">
+                                        <img src="App_Themes/NewTheme/images/BankingMenu.png" width="86" height="70" alt="" /></a>
+                                    </li>
+                                    <li><a href="#" rel="dropmenu4">
+                                        <img src="App_Themes/NewTheme/images/ExpenseMenu.png" width="85" height="70" alt="" /></a>
+                                    </li>
+                                    <li><a href="#" rel="dropmenu5">
+                                        <img src="App_Themes/NewTheme/images/InventoryMenu.png" width="85" height="70" alt="" /></a>
+                                    </li>
+                                    <li><a href="#" rel="dropmenu6">
+                                        <img src="App_Themes/NewTheme/images/AccountMenu.png" width="84" height="70" alt="" /></a></li>
+                                    <li><a href="#" rel="dropmenu7">
+                                        <img src="App_Themes/NewTheme/images/ResourceMenu.png" width="87" height="70" alt="" /></a></li>
+                                    <li><a href="#" rel="dropmenu8">
+                                        <img src="App_Themes/NewTheme/images/ServiceMenu.png" width="87" height="70" alt="" /></a></li>
+                                    <li><a href="#" rel="dropmenu9">
+                                        <img src="App_Themes/NewTheme/images/OtherMenu.png" width="87" height="70" alt="" /></a></li>
+                                    <li><a href="#" rel="dropmenu10">
+                                        <img src="App_Themes/NewTheme/images/ReportMenu.png" width="87" height="70" alt="" /></a>
+                                    </li>
+                                    <li><a href="#" rel="dropmenu11">
+                                        <img src="App_Themes/NewTheme/images/SecurityMenu.png" width="90" height="70" alt="" /></a></li>
+                                </ul>
+                            </div>--%>
+                                <!--1st drop down menu -->
+                                <%--<div id="dropmenu1"  class="dropmenudiv">
+                                <a href="./CustomerInfo.aspx" rel="submenu" runat="server" id="lnkCustomerInfo">Customers</a>
+                                <a href="./CustomerPayment.aspx" runat="server" id="lnkCustomerPayment">Payments</a>
+                                <a href="./CustReceipt.aspx" runat="server" id="lnkCustomerReceipt">Receipts</a>
+                                <a href="./CustomerSales.aspx" runat="server" id="lnkCustomerSales">Sales</a> <a
+                                    href="./LeadMgmt.aspx" runat="server" id="lnkLeadManagement">Lead Management</a>
+                                <a href="./CommissionMngmt.aspx" runat="server" id="lnkCommissionMngmt">Commission Management</a>
+                                <a href="./HirePurchase.aspx" runat="server" id="lnkHirePurchaseNew">Hire Purchase</a>
+                            </div>
+                            <div id="submenu" class="dropmenudiv"><a href="./CustomerInfo.aspx" runat="server" id="A8">submenuitem</a></div>--%>
+                                <!--2nd drop down menu -->
+                                <%--<div id="dropmenu2" class="dropmenudiv">
+                                <a href="./SupplierInfo.aspx" runat="server" id="lnkSupplierInfo">Suppliers</a>
+                                <a href="./SuppPayment.aspx" runat="server" id="lnkSupplierPayment">Payments</a>
+                                <a href="./SupplierReceipt.aspx" runat="server" id="lnkSupplierReceipt">Receipts</a>
+                                <a href="./Purchase.aspx" runat="server" id="lnkSupplierPurchase">Purchases</a>
+                                <a href="./BiltPurchase.aspx" runat="server" id="lnkBilty">Bilty</a>
+                            </div>--%>
+                                <!--3rd drop down menu -->
+                                <%--<div id="dropmenu3" class="dropmenudiv">
+                                <a href="./BankInfo.aspx" runat="server" id="lnkBankInfo">Banks</a> <a href="./BankPayment.aspx"
+                                    runat="server" id="lnkBankDeposit">Deposits</a> <a href="./BankReceipt.aspx" runat="server"
+                                        id="lnkBankReceipt">Receipts</a>
+                            </div>--%>
+                                <!--4th drop down menu -->
+                                <%--<div id="dropmenu4" class="dropmenudiv">
+                                <a href="./ExpenseInfo.aspx" runat="server" id="lnkExpenseInfo">Expense Types</a>
+                                <a href="./ExpPayment.aspx" runat="server" id="lnkExpensePayment">Payments</a>
+                            </div>--%>
+                                <!--5th drop down menu -->
+                                <%--<div id="dropmenu5" class="dropmenudiv">
+                                <a href="./CategryMaster.aspx" runat="server" id="lnkCategoryMast">Categories</a>
+                                <a href="./BrandMaster.aspx" runat="server" id="lnkBrandMast">Brands</a> <a href="./ProductMaster.aspx"
+                                    runat="server" id="lnkProductMast">Products</a> <a href="./OpeningStock.aspx" runat="server" id="lnkOpeningStock">Opening Stock</a>
+                                    <a href="./CreateFormula.aspx" runat="server"
+                                        id="lnkTransferDefn">Manufacturing / Transfer Definitions</a> <a href="./PhysicalStockForm.aspx"
+                                            runat="server" id="lnkRPS">Reconciliation</a> <a href="./FormulaExecution.aspx" runat="server"
+                                                id="lnkTransferExecution">Manufacturing / Transfers</a><a href="./QtyReturns.aspx" runat="server" id="lnkQtyReturns">
+                                            Item Tracking</a>
+                            </div>--%>
+                                <!--6th drop down menu -->
+                                <%--<div id="dropmenu6" class="dropmenudiv">
+                                <a href="./Groupinfo.aspx" runat="server" id="lnkGroupInfo">Groups</a> <a href="./LedgerInfo.aspx"
+                                    runat="server" id="lnkLedgerInfo">Ledgers</a>  <a href="./CreditDebitNote.aspx" runat="server"
+                                            id="lnkCreditDebitNote">Credit / Debit Notes</a><a href="./MultipleJournal.aspx"
+                                                runat="server" id="lnkMultipleInfo">Journals</a><a href="./ManualClearance.aspx"
+                                                    runat="server" id="lnkBillAdjustment">Manual Clearance</a><a href="./BankRecon.aspx"
+                                                        runat="server" id="lnkBankRec">Bank Reconciliation</a><a href="./ChequeBook.aspx"
+                                                            runat="server" id="lnkChequeBook">Cheque Book</a>
+                            </div>--%>
+                                <!--7th drop down menu -->
+                                <%--<div id="dropmenu7" class="dropmenudiv">
+                                <a href="./TimeSheet.aspx" runat="server" id="lnkTimeSheet">TimeSheet Entries</a>
+                                <a href="./TimeSheetApproval.aspx" runat="server" id="lnkTimeSheetApproval">TimeSheet
+                                    Approvals</a> <a href="./WorkManagementEntry.aspx" runat="server" id="lnkWorkManagement">
+                                        Work Entries</a> <a href="./WorkUpdates.aspx" runat="server" id="lnkWorkUpdates">Work
+                                            Updates</a> <a href="./WorkClosure.aspx" runat="server" id="lnkWorkClosure">Work Closure</a>
+                                <a href="./TaskStatus.aspx" runat="server" id="A3">Task Status</a>
+                                <a href="./TaskTypes.aspx" runat="server" id="A4">Task Types</a>
+                                <a href="./ProjectEntry.aspx" runat="server" id="A5">Project</a>
+                                <a href="./TaskEntry.aspx" runat="server" id="A6">Task</a>
+                                <a href="./TaskUpdates.aspx" runat="server" id="A7">Task Updates</a>
+                            </div>--%>
+                                <!--8th drop down menu -->
+                                <%--<div id="dropmenu8" class="dropmenudiv">
+                                <a href="./ServiceEntry.aspx" runat="server" id="lnkContracts">Contracts</a> <a href="./ServiceMGTEntry.aspx"
+                                    runat="server" id="lnkVisits">Visits</a><a href="./JobEntry.aspx" runat="server" id="lnkJobEntry">Job Entries</a>
+                            </div>--%>
+                                <!--9th drop down menu -->
+                                <%--<div id="dropmenu9" class="dropmenudiv">
+                                <a href="./EmployeeMaster.aspx" runat="server" id="lnkEmployeeMast">Business Partners</a>
+                                <a href="./companyinfo.aspx" runat="server" id="lnkCompanyinfo">Basic Settings</a>
+                                <a href="./ShareInterestCalculation.aspx" runat="server" id="lnkInterestCalculation">
+                                    Share Interest Calculation</a> <a href="./SMSText.aspx" runat="server" id="lnkSmsText">
+                                        Text Message Definitions</a>  
+                                
+                            </div>--%>
+                                <!--10th drop down menu -->
+                                <%--<div id="dropmenu10" class="dropmenudiv">
+                                <a href="./InventoryReports.aspx" runat="server" id="lnkInventoryReports">Inventory</a>
+                                <a href="./SalesReports.aspx" runat="server" id="lnkSalesReports">Sales</a> <a href="./PurchaseReports.aspx"
+                                    runat="server" id="lnkPurchaseReports">Purchases</a> <a href="./AccReports.aspx"
+                                        runat="server" id="lnkAccReports">Accounts</a> <a href="./OutStandingReports.aspx"
+                                            runat="server" id="lnkOutStandingReports">Outstanding</a> <a href="./ResMgmReports.aspx"
+                                                runat="server" id="lnkResMgmReports">Resources</a> <a href="./ServiceReports.aspx"
+                                                    runat="server" id="lnkServiceReports">Services</a> <a href="./ComplaintReports.aspx"
+                                                        runat="server" id="lnkComplaintReports">Complaints</a> <a href="./VATReports.aspx"
+                                                            runat="server" id="lnkVATReports">VAT</a> <a href="./OtherReports.aspx" runat="server"
+                                                                id="lnkOtherReports">Other</a>
+                            </div>--%>
+                                <!--11th drop down menu -->
+                                <%--<div id="dropmenu11" class="dropmenudiv" style="margin-left: -90px;">
+                                <a href="./Configuration.aspx" runat="server" id="lnkConfiguration">System Configurations</a>
+                                <a href="./ReconDate.aspx" runat="server" id="lnkReconDate">Lock Transactions</a>--%>
+                                <%--<a href="./UserMaintenance.aspx" runat="server" id="lnkUserMaintenance">Users and Roles</a>--%>
+                                <%--<a href="./UserOptions.aspx" runat="server" id="lnkuserlock">Users</a>
+                                <a href="./DataBackupAndRestore.aspx" runat="server" id="lnkDataBackup">Data Backup</a>
+                                <a href="./NewDBCreation.aspx" runat="server" id="A1">Year End Updation</a>
+                                <a href="./ChangePassword.aspx"
+                                    runat="server" id="lnkChangePassword">Change Password</a>
+                                <a href="./ToolReports.aspx"
+                                    runat="server" id="A2">Tools</a>
+                            </div>--%>
+                                <script type="text/javascript">
+
+                                    cssdropdown.startchrome("chromemenu")
+
+                                </script>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Header Div -->
+                    <%--<br />
+            <br />--%>
+                    <tr>
+                        <td>
+                            <div class="spacer3" style="display: none">
+                                <div class="msgCont">
+                                    <div class="dateDtl">
+                                        <table align="left" cellspacing="2px" cellpadding="0" border="0" style="vertical-align: middle">
+                                            <tr style="display: none">
+                                                <td colspan="2">Company Code :&nbsp;
+                                                <asp:Label ID="lblCompany" runat="server"></asp:Label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="text-align: left">Welcome&nbsp;
+                                                <asp:Label ID="lblUser" runat="server"></asp:Label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div id="dateDtl" style="">
+                                        <table align="left" cellspacing="2px" cellpadding="0" border="0">
+                                            <tr>
+                                                <td>
+                                                    <!-- Message Display Div -->
+                                                    <asp:Label ID="uiDateTimeLabel" runat="server"></asp:Label>
+                                                    <asp:Label ID="lblTitle" runat="server"></asp:Label>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="logoutDiv">
+                                        <div id="signOut" title="Signout">
+                                            <!-- Signout Div -->
+                                        </div>
+                                        <!-- Signout Div -->
+                                        <div id="help" title="Help">
+                                            <!-- Help -->
+                                            <asp:LinkButton ID="lnkHelp" runat="server" CssClass="help" CausesValidation="false"></asp:LinkButton>
+                                        </div>
+                                        <!-- Help -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="innerContentId">
+                                <!-- Main Content -->
+                                <div class="leftCont">
+                                    <div class="lefttDiv">
+                                        <!-- Menu Div -->
+                                        <div class="menuBody">
+                                            <!-- Menu Body -->
+                                            <div id="mainMenu">
+                                                <div class="shadow">
+                                                    <cc1:NavBar ID="Navbar2" runat="server" ReplaceOnNavigate="False">
+                                                        <DefaultItemStyle Selected="selecteditem" Base="item" Hover="hoveritem"></DefaultItemStyle>
+                                                        <Blocks>
+                                                            <cc1:NavBarBlock Text="Customer" Expanded="true" Image="App_Themes/DefaultTheme/Images/Customers.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="CUSTINFO" NavigateUrl="./CustomerInfo.aspx" Text="Customers"
+                                                                        Description="Customer Information" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="CUSTPMT" NavigateUrl="./CustomerPayment.aspx" Text="Payments"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="CUSTRCT" NavigateUrl="./CustReceipt.aspx" Text="Receipts"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SALES" NavigateUrl="./CustomerSales.aspx" Text="Sales" Selected="true">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="LDMNGT" NavigateUrl="./LeadManagement.aspx" Text="LeadMgmnt"
+                                                                        Selected="true">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="COMMNGT" NavigateUrl="./CommissionMngmt.aspx" Text="CommissionMngmt"
+                                                                        Selected="true">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="HIPUR" NavigateUrl="./HirePurchase.aspx" Text="HirePurchase"
+                                                                        Selected="true">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BUNSALES" NavigateUrl="./BundleSalesnew.aspx" Text="Sales"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Supplier" Image="App_Themes/DefaultTheme/Images/Suppliers.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="SUPPINFO" NavigateUrl="./SupplierInfo.aspx" Text="Suppliers"
+                                                                        Description="Supplier Information" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SUPPPMT" NavigateUrl="./SupplierPayment.aspx" Text="Payments"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SUPPRCT" NavigateUrl="./SupplierReceipt.aspx" Text="Receipts"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="PURCHS" NavigateUrl="./Purchase.aspx" Text="Purchases" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BUNPURCHS" NavigateUrl="./BundlePurchase.aspx" Text="Purchases"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Banking" Image="App_Themes/DefaultTheme/Images/Bank.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="BANKINFO" NavigateUrl="./BankInfo.aspx" Text="Banks" Description="Bank Information"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BNKPMT" NavigateUrl="./BankPayment.aspx" Text="Deposits" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BNKRCT" NavigateUrl="./BankReceipt.aspx" Text="Receipts" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Expense" Image="App_Themes/DefaultTheme/Images/Expenses.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="EXPINFO" NavigateUrl="./ExpenseInfo.aspx" Text="Expense Types"
+                                                                        Description="Expenses Information" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="EXPPMT" NavigateUrl="./ExpPayment.aspx" Text="Payments"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Inventory" Image="App_Themes/DefaultTheme/Images/inventory.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="CATMST" NavigateUrl="./CategryMaster.aspx" Text="Categories"
+                                                                        Description="Category Master" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BRDMST" NavigateUrl="./BrandMaster.aspx" Text="Brands" Description="Brand Details"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="PRDMST" NavigateUrl="./ProductMaster.aspx" Text="Products"
+                                                                        Description="Product/Service Details" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="OPNSTK" NavigateUrl="./OpeningStock.aspx" Text="Opening Stock" Description="Opening Stock Details"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="STKMST" NavigateUrl="./CreateFormula.aspx" Text="Manufacturing / Transfer Definitions"
+                                                                        Description="Stock Mgmt Definition" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="PHYSTK" NavigateUrl="./PhysicalStockForm.aspx" Text="Reconciliation"
+                                                                        Description="Physical Stock Entry" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="STKADJ" NavigateUrl="./FormulaExecution.aspx" Text="Manufacturing / Transfers"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Account" Image="App_Themes/DefaultTheme/Images/Accounting.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="GRPMST" NavigateUrl="./Groupinfo.aspx" Text="Groups" Description="Group Information"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="LDGMST" NavigateUrl="./LedgerInfo.aspx" Text="Ledgers" Description="Ledger Information"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <%--<cc1:NavBarItem Roles="JURNAL" NavigateUrl="./JournalInfo.aspx" Text="Journals" Selected="False">
+                                                                </cc1:NavBarItem>--%>
+                                                                    <cc1:NavBarItem Roles="CDNOTE" NavigateUrl="./CreditDebitNote.aspx" Text="Credit / Debit Notes"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="MULJOU" NavigateUrl="./MultipleJournal.aspx" Text="Journals"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="MNL" NavigateUrl="./ManualClearance.aspx" Text="Manual Clearance"
+                                                                        Selected="false">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BNKREC" NavigateUrl="./BankRecon.aspx" Text="Reconciliation"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Resource" Image="App_Themes/DefaultTheme/Images/Resource.png">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="TMENTRY" NavigateUrl="./TimeSheet.aspx" Text="TimeSheet Entries"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="TMAPP" NavigateUrl="./TimeSheetApproval.aspx" Text="TimeSheet Approvals"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="WMENTRY" NavigateUrl="./WorkManagementEntry.aspx" Text="Work Entries"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="WRKUPD" NavigateUrl="./WorkUpdates.aspx" Text="Work Updates"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="WRKCLO" NavigateUrl="./WorkClosure.aspx" Text="Work Closure"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Service" Image="App_Themes/DefaultTheme/Images/Service.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="SRVENT" NavigateUrl="./ServiceEntry.aspx" Text="Contracts"
+                                                                        Description="Service Contracts" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SRVMGMT" NavigateUrl="./ServiceMGTEntry.aspx" Text="Visits"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Complaint" Image="App_Themes/DefaultTheme/Images/Complaint.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="CMPMGMT" NavigateUrl="./ComplaintMgmt.aspx" Text="Complaints"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Other" Image="App_Themes/DefaultTheme/Images/Others.gif">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="EMPMST" NavigateUrl="./EmployeeMaster.aspx" Text="Business Partners"
+                                                                        Description="Business Partner" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="CMPMST" NavigateUrl="./companyinfo.aspx" Text="Basic Settings"
+                                                                        Description="Basic Settings" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SICMST" NavigateUrl="./ShareInterestCalculation.aspx" Text="Share Interest Calculation"
+                                                                        Description="Share Interest Calculation" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SMSDRFT" NavigateUrl="./SMSText.aspx" Text="Text Message Definitions"
+                                                                        Description="Text Message Defintion" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="ITMTRK" NavigateUrl="./QtyReturns.aspx" Text="Item Tracking"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="JOBENT" NavigateUrl="./JobEntry.aspx" Text="Job Entries" Description="Job"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="DELTRANS" NavigateUrl="./DeleteItems.aspx" Text="Hide Transactions"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BILTENT" NavigateUrl="./BiltPurchase.aspx" Text="Bilty" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="TXTCOMM" NavigateUrl="./BulkSMS.aspx" Text="Text Message Communication"
+                                                                        Description="Adhoc SMS" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="CHQMST" NavigateUrl="./ChequeBook.aspx" Text="Cheque Book"
+                                                                        Description="Cheque Book Information" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Report" Image="App_Themes/DefaultTheme/Images/Report.png">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="REORDRPT,STKRPT,STKLEDRPT,STKRECRPT,STKVERRPT" NavigateUrl="./InventoryReports.aspx"
+                                                                        Text="Inventories" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SLSRPT,SLSPDRPT,SLSPERPT,SLSPERPT,SLSUMRPT" NavigateUrl="./SalesReports.aspx"
+                                                                        Text="Sales" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="PRSUMRPT,PURLVL,PURVTCST" NavigateUrl="./PurchaseReports.aspx"
+                                                                        Text="Purchases" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="TRLBRPT,BALSHTRPT,PLRPT,BAKSTRPT,CACCRPT,LEDRPT,DYBKRPT" NavigateUrl="./AccReports.aspx"
+                                                                        Text="Accounts" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="OUTRPT,OUTBDRPT,OUTBERPT,EXECOUT" NavigateUrl="./OutStandingReports.aspx"
+                                                                        Text="Outstanding" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="TMEREPORT,WKRRPT" NavigateUrl="./ResMgmReports.aspx" Text="Resources"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="SERMNGT" NavigateUrl="./ServiceReports.aspx" Text="Services"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="COMRPT" NavigateUrl="./ComplaintReports.aspx" Text="Complaints"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="VATSUM" NavigateUrl="./VATReports.aspx" Text="VAT" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="BUSTRNRPT,VATSUMRPT,YREDRPT,PRSUMRPT,GPSRPT,CSTSMRPT" NavigateUrl="./OtherReports.aspx"
+                                                                        Text="Others" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                            <cc1:NavBarBlock Text="Security" Image="App_Themes/DefaultTheme/Images/Security.png">
+                                                                <Items>
+                                                                    <cc1:NavBarItem Roles="SYSCONF" NavigateUrl="./Configuration.aspx" Text="System Configurations"
+                                                                        Description="System Configuration" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="COMPDB" NavigateUrl="./CompressDBFile.aspx" Text="Compress DB"
+                                                                        Description="Compress DB" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="RECDATE" NavigateUrl="./ReconDate.aspx" Text="Lock Transactions"
+                                                                        Description="Change ReconDate" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="MNGUSRS" NavigateUrl="./UserMaintenance.aspx" Text="Users and Roles"
+                                                                        Description="Manage Users" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <cc1:NavBarItem Roles="ULOCK" NavigateUrl="./UserOptions.aspx" Text="Users Lock" Description="Users Lock"
+                                                                        Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                    <%--<cc1:NavBarItem Roles="BACKRES" NavigateUrl="./DataBackupAndRestore.aspx" Text="Data Backup" Description="Data Backup"
+                                                                    Selected="False">
+                                                                </cc1:NavBarItem>--%>
+                                                                    <cc1:NavBarItem Roles="*" NavigateUrl="./ChangePassword.aspx" Text="Change Password"
+                                                                        Description="Change Password" Selected="False">
+                                                                    </cc1:NavBarItem>
+                                                                </Items>
+                                                            </cc1:NavBarBlock>
+                                                        </Blocks>
+                                                        <DefaultBlockStyle Closed="closedheader" ItemArea="itemarea" Expanded="openheader"></DefaultBlockStyle>
+                                                    </cc1:NavBar>
+                                                    <div style="padding-left: 5px; vertical-align: bottom; height: 10px; border-bottom: 1px solid #86b2d1;">
+                                                        <div class="exitHeader" style="padding-left: 8px" onclick="return LogOut();">
+                                                            <div style="height: 3px">
+                                                                &nbsp;
+                                                            </div>
+                                                            <span style="height: 10px; vertical-align: middle">&nbsp;&nbsp;&nbsp;Log out </span>
+                                                        </div>
+                                                    </div>
+                                                    <asp:LinkButton ID="lnkLogout" CausesValidation="false" runat="server" OnClick="lnkLogout_Click"></asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <!-- Main Menu -->
+                                        </div>
+                                        <!-- Menu Body -->
+                                        <div class="menuBody" style="text-align: left">
+                                            <!-- Menu Footer -->
+                                            <div style="height: 1px">
+                                            </div>
+                                            <asp:Label ID="Label2" runat="server" CssClass="PaddLeft2px" Width="50px" Text="UserName"></asp:Label>:<asp:Label
+                                                runat="server" ID="Label3"></asp:Label><br />
+                                            <asp:Label ID="Label4" runat="server" CssClass="PaddLeft2px" Width="50px" Text="Company"></asp:Label>:<asp:Label
+                                                runat="server" ID="Label8"></asp:Label><br />
+                                            <asp:Label ID="ltVer" runat="server" CssClass="PaddLeft2px" Width="50px" Text="Version"></asp:Label>:<asp:Label
+                                                runat="server" ID="lblVer"></asp:Label>
+                                        </div>
+                                        <div class="menuFoot">
+                                            <!-- Menu Footer -->
+                                            <div class="leftTbl">
+                                            </div>
+                                            <div class="midTbl">
+                                            </div>
+                                            <div class="rightTbl">
+                                            </div>
+                                        </div>
+                                        <!-- Menu Footer -->
+                                    </div>
+                                    <!-- Menu Div -->
+                                </div>
+                                <div class="rightCont">
+                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                        <tr id="rowTab" runat="server" style="text-align: left">
+                                            <td>
+                                                <asp:ContentPlaceHolder ID="cplhTab" runat="server">
+                                                </asp:ContentPlaceHolder>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="middle">
+                                                <!--<div id="height" style="height: 30px">
+                                </div> -->
+                                                <asp:UpdateProgress runat="server" ID="uProcess1">
+                                                    <ProgressTemplate>
+                                                        <progresstemplate>        
+                                            <div id="divLoading" class="divCenter" >
+                                                <img id="imgLoading" src="App_Themes/DefaultTheme/Images/main-loader.gif" align="absmiddle" vspace="0" hspace="0" style="vertical-align:middle" />    
+                                                <%--<table border="0" cellpadding="0" cellspacing="0" align="center" width="95%" height="95%">
+                                                    <tr>
+                                                        <td class="style1">Please Wait....</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="center" valign="top" class="style2">
+                                                            <img id="imgLoading" src="App_Themes/DefaultTheme/Images/ajax-loader.gif" align="absmiddle" vspace="0" hspace="0" style="vertical-align:middle" />    
+                                                        </td>
+                                                    </tr>
+                                                </table>--%>
+                                            </div>
+                                        </progresstemplate>
+                                                    </ProgressTemplate>
+                                                </asp:UpdateProgress>
+                                                <div style="vertical-align: top">
+                                                    <asp:ContentPlaceHolder ID="cplhControlPanel" runat="server">
+                                                    </asp:ContentPlaceHolder>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="footerDiv">
+                                <div class="footTextRight">
+                                    Copyrights &#169; TroyPlus 2015. All Rights Reserved
+                                </div>
+                            </div>
+                            <!-- Footer -->
+                        </td>
+                    </tr>
+                </table>
+                <!-- Main Content -->
+            </div>
+            <!-- Inner Div -->
+        </div>
+        <!-- Footer -->
+        <!-- Key Features Div -->
+    </form>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+<asp:ImageButton SkinID="print" runat="server" ImageUrl="~/App_Themes/DefaultTheme/Images/RightLink1.gif" AlternateText="Print" ToolTip="Click to Print" />
+<asp:ImageButton SkinID="edit" runat="server" ImageUrl="~/App_Themes/DefaultTheme/Images/edit.png" AlternateText="Edit" ToolTip="Click to edit this item" />
+<asp:ImageButton SkinID="Plus" runat="server" ImageUrl="~/App_Themes/DefaultTheme/Images/imagesplus.png" AlternateText="Plus" ToolTip="Click to Add this item" />
+<asp:ImageButton SkinID="delete" runat="server" ImageUrl="~/App_Themes/DefaultTheme/Images/delete.png" AlternateText="Delete" ToolTip="Click to delete this item" />
+<asp:ImageButton SkinID="SoftDelete" runat="server" ImageUrl="~/img/delete.gif" AlternateText="Soft Delete" ToolTip="Click to Delete this item" />
+<asp:ImageButton SkinID="Restore" runat="server" ImageUrl="~/img/restore.gif" AlternateText="Restore" ToolTip="Click to Restore this item" />
+<asp:ImageButton runat="server" ImageUrl="Images/UserApproved.gif" SkinID="skinActiveImg" />
+<asp:ImageButton runat="server" ImageUrl="Images/UserUnApproved.gif" SkinID="skinInActiveImg" />
+<asp:ImageButton runat="server" ImageUrl="Images/add-folder-blue.gif" SkinID="skinAddFolderImg" />
+<asp:ImageButton runat="server" ImageUrl="Images/delete-folder-blue.gif" SkinID="skinDeleteFolderImg" />
+<asp:Image runat="server" ImageUrl="Images/UserApproved.gif" SkinID="skinImgActive" />
+<asp:Image runat="server" ImageUrl="Images/UserUnApproved.gif" SkinID="skinImgInActive" />
+<asp:Image runat="server" ImageUrl="Images/ServiceDeskLftLink.gif" SkinID="skinLeftLnkImg"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/ServiveDeskHeader.gif" SkinID="skinHeaderImg"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/Logo.png" SkinID="skinLogoImg"></asp:Image>
+<asp:ImageButton runat="server" ImageUrl="Images/BlogEdit.gif" SkinID="skinBlogEditImg" />
+<asp:ImageButton runat="server" ImageUrl="Images/BlogAttachment.gif" SkinID="skinBlogAttachmentImg" />
+
+<asp:Image runat="server" ImageUrl="Images/Bullet.gif" SkinID="skinSearchLeftImg"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/Attachment.gif" SkinID="skinAttachImg"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/check-blue.gif" SkinID="skinPermissionImg"></asp:Image>
+<asp:ImageButton runat="server" ImageUrl="Images/Cancel.png" SkinID="GridCancel" />
+<asp:ImageButton runat="server" ImageUrl="Images/Save.png" CssClass="lPadss" SkinID="GridUpdate" />
+<asp:ImageButton runat="server" ImageUrl="Images/delete-page-blue.gif" SkinId="skinImgDelete" />
+<asp:ImageButton runat="server" ImageUrl="Images/Icon_View.gif" SkinId="skinImgSearch" />
+<asp:ImageButton runat="server" ImageUrl="Images/up.gif" SkinId="skinImgUp" />
+<asp:ImageButton runat="server" ImageUrl="Images/down.gif" SkinId="skinImgDown" />
+<asp:ImageButton runat="server" ImageUrl="Images/add-page-blue.gif" SkinId="skinaddPage" />
+<asp:Image runat="server" ImageUrl="Images/RightLink1.gif" SkinID="skinRightLink1Img"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/arrowBold.gif" SkinID="skinArrowBoldImg"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/arrowNormal.gif" SkinID="skinArrowNormalImg"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/RightLink2.gif" SkinID="skinRightLink2Img"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/RightLink3.gif" SkinID="skinRightLink3Img"></asp:Image>
+<asp:Image  runat="server" ImageUrl="~/App_Themes/DefaultTheme/Images/calender.jpg" SkinId="skinImgCalendar" />
+<asp:Image runat="server" ImageUrl="Images/FindMenu.gif" SkinID="SplitterShow" CssClass="cursor"></asp:Image>
+<asp:Image runat="server" ImageUrl="Images/FindMenu.gif" SkinID="SplitterHide" CssClass="cursor"></asp:Image>
+<asp:FileUpload  runat="server" CssClass="txtBox " SkinId="skintxtFileUpload" width="300"/>
+<asp:FileUpload  runat="server" CssClass="txtBox " SkinId="skintxtFileUploadMedium" width="250"/>
+<asp:FileUpload  runat="server" CssClass="txtBox" SkinId="skinFileUpload" width="270"/>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBoxGrid" Width="96%"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBox" Width="99%" Height="18px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTextBox" Height="18px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinUsrTxtBox"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBoxArea" SkinID="skinTxtBoxArea" Width="230px" Height="80px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBoxSearch" Height="17px" Width="96%"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBoxSales" Height="17px" Width="120px"></asp:TextBox>
+
+<asp:TextBox runat="server" CssClass="txtBoxAreaDesc" SkinID="skinTxtBoxAreaDesc" Width="230px" height="70px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBoxAreaDesc" SkinID="skinTxtBoxAreaDescSmall" height="110" Width="230px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBoxAreaDesc" SkinID="skinTxtBoxAreaDescBig" height="110" Width="600px"></asp:TextBox>
+
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBoxAreaExt" Width="38px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBoxSmall" Width="50px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBoxPhone" Width="80px"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtArea"  Width="230" Height="70" Wrap="true"></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtBox" SkinID="skinTxtBoxMedium"  Width="100" ></asp:TextBox>
+<asp:TextBox runat="server" CssClass="txtColBox" SkinID="skinTxtCol" Width="130px"></asp:TextBox>
+<asp:Label runat="server" SkinID="skinLblText" CssClass="lblBox"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblCaption" CssClass="cptnContent lpad"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblCaptionright" CssClass="cptnContent rgpad"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblCaptionrightpad" CssClass="cptnContent rpad"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblColCaption" CssClass="colSmallTitle lpad"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblBoldCaptionWhite" CssClass="cptnBoldContentWhite lpad"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblCaptionWhite" CssClass="cptnContentWhite lpad"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblCaptionCol" CssClass="cptnContentCol lPad"></asp:Label>
+<asp:Label runat="server" SkinID="skinLblFooterCaption" CssClass="cptnContentCol"></asp:Label>
+
+<asp:Button runat="server" CssClass="btn cursor" width="60" Height="20"/>
+<asp:Button runat="server" CssClass="btn cursor" SkinID="skinButtonMedium" width="100"/>
+<asp:Button runat="server" CssClass="btn cursor" SkinID="skinButtonBig" width="140"/>
+<asp:Button runat="server" CssClass="btn cursor" SkinID="skinButtonCol"/>
+
+<asp:Button runat="server" CssClass="btnSave" SkinID="skinBtnSave" width="100px"/>
+<asp:Button runat="server" CssClass="btnSearch" SkinID="skinBtnSearch" width="100px"/>
+<asp:Button runat="server" CssClass="btnCancel" SkinID="skinBtnCancel" width="100px"/>
+<asp:Button runat="server" CssClass="btnPrint cursor" SkinID="skinBtnPrint" width="100"/>
+<asp:Button runat="server" CssClass="btnDelete cursor" SkinID="skinBtnDelete" width="100"/>
+<asp:Button runat="server" CssClass="btnAddNew cursor" SkinID="skinBtnAddNew" width="100" Text="Add New"/>
+<asp:Button runat="server" CssClass="btnDownload" SkinID="skinBtnDownload"/>
+<asp:Button runat="server" CssClass="btnUpload" SkinID="skinBtnUpload" />
+<asp:Button runat="server" CssClass="btnContinue" SkinID="skinBtnContnue" />
+<asp:Button runat="server" CssClass="btnAddProduct" SkinID="skinBtnAddProduct" width="130px" />
+<asp:Button runat="server" CssClass="btnUpdateProduct" SkinID="skinBtnUpdateProduct" width="130px" />
+<asp:Button runat="server" CssClass="btnSearch" SkinID="skinBtnLookUp" width="160px"/>
+<asp:Button runat="server" CssClass="btnUpdateProduct" SkinID="skinBtnRefresh" />
+
+<asp:RadioButtonList runat="server" CssClass="rdButton" SkinID="skinrdbtn"/>
+
+<asp:DropDownList runat="server" CssClass="drpDownList" SkinId="skinDdlBox" Height="23"/>
+<asp:DropDownList runat="server" CssClass="drpDownList" SkinId="skinPagerDdlBox" Height="20" width="40"/>
+<asp:dropdownlist runat="server"  SkinID="DdlListBoxSmallest"  CssClass="cptnContent" width="50"></asp:dropdownlist>
+<asp:dropdownlist runat="server"  SkinID="DdlListBoxSmallestX"  CssClass="cptnContentRole" width="120" Height="12"></asp:dropdownlist>
+<asp:DropDownList CssClass="drpDownList" runat="server" SkinID="skindrpDownList" width="230"></asp:DropDownList>
+<asp:DropDownList CssClass="drpDownList" runat="server" SkinID="skindrpDownListSmall" width="20px"></asp:DropDownList>
+<asp:DropDownList CssClass="drpDownListMedium" runat="server" SkinID="skindrpDownListMedium" width="130"></asp:DropDownList>
+<asp:dropdownlist runat="server"  SkinID="skindrpDownMedium"  CssClass="drpDownList" width="130"></asp:dropdownlist>
+<asp:dropdownlist runat="server"  SkinID="skinddlSearch"  CssClass="ddlSearch" width="130"></asp:dropdownlist>
+
+<asp:ListBox runat="server" CssClass="lstBox" SkinID="skinLstBox"></asp:ListBox>
+<asp:ListBox runat="server" CssClass="lstBoxMedium" SkinID="skinLstBoxMedium"></asp:ListBox>
+
+<asp:CheckBox runat="server" CssClass="cptnContentCol" SkinID="skinChkBox"></asp:CheckBox>
+
+<asp:LinkButton runat="server" SkinID="skinLbtn" CssClass="pgLink"></asp:LinkButton>
+<asp:LinkButton runat="server" SkinID="skinLbtnLeft" CssClass="pgLinkLeft"></asp:LinkButton>
+<asp:LinkButton runat="server" SkinID="skinLbtnError" CssClass="pgLinkError"></asp:LinkButton>
+<asp:LinkButton runat="server" SkinID="skinLbtnGrid" CssClass="pgLinkGrid"></asp:LinkButton>
+
+<asp:Label runat="server" CssClass="errorMsgBold" SkinID="skinErrorMsg"></asp:Label>
+<asp:Label runat="server" CssClass="historyMsgBold lPad" SkinID="skinHistoryMsg"></asp:Label>
+<asp:RequiredFieldValidator runat="server" CssClass="errorMsg" SkinID="skinReqFieldMsg"/> 
+<asp:RegularExpressionValidator runat="server" CssClass="errorMsg" SkinID="skinReqExpFieldMsg"/>
+<asp:CompareValidator runat="server" CssClass="errorMsg" SkinID="skinCmpExpMsg"/>
+
+                            
+<asp:GridView runat="server" AutoGenerateColumns="False" cssclass="GgrdBorder" cellSpacing="0" AllowPaging="True" SkinID="ReportGrid1">
+            <RowStyle HorizontalAlign="left" CssClass="GrdContent allPad" VerticalAlign="Middle"  bordercolor="#cccccc" Height="24px" />
+            <AlternatingRowStyle HorizontalAlign="left" CssClass="GrdAlternateColor allPad" bordercolor="#cccccc" VerticalAlign="middle"  Height="24px" />
+            <HeaderStyle HorizontalAlign="left" CssClass="GrdHeaderbgClr GrdHdrContent allPad" Height="22px" bordercolor="#cccccc" VerticalAlign="Middle" />
+            <FooterStyle HorizontalAlign="left" CssClass="GrdContent allPad" VerticalAlign="Middle"  bordercolor="#cccccc" Height="20px" />
+            <PagerStyle ForeColor="#FFFFFF" VerticalAlign="Middle" HorizontalAlign="Left" CssClass="GrdHeaderbgClr GrdHdrContent allPad" Height="25px" />
+            <EmptyDataRowStyle CssClass="GrdContent" Height="25px" />
+</asp:GridView>            
+
+<asp:GridView runat="server" AutoGenerateColumns="False" cssclass="GgrdBorder" cellSpacing="0" PageSize="100" AllowPaging="False" SkinID="ReportGrid">
+            <RowStyle HorizontalAlign="left" CssClass="GrdContent allPad" VerticalAlign="Middle"  bordercolor="#cccccc" Height="24px" />
+            <AlternatingRowStyle HorizontalAlign="left" CssClass="GrdAlternateColor allPad" bordercolor="#cccccc" VerticalAlign="middle"  Height="24px" />
+            <HeaderStyle HorizontalAlign="left" CssClass="GrdHeaderbgClr GrdHdrContent allPad" Height="25px" bordercolor="#cccccc" VerticalAlign="Middle" />
+            <FooterStyle HorizontalAlign="left" CssClass="GrdContent allPad" VerticalAlign="Middle"  bordercolor="#cccccc" Height="20px" />
+            <PagerStyle ForeColor="#FFFFFF" VerticalAlign="Middle" HorizontalAlign="Left" CssClass="GrdHeaderbgClr GrdHdrContent allPad" Height="25px" />
+            <EmptyDataRowStyle CssClass="GrdContent" Height="25px" />
+</asp:GridView>            
+
+
+<asp:GridView runat="server" CssClass="grid" SkinID="TestGrid" >
+    <AlternatingRowStyle CssClass="altrowstyle" />
+    <HeaderStyle CssClass="headerstyle" />
+    <RowStyle CssClass="rowstyle" />
+    <EditRowStyle CssClass="editrowstyle" />    
+</asp:GridView>
+
+
+<asp:GridView runat="server" CssClass="gridview" SkinID="gridview" >
+    <AlternatingRowStyle CssClass="even" />
+    <HeaderStyle CssClass="gridview" />
+    <RowStyle CssClass="gridview" />
+    <EditRowStyle CssClass="gridview" />    
+</asp:GridView>
+
+<asp:GridView runat="server" CssClass="igoogle igoogle-classic" AutoGenerateColumns="false" PageSize="15" >
+    <RowStyle CssClass="data-row" />
+    <AlternatingRowStyle CssClass="alt-data-row" />
+    <HeaderStyle CssClass="header-row" />
+    <FooterStyle CssClass="footer-row" Height="25px" />
+    <PagerStyle Height="25px"  CssClass="footer-row allPad" VerticalAlign="Middle" HorizontalAlign="Left"  />
+</asp:GridView>

@@ -1,0 +1,15 @@
+C:\ACCSYSTEM\ReportsBL\bin\Release\ReportsBL.dll
+C:\ACCSYSTEM\ReportsBL\bin\Release\ReportsBL.pdb
+C:\ACCSYSTEM\ReportsBL\obj\Release\ResolveAssemblyReference.cache
+C:\ACCSYSTEM\ReportsBL\obj\Release\ReportsBL.dll
+C:\ACCSYSTEM\ReportsBL\obj\Release\ReportsBL.pdb
+D:\ACCSYSTEM\ReportsBL\bin\Release\ReportsBL.dll
+D:\ACCSYSTEM\ReportsBL\bin\Release\ReportsBL.pdb
+D:\ACCSYSTEM\ReportsBL\obj\Release\ResolveAssemblyReference.cache
+D:\ACCSYSTEM\ReportsBL\obj\Release\ReportsBL.dll
+D:\ACCSYSTEM\ReportsBL\obj\Release\ReportsBL.pdb
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\bin\Release\ReportsBL.dll
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\bin\Release\ReportsBL.pdb
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\obj\Release\ReportsBL.csprojResolveAssemblyReference.cache
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\obj\Release\ReportsBL.dll
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\obj\Release\ReportsBL.pdb

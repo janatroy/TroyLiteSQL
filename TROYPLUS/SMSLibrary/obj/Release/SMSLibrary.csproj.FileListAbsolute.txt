@@ -1,0 +1,9 @@
+D:\ACCSYSTEM\SMSLibrary\bin\Release\SMSLibrary.dll
+D:\ACCSYSTEM\SMSLibrary\obj\Release\ResolveAssemblyReference.cache
+D:\ACCSYSTEM\SMSLibrary\obj\Release\SMSLibrary.dll
+C:\ACCSYSTEM\SMSLibrary\bin\Release\SMSLibrary.dll
+C:\ACCSYSTEM\SMSLibrary\obj\Release\ResolveAssemblyReference.cache
+C:\ACCSYSTEM\SMSLibrary\obj\Release\SMSLibrary.dll
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\SMSLibrary\bin\Release\SMSLibrary.dll
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\SMSLibrary\obj\Release\SMSLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\SMSLibrary\obj\Release\SMSLibrary.dll
