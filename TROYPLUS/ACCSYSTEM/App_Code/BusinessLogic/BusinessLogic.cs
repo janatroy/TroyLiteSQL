@@ -2855,7 +2855,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "select GroupID, GroupName, Heading, tblGroups.Order from tblGroups inner join tblAccHeading on tblGroups.HeadingID = tblAccHeading.HeadingID where GroupName = 'Sundry Debtors' Order by GroupName Asc ";
+            dbQry = "select GroupID, GroupName, Heading, tblGroups.[Order] from tblGroups inner join tblAccHeading on tblGroups.HeadingID = tblAccHeading.HeadingID where GroupName = 'Sundry Debtors' Order by GroupName Asc ";
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -2884,7 +2884,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "select GroupID, GroupName, Heading, tblGroups.Order from tblGroups inner join tblAccHeading on tblGroups.HeadingID = tblAccHeading.HeadingID where GroupName = 'Sundry Creditors' Order by GroupName Asc ";
+            dbQry = "select GroupID, GroupName, Heading, tblGroups.[Order] from tblGroups inner join tblAccHeading on tblGroups.HeadingID = tblAccHeading.HeadingID where GroupName = 'Sundry Creditors' Order by GroupName Asc ";
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -5974,11 +5974,12 @@ public class BusinessLogic
         string dbQry = string.Empty;
 
         string dbQ = string.Empty;
+       
         DataSet dsd = new DataSet();
         string logdescription = string.Empty;
         string description = string.Empty;
         string Logsave = string.Empty;
-
+        
         string sAuditStr = string.Empty;
         //DateTime sBilldate;
         //string[] sDate;
@@ -6010,12 +6011,16 @@ public class BusinessLogic
             //sBilldate = new DateTime(Convert.ToInt32(sDate[2].ToString()), Convert.ToInt32(sDate[1].ToString()), Convert.ToInt32(sDate[0].ToString()));
 
 
+            //dbLdId = "SELECT MAX(LedgerID) as LedgerID FROM tblLedger";
+            //dsLdId = manager.ExecuteDataSet(CommandType.Text, dbLdId.ToString());
+            //if (dsLdId.Tables[0].Rows.Count > 0)
+            //    LedgerID = Convert.ToInt32(dsLdId.Tables[0].Rows[0]["LedgerID"].ToString());
 
 
-            int LedgerID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger");
+            int LedgerID =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
 
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -6052,19 +6057,25 @@ public class BusinessLogic
                     value2 = "";
                     value3 = "";
                 }
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}','{5}','{6}')",
-                     DateTime.Now.ToString(), value1, "", "", value2, value3, "InsertCustmoerInfo");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), value1, "", "", value2, value3, "InsertCustmoerInfo");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
+
+
+            dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact,OpDueDate) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26},'{27}')",
                 LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, OpDueDate);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+            dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Customer Ledger : " + LedgerName + " added. Record Details :  User :" + Username + " AliasName = " + AliasName + " GroupID= " + GroupID + " ,LedgerCategory = " + LedgerCategory + " ,Mobile=" + Mobile + " Phone :" + Phone;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
