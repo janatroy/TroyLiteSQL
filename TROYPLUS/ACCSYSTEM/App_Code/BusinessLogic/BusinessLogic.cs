@@ -932,7 +932,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "Select [KEY],KEYVALUE From tblSettings";
+            dbQry = "Select KEYNAME,KEYVALUE From tblSettings";
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -6024,19 +6024,7 @@ public class BusinessLogic
                 {
                     throw new Exception("Ledger Exists");
                 }
-            }
-
-
-            //sDate = OpDueDate.Trim().Split(delimA);
-
-
-            //sBilldate = new DateTime(Convert.ToInt32(sDate[2].ToString()), Convert.ToInt32(sDate[1].ToString()), Convert.ToInt32(sDate[0].ToString()));
-
-
-            //dbLdId = "SELECT MAX(LedgerID) as LedgerID FROM tblLedger";
-            //dsLdId = manager.ExecuteDataSet(CommandType.Text, dbLdId.ToString());
-            //if (dsLdId.Tables[0].Rows.Count > 0)
-            //    LedgerID = Convert.ToInt32(dsLdId.Tables[0].Rows[0]["LedgerID"].ToString());
+            }           
 
 
             int LedgerID =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
@@ -7777,7 +7765,7 @@ public class BusinessLogic
 
             }
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyName='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -7814,8 +7802,8 @@ public class BusinessLogic
                     value3 = "";
                 }
 
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}','{5}','{6}')",
-                     DateTime.Now.ToString(), value1, "", "", value2, value3, "UpdateLedgerInfo");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), value1, "", "", value2, value3, "UpdateLedgerInfo");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -7824,7 +7812,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Ledger ID : " + oldLedgerID + " got edited. Record Details :  User :" + Username + " Ledger : " + oldLedgerName + " GroupID= " + GroupID + " ,Mobile=" + oldmobile + " Phone :" + oldphone;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit And Update", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit And Update", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -22163,160 +22151,160 @@ public class BusinessLogic
             manager.Open();
             if (itemCode.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='ITEMCODE' ", itemCode);
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='ITEMCODE' ", itemCode);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (strQtyReturn.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='QTYRETURN' ", strQtyReturn.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='QTYRETURN' ", strQtyReturn.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (DiscType.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='DISCTYPE' ", DiscType.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='DISCTYPE' ", DiscType.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (strDate.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='QTYDATE' ", strDate);
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='QTYDATE' ", strDate);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (strBillFormat.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='BILLFORMAT' ", strBillFormat);
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='BILLFORMAT' ", strBillFormat);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (strIP.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='IPBLOCKING' ", strIP.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='IPBLOCKING' ", strIP.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (BiltRequired.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='BLITREQ' ", BiltRequired.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='BLITREQ' ", BiltRequired.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (exceedLimit.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='CREDITEXD' ", exceedLimit.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='CREDITEXD' ", exceedLimit.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (OwnerMobile.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='OWNERMOB' ", OwnerMobile.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='OWNERMOB' ", OwnerMobile.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
             if (Currency.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='CURRENCY' ", Currency.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='CURRENCY' ", Currency.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (dealer.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='DEALER' ", dealer.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='DEALER' ", dealer.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (barcode.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='BARCODE' ", barcode.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='BARCODE' ", barcode.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (stockEdit.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='STOCKEDIT' ", stockEdit.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='STOCKEDIT' ", stockEdit.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (SMSrequired.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='SMSREQ' ", SMSrequired.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='SMSREQ' ", SMSrequired.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
             if (VATReconDate.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='VATRECDATE' ", VATReconDate.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='VATRECDATE' ", VATReconDate.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
             if (VATAmount.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='VATAMOUNT' ", VATAmount.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='VATAMOUNT' ", VATAmount.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (strBillMethod.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='BILLMETHOD' ", strBillMethod.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='BILLMETHOD' ", strBillMethod.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (strobsolute.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='OBSOLUTE' ", strobsolute.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='OBSOLUTE' ", strobsolute.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (droundoff.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='ROUNDOFF' ", droundoff.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='ROUNDOFF' ", droundoff.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (dsalesseries.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='SALBILLNO' ", dsalesseries.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='SALBILLNO' ", dsalesseries.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (autolock.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='AUTOLOCK' ", autolock.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='AUTOLOCK' ", autolock.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (savelog.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='SAVELOG' ", savelog.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='SAVELOG' ", savelog.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (enablevat.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='ENBLVAT' ", enablevat.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='ENBLVAT' ", enablevat.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (emailRequired.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='EMAILREQ' ", emailRequired.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='EMAILREQ' ", emailRequired.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (macaddress.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='MACBLOCK' ", macaddress.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='MACBLOCK' ", macaddress.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (tinnoman.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='TINREQ' ", tinnoman.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='TINREQ' ", tinnoman.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (enabledate.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='ENBLDATE' ", enabledate.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='ENBLDATE' ", enabledate.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (salesdiscount.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='SDISCOUNT' ", salesdiscount.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='SDISCOUNT' ", salesdiscount.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (openingbalance.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='OPBAL' ", openingbalance.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='OPBAL' ", openingbalance.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (deviationprice.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='PRICE' ", deviationprice.ToString());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='PRICE' ", deviationprice.ToString());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             if (pwdexpday.Trim() != "")
             {
-                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE [KEY]='PWDEXPDAY' ", pwdexpday.ToUpper());
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='PWDEXPDAY' ", pwdexpday.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
@@ -22337,7 +22325,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "select [Key],KeyValue FROM tblSettings";
+            dbQry = "select KEYNAME,KeyValue FROM tblSettings";
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -44994,7 +44982,7 @@ public class BusinessLogic
             dbQry = string.Format("Update tbllastlogin Set logindate = '{0}'", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE [key]='AUTOLOCK'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='AUTOLOCK'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 datevalue = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -61178,7 +61166,7 @@ public class BusinessLogic
 
             //int BrandID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BrandID) FROM tblBrand");
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE [key]='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -61244,7 +61232,7 @@ public class BusinessLogic
                 }
             }
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE [key]='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -61369,7 +61357,7 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE [key]='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -61485,7 +61473,7 @@ public class BusinessLogic
 
             //int BrandID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BrandID) FROM tblBrand");
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE [key]='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -61551,7 +61539,7 @@ public class BusinessLogic
                 }
             }
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE [key]='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -61677,7 +61665,7 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE [key]='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -66588,7 +66576,7 @@ public class BusinessLogic
 
 
             sAuditStr = "Mapping : " + PriceList_Name + " + and + " + CustomerCategory_Name + " added. Record Details :  User :" + Username;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -66688,7 +66676,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Mapping : " + PriceList_Name + " + and + " + CustomerCategory_Name + " got edited. Record Details :  User :" + Username;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit And Update", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit And Update", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -66765,7 +66753,7 @@ public class BusinessLogic
 
             sAuditStr = "Mapping got deleted : User = " + Username + " old Record Details CategoryID = " + ID;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
