@@ -105,8 +105,8 @@ public partial class CompanyInfo : System.Web.UI.Page
         ds = bl.ListBillFormat();
         cmdBill.DataSource = ds;
         cmdBill.DataBind();
-        cmdBill.DataTextField = "Key";
-        cmdBill.DataValueField = "Key";
+        cmdBill.DataTextField = "KeyName";
+        cmdBill.DataValueField = "KeyName";
     }
 
     protected void lnkBtnAdd_Click(object sender, EventArgs e)
@@ -193,14 +193,14 @@ public partial class CompanyInfo : System.Web.UI.Page
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        if (dr["Key"].ToString() == "ITEMCODE")
+                        if (dr["KeyName"].ToString() == "ITEMCODE")
                         {
                             cmbProdAdd.ClearSelection();
                             liProd = cmbProdAdd.Items.FindByValue(Convert.ToString(dr["KeyValue"]));
                             if (liProd != null)
                                 liProd.Selected = true;
                         }
-                        else if (dr["Key"].ToString() == "IPBLOCKING")
+                        else if (dr["KeyName"].ToString() == "IPBLOCKING")
                         {
                             rdIPBlock.SelectedValue = dr["KeyValue"].ToString();
 
@@ -209,69 +209,69 @@ public partial class CompanyInfo : System.Web.UI.Page
                             else
                                 TabPanel2.Visible = false;
                         }
-                        else if (dr["Key"].ToString() == "CURRENCY")
+                        else if (dr["KeyName"].ToString() == "CURRENCY")
                         {
                             if (dr["KeyValue"] != null)
                                 ddCurrency.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "QTYRETURN")
+                        else if (dr["KeyName"].ToString() == "QTYRETURN")
                         {
                             if (dr["KeyValue"] != null)
                                 rdQtyReturn.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "BARCODE")
+                        else if (dr["KeyName"].ToString() == "BARCODE")
                         {
                             if (dr["KeyValue"] != null)
                                 rdoBarcode.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "STOCKEDIT")
+                        else if (dr["KeyName"].ToString() == "STOCKEDIT")
                         {
                             if (dr["KeyValue"] != null)
                                 rdoStockEdit.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "QTYDATE")
+                        else if (dr["KeyName"].ToString() == "QTYDATE")
                         {
                             if (dr["KeyValue"] != null)
                                 txtDate.Text = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "OWNERMOB")
+                        else if (dr["KeyName"].ToString() == "OWNERMOB")
                         {
                             if (dr["KeyValue"] != null)
                                 txtMobile.Text = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "VATRECDATE")
+                        else if (dr["KeyName"].ToString() == "VATRECDATE")
                         {
                             if (dr["KeyValue"] != null)
                                 txtVATReconDate.Text = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "VATAMOUNT")
+                        else if (dr["KeyName"].ToString() == "VATAMOUNT")
                         {
                             if (dr["KeyValue"] != null)
                                 txtVATAmount.Text = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "DEALER")
+                        else if (dr["KeyName"].ToString() == "DEALER")
                         {
                             if (dr["KeyValue"] != null)
                                 rdDealer.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "BLITREQ")
+                        else if (dr["KeyName"].ToString() == "BLITREQ")
                         {
                             if (dr["KeyValue"] != null)
                                 rdoBLIT.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "CREDITEXD")
+                        else if (dr["KeyName"].ToString() == "CREDITEXD")
                         {
                             if (dr["KeyValue"] != null)
                                 rdoExceedCreditLimit.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "BILLFORMAT")
+                        else if (dr["KeyName"].ToString() == "BILLFORMAT")
                         {
                             cmdBill.ClearSelection();
                             liBill = cmdBill.Items.FindByValue(Convert.ToString(dr["KeyValue"]));
                             if (liBill != null)
                                 liBill.Selected = true;
                         }
-                        else if (dr["Key"].ToString() == "DISCTYPE")
+                        else if (dr["KeyName"].ToString() == "DISCTYPE")
                         {
                             ddDiscType.ClearSelection();
                             liDiscType = ddDiscType.Items.FindByValue(Convert.ToString(dr["KeyValue"]));
@@ -279,82 +279,82 @@ public partial class CompanyInfo : System.Web.UI.Page
                             if (liDiscType != null)
                                 liDiscType.Selected = true;
                         }
-                        else if (dr["Key"].ToString() == "SMSREQ")
+                        else if (dr["KeyName"].ToString() == "SMSREQ")
                         {
                             if (dr["KeyValue"] != null)
                                 rdoSMSRqrd.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "BILLMETHOD")
+                        else if (dr["KeyName"].ToString() == "BILLMETHOD")
                         {
                             if (dr["KeyValue"] != null)
                                 DropDownList1.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "OBSOLUTE")
+                        else if (dr["KeyName"].ToString() == "OBSOLUTE")
                         {
                             if (dr["KeyValue"] != null)
                                 dpobsolute.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "ROUNDOFF")
+                        else if (dr["KeyName"].ToString() == "ROUNDOFF")
                         {
                             if (dr["KeyValue"] != null)
                                 dproundoff.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "SALBILLNO")
+                        else if (dr["KeyName"].ToString() == "SALBILLNO")
                         {
                             if (dr["KeyValue"] != null)
                                 dpsalesbillno.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "AUTOLOCK")
+                        else if (dr["KeyName"].ToString() == "AUTOLOCK")
                         {
                             if (dr["KeyValue"] != null)
                                 dpautolock.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "SAVELOG")
+                        else if (dr["KeyName"].ToString() == "SAVELOG")
                         {
                             if (dr["KeyValue"] != null)
                                 dpsavelog.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "ENBLVAT")
+                        else if (dr["KeyName"].ToString() == "ENBLVAT")
                         {
                             if (dr["KeyValue"] != null)
                                 ddenablevat.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "EMAILREQ")
+                        else if (dr["KeyName"].ToString() == "EMAILREQ")
                         {
                             if (dr["KeyValue"] != null)
                                 rdoemailrequired.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "MACBLOCK")
+                        else if (dr["KeyName"].ToString() == "MACBLOCK")
                         {
                             if (dr["KeyValue"] != null)
                                 rdomacaddress.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "TINREQ")
+                        else if (dr["KeyName"].ToString() == "TINREQ")
                         {
                             if (dr["KeyValue"] != null)
                                 rdotinnomandatory.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "ENBLDATE")
+                        else if (dr["KeyName"].ToString() == "ENBLDATE")
                         {
                             if (dr["KeyValue"] != null)
                                 rdvoudateenable.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "SDISCOUNT")
+                        else if (dr["KeyName"].ToString() == "SDISCOUNT")
                         {
                             if (dr["KeyValue"] != null)
                                 RadioButtonDiscount.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "OPBAL")
+                        else if (dr["KeyName"].ToString() == "OPBAL")
                         {
                             if (dr["KeyValue"] != null)
                                 RadioButtonOpening.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "PRICE")
+                        else if (dr["KeyName"].ToString() == "PRICE")
                         {
                             if (dr["KeyValue"] != null)
                                 ddPriceList.SelectedValue = dr["KeyValue"].ToString();
                         }
-                        else if (dr["Key"].ToString() == "PWDEXPDAY")
+                        else if (dr["KeyName"].ToString() == "PWDEXPDAY")
                         {
                             if (dr["KeyValue"] != null)
                                 txtExpDay.Text = dr["KeyValue"].ToString();
