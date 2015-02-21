@@ -182,19 +182,19 @@
                                                     <table cellspacing="0">
                                                         <tr>
                                                             <td>
-                                                                <asp:ObjectDataSource ID="srcGroupInfo" runat="server" SelectMethod="ListGroupInfo"
+                                                                <asp:SqlDataSource ID="srcGroupInfo" runat="server" SelectCommand="ListGroupInfo"
                                                                     TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
-                                                                </asp:ObjectDataSource>
+                                                                </asp:SqlDataSource>
 
-                                                                <asp:ObjectDataSource ID="srcReferenceType" runat="server" SelectMethod="ListReferenceType"
+                                                                <asp:SqlDataSource ID="srcReferenceType" runat="server" SelectCommand="ListReferenceType"
                                                                     TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
-                                                                </asp:ObjectDataSource>
+                                                                </asp:SqlDataSource>
 
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
@@ -279,20 +279,20 @@
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">
-                                                                <asp:ObjectDataSource ID="srcGroupInfoAdd" runat="server" SelectMethod="ListGroupInfoExp"
+                                                                <asp:SqlDataSource ID="srcGroupInfoAdd" runat="server" SelectCommand="ListGroupInfoExp"
                                                                     TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
-                                                                </asp:ObjectDataSource>
+                                                                </asp:SqlDataSource>
                                                             </td>
                                                             <td colspan="2">
-                                                                <asp:ObjectDataSource ID="srcReferenceTypeAdd" runat="server" SelectMethod="ListReferenceType"
+                                                                <asp:SqlDataSource ID="srcReferenceTypeAdd" runat="server" SelectCommand="ListReferenceType"
                                                                     TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
-                                                                </asp:ObjectDataSource>
+                                                                </asp:SqlDataSource>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -382,14 +382,14 @@
                 </tr>
                 <tr style="width: 100%;">
                     <td style="width: 918px" align="left">
-                        <asp:ObjectDataSource ID="GridSource" runat="server" SelectMethod="ListReferenceInfo"
+                        <asp:SqlDataSource ID="GridSource" runat="server" SelectCommand="ListReferenceInfo"
                             TypeName="LeadBusinessLogic" DeleteMethod="DeleteReference" OnDeleting="GridSource_Deleting">
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="ID" Type="Int32" />
                             </DeleteParameters>
-                        </asp:ObjectDataSource>
-                        <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetReferenceForId"
+                        </asp:SqlDataSource>
+                        <asp:SqlDataSource ID="frmSource" runat="server" SelectCommand="GetReferenceForId"
                             TypeName="LeadBusinessLogic" OnUpdating="frmSource_Updating" OnInserting="frmSource_Inserting"
                             InsertMethod="InsertReference" UpdateMethod="UpdateReference">
                             <UpdateParameters>
@@ -412,7 +412,7 @@
                                 <asp:Parameter Name="Types" Type="String" />
                                 <asp:Parameter Name="TypeID" Type="Int32" />
                             </InsertParameters>
-                        </asp:ObjectDataSource>
+                        </asp:SqlDataSource>
                     </td>
                 </tr>
                 <tr>

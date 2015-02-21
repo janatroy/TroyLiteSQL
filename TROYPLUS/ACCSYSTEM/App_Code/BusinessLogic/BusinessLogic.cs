@@ -932,7 +932,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "Select [KEY],KEYVALUE From tblSettings";
+            dbQry = "Select KEYNAME,KEYVALUE From tblSettings";
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -44982,7 +44982,7 @@ public class BusinessLogic
             dbQry = string.Format("Update tbllastlogin Set logindate = '{0}'", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE [key]='AUTOLOCK'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='AUTOLOCK'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 datevalue = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -66576,7 +66576,7 @@ public class BusinessLogic
 
 
             sAuditStr = "Mapping : " + PriceList_Name + " + and + " + CustomerCategory_Name + " added. Record Details :  User :" + Username;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -66676,7 +66676,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Mapping : " + PriceList_Name + " + and + " + CustomerCategory_Name + " got edited. Record Details :  User :" + Username;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit And Update", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit And Update", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -66753,7 +66753,7 @@ public class BusinessLogic
 
             sAuditStr = "Mapping got deleted : User = " + Username + " old Record Details CategoryID = " + ID;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
