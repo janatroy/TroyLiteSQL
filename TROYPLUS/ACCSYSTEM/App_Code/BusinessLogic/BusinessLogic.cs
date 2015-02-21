@@ -2826,7 +2826,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "select GroupID, GroupName, Heading, tblGroups.Order from tblGroups inner join tblAccHeading on tblGroups.HeadingID = tblAccHeading.HeadingID where GroupName = 'Bank Accounts' Order by GroupName Asc ";
+            dbQry = "select GroupID, GroupName, Heading, tblGroups.[Order] from tblGroups inner join tblAccHeading on tblGroups.HeadingID = tblAccHeading.HeadingID where GroupName = 'Bank Accounts' Order by GroupName Asc ";
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -5822,6 +5822,10 @@ public class BusinessLogic
         string Logsave = string.Empty;
         string sAuditStr = string.Empty;
 
+        //string dbLdId = string.Empty;
+        //DataSet dsLdId = new DataSet();
+       
+
         //DateTime sBilldate;
         //string[] sDate;
         //string delim = "/";
@@ -5851,10 +5855,20 @@ public class BusinessLogic
             //sBilldate = new DateTime(Convert.ToInt32(sDate[2].ToString()), Convert.ToInt32(sDate[1].ToString()), Convert.ToInt32(sDate[0].ToString()));
 
 
-            int LedgerID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger");
 
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+
+           // int LedgerID;
+
+            //dbLdId = "SELECT MAX(LedgerID) as LedgerID FROM tblLedger";
+            //dsLdId = manager.ExecuteDataSet(CommandType.Text, dbLdId.ToString());
+            //if (dsLdId.Tables[0].Rows.Count > 0)
+            //    LedgerID = Convert.ToInt32(dsLdId.Tables[0].Rows[0]["LedgerID"].ToString());
+
+            int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
+
+
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyName='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -5866,6 +5880,7 @@ public class BusinessLogic
                 string value3 = string.Empty;
 
                 int middlePos = 0;
+               
 
                 logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20})",
                 LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc);
@@ -5893,19 +5908,26 @@ public class BusinessLogic
                     value3 = "";
                 }
 
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}','{5}','{6}')",
-                     DateTime.Now.ToString(), value1, "", "", value2, value3, "InsertLedgerInfo");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), value1, "", "", value2, value3, "InsertLedgerInfo");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
+            dbQry = string.Format("SET IDENTITY_INSERT [tblLedger] ON");
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}')",
                 LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+
+            dbQry = string.Format("SET IDENTITY_INSERT [tblLedger] OFF");
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
             sAuditStr = "Ledger : " + LedgerName + " added. Record Details :  User :" + Username + " AliasName = " + AliasName + " GroupID= " + GroupID + " ,LedgerCategory = " + LedgerCategory + " ,Mobile=" + Mobile + " Phone :" + Phone;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -52126,7 +52148,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE key='ENBLVAT'");
+            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE keyName='ENBLVAT'");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -52159,7 +52181,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE key='OPBAL'");
+            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE keyName='OPBAL'");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -58969,7 +58991,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE key='ENBLDATE'");
+            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE keyName='ENBLDATE'");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -61154,8 +61176,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("INSERT INTO tblTaskStatus(Task_Status_Name) VALUES({0})", Task_Status_Name);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "InsertTaskStatusInfo");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertTaskStatusInfo");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -61220,8 +61242,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Update tblTaskStatus SET Task_Status_Name={0} WHERE Task_Status_Id={1}", Task_Status_Name, Task_Status_Id);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateTaskStatusInfo");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateTaskStatusInfo");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -61345,8 +61367,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Delete From tblTaskStatus Where Task_Status_Id = {0}", Task_Status_Id);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, Task_Status_Id, "DeleteTaskStatus");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, Task_Status_Id, "DeleteTaskStatus");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -61461,8 +61483,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("INSERT INTO tblTaskTypes(Task_Type_Name) VALUES({0})", Task_Type_Name);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "InsertTaskTypesInfo");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertTaskTypesInfo");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -61527,8 +61549,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Update tblTaskTypes SET Task_Type_Name={0} WHERE Task_Type_Id={1}", Task_Type_Name, Task_Type_Id);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateTaskTypesInfo");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateTaskTypesInfo");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -61653,8 +61675,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Delete From tblTaskTypes Where Task_Type_Id = {0}", Task_Type_Id);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, Task_Type_Id, "DeleteTaskTypes");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, Task_Type_Id, "DeleteTaskTypes");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -67421,7 +67443,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE key='SDISCOUNT'");
+            dbQry.Append("SELECT   KeyValue  From tblSettings WHERE keyName='SDISCOUNT'");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
