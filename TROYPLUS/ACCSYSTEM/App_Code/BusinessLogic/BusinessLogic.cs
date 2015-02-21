@@ -6024,19 +6024,7 @@ public class BusinessLogic
                 {
                     throw new Exception("Ledger Exists");
                 }
-            }
-
-
-            //sDate = OpDueDate.Trim().Split(delimA);
-
-
-            //sBilldate = new DateTime(Convert.ToInt32(sDate[2].ToString()), Convert.ToInt32(sDate[1].ToString()), Convert.ToInt32(sDate[0].ToString()));
-
-
-            //dbLdId = "SELECT MAX(LedgerID) as LedgerID FROM tblLedger";
-            //dsLdId = manager.ExecuteDataSet(CommandType.Text, dbLdId.ToString());
-            //if (dsLdId.Tables[0].Rows.Count > 0)
-            //    LedgerID = Convert.ToInt32(dsLdId.Tables[0].Rows[0]["LedgerID"].ToString());
+            }           
 
 
             int LedgerID =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
