@@ -179,14 +179,14 @@ public partial class Login : System.Web.UI.Page
 
                     for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                     {
-                        if (ds.Tables[0].Rows[i]["KEY"].ToString() == "VERSION")
+                        if (ds.Tables[0].Rows[i]["KEYNAME"].ToString() == "VERSION")
                         {
-                            if (ds.Tables[0].Rows[i]["KEY"].ToString() == "CURRENCY")
+                            if (ds.Tables[0].Rows[i]["KEYNAME"].ToString() == "CURRENCY")
                             {
                                 Session["CurrencyType"] = ds.Tables[0].Rows[i]["KEYVALUE"].ToString();
                             }
 
-                            if (ds.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                            if (ds.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                             {
                                 Session["OWNERMOB"] = ds.Tables[0].Rows[i]["KEYVALUE"].ToString();
                             }
@@ -552,12 +552,12 @@ public partial class Login : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "CURRENCY")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "CURRENCY")
                 {
                     Session["CurrencyType"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "IPBLOCKING")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "IPBLOCKING")
                 {
                     if (appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString() == "YES")
                         isIPBlockRequired = true;
