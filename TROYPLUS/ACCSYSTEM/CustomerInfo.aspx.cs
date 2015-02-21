@@ -148,7 +148,7 @@ public partial class CustomerInfo : System.Web.UI.Page
     {
         try
         {
-            if (e.Exception == null && check ==false)
+            if (e.Exception == null && check == false)
             {
                 //MyAccordion.Visible = true;
                 lnkBtnAdd.Visible = true;
@@ -185,7 +185,13 @@ public partial class CustomerInfo : System.Web.UI.Page
                     {
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Ledger Exists") > -1))
+                        {
+                            e.ExceptionHandled = true;
+                            e.KeepInInsertMode = true;
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
                     }
                     else
                     {
@@ -205,7 +211,7 @@ public partial class CustomerInfo : System.Web.UI.Page
     {
         try
         {
-            if (e.Exception == null && check==false)
+            if (e.Exception == null && check == false)
             {
                 lnkBtnAdd.Visible = true;
                 frmViewAdd.Visible = false;
@@ -229,6 +235,7 @@ public partial class CustomerInfo : System.Web.UI.Page
                         e.ExceptionHandled = true;
                         e.KeepInEditMode = true;
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        ModalPopupExtender1.Show();
                         return;
                     }
 
@@ -298,41 +305,41 @@ public partial class CustomerInfo : System.Web.UI.Page
             refDate = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtdueDateadd")).Text;
             if (refDate == null || refDate == "")
             {
-                string obdate=((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtOpenBalAdd")).Text;
-                if (obdate!=null && obdate!="0" )
+                string obdate = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtOpenBalAdd")).Text;
+                if (obdate != null && obdate != "0")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('OB due date is mandatory')", true);
-                           check = true;
-                           ModalPopupExtender1.Show();
-                          frmViewAdd.Visible = true;
-                          frmViewAdd.ChangeMode(FormViewMode.Insert);
-                          e.Cancel = true;
-                         return;
-
-                }
-              
-            }
-            else
-            {
-            string dt = Convert.ToDateTime(refDate).ToString("MM/dd/yyyy");
-            EnableOpbalance = bl.getEnableOpBalanceConfig(connection);
-
-            if (EnableOpbalance == "YES")
-            {
-                if (!bl.IsValidDate(connection, Convert.ToDateTime(refDate)))
-                {
-
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This Date has been Locked')", true);
                     check = true;
                     ModalPopupExtender1.Show();
                     frmViewAdd.Visible = true;
                     frmViewAdd.ChangeMode(FormViewMode.Insert);
                     e.Cancel = true;
                     return;
-                    // break;
+
                 }
 
             }
+            else
+            {
+                string dt = Convert.ToDateTime(refDate).ToString("MM/dd/yyyy");
+                EnableOpbalance = bl.getEnableOpBalanceConfig(connection);
+
+                if (EnableOpbalance == "YES")
+                {
+                    if (!bl.IsValidDate(connection, Convert.ToDateTime(refDate)))
+                    {
+
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This Date has been Locked')", true);
+                        check = true;
+                        ModalPopupExtender1.Show();
+                        frmViewAdd.Visible = true;
+                        frmViewAdd.ChangeMode(FormViewMode.Insert);
+                        e.Cancel = true;
+                        return;
+                        // break;
+                    }
+
+                }
 
             }
 
@@ -388,10 +395,10 @@ public partial class CustomerInfo : System.Web.UI.Page
 
             frmViewAdd.ChangeMode(FormViewMode.Insert);
             frmViewAdd.Visible = true;
-           
+
             ModalPopupExtender1.Show();
 
-           
+
         }
         catch (Exception ex)
         {
@@ -535,25 +542,25 @@ public partial class CustomerInfo : System.Web.UI.Page
             }
             else
             {
-            string dt = Convert.ToDateTime(refDate).ToString("MM/dd/yyyy");
-            EnableOpbalance = bl.getEnableOpBalanceConfig(connection);
+                string dt = Convert.ToDateTime(refDate).ToString("MM/dd/yyyy");
+                EnableOpbalance = bl.getEnableOpBalanceConfig(connection);
 
-            if (EnableOpbalance == "YES")
-            {
-                if (!bl.IsValidDate(connection, Convert.ToDateTime(refDate)))
+                if (EnableOpbalance == "YES")
                 {
+                    if (!bl.IsValidDate(connection, Convert.ToDateTime(refDate)))
+                    {
 
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This Date has been Locked')", true);
-                    check = true;
-                    ModalPopupExtender1.Show();
-                    frmViewAdd.Visible = true;
-                    frmViewAdd.ChangeMode(FormViewMode.Edit);
-                    e.Cancel = true;
-                    return;
-                    // break;
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This Date has been Locked')", true);
+                        check = true;
+                        ModalPopupExtender1.Show();
+                        frmViewAdd.Visible = true;
+                        frmViewAdd.ChangeMode(FormViewMode.Edit);
+                        e.Cancel = true;
+                        return;
+                        // break;
+                    }
+
                 }
-
-            }
             }
 
             //BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -788,7 +795,7 @@ public partial class CustomerInfo : System.Web.UI.Page
     }
     protected void InsertButton_Click(object sender, EventArgs e)
     {
-        
+
     }
     protected void frmViewAdd_ItemInserting(object sender, FormViewInsertEventArgs e)
     {
@@ -798,15 +805,15 @@ public partial class CustomerInfo : System.Web.UI.Page
     private void setInsertParameters(ObjectDataSourceMethodEventArgs e)
     {
         if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ddAccGroupAdd")) != null)
-        //if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroupAdd")) != null)
+            //if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroupAdd")) != null)
             e.InputParameters["GroupID"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ddAccGroupAdd")).SelectedValue;
 
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtLdgrNameAdd")) != null)
-        //if (((TextBox)this.frmViewAdd.FindControl("txtLdgrNameAdd")).Text != "")
+            //if (((TextBox)this.frmViewAdd.FindControl("txtLdgrNameAdd")).Text != "")
             e.InputParameters["LedgerName"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtLdgrNameAdd")).Text;
 
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAliasNameAdd")).Text != "")
-        //if (((TextBox)this.frmViewAdd.FindControl("txtAliasNameAdd")).Text != "")
+            //if (((TextBox)this.frmViewAdd.FindControl("txtAliasNameAdd")).Text != "")
             e.InputParameters["AliasName"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAliasNameAdd")).Text;
         else
             e.InputParameters["AliasName"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtLdgrNameAdd")).Text;
@@ -833,19 +840,19 @@ public partial class CustomerInfo : System.Web.UI.Page
             e.InputParameters["ContactName"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtContNameAdd")).Text;
 
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtPhoneAdd")).Text != "")
-        //if (((TextBox)this.frmViewAdd.FindControl("txtPhoneAdd")).Text != "")
+            //if (((TextBox)this.frmViewAdd.FindControl("txtPhoneAdd")).Text != "")
             e.InputParameters["Phone"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtPhoneAdd")).Text;
 
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd1Add")).Text != "")
-        //if (((TextBox)this.frmViewAdd.FindControl("txtAdd1Add")).Text != "")
+            //if (((TextBox)this.frmViewAdd.FindControl("txtAdd1Add")).Text != "")
             e.InputParameters["Add1"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd1Add")).Text;
 
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd2Add")).Text != "")
-        //if (((TextBox)this.frmViewAdd.FindControl("txtAdd2Add")).Text != "")
+            //if (((TextBox)this.frmViewAdd.FindControl("txtAdd2Add")).Text != "")
             e.InputParameters["Add2"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd2Add")).Text;
 
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd3Add")).Text != "")
-        //if (((TextBox)this.frmViewAdd.FindControl("txtAdd3Add")).Text != "")
+            //if (((TextBox)this.frmViewAdd.FindControl("txtAdd3Add")).Text != "")
             e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd3Add")).Text;
 
         if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpLedgerCatAdd")) != null)
@@ -909,7 +916,7 @@ public partial class CustomerInfo : System.Web.UI.Page
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)
     {
         if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddAccGroup")) != null)
-        //if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")) != null)
+            //if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")) != null)
             e.InputParameters["GroupID"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddAccGroup")).SelectedValue;
 
         if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtLdgrName")).Text != "")

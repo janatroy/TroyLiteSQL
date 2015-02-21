@@ -10,6 +10,10 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
+
 public partial class ReportExcelProducts : System.Web.UI.Page
 {
     //DBClass objdb = new DBClass();
@@ -35,7 +39,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
 
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Product");
                 dt.Columns.Add(new DataColumn("ProductName"));
                 dt.Columns.Add(new DataColumn("ItemCode"));
                 dt.Columns.Add(new DataColumn("Model"));
@@ -45,7 +49,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("DP"));
                 dt.Columns.Add(new DataColumn("DP Date"));
                 dt.Columns.Add(new DataColumn("NLC"));
-                dt.Columns.Add(new DataColumn("NLC Date"));
+                dt.Columns.Add(new DataColumn("IsActive"));
                 dt.Columns.Add(new DataColumn("Vat"));
                 dt.Columns.Add(new DataColumn("StockLevel"));
 
@@ -64,7 +68,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                     dr_final1["DP"] = dr["Dealerrate"];
                     dr_final1["DP Date"] = dr["DPEffDate"];
                     dr_final1["NLC"] = dr["NLC"];
-                    dr_final1["NLC Date"] = dr["NLCEffDate"];
+                    dr_final1["IsActive"] = dr["IsActive"];
                     dr_final1["Vat"] = dr["Vat"];
                     //dr_final1["NLC"] = dr["rol"];
                     dr_final1["StockLevel"] = dr["rol"];
@@ -75,14 +79,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dr_final2["ItemCode"] = "";
                 dr_final2["Model"] = "";
                 dr_final2["Brand"] = "";
-                dr_final2["MRP"] = "";
-                dr_final2["MRP Date"] = "";
-                dr_final2["DP"] = "";
-                dr_final2["DP Date"] = "";
-                dr_final2["NLC"] = "";
-                dr_final2["NLC Date"] = "";
                 dr_final2["Vat"] = "";
-                dr_final2["NLC"] = "";
                 dr_final2["StockLevel"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
@@ -264,25 +261,43 @@ public partial class ReportExcelProducts : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            string filename = "Product details.xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
+            //string filename = "Product details.xls";
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
 
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Product details.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
 
     }
