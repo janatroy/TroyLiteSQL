@@ -44,11 +44,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("ItemCode"));
                 dt.Columns.Add(new DataColumn("Model"));
                 dt.Columns.Add(new DataColumn("Brand"));
-                dt.Columns.Add(new DataColumn("MRP"));
-                dt.Columns.Add(new DataColumn("MRP Date"));
-                dt.Columns.Add(new DataColumn("DP"));
-                dt.Columns.Add(new DataColumn("DP Date"));
-                dt.Columns.Add(new DataColumn("NLC"));
+                
                 dt.Columns.Add(new DataColumn("IsActive"));
                 dt.Columns.Add(new DataColumn("Vat"));
                 dt.Columns.Add(new DataColumn("StockLevel"));
