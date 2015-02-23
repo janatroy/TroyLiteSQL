@@ -2688,7 +2688,7 @@ public partial class CustReceipt : System.Web.UI.Page
         try
         {
             if (GrdViewReceipt.SelectedDataKey != null)
-                e.InputParameters["TransNo"] = GrdViewReceipt.SelectedDataKey.Value;
+                e.InputParameters["TransNo"] = Convert.ToInt32(GrdViewReceipt.SelectedDataKey.Value);
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
