@@ -79,7 +79,8 @@
                                         <div style="width: 150px; font-family: 'Trebuchet MS';">
                                             <asp:DropDownList ID="ddCriteria" runat="server" Width="155px" Height="23px" BackColor="White" Style="text-align: center; border: 1px solid white">
                                                 <asp:ListItem Value="0">All</asp:ListItem>
-                                                <asp:ListItem Value="ActivityName">Activity Name</asp:ListItem>
+                                                <asp:ListItem Value="NameDropDown">Name of DropDown</asp:ListItem>
+                                                <asp:ListItem Value="ValueDropDown">Value of DropDown</asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                     </td>
