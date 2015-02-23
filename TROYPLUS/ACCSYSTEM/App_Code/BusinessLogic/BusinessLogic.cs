@@ -57920,7 +57920,7 @@ public class BusinessLogic
                         }
                         else
                         {
-                            dbQry = string.Format("INSERT INTO tblBrand(BrandName,Brandlevel, Deviation,IsActive) VALUES('{0}',{1})",
+                            dbQry = string.Format("INSERT INTO tblBrand(BrandName,Brandlevel, Deviation,IsActive) VALUES('{0}',{1},{2},'{3}')",
                                 Convert.ToString(dr["Brand"]), Convert.ToDouble(dr["Brandlevel"]), Convert.ToDouble(dr["Deviation"]), "YES");
                             manager.ExecuteDataSet(CommandType.Text, dbQry);
                         }
@@ -67698,7 +67698,7 @@ public class BusinessLogic
             }
 
             sAuditStr = "Products added. Record Details :  User :" + Username + " DateTime: " + DateTime.Now.ToString();
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
         }
