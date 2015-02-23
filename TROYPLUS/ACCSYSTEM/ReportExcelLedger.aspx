@@ -62,8 +62,8 @@
                                 <asp:ListItem Value="0">All</asp:ListItem>
                                 <asp:ListItem Value="LedgerName">Supplier Name</asp:ListItem>
                                 <asp:ListItem Value="AliasName">Alias Name</asp:ListItem>
-                                <asp:ListItem Value="Phone">Phone</asp:ListItem>
-                                <asp:ListItem Value="TinNo">Tin No</asp:ListItem>
+                               <%-- <asp:ListItem Value="Phone">Phone</asp:ListItem>
+                                <asp:ListItem Value="TinNo">Tin No</asp:ListItem>--%>
                             </asp:DropDownList>
                         </div>
                     </td>

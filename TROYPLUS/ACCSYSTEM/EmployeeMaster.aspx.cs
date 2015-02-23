@@ -1,10 +1,17 @@
 ﻿﻿using System;
+using System.Collections;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Web;
+using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
 
 public partial class EmployeeMaster : System.Web.UI.Page
 {
@@ -39,7 +46,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
 
                 BindEmp();
                 loadEmp();
-                loadEmployeeRoles();
+
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -143,20 +150,6 @@ public partial class EmployeeMaster : System.Web.UI.Page
 
     }
 
-    private void loadEmployeeRoles()
-    {
-        BusinessLogic bl = new BusinessLogic(sDataSource);
-        
-        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-        ddlRole.Items.Clear();
-        ddlRole.Items.Add(new ListItem("Select Role", "0"));
-
-        ddlRole.DataSource = bl.ListEmployeeRoles();
-        ddlRole.DataTextField = "RoleName";
-        ddlRole.DataValueField = "ID";
-        ddlRole.DataBind();
-    }
-
     protected void lnkBtnAdd_Click(object sender, EventArgs e)
     {
         try
@@ -180,7 +173,6 @@ public partial class EmployeeMaster : System.Web.UI.Page
             string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
             txtDoj.Text = dtaa;
             loadEmp();
-            loadEmployeeRoles();
             ModalPopupExtender2.Show();
             //BusinessLogic bl = new BusinessLogic(sDataSource);
             //int empnum = bl.GetNextEmpno();
@@ -204,6 +196,9 @@ public partial class EmployeeMaster : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    DateTime dDOJ;
+    DateTime dDOB;
     protected void btnSave_Click(object sender, EventArgs e)
     {
         try
@@ -219,10 +214,9 @@ public partial class EmployeeMaster : System.Web.UI.Page
             string sRemarks = string.Empty;
             string sTitle = string.Empty;
             int ManagerId = 0;
-            int roleId = 0;
 
-            string dDOJ = string.Empty;
-            string dDOB = string.Empty;
+            //string dDOJ = string.Empty;
+            //string dDOB = string.Empty;
             string UserGroup = string.Empty;
 
             if (Page.IsValid)
@@ -241,17 +235,15 @@ public partial class EmployeeMaster : System.Web.UI.Page
                 if (txtDesig.Text.Trim() != string.Empty)
                     sDesig = txtDesig.Text.Trim();
                 if (txtDoj.Text.Trim() != string.Empty)
-                    dDOJ = txtDoj.Text.Trim();
+                    dDOJ = Convert.ToDateTime(txtDoj.Text.Trim().ToString());
                 if (txtDOB.Text.Trim() != string.Empty)
-                    dDOB = txtDOB.Text.Trim();
+                    dDOB = Convert.ToDateTime(txtDOB.Text.Trim().ToString());
                 if (txtRemarks.Text.Trim() != string.Empty)
                     sRemarks = txtRemarks.Text.Trim();
                 if (drpIncharge.Text.Trim() != string.Empty)
-                    ManagerId = Convert.ToInt32(drpIncharge.SelectedValue);                
+                    ManagerId = Convert.ToInt32(drpIncharge.SelectedValue);
                 if (txtUserGroup.Text.Trim() != string.Empty)
                     UserGroup = txtUserGroup.Text.Trim();
-                if (!string.IsNullOrEmpty(ddlRole.SelectedValue))
-                    int.TryParse(ddlRole.SelectedValue, out roleId);
 
                 sTitle = drpTitle.SelectedItem.Text;
                 string stype = drptype.SelectedItem.Text;
@@ -264,7 +256,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
                 if (checkemp == null || checkemp.Tables[0].Rows.Count == 0)
                 {
                     //int empno = bl.InsertEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, stype);
-                    int empno = bl.InsertEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup,roleId);
+                    int empno = bl.InsertEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup);
 
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Business Partner Details Saved Successfully.');", true);
                     Reset();
@@ -304,10 +296,9 @@ public partial class EmployeeMaster : System.Web.UI.Page
             string sRemarks = string.Empty;
             string sTitle = string.Empty;
             int ManagerId = 0;
-            int roleId = 0;
             string UserGroup = string.Empty;
-            string dDOJ = string.Empty;
-            string dDOB = string.Empty;
+            //string dDOJ = string.Empty;
+            //string dDOB = string.Empty;
 
             if (Page.IsValid)
             {
@@ -323,9 +314,9 @@ public partial class EmployeeMaster : System.Web.UI.Page
                 if (txtDesig.Text.Trim() != string.Empty)
                     sDesig = txtDesig.Text.Trim();
                 if (txtDoj.Text.Trim() != string.Empty)
-                    dDOJ = txtDoj.Text.Trim();
+                    dDOJ = Convert.ToDateTime(txtDoj.Text.Trim().ToString());
                 if (txtDOB.Text.Trim() != string.Empty)
-                    dDOB = txtDOB.Text.Trim();
+                    dDOB =Convert.ToDateTime(txtDOB.Text.Trim().ToString());
                 if (txtRemarks.Text.Trim() != string.Empty)
                     sRemarks = txtRemarks.Text.Trim();
                 sTitle = drpTitle.SelectedItem.Text;
@@ -335,11 +326,9 @@ public partial class EmployeeMaster : System.Web.UI.Page
                     ManagerId = Convert.ToInt32(drpIncharge.SelectedValue);
                 if (txtUserGroup.Text.Trim() != string.Empty)
                     UserGroup = txtUserGroup.Text.Trim();
-                if (!string.IsNullOrEmpty(ddlRole.SelectedValue))
-                    int.TryParse(ddlRole.SelectedValue, out roleId);
 
                 //int empno = bl.UpdateEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, stype);
-                int empno = bl.UpdateEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup,roleId);
+                int empno = bl.UpdateEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Business Partner Details Updated Successfully. Partner No " + empno + "');", true);
 
@@ -478,7 +467,6 @@ public partial class EmployeeMaster : System.Web.UI.Page
                 txtRemarks.Text = ds.Tables[0].Rows[0]["empRemarks"].ToString(); ;
                 rowremarks.Visible = true;
                 //BindEmp();
-                ddlRole.SelectedValue = ds.Tables[0].Rows[0]["EmployeeRoleId"].ToString();
                 btnUpdate.Visible = true;
                 btnUpdate.Enabled = true;
                 btnSave.Visible = false;
@@ -503,6 +491,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             bl.DeleteEmpDetails(empno);
             BindEmp();
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Business Partner Details Deleted Successfully.');", true);
             btnUpdate.Enabled = false;
             btnSave.Enabled = true;
         }
@@ -716,12 +705,12 @@ public partial class EmployeeMaster : System.Web.UI.Page
             }
             else
             {
-                //txtDeclaredAmt.Text = null;
-                //txtfrmDate.Text = null;
-                //txtfrmDate.Enabled = false;
-                //btnEditDate.Enabled = false;
-                //txtDeclaredAmt.Enabled = false;
-                //ManagePayComponentGrid.SelectedIndex = -1;
+                txtDeclaredAmt.Text = null;
+                txtfrmDate.Text = null;
+                txtfrmDate.Enabled = false;
+                btnEditDate.Enabled = false;
+                txtDeclaredAmt.Enabled = false;
+                ManagePayComponentGrid.SelectedIndex = -1;
 
                 ModalPopupExtender3.Show();
                 EmployeePayCompPopUp.Visible = true;
@@ -738,52 +727,41 @@ public partial class EmployeeMaster : System.Web.UI.Page
 
     protected void CancelRolePayMapBtn_Click(object sender, EventArgs e)
     {
-        
-    }
-
-    protected void removeSelectedBtn_Click(object sender, EventArgs e)
-    {
         try
         {
-            if (PayCompRolePayGrid.SelectedDataKey != null)
-            {
-                int EmpID = Convert.ToInt32(ManagePayRoleID.Value);
+            int empId = Convert.ToInt32(ManagePayRoleID.Value);
 
-                int payCompId = Convert.ToInt32(PayCompRolePayGrid.SelectedDataKey.Value);
+            int payCompId = Convert.ToInt32(PayCompRolePayGrid.SelectedDataKey.Value);
 
-                BusinessLogic bL = new BusinessLogic(sDataSource);
+            BusinessLogic bL = new BusinessLogic(sDataSource);
 
-                bL.DeleteEmpPayComp(EmpID, payCompId);
+            bL.DeleteEmpPayComp(empId, payCompId);
 
-                txtDeclaredAmt.Text = null;
-                txtfrmDate.Text = null;
-                txtfrmDate.Enabled = false;
-                btnEditDate.Enabled = false;
-                txtDeclaredAmt.Enabled = false;
-                PayCompRolePayGrid.SelectedIndex = -1;
-                roleSearch.Text = "";
+            txtDeclaredAmt.Text = null;
+            txtfrmDate.Text = null;
+            ManagePayComponentGrid.SelectedIndex = -1;
 
-                GetPayComponent(string.Empty);
-
-                GetEmpPayComponent(EmpID);
-
-                ModalPopupExtender3.Show();
-                EmployeePayCompPopUp.Visible = true;
-
-            }
-            else
-            {
-                ModalPopupExtender3.Show();
-                EmployeePayCompPopUp.Visible = true;
-                StringBuilder scriptMsg = new StringBuilder();
-                scriptMsg.Append("alert('Please select paycomponent');");
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
-            }
         }
         catch (Exception ex)
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(Failed :" + ex.Message.ToString() + "');", true);
         }
+    }
+
+    protected void removeSelectedBtn_Click(object sender, EventArgs e)
+    {
+        txtDeclaredAmt.Text = null;
+        txtfrmDate.Text = null;
+        txtfrmDate.Enabled = false;
+        btnEditDate.Enabled = false;
+        txtDeclaredAmt.Enabled = false;
+        ManagePayComponentGrid.SelectedIndex = -1;
+        roleSearch.Text = "";
+
+        GetPayComponent(string.Empty);
+
+        ModalPopupExtender3.Show();
+        EmployeePayCompPopUp.Visible = true;
     }
 
 
@@ -797,43 +775,6 @@ public partial class EmployeeMaster : System.Web.UI.Page
             StringBuilder scriptMsg = new StringBuilder();
             scriptMsg.Append("alert('Pay Components is empty');");
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
-        }
-    }
-    protected void PayCompRolePayGrid_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        foreach (GridViewRow row in PayCompRolePayGrid.Rows)
-        {
-            if (row.RowIndex == PayCompRolePayGrid.SelectedIndex)
-            {
-                row.BackColor = ColorTranslator.FromHtml("#A1DCF2");
-                row.ToolTip = string.Empty;
-
-                //ViewState["PayCompId"] = (int)ManagePayComponentGrid.DataKeys[ManagePayComponentGrid.SelectedIndex].Value;
-
-                //txtfrmDate.Enabled = true;
-                //btnEditDate.Enabled = true;
-                //txtDeclaredAmt.Enabled = true;
-
-                ModalPopupExtender3.Show();
-                EmployeePayCompPopUp.Visible = true;
-
-            }
-            else
-            {
-                row.BackColor = ColorTranslator.FromHtml("#FFFFFF");
-                row.ToolTip = "Click to select this row.";
-
-                ModalPopupExtender3.Show();
-                EmployeePayCompPopUp.Visible = true;
-            }
-        }
-    }
-    protected void PayCompRolePayGrid_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(PayCompRolePayGrid, "Select$" + e.Row.RowIndex);
-            e.Row.ToolTip = "Click to select this row.";
         }
     }
 }
