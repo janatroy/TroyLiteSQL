@@ -116,18 +116,18 @@ public partial class LeadMgmt : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -2630,10 +2630,13 @@ public partial class LeadMgmt : System.Web.UI.Page
             GridViewRow row = GrdViewLead.SelectedRow;
             int LeadNo = Convert.ToInt32(GrdViewLead.SelectedDataKey.Value.ToString());
             LeadBusinessLogic bl = new LeadBusinessLogic(GetConnectionString());
+
+            string connection = Request.Cookies["Company"].Value;
+
             DataSet itemDs = new DataSet();
             DataSet itemDscom = new DataSet();
             DataSet itemDsAct = new DataSet();
-            DataSet dsDetails = bl.GetLeadDetails(LeadNo);
+            DataSet dsDetails = bl.GetLeadDetails(connection,LeadNo);
             string sCustomer = string.Empty;
 
             if (dsDetails != null && dsDetails.Tables[0].Rows.Count > 0)
@@ -2697,7 +2700,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 drpStatus.Enabled = false;
 
                 //load product tab details
-                itemDs = Producttab(LeadNo);
+                itemDs = Producttab(connection,LeadNo);
                 Session["ProductDs"] = itemDs;
                 GrdViewLeadproduct.DataSource = itemDs;
                 GrdViewLeadproduct.DataBind();
@@ -2709,19 +2712,24 @@ public partial class LeadMgmt : System.Web.UI.Page
                     DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
                     Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
 
-                    if (itemDs.Tables[0].Rows[vLoop]["Prd"] != null)
+                    if (itemDs.Tables[0].Rows[vLoop]["PrdID"] != null)
                     {
-                        sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["Prd"]);
+                        sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["PrdID"]);
+                       // sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["Prd"]);
+                        //drpProduct.SelectedValue = Convert.ToString(sCustomer);
                         drpProduct.ClearSelection();
                         ListItem li = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
                         if (li != null) li.Selected = true;
                     }
+                   // drpProduct.Text = sCustomer;
+                    //drpproduct.SelectedItem.Text = itemDs.Tables[0].Rows[vLoop]["Prd"].ToString();
                     txtPrdID.Text = itemDs.Tables[0].Rows[vLoop]["PrdID"].ToString();
+                   // drpProduct.SelectedValue =Convert.ToString( sCustomer);
                 }
                 //close product details
 
                 //load competitors tab
-                itemDscom = Competitortab(LeadNo);
+                itemDscom = Competitortab(connection,LeadNo);
                 Session["CompetitorDs"] = itemDscom;
                 GrdViewLeadCompetitor.DataSource = itemDscom;
                 GrdViewLeadCompetitor.DataBind();
@@ -2745,7 +2753,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 //close competitor tab             
 
                 //load activity tab
-                itemDsAct = Activitytab(LeadNo);
+                itemDsAct = Activitytab(connection,LeadNo);
                 Session["ActivityDs"] = itemDsAct;
                 GrdViewLeadActivity.DataSource = itemDsAct;
                 GrdViewLeadActivity.DataBind();
@@ -2827,7 +2835,7 @@ public partial class LeadMgmt : System.Web.UI.Page
         }
     }
 
-    public DataSet Producttab(int salesID)
+    public DataSet Producttab(string connection,int salesID)
     {
         DataSet ds;
 
@@ -2842,8 +2850,9 @@ public partial class LeadMgmt : System.Web.UI.Page
 
         string strItemCode = string.Empty;
         LeadBusinessLogic bl = new LeadBusinessLogic(sDataSource);
+       // string connection = Request.Cookies["Company"].Value;
 
-        ds = bl.GetLeadProduct(salesID);
+        ds = bl.GetLeadProduct(connection,salesID);
 
 
         if (ds != null)
@@ -2887,7 +2896,7 @@ public partial class LeadMgmt : System.Web.UI.Page
 
     }
 
-    public DataSet Competitortab(int salesID)
+    public DataSet Competitortab(string connection,int salesID)
     {
         DataSet ds;
 
@@ -2903,7 +2912,7 @@ public partial class LeadMgmt : System.Web.UI.Page
         string strItemCode = string.Empty;
         LeadBusinessLogic bl = new LeadBusinessLogic(sDataSource);
 
-        ds = bl.GetLeadCompetitor(salesID);
+        ds = bl.GetLeadCompetitor(connection,salesID);
 
 
         if (ds != null)
@@ -2961,7 +2970,7 @@ public partial class LeadMgmt : System.Web.UI.Page
 
     }
 
-    public DataSet Activitytab(int salesID)
+    public DataSet Activitytab(string connection,int salesID)
     {
         DataSet ds;
 
@@ -2977,7 +2986,7 @@ public partial class LeadMgmt : System.Web.UI.Page
         string strItemCode = string.Empty;
         LeadBusinessLogic bl = new LeadBusinessLogic(sDataSource);
 
-        ds = bl.GetLeadActivity(salesID);
+        ds = bl.GetLeadActivity(connection,salesID);
 
 
         if (ds != null)
@@ -3579,15 +3588,17 @@ public partial class LeadMgmt : System.Web.UI.Page
                 string connStr = GetConnectionString();
                 LeadBusinessLogic bl = new LeadBusinessLogic(connStr);
 
+                string connection = Request.Cookies["Company"].Value;
+
                 
-                bl.UpdateLead(LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam, dss1, dss2, dss, check);
+                bl.UpdateLead(connection,LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam, dss1, dss2, dss, check);
                                
 
                 string salestype = string.Empty;
                 int ScreenNo = 0;
                 string ScreenName = string.Empty;
 
-                string connection = Request.Cookies["Company"].Value;
+              //  string connection = Request.Cookies["Company"].Value;
                 BusinessLogic bl1 = new BusinessLogic();
 
                 salestype = "Lead Management";
@@ -4354,16 +4365,17 @@ public partial class LeadMgmt : System.Web.UI.Page
                 //pass dss for prodct tab
                 //pass dss1 for completor tab
                 //pass dss2 for activity tab
+                string connection = Request.Cookies["Company"].Value;
 
                 // bl.AddLead(LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, branch, LeadStatus, TotalAmount, ClosingPer, ClosingDate, PredictedClosing, PredictedClosingDate, PotentialPotAmount, PotentialWeightedAmount, PredictedClosingPeriod, InterestLevel, usernam, dsStages, dss1, dss2, dss, check);
-                bl.AddLead(LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam, dss1, dss2, dss, check);
+                bl.AddLead(connection,LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam, dss1, dss2, dss, check);
 
 
                 string salestype = string.Empty;
                 int ScreenNo = 0;
                 string ScreenName = string.Empty;
 
-                string connection = Request.Cookies["Company"].Value;
+              //  string connection = Request.Cookies["Company"].Value;
                 BusinessLogic bl1 = new BusinessLogic();
 
                 salestype = "Lead Management";

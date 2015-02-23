@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Data.OleDb;
 using SMSLibrary;
+using System.Data.SqlClient;
 
 public partial class FormulaExecution : System.Web.UI.Page
 {
@@ -107,18 +108,18 @@ public partial class FormulaExecution : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -351,11 +352,11 @@ public partial class FormulaExecution : System.Web.UI.Page
             {
                 BusinessLogic objChk = new BusinessLogic();
 
-                using (OleDbConnection connection = new OleDbConnection(objChk.CreateConnectionString(sDataSource)))
+                using (SqlConnection connection = new SqlConnection(objChk.CreateConnectionString(sDataSource)))
                 {
-                    OleDbCommand command = new OleDbCommand();
-                    OleDbTransaction transaction = null;
-                    OleDbDataAdapter adapter = null;
+                    SqlCommand command = new SqlCommand();
+                    SqlTransaction transaction = null;
+                    SqlDataAdapter adapter = null;
 
                     // Set the Connection to the new OleDbConnection.
                     command.Connection = connection;
@@ -480,8 +481,9 @@ public partial class FormulaExecution : System.Web.UI.Page
                                                     stock = drd["Qty"].ToString();
                                                     itemCode = drd["ItemCode"].ToString();
 
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + itemCode + "  " + stock;
+                                                    prd = prd + "\n";
                                                    
                                                 }
                                                 if (index322 >= 0)
@@ -573,8 +575,9 @@ public partial class FormulaExecution : System.Web.UI.Page
                                                     stock = drd["Qty"].ToString();
                                                     itemCode = drd["ItemCode"].ToString();
 
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + itemCode + "  " + stock;
+                                                    prd = prd + "\n";
 
                                                 }
                                                 if (index322 >= 0)
@@ -761,11 +764,11 @@ public partial class FormulaExecution : System.Web.UI.Page
             {
                 BusinessLogic objChk = new BusinessLogic();
 
-                using (OleDbConnection connection = new OleDbConnection(objChk.CreateConnectionString(sDataSource)))
+                using (SqlConnection connection = new SqlConnection(objChk.CreateConnectionString(sDataSource)))
                 {
-                    OleDbCommand command = new OleDbCommand();
-                    OleDbTransaction transaction = null;
-                    OleDbDataAdapter adapter = null;
+                    SqlCommand command = new SqlCommand();
+                    SqlTransaction transaction = null;
+                    SqlDataAdapter adapter = null;
 
                     // Set the Connection to the new OleDbConnection.
                     command.Connection = connection;
@@ -840,6 +843,8 @@ public partial class FormulaExecution : System.Web.UI.Page
         }
     }
 
+
+   
     protected void cmdSave_Click(object sender, EventArgs e)
     {
         try
@@ -849,11 +854,11 @@ public partial class FormulaExecution : System.Web.UI.Page
             {
                 BusinessLogic objChk = new BusinessLogic();
 
-                using (OleDbConnection connection = new OleDbConnection(objChk.CreateConnectionString(sDataSource)))
+                using (SqlConnection connection = new SqlConnection(objChk.CreateConnectionString(sDataSource)))
                 {
-                    OleDbCommand command = new OleDbCommand();
-                    OleDbTransaction transaction = null;
-                    OleDbDataAdapter adapter = null;
+                    SqlCommand command = new SqlCommand();
+                    SqlTransaction transaction = null;
+                    SqlDataAdapter adapter = null;
 
                     // Set the Connection to the new OleDbConnection.
                     command.Connection = connection;
@@ -869,7 +874,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         command.Connection = connection;
                         command.Transaction = transaction;
                         string itemCode = string.Empty;
-                        string date = txtDate.Text;
+                        DateTime date;
                         string formula = lblFormula.Text;
                         string inOut = "IN";
                         string isAssembly = "Y";
@@ -879,12 +884,14 @@ public partial class FormulaExecution : System.Web.UI.Page
                         string StockLimit = string.Empty;
                         string stockHold = string.Empty;
 
+                        date = Convert.ToDateTime(txtDate.Text.Trim().ToString());
+
                         if (rdComplete.SelectedValue == "N")
                             stockHold = "N";
                         else
                             stockHold = "Y";
 
-                        command.CommandText = string.Format("Insert Into tblCompProduct(FormulaName,Comments,CDate,IsAssembly,IsReleased) Values('{0}','{1}',Format('{2}', 'dd/mm/yyyy'),'{3}','{4}')", formula, comments, date, isAssembly, stockHold);
+                        command.CommandText = string.Format("Insert Into tblCompProduct(FormulaName,Comments,CDate,IsAssembly,IsReleased) Values('{0}','{1}','{2}','{3}','{4}')", formula, comments, date.ToString("yyyy-MM-dd"), isAssembly, stockHold);
                         command.ExecuteNonQuery();
 
                         command.CommandText = string.Format("Select Max(CompID) from tblCompProduct");
@@ -1049,9 +1056,10 @@ public partial class FormulaExecution : System.Web.UI.Page
                                                 {
                                                     TextBox txtStock = (TextBox)gr.Cells[3].FindControl("txtQty");
                                                     itemCode = gr.Cells[0].Text;
-                                                    
-                                                    prd = "\n";
+
+                                                    prd = prd + "\n";
                                                     prd = prd + itemCode + "  " + txtStock.Text;
+                                                    prd = prd + "\n";
 
                                                                                                      
                                                 }
@@ -1061,8 +1069,9 @@ public partial class FormulaExecution : System.Web.UI.Page
                                                     TextBox txtStock = (TextBox)gr.Cells[3].FindControl("txtQty");
                                                     itemCode = gr.Cells[0].Text;
 
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + itemCode + "  " + txtStock.Text;
+                                                    prd = prd + "\n";
 
                                                           
                                                 }
@@ -1155,8 +1164,9 @@ public partial class FormulaExecution : System.Web.UI.Page
                                                     TextBox txtStock = (TextBox)gr.Cells[3].FindControl("txtQty");
                                                     itemCode = gr.Cells[0].Text;
 
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + itemCode + "  " + txtStock.Text;
+                                                    prd = prd + "\n";
 
 
                                                 }
@@ -1166,8 +1176,9 @@ public partial class FormulaExecution : System.Web.UI.Page
                                                     TextBox txtStock = (TextBox)gr.Cells[3].FindControl("txtQty");
                                                     itemCode = gr.Cells[0].Text;
 
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + itemCode + "  " + txtStock.Text;
+                                                    prd = prd + "\n";
 
 
                                                 }
@@ -1239,11 +1250,11 @@ public partial class FormulaExecution : System.Web.UI.Page
             {
                 BusinessLogic objChk = new BusinessLogic();
 
-                using (OleDbConnection connection = new OleDbConnection(objChk.CreateConnectionString(sDataSource)))
+                using (SqlConnection connection = new SqlConnection(objChk.CreateConnectionString(sDataSource)))
                 {
-                    OleDbCommand command = new OleDbCommand();
-                    OleDbTransaction transaction = null;
-                    OleDbDataAdapter adapter = null;
+                    SqlCommand command = new SqlCommand();
+                    SqlTransaction transaction = null;
+                    SqlDataAdapter adapter = null;
 
                     // Set the Connection to the new OleDbConnection.
                     command.Connection = connection;
@@ -1476,11 +1487,11 @@ public partial class FormulaExecution : System.Web.UI.Page
     private void GetExecutionDetails(int CompID)
     {
         BusinessLogic objBus = new BusinessLogic(sDataSource);
-        using (OleDbConnection connection = new OleDbConnection(objBus.CreateConnectionString(sDataSource)))
+        using (SqlConnection connection = new SqlConnection(objBus.CreateConnectionString(sDataSource)))
         {
-            OleDbCommand command = new OleDbCommand();
-            OleDbTransaction transaction = null;
-            OleDbDataAdapter adapter = null;
+            SqlCommand command = new SqlCommand();
+            SqlTransaction transaction = null;
+            SqlDataAdapter adapter = null;
 
             // Set the Connection to the new OleDbConnection.
             command.Connection = connection;
@@ -1501,19 +1512,19 @@ public partial class FormulaExecution : System.Web.UI.Page
                 command.Transaction = transaction;
 
                 command.CommandText = string.Format("SELECT E.ID,E.CompID,E.ItemCode,P.ProductDesc,P.ProductName,P.Stock,E.Qty FROM tblExecution E Inner Join tblProductMaster P ON P.ItemCode = E.ItemCode Where E.InOut='IN' and E.CompID = {0}", CompID);
-                adapter = new OleDbDataAdapter(command);
+                adapter = new SqlDataAdapter(command);
                 adapter.Fill(dsIn);
                 grdIn.DataSource = dsIn;
                 grdIn.DataBind();
 
                 command.CommandText = string.Format("SELECT E.ID,E.CompID,E.ItemCode,P.ProductDesc,P.ProductName,P.Stock,E.Qty FROM tblExecution E Inner Join tblProductMaster P ON P.ItemCode = E.ItemCode Where E.InOut='OUT' and E.CompID = {0}", CompID);
-                adapter = new OleDbDataAdapter(command);
+                adapter = new SqlDataAdapter(command);
                 adapter.Fill(dsOut);
                 grdOut.DataSource = dsOut;
                 grdOut.DataBind();
 
                 command.CommandText = string.Format("SELECT CompID,FormulaName,Comments,CDate,IsAssembly FROM tblCompProduct Where CompID = {0}", CompID);
-                adapter = new OleDbDataAdapter(command);
+                adapter = new SqlDataAdapter(command);
                 adapter.Fill(dsDetails);
 
                 if (dsDetails != null)
