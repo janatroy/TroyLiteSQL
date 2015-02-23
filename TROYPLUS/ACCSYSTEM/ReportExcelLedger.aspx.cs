@@ -208,7 +208,7 @@ public partial class ReportExcelLedger : System.Web.UI.Page
             string connection = string.Empty;
             connection = Request.Cookies["Company"].Value;
 
-            ds = objBL.ListLedgerInfo(connection, "All", "All");
+            ds = objBL.ListLedgerInfo(connection,txtsearch, dropdown);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -217,37 +217,37 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("AliasName"));
                 dt.Columns.Add(new DataColumn("Address"));
                 dt.Columns.Add(new DataColumn("TINnumber"));
-                dt.Columns.Add(new DataColumn("CreditLimit"));
+               // dt.Columns.Add(new DataColumn("CreditLimit"));
                 //dt.Columns.Add(new DataColumn("OpenBalanceDR"));
                 dt.Columns.Add(new DataColumn("OpenBal"));
                 dt.Columns.Add(new DataColumn("Phone"));
                 dt.Columns.Add(new DataColumn("LedgerCategory"));
                 dt.Columns.Add(new DataColumn("ExecutiveIncharge"));
-                dt.Columns.Add(new DataColumn("Mobile"));
-                dt.Columns.Add(new DataColumn("CreditDays"));
+              //  dt.Columns.Add(new DataColumn("Mobile"));
+               // dt.Columns.Add(new DataColumn("CreditDays"));
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     DataRow dr_final1 = dt.NewRow();
                     dr_final1["LedgerName"] = dr["LedgerName"];
                     dr_final1["AliasName"] = dr["AliasName"];
-                    dr_final1["Address"] = dr["Address"];
+                    dr_final1["Address"] = dr["Add1"];
                     dr_final1["TINnumber"] = dr["TINnumber"];
-                    dr_final1["CreditLimit"] = dr["CreditLimit"];
+                  //  dr_final1["CreditLimit"] = dr["CreditLimit"];
                     //dr_final1["OpenBalanceDR"] = dr["OpenBalanceDR"];
-                    dr_final1["OpenBal"] = dr["OpenBal"];
+                    dr_final1["OpenBal"] = dr["OpenBalance"];
                     dr_final1["Phone"] = dr["Phone"];
                     dr_final1["LedgerCategory"] = dr["LedgerCategory"];
                     dr_final1["ExecutiveIncharge"] = dr["ExecutiveIncharge"];
-                    dr_final1["CreditDays"] = dr["CreditDays"];
+                   // dr_final1["CreditDays"] = dr["CreditDays"];
                     dt.Rows.Add(dr_final1);
 
                     //GtotalOpenDR = GtotalOpenDR + Convert.ToDecimal(dr["OpenBalanceDR"]);
                     //GtotalOpenCR = GtotalOpenCR + Convert.ToDecimal(dr["OpenBal"]);
                     //GtotalOpenDR = GtotalExecute + Convert.ToDecimal(dr["ExecutiveIncharge"]);
-                    if (!DBNull.Value.Equals(dr["CreditLimit"]))
-                    {
-                        GtotalCreditlimit = GtotalCreditlimit + Convert.ToDecimal(dr["CreditLimit"]);
-                    }
+                    //if (!DBNull.Value.Equals(dr["CreditLimit"]))
+                    //{
+                    //    GtotalCreditlimit = GtotalCreditlimit + Convert.ToDecimal(dr["CreditLimit"]);
+                    //}
 
                     //if(!DBNull.Value.Equals(dr["CreditDays"]))
                     //{
@@ -259,14 +259,14 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                 dr_final2["AliasName"] = "";
                 dr_final2["Address"] = "";
                 dr_final2["TINnumber"] = "Grand Total:";
-                dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
+              //  dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
                 //dr_final2["OpenBalanceDR"] = Convert.ToDecimal(GtotalOpenDR);
                 //dr_final2["OpenBal"] = Convert.ToDecimal(GtotalOpenCR);
                 dr_final2["OpenBal"] = "";
                 dr_final2["Phone"] = "";
                 dr_final2["LedgerCategory"] = "";
                 dr_final2["ExecutiveIncharge"] = "";
-                dr_final2["CreditDays"] = "";
+               // dr_final2["CreditDays"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }

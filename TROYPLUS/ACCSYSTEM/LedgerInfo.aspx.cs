@@ -681,7 +681,7 @@ public partial class LedgerInfo : System.Web.UI.Page
         try
         {
             if (GrdViewLedger.SelectedDataKey != null)
-                e.InputParameters["LedgerID"] = GrdViewLedger.SelectedDataKey.Value;
+                e.InputParameters["LedgerID"] = Convert.ToInt32(GrdViewLedger.SelectedDataKey.Value);
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
         }
@@ -891,7 +891,7 @@ public partial class LedgerInfo : System.Web.UI.Page
         if (((TextBox)this.frmViewAdd.FindControl("txtAdd3")).Text != "")
             e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("txtAdd3")).Text;
 
-        e.InputParameters["LedgerID"] = GrdViewLedger.SelectedDataKey.Value;
+        e.InputParameters["LedgerID"] =Convert.ToInt32(GrdViewLedger.SelectedDataKey.Value);
 
         e.InputParameters["DRORCR"] = "NA";
         e.InputParameters["OpenBalance"] = "0";
