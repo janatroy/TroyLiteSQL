@@ -921,7 +921,7 @@
                                                         <cc1:ConfirmButtonExtender ID="CnrfmDel" TargetControlID="lnkB" ConfirmText="Are you sure to Delete this Payment?"
                                                             runat="server">
                                                         </cc1:ConfirmButtonExtender>
-                                                        <asp:ImageButton ID="lnkB" SkinID="delete" runat="Server" CommandName="Delete"></asp:ImageButton>
+                                                        <asp:ImageButton ID="lnkB" SkinID="delete" runat="Server" CommandName="Delete" CausesValidation="false"></asp:ImageButton>
                                                         <asp:ImageButton ID="lnkBDisabled" Enabled="false" SkinID="deleteDisable" runat="Server"></asp:ImageButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
@@ -1007,7 +1007,7 @@
         <tr>
             <td style="width:50%">
                    <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                                                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CausesValidation="false" CssClass="ButtonAdd66"
                                                     EnableTheming="false" Width="80px" Text=""></asp:Button>
                                             </asp:Panel>
             </td>

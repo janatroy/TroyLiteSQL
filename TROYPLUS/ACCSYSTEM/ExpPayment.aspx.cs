@@ -1010,7 +1010,7 @@ public partial class ExpPayment : System.Web.UI.Page
         try
         {
             if (GrdViewPayment.SelectedDataKey != null)
-                e.InputParameters["TransNo"] = GrdViewPayment.SelectedDataKey.Value;
+                e.InputParameters["TransNo"] = Convert.ToInt32(GrdViewPayment.SelectedDataKey.Value);
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 

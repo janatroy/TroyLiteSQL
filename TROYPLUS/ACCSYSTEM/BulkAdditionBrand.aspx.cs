@@ -126,12 +126,13 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
 
         dt.Columns.Add(new DataColumn("BRAND"));
         dt.Columns.Add(new DataColumn("BRANDLEVEL"));
-
+        dt.Columns.Add(new DataColumn("Deviation"));
         double vat = 0;
 
         DataRow dr_final12 = dt.NewRow();
         dr_final12["BRAND"] = "";
         dr_final12["BRANDLEVEL"] = "1";
+        dr_final12["Deviation"] = "1";
         dt.Rows.Add(dr_final12);
 
         ExportToExcel(dt);
@@ -392,37 +393,37 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
                 //}
 
 
-                //int i = 1;
-                //int ii = 1;
-                //string itemc = string.Empty;
-                //foreach (DataRow dr in ds.Tables[0].Rows)
-                //{
-                //    itemc = Convert.ToString(dr["ItemCode"]);
+                int i = 1;
+                int ii = 1;
+                string Brand = string.Empty;
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    Brand = Convert.ToString(dr["Brand"]);
 
-                //    if ((itemc == null) || (itemc == ""))
-                //    {
-                //    }
-                //    else
-                //    {
-                //        foreach (DataRow drd in ds.Tables[0].Rows)
-                //        {
-                //            if (ii == i)
-                //            {
-                //            }
-                //            else
-                //            {
-                //                if (itemc == Convert.ToString(drd["ItemCode"]))
-                //                {
-                //                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product with item code - " + itemc + " - already exists in the excel.');", true);
-                //                    return;
-                //                }
-                //            }
-                //            ii = ii + 1;
-                //        }
-                //    }
-                //    i = i + 1;
-                //    ii = 1;
-                //}
+                    if ((Brand == null) || (Brand == ""))
+                    {
+                    }
+                    else
+                    {
+                        foreach (DataRow drd in ds.Tables[0].Rows)
+                        {
+                            if (ii == i)
+                            {
+                            }
+                            else
+                            {
+                                if (Brand == Convert.ToString(drd["Brand"]))
+                                {
+                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Brand with  - " + Brand + " - already exists in the excel.');", true);
+                                    return;
+                                }
+                            }
+                            ii = ii + 1;
+                        }
+                    }
+                    i = i + 1;
+                    ii = 1;
+                }
 
                 objBL.InsertBulkBrands(connection, ds, usernam);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Brands Uploaded Successfully');", true);

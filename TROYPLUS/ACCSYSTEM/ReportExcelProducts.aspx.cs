@@ -46,6 +46,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Brand"));
                 
                 dt.Columns.Add(new DataColumn("IsActive"));
+                dt.Columns.Add(new DataColumn("Outdated"));
                 dt.Columns.Add(new DataColumn("Vat"));
                 dt.Columns.Add(new DataColumn("StockLevel"));
 
@@ -59,11 +60,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                     dr_final1["ItemCode"] = dr["ItemCode"];
                     dr_final1["Model"] = dr["Model"];
                     dr_final1["Brand"] = dr["productdesc"];
-                    dr_final1["MRP"] = dr["rate"];
-                    dr_final1["MRP Date"] = dr["MRPEffDate"];
-                    dr_final1["DP"] = dr["Dealerrate"];
-                    dr_final1["DP Date"] = dr["DPEffDate"];
-                    dr_final1["NLC"] = dr["NLC"];
+                    dr_final1["Outdated"] = dr["Outdated"];
                     dr_final1["IsActive"] = dr["IsActive"];
                     dr_final1["Vat"] = dr["Vat"];
                     //dr_final1["NLC"] = dr["rol"];
