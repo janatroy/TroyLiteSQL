@@ -89,7 +89,7 @@
                                         <td style="width: 16%">
                                             <div style="text-align: right;">
                                                 <%--<asp:Panel ID="pnlSearch" runat="server" Width="100px">--%>
-
+                                              
                                                 <%--</asp:Panel>--%>
                                             </div>
                                         </td>
@@ -214,6 +214,8 @@
                                                                         </td>
                                                                         <td></td>
                                                                     </tr>
+                                                                    <tr>
+                                                                    </tr>
                                                                     <tr style="vertical-align: bottom">
                                                                         <td style="width: 25%" class="ControlLabel">Title
                                                                         </td>
@@ -232,6 +234,8 @@
                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                             <asp:TextBox ID="txtEmpFName" runat="server" CssClass="cssTextBox" Width="92%"></asp:TextBox>
                                                                         </td>
+                                                                    </tr>
+                                                                    <tr>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="width: 25%" class="ControlLabel">Surname
@@ -254,6 +258,8 @@
                                                                             <asp:ImageButton ID="btnDate3" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
                                                                                 Width="20px" runat="server" />
                                                                         </td>
+                                                                    </tr>
+                                                                    <tr>
                                                                     </tr>
                                                                     <tr style="width: 100%">
                                                                         <td style="width: 25%" class="ControlLabel">
@@ -309,18 +315,8 @@
                                                                                         <asp:TextBox ID="txtRemarks" Height="24px" TextMode="MultiLine" MaxLength="10"
                                                                                             runat="server" CssClass="cssTextBox" />
                                                                                     </td>
-                                                                                    <td style="width: 15%" class="ControlLabel">Role
-                                                                                        <asp:RequiredFieldValidator ValidationGroup="Save" ID="rqdValidatorRole" runat="server"
-                                                                                            ErrorMessage="Role is mandatory" Text="*" ControlToValidate="ddlRole"></asp:RequiredFieldValidator>
-
-                                                                                    </td>
-                                                                                    <td style="width: 25%" class="ControlDrpBorder">
-                                                                                        <asp:DropDownList ID="ddlRole" TabIndex="11" Enabled="True" EnableTheming="false" AppendDataBoundItems="true" CssClass="drpDownListMedium"
-                                                                                            runat="server" Width="100%" DataTextField="RoleName" BackColor="#90c9fc" Style="border: 1px solid #90c9fc" Height="26px"
-                                                                                            DataValueField="Id">
-                                                                                            <%--<asp:ListItem Text="Select Role" Value="0"></asp:ListItem>--%>
-                                                                                        </asp:DropDownList>
-                                                                                    </td>
+                                                                                    <td style="width: 15%"></td>
+                                                                                    <td style="width: 25%"></td>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
@@ -328,6 +324,8 @@
                                                                     </tr>
                                                                 </table>
                                                                 <table align="center" width="100%">
+                                                                    <tr style="width: 20px">
+                                                                    </tr>
                                                                     <tr>
                                                                         <td style="width: 30%"></td>
                                                                         <td style="width: 20%;" align="center">
@@ -377,189 +375,250 @@
                                                                     Role Pay Component Mapping
                                                                 </td>
                                                             </tr>--%>
+                                                    <tr style="height: 5px">
+                                                    </tr>
                                                     <tr>
-                                                        <td align="left" colspan="5">
-                                                            <cc1:TabContainer ID="TabContainer2" runat="server" ActiveTabIndex="0" CssClass="fancy fancy-green" Width="100%">
+                                                        <td colspan="5" align="left">
+                                                            <cc1:TabContainer ID="TabContainer2" runat="server" Width="100%" ActiveTabIndex="0" CssClass="fancy fancy-green">
                                                                 <cc1:TabPanel ID="TabPanel2" runat="server">
                                                                     <ContentTemplate>
-                                                                        <table align="center" cellpadding="3" cellspacing="1" style="width: 770px; border: 0px solid #86b2d1; vertical-align: text-top">
+                                                                        <table style="width: 770px; border: 0px solid #86b2d1; vertical-align: text-top" align="center" cellpadding="3"
+                                                                            cellspacing="1">
+
                                                                             <tr>
                                                                                 <td style="width: 40%">
                                                                                     <table>
                                                                                         <tr>
-                                                                                            <asp:HiddenField ID="ManagePayRoleID" runat="server" Visible="False" />
-                                                                                            <td class="ControlLabel" style="width: 20%">Role Name : </td>
+                                                                                            <asp:HiddenField ID="ManagePayRoleID" Visible="false" runat="server"></asp:HiddenField>
+
+                                                                                            <td class="ControlLabel" style="width: 20%">Role Name :                                                               
+                                                                                            </td>
                                                                                             <td class="ControlTextBox3" style="width: 20%">
-                                                                                                <asp:TextBox ID="txtManagePayCompRoleName" runat="server" Enabled="False" SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
+                                                                                                <asp:TextBox ID="txtManagePayCompRoleName" Enabled="false" runat="server"
+                                                                                                    SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td class="ControlLabel" style="width: 25%; font-weight: bold;">Role Based Pay Component List: </td>
+                                                                                            <td class="ControlLabel" style="width: 25%; font-weight: bold;">Role Based Pay Component List:                                                                   
+                                                                                            </td>
                                                                                             <td class="ControlLabel" style="width: 12%">Filter By: </td>
-                                                                                            <td class="ControlTextBox3" style="width: 10%">
-                                                                                                <asp:TextBox ID="roleSearch" runat="server" SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
+
+                                                                                            <td style="width: 10%" class="ControlTextBox3">
+                                                                                                <asp:TextBox ID="roleSearch" Enabled="true" runat="server"
+                                                                                                    SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                                             </td>
-                                                                                            <td class="tblLeftNoPad" style="width: 10%">
-                                                                                                <asp:Button ID="SearchRoleBtn" runat="server" CausesValidation="False" CommandName="searchPay" EnableTheming="False" OnClick="SearchRoleBtn_Click" SkinID="skinBtnCancel" Text="Search" />
+                                                                                            <td style="width: 10%" class="tblLeftNoPad">
+                                                                                                <asp:Button ID="SearchRoleBtn" Text="Search" runat="server" CausesValidation="False" CommandName="searchPay"
+                                                                                                    EnableTheming="false" SkinID="skinBtnCancel" OnClick="SearchRoleBtn_Click"></asp:Button>
                                                                                             </td>
+
                                                                                         </tr>
+
                                                                                     </table>
                                                                                 </td>
                                                                                 <td style="width: 10%"></td>
                                                                             </tr>
+
                                                                             <tr>
-                                                                                <asp:GridView ID="ManagePayComponentGrid" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="PayComponentID" EmptyDataText="No Pay Component List Found." Font-Names="Trebuchet MS" OnRowDataBound="ManagePayComponentGrid_RowDataBound" OnSelectedIndexChanged="ManagePayComponentGrid_SelectedIndexChanged" Width="99.9%">
+
+                                                                                <asp:GridView ID="ManagePayComponentGrid" runat="server" Visible="true" AllowSorting="True" AutoGenerateColumns="False"
+                                                                                    Width="99.9%" AllowPaging="True" DataKeyNames="PayComponentID" OnSelectedIndexChanged="ManagePayComponentGrid_SelectedIndexChanged"
+                                                                                    OnRowDataBound="ManagePayComponentGrid_RowDataBound" EmptyDataText="No Pay Component List Found." Font-Names="Trebuchet MS">
+
                                                                                     <Columns>
-                                                                                        <asp:BoundField DataField="PayComponentID" HeaderText="PayComponent ID" Visible="False">
-                                                                                        <HeaderStyle BorderColor="Gray" />
-                                                                                        </asp:BoundField>
-                                                                                        <asp:BoundField DataField="PayComponentName" HeaderText="Pay Component Name">
-                                                                                        <HeaderStyle BorderColor="Gray" />
-                                                                                        </asp:BoundField>
-                                                                                        <asp:BoundField DataField="Description" HeaderText="Pay Component Description">
-                                                                                        <HeaderStyle BorderColor="Gray" />
-                                                                                        </asp:BoundField>
+
+                                                                                        <asp:BoundField DataField="PayComponentID" HeaderText="PayComponent ID" Visible="false" HeaderStyle-BorderColor="Gray" />
+                                                                                        <%--<asp:BoundField DataField="Role_ID" HeaderText="Role ID" Visible="false" HeaderStyle-BorderColor="Gray" />--%>
+                                                                                        <asp:BoundField DataField="PayComponentName" HeaderText="Pay Component Name" HeaderStyle-BorderColor="Gray" />
+                                                                                        <%-- <asp:BoundField DataField="AllowedCount" HeaderText="Limit/Count" HeaderStyle-BorderColor="Gray" />
+                                                                                    <asp:BoundField DataField="EffectiveDate" HeaderText="Effective Date" Visible="true" HeaderStyle-BorderColor="Gray" />--%>
+                                                                                        <asp:BoundField DataField="Description" HeaderText="Pay Component Description" Visible="true" HeaderStyle-BorderColor="Gray" />
+
                                                                                     </Columns>
                                                                                     <PagerTemplate>
                                                                                         <table style="border-color: white">
                                                                                             <tr style="border-color: white">
-                                                                                                <td style="border-color: white">Goto Page </td>
+                                                                                                <td style="border-color: white">Goto Page
+                                                                                                </td>
                                                                                                 <td style="border-color: white">
-                                                                                                    <asp:DropDownList ID="ddlPageSelector" runat="server" AutoPostBack="true" BackColor="#BBCAFB" Height="25px" Style="border: 1px solid blue" Width="75px">
+                                                                                                    <asp:DropDownList ID="ddlPageSelector" runat="server" AutoPostBack="true" Style="border: 1px solid blue" BackColor="#BBCAFB" Width="75px" Height="25px">
                                                                                                     </asp:DropDownList>
                                                                                                 </td>
                                                                                                 <td style="border-color: white; width: 5px"></td>
                                                                                                 <td style="border-color: white">
-                                                                                                    <asp:Button ID="btnFirst" runat="server" CommandArgument="First" CommandName="Page" CssClass="NewFirst" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="First" runat="server" CssClass="NewFirst" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                        ID="btnFirst" />
                                                                                                 </td>
                                                                                                 <td style="border-color: white">
-                                                                                                    <asp:Button ID="btnPrevious" runat="server" CommandArgument="Prev" CommandName="Page" CssClass="NewPrev" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="Prev" runat="server" CssClass="NewPrev" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                        ID="btnPrevious" />
                                                                                                 </td>
                                                                                                 <td style="border-color: white">
-                                                                                                    <asp:Button ID="btnNext" runat="server" CommandArgument="Next" CommandName="Page" CssClass="NewNext" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="Next" runat="server" CssClass="NewNext" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                        ID="btnNext" />
                                                                                                 </td>
                                                                                                 <td style="border-color: white">
-                                                                                                    <asp:Button ID="btnLast" runat="server" CommandArgument="Last" CommandName="Page" CssClass="NewLast" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="Last" runat="server" CssClass="NewLast" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                        ID="btnLast" />
                                                                                                 </td>
+
                                                                                             </tr>
                                                                                         </table>
                                                                                     </PagerTemplate>
                                                                                 </asp:GridView>
+
                                                                             </tr>
+
+                                                                            <tr style="height: 3px">
+                                                                            </tr>
+
                                                                             <tr>
                                                                                 <td>
                                                                                     <table>
                                                                                         <tr>
-                                                                                            <td class="ControlLabel" style="width: 20%">From Date : </td>
+                                                                                            <td class="ControlLabel" style="width: 20%">From Date :
+                                                                                    <%--<asp:RequiredFieldValidator ID="rvFromDateEdit" runat="server" ControlToValidate="txtfrmDate"
+                                                                            Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="From Date is mandatory"></asp:RequiredFieldValidator>--%>
+                                                                 
+                                                                                            </td>
                                                                                             <td class="ControlTextBox3" style="width: 20%">
-                                                                                                <asp:TextBox ID="txtfrmDate" runat="server" Enabled="False" SkinID="skinTxtBoxGrid" TabIndex="1" ToolTip="Select Pay Name"></asp:TextBox>
-                                                                                                <cc1:CalendarExtender ID="calEditDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnEditDate" TargetControlID="txtfrmDate">
+                                                                                                <asp:TextBox ID="txtfrmDate" Enabled="false" runat="server" ToolTip="Select Pay Name"
+                                                                                                    SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
+                                                                                                <cc1:CalendarExtender ID="calEditDate" runat="server" Animated="true" Format="dd/MM/yyyy"
+                                                                                                    PopupButtonID="btnEditDate" PopupPosition="BottomLeft" TargetControlID="txtfrmDate">
                                                                                                 </cc1:CalendarExtender>
                                                                                             </td>
-                                                                                            <td align="left" style="width: 30%">
-                                                                                                <asp:ImageButton ID="btnEditDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                            <td style="width: 30%" align="left">
+                                                                                                <asp:ImageButton ID="btnEditDate" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
+                                                                                                    Width="20px" runat="server" />
                                                                                             </td>
                                                                                         </tr>
+
                                                                                         <tr>
-                                                                                            <td class="ControlLabel" style="width: 20%">Amount Declared : </td>
+                                                                                            <td class="ControlLabel" style="width: 20%">Amount Declared :
+                                                                                            <%--<asp:RequiredFieldValidator ID="ReqAmountName" runat="server" ControlToValidate="txtDeclaredAmt"
+                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Amount is mandatory"></asp:RequiredFieldValidator>--%>
+                                                                                            </td>
                                                                                             <td class="ControlTextBox3" style="width: 20%">
-                                                                                                <asp:TextBox ID="txtDeclaredAmt" runat="server" Enabled="False" SkinID="skinTxtBoxGrid" TabIndex="1" ToolTip="Select Pay Name"></asp:TextBox>
+                                                                                                <asp:TextBox ID="txtDeclaredAmt" Enabled="false" runat="server" ToolTip="Select Pay Name"
+                                                                                                    SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </table>
                                                                                 </td>
                                                                             </tr>
+
+                                                                            <tr style="height: 3px">
+                                                                            </tr>
+
                                                                             <tr>
                                                                                 <td>
                                                                                     <table>
                                                                                         <tr>
                                                                                             <td style="width: 20%">
-                                                                                                <asp:Button ID="addSelectedBtn" runat="server" CausesValidation="False" CommandName="addPayAmount" EnableTheming="False" OnClick="addSelectedBtn_Click" SkinID="skinBtnCancel" Text="Add Selected" />
-                                                                                                <asp:Button ID="removeSelectedBtn" runat="server" CausesValidation="False" CommandName="removePayAmount" EnableTheming="False" OnClick="removeSelectedBtn_Click" SkinID="skinBtnCancel" Text="Remove Selected" />
+                                                                                                <asp:Button ID="addSelectedBtn" Text="Add Selected" runat="server" CausesValidation="False" CommandName="addPayAmount"
+                                                                                                    EnableTheming="false" SkinID="skinBtnCancel" OnClick="addSelectedBtn_Click"></asp:Button>
+
+                                                                                                <asp:Button ID="removeSelectedBtn" Text="Remove Selected" runat="server" CausesValidation="False" CommandName="removePayAmount"
+                                                                                                    EnableTheming="false" SkinID="skinBtnCancel" OnClick="removeSelectedBtn_Click"></asp:Button>
                                                                                             </td>
                                                                                             <td style="width: 20%"></td>
                                                                                         </tr>
                                                                                     </table>
                                                                                 </td>
                                                                             </tr>
+
+                                                                            <tr style="height: 3px">
+                                                                            </tr>
+
                                                                             <tr>
                                                                                 <td style="width: 10%">
                                                                                     <table>
                                                                                         <tr>
-                                                                                            <td class="ControlLabel" style="width: 4%; font-weight: bold;">Pay components selected for role: </td>
+                                                                                            <td class="ControlLabel" style="width: 4%; font-weight: bold;">Pay components selected for role:
+                                                                                            </td>
                                                                                             <td class="ControlLabel" style="width: 10%"></td>
                                                                                         </tr>
                                                                                     </table>
                                                                                 </td>
                                                                             </tr>
+
                                                                             <tr>
                                                                                 <td>
-                                                                                    <asp:GridView ID="PayCompRolePayGrid" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" DataKeyNames="PayComponent_ID" EmptyDataText="No Pay Component for Roles List Found." Font-Names="Trebuchet MS" OnRowDataBound="PayCompRolePayGrid_RowDataBound" OnSelectedIndexChanged="PayCompRolePayGrid_SelectedIndexChanged" Width="99.9%">
+                                                                                    <asp:GridView ID="PayCompRolePayGrid" runat="server" Visible="true" AllowSorting="True" AutoGenerateColumns="False"
+                                                                                        Width="99.9%" AllowPaging="True" DataKeyNames="PayComponent_ID"
+                                                                                        EmptyDataText="No Pay Component for Roles List Found." Font-Names="Trebuchet MS">
                                                                                         <Columns>
-                                                                                            <asp:BoundField DataField="PayComponent_ID" HeaderText="PayComponent ID" Visible="False">
-                                                                                            <HeaderStyle BorderColor="Gray" />
-                                                                                            </asp:BoundField>
-                                                                                            <asp:BoundField DataField="Role_ID" HeaderText="Role ID" Visible="False">
-                                                                                            <HeaderStyle BorderColor="Gray" />
-                                                                                            </asp:BoundField>
-                                                                                            <asp:BoundField DataField="PayComponentName" HeaderText="Pay Component Name">
-                                                                                            <HeaderStyle BorderColor="Gray" />
-                                                                                            </asp:BoundField>
-                                                                                            <asp:BoundField DataField="Description" HeaderText="Pay Component Description">
-                                                                                            <HeaderStyle BorderColor="Gray" />
-                                                                                            </asp:BoundField>
-                                                                                            <asp:BoundField DataField="EffectiveDate" HeaderText="From Date">
-                                                                                            <HeaderStyle BorderColor="Gray" />
-                                                                                            </asp:BoundField>
-                                                                                            <asp:BoundField DataField="DeclaredAmount" HeaderText="Amount Declared">
-                                                                                            <HeaderStyle BorderColor="Gray" />
-                                                                                            </asp:BoundField>
+                                                                                            <asp:BoundField DataField="PayComponent_ID" HeaderText="PayComponent ID" Visible="false" HeaderStyle-BorderColor="Gray" />
+                                                                                            <asp:BoundField DataField="Role_ID" HeaderText="Role ID" Visible="false" HeaderStyle-BorderColor="Gray" />
+                                                                                            <asp:BoundField DataField="PayComponentName" HeaderText="Pay Component Name" HeaderStyle-BorderColor="Gray" />
+                                                                                            <asp:BoundField DataField="Description" HeaderText="Pay Component Description" Visible="true" HeaderStyle-BorderColor="Gray" />
+                                                                                            <asp:BoundField DataField="EffectiveDate" HeaderText="From Date" Visible="true" HeaderStyle-BorderColor="Gray" />
+                                                                                            <asp:BoundField DataField="DeclaredAmount" HeaderText="Amount Declared" Visible="true" HeaderStyle-BorderColor="Gray" />
                                                                                         </Columns>
                                                                                         <PagerTemplate>
                                                                                             <table style="border-color: white">
                                                                                                 <tr style="border-color: white">
-                                                                                                    <td style="border-color: white">Goto Page </td>
+                                                                                                    <td style="border-color: white">Goto Page
+                                                                                                    </td>
                                                                                                     <td style="border-color: white">
-                                                                                                        <asp:DropDownList ID="ddlPageSelector" runat="server" AutoPostBack="true" BackColor="#BBCAFB" Height="25px" Style="border: 1px solid blue" Width="75px">
+                                                                                                        <asp:DropDownList ID="ddlPageSelector" runat="server" AutoPostBack="true" Style="border: 1px solid blue" BackColor="#BBCAFB" Width="75px" Height="25px">
                                                                                                         </asp:DropDownList>
                                                                                                     </td>
                                                                                                     <td style="border-color: white; width: 5px"></td>
                                                                                                     <td style="border-color: white">
-                                                                                                        <asp:Button ID="btnFirst" runat="server" CommandArgument="First" CommandName="Page" CssClass="NewFirst" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                        <asp:Button Text="" CommandName="Page" CommandArgument="First" runat="server" CssClass="NewFirst" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                            ID="btnFirst" />
                                                                                                     </td>
                                                                                                     <td style="border-color: white">
-                                                                                                        <asp:Button ID="btnPrevious" runat="server" CommandArgument="Prev" CommandName="Page" CssClass="NewPrev" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                        <asp:Button Text="" CommandName="Page" CommandArgument="Prev" runat="server" CssClass="NewPrev" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                            ID="btnPrevious" />
                                                                                                     </td>
                                                                                                     <td style="border-color: white">
-                                                                                                        <asp:Button ID="btnNext" runat="server" CommandArgument="Next" CommandName="Page" CssClass="NewNext" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                        <asp:Button Text="" CommandName="Page" CommandArgument="Next" runat="server" CssClass="NewNext" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                            ID="btnNext" />
                                                                                                     </td>
                                                                                                     <td style="border-color: white">
-                                                                                                        <asp:Button ID="btnLast" runat="server" CommandArgument="Last" CommandName="Page" CssClass="NewLast" EnableTheming="false" Height="18px" Text="" Width="22px" />
+                                                                                                        <asp:Button Text="" CommandName="Page" CommandArgument="Last" runat="server" CssClass="NewLast" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                            ID="btnLast" />
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             </table>
                                                                                         </PagerTemplate>
                                                                                     </asp:GridView>
                                                                                 </td>
+
                                                                             </tr>
+
+
                                                                             <tr>
                                                                                 <td>
                                                                                     <table>
                                                                                         <tr>
                                                                                             <td style="width: 20%">
-                                                                                                <asp:Button ID="CancelRolePayMapBtn" runat="server" CausesValidation="False" CommandName="CancelRolePay" EnableTheming="False" OnClick="CancelRolePayMapBtn_Click" SkinID="skinBtnCancel" Text="Cancel" />
-                                                                                                <asp:Button ID="AssignRolePayMapBtn" runat="server" CausesValidation="False" CommandName="AssignRolePay" EnableTheming="False" OnClick="AssignRolePayMapBtn_Click" SkinID="skinBtnCancel" Text="Assign" />
+                                                                                                <asp:Button ID="CancelRolePayMapBtn" Text="Cancel" runat="server" CausesValidation="False" CommandName="CancelRolePay"
+                                                                                                    EnableTheming="false" SkinID="skinBtnCancel" OnClick="CancelRolePayMapBtn_Click"></asp:Button>
+
+                                                                                                <asp:Button ID="AssignRolePayMapBtn" Text="Assign" runat="server" CausesValidation="False" CommandName="AssignRolePay"
+                                                                                                    EnableTheming="false" SkinID="skinBtnCancel" OnClick="AssignRolePayMapBtn_Click"></asp:Button>
                                                                                             </td>
                                                                                             <td style="width: 20%"></td>
                                                                                         </tr>
                                                                                     </table>
                                                                                 </td>
                                                                             </tr>
+
+
+                                                                            <tr style="height: 3px">
+                                                                            </tr>
+
                                                                         </table>
                                                                     </ContentTemplate>
                                                                 </cc1:TabPanel>
                                                             </cc1:TabContainer>
                                                         </td>
+                                                    </tr>
+                                                    <tr style="height: 6px">
                                                     </tr>
                                                     <%-- <tr>
                                                                 <td colspan="4">
@@ -688,11 +747,11 @@
     </asp:UpdatePanel>
     <table width="100%">
         <tr>
-            <td style="width: 50%" align="right">
-                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
-                    EnableTheming="false" Text=""></asp:Button>
+            <td style="width:50%" align="right" >
+                  <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                                                    EnableTheming="false" Text=""></asp:Button>
             </td>
-            <td style="width: 50%">
+            <td style="width:50%">
                 <asp:Button ID="btnExportToExcel" runat="server" CssClass="exportexl6" OnClientClick="window.open('ReportExcelEmployee.aspx ','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');"
                     EnableTheming="false"></asp:Button>
             </td>

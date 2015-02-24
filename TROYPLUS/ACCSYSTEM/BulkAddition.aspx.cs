@@ -130,9 +130,7 @@ public partial class BulkAddition : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("PRODUCTNAME"));
         dt.Columns.Add(new DataColumn("MODEL"));
         dt.Columns.Add(new DataColumn("CATEGORY"));
-        dt.Columns.Add(new DataColumn("MRP"));
-        dt.Columns.Add(new DataColumn("DP"));
-        dt.Columns.Add(new DataColumn("NLC"));
+       
         dt.Columns.Add(new DataColumn("VAT"));
         dt.Columns.Add(new DataColumn("Deviation"));
         double vat = 0;
@@ -142,9 +140,7 @@ public partial class BulkAddition : System.Web.UI.Page
         dr_final12["BRAND"] = "";
         dr_final12["PRODUCTNAME"] = "";
         dr_final12["MODEL"] = "";
-        dr_final12["MRP"] = "";
-        dr_final12["DP"] = "";
-        dr_final12["NLC"] = "";
+      
         dr_final12["VAT"] = vat;
         dr_final12["Deviation"] = vat;
         dt.Rows.Add(dr_final12);

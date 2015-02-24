@@ -932,7 +932,7 @@ public partial class SuppPayment : System.Web.UI.Page
         try
         {
             if (GrdViewPayment.SelectedDataKey != null)
-                e.InputParameters["TransNo"] = GrdViewPayment.SelectedDataKey.Value;
+                e.InputParameters["TransNo"] = Convert.ToInt32(GrdViewPayment.SelectedDataKey.Value);
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
@@ -2660,6 +2660,8 @@ public partial class SuppPayment : System.Web.UI.Page
                 }
 
                 pnlEdit.Visible = false;
+
+                ModalPopupExtender2.Hide();
                 //lnkBtnAdd.Visible = true;
                 ////MyAccordion.Visible = true;
                 //GrdViewReceipt.Visible = true;

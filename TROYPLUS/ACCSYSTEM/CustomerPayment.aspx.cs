@@ -1460,7 +1460,7 @@ public partial class CustomerPayment : System.Web.UI.Page
 
         e.InputParameters["VoucherType"] = "Payment";
 
-        e.InputParameters["TransNo"] = GrdViewPayment.SelectedDataKey.Value;
+        e.InputParameters["TransNo"] = Convert.ToInt32(GrdViewPayment.SelectedDataKey.Value);
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
@@ -1831,7 +1831,7 @@ public partial class CustomerPayment : System.Web.UI.Page
         try
         {
             if (GrdViewPayment.SelectedDataKey != null)
-                e.InputParameters["TransNo"] = GrdViewPayment.SelectedDataKey.Value;
+                e.InputParameters["TransNo"] = Convert.ToInt32(GrdViewPayment.SelectedDataKey.Value);
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 

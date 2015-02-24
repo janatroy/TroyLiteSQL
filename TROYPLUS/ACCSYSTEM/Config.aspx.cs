@@ -2073,7 +2073,7 @@ public partial class Config : System.Web.UI.Page
         try
         {
             if (GrdViewCust.SelectedDataKey != null)
-                e.InputParameters["username"] = GrdViewCust.SelectedDataKey.Value;
+                e.InputParameters["username"] = Convert.ToInt32(GrdViewCust.SelectedDataKey.Value);
 
             string connection="";
             if (Request.Cookies["Company"] != null)

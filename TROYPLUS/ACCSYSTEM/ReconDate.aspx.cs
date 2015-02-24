@@ -39,7 +39,7 @@ public partial class ReconDate : System.Web.UI.Page
                 lnkBtnUpdate.Enabled = false;
             }
 
-            DBManager manager = new DBManager(DataProvider.OleDb);
+            DBManager manager = new DBManager(DataProvider.SqlServer);
             manager.ConnectionString = objChk.CreateConnectionString(System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ConnectionString);
 
             try
@@ -92,7 +92,7 @@ public partial class ReconDate : System.Web.UI.Page
                         {
                             foreach (DataRow dr in ds.Tables[0].Rows)
                             {
-                                if (dr["Key"].ToString() == "ENBLDATE")
+                                if (dr["KeyName"].ToString() == "ENBLDATE")
                                 {
                                     if (dr["KeyValue"] != null)
                                         rdvoudateenable.SelectedValue = dr["KeyValue"].ToString();
@@ -123,18 +123,18 @@ public partial class ReconDate : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -147,7 +147,7 @@ public partial class ReconDate : System.Web.UI.Page
     protected void lnkBtnUpdate_Click(object sender, EventArgs e)
     {
         BusinessLogic objBus = new BusinessLogic();
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = objBus.CreateConnectionString(System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ConnectionString);
         
         string enabledate = string.Empty;
@@ -156,9 +156,9 @@ public partial class ReconDate : System.Web.UI.Page
         try
         {
             manager.Open();
-            manager.ExecuteNonQuery(CommandType.Text, "Update last_recon Set recon_date=Format('" + txtReconDate.Text + "', 'dd/MM/yyyy')");
+            manager.ExecuteNonQuery(CommandType.Text, "Update last_recon Set recon_date='" + Convert.ToDateTime(txtReconDate.Text).ToString("yyyy-MM-dd") + "'");
 
-            manager.ExecuteNonQuery(CommandType.Text, "UPDATE tblSettings SET KEYVALUE = '" + enabledate.ToString() + "' WHERE KEY='ENBLDATE' ");
+            manager.ExecuteNonQuery(CommandType.Text, "UPDATE tblSettings SET KEYVALUE = '" + enabledate.ToString() + "' WHERE KEYNAME='ENBLDATE' ");
 
             string salestype = string.Empty;
             int ScreenNo = 0;
