@@ -695,8 +695,9 @@ public partial class CreateFormula : System.Web.UI.Page
                                                 {
 
                                                     //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + drd["ItemCode"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["InOut"].ToString();
+                                                    prd = prd + "\n";
 
                                                 }
                                                 if (index322 >= 0)
@@ -795,8 +796,9 @@ public partial class CreateFormula : System.Web.UI.Page
                                                 {
 
                                                     //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + drd["ItemCode"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["InOut"].ToString();
+                                                    prd = prd + "\n";
 
                                                 }
                                                 if (index322 >= 0)
@@ -1003,8 +1005,9 @@ public partial class CreateFormula : System.Web.UI.Page
                                                 {
 
                                                     //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + drd["ItemCode"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["InOut"].ToString();
+                                                    prd = prd + "\n";
 
                                                 }
                                                 if (index322 >= 0)
@@ -1103,8 +1106,9 @@ public partial class CreateFormula : System.Web.UI.Page
                                                 {
 
                                                     //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                    prd = "\n";
+                                                    prd = prd + "\n";
                                                     prd = prd + drd["ItemCode"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["InOut"].ToString();
+                                                    prd = prd + "\n";
 
                                                 }
                                                 if (index322 >= 0)

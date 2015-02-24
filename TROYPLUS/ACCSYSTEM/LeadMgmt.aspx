@@ -314,9 +314,9 @@
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">
                                                                                                             <asp:CompareValidator ID="CompareValidator15" runat="server" ControlToValidate="drpStatus" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Name of Customer * 
-                                                                                                         <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="cmbCustomer"
+                                                                                                        <%-- <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="cmbCustomer"
                                                                                                              Display="Dynamic" ErrorMessage="Please Select Business Partner Name" Operator="GreaterThan"
-                                                                                                             Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                             Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
                                                                                                             <asp:UpdatePanel ID="UpdatePanel21" runat="server" UpdateMode="Conditional">

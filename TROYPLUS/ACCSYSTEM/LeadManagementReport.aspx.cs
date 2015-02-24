@@ -186,7 +186,7 @@ public partial class PurchaseSummaryReport1 : System.Web.UI.Page
         string aaa = Convert.ToString(endDate);
         string dtt = Convert.ToDateTime(aaa).ToString("MM/dd/yyyy");
 
-        cond = " Start_Date >= #" + dt + "# and Start_Date <= #" + dtt + "# ";
+        cond = " Start_Date >= '" + dt + "' and Start_Date <= '" + dtt + "' ";
 
         if ((status != "Select Lead Status"))
         {
