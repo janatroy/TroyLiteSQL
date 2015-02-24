@@ -126,7 +126,7 @@ public partial class PrintPayment : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "CURRENCY")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "CURRENCY")
                 {
                     currency = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }

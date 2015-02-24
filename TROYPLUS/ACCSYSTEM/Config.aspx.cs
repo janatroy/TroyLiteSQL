@@ -75,6 +75,8 @@ public partial class Config : System.Web.UI.Page
         {
             txtScreenName.Text = "";
             loadEmp();
+            BindGrid();
+
             //ddlSearchCriteria.SelectedIndex = 0;
         }
         catch (Exception ex)
@@ -1579,8 +1581,8 @@ public partial class Config : System.Web.UI.Page
             BindGrid();
 
             ModalPopupGet.Hide();
-            //GrdViewCust.DataBind();
-            //UpdatePanelPage.Update();
+            GrdViewCust.DataBind();
+            UpdatePanelPage.Update();
         }
         catch (Exception ex)
         {
@@ -1938,7 +1940,7 @@ public partial class Config : System.Web.UI.Page
 
             ModalPopupGet.Hide();
             GrdViewCust.DataBind();
-            //UpdatePanelPage.Update();
+            UpdatePanelPage.Update();
         }
         catch (Exception ex)
         {
