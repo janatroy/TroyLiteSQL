@@ -185,7 +185,7 @@
                                                                         <asp:Panel ID="salesPanel" runat="server" Visible="False">
                                                                             <table  width="100%" cellpadding="4"   style=" font-size:12px; font-weight:bold; border: 1px solid #5078B3" ;>
                                                                                 <tr class="HeadataRow">
-                                                                                    <td width="15%" style="font-size:14px; background:#cccccc; font-weight:bold;">
+                                                                                    <td width="8%" style="font-size:14px; background:#cccccc; font-weight:bold;">
                                                                                         Component ID
                                                                                     </td>
                                                                                     <td width="25%" style="font-size:14px; background:#cccccc; font-weight:bold;">
@@ -336,7 +336,7 @@
                                                                                         <FooterTemplate>
                                                                                         </FooterTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Type" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Type of component" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("InOut")%>
                                                                                         </ItemTemplate>

@@ -9,7 +9,7 @@
 
 
 
-                function EnableDisableButton(sender, target) {
+        function EnableDisableButton(sender, target) {
             if (sender.value.length > 0)
 
                 document.getElementById('<%= BtnClearFilter.ClientID %>').disabled = false;
@@ -33,7 +33,7 @@
             };
         };--%>
 
-     <%--   window.onload = function () {
+        <%--   window.onload = function () {
            
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -122,7 +122,7 @@
                                     <td style="width: 10%; color: white;" align="right">Search
                                     </td>
                                     <td style="width: 41%" class="NewBox">
-                                        <asp:TextBox ID="txtSearch" runat="server" Width="152px"  onkeyup="EnableDisableButton(this,'btnReset')"  AutoPostBack="true" ></asp:TextBox>
+                                        <asp:TextBox ID="txtSearch" runat="server" Width="152px" onkeyup="EnableDisableButton(this,'btnReset')" AutoPostBack="true"></asp:TextBox>
                                         <%--  <asp:TextBox ID="txtSearch" onkeyup="EnableDisableButton(this,'btnReset')" runat="server" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true"></asp:TextBox>--%>
 
                                         <%--  <asp:TextBox  onblur="return: fnOnblur();" ID="txtSearch" runat="server" SkinID="skinTxtBoxSearch" ></asp:TextBox>--%>
@@ -142,8 +142,8 @@
                                     <td style="width: 16%" class="tblLeftNoPad">
                                         <%--     <asp:Button ID="btnReset" runat="server" Text="Reset" Font-Bold="true"
             Enabled="false" onclick="btnReset_Click" />--%>
-                                     
-                                        <asp:Button ID="BtnClearFilter"  runat="server" OnClick="BtnClearFilter_Click"  EnableTheming="false" Text="" CssClass="ClearFilter6" />
+
+                                        <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                     </td>
 
                                 </tr>
@@ -187,11 +187,11 @@
                                                             <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabelproject" style="width: 40%">Task Status *
+                                                                <td class="ControlLabelproject" style="width: 34%">Task Status *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtTaskStatusName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Task Status Name is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Status. It cannot be left blank. ">*</asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width: 30%">
+                                                                <td class="ControlTextBox3" style="width: 33%">
                                                                     <asp:TextBox ID="txtTaskStatusName" runat="server" Text='<%# Bind("Task_Status_Name") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -233,7 +233,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -257,11 +257,11 @@
                                                             <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabelproject" style="width: 40%">Task Status *
+                                                                <td class="ControlLabelproject" style="width: 34%">Task Status *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtTaskStatusNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Task Status Name is mandatory"></asp:RequiredFieldValidator>
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Status. It cannot be left blank. "></asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width: 30%">
+                                                                <td class="ControlTextBox3" style="width: 33%">
                                                                     <asp:TextBox ID="txtTaskStatusNameAdd" runat="server" Text='<%# Bind("Task_Status_Name") %>'
                                                                         SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -298,7 +298,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">
@@ -331,11 +331,11 @@
                                             AllowPaging="True" DataKeyNames="Task_Status_Id" EmptyDataText="No Task Status Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" ForeColor="#0567AE" />
                                             <Columns>
-                                                <asp:BoundField DataField="Row" HeaderText="#" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="Small" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px" />
-                                                <asp:BoundField DataField="Task_Status_Name" HeaderText="Task Status" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="Small" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
+                                                <asp:BoundField DataField="Row" HeaderText="#" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true"  ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"  HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px" />
+                                                <asp:BoundField DataField="Task_Status_Name" HeaderText="Task Status" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" HeaderStyle-BorderColor="Gray"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
