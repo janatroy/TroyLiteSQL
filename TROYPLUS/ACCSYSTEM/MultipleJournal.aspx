@@ -1361,7 +1361,7 @@
                                                     <asp:BoundField DataField="TransNo" HeaderText="Trans. No." SortExpression="TransNo"
                                                         HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="Refno" HeaderText="Ref. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="TransDate" HeaderText="Trans. Date" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="TransDate" HeaderText="Trans. Date" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" DataFormatString="{0:dd/MM/yyyy}"/>
                                                     <asp:BoundField DataField="Debi" HeaderText="Debtor" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="Cred" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-BorderColor="Gray" />
