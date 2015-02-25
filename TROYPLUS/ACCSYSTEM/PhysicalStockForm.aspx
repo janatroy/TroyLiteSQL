@@ -14,7 +14,7 @@
                         <table style="width: 99.8%; border: 0px solid #86b2d1; margin: -3px 0px 0px -3px;" align="center" cellpadding="3" cellspacing="5">
                             <tr>
                                 <td>
-                                    <asp:Label ID="err" runat="server" Width="95%" CssClass="info" SkinID="skinHistoryMsg"></asp:Label>
+                                    <asp:Label ID="err" runat="server" Width="94%" CssClass="info" SkinID="skinHistoryMsg"></asp:Label>
                                 </td>
                             </tr>
                         </table>
@@ -27,13 +27,21 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="left">Date
+                                <td colspan="2" align="left">
 
-                <asp:TextBox ID="txtDate" runat="server" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10" BackColor="#90c9fc" Style="border: 1px solid blue" />
-                                    <script type="text/javascript" language="JavaScript">                    new tcal({ 'formname': 'aspnetForm', 'controlname': GettxtBoxName('txtDate') });</script>
-                                    &nbsp;
-                <asp:Button ID="cmdShow" runat="server" ValidationGroup="salesval" CssClass="Button"
-                    Width="150px" Text="Show Entered Stock" OnClick="cmdShow_Click" />
+                                    <asp:TextBox ID="txtDate" runat="server" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10" BackColor="#90c9fc" Style="border: 1px solid blue" />
+                                    <%--<script type="text/javascript" language="JavaScript">                    new tcal({ 'formname': 'aspnetForm', 'controlname': GettxtBoxName('txtDate') });</script>
+                                    &nbsp;--%>
+                                    <ajX:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True"
+                                        Format="dd/MM/yyyy"
+                                        PopupButtonID="ImageButton2" TargetControlID="txtDate">
+                                    </ajX:CalendarExtender>
+                                    <asp:ImageButton ID="ImageButton2" runat="server" CausesValidation="False"
+                                        ImageUrl="App_Themes/NewTheme/images/cal.gif"
+                                        Width="20px" />
+
+                                    <asp:Button ID="cmdShow" runat="server" ValidationGroup="salesval" CssClass="Button"
+                                        Width="150px" Text="Show Entered Stock" OnClick="cmdShow_Click" />
                                     &nbsp;<asp:Button ID="cmdSave" runat="server" ValidationGroup="salesval" CssClass="Button"
                                         Width="150px" Text="Save Closing Stock" OnClick="cmdSave_Click" />
                                     &nbsp;<asp:Button ID="cmdOpen" runat="server" ValidationGroup="salesval" CssClass="Button"
@@ -66,22 +74,22 @@
                                         <AlternatingRowStyle CssClass="altRow" />
                                         <EmptyDataRowStyle CssClass="HeadataRow" Font-Bold="true" />
                                         <HeaderStyle Wrap="false" />
-                                        <FooterStyle  />
+                                        <FooterStyle />
                                         <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                         <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                         <Columns>
                                             <asp:BoundField HeaderText="ItemCode" ReadOnly="true" DataField="itemCode" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
-                                            <asp:BoundField HeaderText="ProductName" ReadOnly="true" DataField="ProductName"
+                                            <asp:BoundField HeaderText="ProductName" ReadOnly="true" DataField="ProductName" ItemStyle-HorizontalAlign="Left"
                                                 ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
-                                            <asp:BoundField HeaderText="ProductDesc" ReadOnly="true" DataField="ProductDesc"
+                                            <asp:BoundField HeaderText="ProductDesc" ReadOnly="true" DataField="ProductDesc" ItemStyle-HorizontalAlign="Left"
                                                 ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
-                                            <asp:BoundField HeaderText="Model" DataField="Model" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
-                                            <asp:BoundField HeaderText="Date" DataField="ClosingDate" ReadOnly="true" Visible="false"
+                                            <asp:BoundField HeaderText="Model" DataField="Model" ReadOnly="true" ApplyFormatInEditMode="false" ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="Gray" />
+                                            <asp:BoundField HeaderText="Date" DataField="ClosingDate" ReadOnly="true" Visible="false" ItemStyle-HorizontalAlign="Left"
                                                 ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
-                                            <asp:TemplateField HeaderText="Stock" HeaderStyle-BorderColor="Gray">
-                                                <ItemStyle Width="10%" />
+                                            <asp:TemplateField HeaderText="Stock" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center">
+                                                <ItemStyle Width="10%" HorizontalAlign="Center" />
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtStock" Width="80px" runat="server" CssClass="cssTextBox" Text="<%#Bind('Stock')%>"></asp:TextBox>
+                                                    <asp:TextBox ID="txtStock" Width="80px" runat="server" style="text-align:right" CssClass="cssTextBox" Text="<%#Bind('Stock')%>"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ValidationGroup="salesval" ID="rq" runat="server" Display="Dynamic"
                                                         ControlToValidate="txtStock" ErrorMessage="Empty"></asp:RequiredFieldValidator>
                                                     <ajX:FilteredTextBoxExtender ID="FilteredTextBoxExtender41" runat="server" TargetControlID="txtStock"
@@ -90,7 +98,7 @@
                                             </asp:TemplateField>
                                         </Columns>
                                     </rwg:BulkEditGridView>
-                                    <asp:SqlDataSource ID="datasrc" runat="server" ProviderName="System.Data.OleDb" UpdateCommand="INSERT INTO [ClosingStock] ([ItemCode], [ClosingDate], [Stock]) VALUES (@Itemcode, @ClosingDate, @Stock)" />
+                                    <asp:SqlDataSource ID="datasrc" runat="server" ProviderName="System.Data.SqlClient" UpdateCommand="INSERT INTO [ClosingStock] ([ItemCode], [ClosingDate], [Stock]) VALUES (@Itemcode, @ClosingDate, @Stock)" />
 
                                 </td>
                             </tr>

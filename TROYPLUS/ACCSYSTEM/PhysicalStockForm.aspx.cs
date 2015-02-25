@@ -226,6 +226,7 @@ public partial class PhysicalStockForm : System.Web.UI.Page
             }
 
             BindGrid();
+          
             cmdSave.Enabled = true;
 
             if (Convert.ToDateTime(txtDate.Text) > DateTime.Now)

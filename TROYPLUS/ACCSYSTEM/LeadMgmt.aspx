@@ -508,7 +508,7 @@
                                                                                                     </tr>
                                                                                                     <tr>
                                                                                                         <td>
-                                                                                                            <div class="mainGridHold" id="searchGrid123" style="height: 350px; width: 100%; overflow: scroll" align="center">
+                                                                                                            <div class="mainGridHold" id="searchGrid123" style="height: 350px; width: 100%; overflow: scroll; border:double" align="center">
                                                                                                                 <asp:GridView ID="GrdViewLeadproduct" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadproduct_RowDeleting"
                                                                                                                     Width="94%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadproduct_RowDataBound">
                                                                                                                     <%-- <RowStyle CssClass="dataRow" />
@@ -520,22 +520,45 @@
 
                                                                                                                     <Columns>
                                                                                                                         <asp:BoundField DataField="RowNumber" HeaderText="#" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px" ItemStyle-Font-Bold="true" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="13px" />
-                                                                                                                        <asp:TemplateField HeaderText="Name of Interested Product" ItemStyle-Width="250px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                          <asp:TemplateField HeaderText="Name of Interested Product" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
-                                                                                                                                <asp:DropDownList ID="drpproduct" Width="250px" Height="25px" ItemStyle-Font-Size="15px" runat="server" Font-Bold="true" AppendDataBoundItems="true" BackColor="White" AutoPostBack="true" ForeColor="#0567AE" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpproduct_SelectedIndexChanged">
+                                                                                                                                <asp:DropDownList ID="drpproduct" Width="200px" Height="23px" ItemStyle-Font-Size="15px" runat="server" Font-Bold="false" AppendDataBoundItems="true"  AutoPostBack="true" ForeColor="#0567AE" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpproduct_SelectedIndexChanged">
                                                                                                                                 </asp:DropDownList>
                                                                                                                             </ItemTemplate>
-                                                                                                                        </asp:TemplateField>
-                                                                                                                        <asp:TemplateField HeaderText="Product Id" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px">
+                                                                                                                        </asp:TemplateField> 
+                                                                                                                        <asp:TemplateField HeaderText="Product Category" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
-                                                                                                                                <asp:Label ID="txtPrdId" runat="server" Width="150px"></asp:Label>
+                                                                                                                                 <asp:Label ID="txtCat" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>     
                                                                                                                             </ItemTemplate>
-                                                                                                                            <FooterStyle HorizontalAlign="Right" />
+                                                                                                                        </asp:TemplateField>
+                                                                                                                         <asp:TemplateField HeaderText="Brand" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                            <ItemTemplate>
+                                                                                                                                  <asp:Label ID="txtBrand" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>     
+                                                                                                                            </ItemTemplate>
+                                                                                                                        </asp:TemplateField>
+                                                                                                                         <asp:TemplateField HeaderText="Model" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                            <ItemTemplate>
+                                                                                                                                 <asp:Label ID="txtModel" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>     
+                                                                                                                            </ItemTemplate>
+                                                                                                                        </asp:TemplateField>
+                                                                                                                      
+                                                                                                                         <asp:TemplateField HeaderText="Product Id" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px">
+                                                                                                                            <ItemTemplate>
+                                                                                                                               <asp:Label ID="txtPrdId" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>                                                                                                                                 
+                                                                                                                            </ItemTemplate>                                                                                                                           
+                                                                                                                        </asp:TemplateField>
+                                                                                                                          <asp:TemplateField HeaderText="Quantity" ItemStyle-Width="100px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                            <ItemTemplate>
+                                                                                                                                <asp:TextBox ID="txtQty" ForeColor="Black" runat="server" Font-Bold="true" Width="100px"></asp:TextBox>
+                                                                                                                            </ItemTemplate>
+                                                                                                                               <FooterStyle HorizontalAlign="Right" />
                                                                                                                             <FooterTemplate>
                                                                                                                                 <asp:Button ID="ButtonAdd" runat="server" AutoPostback="true" EnableTheming="false" OnClick="ButtonAdd_Click"
                                                                                                                                     ValidationGroup="DynRowAdd" Text="Add New Product" />
                                                                                                                             </FooterTemplate>
                                                                                                                         </asp:TemplateField>
+                                                                                                                         
+                                                                                                                       
                                                                                                                         <asp:CommandField ShowDeleteButton="True" ButtonType="Button" />
                                                                                                                         <%-- <asp:BoundField DataField="Product_Name" HeaderText="Product Name" HeaderStyle-BorderColor="Gray" />--%>
                                                                                                                         <%--<asp:BoundField DataField="Product_Id" HeaderText="Product Id" HeaderStyle-BorderColor="Gray" />--%>
@@ -676,7 +699,7 @@
                                                                                             <table style="width: 1200px" cellpadding="1" cellspacing="1">
                                                                                                 <tr style="width: 1200px">
                                                                                                     <td style="width: 1200px">
-                                                                                                        <div class="mainGridHold" id="searchGrid3" style="height: 350px; width: 1200px; overflow: scroll" align="center">
+                                                                                                        <div class="mainGridHold" id="searchGrid3" style="height: 350px; width: 1200px; overflow: scroll;border:double" align="center">
                                                                                                             <asp:GridView ID="GrdViewLeadActivity" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadActivity_RowDeleting"
                                                                                                                 Width="100%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadActivity_RowDataBound">
 
@@ -1067,11 +1090,11 @@
                                                                                     <ContentTemplate>
                                                                                         <center>
                                                                                             <div style="width: 1200px;">
-                                                                                                <table style="width: 1000px" cellpadding="1" cellspacing="1">
+                                                                                                <table style="width: 1000px; border-width:1px; border-color:blue" cellpadding="1" cellspacing="1">
                                                                                                     <tr style="width: 1000px">
                                                                                                         <td style="width: 1000px">
-                                                                                                            <div class="mainGridHold" id="searchGrid2" style="height: 350px; width: 100%; overflow: scroll" align="center">
-                                                                                                                <asp:GridView ID="GrdViewLeadCompetitor" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting"
+                                                                                                            <div class="mainGridHold" id="searchGrid2" style="height: 350px; width: 100%; overflow: scroll; border:double" align="center">
+                                                                                                                <asp:GridView ID="GrdViewLeadCompetitor" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" BorderColor="Blue"
                                                                                                                     Width="90%" AllowPaging="True" ShowFooter="True" CellPadding="4" GridLines="None" OnRowDataBound="GrdViewLeadCompetitor_RowDataBound">
 
                                                                                                                     <%--  <RowStyle CssClass="dataRow" />
