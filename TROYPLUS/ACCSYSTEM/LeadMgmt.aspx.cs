@@ -2212,7 +2212,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 GrdViewLeadCompetitor.DataSource = dt;
                 GrdViewLeadCompetitor.DataBind();
 
-                for (int i = 0; i < GrdViewLeadCompetitor.Rows.Count - 1; i++)
+                for (int i = 0; i < GrdViewLeadCompetitor.Rows.Count; i++)
                 {
                     GrdViewLeadCompetitor.Rows[i].Cells[0].Text = Convert.ToString(i + 1);
                 }
@@ -2256,7 +2256,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 GrdViewLeadproduct.DataSource = dt;
                 GrdViewLeadproduct.DataBind();
 
-                for (int i = 0; i < GrdViewLeadproduct.Rows.Count - 1; i++)
+                for (int i = 0; i < GrdViewLeadproduct.Rows.Count; i++)
                 {
                     GrdViewLeadproduct.Rows[i].Cells[0].Text = Convert.ToString(i + 1);
                 }
@@ -2291,7 +2291,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 GrdViewLeadActivity.DataSource = dt;
                 GrdViewLeadActivity.DataBind();
 
-                for (int i = 0; i < GrdViewLeadCompetitor.Rows.Count - 1; i++)
+                for (int i = 0; i < GrdViewLeadCompetitor.Rows.Count; i++)
                 {
                     GrdViewLeadActivity.Rows[i].Cells[0].Text = Convert.ToString(i + 1);
                 }
