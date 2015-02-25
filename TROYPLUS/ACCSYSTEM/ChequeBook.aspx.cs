@@ -10,6 +10,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using SMSLibrary;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class ChequeBook : System.Web.UI.Page
 {
@@ -541,7 +544,7 @@ public partial class ChequeBook : System.Web.UI.Page
             Response.Clear();
             Response.Buffer = true;
 
-            string filename = "UnUsed Cheque Leaf.xls";
+          //  string filename = "UnUsed Cheque Leaf.xls";
             string fLvlValueTemp = string.Empty;
             string tLvlValueTemp = string.Empty;
 
@@ -561,7 +564,7 @@ public partial class ChequeBook : System.Web.UI.Page
 
             itemDs.Tables.Add(dtf);
 
-            DataTable dt = new DataTable();
+            DataTable dt = new DataTable("unused leaf");
 
             dt.Columns.Add(new DataColumn("ChequeNo"));
             dt.Columns.Add(new DataColumn("Bank"));
@@ -674,22 +677,39 @@ public partial class ChequeBook : System.Web.UI.Page
 
                     if (dtt.Rows.Count > 0)
                     {
-                        System.IO.StringWriter tw = new System.IO.StringWriter();
-                        System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+                        using (XLWorkbook wb = new XLWorkbook())
+                        {
+                            string filename = "Unused leaf.xlsx";
+                            wb.Worksheets.Add(dt);
+                            Response.Clear();
+                            Response.Buffer = true;
+                            Response.Charset = "";
+                            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                            Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                            using (MemoryStream MyMemoryStream = new MemoryStream())
+                            {
+                                wb.SaveAs(MyMemoryStream);
+                                MyMemoryStream.WriteTo(Response.OutputStream);
+                                Response.Flush();
+                                Response.End();
+                            }
+                        }
+                        //System.IO.StringWriter tw = new System.IO.StringWriter();
+                        //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-                        DataGrid dgGrid = new DataGrid();
-                        dgGrid.DataSource = dtt;
-                        dgGrid.DataBind();
+                        //DataGrid dgGrid = new DataGrid();
+                        //dgGrid.DataSource = dtt;
+                        //dgGrid.DataBind();
 
-                        //Get the HTML for the control.
-                        dgGrid.RenderControl(hw);
+                        ////Get the HTML for the control.
+                        //dgGrid.RenderControl(hw);
 
-                        //Write the HTML back to the browser.
-                        Response.ContentType = "application/vnd.ms-excel";
-                        Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-                        this.EnableViewState = false;
-                        Response.Write(tw.ToString());
-                        Response.End();
+                        ////Write the HTML back to the browser.
+                        //Response.ContentType = "application/vnd.ms-excel";
+                        //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+                        //this.EnableViewState = false;
+                        //Response.Write(tw.ToString());
+                        //Response.End();
                     }
                     else
                     {
@@ -755,6 +775,15 @@ public partial class ChequeBook : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
 
                 if (bl.ChequeLeafUsed(int.Parse(((HiddenField)e.Row.FindControl("ldgID")).Value)))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+
+                    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                }
+
+                if (bl.ChequeDamageUsed(int.Parse(((HiddenField)e.Row.FindControl("ldgID")).Value)))
                 {
                     ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
                     ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
@@ -902,7 +931,7 @@ public partial class ChequeBook : System.Web.UI.Page
         try
         {
             if (GrdViewSerVisit.SelectedDataKey != null)
-                e.InputParameters["ChequeBookID"] = GrdViewSerVisit.SelectedDataKey.Value;
+                e.InputParameters["ChequeBookID"] =Convert.ToInt32(GrdViewSerVisit.SelectedDataKey.Value);
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 

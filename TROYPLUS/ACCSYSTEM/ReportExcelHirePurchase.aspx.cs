@@ -10,6 +10,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
+using ClosedXML.Excel;
+
 public partial class ReportExcelHirePurchase : System.Web.UI.Page
 {
     //DBClass objdb = new DBClass();
@@ -37,7 +40,7 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
             {
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = new DataTable("HirePurchase");
                     dt.Columns.Add(new DataColumn("Bill No"));
                     dt.Columns.Add(new DataColumn("Bill Date"));
                     dt.Columns.Add(new DataColumn("Customer Name"));
@@ -63,7 +66,12 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
                         DataRow dr_final1 = dt.NewRow();
                         dr_final1["Bill No"] = dr["slno"];
                         dr_final1["Customer Name"] = dr["CustomerName"];
-                        dr_final1["Bill Date"] = dr["BillDate"];
+
+                        string aa = dr["BillDate"].ToString().ToUpper().Trim();
+                        string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
+                        dr_final1["Bill Date"] = dtaa;
+
+                        //dr_final1["Bill Date"] = dr["BillDate"];
                         dr_final1["Purchase Amount"] = dr["puramt"];
                         dr_final1["Document Charges"] = dr["dochr"];
                         dr_final1["No of Inst"] = dr["noinst"];
@@ -71,9 +79,19 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
                         dr_final1["Interest Amount"] = dr["intamt"];
                         dr_final1["Initial Payment"] = dr["inipay"];
                         dr_final1["Each Month Payment"] = dr["eachpay"];
-                        dr_final1["Date of Payment"] = dr["paydate"];
+
+                        string aa1 = dr["paydate"].ToString().ToUpper().Trim();
+                        string dtaa1 = Convert.ToDateTime(aa1).ToString("dd/MM/yyyy");
+                        dr_final1["Date of Payment"] = dtaa1;
+
+                        //dr_final1["Date of Payment"] = dr["paydate"];
                         dr_final1["Others"] = dr["Others"];
-                        dr_final1["Start Due date"] = dr["startdate"];
+
+                        string aa11 = dr["startdate"].ToString().ToUpper().Trim();
+                        string dtaa11 = Convert.ToDateTime(aa11).ToString("dd/MM/yyyy");
+                        dr_final1["Start Due date"] = dtaa11;
+
+                        //dr_final1["Start Due date"] = dr["startdate"];
                         dr_final1["Final Payment"] = dr["finpay"];
                         dr_final1["Upfront Interest"] = dr["Upfront"];
                         dr_final1["Advance Emi"] = dr["emi"];
@@ -258,27 +276,47 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            //string filename = "Hire Purchase.xls";
-            string filename = "Hire Purchase_" + DateTime.Now.ToString() + ".xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
+            ////string filename = "Hire Purchase.xls";
+            //string filename = "Hire Purchase_" + DateTime.Now.ToString() + ".xls";
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
 
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Hire Purchase.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
+
+
 
     }
     decimal CreditLimitTotal;
