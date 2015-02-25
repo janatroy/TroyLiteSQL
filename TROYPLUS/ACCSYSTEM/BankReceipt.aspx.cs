@@ -117,18 +117,18 @@ public partial class BankReceipt : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -147,18 +147,18 @@ public partial class BankReceipt : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -1191,7 +1191,7 @@ public partial class BankReceipt : System.Web.UI.Page
 
         e.InputParameters["VoucherType"] = "Receipt";
 
-        e.InputParameters["TransNo"] = GrdViewReceipt.SelectedDataKey.Value;
+        e.InputParameters["TransNo"] = Convert.ToInt32(GrdViewReceipt.SelectedDataKey.Value);
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
@@ -1605,7 +1605,7 @@ public partial class BankReceipt : System.Web.UI.Page
         try
         {
             if (GrdViewReceipt.SelectedDataKey != null)
-                e.InputParameters["TransNo"] = GrdViewReceipt.SelectedDataKey.Value;
+                e.InputParameters["TransNo"] = Convert.ToInt32(GrdViewReceipt.SelectedDataKey.Value);
 
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;

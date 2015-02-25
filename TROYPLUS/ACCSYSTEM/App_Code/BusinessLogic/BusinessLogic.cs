@@ -4861,7 +4861,7 @@ public class BusinessLogic
             }
             else if (dropDown == "TransDate" && txtSearch != null)
             {
-                dbQry.AppendFormat("WHERE tblDayBook.VoucherType = 'Payment' and Format([tblDayBook.TransDate], 'dd/mm/yyyy') = '{0}' ", Convert.ToDateTime(txtSearch).ToShortDateString());
+                dbQry.AppendFormat("WHERE tblDayBook.VoucherType = 'Payment' and [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
             else if (dropDown == "LedgerName" && txtSearch != null)
             {
@@ -4876,7 +4876,7 @@ public class BusinessLogic
                 dbQry.Append("Where tblDayBook.VoucherType = 'Payment' ");
             }
 
-            dbQry.Append(" AND G.GroupName = 'Bank Accounts' AND tblDayBook.TransDate > #" + DateTime.Parse(reconDate.ToString()).ToString("MM/dd/yyyy") + "#");
+            dbQry.Append(" AND G.GroupName = 'Bank Accounts' AND tblDayBook.TransDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
             dbQry.Append(" Order By tblDayBook.TransDate Desc ");
 
 
@@ -5425,7 +5425,7 @@ public class BusinessLogic
             }
             else if (dropDown == "TransDate" && txtSearch != null)
             {
-                dbQry.AppendFormat("WHERE tblDayBook.VoucherType= 'Receipt' and Format([tblDayBook.TransDate], 'dd/mm/yyyy') = '{0}' ", Convert.ToDateTime(txtSearch).ToShortDateString());
+                dbQry.AppendFormat("WHERE tblDayBook.VoucherType= 'Receipt' and [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
             else if (dropDown == "LedgerName" && txtSearch != null)
             {
@@ -5440,7 +5440,7 @@ public class BusinessLogic
                 dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' ");
             }
 
-            dbQry.Append(" AND G.GroupName = 'Bank Accounts' AND tblDayBook.TransDate > #" + DateTime.Parse(reconDate.ToString()).ToString("MM/dd/yyyy") + "#");
+            dbQry.Append(" AND G.GroupName = 'Bank Accounts' AND tblDayBook.TransDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
             dbQry.Append("Order By tblDayBook.TransDate Desc");
 
 
@@ -7536,7 +7536,7 @@ public class BusinessLogic
                 }
 
 
-                dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+                dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
                 dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
                 if (dsd.Tables[0].Rows.Count > 0)
                     Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -7546,31 +7546,31 @@ public class BusinessLogic
                     logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
                         TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
                     logdescription = logdescription.Trim();
-                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                         DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateBankReceipt");
+                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                         DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateBankReceipt");
                     manager.ExecuteNonQuery(CommandType.Text, description);
                 }
 
 
-                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                    TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
+                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
-                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                    TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
+                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                int TransNm = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                int TransNm = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
 
 
                 if (Logsave == "YES")
                 {
                     logdescription = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},{2})", CreditorID, TransNm, Paymode);
                     logdescription = logdescription.Trim();
-                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                         DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateBankReceipt");
+                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                         DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateBankReceipt");
                     manager.ExecuteNonQuery(CommandType.Text, description);
                 }
 
@@ -7582,7 +7582,7 @@ public class BusinessLogic
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                int Voucher = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ReceiptNo) FROM tblReceipt");
+                int Voucher = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ReceiptNo) FROM tblReceipt"));
 
                 dbQry = string.Format("Insert Into tblAuditReceipt(ReceiptNo,CreditorID,JournalID,Paymode) Values({0},{1},{2},'{3}')", Voucher, CreditorID, TransNm, Paymode);
 
@@ -7664,8 +7664,8 @@ public class BusinessLogic
                 {
                     if (dsOldRec.Tables.Count > 0)
                     {
-                        dbQry = string.Format("UPDATE tblBankRecon SET TransNo={0},TransDate = Format('{1}', 'dd/mm/yyyy'),DebtorID={2},Debtor='{3}',CreditorID={4},Creditor='{5}',Amount={6},Narration='{7}',VoucherType='{8}',Chequeno='{9}',RefNo={10} WHERE TransNo={11} ",
-                        TransNm, TransDate.ToShortDateString(), DebitorID, Debtor, CreditorID, creditor, Amount, Narration, VoucherType, ChequeNo, 0, TransNo);
+                        dbQry = string.Format("UPDATE tblBankRecon SET TransNo={0},TransDate = '{1}',DebtorID={2},Debtor='{3}',CreditorID={4},Creditor='{5}',Amount={6},Narration='{7}',VoucherType='{8}',Chequeno='{9}',RefNo={10} WHERE TransNo={11} ",
+                        TransNm, TransDate.ToString("yyyy-MM-dd"), DebitorID, Debtor, CreditorID, creditor, Amount, Narration, VoucherType, ChequeNo, 0, TransNo);
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
@@ -7680,7 +7680,7 @@ public class BusinessLogic
 
                 sAuditStr = "Receipt Transaction: " + TransNo + " got edited. Updates Record Details : User = " + Username + " Bill No=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt + " New Trans No :" + NewTransNo + " DateTime:" + DateTime.Now.ToString();
 
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit and Update", DateTime.Now.ToString());
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 manager.CommitTransaction();
@@ -9051,7 +9051,7 @@ public class BusinessLogic
             dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.TransDate, Creditor.LedgerName,tblDayBook.CreditorID,tblDayBook.DebtorID, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
             dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo FROM  (((tblDayBook INNER JOIN ");
             dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID)) ");
-            dbQry.AppendFormat("Where tblDayBook.TransNo = {0} AND tblDayBook.TransDate > #" + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + "#   Order By tblDayBook.TransDate Desc", TransNo);
+            dbQry.AppendFormat("Where tblDayBook.TransNo = {0} AND tblDayBook.TransDate > " + DateTime.Parse(retVal.ToString()).ToString("yyyy-MM-dd") + "   Order By tblDayBook.TransDate Desc", TransNo);
 
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -9169,7 +9169,7 @@ public class BusinessLogic
             //End Updating the Debit and credit
             //Start Delete the old record
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -9178,15 +9178,15 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Delete From tblDayBook Where TransNo={0}", TransNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateJournal");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateJournal");
                 manager.ExecuteNonQuery(CommandType.Text, description);
 
                 logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6})",
                      TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateJournal");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateJournal");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -9198,12 +9198,12 @@ public class BusinessLogic
             //End Deleting the old record
             //Insert New Record
 
-            dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-               TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
+            dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+               TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-               TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+               TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NewTransNo = 0;
@@ -9212,7 +9212,7 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                NewTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NewTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -9278,8 +9278,8 @@ public class BusinessLogic
             {
                 if (dsOldRec.Tables.Count > 0)
                 {
-                    dbQry = string.Format("UPDATE tblBankRecon SET TransNo={0},TransDate = Format('{1}', 'dd/mm/yyyy'),DebtorID={2},Debtor='{3}',CreditorID={4},Creditor='{5}',Amount={6},Narration='{7}',VoucherType='{8}',Chequeno='{9}',RefNo={10} WHERE TransNo={11} ",
-                    NewTransNo, TransDate.ToShortDateString(), DebitorID, Debtor, CreditorID, creditor, Amount, Narration, VoucherType, 0, 0, TransNo);
+                    dbQry = string.Format("UPDATE tblBankRecon SET TransNo={0},TransDate = '{1}',DebtorID={2},Debtor='{3}',CreditorID={4},Creditor='{5}',Amount={6},Narration='{7}',VoucherType='{8}',Chequeno='{9}',RefNo={10} WHERE TransNo={11} ",
+                    NewTransNo, TransDate.ToString("yyyy-MM-dd"), DebitorID, Debtor, CreditorID, creditor, Amount, Narration, VoucherType, 0, 0, TransNo);
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 }
             }
@@ -9316,7 +9316,7 @@ public class BusinessLogic
             //manager.ExecuteNonQuery(CommandType.Text, dbQry);
             //Store the details in the Audit Table.
             sAuditStr = "Journal Transaction : " + TransNo + " got edited and deleted Record Details : User = " + Username + "DebtorID=" + DebitorID + ",CreditorID=" + CreditorID + ",Amount=" + Amount + " New Trans No :" + NewTransNo;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit and Update", TransDate.ToShortDateString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", TransDate.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -9543,7 +9543,7 @@ public class BusinessLogic
             manager.BeginTransaction();
 
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -9553,14 +9553,14 @@ public class BusinessLogic
                 logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6})",
                     TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "InsertJournal");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertJournal");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, RefNo);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int TransNo = 0;
@@ -9568,7 +9568,7 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                TransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                TransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -9606,7 +9606,7 @@ public class BusinessLogic
 
 
             sAuditStr = "Journal Transaction: " + TransNo + " added. Record Details :  User :" + Username + " Bill No=" + RefNo + " DebtorID=" + DebitorID + " ,CreditorID=" + CreditorID + " ,Amount=" + Amount + " New Trans No :" + TransNo + " DateTime: " + DateTime.Now.ToString();
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -9697,7 +9697,7 @@ public class BusinessLogic
 
             //Start Save in Log table
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -9706,8 +9706,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Delete From tblDayBook Where TransNo={0}", TransNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, TransNo, "DeleteJournal");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, TransNo, "DeleteJournal");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -9740,7 +9740,7 @@ public class BusinessLogic
 
 
             sAuditStr = "Journal Transaction: " + TransNo + " got deleted old Record Details : User = " + Username + " DebtorID=" + oldDebtorID + ",CreditorID=" + oldCreditorID + ",Amount=" + Amount;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}', Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}', '{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
             manager.CommitTransaction();
 
@@ -30254,7 +30254,7 @@ public class BusinessLogic
 
             }
 
-            dbQry.Append(" tblCreditDebitNote.NoteDate > #" + DateTime.Parse(reconDate.ToString()).ToString("MM/dd/yyyy") + "#");
+            dbQry.Append(" tblCreditDebitNote.NoteDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
             dbQry.Append(" Order By tblCreditDebitNote.NoteDate Desc ");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -30343,7 +30343,7 @@ public class BusinessLogic
                 sVoucherType = "Debit Note";
             }
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -30353,14 +30353,14 @@ public class BusinessLogic
                 logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo) VALUES(Format({0},{1},{2},{3},{4},{5},{6},{7})",
                         NoteDate.ToShortDateString(), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "InsertCreditDebitNote");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertCreditDebitNote");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}','{6}',{7})",
-            NoteDate.ToShortDateString(), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7})",
+            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -30396,19 +30396,19 @@ public class BusinessLogic
                 logdescription = string.Format("INSERT INTO tblCreditDebitNote(NoteID,CDType,RefNo,Amount,NoteDate,LedgerID,[Note],TransNo,BillNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
                         MaxNoteID, CDType, RefNo, Amount, NoteDate.ToShortDateString(), LedgerID, Note, NewTransNo, BillNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "InsertCreditDebitNote");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertCreditDebitNote");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
 
-            dbQry = string.Format("INSERT INTO tblCreditDebitNote(NoteID,CDType,RefNo,Amount,NoteDate,LedgerID,[Note],TransNo,BillNo) VALUES({0},'{1}','{2}',{3},Format('{4}', 'dd/mm/yyyy'),{5},'{6}',{7},'{8}')",
-                MaxNoteID, CDType, RefNo, Amount, NoteDate.ToShortDateString(), LedgerID, Note, NewTransNo, BillNo);
+            dbQry = string.Format("INSERT INTO tblCreditDebitNote(NoteID,CDType,RefNo,Amount,NoteDate,LedgerID,[Note],TransNo,BillNo) VALUES({0},'{1}','{2}',{3},'{4}',{5},'{6}',{7},'{8}')",
+                MaxNoteID, CDType, RefNo, Amount, NoteDate.ToString("yyyy-MM-dd"), LedgerID, Note, NewTransNo, BillNo);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Credit Debit Note Transaction: " + NewTransNo + " added. Record Details :  User :" + Username + " Bill No=" + RefNo + " DebtorID=" + DebtorID + " ,CreditorID=" + CreditorID + " ,Amount=" + Amount + " DateTime: " + DateTime.Now.ToString();
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -30582,7 +30582,7 @@ public class BusinessLogic
             }
 
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -30592,8 +30592,8 @@ public class BusinessLogic
                 logdescription = string.Format("UPDATE tblCreditDebitNote SET RefNo = {0},Amount={1},LedgerID={2},NoteDate={3},[Note]={4},CDType={5},BillNo={7} WHERE TransNo={6}",
                 RefNo, Amount, LedgerID, NoteDate.ToShortDateString(), Note, CDType, TransNo, BillNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateCreditDebitNote");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateCreditDebitNote");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -30603,8 +30603,8 @@ public class BusinessLogic
             //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
-            dbQry = string.Format("UPDATE tblCreditDebitNote SET RefNo = '{0}',Amount={1},LedgerID={2},NoteDate=Format('{3}', 'dd/mm/yyyy'),[Note]='{4}',CDType='{5}',BillNo='{7}' WHERE TransNo={6}",
-                RefNo, Amount, LedgerID, NoteDate.ToShortDateString(), Note, CDType, TransNo, BillNo);
+            dbQry = string.Format("UPDATE tblCreditDebitNote SET RefNo = '{0}',Amount={1},LedgerID={2},NoteDate='{3}',[Note]='{4}',CDType='{5}',BillNo='{7}' WHERE TransNo={6}",
+                RefNo, Amount, LedgerID, NoteDate.ToString("yyyy-MM-dd"), Note, CDType, TransNo, BillNo);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -30627,19 +30627,19 @@ public class BusinessLogic
                 logdescription = string.Format("UPDATE tblDayBook SET TransDate={0},DebtorID = {1},CreditorID = {2},Amount={3},Narration={5} WHERE TransNo={4}",
                     NoteDate.ToShortDateString(), DebtorID, CreditorID, Amount, TransNo, Note);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdateCreditDebitNote");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateCreditDebitNote");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
-            dbQry = string.Format("UPDATE tblDayBook SET TransDate=Format('{0}', 'dd/mm/yyyy'),DebtorID = {1},CreditorID = {2},Amount={3},Narration='{5}' WHERE TransNo={4}",
-            NoteDate.ToShortDateString(), DebtorID, CreditorID, Amount, TransNo, Note);
+            dbQry = string.Format("UPDATE tblDayBook SET TransDate='{0}',DebtorID = {1},CreditorID = {2},Amount={3},Narration='{5}' WHERE TransNo={4}",
+            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, TransNo, Note);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Credit Debit Note Transaction: " + TransNo + " got edited. Updates Record Details :  User :" + Username + " Bill No=" + oldBillNo + " DebtorID=" + oldDebitID + " ,CreditorID=" + oldCreditID + " ,Amount=" + oldAmt + " New Trans No :" + TransNo + " DateTime: " + DateTime.Now.ToString();
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit and Update", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -30754,7 +30754,7 @@ public class BusinessLogic
 
             }
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -30763,14 +30763,14 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Delete From tblCreditDebitNote Where TransNo = {0}", TransNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, TransNo, "DeleteCreditDebitNote");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, TransNo, "DeleteCreditDebitNote");
                 manager.ExecuteNonQuery(CommandType.Text, description);
 
                 logdescription = string.Format("Delete From tblDayBook Where TransNo = {0}", TransNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, TransNo, "DeleteCreditDebitNote");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, TransNo, "DeleteCreditDebitNote");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -30790,7 +30790,7 @@ public class BusinessLogic
 
             sAuditStr = "Credit Debit Note Transaction: User = " + Username + " got deleted old Record Details : DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -33426,7 +33426,7 @@ public class BusinessLogic
 
         //dbQry = ("SELECT tc.RefNo As RefNo,format(tc.NoteDate,'dd/mm/yyyy') As NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
 
-        dbQry = ("SELECT tc.RefNo As RefNo,format(tc.NoteDate,'dd/mm/yyyy') As NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tc.NoteDate<=#" + endDate.ToString("MM/dd/yyyy") + "# order by tc.NoteDate");
+        dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
 
 
 
@@ -33485,7 +33485,7 @@ public class BusinessLogic
 
         //dbQry = ("SELECT tc.RefNo As RefNo,Mid(tc.NoteDate,1,9) As NoteDate,td.DebtorID As Debitor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td where tc.TransNo=td.TransNo and tc.CDType='Debit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
 
-        dbQry = ("SELECT tc.RefNo As RefNo,format(tc.NoteDate,'dd/mm/yyyy') As NoteDate,tl.ledgername As Debitor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit' and tc.NoteDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tc.NoteDate<=#" + endDate.ToString("MM/dd/yyyy") + "# order by tc.NoteDate");
+        dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Debitor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
 
         try
         {
@@ -35607,7 +35607,7 @@ public class BusinessLogic
             manager.BeginTransaction();
 
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -35617,26 +35617,26 @@ public class BusinessLogic
                 logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
                         TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "InsertBankReceipt");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertBankReceipt");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
 
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
+                TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            int TransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+            int TransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
 
             if (Logsave == "YES")
             {
                 logdescription = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},{2})", CreditorID, TransNo, Paymode);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), Username, "", "InsertBankReceipt");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertBankReceipt");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -35664,7 +35664,7 @@ public class BusinessLogic
 
             sAuditStr = "Receipt Transaction: " + TransNo + " got added Record Details : User=" + Username + "  Ref No=" + RefNo + " DebtorID=" + DebitorID + ",CreditorID=" + CreditorID + ",Amount=" + Amount + " New Trans No :" + NewTransNo + " DateTime:" + TransDate;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -36083,7 +36083,7 @@ public class BusinessLogic
             {
                 DeletePayment(connection, TransNo, false, Userna);
 
-                dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+                dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
                 dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
                 if (dsd.Tables[0].Rows.Count > 0)
                     Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -36093,27 +36093,27 @@ public class BusinessLogic
                     logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
                 TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
                     logdescription = logdescription.Trim();
-                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                         DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdatePaymentBank");
+                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                         DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdatePaymentBank");
                     manager.ExecuteNonQuery(CommandType.Text, description);
                 }
 
-                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
+                TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
+                TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                int TransNum = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                int TransNum =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
 
                 if (Logsave == "YES")
                 {
                     logdescription = string.Format("Insert Into tblPayment(JournalID,Paymode,BillNo) Values({0},{1},{2})", TransNum, Paymode, BillNo);
                     logdescription = logdescription.Trim();
-                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                         DateTime.Now.ToString(), logdescription.ToString(), Username, "", "UpdatePaymentBank");
+                    description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                         DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdatePaymentBank");
                     manager.ExecuteNonQuery(CommandType.Text, description);
                 }
 
@@ -36125,7 +36125,7 @@ public class BusinessLogic
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                int Voucher = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(VoucherNo) FROM tblPayment");
+                int Voucher = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(VoucherNo) FROM tblPayment"));
 
                 dbQry = string.Format("Insert Into tblAuditPayment(VoucherNo,JournalID,Paymode,BillNo) Values({0},{1},'{2}','{3}')", Voucher, TransNum, Paymode, BillNo);
 
@@ -36192,8 +36192,8 @@ public class BusinessLogic
                 {
                     if (dsOldRec.Tables.Count > 0)
                     {
-                        dbQry = string.Format("UPDATE tblBankRecon SET TransNo={0},TransDate = Format('{1}', 'dd/mm/yyyy'),DebtorID={2},Debtor='{3}',CreditorID={4},Creditor='{5}',Amount={6},Narration='{7}',VoucherType='{8}',Chequeno='{9}',RefNo={10} WHERE TransNo={11} ",
-                        TransNum, TransDate.ToShortDateString(), DebitorID, Debtor, CreditorID, creditor, Amount, Narration, VoucherType, ChequeNo, 0, TransNo);
+                        dbQry = string.Format("UPDATE tblBankRecon SET TransNo={0},TransDate = '{1}',DebtorID={2},Debtor='{3}',CreditorID={4},Creditor='{5}',Amount={6},Narration='{7}',VoucherType='{8}',Chequeno='{9}',RefNo={10} WHERE TransNo={11} ",
+                        TransNum, TransDate.ToString("yyyy-MM-dd"), DebitorID, Debtor, CreditorID, creditor, Amount, Narration, VoucherType, ChequeNo, 0, TransNo);
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
@@ -36217,7 +36217,7 @@ public class BusinessLogic
                 NewTransNo = TransNo;
 
                 sAuditStr = "Payment Transaction: " + TransNo + " got edited. Updated Record Details : User =" + Username + " Bill No=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt + " New Trans No :" + NewTransNo + " DateTime:" + DateTime.Now.ToString();
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit and Update", DateTime.Now.ToString());
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 manager.CommitTransaction();
@@ -43081,7 +43081,7 @@ public class BusinessLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            int ChequeBookId = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeBookID) FROM tblCheque");
+            int ChequeBookId =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeBookID) FROM tblCheque"));
 
             string Status = "N";
             int g = 0;
@@ -43106,7 +43106,7 @@ public class BusinessLogic
                     ChequeNo = ChequeNo + 1;
                 }
 
-                int ChequeId = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeID) FROM tblChequeItems");
+                int ChequeId =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeID) FROM tblChequeItems"));
 
                 g = 1;
 
@@ -43117,7 +43117,7 @@ public class BusinessLogic
             if (Types == "New")
             {
                 sAuditStr = "Cheque Book For : " + BankName + " added. Record Details :  User :" + Username + " For Account No : " + AccountNo + " From Cheque No : " + FromChequeNo + " To ChequeNo : " + ToChequeNo;
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
@@ -43165,7 +43165,7 @@ public class BusinessLogic
             if (Types == "Update")
             {
                 sAuditStr = "Cheque Book For : " + BankName + " updated. Record Details :  User :" + Username + " For Account No : " + AccountNo + " From Cheque No : " + FromChequeNo + " To ChequeNo : " + ToChequeNo;
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit And Update", DateTime.Now.ToString());
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit And Update", DateTime.Now.ToString("yyyy-MM-dd"));
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
@@ -45086,7 +45086,7 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
 
         //sQry = "SELECT tbldaybook.TransDate,tbldaybook.DebtorID,tbldaybook.CreditorID,tbldaybook.Amount,tbldaybook.Narration,tbldaybook.VoucherType FROM tbldaybook inner join tblledger on tbldaybook.creditorid = tblledger.ledgerid or  tbldaybook.debtorid = tblledger.ledgerid where tblledger.groupid=3 AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate ";
-        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "#  Order by TransDate ";
+        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "'  Order by TransDate ";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -45172,7 +45172,7 @@ public class BusinessLogic
             {
                 if (drParentQry["TransDate"] != null)
                 {
-                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToString("yyyy-MM-dd");
                 }
                 if (drParentQry["VoucherType"] != null)
                 {
@@ -45291,7 +45291,7 @@ public class BusinessLogic
             manager.Open();
 
             dbQry.Append("SELECT TransDate FROM tblBankRecon");
-            dbQry.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "#  And Types='" + Types + "' ");
+            dbQry.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "'  And Types='" + Types + "' ");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -45348,7 +45348,7 @@ public class BusinessLogic
             manager.Open();
 
             dbQry.Append("SELECT TransDate,transno,debtorid,creditorid,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo,RefType,CreditCardNo,ChequeId,ReconcilatedBy,Reconcilateddate,Debtor,Creditor,Result FROM tblBankRecon");
-            dbQry.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "#  And Types='" + Types + "'");
+            dbQry.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "'  And Types='" + Types + "'");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -45414,11 +45414,11 @@ public class BusinessLogic
                 {
                     if (drd["TransDate"] != null)
                     {
-                        sTransDate = Convert.ToDateTime(drd["TransDate"].ToString()).ToShortDateString();
+                        sTransDate = Convert.ToDateTime(drd["TransDate"].ToString()).ToString("yyyy-MM-dd");
                     }
                     if (drd["Reconcilateddate"] != null)
                     {
-                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"].ToString()).ToShortDateString();
+                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"].ToString()).ToString("yyyy-MM-dd");
                     }
                     if (drd["Result"] != null)
                     {
@@ -46754,7 +46754,7 @@ public class BusinessLogic
 
 
             dbQry1.Append("SELECT TransNo,TransDate,DebtorID,Debtor,CreditorID,Creditor,Amount,Narration,VoucherType,Chequeno,RefNo,ReconcilatedBy,Reconcilateddate,Result FROM tblBankRecon");
-            dbQry1.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+            dbQry1.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry1.ToString());
 
@@ -46764,14 +46764,14 @@ public class BusinessLogic
                 {
                     sAudit = " Old Record Deleted on " + dtSdate.ToShortDateString();
 
-                    dbQry = string.Format("Delete From tblBankRecon WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+                    dbQry = string.Format("Delete From tblBankRecon WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 }
             }
 
             dbQry2.Append("SELECT LedgerID FROM tblBankRec");
-            dbQry2.Append(" WHERE LedgerID=" + iLedgerID + " AND DateT =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+            dbQry2.Append(" WHERE LedgerID=" + iLedgerID + " AND DateT ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
 
@@ -46779,7 +46779,7 @@ public class BusinessLogic
             {
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    dbQry = string.Format("Delete From tblBankRec WHERE LedgerID=" + iLedgerID + " AND DateT =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+                    dbQry = string.Format("Delete From tblBankRec WHERE LedgerID=" + iLedgerID + " AND DateT ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 }
             }
@@ -46797,13 +46797,13 @@ public class BusinessLogic
                 }
             }
 
-            dbQry = string.Format("INSERT INTO tblBankRec(DateT,LedgerID,Ledger,Types,Username) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},'{2}','{3}','{4}')", dtSdate.ToShortDateString(), iLedgerID, iLedgerName, Types, Username);
+            dbQry = string.Format("INSERT INTO tblBankRec(DateT,LedgerID,Ledger,Types,Username) VALUES('{0}',{1},'{2}','{3}','{4}')", dtSdate.ToString("yyyy-MM-dd"), iLedgerID, iLedgerName, Types, Username);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Bank Reconciliation on: " + dtSdate.ToShortDateString() + " .Record Details :  User :" + Username + " Ledger = " + iLedgerName;
 
             sAuditStr = sAuditStr + sAudit;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Bank Reconciliation", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Bank Reconciliation", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -48449,7 +48449,7 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
 
         //sQry = "SELECT tbldaybook.TransDate,tbldaybook.DebtorID,tbldaybook.CreditorID,tbldaybook.Amount,tbldaybook.Narration,tbldaybook.VoucherType FROM tbldaybook inner join tblledger on tbldaybook.creditorid = tblledger.ledgerid or  tbldaybook.debtorid = tblledger.ledgerid where tblledger.groupid=3 AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate ";
-        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "# and Transno not in (select transno from tblbankrecon) Order by TransDate ";
+        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "' and Transno not in (select transno from tblbankrecon) Order by TransDate ";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -48535,7 +48535,7 @@ public class BusinessLogic
             {
                 if (drParentQry["TransDate"] != null)
                 {
-                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToString("yyyy-MM-dd");
                 }
                 if (drParentQry["VoucherType"] != null)
                 {
@@ -49824,7 +49824,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Damaged Cheque Leaf For : " + Bank + " deleted. Record Details :  User :" + Username + " Cheque No : " + FromChequeNo;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -49904,11 +49904,11 @@ public class BusinessLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            int ChequeBookId = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeID) FROM tblDamageCheque");
+            int ChequeBookId =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeID) FROM tblDamageCheque"));
 
 
             sAuditStr = "Damaged Cheque Leaf For : " + BankName + " added. Record Details :  User :" + Username + " Cheque No : " + ChequeNo;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -51062,11 +51062,11 @@ public class BusinessLogic
         manager.Open();
         object retVal = manager.ExecuteScalar(CommandType.Text, dbQry2);
 
-        dbQry.Append("SELECT  tblDayBook.TransNo, Format(tblDayBook.TransDate, 'dd/mm/yyyy') As TransDate, Creditor.LedgerName As Cred, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+        dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.TransDate, Creditor.LedgerName As Cred, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
         dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo FROM  (((tblDayBook INNER JOIN ");
         dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID))");
 
-        dbQry.AppendFormat(" Where VoucherType='Journal' AND tblDayBook.TransDate > #" + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + "#   ");
+        dbQry.AppendFormat(" Where VoucherType='Journal' AND tblDayBook.TransDate > " + DateTime.Parse(retVal.ToString()).ToString("yyyy-MM-dd") + "   ");
 
         if (txtSearch == null || txtSearch == "")
         {
@@ -51084,7 +51084,7 @@ public class BusinessLogic
             }
             else if (dropDown == "Date" && txtSearch != null)
             {
-                dbQry.AppendFormat(" AND Format([tblDayBook.TransDate], 'dd/mm/yyyy') = '{0}' ", Convert.ToDateTime(txtSearch).ToShortDateString());
+                dbQry.AppendFormat(" AND [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
             else if (dropDown == "LedgerName" && txtSearch != null)
             {
@@ -58575,7 +58575,7 @@ public class BusinessLogic
 
 
             dbQry1.Append("SELECT TransNo,TransDate,DebtorID,Debtor,CreditorID,Creditor,Amount,Narration,VoucherType,Chequeno,RefNo,ReconcilatedBy,Reconcilateddate,Result FROM tblBankRecon");
-            dbQry1.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+            dbQry1.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry1.ToString());
 
@@ -58585,14 +58585,14 @@ public class BusinessLogic
                 {
                     sAudit = " Old Record Deleted on " + dtSdate.ToShortDateString();
 
-                    dbQry = string.Format("Delete From tblBankRecon WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+                    dbQry = string.Format("Delete From tblBankRecon WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND TransDate ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 }
             }
 
             dbQry2.Append("SELECT LedgerID FROM tblBankRec");
-            dbQry2.Append(" WHERE LedgerID=" + iLedgerID + " AND DateT =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+            dbQry2.Append(" WHERE LedgerID=" + iLedgerID + " AND DateT ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
 
@@ -58600,7 +58600,7 @@ public class BusinessLogic
             {
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    dbQry = string.Format("Delete From tblBankRec WHERE LedgerID=" + iLedgerID + " AND DateT =#" + dtSdate.ToString("MM/dd/yyyy") + "# And Types='" + Types + "' ");
+                    dbQry = string.Format("Delete From tblBankRec WHERE LedgerID=" + iLedgerID + " AND DateT ='" + dtSdate.ToString("yyyy-MM-dd") + "' And Types='" + Types + "' ");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 }
             }
@@ -58611,7 +58611,7 @@ public class BusinessLogic
             sAuditStr = "Bank Reconciliation on: " + dtSdate.ToShortDateString() + " .Record Details :  User :" + Username + " Ledger = " + iLedgerName;
 
             sAuditStr = sAuditStr + sAudit;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Bank Reconciliation", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Bank Reconciliation", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -67093,7 +67093,7 @@ public class BusinessLogic
             manager.BeginTransaction();
 
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -67115,8 +67115,8 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-                        Convert.ToDateTime(dr["Date"]), Convert.ToInt32(dr["Debtor"]), Convert.ToInt32(dr["Creditor"]), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Narration"]), Convert.ToString(dr["VoucherType"]), Convert.ToInt32(dr["RefNo"]));
+                        dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+                        Convert.ToDateTime(dr["Date"]).ToString("yyyy-MM-dd"), Convert.ToInt32(dr["Debtor"]), Convert.ToInt32(dr["Creditor"]), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Narration"]), Convert.ToString(dr["VoucherType"]), Convert.ToInt32(dr["RefNo"]));
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                         int TransNo = 0;
@@ -67124,7 +67124,7 @@ public class BusinessLogic
 
                         if ((retVal != null) && (retVal != DBNull.Value))
                         {
-                            TransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                            TransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
                         }
                         else
                         {
@@ -67135,7 +67135,7 @@ public class BusinessLogic
             }
 
             sAuditStr = "Journal Transaction added. Record Details :  User :" + Username + " DateTime: " + DateTime.Now.ToString();
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -69394,7 +69394,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in dsttN.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}',{5},{6},{7},{8})",
+                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}','{5}','{6}',{7},{8})",
                             Id, Convert.ToString(dr["Name"]), Convert.ToInt32(dr["NameId"]), Convert.ToString(dr["MobileNo"]), Convert.ToString(dr["EmailId"]), Convert.ToBoolean(dr["Mobile"]), Convert.ToBoolean(dr["Email"]), Convert.ToInt32(dr["Type"]), Convert.ToInt32(dr["ScreenType"]));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -69410,7 +69410,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in dsttNN.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}',{5},{6},{7},{8})",
+                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}','{5}','{6}',{7},{8})",
                             Id, Convert.ToString(dr["Name"]), Convert.ToInt32(dr["NameId"]), "", "", Convert.ToBoolean(dr["Mobile"]), Convert.ToBoolean(dr["Email"]), Convert.ToInt32(dr["Type"]), Convert.ToInt32(dr["ScreenType"]));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -69535,7 +69535,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in dsttN.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}',{5},{6},{7},{8})",
+                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}','{5}','{6}',{7},{8})",
                             Id, Convert.ToString(dr["Name"]), Convert.ToInt32(dr["NameId"]), Convert.ToString(dr["MobileNo"]), Convert.ToString(dr["EmailId"]), Convert.ToBoolean(dr["Mobile"]), Convert.ToBoolean(dr["Email"]), Convert.ToInt32(dr["Type"]), Convert.ToInt32(dr["ScreenType"]));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -69550,7 +69550,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in dsttNN.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}',{5},{6},{7},{8})",
+                        dbQry = string.Format("INSERT INTO tblScreenConfig(Id,Name1,NameId,MobileNo,EmailId,Mobile,Email,Type,ScreenType) VALUES({0},'{1}',{2},'{3}','{4}','{5}','{6}',{7},{8})",
                             Id, Convert.ToString(dr["Name"]), Convert.ToInt32(dr["NameId"]), "", "", Convert.ToBoolean(dr["Mobile"]), Convert.ToBoolean(dr["Email"]), Convert.ToInt32(dr["Type"]), Convert.ToInt32(dr["ScreenType"]));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);

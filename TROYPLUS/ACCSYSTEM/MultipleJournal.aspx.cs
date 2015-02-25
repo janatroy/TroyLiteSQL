@@ -2080,7 +2080,7 @@ public partial class MultipleJournal : System.Web.UI.Page
     {
         try
         {
-            int TransNo = (int)GrdViewJournal.DataKeys[e.RowIndex].Value;
+            int TransNo = Convert.ToInt32(GrdViewJournal.DataKeys[e.RowIndex].Value);
 
             string sDataSource = string.Empty;
 

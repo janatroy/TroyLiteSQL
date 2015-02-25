@@ -11,6 +11,8 @@ using System.Web.UI.WebControls;
 using AjaxControlToolkit;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
+using ClosedXML.Excel;
 
 public partial class Creditnote : System.Web.UI.Page
 {
@@ -121,7 +123,7 @@ public partial class Creditnote : System.Web.UI.Page
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Note");
                 dt.Columns.Add(new DataColumn("RefNo"));
                 dt.Columns.Add(new DataColumn("NoteDate"));
                 dt.Columns.Add(new DataColumn("Debitor"));
@@ -133,7 +135,12 @@ public partial class Creditnote : System.Web.UI.Page
                     {
                         DataRow dr_final1 = dt.NewRow();
                         dr_final1["RefNo"] = dr["RefNo"];
-                        dr_final1["NoteDate"] = dr["NoteDate"];
+
+                        string aa = dr["NoteDate"].ToString().ToUpper().Trim();
+                        string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
+                        dr_final1["NoteDate"] = dtaa;
+
+                        //dr_final1["NoteDate"] = dr["NoteDate"];
                         dr_final1["Debitor"] = dr["Debitor"];
                         dr_final1["Amount"] = dr["Amount"];
                         dr_final1["Narration"] = dr["Narration"];
@@ -239,7 +246,7 @@ public partial class Creditnote : System.Web.UI.Page
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Note");
                 dt.Columns.Add(new DataColumn("RefNo"));
                 dt.Columns.Add(new DataColumn("NoteDate"));
                 dt.Columns.Add(new DataColumn("Creditor"));
@@ -251,7 +258,11 @@ public partial class Creditnote : System.Web.UI.Page
                     {
                         DataRow dr_final1 = dt.NewRow();
                         dr_final1["RefNo"] = dr["RefNo"];
-                        dr_final1["NoteDate"] = dr["NoteDate"];
+
+                        string aa = dr["NoteDate"].ToString().ToUpper().Trim();
+                        string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
+                        dr_final1["NoteDate"] = dtaa;
+
                         dr_final1["Creditor"] = dr["Creditor"];
                         dr_final1["Amount"] = dr["Amount"];
                         dr_final1["Narration"] = dr["Narration"];
@@ -291,24 +302,42 @@ public partial class Creditnote : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            string filename = "CreditDebitnoteDownloadExcel.xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //string filename = "CreditDebitnoteDownloadExcel.xls";
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "CreditDebitnoteDownloadExcel.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
     decimal Total;
