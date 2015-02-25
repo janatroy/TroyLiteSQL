@@ -143,12 +143,12 @@
                                                               <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabelproject" style="width:40%">
+                                                                <td class="ControlLabelproject" style="width:34%">
                                                                     Task Type *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtTaskTypeName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Task Type Name is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Type. It cannot be left blank. ">*</asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width:30%">
+                                                                <td class="ControlTextBox3" style="width:33%">
                                                                     <asp:TextBox ID="txtTaskTypeName" runat="server" Text='<%# Bind("Task_Type_Name") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -161,18 +161,21 @@
                                                             <tr style="height:10px">
                                                             </tr> 
                                                             <tr>
-                                                                <td colspan="4">
+                                                                <td colspan="5">
                                                                     <table style="width:100%">
                                                                         <tr>
                                                                             <td style="width:30%">
                                                                             
                                                                             </td>
-                                                                            <td align="center" style="width:20%">                                                                                
+                                                                            <td align="right" style="width:20%">                                                                                
                                                                                  <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
                                                                                     CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="UpdateButton_Click"></asp:Button>
                                                                             </td>
-                                                                            <td align="center" style="width:20%">
+                                                                             <td style="width:5%">
+                                                                            
+                                                                            </td>
+                                                                            <td align="left" style="width:20%">
                                                                                <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
                                                                                     CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="UpdateCancelButton_Click">
                                                                                 </asp:Button>
@@ -196,7 +199,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td>
@@ -223,12 +226,12 @@
                                                              <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabelproject" style="width:40%">
+                                                                <td class="ControlLabelproject" style="width:34%">
                                                                     Task Type *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtTaskTypeNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Task Type Name is mandatory"></asp:RequiredFieldValidator>
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Type. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width:30%">
+                                                                <td class="ControlTextBox3" style="width:33%">
                                                                     <asp:TextBox ID="txtTaskTypeNameAdd" runat="server" Text='<%# Bind("Task_Type_Name") %>'
                                                                         SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -242,18 +245,21 @@
                                                             <tr style="height:10px"> 
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4">
+                                                                <td colspan="5">
                                                                     <table style="width:100%">
                                                                         <tr>
                                                                             <td style="width:20%">
                                                                             
                                                                             </td>
-                                                                            <td align="center" style="width:30%">                                                                              
+                                                                            <td align="right" style="width:30%">                                                                              
                                                                                  <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
                                                                                     CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="InsertButton_Click"></asp:Button>
                                                                             </td>
-                                                                            <td align="center" style="width:30%">
+                                                                              <td style="width:5%">
+                                                                            
+                                                                            </td>
+                                                                            <td align="left" style="width:30%">
                                                                                  <asp:Button ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
                                                                                     CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="InsertCancelButton_Click">
                                                                                 </asp:Button>                                                                        
@@ -272,7 +278,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">
@@ -306,11 +312,11 @@
                                 OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                 OnRowDeleted="GrdViewLedger_RowDeleted">
                                 <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small"/>
-                                <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE"/>
+                                <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" ForeColor="#0567AE"/>
                                 <Columns>
-                                      <asp:BoundField DataField="Row" HeaderText="#" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="Small" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"  HeaderStyle-Font-Size="Medium" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px" />
-                                    <asp:BoundField DataField="Task_Type_Name" HeaderText="Task Types" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="Small" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"  HeaderStyle-Font-Size="Medium" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
-                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="Small" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"  HeaderStyle-Font-Size="Medium" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px">
+                                      <asp:BoundField DataField="Row" HeaderText="#" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px"   ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"  HeaderStyle-Font-Size="Medium" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px" />
+                                    <asp:BoundField DataField="Task_Type_Name" HeaderText="Task Types" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px"  ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"   HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
+                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px"   ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"  HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px">
                                         <ItemTemplate>
                                             <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CommandName="Select" />
                                             <asp:ImageButton ID="btnEditDisabled" Enabled="false" SkinID="editDisable" runat="Server">

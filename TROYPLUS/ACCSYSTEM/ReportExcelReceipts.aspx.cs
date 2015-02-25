@@ -10,6 +10,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class Receipts : System.Web.UI.Page
 {
@@ -239,7 +242,7 @@ public partial class Receipts : System.Web.UI.Page
             string aaa = txtEndDt.Text;
             string dtt = Convert.ToDateTime(aaa).ToString("MM/dd/yyyy");
 
-            cond = " and tblDayBook.TransDate >= #" + dt + "# and tblDayBook.TransDate <= #" + dtt + "# ";
+            cond = " and tblDayBook.TransDate >= '" + dt + "' and tblDayBook.TransDate <= '" + dtt + "' ";
         }
 
         if (ddlCategory.SelectedIndex > 0)
@@ -322,8 +325,8 @@ public partial class Receipts : System.Web.UI.Page
         }
         if (orderBy == "" && selColumn == "")
         {
-            orderBy = " order by TransDate,PaidTo,PaymentMode,RefNo,IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo),Narration";
-            selColumn = " RefNo,TransDate,PaidTo,PaymentMode,IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) as CNo,Narration";
+            orderBy = " order by TransDate,PaidTo,PaymentMode,RefNo,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo),Narration";
+            selColumn = " RefNo,TransDate,PaidTo,PaymentMode,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) as CNo,Narration";
         }
         else
         {
@@ -343,8 +346,8 @@ public partial class Receipts : System.Web.UI.Page
                 orderBy += " , PaymentMode ";
                 selColumn += " , PaymentMode ";
             }
-            orderBy += " ,RefNo,IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo),Narration";
-            selColumn += " ,RefNo,IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) as CNo,Narration";
+            orderBy += " ,RefNo,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo),Narration";
+            selColumn += " ,RefNo,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) as CNo,Narration";
         }
         selColumn = selColumn.Replace("TransDate", "format(tblDayBook.TransDate,'dd/mm/yyyy') As TransDate");
         selColumn = selColumn.Replace("PaidTo", "tblLedger.LedgerName As PaidTo");
@@ -399,7 +402,7 @@ public partial class Receipts : System.Web.UI.Page
         bool dispLastTotal = false;
         DataSet ds = new DataSet();
         ds = objBL.getRceipts(selColumn, condtion, orderBy);
-        DataTable dt = new DataTable();
+        DataTable dt = new DataTable("Receipt Details");
         if (ds.Tables[0].Rows.Count > 0)
         {
             if (ddlone.SelectedIndex > 0)
@@ -844,24 +847,23 @@ public partial class Receipts : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            string filename = "ReceiptsDownloadExcel.xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Receipt details.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
     decimal Total;

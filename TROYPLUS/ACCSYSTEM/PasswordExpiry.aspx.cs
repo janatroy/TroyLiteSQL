@@ -52,7 +52,7 @@ public partial class Password_Expiry : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "PWDEXPDAY")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "PWDEXPDAY")
                 {
                     discType = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["DISCTYPE"] = discType.Trim().ToUpper();
@@ -72,7 +72,7 @@ public partial class Password_Expiry : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "PWDEXPDAY")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "PWDEXPDAY")
                 {
                     discType = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["DISCTYPE"] = discType.Trim().ToUpper();
@@ -148,20 +148,25 @@ public partial class Password_Expiry : System.Web.UI.Page
 
                     objBus.ChangePassword(Request.Cookies["LoggedUserName"].Value, txtNewPwd.Text, Request.Cookies["Company"].Value, ts);
                     //errorDisplay.AddItem("Your password has been changed successfully.", DisplayIcons.GreenTick, false);
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Your password has been changed successfully.');", true);
+                  
 
                     txtOldPwd.Text = string.Empty;
                     txtNewPwd.Text = string.Empty;
                     txtConPwd.Text = string.Empty;
+                   
                     Response.Redirect("DashBoard.aspx");
+                   
                     //return;
                 }
+               
             }
 
         }
         catch (Exception ex)
         {
+           
             TroyLiteExceptionManager.HandleException(ex);
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Your password has been changed successfully.');", true);
         }
     }
 

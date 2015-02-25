@@ -141,18 +141,18 @@ public partial class ChequeBook : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -171,18 +171,18 @@ public partial class ChequeBook : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -621,11 +621,11 @@ public partial class ChequeBook : System.Web.UI.Page
                     {
                         foreach (DataRow drd in dsd.Tables[0].Rows)
                         {
-                            var billNo = Convert.ToUInt32(drd["ChequeNo"]);
+                            var billNo = Convert.ToInt32(drd["ChequeNo"]);
 
                             for (int i = 0; i < itemDs.Tables[0].Rows.Count; i++)
                             {
-                                if (billNo == Convert.ToUInt32(itemDs.Tables[0].Rows[i]["ChequeNo"]))
+                                if (billNo == Convert.ToInt32(itemDs.Tables[0].Rows[i]["ChequeNo"]))
                                 {
                                     itemDs.Tables[0].Rows[i].Delete();
                                 }
@@ -648,13 +648,13 @@ public partial class ChequeBook : System.Web.UI.Page
                     {
                         foreach (DataRow drdddd in dsddd.Tables[0].Rows)
                         {
-                            var billNo = Convert.ToUInt32(drdddd["ChequeNo"]);
+                            var billNo = Convert.ToInt32(drdddd["ChequeNo"]);
 
                             for (int i = 0; i < itemDs.Tables[0].Rows.Count; i++)
                             {
                                 //var billNoll = Convert.ToUInt32(itemDs.Tables[0].Rows[i]["ChequeNo"]);
 
-                                if (billNo == Convert.ToUInt32(itemDs.Tables[0].Rows[i]["ChequeNo"]))
+                                if (billNo == Convert.ToInt32(itemDs.Tables[0].Rows[i]["ChequeNo"]))
                                 {
                                     itemDs.Tables[0].Rows[i].Delete();
                                 }
