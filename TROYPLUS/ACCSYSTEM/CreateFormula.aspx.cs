@@ -94,7 +94,7 @@ public partial class CreateFormula : System.Web.UI.Page
                 cmdSave.Enabled = false;
             }
 
-
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
 
         }
         catch (Exception ex)
@@ -538,6 +538,8 @@ public partial class CreateFormula : System.Web.UI.Page
             {
                 //err.Text = "Select the Product";
             }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+
         }
         catch (Exception ex)
         {
@@ -598,7 +600,7 @@ public partial class CreateFormula : System.Web.UI.Page
                         {
                             foreach (DataRow dr in ds.Tables[0].Rows)
                             {
-                                if (dr["InOut"].ToString() == "IN")
+                                if (dr["InOut"].ToString() == "Raw Material")
                                     InCount = InCount + 1;
                                 else
                                     OutCount = OutCount + 1;
@@ -901,7 +903,7 @@ public partial class CreateFormula : System.Web.UI.Page
                     {
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
-                            if (dr["InOut"].ToString() == "IN")
+                            if (dr["InOut"].ToString() == "Raw Material")
                                 InCount = InCount + 1;
                             else
                                 OutCount = OutCount + 1;

@@ -64,12 +64,7 @@
                                             Damaged Cheque Leaf
                                         </td>
                                         <td style="width: 16%">
-                                            <div style="text-align: right;">
-                                                <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
-                                                        EnableTheming="false" Width="80px" Text=""></asp:Button>
-                                                </asp:Panel>
-                                            </div>
+                                           
                                         </td>
                                         <td style="width: 13%; color: White;" align="right">
                                             Search
@@ -433,8 +428,15 @@
                     <td>
                         <table style="width:100%">
                             <tr>
-                                <td style="width:35%">
+                                 <td style="width:20%">
                                 
+                                </td>
+                                <td style="width:15%" align="left">
+                            
+                                                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                                                        EnableTheming="false" Width="80px" Text=""></asp:Button>
+                                              
+                                           
                                 </td>
                                 <td style="width:15%">
                                     <asp:Button ID="btnpur" runat="server"

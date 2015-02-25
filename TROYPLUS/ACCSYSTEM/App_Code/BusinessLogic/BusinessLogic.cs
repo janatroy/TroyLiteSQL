@@ -43233,7 +43233,7 @@ public class BusinessLogic
             if (Types == "Delete")
             {
                 sAuditStr = "Cheque Book For : " + Bank + " deleted. Record Details :  User :" + Username + " For Account No : " + AccountNo + " From Cheque No : " + FromChequeNo + " To ChequeNo : " + ToChequeNo;
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
@@ -45172,7 +45172,7 @@ public class BusinessLogic
             {
                 if (drParentQry["TransDate"] != null)
                 {
-                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToString("yyyy-MM-dd");
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"]).ToString("dd-MM-yyy");
                 }
                 if (drParentQry["VoucherType"] != null)
                 {
@@ -45414,11 +45414,11 @@ public class BusinessLogic
                 {
                     if (drd["TransDate"] != null)
                     {
-                        sTransDate = Convert.ToDateTime(drd["TransDate"].ToString()).ToString("yyyy-MM-dd");
+                        sTransDate = Convert.ToDateTime(drd["TransDate"]).ToString("dd-MM-yyyy");
                     }
                     if (drd["Reconcilateddate"] != null)
                     {
-                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"].ToString()).ToString("yyyy-MM-dd");
+                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"].ToString()).ToString();
                     }
                     if (drd["Result"] != null)
                     {
@@ -46791,7 +46791,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in BankDS.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblBankRecon(TransNo,TransDate,DebtorID,Debtor,CreditorID,Creditor,Amount,Narration,VoucherType,Chequeno,RefNo,ReconcilatedBy,Reconcilateddate,Types,Result) VALUES({0},Format('{1}', 'dd/mm/yyyy'),{2},'{3}',{4},'{5}',{6},'{7}','{8}','{9}',{10},'{11}',Format('{12}', 'dd/mm/yyyy'),'{13}','{14}')", Convert.ToInt32(dr["TransNo"]), dr["Date"].ToString(), Convert.ToInt32(dr["DebtorID"]), Convert.ToString(dr["Debtor"]), Convert.ToInt32(dr["creditorID"]), Convert.ToString(dr["creditor"]), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Narration"]), Convert.ToString(dr["VoucherType"]), Convert.ToString(dr["Chequeno"]), 0, Convert.ToString(dr["ReconcilatedBy"]), dr["Reconcilateddate"].ToString(), Types, Convert.ToString(dr["Result"]));
+                        dbQry = string.Format("INSERT INTO tblBankRecon(TransNo,TransDate,DebtorID,Debtor,CreditorID,Creditor,Amount,Narration,VoucherType,Chequeno,RefNo,ReconcilatedBy,Reconcilateddate,Types,Result) VALUES({0},'{1}',{2},'{3}',{4},'{5}',{6},'{7}','{8}','{9}',{10},'{11}','{12}','{13}','{14}')", Convert.ToInt32(dr["TransNo"]), Convert.ToDateTime(dr["Date"].ToString()).ToString("yyyy-MM-dd"), Convert.ToInt32(dr["DebtorID"]), Convert.ToString(dr["Debtor"]), Convert.ToInt32(dr["creditorID"]), Convert.ToString(dr["creditor"]), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Narration"]), Convert.ToString(dr["VoucherType"]), Convert.ToString(dr["Chequeno"]), 0, Convert.ToString(dr["ReconcilatedBy"]), Convert.ToDateTime(dr["Reconcilateddate"].ToString()).ToString("yyyy-MM-dd"), Types, Convert.ToString(dr["Result"]));
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
@@ -48535,7 +48535,7 @@ public class BusinessLogic
             {
                 if (drParentQry["TransDate"] != null)
                 {
-                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToString("yyyy-MM-dd");
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"]).ToString("dd-MM-yyyy");
                 }
                 if (drParentQry["VoucherType"] != null)
                 {
@@ -49724,6 +49724,61 @@ public class BusinessLogic
         }
     }
 
+
+    public bool ChequeDamageUsed(int ChequeBookID)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        int qty = 0;
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        string FChequeNo = string.Empty;
+        string TChequeNo = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            dbQry = "SELECT FromChequeNo,ToChequeNo FROM tblcheque Where ChequeBookID =" + ChequeBookID + " ";
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dd in ds.Tables[0].Rows)
+                {
+                    FChequeNo = dd["FromChequeNo"].ToString();
+                    TChequeNo = dd["ToChequeNo"].ToString();
+                }
+            }
+
+            dbQry = "SELECT Count(*) FROM tblDamageCheque Where ChequeNo >='" + FChequeNo.ToString() + "' And ChequeNo <='" + TChequeNo.ToString() + "' ";
+
+            object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if (qtyObj != null && qtyObj != DBNull.Value)
+            {
+                if (qtyObj.ToString() != "")
+                    qty = qty + (int)qtyObj;
+            }
+
+            if (qty > 0)
+                return true;
+            else
+                return false;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
     public DataSet ListUnusedLeaf(string connection)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -49890,6 +49945,8 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
         string dbQry2 = string.Empty;
+        string FChequeNo = string.Empty;
+        string TChequeNo = string.Empty;
 
         string sAuditStr = string.Empty;
         try
@@ -49899,20 +49956,62 @@ public class BusinessLogic
 
             manager.BeginTransaction();
 
-            dbQry = string.Format("INSERT INTO tblDamageCheque(BankName, BankID, ChequeNo) VALUES('{0}',{1},'{2}')",
-                BankName, BankID, ChequeNo);
+            //dbQry = "SELECT FromChequeNo,ToChequeNo FROM tblcheque Where BankID =" + BankID + " ";
 
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            //ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
-            int ChequeBookId =Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeID) FROM tblDamageCheque"));
+            //if (ds.Tables[0].Rows.Count > 0)
+            //{
+            //    foreach (DataRow dd in ds.Tables[0].Rows)
+            //    {
+            //        FChequeNo = dd["FromChequeNo"].ToString();
+            //        TChequeNo = dd["ToChequeNo"].ToString();
+
+            //        if (Convert.ToInt32(FChequeNo) <= Convert.ToInt32(ChequeNo) && Convert.ToInt32(TChequeNo) <= Convert.ToInt32(ChequeNo))
+            //        {
+            //            throw new Exception("Damaged leaf Exists");
+            //        }
+            //    }
+
+            //}
 
 
-            sAuditStr = "Damaged Cheque Leaf For : " + BankName + " added. Record Details :  User :" + Username + " Cheque No : " + ChequeNo;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblDamageCheque Where ChequeNo ='" + ChequeNo + "' ");
+            if (exists.ToString() != string.Empty)
+            {
+                if (int.Parse(exists.ToString()) > 0)
+                {
+                    throw new Exception("Damaged leaf Exists");
+                }
+            }
 
 
-            manager.CommitTransaction();
+            object exists1 = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblChequeitems Where ChequeNo ='" + ChequeNo + "' and BankID =" + BankID + " ");
+            if (exists1.ToString() != string.Empty)
+            {
+                if (int.Parse(exists1.ToString()) <= 0)
+                {
+                    throw new Exception("Leaf Not Exists");
+                }
+            }
+
+
+
+                dbQry = string.Format("INSERT INTO tblDamageCheque(BankName, BankID, ChequeNo) VALUES('{0}',{1},'{2}')",
+                    BankName, BankID, ChequeNo);
+
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+                int ChequeBookId = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeID) FROM tblDamageCheque"));
+
+
+                sAuditStr = "Damaged Cheque Leaf For : " + BankName + " added. Record Details :  User :" + Username + " Cheque No : " + ChequeNo;
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
+                manager.CommitTransaction();
+            
 
         }
         catch (Exception ex)
@@ -51821,7 +51920,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Opening Stock For ItemCode : " + ItemCode + " got deleted. Record Details :  User :" + Username + " Model : " + Model + " Brand : " + Brand + " Product Name :" + Product + " Old Opening Stock " + OpeningStock + " Old Current Stock " + Stock;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -54448,7 +54547,7 @@ public class BusinessLogic
             {
                 if (drParentQry["TransDate"] != null)
                 {
-                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"]).ToString("dd-MM-yyyy");
                 }
                 if (drParentQry["VoucherType"] != null)
                 {
@@ -54637,11 +54736,11 @@ public class BusinessLogic
                 {
                     if (drd["TransDate"] != null)
                     {
-                        sTransDate = Convert.ToDateTime(drd["TransDate"].ToString()).ToShortDateString();
+                        sTransDate = Convert.ToDateTime(drd["TransDate"]).ToString("dd-MM-yyyy");
                     }
                     if (drd["Reconcilateddate"] != null)
                     {
-                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"].ToString()).ToShortDateString();
+                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"]).ToString("dd-MM-yyyy");
                     }
                     if (drd["Result"] != null)
                     {
@@ -54800,7 +54899,7 @@ public class BusinessLogic
             {
                 if (drParentQry["TransDate"] != null)
                 {
-                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"]).ToString("dd-MM-yyyy");
                 }
                 if (drParentQry["VoucherType"] != null)
                 {
@@ -56842,12 +56941,12 @@ public class BusinessLogic
             if (Types == "ReconcilatedDate")
             {
                 dbQry.Append("SELECT TransDate,transno,debtorid,creditorid,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo,RefType,CreditCardNo,ChequeId,ReconcilatedBy,Reconcilateddate,Debtor,Creditor,Result FROM tblBankRecon");
-                dbQry.Append(" WHERE (Reconcilateddate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND Reconcilateddate <=#" + EndDate.ToString("MM/dd/yyyy") + "#) ");
+                dbQry.Append(" WHERE (Reconcilateddate >='" + startDate.ToString("yyyy-MM-dd") + "' AND Reconcilateddate <='" + EndDate.ToString("yyyy-MM-dd") + "') ");
             }
             else if (Types == "TransDate")
             {
                 dbQry.Append("SELECT TransDate,transno,debtorid,creditorid,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo,RefType,CreditCardNo,ChequeId,ReconcilatedBy,Reconcilateddate,Debtor,Creditor,Result FROM tblBankRecon");
-                dbQry.Append(" WHERE (TransDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + EndDate.ToString("MM/dd/yyyy") + "#) ");
+                dbQry.Append(" WHERE (TransDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND TransDate <='" + EndDate.ToString("yyyy-MM-dd") + "') ");
             }
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -56914,11 +57013,11 @@ public class BusinessLogic
                 {
                     if (drd["TransDate"] != null)
                     {
-                        sTransDate = Convert.ToDateTime(drd["TransDate"].ToString()).ToShortDateString();
+                        sTransDate = Convert.ToDateTime(drd["TransDate"]).ToString("dd-MM-yyyy");
                     }
                     if (drd["Reconcilateddate"] != null)
                     {
-                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"].ToString()).ToShortDateString();
+                        sReconcilateddate = Convert.ToDateTime(drd["Reconcilateddate"]).ToString("dd-MM-yyyy");
                     }
                     if (drd["Result"] != null)
                     {
@@ -66777,7 +66876,7 @@ public class BusinessLogic
 
             sAuditStr = "Mapping got deleted : User = " + Username + " old Record Details CategoryID = " + ID;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();

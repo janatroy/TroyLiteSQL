@@ -269,27 +269,45 @@ public partial class OpeningStock : System.Web.UI.Page
 
                                         int index123 = emailcontent.IndexOf("@Branch");
                                         body = Request.Cookies["Company"].Value;
-                                        emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                        if (index123 >= 0)
+                                        {
+                                            emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                        }
 
                                         int index132 = emailcontent.IndexOf("@ProductName");
                                         body = dProductName;
-                                        emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
+                                        if (index132 >= 0)
+                                        {
+                                            emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
+                                        }
 
                                         int index312 = emailcontent.IndexOf("@User");
                                         body = usernam;
-                                        emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
+                                        if (index312 >= 0)
+                                        {
+                                            emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
+                                        }
 
                                         int index2 = emailcontent.IndexOf("@Brand");
                                         body = dProductDesc;
-                                        emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
+                                        if (index2 >= 0)
+                                        {
+                                            emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
+                                        }
 
                                         int index221 = emailcontent.IndexOf("@Opening");
                                         body = dopening.ToString();
-                                        emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
+                                        if (index221 >= 0)
+                                        {
+                                            emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
+                                        }
 
                                         int index = emailcontent.IndexOf("@model");
                                         body = dmodel;
-                                        emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                        if (index >= 0)
+                                        {
+                                            emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                        }
 
                                         string smtphostname = ConfigurationManager.AppSettings["SmtpHostName"].ToString();
                                         int smtpport = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPortNumber"]);
@@ -307,6 +325,7 @@ public partial class OpeningStock : System.Web.UI.Page
                             }
                         }
                     }
+
 
 
                     string conn = bl.CreateConnectionString(Request.Cookies["Company"].Value);
@@ -348,27 +367,45 @@ public partial class OpeningStock : System.Web.UI.Page
 
                                         int index123 = smscontent.IndexOf("@Branch");
                                         body = Request.Cookies["Company"].Value;
-                                        smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
+                                        if (index123 >= 0)
+                                        {
+                                            smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
+                                        }
 
                                         int index132 = smscontent.IndexOf("@ProductName");
                                         body = dProductName;
-                                        smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
+                                        if (index132 >= 0)
+                                        {
+                                            smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
+                                        }
 
                                         int index312 = smscontent.IndexOf("@User");
                                         body = usernam;
-                                        smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
+                                        if (index312 >= 0)
+                                        {
+                                            smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
+                                        }
 
                                         int index2 = smscontent.IndexOf("@Brand");
                                         body = dProductDesc;
-                                        smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
+                                        if (index2 >= 0)
+                                        {
+                                            smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
+                                        }
 
                                         int index221 = smscontent.IndexOf("@Opening");
                                         body = dopening.ToString();
-                                        smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
+                                        if (index221 >= 0)
+                                        {
+                                            smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
+                                        }
 
-                                        int index = smscontent.IndexOf("@model");
+                                        int index = smscontent.IndexOf("@Model");
                                         body = dmodel;
-                                        smscontent = smscontent.Remove(index, 9).Insert(index, body);
+                                        if (index >= 0)
+                                        {
+                                            smscontent = smscontent.Remove(index, 9).Insert(index, body);
+                                        }
 
 
                                         if (Session["Provider"] != null)
@@ -1069,27 +1106,45 @@ public partial class OpeningStock : System.Web.UI.Page
 
                                 int index123 = emailcontent.IndexOf("@Branch");
                                 body = Request.Cookies["Company"].Value;
-                                emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                if (index123 >= 0)
+                                {
+                                    emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                }
 
                                 int index132 = emailcontent.IndexOf("@ProductName");
                                 body = ProductName;
-                                emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
+                                if (index132 >= 0)
+                                {
+                                    emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
+                                }
 
                                 int index312 = emailcontent.IndexOf("@User");
                                 body = usernam;
-                                emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
+                                if (index312 >= 0)
+                                {
+                                    emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
+                                }
 
                                 int index2 = emailcontent.IndexOf("@Brand");
                                 body = ProductDesc;
-                                emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
+                                if (index2 >= 0)
+                                {
+                                    emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
+                                }
 
                                 int index221 = emailcontent.IndexOf("@Opening");
                                 body = dOpeningStock.ToString();
-                                emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
+                                if (index221 >= 0)
+                                {
+                                    emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
+                                }
 
                                 int index = emailcontent.IndexOf("@model");
                                 body = Model;
-                                emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                if (index >= 0)
+                                {
+                                    emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                }
 
                                 string smtphostname = ConfigurationManager.AppSettings["SmtpHostName"].ToString();
                                 int smtpport = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPortNumber"]);
@@ -1148,27 +1203,45 @@ public partial class OpeningStock : System.Web.UI.Page
 
                                 int index123 = smscontent.IndexOf("@Branch");
                                 body = Request.Cookies["Company"].Value;
-                                smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
+                                if (index123 >= 0)
+                                {
+                                    smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
+                                }
 
                                 int index132 = smscontent.IndexOf("@ProductName");
                                 body = ProductName;
-                                smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
+                                if (index132 >= 0)
+                                {
+                                    smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
+                                }
 
                                 int index312 = smscontent.IndexOf("@User");
                                 body = usernam;
-                                smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
+                                if (index312 >= 0)
+                                {
+                                    smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
+                                }
 
                                 int index2 = smscontent.IndexOf("@Brand");
                                 body = ProductDesc;
-                                smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
+                                if (index2 >= 0)
+                                {
+                                    smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
+                                }
 
                                 int index221 = smscontent.IndexOf("@Opening");
                                 body = dOpeningStock.ToString();
-                                smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
+                                if (index221 >= 0)
+                                {
+                                    smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
+                                }
 
                                 int index = smscontent.IndexOf("@model");
                                 body = Model;
-                                smscontent = smscontent.Remove(index, 9).Insert(index, body);
+                                if (index >= 0)
+                                {
+                                    smscontent = smscontent.Remove(index, 9).Insert(index, body);
+                                }
 
 
                                 if (Session["Provider"] != null)
@@ -1304,27 +1377,45 @@ public partial class OpeningStock : System.Web.UI.Page
                                     
                                     int index123 = emailcontent.IndexOf("@Branch");
                                     body = Request.Cookies["Company"].Value;
-                                    emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                    if (index123 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                    }
 
                                     int index132 = emailcontent.IndexOf("@ProductName");
                                     body = dProductName;
-                                    emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
+                                    if (index132 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
+                                    }
 
                                     int index312 = emailcontent.IndexOf("@User");
                                     body = usernam;
-                                    emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
+                                    if (index312 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
+                                    }
 
                                     int index2 = emailcontent.IndexOf("@Brand");
                                     body = dProductDesc;
-                                    emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
+                                    if (index2 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
+                                    }
 
                                     int index221 = emailcontent.IndexOf("@Opening");
                                     body = dopening.ToString();
-                                    emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
+                                    if (index221 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
+                                    }
 
                                     int index = emailcontent.IndexOf("@model");
                                     body = dmodel;
-                                    emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                    if (index >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                    }
 
                                     string smtphostname = ConfigurationManager.AppSettings["SmtpHostName"].ToString();
                                     int smtpport = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPortNumber"]);
@@ -1383,27 +1474,45 @@ public partial class OpeningStock : System.Web.UI.Page
 
                                     int index123 = smscontent.IndexOf("@Branch");
                                     body = Request.Cookies["Company"].Value;
-                                    smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
+                                    if (index123 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
+                                    }
 
                                     int index132 = smscontent.IndexOf("@ProductName");
                                     body = dProductName;
-                                    smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
+                                    if (index132 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
+                                    }
 
                                     int index312 = smscontent.IndexOf("@User");
                                     body = usernam;
-                                    smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
+                                    if (index312 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
+                                    }
 
                                     int index2 = smscontent.IndexOf("@Brand");
                                     body = dProductDesc;
-                                    smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
+                                    if (index2 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
+                                    }
 
                                     int index221 = smscontent.IndexOf("@Opening");
                                     body = dopening.ToString();
-                                    smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
+                                    if (index221 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
+                                    }
 
                                     int index = smscontent.IndexOf("@model");
                                     body = dmodel;
-                                    smscontent = smscontent.Remove(index, 9).Insert(index, body);
+                                    if (index >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index, 9).Insert(index, body);
+                                    }
 
 
                                     if (Session["Provider"] != null)
