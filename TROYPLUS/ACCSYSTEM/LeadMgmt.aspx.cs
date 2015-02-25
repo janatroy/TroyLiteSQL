@@ -97,6 +97,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 }
 
             }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         }
         catch (Exception ex)
         {
@@ -2272,6 +2273,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 drpProduct.SelectedIndex = 0;
                 txtPrdID.Text = "";
             }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         }
     }
 
@@ -2890,11 +2892,12 @@ public partial class LeadMgmt : System.Web.UI.Page
                     txtremarks.Text = itemDsAct.Tables[0].Rows[vLoop]["Remarks"].ToString();
                 }
                 //close activity tab
-
+                
                 UpdateButton.Visible = true;
                 AddButton.Visible = false;
                 ModalPopupExtender2.Show();
             }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         }
         catch (Exception ex)
         {
@@ -5663,6 +5666,8 @@ public partial class LeadMgmt : System.Web.UI.Page
                 if (LeadDs.Tables[0].Rows[0]["Model"] != null)
                     txtModel.Text = LeadDs.Tables[0].Rows[0]["Model"].ToString();
             }
+
+            txtQty.Focus();
         }
     }
     protected void ButtonAddCom_Click(object sender, EventArgs e)
