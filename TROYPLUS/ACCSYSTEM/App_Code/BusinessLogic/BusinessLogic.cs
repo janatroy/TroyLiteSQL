@@ -33251,7 +33251,7 @@ public class BusinessLogic
         int sRefno = 0;
         string sDebtor = string.Empty;
         string sCreditor = string.Empty;
-        dbQry = ("select RefNo,TransDate,TransNo,CreditorID As Creditor,DebtorID As Debtor,Amount,Narration from tbldaybook where VoucherType='Journal' and TransDate >=#" + StartDate + "# and TransDate <=#" + EndDate + "# order by TransDate");
+        dbQry = ("select RefNo,TransDate,TransNo,CreditorID As Creditor,DebtorID As Debtor,Amount,Narration from tbldaybook where VoucherType='Journal' and TransDate >='" + StartDate + "' and TransDate <='" + EndDate + "' order by TransDate");
 
         try
         {
@@ -33293,7 +33293,7 @@ public class BusinessLogic
             {
                 if (dr["TransDate"] != null)
                 {
-                    sTranDate = Convert.ToDateTime(dr["TransDate"].ToString()).ToShortDateString();
+                    sTranDate = Convert.ToDateTime(dr["TransDate"].ToString()).ToString("yyyy-MM-dd");
                 }
                 if (dr["Narration"] != null)
                 {
@@ -55724,7 +55724,7 @@ public class BusinessLogic
             //Start Delete the old record
 
 
-            dbQ = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -55766,7 +55766,7 @@ public class BusinessLogic
 
                 int middlePos = 0;
                 logdescription = string.Format("INSERT INTO tblHirePurchase(BillDate,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,paydate,startdate,eachpay,BillNoNew,BranchRefNo) VALUES {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}",
-                sBilldate.ToShortDateString(), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToShortDateString(), dstartdatenew.ToShortDateString(), deachpay, billnonew, branchrefno);
+                sBilldate.ToString("yyyy-MM-dd"), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToString("yyyy-MM-dd"), dstartdatenew.ToString("yyyy-MM-dd"), deachpay, billnonew, branchrefno);
                 //logdescription = string.Format("INSERT INTO tblHirePurchase(Billno,BillDate,SupplierID,JournalID,Paymode,TotalAmt,salesreturn,salesreturnreason,freight,LoadUnload,BilitID,InternalTransfer,DeliveryNote,InvoiceNo,InvoiceDate,discamount,discper,dcbillno,TotalWORndOff) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18})",
                 //    Billno, BillDate.ToShortDateString(), SupplierID, NewTransNo, paymode, Amount, salesreturn, srReason, freight, dLU, BilitID, intTrans, deliveryNote, Invoiceno, InvoiceDate, discamount, discper, dcbillno, TotalWORndOff);
                 logdescription = logdescription.Trim();
@@ -55792,13 +55792,13 @@ public class BusinessLogic
                     value2 = "";
                     value3 = "";
                 }
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}','{5}','{6}')",
-                DateTime.Now.ToString(), value1, username, slno, value2, value3, "InsertHirePurchase");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                DateTime.Now.ToString("yyyy-MM-dd"), value1, username, slno, value2, value3, "InsertHirePurchase");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
-            dbQry = string.Format("INSERT INTO tblHirePurchase(BillDate,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,paydate,startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront,dob,mobile,bankid,BranchName,IFSCCode,AccountNumber,Dayofpayment,paymentmode) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}',{10},Format('{11}', 'dd/mm/yyyy'),Format('{12}', 'dd/mm/yyyy'),{13},'{14}','{15}',{16},{17},{18},{19},{20},Format('{21}', 'dd/mm/yyyy'),'{22}',{23},'{24}','{25}','{26}',Format('{27}', 'dd/mm/yyyy'),{28})",
-            sBilldate.ToShortDateString(), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToShortDateString(), dstartdatenew.ToShortDateString(), deachpay, billnonew, branchrefno, down, down1, emi, emiper, upfront, sddob.ToShortDateString(), dmobile, bankid, BranchName, IFSCCode, AccountNumber, Dayofpayment, paymode);
+            dbQry = string.Format("INSERT INTO tblHirePurchase(BillDate,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,paydate,startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront,dob,mobile,bankid,BranchName,IFSCCode,AccountNumber,Dayofpayment,paymentmode) VALUES('{0}',{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}',{10},'{11}','{12}',{13},'{14}','{15}',{16},{17},{18},{19},{20},'{21}','{22}',{23},'{24}','{25}','{26}','{27}',{28})",
+            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToString("yyyy-MM-dd"), dstartdatenew.ToString("yyyy-MM-dd"), deachpay, billnonew, branchrefno, down, down1, emi, emiper, upfront, sddob.ToString("yyyy-MM-dd"), dmobile, bankid, BranchName, IFSCCode, AccountNumber, Dayofpayment, paymode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -55806,7 +55806,7 @@ public class BusinessLogic
 
             if ((retPurchase != null) && (retPurchase != DBNull.Value))
             {
-                slno = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(Slno) FROM tblHirePurchase");
+                slno = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(Slno) FROM tblHirePurchase"));
             }
             else
             {
@@ -55820,7 +55820,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in dsLeadContact.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblHireContact(Slno,ContactedDate,ContactSummary) VALUES({0},Format('{1}', 'dd/mm/yyyy'),'{2}')", slno, dr["ContactedDate"].ToString(), dr["ContactSummary"].ToString());
+                        dbQry = string.Format("INSERT INTO tblHireContact(Slno,ContactedDate,ContactSummary) VALUES({0},'{1}','{2}')", slno, dr["ContactedDate"].ToString(), dr["ContactSummary"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
@@ -55873,8 +55873,8 @@ public class BusinessLogic
 
             // Cost  id1 7
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), sCustomerID, id1, dpurAmt, Narration, VoucherType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, id1, dpurAmt, Narration, VoucherType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NTransNo = 0;
@@ -55882,7 +55882,7 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                NTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -55893,8 +55893,8 @@ public class BusinessLogic
             // Margin Amt id1 7 
             string VouType = "INITIAL AMT";
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), id1, sCustomerID, dpay, Narration, VouType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), id1, sCustomerID, dpay, Narration, VouType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NNTransNo = 0;
@@ -55902,7 +55902,7 @@ public class BusinessLogic
 
             if ((retVall != null) && (retVall != DBNull.Value))
             {
-                NNTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NNTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -55913,8 +55913,8 @@ public class BusinessLogic
             string Nar = "Branch ref no : " + branchrefno + " Customer : " + sCustomerName;
             string VoType = "DOC AMT";
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), id1, id2, ddochr, Nar, VoType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), id1, id2, ddochr, Nar, VoType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NNNTransNo = 0;
@@ -55922,7 +55922,7 @@ public class BusinessLogic
 
             if ((retValll != null) && (retValll != DBNull.Value))
             {
-                NNNTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NNNTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -55933,8 +55933,8 @@ public class BusinessLogic
             string Nartn = "Branch ref no : " + branchrefno + " Customer : " + sCustomerName;
             string VType = "INTEREST AMT";
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), sCustomerID, id3, dintamt, Nartn, VType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, id3, dintamt, Nartn, VType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NNNNTransNo = 0;
@@ -55942,7 +55942,7 @@ public class BusinessLogic
 
             if ((retVallll != null) && (retVallll != DBNull.Value))
             {
-                NNNNTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NNNNTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -55956,14 +55956,14 @@ public class BusinessLogic
             {
                 foreach (DataRow dr in dsinstall.Tables[0].Rows)
                 {
-                    dbQry = string.Format("INSERT INTO tblInstallmentDetails(CustomerId,ChequeNo,Amount,Cancelled,DueDate,Narration,BranchRefNo,BillNo,SlNo) VALUES({0},'{1}',{2},'{3}',Format('{4}', 'dd/mm/yyyy'),'{5}','{6}','{7}',{8})", sCustomerID, dr["ChequeNo"].ToString(), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Cancelled"]), Convert.ToDateTime(dr["DueDate"]), dr["Narration"].ToString(), branchrefno, billnonew, slno);
+                    dbQry = string.Format("INSERT INTO tblInstallmentDetails(CustomerId,ChequeNo,Amount,Cancelled,DueDate,Narration,BranchRefNo,BillNo,SlNo) VALUES({0},'{1}',{2},'{3}','{4}','{5}','{6}','{7}',{8})", sCustomerID, dr["ChequeNo"].ToString(), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Cancelled"]), Convert.ToDateTime(dr["DueDate"]).ToString("yyyy-MM-dd"), dr["Narration"].ToString(), branchrefno, billnonew, slno);
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 }
             }
 
 
             sAuditStr = "HirePurchase SlNo : " + slno + " got added. Record Details : User =" + username + " Bill Date= " + Billdate + " CustomerID=" + sCustomerID + ",Amount=" + dpurAmt;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
             manager.CommitTransaction();
             return slno;
@@ -56005,12 +56005,12 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                dbQry.Append("SELECT Format(tblHirePurchase.Billdate, 'dd/mm/yyyy') As BillDate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,Format(tblHirePurchase.paydate, 'dd/mm/yyyy') As paydate,Format(tblHirePurchase.startdate, 'dd/mm/yyyy') As startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront ");
-                dbQry.Append(" FROM tblHirePurchase INNER JOIN tblLedger Debtor ON tblHirePurchase.Customerid = Debtor.LedgerID Where tblHirePurchase.BillDate > #" + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + "# ");
+                dbQry.Append("SELECT tblHirePurchase.Billdate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,tblHirePurchase.paydate,tblHirePurchase.startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront ");
+                dbQry.Append(" FROM tblHirePurchase INNER JOIN tblLedger Debtor ON tblHirePurchase.Customerid = Debtor.LedgerID Where tblHirePurchase.BillDate > " + DateTime.Parse(retVal.ToString()).ToString("yyyy-MM-dd") + " ");
             }
             else
             {
-                dbQry.Append("SELECT Format(tblHirePurchase.Billdate, 'dd/mm/yyyy') As BillDate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,Format(tblHirePurchase.paydate, 'dd/mm/yyyy') As paydate,Format(tblHirePurchase.startdate, 'dd/mm/yyyy') As startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront ");
+                dbQry.Append("SELECT tblHirePurchase.Billdate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,tblHirePurchase.paydate,tblHirePurchase.startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront ");
                 dbQry.Append(" FROM tblHirePurchase INNER JOIN tblLedger Debtor ON tblHirePurchase.Customerid = Debtor.LedgerID Where 1=1 ");
             }
 
@@ -56026,12 +56026,12 @@ public class BusinessLogic
                 }
                 else if (dropDown == "BillDate" && txtSearch != null)
                 {
-                    dbQry.AppendFormat(" AND Format([tblHirePurchase.BillDate], 'dd/mm/yyyy') = '{0}' ", Convert.ToDateTime(txtSearch).ToShortDateString());
+                    dbQry.AppendFormat(" AND [tblHirePurchase.BillDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
                 }
                 else if (dropDown == "dob" && txtSearch != null)
                 {
                     //dbQry.AppendFormat(" AND Format([tblHirePurchase.dob], 'mm/dd/yyyy') = #" + Convert.ToDateTime(txtSearch).ToShortDateString() + "# ");
-                    dbQry.AppendFormat(" AND Format([tblHirePurchase.dob], 'dd/mm/yyyy') = '{0}' ", Convert.ToDateTime(txtSearch).ToShortDateString());
+                    dbQry.AppendFormat(" AND [tblHirePurchase.dob] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
                 }
                 else if (dropDown == "CustomerName" && txtSearch != null)
                 {
@@ -56094,7 +56094,7 @@ public class BusinessLogic
             {
                 dbQry.Append("SELECT BillDate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,paydate,startdate,eachpay,BillNoNew,BranchRefNo,down,down1,upfront,emi,emiper,dob,tblHirePurchase.mobile,dayofpayment,bankid,branchname,ifsccode,paymentmode,accountnumber ");
                 dbQry.Append(" FROM tblHirePurchase INNER JOIN tblLedger Creditor ON tblHirePurchase.customerid = Creditor.LedgerID ");
-                dbQry.Append(" Where tblHirePurchase.slno=" + slno + " AND tblHirePurchase.BillDate > #" + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + "# ORDER BY tblHirePurchase.BillDate Desc");
+                dbQry.Append(" Where tblHirePurchase.slno=" + slno + " AND tblHirePurchase.BillDate > " + DateTime.Parse(retVal.ToString()).ToString("yyyy-MM-dd") + " ORDER BY tblHirePurchase.BillDate Desc");
             }
             else
             {
@@ -56143,11 +56143,12 @@ public class BusinessLogic
         string description = string.Empty;
         string Logsave = string.Empty;
 
-        string[] sDate, ddate, ddatestart, stDate;
+        string[] sDate, ddate, ddatestart, stDate, sttDate;
         string delim = "/";
         char[] delimA = delim.ToCharArray();
         CultureInfo culture = new CultureInfo("pt-BR");
         DateTime sBilldate;
+        DateTime sDayofpayment;
         DateTime sddob;
         DateTime dpaydatenew;
         DateTime dstartdatenew;
@@ -56169,6 +56170,9 @@ public class BusinessLogic
             {
                 sDate = Billdate.Trim().Split(delimA);
                 sBilldate = new DateTime(Convert.ToInt32(sDate[2].ToString()), Convert.ToInt32(sDate[1].ToString()), Convert.ToInt32(sDate[0].ToString()));
+
+                sttDate = Dayofpayment.Trim().Split(delimA);
+                sDayofpayment = new DateTime(Convert.ToInt32(sttDate[2].ToString()), Convert.ToInt32(sttDate[1].ToString()), Convert.ToInt32(sttDate[0].ToString()));
 
                 stDate = ddob.Trim().Split(delimA);
                 sddob = new DateTime(Convert.ToInt32(stDate[2].ToString()), Convert.ToInt32(stDate[1].ToString()), Convert.ToInt32(stDate[0].ToString()));
@@ -56261,7 +56265,7 @@ public class BusinessLogic
                     value2 = "";
                     value3 = "";
                 }
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}','{5}','{6}')",
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
                      DateTime.Now.ToString("yyyy-MM-dd"), value1, usernam, "", value2, value3, "UpdatePurchase");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
@@ -56275,8 +56279,8 @@ public class BusinessLogic
             //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
-            dbQry = string.Format("INSERT INTO tblHirePurchase(BillDate,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,paydate,startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront,dob,mobile,bankid,BranchName,IFSCCode,AccountNumber,Dayofpayment,paymentmode) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}',{10},Format('{11}', 'dd/mm/yyyy'),Format('{12}', 'dd/mm/yyyy'),{13},'{14}','{15}',{16},{17},{18},{19},{20},Format('{21}', 'dd/mm/yyyy'),'{22}',{23},'{24}','{25}','{26}',Format('{27}', 'dd/mm/yyyy'),{28})",
-            sBilldate.ToShortDateString(), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToShortDateString(), dstartdatenew.ToShortDateString(), deachpay, BillNoNew, BranchRefNo, down, down1, emi, emiper, upfront, sddob.ToShortDateString(), dmobile, bankid, BranchName, IFSCCode, AccountNumber, Dayofpayment, paymode);
+            dbQry = string.Format("INSERT INTO tblHirePurchase(BillDate,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,paydate,startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront,dob,mobile,bankid,BranchName,IFSCCode,AccountNumber,Dayofpayment,paymentmode) VALUES('{0}',{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}',{10},'{11}','{12}',{13},'{14}','{15}',{16},{17},{18},{19},{20},'{21}','{22}',{23},'{24}','{25}','{26}','{27}',{28})",
+            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToString("yyyy-MM-dd"), dstartdatenew.ToString("yyyy-MM-dd"), deachpay, BillNoNew, BranchRefNo, down, down1, emi, emiper, upfront, sddob.ToString("yyyy-MM-dd"), dmobile, bankid, BranchName, IFSCCode, AccountNumber, sDayofpayment.ToString("yyyy-MM-dd"), paymode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -56284,7 +56288,7 @@ public class BusinessLogic
 
             if ((retPurchase != null) && (retPurchase != DBNull.Value))
             {
-                slno = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(slno) FROM tblHirePurchase");
+                slno = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(slno) FROM tblHirePurchase"));
             }
             else
             {
@@ -56299,7 +56303,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in dsLeadContact.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblHireContact(Slno,ContactedDate,ContactSummary) VALUES({0},Format('{1}', 'dd/mm/yyyy'),'{2}')", slno, dr["ContactedDate"].ToString(), dr["ContactSummary"].ToString());
+                        dbQry = string.Format("INSERT INTO tblHireContact(Slno,ContactedDate,ContactSummary) VALUES({0},'{1}','{2}')", slno, dr["ContactedDate"].ToString(), dr["ContactSummary"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
 
@@ -56353,8 +56357,8 @@ public class BusinessLogic
 
             // Cost
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), sCustomerID, id1, dpurAmt, Narration, VoucherType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, id1, dpurAmt, Narration, VoucherType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NTransNo = 0;
@@ -56362,7 +56366,7 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                NTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -56373,8 +56377,8 @@ public class BusinessLogic
             // Margin Amt
             string VouType = "INITIAL AMT";
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), id1, sCustomerID, dpay, Narration, VouType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), id1, sCustomerID, dpay, Narration, VouType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NNTransNo = 0;
@@ -56382,7 +56386,7 @@ public class BusinessLogic
 
             if ((retVall != null) && (retVall != DBNull.Value))
             {
-                NNTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NNTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -56393,8 +56397,8 @@ public class BusinessLogic
             string Nar = "Branch ref no : " + BranchRefNo + " Customer : " + sCustomerName;
             string VoType = "DOC AMT";
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), id1, id2, ddochr, Nar, VoType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), id1, id2, ddochr, Nar, VoType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NNNTransNo = 0;
@@ -56402,7 +56406,7 @@ public class BusinessLogic
 
             if ((retValll != null) && (retValll != DBNull.Value))
             {
-                NNNTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NNNTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -56413,8 +56417,8 @@ public class BusinessLogic
             string Nartn = "Branch ref no : " + BranchRefNo + " Customer : " + sCustomerName;
             string VType = "INTEREST AMT";
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}',{6})",
-            sBilldate.ToShortDateString(), sCustomerID, id3, dintamt, Nartn, VType, slno);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}',{6})",
+            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, id3, dintamt, Nartn, VType, slno);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             int NNNNTransNo = 0;
@@ -56422,7 +56426,7 @@ public class BusinessLogic
 
             if ((retVallll != null) && (retVallll != DBNull.Value))
             {
-                NNNNTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                NNNNTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
             }
             else
             {
@@ -56439,7 +56443,7 @@ public class BusinessLogic
             {
                 foreach (DataRow dr in dsinstall.Tables[0].Rows)
                 {
-                    dbQry = string.Format("INSERT INTO tblInstallmentDetails(CustomerId,ChequeNo,Amount,Cancelled,DueDate,Narration,BranchRefNo,BillNo,SlNo) VALUES({0},'{1}',{2},'{3}',Format('{4}', 'dd/mm/yyyy'),'{5}','{6}','{7}',{8})", sCustomerID, dr["ChequeNo"].ToString(), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Cancelled"]), Convert.ToDateTime(dr["DueDate"]), dr["Narration"].ToString(), BranchRefNo, BillNoNew, slno);
+                    dbQry = string.Format("INSERT INTO tblInstallmentDetails(CustomerId,ChequeNo,Amount,Cancelled,DueDate,Narration,BranchRefNo,BillNo,SlNo) VALUES({0},'{1}',{2},'{3}','{4}','{5}','{6}','{7}',{8})", sCustomerID, dr["ChequeNo"].ToString(), Convert.ToDouble(dr["Amount"]), Convert.ToString(dr["Cancelled"]), Convert.ToDateTime(dr["DueDate"]).ToString("yyyy-MM-dd"), dr["Narration"].ToString(), BranchRefNo, BillNoNew, slno);
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 }
             }
@@ -56448,7 +56452,7 @@ public class BusinessLogic
 
             sAuditStr = "Hire Purchase Transaction: " + slno + " got edited. User Name = " + usernam + ". Deleted Record Details : Bill No=" + oldBillNo + " DebtorID=" + oldDebitID + ",Pur Amount=" + oldAmt + " DateTime:" + oldtrandate;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Edit and Update", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
             manager.CommitTransaction();
             return slno;
@@ -56512,7 +56516,7 @@ public class BusinessLogic
             }
 
 
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -56521,8 +56525,8 @@ public class BusinessLogic
             {
                 logdescription = string.Format("Delete From tblHirePurchase Where slno={0}", Slno);
                 logdescription = logdescription.Trim();
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                     DateTime.Now.ToString(), logdescription.ToString(), usernam, Slno, "DeleteHirePurchase");
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), usernam, Slno, "DeleteHirePurchase");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
@@ -56537,7 +56541,7 @@ public class BusinessLogic
 
 
             sAuditStr = "Hire Purchase Transaction: " + Slno + " got deleted old Record Details : User =" + usernam + " BillNo=" + oldBillNo + " CustomerId=" + oldDebitID + ",Pur Amount=" + oldAmt + " TransDate " + transdate;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -56690,11 +56694,11 @@ public class BusinessLogic
 
         if (customer == "0")
         {
-            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay FROM tblHirePurchase Where BillDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + endDate.ToString("MM/dd/yyyy") + "# ";
+            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay FROM tblHirePurchase Where BillDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + endDate.ToString("yyyy-MM-dd") + "' ";
         }
         else
         {
-            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay FROM tblHirePurchase Where BillDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + endDate.ToString("MM/dd/yyyy") + "# and customerid = " + customer + " ";
+            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay FROM tblHirePurchase Where BillDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + endDate.ToString("yyyy-MM-dd") + "' and customerid = " + customer + " ";
         }
 
         if (customer != "0")
@@ -57234,8 +57238,8 @@ public class BusinessLogic
                                 }
                             }
 
-                            dbQry = string.Format("INSERT INTO tblProductMaster VALUES('{0}','{1}', '{2}',{3},'{4}',{5},{6},{7},'{8}',{9},{10},'{11}',{12},{13},{14},'{15}',{16},{17},{18},'{19}','{20}','{21}',{22},'{23}',{24},'{25}',{26},'{27}',{28},'{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}','{37}',{38},{39},'{40}')",//Jolo Barcode
-                                Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["Model"]), Catname, Convert.ToString(dr["Brand"]), 0, 1, Convert.ToDouble(dr["MRP"]), productunit, Convert.ToDouble(dr["VAT"]), 0, productunit, 0, Convert.ToDouble(dr["VAT"]), 0, productunit, Convert.ToDouble(dr["DP"]), 0, 0, productunit, productunit, productunit, 0, productunit, 0, 0, Convert.ToDouble(dr["NLC"]), 'N', 0, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")), 0, Convert.ToInt32(dr["Deviation"]), 'N');//Jolo Barcode
+                            dbQry = string.Format("INSERT INTO tblProductMaster VALUES('{0}','{1}', '{2}',{3},'{4}',{5},{6},{7},'{8}',{9},{10},'{11}',{12},{13},{14},'{15}',{16},{17},{18},'{19}','{20}','{21}',{22},'{23}',{24},'{25}',{26},'{27}',{28},'{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}','{37}',{38},{39},'{40}','{41}')",//Jolo Barcode
+                                Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["Model"]), Catname, Convert.ToString(dr["Brand"]), 0, 1, 0, productunit, Convert.ToDouble(dr["VAT"]), 0, productunit, 0, Convert.ToDouble(dr["VAT"]), 0, productunit, 0, 0, 0, productunit, productunit, productunit, 0, productunit, 0, 0, 0, 'N', 0, DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), 0, Convert.ToInt32(dr["Deviation"]), 'N',"YES");//Jolo Barcode
                             manager.ExecuteDataSet(CommandType.Text, dbQry);
                         }
                     }
@@ -60775,11 +60779,11 @@ public class BusinessLogic
 
         if (types == "ECS")
         {
-            dbQry = "select tblInstallmentDetails.duedate,tblInstallmentDetails.slno,tblInstallmentDetails.chequeno,tblInstallmentDetails.narration,tblInstallmentDetails.amount,tblInstallmentDetails.customerid,tblhirepurchase.customername,tblhirepurchase.BankId,tblhirepurchase.paymentmode From tblInstallmentDetails inner join tblhirepurchase on tblInstallmentDetails.slno = tblhirepurchase.slno WHERE tblInstallmentDetails.DueDate<=#" + NewDate.ToString("MM/dd/yyyy") + "# and tblInstallmentDetails.cancelled ='N' and tblhirepurchase.paymentmode = 3 ";
+            dbQry = "select tblInstallmentDetails.duedate,tblInstallmentDetails.slno,tblInstallmentDetails.chequeno,tblInstallmentDetails.narration,tblInstallmentDetails.amount,tblInstallmentDetails.customerid,tblhirepurchase.customername,tblhirepurchase.BankId,tblhirepurchase.paymentmode From tblInstallmentDetails inner join tblhirepurchase on tblInstallmentDetails.slno = tblhirepurchase.slno WHERE tblInstallmentDetails.DueDate<='" + NewDate.ToString("yyyy-MM-dd") + "' and tblInstallmentDetails.cancelled ='N' and tblhirepurchase.paymentmode = 3 ";
         }
         else if (types == "Cheque")
         {
-            dbQry = "select tblInstallmentDetails.duedate,tblInstallmentDetails.slno,tblInstallmentDetails.chequeno,tblInstallmentDetails.narration,tblInstallmentDetails.amount,tblInstallmentDetails.customerid,tblhirepurchase.customername,tblhirepurchase.BankId,tblhirepurchase.paymentmode From tblInstallmentDetails inner join tblhirepurchase on tblInstallmentDetails.slno = tblhirepurchase.slno WHERE tblInstallmentDetails.DueDate<=#" + NewDate.ToString("MM/dd/yyyy") + "# and tblInstallmentDetails.cancelled ='N' and tblhirepurchase.paymentmode = 2 ";
+            dbQry = "select tblInstallmentDetails.duedate,tblInstallmentDetails.slno,tblInstallmentDetails.chequeno,tblInstallmentDetails.narration,tblInstallmentDetails.amount,tblInstallmentDetails.customerid,tblhirepurchase.customername,tblhirepurchase.BankId,tblhirepurchase.paymentmode From tblInstallmentDetails inner join tblhirepurchase on tblInstallmentDetails.slno = tblhirepurchase.slno WHERE tblInstallmentDetails.DueDate<='" + NewDate.ToString("yyyy-MM-dd") + "' and tblInstallmentDetails.cancelled ='N' and tblhirepurchase.paymentmode = 2 ";
         }
 
         try
@@ -60874,12 +60878,12 @@ public class BusinessLogic
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES(Format('{0}', 'dd/mm/yyyy'),{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                    Convert.ToDateTime(dr["TransDate"]), Convert.ToInt32(dr["DebitorID"]), Convert.ToInt32(dr["CreditorID"]), Convert.ToDouble(dr["Amount"]), dr["Narration"].ToString(), dr["VoucherType"].ToString(), dr["ChequeNo"].ToString(), 0, Convert.ToInt32(dr["RefNo"]));
+                    dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
+                    Convert.ToDateTime(dr["TransDate"]).ToString("yyyy-MM-dd"), Convert.ToInt32(dr["DebitorID"]), Convert.ToInt32(dr["CreditorID"]), Convert.ToDouble(dr["Amount"]), dr["Narration"].ToString(), dr["VoucherType"].ToString(), dr["ChequeNo"].ToString(), 0, Convert.ToInt32(dr["RefNo"]));
 
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                    int TransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                    int TransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
 
 
                     dbQry = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},'{2}')", Convert.ToInt32(dr["CreditorID"]), TransNo, dr["Paymode"].ToString());
@@ -61000,7 +61004,7 @@ public class BusinessLogic
 
         //sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.mobile,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID = 1 and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
 
-        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.mobile,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE tblDayBook.TransDate<=#" + startDate.ToString("MM/dd/yyyy") + "# and DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE tblDayBook.TransDate<=#" + startDate.ToString("MM/dd/yyyy") + "# and CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID = 1 and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
+        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.mobile,tblLedger.AliasName, (IIF((tblLedger.OpenBalanceDR IS NULL),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount IS NULL),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR IS NULL),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount IS NULL),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE tblDayBook.TransDate<='" + startDate.ToString("yyyy-MM-dd") + "' and DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE tblDayBook.TransDate<='" + startDate.ToString("MM/dd/yyyy") + "' and CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID = 1 and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF((tblLedger.OpenBalanceDR IS NULL),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount IS NULL),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR IS NULL),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount IS NULL),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;

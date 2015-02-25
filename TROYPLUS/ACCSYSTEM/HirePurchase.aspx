@@ -1058,11 +1058,11 @@
                                                 <asp:BoundField DataField="SlNo" HeaderText="SlNo" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="BranchRefNo" HeaderText="Ref No" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="BillNoNew" HeaderText="Bill No" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="BillDate" HeaderText="BillDate" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="BillDate" HeaderText="BillDate" HeaderStyle-BorderColor="Gray" DataFormatString="{0:dd/MM/yyyy}"/>
                                                 <asp:BoundField DataField="CustomerName" HeaderText="CustomerName" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="puramt" HeaderText="Cost" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="noinst" HeaderText="No of Inst" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="startdate" HeaderText="Start Due Date" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="startdate" HeaderText="Start Due Date" HeaderStyle-BorderColor="Gray" DataFormatString="{0:dd/MM/yyyy}"/>
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" CausesValidation="false" SkinID="edit"
@@ -1178,7 +1178,7 @@
                         SkinID="skinButtonCol2" Width="100%"></asp:Button>
                 </td>
                 <td style="width: 14%">
-                    <asp:Button ID="Button4" runat="server" Text="Bulk Receipt Cheque" OnClientClick="window.open('  .aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=610,width=930,left=200,top=30, scrollbars=yes');"
+                    <asp:Button ID="Button4" runat="server" Text="Bulk Receipt Cheque" OnClientClick="window.open('BulkReceiptCheque.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=610,width=930,left=200,top=30, scrollbars=yes');"
                         SkinID="skinButtonCol2" Width="100%"></asp:Button>
                 </td>
                 <td style="width: 14%">
