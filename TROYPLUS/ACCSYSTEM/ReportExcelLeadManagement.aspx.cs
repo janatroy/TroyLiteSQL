@@ -230,7 +230,7 @@ public partial class ReportExcelLeadManagement : System.Web.UI.Page
             string condtion = "";
             condtion = getCond();
 
-           // ds = objBL.GetLeadManagementList(connection, startDate, endDate);
+            // ds = objBL.GetLeadManagementList(connection, startDate, endDate);
             ds = objBL.GetLeadManagementListFilter(connection, condtion);
 
             if (ds != null)
@@ -293,7 +293,10 @@ public partial class ReportExcelLeadManagement : System.Web.UI.Page
 
                         string aae = dr["Predicted_Closing_Date"].ToString().ToUpper().Trim();
                         string dtaae = Convert.ToDateTime(aae).ToString("dd/MM/yyyy");
-                        dr_final1["Predicted Closing Date"] = dtaae;
+                        if (dtaae != "01/01/2000")
+                        {
+                            dr_final1["Predicted Closing Date"] = dtaae;
+                        }
 
                         dr_final1["Competitor Name"] = dr["Competitor_Name"];
                         dr_final1["Activity Name"] = dr["Activity_Name"];
