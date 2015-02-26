@@ -346,7 +346,7 @@ public partial class Payments : System.Web.UI.Page
             orderBy += " ,RefNo,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo),Narration";
             selColumn += " ,RefNo,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) as CNo,Narration";
         }
-        selColumn = selColumn.Replace("TransDate", "format(tblDayBook.TransDate,'dd/mm/yyyy') as TransDate");
+        selColumn = selColumn.Replace("TransDate", "tblDayBook.TransDate");
         selColumn = selColumn.Replace("PaidTo", "tblLedger.LedgerName As PaidTo");
         //selColumn = selColumn.Replace("PaymentMode", "IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) AS PaymentMode");
         //selColumn = selColumn.Replace("PaymentMode", "IIf(IsNull(IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo)),'Cash', 'Cheque / Card') AS PaymentMode");

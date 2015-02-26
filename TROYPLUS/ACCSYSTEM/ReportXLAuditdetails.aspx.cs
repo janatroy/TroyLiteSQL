@@ -12,6 +12,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Text;
 using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Management;
@@ -123,7 +125,7 @@ public partial class ReportXLAuditdetails : System.Web.UI.Page
          DataSet ds = new DataSet();
          ds = objBL.getauditdetails(sDataSource, startDate,endDate);
 
-         DataTable dt = new DataTable();
+         DataTable dt = new DataTable("Audit details");
          if (ds.Tables[0].Rows.Count > 0)
          {
               dt.Columns.Add(new DataColumn("Audit Date"));
@@ -161,24 +163,23 @@ public partial class ReportXLAuditdetails : System.Web.UI.Page
 
          if (dt.Rows.Count > 0)
          {
-             string filename = "Audit Details.xls";
-             System.IO.StringWriter tw = new System.IO.StringWriter();
-             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-             DataGrid dgGrid = new DataGrid();
-             dgGrid.DataSource = dt;
-             dgGrid.DataBind();
-             dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-             dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-             dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-             dgGrid.HeaderStyle.Font.Bold = true;
-             //Get the HTML for the control.
-             dgGrid.RenderControl(hw);
-             //Write the HTML back to the browser.
-             Response.ContentType = "application/vnd.ms-excel";
-             Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-             this.EnableViewState = false;
-             Response.Write(tw.ToString());
-             Response.End();
+             using (XLWorkbook wb = new XLWorkbook())
+             {
+                 string filename = "Audit Details.xlsx";
+                 wb.Worksheets.Add(dt);
+                 Response.Clear();
+                 Response.Buffer = true;
+                 Response.Charset = "";
+                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                 Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                 using (MemoryStream MyMemoryStream = new MemoryStream())
+                 {
+                     wb.SaveAs(MyMemoryStream);
+                     MyMemoryStream.WriteTo(Response.OutputStream);
+                     Response.Flush();
+                     Response.End();
+                 }
+             }
          }
      }
     

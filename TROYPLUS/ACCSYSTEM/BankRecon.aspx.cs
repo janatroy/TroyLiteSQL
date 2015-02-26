@@ -2092,14 +2092,22 @@ public partial class BankRecon : System.Web.UI.Page
                         string logdescription = GrdViewItems.Rows[vLoop].Cells[9].Text;
                         string value1 = string.Empty;
 
-                        if (logdescription.Length > 20)
+
+                        if (logdescription == "&nbsp;")
                         {
-                            value1 = logdescription.Substring(0, 19);
-                            drNew["ChequeNo"] = value1;
+                            drNew["ChequeNo"] = "";
                         }
                         else
                         {
-                            drNew["ChequeNo"] = GrdViewItems.Rows[vLoop].Cells[9].Text;
+                            if (logdescription.Length > 20)
+                            {
+                                value1 = logdescription.Substring(0, 19);
+                                drNew["ChequeNo"] = value1;
+                            }
+                            else
+                            {
+                                drNew["ChequeNo"] = GrdViewItems.Rows[vLoop].Cells[9].Text;
+                            }
                         }
 
                         drNew["ReconcilatedBy"] = GrdViewItems.Rows[vLoop].Cells[10].Text;

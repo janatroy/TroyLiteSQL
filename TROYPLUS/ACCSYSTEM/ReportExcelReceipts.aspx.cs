@@ -349,7 +349,7 @@ public partial class Receipts : System.Web.UI.Page
             orderBy += " ,RefNo,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo),Narration";
             selColumn += " ,RefNo,IIf((tblDayBook.ChequeNo IS NULL),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) as CNo,Narration";
         }
-        selColumn = selColumn.Replace("TransDate", "format(tblDayBook.TransDate,'dd/mm/yyyy') As TransDate");
+        selColumn = selColumn.Replace("TransDate", "tblDayBook.TransDate");
         selColumn = selColumn.Replace("PaidTo", "tblLedger.LedgerName As PaidTo");
         selColumn = selColumn.Replace("PaymentMode", " tblDayBook.ChequeNo AS PaymentMode");
         orderBy = orderBy.Replace("PaidTo", "tblLedger.LedgerName");

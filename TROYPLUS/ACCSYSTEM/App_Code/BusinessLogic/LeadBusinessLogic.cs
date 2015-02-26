@@ -887,7 +887,7 @@ public class LeadBusinessLogic : BaseLogic
                 {
                     foreach (DataRow dr in dsProduct.Tables[0].Rows)
                     {
-                        dbQry = string.Format("INSERT INTO tblProductInterest(Lead_No,Product_Id,Product_Name) VALUES({0},'{1}','{2}')", LeadIDD, dr["PrdID"].ToString(), dr["Prd"].ToString());
+                        dbQry = string.Format("INSERT INTO tblProductInterest(Lead_No,Product_Id,Product_Name,Product_Model,Product_Category,Product_Brand,Product_Quantity) VALUES({0},'{1}','{2}','{3}','{4}','{5}','{6}')", LeadIDD, dr["PrdID"].ToString(), dr["Prd"].ToString(), dr["Model"].ToString(), dr["Cate"].ToString(), dr["Brd"].ToString(), dr["Qty"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
@@ -1254,7 +1254,8 @@ public class LeadBusinessLogic : BaseLogic
                     foreach (DataRow dr in dsProduct.Tables[0].Rows)
                     {
                         //dbQry = string.Format("INSERT INTO tblProductInterest(Lead_No,Product_Id,Product_Name,SlNo) VALUES({0},'{1}','{2}',{3})", LeadNo, dr["Product_Id"].ToString(), dr["Product_Name"].ToString(), Convert.ToInt32(dr["SlNo"]));
-                        dbQry = string.Format("INSERT INTO tblProductInterest(Lead_No,Product_Id,Product_Name) VALUES({0},'{1}','{2}')", LeadNo, dr["PrdID"].ToString(), dr["Prd"].ToString());
+                        //dbQry = string.Format("INSERT INTO tblProductInterest(Lead_No,Product_Id,Product_Name) VALUES({0},'{1}','{2}')", LeadNo, dr["PrdID"].ToString(), dr["Prd"].ToString());
+                        dbQry = string.Format("INSERT INTO tblProductInterest(Lead_No,Product_Id,Product_Name,Product_Model,Product_Category,Product_Brand,Product_Quantity) VALUES({0},'{1}','{2}','{3}','{4}','{5}','{6}')", LeadNo, dr["PrdID"].ToString(), dr["Prd"].ToString(), dr["Model"].ToString(), dr["Cate"].ToString(), dr["Brd"].ToString(), dr["Qty"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }

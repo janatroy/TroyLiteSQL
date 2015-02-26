@@ -4692,6 +4692,13 @@ fieldset
     border : 1px solid Gray ;
 }
 
+.someclass1
+{
+    font-size:15px;
+    font-weight:700;
+     border : 1px solid Gray ;
+}
+
 .AddGetRefNo
 {
     background: url(images/AddRefNo.png) no-repeat !important;

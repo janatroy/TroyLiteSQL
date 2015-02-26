@@ -306,7 +306,7 @@
                                                                                                     <asp:Label id="lblStatus" runat ="server" Text='<%# Eval("Status")%>'/>
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>--%>
-                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Reconciled Date" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="30px">
+                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Reconciled Date" HeaderStyle-BorderColor="Gray"  HeaderStyle-Width="30px">
                                                                                                                 <ItemTemplate>
                                                                                                                     <asp:TextBox ID="txtDate" Enabled="false" runat="server" Width="70px" Text='<%# Bind("Reconcilateddate") %>'></asp:TextBox>
                                                                                                                     <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"

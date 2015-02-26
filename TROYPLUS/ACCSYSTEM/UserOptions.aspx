@@ -794,7 +794,7 @@
                                                                                                     </asp:TemplateField>
                                                                                                     <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="View" HeaderStyle-BorderColor="Gray">
                                                                                                         <ItemTemplate>
-                                                                                                            <asp:CheckBox ID="chkboxView" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Views") %>'></asp:CheckBox>
+                                                                                                            <asp:CheckBox ID="chkboxView" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Views") %>' Enabled="false"></asp:CheckBox>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
                                                                                                 </Columns>

@@ -130,18 +130,18 @@ public partial class DamageCheque : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -160,18 +160,18 @@ public partial class DamageCheque : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -206,39 +206,78 @@ public partial class DamageCheque : System.Web.UI.Page
     {
         try
         {
-            //if (e.Exception == null)
+           
+
+            //if (e.Exception.InnerException != null)
             //{
-            //MyAccordion.Visible = true;
-            lnkBtnAdd.Visible = true;
-            frmViewAdd.Visible = false;
-            GrdViewLedger.Visible = true;
-            System.Threading.Thread.Sleep(1000);
-            GrdViewLedger.DataBind();
-            StringBuilder scriptMsg = new StringBuilder();
-            scriptMsg.Append("alert('Damaged Cheque Leaf Information Saved Successfully.');");
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
+            //    if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+            //        (e.Exception.InnerException.Message.IndexOf("Task Status Exists") > -1))
+            //    {
+
+            //        e.ExceptionHandled = true;
+            //        e.KeepInInsertMode = true;
+            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
+            //        ModalPopupExtender1.Show();
+            //        return;
+            //    }
             //}
             //else
             //{
-            //    if (e.Exception != null)
-            //    {
-            //        StringBuilder script = new StringBuilder();
-            //        script.Append("alert('Cheque Book with this name already exists, Please try with a different name.');");
+                if (e.Exception == null)
+                {
+                //MyAccordion.Visible = true;
+                lnkBtnAdd.Visible = true;
+                frmViewAdd.Visible = false;
+                GrdViewLedger.Visible = true;
+                System.Threading.Thread.Sleep(1000);
+                GrdViewLedger.DataBind();
+                StringBuilder scriptMsg = new StringBuilder();
+                scriptMsg.Append("alert('Damaged Cheque Leaf Information Saved Successfully.');");
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
+                }
 
-            //        if (e.Exception.InnerException != null)
-            //        {
-            //            if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
-            //                (e.Exception.InnerException.Message.IndexOf("Ledger Exists") > -1))
-            //                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
-            //        }
-            //        else
-            //        {
-            //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "Exception: " + e.Exception.Message + e.Exception.StackTrace, true);
-            //        }
-            //    }
-            //    e.KeepInInsertMode = true;
-            //    e.ExceptionHandled = true;
-            //}
+                else
+                {
+                    if (e.Exception != null)
+                    {
+                        StringBuilder script = new StringBuilder();
+                        
+
+                        if (e.Exception.InnerException != null)
+                        {
+
+                            if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+                                (e.Exception.InnerException.Message.IndexOf("Damaged leaf Exists") > -1))
+                            {
+                                script.Append("alert(' Damaged Cheque with this Number already exists, Please try with a different Number.');");
+
+                                e.ExceptionHandled = true;
+                                e.KeepInInsertMode = true;
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                            else if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+                               (e.Exception.InnerException.Message.IndexOf("Leaf Not Exists") > -1))
+                            {
+                                script.Append("alert(' Leaf Number not exists in Cheque Book, Please try with a different Number.');");
+
+                                e.ExceptionHandled = true;
+                                e.KeepInInsertMode = true;
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "Exception: " + e.Exception.Message + e.Exception.StackTrace, true);
+                        }
+                    }
+                    e.KeepInInsertMode = true;
+                    e.ExceptionHandled = true;
+                }
         }
         catch (Exception ex)
         {
