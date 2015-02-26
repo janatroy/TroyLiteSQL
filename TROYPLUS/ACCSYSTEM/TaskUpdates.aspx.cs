@@ -51,6 +51,12 @@ public partial class TaskUpdates : System.Web.UI.Page
                     lnkBtnAdd.ToolTip = "Click to Add New item ";
                 }
 
+                //if (bl.CheckUserHaveEdit(usernam, "Tupdate"))
+                //{
+                //    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                //    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                //}
+
 
             }
         }
@@ -121,7 +127,7 @@ public partial class TaskUpdates : System.Web.UI.Page
         dstd = bl.GetTaskList(connection, "", "");
         drpDependencyTask.DataSource = dstd;
         drpDependencyTask.DataBind();
-        drpDependencyTask.DataTextField = "TaskId";
+        drpDependencyTask.DataTextField = "Task_Name";
         drpDependencyTask.DataValueField = "Task_Id";
 
         //drpsIncharge.DataSource = ds;
