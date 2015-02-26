@@ -310,6 +310,22 @@ public partial class ProjectEntry : System.Web.UI.Page
             int EndDueDate = 0;
             int OverDueDate = 0;
 
+
+
+            if (txtEffortDays.Text.Trim() != string.Empty)
+                EffortDays = Convert.ToInt32(txtEffortDays.Text.Trim());
+
+            if (Convert.ToInt32(EffortDays) == 0 || Convert.ToInt32(EffortDays) == null)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Estimate Effort days should not Zero Or Blank');", true);
+
+                ModalPopupExtender1.Show();
+                tbMain.Visible = true;
+                return;
+
+            }
+
+
             if (Page.IsValid)
             {              
                 if (txtProjectCode.Text.Trim() != string.Empty)

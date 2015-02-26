@@ -437,6 +437,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
     {
         try
         {
+            loadEmp();
             GridViewRow row = GrdEmp.SelectedRow;
 
             int empNo = Convert.ToInt32(GrdEmp.SelectedDataKey.Value);
@@ -459,6 +460,9 @@ public partial class EmployeeMaster : System.Web.UI.Page
                 //if (li222 != null) li222.Selected = true;
 
                 txtEmpFName.Text = ds.Tables[0].Rows[0]["empFirstName"].ToString();
+                drpIncharge.ClearSelection();
+                ListItem li12 = drpIncharge.Items.FindByValue(ds.Tables[0].Rows[0]["ManagerID"].ToString());
+                if (li12 != null) li12.Selected = true;
                 txtEmpMName.Text = ds.Tables[0].Rows[0]["empMiddleName"].ToString();
                 txtEmpSName.Text = ds.Tables[0].Rows[0]["empSurName"].ToString();
                 txtDoj.Text = DateTime.Parse(ds.Tables[0].Rows[0]["empDOJ"].ToString()).ToShortDateString();

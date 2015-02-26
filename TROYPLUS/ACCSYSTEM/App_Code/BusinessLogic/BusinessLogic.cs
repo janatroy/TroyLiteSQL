@@ -49771,17 +49771,28 @@ public class BusinessLogic
         string dbQry = string.Empty;
         string FChequeNo = string.Empty;
         string TChequeNo = string.Empty;
+        //int BankID = 0;
 
         try
         {
+            int bankid = 0;
             manager.Open();
 
-            dbQry = "SELECT FromChequeNo,ToChequeNo FROM tblcheque Where ChequeBookID =" + ChequeBookID + " ";
+            dbQry = "SELECT FromChequeNo,ToChequeNo,BankID FROM tblcheque Where ChequeBookID =" + ChequeBookID + " ";
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
+           // if (ds.Tables[0].Rows.Count > 0)
+               
+
+            //BankID = int.Parse(ddBankName.SelectedValue);
+
+            //BankName = ddBankName.SelectedItem.Text;
+            //string ddBankID = ddBankName.SelectedValue;
+
             if (ds.Tables[0].Rows.Count > 0)
             {
+                bankid = Convert.ToInt32(ds.Tables[0].Rows[0]["BankID"].ToString());
                 foreach (DataRow dd in ds.Tables[0].Rows)
                 {
                     FChequeNo = dd["FromChequeNo"].ToString();
@@ -49789,7 +49800,7 @@ public class BusinessLogic
                 }
             }
 
-            dbQry = "SELECT Count(*) FROM tblDamageCheque Where ChequeNo >='" + FChequeNo.ToString() + "' And ChequeNo <='" + TChequeNo.ToString() + "' ";
+            dbQry = "SELECT Count(*) FROM tblDamageCheque Where BankID=" + bankid + " And ChequeNo >='" + FChequeNo.ToString() + "' And ChequeNo <='" + TChequeNo.ToString() + "' ";
 
             object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
 
