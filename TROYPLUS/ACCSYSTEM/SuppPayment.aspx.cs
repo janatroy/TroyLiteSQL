@@ -2050,7 +2050,7 @@ public partial class SuppPayment : System.Web.UI.Page
                 string smscontent = string.Empty;
                 if (hdSMSRequired.Value == "YES")
                 {
-                    DataSet dsd = bl.GetLedgerInfoForId(connection, CreditorID);
+                    DataSet dsd = bl.GetLedgerInfoForId(connection, DebitorID);
                     var toAddress = "";
                     var toAdd = "";
                     Int32 ModeofContact = 0;

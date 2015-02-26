@@ -228,9 +228,16 @@ public partial class Purchase : System.Web.UI.Page
 
         grvStudentDetails.DataSource = dt;
 
-        if (ddDeliveryNote.SelectedValue == "YES" || drpSalesReturn.SelectedValue == "YES")
+        if (cmdSave.Visible == true)
         {
-            grvStudentDetails.Columns[3].Visible = true;
+            if (ddDeliveryNote.SelectedValue == "YES" || drpSalesReturn.SelectedValue == "YES")
+            {
+                grvStudentDetails.Columns[3].Visible = true;
+            }
+            else
+            {
+                grvStudentDetails.Columns[3].Visible = false;
+            }
         }
         else
         {
@@ -4136,7 +4143,8 @@ public partial class Purchase : System.Web.UI.Page
 
             //valdate.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
             //valdate.MaximumValue = System.DateTime.Now.ToShortDateString();
-
+            cmdSave.Visible = false;
+            FirstGridViewRow();
             string enabledate = string.Empty;
             enabledate = bl.getEnableDateConfigInfoMethod();
             if (enabledate == "YES")
@@ -4394,6 +4402,7 @@ public partial class Purchase : System.Web.UI.Page
             {
                 DropDownList drpProduct = (DropDownList)grvStudentDetails.Rows[vLoop].FindControl("drpPrd");
                 TextBox txtQty = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtQty");
+                TextBox txtRtnQty = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtRtnQty");
                 TextBox txtRate = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtRate");
                 TextBox txtNLP = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtNLP");
                 TextBox txtDisPre = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtDisPre");
@@ -4417,11 +4426,12 @@ public partial class Purchase : System.Web.UI.Page
                 txtDisPre.Text = itemDs.Tables[0].Rows[vLoop]["Discount"].ToString();
                 txtVATPre.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["VAT"].ToString()).ToString("#0.00");
                 txtCSTPre.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["CST"].ToString()).ToString("#0.00");
-                txtDiscAmt.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["DiscAmount"].ToString()).ToString("#0.00");
+                txtDiscAmt.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["DiscAmount"].ToString()).ToString();
                 //txtTotal.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["Total"].ToString()).ToString("#0.00");
 
 
                 if (txtQty.Text == "") txtQty.Text = "0";
+                if (txtRtnQty.Text == "") txtRtnQty.Text = "0";
                 if (txtRate.Text == "") txtRate.Text = "0";
                 if (txtNLP.Text == "") txtNLP.Text = "0";
                 if (txtDisPre.Text == "") txtDisPre.Text = "0";
@@ -4966,6 +4976,9 @@ public partial class Purchase : System.Web.UI.Page
             dt.Columns.Add(dc);
 
             dc = new DataColumn("Qty");
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("RtnQty");
             dt.Columns.Add(dc);
 
             dc = new DataColumn("Measure_Unit");
@@ -7000,6 +7013,7 @@ public partial class Purchase : System.Web.UI.Page
                 ddl.DataValueField = "ItemCode";
             }
 
+
             if (optionmethod.SelectedValue != "Purchase")
             {
                 for (int vLoop = 0; vLoop < grvStudentDetails.Rows.Count; vLoop++)
@@ -7015,29 +7029,32 @@ public partial class Purchase : System.Web.UI.Page
                     TextBox txtDiscAmt = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtDiscAmt");
                     TextBox txtTotal = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtTotal");
 
-                    if (ddDeliveryNote.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
+                    if (cmdSave.Visible == true)
                     {
-                        drpProduct.Enabled = false;
-                        txtQty.ReadOnly = true;
-                        txtRate.ReadOnly = true;
-                        txtNLP.ReadOnly = true;
-                        txtDisPre.ReadOnly = true;
-                        txtVATPre.ReadOnly = true;
-                        txtCSTPre.ReadOnly = true;
-                        txtDiscAmt.ReadOnly = true;
-                        txtTotal.ReadOnly = true;
-                    }
-                    else
-                    {
-                        drpProduct.Enabled = true;
-                        txtQty.ReadOnly = false;
-                        txtRate.ReadOnly = false;
-                        txtNLP.ReadOnly = false;
-                        txtDisPre.ReadOnly = false;
-                        txtVATPre.ReadOnly = false;
-                        txtCSTPre.ReadOnly = false;
-                        txtDiscAmt.ReadOnly = false;
-                        txtTotal.ReadOnly = false;
+                        if (ddDeliveryNote.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
+                        {
+                            drpProduct.Enabled = false;
+                            txtQty.ReadOnly = true;
+                            txtRate.ReadOnly = true;
+                            txtNLP.ReadOnly = true;
+                            txtDisPre.ReadOnly = true;
+                            txtVATPre.ReadOnly = true;
+                            txtCSTPre.ReadOnly = true;
+                            txtDiscAmt.ReadOnly = true;
+                            txtTotal.ReadOnly = true;
+                        }
+                        else
+                        {
+                            drpProduct.Enabled = true;
+                            txtQty.ReadOnly = false;
+                            txtRate.ReadOnly = false;
+                            txtNLP.ReadOnly = false;
+                            txtDisPre.ReadOnly = false;
+                            txtVATPre.ReadOnly = false;
+                            txtCSTPre.ReadOnly = false;
+                            txtDiscAmt.ReadOnly = false;
+                            txtTotal.ReadOnly = false;
+                        }
                     }
                 }
             }
