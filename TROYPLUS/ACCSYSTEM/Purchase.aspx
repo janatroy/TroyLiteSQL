@@ -936,7 +936,7 @@
                                                                                                                                                 <td colspan="4">
                                                                                                                                                     <div style="height: 250px; width: 1190px; overflow: scroll">
                                                                                                                                                         <center>
-                                                                                                                                                            <asp:GridView ID="grvStudentDetails" runat="server" Width="50%" AllowPaging="True"
+                                                                                                                                                            <asp:GridView ID="grvStudentDetails" runat="server" Width="50%" 
                                                                                                                                                                 ShowFooter="True" AutoGenerateColumns="False" OnRowDeleting="grvStudentDetails_RowDeleting" OnRowDataBound="grvStudentDetails_RowDataBound"
                                                                                                                                                                 CellPadding="1"
                                                                                                                                                                 GridLines="None">

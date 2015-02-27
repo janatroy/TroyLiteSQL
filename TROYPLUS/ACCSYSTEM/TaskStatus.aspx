@@ -10,14 +10,26 @@
 
 
         function EnableDisableButton(sender, target) {
-            if (sender.value.length > 0)
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+           //alert('test');
+           <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
 
-                document.getElementById('<%= BtnClearFilter.ClientID %>').disabled = false;
 
-            else
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                alert(sender.value.length);
+                alert(first.value.length);
+                document.getElementById(target).disabled = false;
+            }
 
-                document.getElementById('<%= BtnClearFilter.ClientID %>').disabled = true;
+            if (sender.value.length < 1 && first.value.length < 1) {
+                alert(sender.value.length);
+                alert(first.value.length);
+                document.getElementById(target).disabled = true;
+            }
+            //else {
 
+            //    document.getElementById(target).disabled = false;
+            //}
         }
         <%-- window.onload = function () {
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
@@ -122,7 +134,7 @@
                                     <td style="width: 10%; color: white;" align="right">Search
                                     </td>
                                     <td style="width: 41%" class="NewBox">
-                                        <asp:TextBox ID="txtSearch" runat="server" Width="152px" onkeyup="EnableDisableButton(this,'btnReset')" AutoPostBack="true"></asp:TextBox>
+                                        <asp:TextBox ID="txtSearch" runat="server" Width="152px" onkeyup="EnableDisableButton(this,'BtnClearFilter')"></asp:TextBox>
                                         <%--  <asp:TextBox ID="txtSearch" onkeyup="EnableDisableButton(this,'btnReset')" runat="server" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true"></asp:TextBox>--%>
 
                                         <%--  <asp:TextBox  onblur="return: fnOnblur();" ID="txtSearch" runat="server" SkinID="skinTxtBoxSearch" ></asp:TextBox>--%>
@@ -140,10 +152,10 @@
                                         <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false" />
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">
-                                        <%--     <asp:Button ID="btnReset" runat="server" Text="Reset" Font-Bold="true"
+                                        <%--     <asp:Button ID="btnReset" runat="server" OnClick="BtnClearFilter_Click" Text="Reset" Font-Bold="true"
             Enabled="false" onclick="btnReset_Click" />--%>
 
-                                        <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click"   EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                     </td>
 
                                 </tr>

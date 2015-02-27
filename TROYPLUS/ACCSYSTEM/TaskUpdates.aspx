@@ -656,7 +656,7 @@
                                                                                     </td>
                                                                                     <td style="width: 25%;" class="ControlDrpBorder">
                                                                                         <asp:DropDownList ID="drpDependencyTask" TabIndex="5"  EnableTheming="false" AppendDataBoundItems="true" CssClass="drpDownListMedium"
-                                                                                            runat="server" Width="100%" DataTextField="TaskId" backcolor = "#e7e7e7" style="border: 1px solid #e7e7e7" height="26px" Enabled="false"
+                                                                                            runat="server" Width="100%" DataTextField="Task_Name" backcolor = "#e7e7e7" style="border: 1px solid #e7e7e7" height="26px" Enabled="false"
                                                                                             DataValueField="Task_Id" >
                                                                                             <asp:ListItem Text="Select Dependency Task" Value="0"></asp:ListItem>
                                                                                         </asp:DropDownList>
@@ -789,7 +789,7 @@
                 <asp:GridView ID="GrdWME" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                     HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center" Width="100%" CssClass="someClass"
                     AllowPaging="True" OnPageIndexChanging="GrdWME_PageIndexChanging" OnRowCreated="GrdWME_RowCreated"
-                    DataKeyNames="Task_Id" EmptyDataText="No Task Details found." OnSelectedIndexChanged="GrdWME_SelectedIndexChanged"
+                    DataKeyNames="Task_Id" EmptyDataText="No Task Details found." OnSelectedIndexChanged="GrdWME_SelectedIndexChanged" OnRowDataBound="GrdWME_RowDataBound"
                      >
                     <HeaderStyle Height="40px"  Font-Bold="true" />
                     <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px"/>

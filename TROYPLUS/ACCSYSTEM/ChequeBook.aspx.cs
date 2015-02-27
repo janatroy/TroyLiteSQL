@@ -58,7 +58,7 @@ public partial class ChequeBook : System.Web.UI.Page
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
-                GrdViewSerVisit.PageSize = 3;
+                GrdViewSerVisit.PageSize = 8;
 
 
                 string connection = Request.Cookies["Company"].Value;

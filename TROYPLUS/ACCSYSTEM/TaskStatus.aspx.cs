@@ -53,7 +53,7 @@ public partial class TaskStatus : System.Web.UI.Page
                 lnkBtnAdd.Enabled = true;
                 lnkBtnAdd.ToolTip = "Click to Add New ";
             }
-
+            BtnClearFilter.Enabled = false;
             //if(txtSearch.Text=="")
             //{
             //    BtnClearFilter.Enabled = false;
@@ -106,6 +106,8 @@ public partial class TaskStatus : System.Web.UI.Page
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
 
+
+
         //if(txtSearch.Text!="")
         //{
         //    BtnClearFilter.Enabled = true;
@@ -114,8 +116,7 @@ public partial class TaskStatus : System.Web.UI.Page
       // ScriptManager.RegisterStartupScript(this, GetType(),"EnableDisableButton","EnableDisableButton();", true);
 
 
-       // BtnClearFilter.Visible = false;
-
+        //BtnClearFilter.Enabled = true;
         //BtnClearFilter_Click(sender, e);
 
         
@@ -143,6 +144,8 @@ public partial class TaskStatus : System.Web.UI.Page
 
         txtSearch.Text = "";
         ddCriteria.SelectedIndex = 0;
+        //BtnClearFilter.Visible = true;
+        //BtnClearFilter.Enabled = false;
         //if (txtSearch.Text == "")
         //{
         //    BtnClearFilter.Enabled = false;

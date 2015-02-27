@@ -1324,7 +1324,7 @@ public partial class Purchase : System.Web.UI.Page
                             TextBox txtTotal = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtTotal");
 
                             int col = vLoop + 1;
-
+                            if (txtRtnQty.Text == "") txtRtnQty.Text = "0";
                             if (drpProduct.SelectedValue == "0")
                             {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Product in row " + col + " ')", true);
@@ -1341,6 +1341,11 @@ public partial class Purchase : System.Web.UI.Page
                             {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Rate in row " + col + " ')", true);
                                 txtRate.Focus();
+                                return;
+                            }
+                            else if (Convert.ToInt32(txtQty.Text) < Convert.ToInt32(txtRtnQty.Text))
+                            {                               
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Return qty is greater than Available Quantity in row " + col + " ')", true);
                                 return;
                             }
                             else if (txtNLP.Text == "")
@@ -6997,7 +7002,7 @@ public partial class Purchase : System.Web.UI.Page
             DataSet ds = new DataSet();
             DataSet dsEmp = new DataSet();
 
-            ds = bl.ListProdForDynammicrow(sDataSource);
+            ds = bl.ListProdForDynammicrowPurchase(sDataSource);
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {

@@ -8682,6 +8682,41 @@ public class BusinessLogic
         }
     }
 
+    public DataSet ListProdForDynammicrowPurchase(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        if (connection.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
+            manager.ConnectionString = CreateConnectionString(connection);
+        else
+            manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}','{2}','{3}','{4}') OR tblGroups.HeadingID IN (11) Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors", "Bank Accounts", "Cash in Hand", "InCome");
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblLedger.Unuse = 'YES' ORDER By LedgerName");
+            dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster");
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
     public DataSet ListProdForDynammicrow(string connection)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -8697,7 +8732,7 @@ public class BusinessLogic
         {
             //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}','{2}','{3}','{4}') OR tblGroups.HeadingID IN (11) Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors", "Bank Accounts", "Cash in Hand", "InCome");
             //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblLedger.Unuse = 'YES' ORDER By LedgerName");
-            dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster where stock > 0");
+            dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster where stock > 0 and IsActive='YES'");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -49771,17 +49806,28 @@ public class BusinessLogic
         string dbQry = string.Empty;
         string FChequeNo = string.Empty;
         string TChequeNo = string.Empty;
+        //int BankID = 0;
 
         try
         {
+            int bankid = 0;
             manager.Open();
 
-            dbQry = "SELECT FromChequeNo,ToChequeNo FROM tblcheque Where ChequeBookID =" + ChequeBookID + " ";
+            dbQry = "SELECT FromChequeNo,ToChequeNo,BankID FROM tblcheque Where ChequeBookID =" + ChequeBookID + " ";
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
+           // if (ds.Tables[0].Rows.Count > 0)
+               
+
+            //BankID = int.Parse(ddBankName.SelectedValue);
+
+            //BankName = ddBankName.SelectedItem.Text;
+            //string ddBankID = ddBankName.SelectedValue;
+
             if (ds.Tables[0].Rows.Count > 0)
             {
+                bankid = Convert.ToInt32(ds.Tables[0].Rows[0]["BankID"].ToString());
                 foreach (DataRow dd in ds.Tables[0].Rows)
                 {
                     FChequeNo = dd["FromChequeNo"].ToString();
@@ -49789,7 +49835,7 @@ public class BusinessLogic
                 }
             }
 
-            dbQry = "SELECT Count(*) FROM tblDamageCheque Where ChequeNo >='" + FChequeNo.ToString() + "' And ChequeNo <='" + TChequeNo.ToString() + "' ";
+            dbQry = "SELECT Count(*) FROM tblDamageCheque Where BankID=" + bankid + " And ChequeNo >='" + FChequeNo.ToString() + "' And ChequeNo <='" + TChequeNo.ToString() + "' ";
 
             object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
 

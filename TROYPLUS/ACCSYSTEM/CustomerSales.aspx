@@ -998,7 +998,7 @@
                                                                                                                                             <tr>
                                                                                                                                                 <td colspan="4">
                                                                                                                                                     <div style="height: 250px; width: 100%; overflow: scroll">
-                                                                                                                                                        <asp:GridView ID="grvStudentDetails" runat="server" Width="100%" AllowPaging="True"
+                                                                                                                                                        <asp:GridView ID="grvStudentDetails" runat="server" Width="100%"
                                                                                                                                                             ShowFooter="True" AutoGenerateColumns="False"
                                                                                                                                                             CellPadding="1" OnRowDataBound="grvStudentDetails_RowDataBound"
                                                                                                                                                             GridLines="None" OnRowDeleting="grvStudentDetails_RowDeleting">
