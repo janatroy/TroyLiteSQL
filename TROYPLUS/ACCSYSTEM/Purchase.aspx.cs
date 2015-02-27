@@ -7002,7 +7002,7 @@ public partial class Purchase : System.Web.UI.Page
             DataSet ds = new DataSet();
             DataSet dsEmp = new DataSet();
 
-            ds = bl.ListProdForDynammicrow(sDataSource);
+            ds = bl.ListProdForDynammicrowPurchase(sDataSource);
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {

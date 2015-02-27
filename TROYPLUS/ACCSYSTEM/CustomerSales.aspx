@@ -348,6 +348,7 @@
                                                                                                                                             <Triggers>
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="tabs2$TabPanel1$drpPurchaseReturn" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="chk" EventName="CheckedChanged" />
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
@@ -371,6 +372,7 @@
                                                                                                                                                 </asp:DropDownList>
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
@@ -410,6 +412,7 @@
                                                                                                                                                 <asp:Label ID="lblledgerCategory" runat="server" CssClass="lblFont" Style="color: royalblue; font-weight: normal; font-size: smaller"></asp:Label>
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
@@ -422,6 +425,7 @@
                                                                                                                                                 <asp:TextBox ID="txtAddress" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" Height="26px" MaxLength="200" SkinID="skinTxtBox" TabIndex="3" Width="50%"></asp:TextBox>
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="TextBox4" EventName="TextChanged" />
                                                                                                                                             </Triggers>
@@ -453,6 +457,7 @@
                                                                                                                                                 <asp:TextBox ID="txtAddress2" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" Height="26px" MaxLength="200" SkinID="skinTxtBox" TabIndex="5" Width="500px"></asp:TextBox>
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
@@ -470,6 +475,7 @@
                                                                                                                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxEx" runat="server" FilterType="Numbers" TargetControlID="txtCustPh" />
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
 
                                                                                                                                             </Triggers>
@@ -484,6 +490,7 @@
                                                                                                                                                 <asp:TextBox ID="txtAddress3" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" Width="500px"></asp:TextBox>
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
@@ -507,12 +514,14 @@
                                                                                                                                     <td class="ControlDrpBorder" style="width: 24%">
                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
-                                                                                                                                                <asp:DropDownList ID="drpPurID" runat="server" AutoPostBack="true" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="PurchaseID" DataValueField="PurchaseID" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%" OnSelectedIndexChanged="drpPurID_SelectedIndexChanged">
+                                                                                                                                                <asp:DropDownList ID="drpPurID" runat="server" AutoPostBack="true" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="PurchaseID" DataValueField="PurchaseID" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2"  Width="100%" OnSelectedIndexChanged="drpPurID_SelectedIndexChanged">
                                                                                                                                                     <asp:ListItem style="background-color: #e7e7e7" Text="Select Invoice No" Value="0"></asp:ListItem>
                                                                                                                                                 </asp:DropDownList>
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
-                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
+                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" /> 
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />                                                                                                                                             
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                     </td>
@@ -624,6 +633,7 @@
                                                                                                                                                 <asp:HiddenField ID="hdEditQty" runat="server" Value="0" />
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
+                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmdSave" EventName="Click" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmdCancel" EventName="Click" />
@@ -998,7 +1008,7 @@
                                                                                                                                             <tr>
                                                                                                                                                 <td colspan="4">
                                                                                                                                                     <div style="height: 250px; width: 100%; overflow: scroll">
-                                                                                                                                                        <asp:GridView ID="grvStudentDetails" runat="server" Width="100%" AllowPaging="True"
+                                                                                                                                                        <asp:GridView ID="grvStudentDetails" runat="server" Width="100%"
                                                                                                                                                             ShowFooter="True" AutoGenerateColumns="False"
                                                                                                                                                             CellPadding="1" OnRowDataBound="grvStudentDetails_RowDataBound"
                                                                                                                                                             GridLines="None" OnRowDeleting="grvStudentDetails_RowDeleting">
@@ -1020,7 +1030,7 @@
                                                                                                                                                                 </asp:TemplateField>
                                                                                                                                                                 <asp:TemplateField HeaderText="Quantity" ItemStyle-Width="40px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                                         <cc1:FilteredTextBoxExtender ID="Qty" runat="server" FilterType="Numbers" TargetControlID="txtQty" />
+                                                                                                                                                                        <cc1:FilteredTextBoxExtender ID="Qty" runat="server" FilterType="Numbers" TargetControlID="txtQty" />
                                                                                                                                                                         <asp:TextBox ID="txtQty" Style="text-align: right" runat="server" Width="40px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                     </ItemTemplate>
                                                                                                                                                                 </asp:TemplateField>
@@ -1040,9 +1050,9 @@
                                                                                                                                                                             ValidationGroup="DynRowAdd" Text="Add New Product" OnClick="ButtonAdd_Click" />
                                                                                                                                                                     </FooterTemplate>
                                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                                 <asp:TemplateField HeaderText="Return Quantity" ItemStyle-Width="40px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
+                                                                                                                                                                <asp:TemplateField HeaderText="Return Quantity" ItemStyle-Width="40px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                                         <cc1:FilteredTextBoxExtender ID="RtnQty" runat="server" FilterType="Numbers" TargetControlID="txtRtnQty" />
+                                                                                                                                                                        <cc1:FilteredTextBoxExtender ID="RtnQty" runat="server" FilterType="Numbers" TargetControlID="txtRtnQty" />
                                                                                                                                                                         <asp:TextBox ID="txtRtnQty" Style="text-align: right" runat="server" Width="40px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                     </ItemTemplate>
                                                                                                                                                                 </asp:TemplateField>

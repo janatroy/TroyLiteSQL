@@ -8682,6 +8682,41 @@ public class BusinessLogic
         }
     }
 
+    public DataSet ListProdForDynammicrowPurchase(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        if (connection.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
+            manager.ConnectionString = CreateConnectionString(connection);
+        else
+            manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}','{2}','{3}','{4}') OR tblGroups.HeadingID IN (11) Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors", "Bank Accounts", "Cash in Hand", "InCome");
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblLedger.Unuse = 'YES' ORDER By LedgerName");
+            dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster where IsActive='YES'");
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
     public DataSet ListProdForDynammicrow(string connection)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -69857,6 +69892,221 @@ public class BusinessLogic
         {
             manager.Open();
             dbQry = "SELECT Count(*) FROM tblScreenMaster Where ScreenName ='" + Screen + "'";
+
+            object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if (qtyObj != null && qtyObj != DBNull.Value)
+            {
+                qty = (int)qtyObj;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+    public DataSet ListBranchInfo(string connection, string txtSearch, string dropDown)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        txtSearch = "%" + txtSearch + "%";
+
+        if (dropDown == "BranchName")
+        {
+            dbQry = "select A.BranchId,A.BranchName,A.Branchcode,A.Branchaddress1,A.Branchaddress2,A.Branchaddress3,A.BranchLocation,A.IsActive,A.Branchcode, (Select count(*) from tblBranch where A.BranchId>=BranchId) as Row from tblBranch as A Where A.BranchName like '" + txtSearch + "' Order By A.BranchId";
+        }
+        else if (dropDown == "BranchCode")
+        {
+            dbQry = "select A.BranchId,A.BranchName,A.Branchcode,A.Branchaddress1,A.Branchaddress2,A.Branchaddress3,A.BranchLocation,A.IsActive,A.Branchcode, (Select count(*) from tblBranch where A.BranchId>=BranchId) as Row from tblBranch as A Where A.Branchcode like '" + txtSearch + "' Order By A.BranchId";
+        }
+        else
+        {
+            dbQry = string.Format("select A.BranchId,A.BranchName,A.Branchcode,A.Branchaddress1,A.Branchaddress2,A.Branchaddress3,A.BranchLocation,A.IsActive,A.Branchcode, (Select count(*) from tblBranch where A.BranchId>=BranchId) as Row from tblBranch as A Order By A.BranchId");
+        }
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+    public void InsertBranch(string connection, string Branchcode, string BranchName, string BranchAddress1, string BranchAddress2, string BranchAddress3, string BranchLocation,string IsActive, string Username)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        string dbQry2 = string.Empty;
+
+        string sAuditStr = string.Empty;
+        try
+        {
+            manager.Open();
+            manager.ProviderType = DataProvider.SqlServer;
+
+            manager.BeginTransaction();
+
+            dbQry = string.Format("INSERT INTO tblBranch(Branchcode,BranchName,BranchAddress1,BranchAddress2,BranchAddress3,BranchLocation,IsActive) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive);
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            int BranchID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BranchID) FROM tblBranch"));
+
+
+            //int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
+
+            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            //dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26})",
+            //    LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact);
+
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            //sAuditStr = "Customer Ledger : " + LedgerName + " added. Record Details :  User :" + Username + " AliasName = " + AliasName + " GroupID= " + GroupID + " ,LedgerCategory = " + LedgerCategory + " ,Mobile=" + Mobile + " Phone :" + Phone;
+            //dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
+
+
+
+            sAuditStr = "Branch : " + BranchName + " added. Record Details :  User :" + Username;
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            
+
+            manager.CommitTransaction();
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+    public void UpdateBranch(string connection, int BranchID, string Branchcode, string BranchName, string BranchAddress1, string BranchAddress2, string BranchAddress3, string BranchLocation, string IsActive, string Username)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        string sAuditStr = string.Empty;
+
+        string dbQ = string.Empty;
+        DataSet dsd = new DataSet();
+        string logdescription = string.Empty;
+        string description = string.Empty;
+        string Logsave = string.Empty;
+
+        try
+        {
+            manager.Open();
+            manager.ProviderType = DataProvider.SqlServer;
+
+            manager.BeginTransaction();
+
+            dbQry = string.Format("Update tblBranch SET Branchcode='{0}',BranchName='{1}',BranchAddress1='{2}' ,BranchAddress2='{3}',BranchAddress3='{4}',BranchLocation='{5}',IsActive='{6}' WHERE BranchId={7}", Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation,IsActive, BranchID);
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            sAuditStr = "Branch : " + BranchName + " updated. Record Details :  User :" + Username;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit And Update", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            manager.CommitTransaction();
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataSet GetBranchForId(string connection, int BranchId)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            dbQry = "select * from tblBranch where BranchId = " + BranchId;
+            manager.Open();
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public bool CheckIfBranchDuplicate(string connection, string BranchName)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        int Totalqty = 0;
+        int qty = 0;
+        string dbQry = string.Empty;
+
+        try
+        {
+            manager.Open();
+            dbQry = "SELECT Count(*) FROM tblBranch Where BranchName ='" + BranchName + "'";
 
             object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
 
