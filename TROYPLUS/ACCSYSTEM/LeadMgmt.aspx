@@ -509,8 +509,10 @@
                                                                                                     <tr>
                                                                                                         <td>
                                                                                                             <div class="mainGridHold" id="searchGrid123" style="height: 350px; width: 100%; overflow: scroll; border:double" align="center">
-                                                                                                                <asp:GridView ID="GrdViewLeadproduct" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadproduct_RowDeleting"
-                                                                                                                    Width="94%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadproduct_RowDataBound">
+                                                                                                               <%-- <asp:GridView ID="GrdViewLeadproduct" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadproduct_RowDeleting"
+                                                                                                                    Width="94%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadproduct_RowDataBound">--%>
+                                                                                                                     <asp:GridView ID="GrdViewLeadproduct" AutoGenerateColumns="False"  ShowFooter="True" OnRowDataBound="GrdViewLeadproduct_RowDataBound" OnRowDeleting="GrdViewLeadproduct_RowDeleting" GridLines="None"  runat="server"
+                                                                                                                       Width="94%">
                                                                                                                     <%-- <RowStyle CssClass="dataRow" />
                                                                                                                     <SelectedRowStyle CssClass="SelectdataRow" />
                                                                                                                     <AlternatingRowStyle CssClass="altRow" />
@@ -700,9 +702,10 @@
                                                                                                 <tr style="width: 1200px">
                                                                                                     <td style="width: 1200px">
                                                                                                         <div class="mainGridHold" id="searchGrid3" style="height: 350px; width: 1200px; overflow: scroll;border:double" align="center">
-                                                                                                            <asp:GridView ID="GrdViewLeadActivity" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadActivity_RowDeleting"
-                                                                                                                Width="100%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadActivity_RowDataBound">
-
+                                                                                                            <%--<asp:GridView ID="GrdViewLeadActivity" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadActivity_RowDeleting"
+                                                                                                                Width="100%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadActivity_RowDataBound">--%>
+                                                                                                                <asp:GridView ID="GrdViewLeadActivity" AutoGenerateColumns="False"  ShowFooter="True" OnRowDataBound="GrdViewLeadActivity_RowDataBound" OnRowDeleting="GrdViewLeadActivity_RowDeleting" GridLines="None"  runat="server"
+                                                                                                                       Width="100%">
                                                                                                                 <%--   <RowStyle CssClass="dataRow" />
                                                                                                                 <SelectedRowStyle CssClass="SelectdataRow" />
                                                                                                                 <AlternatingRowStyle CssClass="altRow" />
@@ -1094,9 +1097,10 @@
                                                                                                     <tr style="width: 1000px">
                                                                                                         <td style="width: 1000px">
                                                                                                             <div class="mainGridHold" id="searchGrid2" style="height: 350px; width: 100%; overflow: scroll; border:double" align="center">
-                                                                                                                <asp:GridView ID="GrdViewLeadCompetitor" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" BorderColor="Blue"
-                                                                                                                    Width="90%" AllowPaging="True" ShowFooter="True" CellPadding="4" GridLines="None" OnRowDataBound="GrdViewLeadCompetitor_RowDataBound">
-
+                                                                                                               <%-- <asp:GridView ID="GrdViewLeadCompetitor" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" BorderColor="Blue"
+                                                                                                                    Width="90%" AllowPaging="True" ShowFooter="True" CellPadding="4" GridLines="None" OnRowDataBound="GrdViewLeadCompetitor_RowDataBound">--%>
+                                                                                                                      <asp:GridView ID="GrdViewLeadCompetitor" AutoGenerateColumns="False"  ShowFooter="True" OnRowDataBound="GrdViewLeadCompetitor_RowDataBound" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" GridLines="None"  runat="server"
+                                                                                                                       Width="100%">
                                                                                                                     <%--  <RowStyle CssClass="dataRow" />
                                                                                                                     <SelectedRowStyle CssClass="SelectdataRow" />
                                                                                                                     <AlternatingRowStyle CssClass="altRow" />

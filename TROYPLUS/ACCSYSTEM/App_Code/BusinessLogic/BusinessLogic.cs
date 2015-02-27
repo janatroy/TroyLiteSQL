@@ -8682,6 +8682,41 @@ public class BusinessLogic
         }
     }
 
+    public DataSet ListProdForDynammicrowPurchase(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        if (connection.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
+            manager.ConnectionString = CreateConnectionString(connection);
+        else
+            manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}','{2}','{3}','{4}') OR tblGroups.HeadingID IN (11) Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors", "Bank Accounts", "Cash in Hand", "InCome");
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblLedger.Unuse = 'YES' ORDER By LedgerName");
+            dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster");
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
     public DataSet ListProdForDynammicrow(string connection)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -8697,7 +8732,7 @@ public class BusinessLogic
         {
             //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}','{2}','{3}','{4}') OR tblGroups.HeadingID IN (11) Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors", "Bank Accounts", "Cash in Hand", "InCome");
             //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblLedger.Unuse = 'YES' ORDER By LedgerName");
-            dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster where stock > 0");
+            dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster where stock > 0 and IsActive='YES'");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
