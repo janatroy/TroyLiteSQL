@@ -778,7 +778,7 @@
                                                                                                                             </asp:DropDownList>
                                                                                                                         </ItemTemplate>
                                                                                                                     </asp:TemplateField>
-                                                                                                                    <asp:TemplateField HeaderText="Remarks *" ItemStyle-Width="80px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                    <asp:TemplateField HeaderText="Remarks" ItemStyle-Width="80px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                         <ItemTemplate>
                                                                                                                             <asp:TextBox ID="txtremarks" ForeColor="#0567AE" Font-Bold="true" runat="server" Width="130px"></asp:TextBox>
                                                                                                                         </ItemTemplate>

@@ -3550,7 +3550,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                         }
                         else if (txtComstrweak.Text == "")
                         {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Competitor's Strengths and Weaknesses in row " + col + " ')", true);
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Competitors Strengths and Weaknesses in row " + col + " ')", true);
                             return;
                         }
                         else if (txtremarks.Text == "")
@@ -3733,11 +3733,11 @@ public partial class LeadMgmt : System.Web.UI.Page
                     //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Additional Information5 in row " + col + " ')", true);
                     //    return;
                     //}
-                    else if (txtremarks.Text == "")
-                    {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
-                        return;
-                    }
+                    //else if (txtremarks.Text == "")
+                    //{
+                    //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
+                    //    return;
+                    //}
                 }
 
                 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&              
@@ -4387,7 +4387,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                         }
                         else if (txtComstrweak.Text == "")
                         {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Competitor's Strengths and Weaknesses in row " + col + " ')", true);
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Competitors Strengths and Weaknesses in row " + col + " ')", true);
                             return;
                         }
                         else if (txtremarks.Text == "")
@@ -4569,11 +4569,11 @@ public partial class LeadMgmt : System.Web.UI.Page
                     //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Additional Information5 in row " + col + " ')", true);
                     //    return;
                     //}
-                    else if (txtremarks.Text == "")
-                    {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
-                        return;
-                    }
+                    //else if (txtremarks.Text == "")
+                    //{
+                    //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
+                    //    return;
+                    //}
                 }
 
                 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&

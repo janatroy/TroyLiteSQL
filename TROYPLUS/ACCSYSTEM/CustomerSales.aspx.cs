@@ -392,6 +392,8 @@ public partial class CustomerSales : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         ds = bl.ListPurchaseID();
+        drpPurID.Items.Clear();
+        drpPurID.Items.Add(new ListItem("Select Purchase InvoiceNo", "0"));
         drpPurID.DataSource = ds;
         drpPurID.DataBind();
         drpPurID.DataTextField = "PurchaseID";
@@ -8235,8 +8237,8 @@ public partial class CustomerSales : System.Web.UI.Page
             //dt.Columns.Add(dc);
 
 
-            //dc = new DataColumn("Vatamount");
-            //dt.Columns.Add(dc);
+            dc = new DataColumn("Vatamount");
+            dt.Columns.Add(dc);
 
             //dc = new DataColumn("Subtotal");
             //dt.Columns.Add(dc);
@@ -8323,7 +8325,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     }*/
 
                     dr["Qty"] = dQty.ToString();
-                    //dr["PurchaseRate"] = dRate.ToString();
+                    dr["PurchaseRate"] = dRate.ToString();
 
                     //if (dR["TotalPrice"] != null)
                     //    dr["TotalPrice"] = Convert.ToString(dR["TotalPrice"]);
@@ -8347,8 +8349,8 @@ public partial class CustomerSales : System.Web.UI.Page
                     //if (dR["SubTotal"] != null)
                     //    dr["SubTotal"] = Convert.ToString(dR["SubTotal"]);
 
-                    //if (dR["Vatamount"] != null)
-                    //    dr["Vatamount"] = Convert.ToString(dR["Vatamount"]);
+                    if (dR["discamt"] != null)
+                        dr["Vatamount"] = Convert.ToString(dR["discamt"]);
 
                     // krishnavelu 26 June
                     //if (dR["ExecCharge"] != null)
@@ -10411,33 +10413,49 @@ public partial class CustomerSales : System.Web.UI.Page
         ViewState["CurrentTable"] = dt;
 
         grvStudentDetails.DataSource = dt;
-
-        if (EnableDiscount == "YES")
-        {
-            grvStudentDetails.Columns[10].Visible = true;
-        }
-        else
-        {
-            grvStudentDetails.Columns[10].Visible = false;
-        }
-
-        if (discType == "PERCENTAGE")
-        {
-            grvStudentDetails.Columns[10].HeaderText = "Disc(%)";
-        }
-        else if (discType == "RUPEE")
-        {
-            grvStudentDetails.Columns[10].HeaderText = "Disc(INR)";
-        }
+               
         
         if (drpPurchaseReturn.SelectedValue != "YES")
         {
+            grvStudentDetails.Columns[3].Visible = true;
             grvStudentDetails.Columns[4].Visible = true;
+            grvStudentDetails.Columns[8].Visible = true;
+            grvStudentDetails.Columns[9].Visible = true;
+            grvStudentDetails.Columns[10].Visible = true;
             grvStudentDetails.Columns[5].Visible = false;
+            grvStudentDetails.Columns[13].Visible = true;
+
+            grvStudentDetails.Columns[7].HeaderText = "Total Price";
+            grvStudentDetails.Columns[14].HeaderText = "VAT Amount";
+
+            if (EnableDiscount == "YES")
+            {
+                grvStudentDetails.Columns[10].Visible = true;
+            }
+            else
+            {
+                grvStudentDetails.Columns[10].Visible = false;
+            }
+
+            if (discType == "PERCENTAGE")
+            {
+                grvStudentDetails.Columns[10].HeaderText = "Disc(%)";
+            }
+            else if (discType == "RUPEE")
+            {
+                grvStudentDetails.Columns[10].HeaderText = "Disc(INR)";
+            }
         }
         else
         {
+            grvStudentDetails.Columns[3].Visible = false;
             grvStudentDetails.Columns[4].Visible = false;
+            grvStudentDetails.Columns[8].Visible = false;
+            grvStudentDetails.Columns[9].Visible = false;
+            grvStudentDetails.Columns[10].Visible = false;
+            grvStudentDetails.Columns[13].Visible = false;
+            grvStudentDetails.Columns[7].HeaderText = "Disc(%)";
+            grvStudentDetails.Columns[14].HeaderText = "Discount Amount";
             grvStudentDetails.Columns[5].Visible = true;
         }
         grvStudentDetails.DataBind();
@@ -11290,7 +11308,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                     // drpProduct.Text = itemDs.Tables[0].Rows[vLoop]["ItemCode"].ToString();
                     txtDesc.Text = itemDs.Tables[0].Rows[vLoop]["ProductDesc"].ToString();
-                    //txtRate.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["Rate"].ToString()).ToString("#0.00");
+                    txtRate.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["PurchaseRate"].ToString()).ToString("#0.00");
                     //txtTotalPrice.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["TotalPrice"].ToString()).ToString("#0.00");
                     // txtStock.Text = itemDs.Tables[0].Rows[vLoop]["Stock"].ToString();
                     txtQty.Text = itemDs.Tables[0].Rows[vLoop]["Qty"].ToString();
@@ -11299,7 +11317,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     txtVATPre.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["Vat"].ToString()).ToString("#0.00");
                     txtCSTPre.Text = itemDs.Tables[0].Rows[vLoop]["CST"].ToString();
                     // txtPrBefVAT.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["PriceBeforeVATAmt"].ToString()).ToString("#0.00");
-                    //txtVATAmt.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["Vatamount"].ToString()).ToString("#0.00");
+                    txtVATAmt.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["Vatamount"].ToString()).ToString("#0.00");
                     //txtRtVAT.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["Subtotal"].ToString()).ToString("#0.00");
                     // txtTotal.Text = Convert.ToDouble(itemDs.Tables[0].Rows[vLoop]["Totalmrp"].ToString()).ToString("#0.00");
                 }
@@ -11322,7 +11340,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 cmdSaveProduct.Visible = true;
                 //Label2.Visible = true;
                 //cmdCancelProduct.Visible = false;
-
+                
 
                 if (drpPaymode.SelectedValue.Trim() == "3")
                 {
@@ -11454,8 +11472,8 @@ public partial class CustomerSales : System.Web.UI.Page
                     //lnkBtnAdd.Visible = false;
                     AddNewProd.Enabled = false;
                 }
-
-            }
+                updatePnlSales.Update();
+            }          
         }
     }
 }
