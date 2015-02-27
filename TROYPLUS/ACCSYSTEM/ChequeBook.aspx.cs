@@ -219,6 +219,7 @@ public partial class ChequeBook : System.Web.UI.Page
                 string FromNo = string.Empty;
                 string ToNo = string.Empty;
                 int BankID = 0;
+                //int AccountNo = 0;
 
                 string Username = Request.Cookies["LoggedUserName"].Value;
                 AccountNo = txtAccNoAdd.Text;

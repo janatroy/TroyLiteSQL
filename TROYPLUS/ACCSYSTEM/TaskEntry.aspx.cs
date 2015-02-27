@@ -16,6 +16,7 @@ public partial class TaskEntry : System.Web.UI.Page
     private string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
             if (!IsPostBack)

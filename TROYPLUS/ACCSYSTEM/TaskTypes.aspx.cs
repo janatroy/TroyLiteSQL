@@ -16,6 +16,8 @@ public partial class TaskTypes : System.Web.UI.Page
     public string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+
         if (!Page.IsPostBack)
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
