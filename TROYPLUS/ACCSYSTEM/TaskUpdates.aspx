@@ -33,16 +33,56 @@
         Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
         function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
 
-        function EnableDisableButton(sender, target) {
-            if (sender.value.length > 0)
+        window.onload = function Showalert() {
 
-                document.getElementById('<%= BtnClearFilter.ClientID %>').disabled = false;
-
-            else
-
-                document.getElementById('<%= BtnClearFilter.ClientID %>').disabled = true;
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            // alert('test');
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
 
         }
+
+        function clearfilterclick() {
+            var button = document.getElementById('<%=BtnClearFilter.ClientID %>');
+            alert('clicent');
+            button.style.visibility = "hidden";
+            //button.click();
+
+        }
+
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+            //alert('test');
+            <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
+
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                // alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = false;
+                <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+                // window.onload = function ();
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+                //alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = true;
+                <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+            //else {
+
+            //    document.getElementById(target).disabled = false;
+            //}
+        }
+
 
 
     </script>
@@ -147,7 +187,7 @@
                                          Search
                                     </td>
                                     <td style="width: 20%" class="NewBox">
-                                        <asp:TextBox ID="txtSearch" runat="server" Width="152px" OnTextChanged="txtSearch_TextChanged"  AutoPostBack="true"></asp:TextBox>
+                                        <asp:TextBox ID="txtSearch" runat="server" Width="152px" ></asp:TextBox>
                                        <%-- <asp:TextBox ID="txtSearch" runat="server" onkeyup="EnableDisableButton(this,'btnReset')" SkinID="skinTxtBoxSearch"></asp:TextBox>--%>
                                     </td>
                                     <td style="width: 20%" class="NewBox">
@@ -163,11 +203,11 @@
                                                 </div>
                                     </td>
                                     <td style="width: 20%" class="tblLeftNoPad">
-                                        <asp:Button ID="btnSearch" runat="server" Text="" OnClick="btnSearch_Click"
+                                        <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')"  runat="server" Text="" OnClick="btnSearch_Click"
                                             CssClass="ButtonSearch6" EnableTheming="false" />
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">
-                                            <asp:Button ID="BtnClearFilter" Enabled="false" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                            <asp:Button ID="BtnClearFilter"  runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                         </td>
                                 </tr>
                                 <tr style="display: none">

@@ -16,6 +16,8 @@ public partial class ProjectEntry : System.Web.UI.Page
     private string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+
         try
         {
             if (!IsPostBack)
@@ -140,6 +142,8 @@ public partial class ProjectEntry : System.Web.UI.Page
             //{
             //    BtnClearFilter.Enabled = false;
             //}
+
+            //Page_Load(sender,e);
         }
         catch (Exception ex)
         {
@@ -1384,15 +1388,5 @@ public partial class ProjectEntry : System.Web.UI.Page
     //{
     //    Response.Redirect("DashBoard.aspx");
     //}
-    protected void txtSearch_TextChanged(object sender, EventArgs e)
-    {
-        if (txtSearch.Text == "" || txtSearch.Text == " ")
-        {
-            BtnClearFilter.Enabled = false;
-        }
-        else
-        {
-            BtnClearFilter.Enabled = true;
-        }
-    }
+   
 }
