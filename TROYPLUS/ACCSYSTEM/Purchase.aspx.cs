@@ -3607,6 +3607,8 @@ public partial class Purchase : System.Web.UI.Page
 
             if (optionmethod.SelectedValue == "Purchase")
             {
+                lblHeading.Text = "Purchase Details";
+
                 drpIntTrans.ClearSelection();
                 ListItem cli = drpIntTrans.Items.FindByValue(Convert.ToString("NO"));
                 if (cli != null) cli.Selected = true;
@@ -3661,6 +3663,8 @@ public partial class Purchase : System.Web.UI.Page
             }
             else if (optionmethod.SelectedValue == "DeliveryNote")
             {
+                lblHeading.Text = "Delivery Return";
+
                 ddDeliveryNote.ClearSelection();
                 ListItem cl = ddDeliveryNote.Items.FindByValue(Convert.ToString("YES"));
                 if (cl != null) cl.Selected = true;
@@ -3698,6 +3702,8 @@ public partial class Purchase : System.Web.UI.Page
             }
             else if (optionmethod.SelectedValue == "SalesReturn")
             {
+                lblHeading.Text = "Sales Return";
+
                 drpSalesReturn.ClearSelection();
                 ListItem cliddd = drpSalesReturn.Items.FindByValue(Convert.ToString("YES"));
                 if (cliddd != null) cliddd.Selected = true;
@@ -7635,12 +7641,14 @@ public partial class Purchase : System.Web.UI.Page
             TextBox txtTotal = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtTotal");
 
             int col = vLoop + 1;
-
-            if (Convert.ToInt32(txtQty.Text) < Convert.ToInt32(txtRtnQty.Text))
+            if (txtRtnQty.Text != "")
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Return qty is greater than Available Quantity in row " + col + " ')", true);
-                return;
+                if (Convert.ToInt32(txtQty.Text) < Convert.ToInt32(txtRtnQty.Text))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Return qty is greater than Available Quantity in row " + col + " ')", true);
+                    return;
+                }
             }
         }
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);

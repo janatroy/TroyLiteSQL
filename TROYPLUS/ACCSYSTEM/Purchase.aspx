@@ -247,7 +247,8 @@
                                                                                                 <td>
                                                                                                     <table class="headerPopUp" width="95%">
                                                                                                         <tr>
-                                                                                                            <td>Purchase Details
+                                                                                                            <td>
+                                                                                                                <asp:Label ID="lblHeading" Text="Purchase Details" runat="server"></asp:Label>
                                                                                                             </td>
                                                                                                         </tr>
                                                                                                     </table>
