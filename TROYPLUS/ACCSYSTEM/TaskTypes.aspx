@@ -199,7 +199,7 @@
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtTaskTypeName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Type. It cannot be left blank. ">*</asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width:34%">
+                                                                <td class="ControlTextBox3" style="width:33%">
                                                                     <asp:TextBox ID="txtTaskTypeName" runat="server" Text='<%# Bind("Task_Type_Name") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -212,13 +212,13 @@
                                                             <tr style="height:10px">
                                                             </tr> 
                                                             <tr>
-                                                                <td colspan="5">
+                                                                <td colspan="6">
                                                                     <table style="width:100%">
                                                                         <tr>
                                                                             <td style="width:30%">
                                                                             
                                                                             </td>
-                                                                            <td align="right" style="width:20%">                                                                                
+                                                                            <td align="right" style="width:17%">                                                                                
                                                                                  <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
                                                                                     CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="UpdateButton_Click"></asp:Button>
@@ -280,7 +280,7 @@
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtTaskTypeNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Type. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width:34%">
+                                                                <td class="ControlTextBox3" style="width:33%">
                                                                     <asp:TextBox ID="txtTaskTypeNameAdd" runat="server" Text='<%# Bind("Task_Type_Name") %>'
                                                                         SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -300,7 +300,7 @@
                                                                             <td style="width:30%">
                                                                             
                                                                             </td>
-                                                                            <td align="right" style="width:20%">                                                                              
+                                                                            <td align="right" style="width:17%">                                                                              
                                                                                  <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
                                                                                     CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="InsertButton_Click"></asp:Button>
