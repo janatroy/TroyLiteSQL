@@ -6,6 +6,31 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <script language="javascript" type="text/javascript">
 
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+        }
         /*@cc_on@*/
         /*@if (@_win32 && @_jscript_version>=5)
     
@@ -178,7 +203,7 @@
                                                 </div>
                                             </td>--%>
                                         <td style="width: 12%; text-align: left">
-                                            <asp:Button ID="btnSearch" runat="server" Text="" OnClick="btnSearch_Click" CausesValidation="false"
+                                            <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')"  runat="server" Text="" OnClick="btnSearch_Click" CausesValidation="false"
                                                 CssClass="ButtonSearch6" EnableTheming="false" ForeColor="White" />
                                         </td>
                                         <td style="width: 16%" class="tblLeftNoPad">

@@ -17,7 +17,31 @@
 
         @end@*/
 
+        window.onload = function Showalert() {
 
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+        }
 
         function pageLoad() {
             //  get the behavior associated with the tab control
@@ -350,7 +374,7 @@
                                             </asp:DropDownList>
                                     </td>
                                     <td style="width: 22%; text-align: left">
-                                        <asp:Button ID="btnSearch" runat="server" Text="" OnClick="btnSearch_Click"
+                                        <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')"  runat="server" Text="" OnClick="btnSearch_Click"
                                             CssClass="ButtonSearch6" EnableTheming="false" />
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">

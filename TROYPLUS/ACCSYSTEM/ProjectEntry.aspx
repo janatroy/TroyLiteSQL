@@ -162,29 +162,29 @@
                             <div style="text-align: left">
                                 <table style="width: 99.8%; margin: -2px 0px 0px 2px;" cellpadding="3" cellspacing="2" class="searchbg">
                                     <tr>
-                                        <td style="width: 8%;"></td>
-                                        <td style="width: 40%; font-size: 22px; color: White">Manage Projects
+                                        <td style="width: 1%;"></td>
+                                        <td style="width: 25%; font-size: 22px; color: White">Manage Projects
                                         </td>
-                                        <td style="width: 17%">
-                                            <div style="text-align: right;">
-                                                <asp:Panel ID="pnlSearch" runat="server" Width="100px">
+                                     <%--   <td style="width: 1%">--%>
+                                          <%--  <div style="text-align: right;">
+                                                <asp:Panel ID="pnlSearch" runat="server" Width="100px">--%>
                                                     <%--    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
                                                         EnableTheming="false" Width="80px" Text=""></asp:Button>--%>
-                                                </asp:Panel>
-                                            </div>
-                                        </td>
+                                            <%--    </asp:Panel>
+                                            </div>--%>
+                                   <%--     </td>--%>
                                         <%--<td style="width: 12%" align="center">
                                         Executive Name
                                     </td>--%>
 
-                                        <td style="width: 15%; color: White;" align="right">Search
+                                        <td style="width: 8%; color: White;" align="right">Search
                                         </td>
-                                        <td style="width: 20%" class="NewBox">
-                                            <asp:TextBox ID="txtSearch" runat="server" Width="152px"  ></asp:TextBox>
+                                        <td style="width: 17%" class="NewBox">
+                                              <asp:TextBox ID="txtSearch" runat="server" SkinID="skinTxtBoxGrid" Width="100px"  BorderColor="White" ></asp:TextBox>
 
                                           <%--  <asp:TextBox ID="txtSearch" onkeyup="EnableDisableButton(this,'btnReset')" runat="server" SkinID="skinTxtBoxSearch"></asp:TextBox>--%>
                                         </td>
-                                        <td style="width: 20%" class="NewBox">
+                                        <td style="width: 17%" class="NewBox">
                                             <div style="width: 150px; font-family: 'Trebuchet MS';">
                                                 <asp:DropDownList ID="ddCriteria" runat="server" BackColor="White" Width="157px" Height="24px" Style="text-align: center; border: 1px solid White">
                                                     <asp:ListItem Value="0">All</asp:ListItem>
@@ -197,7 +197,7 @@
                                                 </asp:DropDownList>
                                             </div>
                                         </td>
-                                        <td style="width: 20%" class="tblLeftNoPad">
+                                        <td style="width: 16%" class="tblLeftNoPad">
                                             <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" Text="" OnClick="btnSearch_Click"
                                                 CssClass="ButtonSearch6" EnableTheming="false" />
                                         </td>

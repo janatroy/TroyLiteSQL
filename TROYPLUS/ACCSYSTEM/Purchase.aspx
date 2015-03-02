@@ -6,8 +6,33 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cplhTab" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
-    <script src="Scripts/JScriptPurchase.js" type="text/javascript">
+   <script language="javascript" type="text/javascript">
 
+         window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter1.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+          
+            if (sender.value.length >= 1 && first.value.length >= 1) {   
+                document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "visible";
+              
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+              
+                document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
+            }
+        }
     </script>
     <style id="Style1" runat="server">
         .fancy-green .ajax__tab_header {
@@ -115,7 +140,7 @@
                                                     FilterType="Numbers" />
                                             </td>
                                             <td style="width: 18%; text-align: left">
-                                                <asp:Button ID="btnSearch" runat="server" CssClass="ButtonSearch6" EnableTheming="false" ForeColor="White" OnClick="btnSearch_Click" />
+                                                <asp:Button ID="btnSearch"  onkeyup="EnableDisableButton(this,'BtnClearFilter1')"  runat="server" CssClass="ButtonSearch6" EnableTheming="false" ForeColor="White" OnClick="btnSearch_Click" />
                                             </td>
                                             <td style="width: 17%" class="tblLeftNoPad">
                                                 <asp:Button ID="BtnClearFilter1" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />

@@ -17,6 +17,7 @@ public partial class SupplierInfo : System.Web.UI.Page
     public string EnableOpbalance = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
             //string st = string.Empty;

@@ -33,6 +33,32 @@
         }
 
 
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter1.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
+            }
+        }
+
 
     </script>
 
@@ -155,7 +181,7 @@
                                             </div>
                                         </td>
                                         <td style="width: 16%" class="tblLeftNoPad">
-                                            <asp:Button ID="BtnClearFilter1" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                            <asp:Button ID="BtnClearFilter1" runat="server" onkeyup="EnableDisableButton(this,'BtnClearFilter1')" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                         </td>
                                     </tr>
                                 </table>

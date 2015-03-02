@@ -1936,6 +1936,37 @@ public class BusinessLogic
 
     }
 
+
+    public DataSet ListAccountnumber()
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        //manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            dbQry = string.Format("select AccountNO from  ");
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
     public DataSet ListBanksIsActive()
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -50295,7 +50326,7 @@ public class BusinessLogic
         }
     }
 
-    public bool IsChequeAlreadyEntered(string connection, string BankID, string FromChequeNo, string ToChequeNo)
+    public bool IsChequeAlreadyEntered(string connection, string BankID, string FromChequeNo, string ToChequeNo,string accountno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -50312,14 +50343,31 @@ public class BusinessLogic
         string fLvlValueTemp = string.Empty;
         string tLvlValueTemp = string.Empty;
         int retVal = 0;
+       // int accountno = 0;
 
         try
         {
 
-            dbQry = string.Format("Select FromChequeNo,ToChequeNo from tblCheque Where BankID = " + BankID);
+            dbQry = string.Format("Select FromChequeNo,ToChequeNo,AccountNo from tblCheque Where AccountNo='" + accountno + "' and BankID = " + BankID);
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+           
+
+         //   dbQry = string.Format("Select FromChequeNo,ToChequeNo,AccountNo from tblCheque Where BankID="+BankID+" and  AccountNo = " + accountno);
+           
+            //manager.Open();
+            //object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            //if ((retVal != null) && (retVal != DBNull.Value))
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
 
             dc = new DataColumn("ChequeNo");
             dtf.Columns.Add(dc);
@@ -50332,114 +50380,127 @@ public class BusinessLogic
 
             if (ds.Tables[0] != null)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                if (ds.Tables[0].Rows.Count > 0)
                 {
-                    fLvlValueTemp = dr["FromChequeNo"].ToString().ToUpper().Trim();
-                    tLvlValueTemp = dr["ToChequeNo"].ToString().ToUpper().Trim();
-
-                    int difff = Convert.ToInt32(tLvlValueTemp) - Convert.ToInt32(fLvlValueTemp);
-                    int g = 0;
-                    int ChequeNo = 0;
-
-                    for (int k = 0; k <= difff; k++)
+                    foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        if (g == 0)
+                        fLvlValueTemp = dr["FromChequeNo"].ToString().ToUpper().Trim();
+                        tLvlValueTemp = dr["ToChequeNo"].ToString().ToUpper().Trim();
+
+                        int difff = Convert.ToInt32(tLvlValueTemp) - Convert.ToInt32(fLvlValueTemp);
+                        int g = 0;
+                        int ChequeNo = 0;
+
+                        for (int k = 0; k <= difff; k++)
                         {
-                            drddd = itemDs.Tables[0].NewRow();
-                            DataRow dr_final8 = dt.NewRow();
-                            dr_final8["ChequeNo"] = fLvlValueTemp;
-                            drddd["ChequeNo"] = Convert.ToString(fLvlValueTemp);
-                            dt.Rows.Add(dr_final8);
-                            ChequeNo = Convert.ToInt32(fLvlValueTemp) + 1;
-                            itemDs.Tables[0].Rows.Add(drddd);
+                            if (g == 0)
+                            {
+                                drddd = itemDs.Tables[0].NewRow();
+                                DataRow dr_final8 = dt.NewRow();
+                                dr_final8["ChequeNo"] = fLvlValueTemp;
+                                drddd["ChequeNo"] = Convert.ToString(fLvlValueTemp);
+                                dt.Rows.Add(dr_final8);
+                                ChequeNo = Convert.ToInt32(fLvlValueTemp) + 1;
+                                itemDs.Tables[0].Rows.Add(drddd);
+                            }
+                            else
+                            {
+                                drddd = itemDs.Tables[0].NewRow();
+                                DataRow dr_final8 = dt.NewRow();
+                                dr_final8["ChequeNo"] = Convert.ToString(ChequeNo);
+                                drddd["ChequeNo"] = Convert.ToString(ChequeNo);
+                                dt.Rows.Add(dr_final8);
+                                ChequeNo = ChequeNo + 1;
+                                itemDs.Tables[0].Rows.Add(drddd);
+                                g = 1;
+                            }
+                            g = 1;
+                        }
+                    }
+
+                    DataSet dsd = new DataSet();
+                    dcc = new DataColumn("ChequeNo");
+                    dtfff.Columns.Add(dcc);
+
+                    dsd.Tables.Add(dtfff);
+
+                    int dif = Convert.ToInt32(ToChequeNo) - Convert.ToInt32(FromChequeNo);
+                    int ggg = 0;
+                    int TChequeNo = 0;
+
+                    for (int k = 0; k <= dif; k++)
+                    {
+                        if (ggg == 0)
+                        {
+                            drddf = dsd.Tables[0].NewRow();
+                            drddf["ChequeNo"] = Convert.ToString(FromChequeNo);
+                            TChequeNo = Convert.ToInt32(FromChequeNo) + 1;
+                            dsd.Tables[0].Rows.Add(drddf);
                         }
                         else
                         {
-                            drddd = itemDs.Tables[0].NewRow();
-                            DataRow dr_final8 = dt.NewRow();
-                            dr_final8["ChequeNo"] = Convert.ToString(ChequeNo);
-                            drddd["ChequeNo"] = Convert.ToString(ChequeNo);
-                            dt.Rows.Add(dr_final8);
-                            ChequeNo = ChequeNo + 1;
-                            itemDs.Tables[0].Rows.Add(drddd);
-                            g = 1;
+                            drddf = dsd.Tables[0].NewRow();
+                            drddf["ChequeNo"] = Convert.ToString(TChequeNo);
+                            TChequeNo = TChequeNo + 1;
+                            dsd.Tables[0].Rows.Add(drddf);
+                            ggg = 1;
                         }
-                        g = 1;
+                        ggg = 1;
                     }
-                }
-            }
 
-            DataSet dsd = new DataSet();
-            dcc = new DataColumn("ChequeNo");
-            dtfff.Columns.Add(dcc);
 
-            dsd.Tables.Add(dtfff);
 
-            int dif = Convert.ToInt32(ToChequeNo) - Convert.ToInt32(FromChequeNo);
-            int ggg = 0;
-            int TChequeNo = 0;
+                    if (dsd.Tables[0] != null)
+                    {
+                        DataTable dtttt = dsd.Tables[0];
 
-            for (int k = 0; k <= dif; k++)
-            {
-                if (ggg == 0)
-                {
-                    drddf = dsd.Tables[0].NewRow();
-                    drddf["ChequeNo"] = Convert.ToString(FromChequeNo);
-                    TChequeNo = Convert.ToInt32(FromChequeNo) + 1;
-                    dsd.Tables[0].Rows.Add(drddf);
+                        if (itemDs.Tables[0] != null)
+                        {
+                            foreach (DataRow drd in itemDs.Tables[0].Rows)
+                            {
+                                var billNo = Convert.ToInt32(drd["ChequeNo"]);
+
+                                for (int i = 0; i < dsd.Tables[0].Rows.Count; i++)
+                                {
+                                    if (billNo == Convert.ToInt32(dsd.Tables[0].Rows[i]["ChequeNo"]))
+                                    {
+                                        retVal = 1;
+                                        break;
+                                    }
+                                    else
+                                        retVal = 0;
+                                }
+                                if (retVal == 1)
+                                    break;
+
+                            }
+
+                        }
+                    }
+
+                    //object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+                    if ((retVal == 1))
+                    {
+                        //throw new Exception("Given Cheque No already entered for this bank");
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    drddf = dsd.Tables[0].NewRow();
-                    drddf["ChequeNo"] = Convert.ToString(TChequeNo);
-                    TChequeNo = TChequeNo + 1;
-                    dsd.Tables[0].Rows.Add(drddf);
-                    ggg = 1;
+                    return false;
                 }
-                ggg = 1;
-            }
-
-
-
-            if (dsd.Tables[0] != null)
-            {
-                DataTable dtttt = dsd.Tables[0];
-
-                if (itemDs.Tables[0] != null)
-                {
-                    foreach (DataRow drd in itemDs.Tables[0].Rows)
-                    {
-                        var billNo = Convert.ToUInt32(drd["ChequeNo"]);
-
-                        for (int i = 0; i < dsd.Tables[0].Rows.Count; i++)
-                        {
-                            if (billNo == Convert.ToUInt32(dsd.Tables[0].Rows[i]["ChequeNo"]))
-                            {
-                                retVal = 1;
-                                break;
-                            }
-                            else
-                                retVal = 0;
-                        }
-                        if (retVal == 1)
-                            break;
-
-                    }
-
-                }
-            }
-
-            //object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
-
-            if ((retVal == 1))
-            {
-                //throw new Exception("Given Cheque No already entered for this bank");
-                return true;
+            
             }
             else
             {
                 return false;
             }
+            
 
         }
         catch (Exception ex)

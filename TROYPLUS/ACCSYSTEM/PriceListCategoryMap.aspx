@@ -7,6 +7,32 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <script language="javascript" type="text/javascript">
 
+
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+          
+            if (sender.value.length >= 1 && first.value.length >= 1) {   
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+              
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+              
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+        }
         //        function Mobile_Validator() {
         //            var ctrMobile = document.getElementById('ctl00_cplhControlPanel_frmViewAdd_txtMobile');
 
@@ -78,10 +104,10 @@
                                         </div>
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">
-                                        <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false" />
+                                        <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false" />
                                     </td>
                                     <td style="width: 2%" class="tblLeftNoPad">
-                                        <asp:Button ID="BtnClearFilter" runat="server" Visible="true" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        <asp:Button ID="BtnClearFilter" runat="server"  Visible="true" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                     </td>
                                 </tr>
                             </table>

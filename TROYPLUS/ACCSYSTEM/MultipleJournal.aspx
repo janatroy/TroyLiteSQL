@@ -11,6 +11,33 @@
 
         function PrintItem(ID) {
             window.showModalDialog('PrintJournal.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+
+        }
+
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
         }
 
     </script>
@@ -70,7 +97,7 @@
                                         </td>
 
                                         <td style="width: 20%">
-                                            <asp:Button ID="cmdSearch" runat="server" OnClick="cmdSearch_Click" Text=""
+                                            <asp:Button ID="cmdSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" OnClick="cmdSearch_Click" Text=""
                                                 EnableTheming="false" CssClass="ButtonSearch6" />
                                         </td>
                                         <td style="width: 16%" class="tblLeftNoPad">
