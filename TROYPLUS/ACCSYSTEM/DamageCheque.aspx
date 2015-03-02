@@ -158,6 +158,27 @@
                                                                 <td>
                                                                 </td>
                                                             </tr>
+                                                               <tr>
+                                                                <td class="ControlLabel" style="width:40%">
+                                                                     Account number *
+                                                                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="ddaccountnumber"
+                                                                                                                    Display="Dynamic" ErrorMessage="Account is Mandatory" Operator="GreaterThan"
+                                                                                                                    ValueToCompare="0">*</asp:CompareValidator>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width:30%">
+                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo"  CssClass="drpDownListMedium" BackColor = "#e7e7e7"
+                                                                        runat="server" SelectedValue='<%# Bind("AccountNo") %>' DataTextField="LedgerName"
+                                                                        DataValueField="LedgerID" Width="100%" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" >
+                                                                     </asp:DropDownList>
+                                                                </td>
+                                                                
+                                                                <td style="width:30%">
+                                                                </td>
+                                                                <td>
+                                                                </td>
+                                                            </tr>
+
+
                                                             <tr>
                                                                 <table style="width:100%">
                                                                     <tr>
@@ -188,6 +209,12 @@
                                                         <tr>
                                                             <td>
                                                                 <asp:ObjectDataSource ID="srcGroupInfo" runat="server" SelectMethod="ListBanks"
+                                                                    TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
+                                                                    <SelectParameters>
+                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                    </SelectParameters>
+                                                                </asp:ObjectDataSource>
+                                                                 <asp:ObjectDataSource ID="srcGroupInfo1" runat="server" SelectMethod="ListAccountnumber"
                                                                     TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
@@ -257,6 +284,25 @@
                                                                 <td>
                                                                 </td>
                                                             </tr>
+                                                              <tr>
+                                                                <td class="ControlLabel" style="width:40%">
+                                                                     Account number *
+                                                                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="ddaccountnumber"
+                                                                                                                    Display="Dynamic" ErrorMessage="Account is Mandatory" Operator="GreaterThan"
+                                                                                                                    ValueToCompare="0">*</asp:CompareValidator>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width:30%">
+                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
+                                                                        runat="server" SelectedValue='<%# Bind("AccountNo") %>' DataTextField="LedgerName"
+                                                                        DataValueField="LedgerID" Width="100%" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" >
+                                                                     </asp:DropDownList>
+                                                                </td>
+                                                                
+                                                                <td style="width:30%">
+                                                                </td>
+                                                                <td>
+                                                                </td>
+                                                            </tr>
                                                             <tr style="height:3px">
                                                                                     </tr>
                                                             
@@ -299,6 +345,12 @@
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
+                                                                    <asp:ObjectDataSource ID="srcGroupInfo1" runat="server" SelectMethod="ListAccountnumber"
+                                                                    TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
+                                                                    <SelectParameters>
+                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                    </SelectParameters>
+                                                                </asp:ObjectDataSource>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -325,6 +377,7 @@
                                 <Columns>
                                     <asp:BoundField DataField="ChequeNo" HeaderText="Cheque No"  HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="ledgername" HeaderText="Bank Name" HeaderStyle-BorderColor="Gray" />
+                                     <asp:BoundField DataField="AccountNo" HeaderText="Account Number" HeaderStyle-BorderColor="Gray" />
                                     <%--<asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" HeaderStyle-BorderColor="Blue"
                                         ItemStyle-HorizontalAlign="Center">
                                         <ItemTemplate>
@@ -417,6 +470,7 @@
                                 <asp:Parameter Name="BankName" Type="String" />
                                 <asp:Parameter Name="BankID" Type="Int32" />
                                 <asp:Parameter Name="ChequeNo" Type="String" />
+                                 <asp:Parameter Name="AccountNo" Type="String" />
                                 <asp:Parameter Name="Username" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>

@@ -6,6 +6,31 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <script language="javascript" type="text/javascript">
 
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+        }
         /*@cc_on@*/
         /*@if (@_win32 && @_jscript_version>=5)
     
@@ -178,7 +203,7 @@
                                                 </div>
                                             </td>--%>
                                         <td style="width: 12%; text-align: left">
-                                            <asp:Button ID="btnSearch" runat="server" Text="" OnClick="btnSearch_Click" CausesValidation="false"
+                                            <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" Text="" OnClick="btnSearch_Click" CausesValidation="false"
                                                 CssClass="ButtonSearch6" EnableTheming="false" ForeColor="White" />
                                         </td>
                                         <td style="width: 16%" class="tblLeftNoPad">
@@ -196,7 +221,7 @@
                                 </table>
                             </div>
                         </div>
-                         
+
                         <input id="dummy" type="button" style="display: none" runat="server" />
                         <input id="Button1" type="button" style="display: none" runat="server" />
                         <cc1:ModalPopupExtender ID="ModalPopupExtender2" runat="server" BackgroundCssClass="modalBackground"
@@ -266,7 +291,7 @@
                                                                                                             <asp:TextBox ID="txtLeadName" runat="server" SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                       <td class="ControlLabelproject" style="width: 20%;">
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">
                                                                                                             <asp:CompareValidator ID="CompareValidator13" runat="server" ControlToValidate="drpStatus" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Interest Level *
                                                                                                         <asp:CompareValidator ID="CompareValidator14" runat="server" ControlToValidate="drpIntLevel"
@@ -295,7 +320,7 @@
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                          <td class="ControlLabelproject" style="width: 20%;">
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">
                                                                                                             <asp:RequiredFieldValidator ID="rvStock" runat="server" ControlToValidate="txtCreationDate"
                                                                                                                 ErrorMessage="Start Date is mandatory" Display="Dynamic">*</asp:RequiredFieldValidator>
                                                                                                             <asp:CompareValidator ControlToValidate="txtCreationDate" Operator="DataTypeCheck" Type="Date"
@@ -305,7 +330,7 @@
                                                                                                         <td class="ControlTextBox3" style="width: 20%;">
                                                                                                             <asp:TextBox ID="txtCreationDate" runat="server" TabIndex="1" Enabled="False"
                                                                                                                 CssClass="cssTextBox"></asp:TextBox>
-                                                                                                        </td>                                                                                                       
+                                                                                                        </td>
                                                                                                         <td style="width: 5%;" />
                                                                                                         <%-- <td style="width: 10%;"></td>--%>
                                                                                                     </tr>
@@ -335,15 +360,15 @@
                                                                                                                 </ContentTemplate>
                                                                                                             </asp:UpdatePanel>
                                                                                                         </td>
-                                                                                                         <td class="ControlLabelproject" style="width: 20%;">Predicted Closing Date </td>
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">Predicted Closing Date </td>
                                                                                                         <td class="ControlTextBox3" style="width: 20%">
                                                                                                             <asp:TextBox ID="txtPredictedClosingDate" runat="server" Enabled="False" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                         </td>
                                                                                                         <td style="width: 7%;">
                                                                                                             <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="ImageButton3" TargetControlID="txtPredictedClosingDate">
                                                                                                             </cc1:CalendarExtender>
-                                                                                                            <asp:ImageButton ID="ImageButton3" runat="server"  TabIndex="12" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
-                                                                                                        </td>                                                                                                       
+                                                                                                            <asp:ImageButton ID="ImageButton3" runat="server" TabIndex="12" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                                        </td>
                                                                                                         <td style="width: 5%;" />
                                                                                                     </tr>
                                                                                                     <tr style="height: 2px;" />
@@ -355,7 +380,7 @@
                                                                                                             </cc1:FilteredTextBoxExtender>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                         <td class="ControlLabelproject" style="width: 20%;">&nbsp;&nbsp;&nbsp;Status of Record *
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">&nbsp;&nbsp;&nbsp;Status of Record *
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
                                                                                                             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
@@ -367,7 +392,7 @@
                                                                                                                     </asp:DropDownList>
                                                                                                                 </ContentTemplate>
                                                                                                             </asp:UpdatePanel>
-                                                                                                        </td>                                                                                                      
+                                                                                                        </td>
 
                                                                                                         <td style="width: 5%;"></td>
                                                                                                     </tr>
@@ -378,7 +403,7 @@
                                                                                                             <asp:TextBox ID="txtContactName" TabIndex="5" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                         <td class="ControlLabelproject" style="width: 20%;">
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">
                                                                                                             <asp:CompareValidator ID="CompareValidator17" runat="server" ControlToValidate="drpLeadStatus" Display="Dynamic" ErrorMessage="Please Select Lead Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Status of Lead *
                                                                                                         </td>
@@ -389,7 +414,7 @@
                                                                                                                 <asp:ListItem Text="Lost" Value="Lost"></asp:ListItem>
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
-                                                                                                       
+
                                                                                                     </tr>
                                                                                                     <tr style="height: 2px;" />
                                                                                                     <tr style="height: 30px">
@@ -398,7 +423,7 @@
                                                                                                             <asp:TextBox ID="txtTelephone" runat="server" SkinID="skinTxtBoxGrid" TabIndex="6"></asp:TextBox>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                         <td class="ControlLabelproject" style="width: 20%;">Closing Date</td>
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">Closing Date</td>
                                                                                                         <td class="ControlTextBox3" style="width: 20%">
                                                                                                             <asp:TextBox ID="txtClosingDate" runat="server" Enabled="False" SkinID="skinTxtBoxGrid" TabIndex="5"></asp:TextBox>
                                                                                                         </td>
@@ -423,10 +448,10 @@
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                         <td class="ControlLabelproject" style="width: 20%;">Additional Information 1 </td>
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">Additional Information 1 </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
                                                                                                             <asp:TextBox ID="txtInformation1" runat="server" SkinID="skinTxtBoxGrid" TabIndex="13"></asp:TextBox>
-                                                                                                        </td>                                                                                                       
+                                                                                                        </td>
                                                                                                         <td style="width: 5%;"></td>
                                                                                                     </tr>
                                                                                                     <tr style="height: 2px;" />
@@ -443,11 +468,11 @@
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                         <td class="ControlLabelproject" style="width: 20%;">Additional Information 2</td>
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">Additional Information 2</td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
                                                                                                             <asp:DropDownList ID="drpInformation3" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="14" Width="100%" DataTextField="TextValue" DataValueField="ID">
                                                                                                             </asp:DropDownList>
-                                                                                                        </td>                                                                                                       
+                                                                                                        </td>
                                                                                                         <td style="width: 5%;"></td>
                                                                                                     </tr>
                                                                                                     <tr style="height: 2px;" />
@@ -464,11 +489,30 @@
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
-                                                                                                         <td class="ControlLabelproject" style="width: 20%;">Additional Information 3</td>
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">Additional Information 3</td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
                                                                                                             <asp:DropDownList ID="drpInformation4" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="TextValue" DataValueField="ID">
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
+                                                                                                        <td style="width: 5%;"></td>
+                                                                                                    </tr>
+                                                                                                    <tr style="height: 2px;" />
+                                                                                                    <tr style="height: 30px">
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">  
+                                                                                                              <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                            Select Branch  *
+                                                                                                        <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                                                            Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                        </td>                                                                                                        
+                                                                                                        </td>
+                                                                                                        <td class="ControlDrpBorder" style="width: 20%;">
+                                                                                                            <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                                                                                            </asp:DropDownList>
+                                                                                                        </td>
+                                                                                                        <td style="width: 15%;" />
+                                                                                                        <td style="width: 20%;"></td>
+                                                                                                        <td style="width: 20%;"></td>
                                                                                                         <td style="width: 5%;"></td>
                                                                                                     </tr>
                                                                                                     <tr style="height: 2px;" />
@@ -508,11 +552,11 @@
                                                                                                     </tr>
                                                                                                     <tr>
                                                                                                         <td>
-                                                                                                            <div class="mainGridHold" id="searchGrid123" style="height: 350px; width: 100%; overflow: scroll; border:double" align="center">
-                                                                                                               <%-- <asp:GridView ID="GrdViewLeadproduct" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadproduct_RowDeleting"
+                                                                                                            <div class="mainGridHold" id="searchGrid123" style="height: 350px; width: 100%; overflow: scroll; border: double" align="center">
+                                                                                                                <%-- <asp:GridView ID="GrdViewLeadproduct" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadproduct_RowDeleting"
                                                                                                                     Width="94%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadproduct_RowDataBound">--%>
-                                                                                                                     <asp:GridView ID="GrdViewLeadproduct" AutoGenerateColumns="False"  ShowFooter="True" OnRowDataBound="GrdViewLeadproduct_RowDataBound" OnRowDeleting="GrdViewLeadproduct_RowDeleting" GridLines="None"  runat="server"
-                                                                                                                       Width="94%">
+                                                                                                                <asp:GridView ID="GrdViewLeadproduct" AutoGenerateColumns="False" ShowFooter="True" OnRowDataBound="GrdViewLeadproduct_RowDataBound" OnRowDeleting="GrdViewLeadproduct_RowDeleting" GridLines="None" runat="server"
+                                                                                                                    Width="94%">
                                                                                                                     <%-- <RowStyle CssClass="dataRow" />
                                                                                                                     <SelectedRowStyle CssClass="SelectdataRow" />
                                                                                                                     <AlternatingRowStyle CssClass="altRow" />
@@ -522,45 +566,45 @@
 
                                                                                                                     <Columns>
                                                                                                                         <asp:BoundField DataField="RowNumber" HeaderText="#" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px" ItemStyle-Font-Bold="true" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="13px" />
-                                                                                                                          <asp:TemplateField HeaderText="Name of Interested Product" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                        <asp:TemplateField HeaderText="Name of Interested Product" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
-                                                                                                                                <asp:DropDownList ID="drpproduct" Width="200px" Height="23px" ItemStyle-Font-Size="15px" runat="server" Font-Bold="false" AppendDataBoundItems="true"  AutoPostBack="true" ForeColor="#0567AE" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpproduct_SelectedIndexChanged">
+                                                                                                                                <asp:DropDownList ID="drpproduct" Width="200px" Height="23px" ItemStyle-Font-Size="15px" runat="server" Font-Bold="false" AppendDataBoundItems="true" AutoPostBack="true" ForeColor="#0567AE" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpproduct_SelectedIndexChanged">
                                                                                                                                 </asp:DropDownList>
                                                                                                                             </ItemTemplate>
-                                                                                                                        </asp:TemplateField> 
+                                                                                                                        </asp:TemplateField>
                                                                                                                         <asp:TemplateField HeaderText="Product Category" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
-                                                                                                                                 <asp:Label ID="txtCat" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>     
+                                                                                                                                <asp:Label ID="txtCat" Style="text-align: center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0"></asp:Label>
                                                                                                                             </ItemTemplate>
                                                                                                                         </asp:TemplateField>
-                                                                                                                         <asp:TemplateField HeaderText="Brand" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                        <asp:TemplateField HeaderText="Brand" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
-                                                                                                                                  <asp:Label ID="txtBrand" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>     
+                                                                                                                                <asp:Label ID="txtBrand" Style="text-align: center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0"></asp:Label>
                                                                                                                             </ItemTemplate>
                                                                                                                         </asp:TemplateField>
-                                                                                                                         <asp:TemplateField HeaderText="Model" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                        <asp:TemplateField HeaderText="Model" ItemStyle-Width="200px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
-                                                                                                                                 <asp:Label ID="txtModel" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>     
+                                                                                                                                <asp:Label ID="txtModel" Style="text-align: center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0"></asp:Label>
                                                                                                                             </ItemTemplate>
                                                                                                                         </asp:TemplateField>
-                                                                                                                      
-                                                                                                                         <asp:TemplateField HeaderText="Product Id" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px">
+
+                                                                                                                        <asp:TemplateField HeaderText="Product Id" ItemStyle-Width="150px" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
-                                                                                                                               <asp:Label ID="txtPrdId" style="text-align:center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0" ></asp:Label>                                                                                                                                 
-                                                                                                                            </ItemTemplate>                                                                                                                           
+                                                                                                                                <asp:Label ID="txtPrdId" Style="text-align: center" runat="server" Height="15px" Width="150px" Font-Bold="true" Text="0"></asp:Label>
+                                                                                                                            </ItemTemplate>
                                                                                                                         </asp:TemplateField>
-                                                                                                                          <asp:TemplateField HeaderText="Quantity" ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                        <asp:TemplateField HeaderText="Quantity" ItemStyle-Width="100px" HeaderStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                             <ItemTemplate>
                                                                                                                                 <asp:TextBox ID="txtQty" Style="text-align: center" ForeColor="Black" runat="server" Font-Bold="true" Width="100px"></asp:TextBox>
                                                                                                                             </ItemTemplate>
-                                                                                                                               <FooterStyle HorizontalAlign="Right" />
+                                                                                                                            <FooterStyle HorizontalAlign="Right" />
                                                                                                                             <FooterTemplate>
                                                                                                                                 <asp:Button ID="ButtonAdd" runat="server" AutoPostback="true" EnableTheming="false" OnClick="ButtonAdd_Click"
                                                                                                                                     ValidationGroup="DynRowAdd" Text="Add New Product" />
                                                                                                                             </FooterTemplate>
                                                                                                                         </asp:TemplateField>
-                                                                                                                         
-                                                                                                                       
+
+
                                                                                                                         <asp:CommandField ShowDeleteButton="True" ButtonType="Button" />
                                                                                                                         <%-- <asp:BoundField DataField="Product_Name" HeaderText="Product Name" HeaderStyle-BorderColor="Gray" />--%>
                                                                                                                         <%--<asp:BoundField DataField="Product_Id" HeaderText="Product Id" HeaderStyle-BorderColor="Gray" />--%>
@@ -701,11 +745,11 @@
                                                                                             <table style="width: 1200px" cellpadding="1" cellspacing="1">
                                                                                                 <tr style="width: 1200px">
                                                                                                     <td style="width: 1200px">
-                                                                                                        <div class="mainGridHold" id="searchGrid3" style="height: 350px; width: 1200px; overflow: scroll;border:double" align="center">
+                                                                                                        <div class="mainGridHold" id="searchGrid3" style="height: 350px; width: 1200px; overflow: scroll; border: double" align="center">
                                                                                                             <%--<asp:GridView ID="GrdViewLeadActivity" runat="server" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadActivity_RowDeleting"
                                                                                                                 Width="100%" AllowPaging="True" AllowSorting="true" ShowFooter="True" CellPadding="2" GridLines="None" OnRowDataBound="GrdViewLeadActivity_RowDataBound">--%>
-                                                                                                                <asp:GridView ID="GrdViewLeadActivity" AutoGenerateColumns="False"  ShowFooter="True" OnRowDataBound="GrdViewLeadActivity_RowDataBound" OnRowDeleting="GrdViewLeadActivity_RowDeleting" GridLines="None"  runat="server"
-                                                                                                                       Width="100%">
+                                                                                                            <asp:GridView ID="GrdViewLeadActivity" AutoGenerateColumns="False" ShowFooter="True" OnRowDataBound="GrdViewLeadActivity_RowDataBound" OnRowDeleting="GrdViewLeadActivity_RowDeleting" GridLines="None" runat="server"
+                                                                                                                Width="100%">
                                                                                                                 <%--   <RowStyle CssClass="dataRow" />
                                                                                                                 <SelectedRowStyle CssClass="SelectdataRow" />
                                                                                                                 <AlternatingRowStyle CssClass="altRow" />
@@ -755,7 +799,7 @@
                                                                                                                     </asp:TemplateField>
                                                                                                                     <asp:TemplateField HeaderText="Employee Responsible *" ItemStyle-Width="110px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                         <ItemTemplate>
-                                                                                                                            <asp:DropDownList ID="drpemployee" Width="110px" Height="25px" runat="server" Font-Bold="true" AppendDataBoundItems="true" ForeColor="#0567AE" AutoPostBack="true"  DataTextField="empFirstName" DataValueField="empno">
+                                                                                                                            <asp:DropDownList ID="drpemployee" Width="110px" Height="25px" runat="server" Font-Bold="true" AppendDataBoundItems="true" ForeColor="#0567AE" AutoPostBack="true" DataTextField="empFirstName" DataValueField="empno">
                                                                                                                             </asp:DropDownList>
                                                                                                                         </ItemTemplate>
                                                                                                                     </asp:TemplateField>
@@ -778,7 +822,7 @@
                                                                                                                             </asp:DropDownList>
                                                                                                                         </ItemTemplate>
                                                                                                                     </asp:TemplateField>
-                                                                                                                    <asp:TemplateField HeaderText="Remarks *" ItemStyle-Width="80px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
+                                                                                                                    <asp:TemplateField HeaderText="Remarks" ItemStyle-Width="80px" HeaderStyle-ForeColor="Black" ItemStyle-Font-Size="15px">
                                                                                                                         <ItemTemplate>
                                                                                                                             <asp:TextBox ID="txtremarks" ForeColor="#0567AE" Font-Bold="true" runat="server" Width="130px"></asp:TextBox>
                                                                                                                         </ItemTemplate>
@@ -1093,14 +1137,14 @@
                                                                                     <ContentTemplate>
                                                                                         <center>
                                                                                             <div style="width: 1200px;">
-                                                                                                <table style="width: 1000px; border-width:1px; border-color:blue" cellpadding="1" cellspacing="1">
+                                                                                                <table style="width: 1000px; border-width: 1px; border-color: blue" cellpadding="1" cellspacing="1">
                                                                                                     <tr style="width: 1000px">
                                                                                                         <td style="width: 1000px">
-                                                                                                            <div class="mainGridHold" id="searchGrid2" style="height: 350px; width: 100%; overflow: scroll; border:double" align="center">
-                                                                                                               <%-- <asp:GridView ID="GrdViewLeadCompetitor" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" BorderColor="Blue"
+                                                                                                            <div class="mainGridHold" id="searchGrid2" style="height: 350px; width: 100%; overflow: scroll; border: double" align="center">
+                                                                                                                <%-- <asp:GridView ID="GrdViewLeadCompetitor" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" BorderColor="Blue"
                                                                                                                     Width="90%" AllowPaging="True" ShowFooter="True" CellPadding="4" GridLines="None" OnRowDataBound="GrdViewLeadCompetitor_RowDataBound">--%>
-                                                                                                                      <asp:GridView ID="GrdViewLeadCompetitor" AutoGenerateColumns="False"  ShowFooter="True" OnRowDataBound="GrdViewLeadCompetitor_RowDataBound" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" GridLines="None"  runat="server"
-                                                                                                                       Width="100%">
+                                                                                                                <asp:GridView ID="GrdViewLeadCompetitor" AutoGenerateColumns="False" ShowFooter="True" OnRowDataBound="GrdViewLeadCompetitor_RowDataBound" OnRowDeleting="GrdViewLeadCompetitor_RowDeleting" GridLines="None" runat="server"
+                                                                                                                    Width="100%">
                                                                                                                     <%--  <RowStyle CssClass="dataRow" />
                                                                                                                     <SelectedRowStyle CssClass="SelectdataRow" />
                                                                                                                     <AlternatingRowStyle CssClass="altRow" />
@@ -1331,10 +1375,11 @@
                                                                                         <asp:Button ID="UpdateButton" runat="server" SkinID="skinBtnSave" OnClientClick="javascript:CheckLeadContact();"
                                                                                             OnClick="UpdateButton_Click" CssClass="Updatebutton1231" EnableTheming="false"></asp:Button>
                                                                                         <asp:Button ID="AddButton" runat="server" SkinID="skinBtnSave" OnClientClick="javascript:CheckLeadContact()"
-                                                                                          TabIndex="17"  OnClick="AddButton_Click" CssClass="savebutton1231" EnableTheming="false"></asp:Button>                                                                                    </td>
-                                                                                    <td style="width:8%">
+                                                                                            TabIndex="17" OnClick="AddButton_Click" CssClass="savebutton1231" EnableTheming="false"></asp:Button>
+                                                                                    </td>
+                                                                                    <td style="width: 8%">
                                                                                         <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
-                                                                                          TabIndex="18"  OnClick="UpdateCancelButton_Click" SkinID="skinBtnCancel" CssClass="cancelbutton6"
+                                                                                            TabIndex="18" OnClick="UpdateCancelButton_Click" SkinID="skinBtnCancel" CssClass="cancelbutton6"
                                                                                             EnableTheming="false"></asp:Button>
                                                                                     </td>
                                                                                     <td style="width: 42%" align="center"></td>

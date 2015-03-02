@@ -273,7 +273,7 @@ public partial class ChequeInfo : System.Web.UI.Page
 
             string ToChequeNo = ((TextBox)this.frmViewAdd.FindControl("txtToNoAdd")).Text;
 
-            bl.IsChequeAlreadyEntered(connection, BankID, FromChequeNo, ToChequeNo);
+            //bl.IsChequeAlreadyEntered(connection, BankID, FromChequeNo, ToChequeNo);
 
             bl.IsChequeNoNotLess(connection, BankID, FromChequeNo, ToChequeNo);
 
@@ -378,7 +378,7 @@ public partial class ChequeInfo : System.Web.UI.Page
 
             string ToChequeNo = ((TextBox)this.frmViewAdd.FindControl("txtToNoAdd")).Text;
 
-            bl.IsChequeAlreadyEntered(connection, BankID, FromChequeNo, ToChequeNo);
+            //bl.IsChequeAlreadyEntered(connection, BankID, FromChequeNo, ToChequeNo);
 
             bl.IsChequeNoNotLess(connection, BankID, FromChequeNo, ToChequeNo);
 

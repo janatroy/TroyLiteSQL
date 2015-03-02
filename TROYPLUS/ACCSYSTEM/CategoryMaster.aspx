@@ -4,6 +4,9 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 
+
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="cplhTab" runat="Server">
 
 </asp:Content>
@@ -87,7 +90,7 @@
                                     <td style="width: 20%" class="tblLeftNoPad" >
                                         <%--<div style="text-align: left;">
                                             <asp:Panel ID="Panel4" runat="server" Width="100px">--%>
-                                                <asp:Button ID="btnSearch" runat="server" Text="Search" SkinID="skinBtnSearch" 
+                                                <asp:Button ID="btnSearch"  runat="server" Text="Search" SkinID="skinBtnSearch" 
                                                     onclick="btnSearch_Click" />
                                             <%--</asp:Panel> 
                                         </div>--%>

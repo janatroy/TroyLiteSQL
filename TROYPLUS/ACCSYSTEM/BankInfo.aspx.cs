@@ -18,7 +18,7 @@ public partial class BankInfo : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();

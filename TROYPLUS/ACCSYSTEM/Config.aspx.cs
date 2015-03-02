@@ -18,6 +18,7 @@ public partial class Config : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();

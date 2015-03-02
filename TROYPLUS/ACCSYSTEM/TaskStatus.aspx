@@ -9,6 +9,28 @@
 
 
 
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+           // alert('test');
+            if (txt.value == "") {
+               // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+           
+        }
+
+        function clearfilterclick() {
+            var button = document.getElementById('<%=BtnClearFilter.ClientID %>');
+           // alert('clicent');
+            button.style.visibility = "hidden";
+            //button.click();
+
+        }
+       
+
         function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtSearch.ClientID %>');
            //alert('test');
@@ -16,21 +38,27 @@
 
 
             if (sender.value.length >= 1 && first.value.length >= 1) {
-                alert(sender.value.length);
-                alert(first.value.length);
-                document.getElementById(target).disabled = false;
+               // alert(sender.value.length);
+               // alert(first.value.length);
+                //BtnClearFilter.disabled = false;
+                <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+               // window.onload = function ();
             }
 
             if (sender.value.length < 1 && first.value.length < 1) {
-                alert(sender.value.length);
-                alert(first.value.length);
-                document.getElementById(target).disabled = true;
+                //alert(sender.value.length);
+               // alert(first.value.length);
+                //BtnClearFilter.disabled = true;
+                <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility ="Hidden";
             }
             //else {
 
             //    document.getElementById(target).disabled = false;
             //}
         }
+        //window.
         <%-- window.onload = function () {
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -127,19 +155,19 @@
                         <div class="mainConBody">
                             <table style="width: 99.8%; margin: -1px 0px 0px 1px;" cellpadding="3" cellspacing="2" class="searchbg">
                                 <tr style="height: 25px; vertical-align: middle">
-                                    <td style="width: 2%;"></td>
-                                    <td style="width: 70%; font-size: 22px; color: white;">Defined List of Task Status
+                                    <td style="width: 1%;"></td>
+                                    <td style="width: 30%; font-size: 22px; color: white;">Defined List of Task Status
                                     </td>
 
-                                    <td style="width: 10%; color: white;" align="right">Search
+                                    <td style="width: 8%; color: white;" align="right">Search
                                     </td>
-                                    <td style="width: 41%" class="NewBox">
-                                        <asp:TextBox ID="txtSearch" runat="server" Width="152px" onkeyup="EnableDisableButton(this,'BtnClearFilter')"></asp:TextBox>
+                                    <td style="width: 17%" class="NewBox">
+                                        <asp:TextBox ID="txtSearch" runat="server" SkinID="skinTxtBoxGrid" Width="100px"  BorderColor="White" ></asp:TextBox>
                                         <%--  <asp:TextBox ID="txtSearch" onkeyup="EnableDisableButton(this,'btnReset')" runat="server" OnTextChanged="txtSearch_TextChanged" AutoPostBack="true"></asp:TextBox>--%>
 
                                         <%--  <asp:TextBox  onblur="return: fnOnblur();" ID="txtSearch" runat="server" SkinID="skinTxtBoxSearch" ></asp:TextBox>--%>
                                     </td>
-                                    <td style="width: 20%" class="NewBox">
+                                    <td style="width: 17%" class="NewBox">
                                         <div style="width: 160px; font-family: 'Trebuchet MS';">
                                             <asp:DropDownList ID="ddCriteria" runat="server" Width="153px" Height="23px" BackColor="White" Style="text-align: center; border: 1px solid white">
                                                 <asp:ListItem Value="0">All</asp:ListItem>
@@ -149,13 +177,13 @@
                                         </div>
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">
-                                        <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false" />
+                                        <asp:Button ID="btnSearch" runat="server" onkeyup="EnableDisableButton(this,'BtnClearFilter')" Text="" CssClass="ButtonSearch6" EnableTheming="false" />
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">
                                         <%--     <asp:Button ID="btnReset" runat="server" OnClick="BtnClearFilter_Click" Text="Reset" Font-Bold="true"
             Enabled="false" onclick="btnReset_Click" />--%>
 
-                                        <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click"   EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        <asp:Button ID="BtnClearFilter"  runat="server"  OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                     </td>
 
                                 </tr>
@@ -187,7 +215,7 @@
                                                     Height="25px" BorderColor="#cccccc" VerticalAlign="Middle" />
                                                 <EditItemTemplate>
                                                     <div class="divArea">
-                                                        <table cellpadding="1" cellspacing="1" style="height: 250px; border: 1px solid #86b2d1; width: 100%;">
+                                                        <table cellpadding="1" cellspacing="1" style="height: 200px; border: 1px solid #86b2d1; width: 100%;">
                                                             <tr>
                                                                 <td colspan="4" class="headerPopUp">Task Status
                                                                 </td>
@@ -203,7 +231,7 @@
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtTaskStatusName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Status. It cannot be left blank. ">*</asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width: 33%">
+                                                                <td class="ControlTextBox3" style="width: 34%">
                                                                     <asp:TextBox ID="txtTaskStatusName" runat="server" Text='<%# Bind("Task_Status_Name") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -211,10 +239,9 @@
                                                                 <td style="width: 30%"></td>
                                                                 <td></td>
                                                             </tr>
-                                                            <tr style="height: 10px">
-                                                            </tr>
+                                                           
                                                             <tr>
-                                                                <td colspan="4">
+                                                                <td colspan="6">
                                                                     <table style="width: 100%">
                                                                         <tr>
                                                                             <td style="width: 30%"></td>
@@ -223,7 +250,8 @@
                                                                                     CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="UpdateButton_Click"></asp:Button>
                                                                             </td>
-                                                                            <td align="center" style="width: 20%">
+                                                                             <td style="width:2%" ></td>
+                                                                            <td align="center" style="width: 15%">
                                                                                 <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
                                                                                     CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="UpdateCancelButton_Click"></asp:Button>
                                                                             </td>
@@ -257,7 +285,7 @@
                                                 </FooterTemplate>
                                                 <InsertItemTemplate>
                                                     <div class="divArea">
-                                                        <table cellpadding="1" cellspacing="1" style="height: 250px; border: 1px solid #86b2d1; width: 100%;">
+                                                        <table cellpadding="1" cellspacing="1" style="height: 200px; border: 1px solid #86b2d1; width: 100%;">
                                                             <tr>
                                                                 <td colspan="4" class="headerPopUp">Task Status
                                                                 </td>
@@ -273,7 +301,7 @@
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtTaskStatusNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Enter Task Status. It cannot be left blank. "></asp:RequiredFieldValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width: 33%">
+                                                                <td class="ControlTextBox3" style="width: 34%">
                                                                     <asp:TextBox ID="txtTaskStatusNameAdd" runat="server" Text='<%# Bind("Task_Status_Name") %>'
                                                                         SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                 </td>
@@ -281,10 +309,10 @@
                                                                 <td style="width: 30%"></td>
                                                                 <td></td>
                                                             </tr>
-                                                            <tr style="height: 10px">
+                                                            <tr style="height: 1px">
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4">
+                                                                <td colspan="6">
                                                                     <table style="width: 100%">
                                                                         <tr>
                                                                             <td style="width: 30%"></td>

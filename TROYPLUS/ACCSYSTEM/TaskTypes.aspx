@@ -8,7 +8,58 @@
     <script language="javascript" type="text/javascript">
 
 
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            // alert('test');
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function clearfilterclick() {
+            var button = document.getElementById('<%=BtnClearFilter.ClientID %>');
+            alert('clicent');
+            button.style.visibility = "hidden";
+            //button.click();
+
+        }
+
+
         function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+            //alert('test');
+            <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
+
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                // alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = false;
+                <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+                // window.onload = function ();
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+                //alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = true;
+                <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+            //else {
+
+            //    document.getElementById(target).disabled = false;
+            //}
+        }
+
+
+        <%--function EnableDisableButton(sender, target) {
             if (sender.value.length > 0)
 
                 document.getElementById('<%= BtnClearFilter.ClientID %>').disabled = false;
@@ -17,7 +68,7 @@
 
                 document.getElementById('<%= BtnClearFilter.ClientID %>').disabled = true;
 
-        }
+        }--%>
 
 //        function Mobile_Validator() {
 //            var ctrMobile = document.getElementById('ctl00_cplhControlPanel_frmViewAdd_txtMobile');
@@ -74,19 +125,19 @@
                             <div class="mainConBody">
                                 <table style="width: 99.8%; margin: -1px 0px 0px 1px;" cellpadding="3" cellspacing="2" class="searchbg">
                                     <tr style="height: 25px; vertical-align: middle">
-                                        <td style="width: 2%;"></td>
-                                        <td style="width: 70%; font-size: 22px; color: white;" >
+                                        <td style="width: 1%;"></td>
+                                        <td style="width: 30%; font-size: 22px; color: white;" >
                                             Defined Types of Task
                                         </td>
                                        
-                                        <td style="width:10%; color: white;" align="right">
+                                        <td style="width:8%; color: white;" align="right">
                                                 Search
                                             </td>
-                                        <td style="width: 30%" class="NewBox">
-                                           <asp:TextBox ID="txtSearch" runat="server" Width="152px" onkeyup="EnableDisableButton(this,'btnReset')" AutoPostBack="true"></asp:TextBox>
+                                        <td style="width: 17%" class="NewBox">
+                                           <asp:TextBox ID="txtSearch" SkinID="skinTxtBoxGrid" runat="server" Width="152px"  ></asp:TextBox>
 
                                         </td>
-                                        <td style="width: 20%" class="NewBox">
+                                        <td style="width: 17%" class="NewBox">
                                             <div style="width: 160px; font-family: 'Trebuchet MS';">
                                                 <asp:DropDownList ID="ddCriteria" runat="server" Width="153px" Height="23px" BackColor="White" style="text-align:center;border:1px solid white">
                                                     <asp:ListItem Value="0">All</asp:ListItem>
@@ -96,7 +147,7 @@
                                             </div>
                                         </td>
                                         <td style="width: 16%" class="tblLeftNoPad">
-                                            <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false" />
+                                            <asp:Button ID="btnSearch" runat="server" Text="" onkeyup="EnableDisableButton(this,'btnReset')" CssClass="ButtonSearch6" EnableTheming="false" />
                                         </td>
                                         <td style="width: 16%" class="tblLeftNoPad">
                                             <asp:Button ID="BtnClearFilter" runat="server"  OnClick="BtnClearFilter_Click"  EnableTheming="false" Text="" CssClass="ClearFilter6" />
@@ -130,7 +181,7 @@
                                                     Height="25px" BorderColor="#cccccc" VerticalAlign="Middle" />
                                                 <EditItemTemplate>
                                                     <div class="divArea">
-                                                        <table cellpadding="1" cellspacing="1" style="border: 1px solid #86b2d1; height:250px; width: 100%;">
+                                                        <table cellpadding="1" cellspacing="1" style="border: 1px solid #86b2d1; height:200px; width: 100%;">
                                                             <tr>
                                                                 <td colspan="4" class="headerPopUp">
                                                                     Task Types
@@ -161,21 +212,19 @@
                                                             <tr style="height:10px">
                                                             </tr> 
                                                             <tr>
-                                                                <td colspan="5">
+                                                                <td colspan="6">
                                                                     <table style="width:100%">
                                                                         <tr>
                                                                             <td style="width:30%">
                                                                             
                                                                             </td>
-                                                                            <td align="right" style="width:20%">                                                                                
+                                                                            <td align="right" style="width:17%">                                                                                
                                                                                  <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
                                                                                     CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="UpdateButton_Click"></asp:Button>
                                                                             </td>
-                                                                             <td style="width:5%">
-                                                                            
-                                                                            </td>
-                                                                            <td align="left" style="width:20%">
+                                                                            <td style="width:2%" ></td>
+                                                                            <td align="left" style="width:15%">
                                                                                <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
                                                                                     CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="UpdateCancelButton_Click">
                                                                                 </asp:Button>
@@ -213,7 +262,7 @@
                                                 </FooterTemplate>
                                                 <InsertItemTemplate>
                                                     <div class="divArea">
-                                                        <table cellpadding="1" cellspacing="1" style="height:250px; border: 1px solid #86b2d1; width: 100%;">
+                                                        <table cellpadding="1" cellspacing="1" style="height:200px; border: 1px solid #86b2d1; width: 100%;">
                                                             <tr>
                                                                 <td colspan="4" class="headerPopUp">
                                                                     Task Types
@@ -245,26 +294,26 @@
                                                             <tr style="height:10px"> 
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="5">
+                                                                <td colspan="6">
                                                                     <table style="width:100%">
                                                                         <tr>
-                                                                            <td style="width:20%">
+                                                                            <td style="width:30%">
                                                                             
                                                                             </td>
-                                                                            <td align="right" style="width:30%">                                                                              
+                                                                            <td align="right" style="width:17%">                                                                              
                                                                                  <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
                                                                                     CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="InsertButton_Click"></asp:Button>
                                                                             </td>
-                                                                              <td style="width:5%">
-                                                                            
-                                                                            </td>
-                                                                            <td align="left" style="width:30%">
+                                                                             
+                                                                            <td style="width:2%" ></td>
+                                                                          
+                                                                            <td align="left" style="width:15%">
                                                                                  <asp:Button ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
                                                                                     CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="InsertCancelButton_Click">
                                                                                 </asp:Button>                                                                        
                                                                             </td>
-                                                                            <td style="width:20%">
+                                                                            <td style="width:30%">
 
                                                                             </td>
                                                                         </tr>

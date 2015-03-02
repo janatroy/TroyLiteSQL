@@ -16,6 +16,7 @@ public partial class TaskUpdates : System.Web.UI.Page
     private string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
             if (!IsPostBack)
@@ -40,16 +41,16 @@ public partial class TaskUpdates : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                if (bl.CheckUserHaveAdd(usernam, "Tupdate"))
-                {
-                    lnkBtnAdd.Enabled = false;
-                    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
-                }
-                else
-                {
-                    lnkBtnAdd.Enabled = true;
-                    lnkBtnAdd.ToolTip = "Click to Add New item ";
-                }
+                //if (bl.CheckUserHaveAdd(usernam, "Tupdate"))
+                //{
+                //    lnkBtnAdd.Enabled = false;
+                //    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+                //}
+                //else
+                //{
+                //    lnkBtnAdd.Enabled = true;
+                //    lnkBtnAdd.ToolTip = "Click to Add New item ";
+                //}
 
                 //if (bl.CheckUserHaveEdit(usernam, "Tupdate"))
                 //{
@@ -84,7 +85,7 @@ public partial class TaskUpdates : System.Web.UI.Page
         {
             btnSave.Enabled = false;
             btnUpdate.Enabled = false;
-            lnkBtnAdd.Visible = false;
+          //  lnkBtnAdd.Visible = false;
             GrdWME.Columns[10].Visible = false;
             GrdWME.Columns[11].Visible = false;
         }
@@ -495,7 +496,7 @@ public partial class TaskUpdates : System.Web.UI.Page
         drpIncharge.SelectedIndex = 0;
 
         pnsSave.Visible = false;
-        lnkBtnAdd.Visible = false;
+      //  lnkBtnAdd.Visible = false;
         btnSave.Enabled = true;
         btnCancel.Enabled = true;
         btnUpdate.Enabled = false;
@@ -940,15 +941,5 @@ public partial class TaskUpdates : System.Web.UI.Page
         }
     }
 
-    protected void txtSearch_TextChanged(object sender, EventArgs e)
-    {
-        if (txtSearch.Text == "" || txtSearch.Text == " ")
-        {
-            BtnClearFilter.Enabled = false;
-        }
-        else
-        {
-            BtnClearFilter.Enabled = true;
-        }
-    }
+   
 }

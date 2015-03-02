@@ -19,6 +19,7 @@ public partial class CustomerInfo : System.Web.UI.Page
     string EnableOpbalance = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
             //drpLedgerCatAdd.BorderWidth = 2;

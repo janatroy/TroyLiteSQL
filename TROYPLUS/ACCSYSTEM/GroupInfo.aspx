@@ -5,7 +5,37 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cplhTab" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
+     <script language="javascript" type="text/javascript">
+
+         window.onload = function Showalert() {
+
+             var txt = document.getElementById("<%= txtSearch.ClientID %>")
+              <%--  var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");--%>
+                if (txt.value == "") {
+                    // alert(txt.value);
+                    btn.style.visibility = "hidden";
+                    // when the window is loaded, hide the button if the textbox is empty
+                }
+
+            }
+
+            function EnableDisableButton(sender, target) {
+                var first = document.getElementById('<%=txtSearch.ClientID %>');
+
+                if (sender.value.length >= 1 && first.value.length >= 1) {
+                   <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";--%>
+
+                }
+
+                if (sender.value.length < 1 && first.value.length < 1) {
+
+                  <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";--%>
+                }
+            }
+        </script>
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
+
+       
         <ContentTemplate>
 
             <table style="width: 100%">
@@ -63,7 +93,7 @@
                                     <td style="width: 19%" class="tblLeftNoPad">
                                         <div style="text-align: left;">
                                             <asp:Panel ID="Panel4" runat="server" Width="100px">
-                                                <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false"
+                                                <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false"
                                                     OnClick="btnSearch_Click" />
                                             </asp:Panel>
                                         </div>

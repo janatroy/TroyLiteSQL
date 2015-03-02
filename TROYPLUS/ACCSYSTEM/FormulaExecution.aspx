@@ -36,6 +36,35 @@
             }
         }
 
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtStartDate.ClientID %>");
+            var txt1 = document.getElementById("<%= txtEndDate.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "" || txt1.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtStartDate.ClientID %>');
+
+            var first1 = document.getElementById('<%=txtEndDate.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+        }
+
 
     </script>
 
@@ -154,7 +183,7 @@
                                         <asp:CheckBox ID="rdoIsPros" runat="server" Text="Processed" />
                                     </td>
                                     <td style="width: 8%; text-align: left">
-                                        <asp:Button ValidationGroup="search" ID="btnSearch" OnClick="btnSearch_Click" runat="server"
+                                        <asp:Button ValidationGroup="search" ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" OnClick="btnSearch_Click" runat="server"
                                             Text="" EnableTheming="false" CssClass="ButtonSearch6" />
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">

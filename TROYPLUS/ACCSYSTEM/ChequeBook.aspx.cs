@@ -20,6 +20,7 @@ public partial class ChequeBook : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
             //if (hdCustomerID.Value != "0")
@@ -219,6 +220,7 @@ public partial class ChequeBook : System.Web.UI.Page
                 string FromNo = string.Empty;
                 string ToNo = string.Empty;
                 int BankID = 0;
+                //int AccountNo = 0;
 
                 string Username = Request.Cookies["LoggedUserName"].Value;
                 AccountNo = txtAccNoAdd.Text;
@@ -232,8 +234,9 @@ public partial class ChequeBook : System.Web.UI.Page
                 string ddBankID = ddBankName.SelectedValue;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                if (bl.IsChequeAlreadyEntered(connection, ddBankID, FromNo, ToNo))
+                if (bl.IsChequeAlreadyEntered(connection, ddBankID, FromNo, ToNo,AccountNo))
                 {
+
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given Cheque No already entered for this bank.');", true);
                     ModalPopupExtender1.Show();
                     return;
@@ -1195,7 +1198,7 @@ public partial class ChequeBook : System.Web.UI.Page
 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                if (bl.IsChequeAlreadyEntered(connection, BankID, FromNo, ToNo))
+                if (bl.IsChequeAlreadyEntered(connection, BankID, FromNo, ToNo,AccountNo))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given Cheque No already entered for this bank.');", true);
                     ModalPopupExtender1.Show();

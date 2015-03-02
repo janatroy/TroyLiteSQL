@@ -16,6 +16,8 @@ public partial class TaskStatus : System.Web.UI.Page
     public string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+
         if (!Page.IsPostBack)
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -53,14 +55,14 @@ public partial class TaskStatus : System.Web.UI.Page
                 lnkBtnAdd.Enabled = true;
                 lnkBtnAdd.ToolTip = "Click to Add New ";
             }
-            BtnClearFilter.Enabled = false;
-            //if(txtSearch.Text=="")
+          // BtnClearFilter.Visible =false;
+            //if (txtSearch.Text == "")
             //{
-            //    BtnClearFilter.Enabled = false;
+            //    BtnClearFilter.attr = false;
             //}
             //else
             //{
-            //BtnClearFilter.Enabled=true;
+            //    BtnClearFilter.Visible = true;
             //}
 
            // BtnClearFilter.Visible = false;
@@ -107,7 +109,7 @@ public partial class TaskStatus : System.Web.UI.Page
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
 
 
-
+      //  BtnClearFilter.Visible = true;
         //if(txtSearch.Text!="")
         //{
         //    BtnClearFilter.Enabled = true;
@@ -144,40 +146,42 @@ public partial class TaskStatus : System.Web.UI.Page
 
         txtSearch.Text = "";
         ddCriteria.SelectedIndex = 0;
-        //BtnClearFilter.Visible = true;
-        //BtnClearFilter.Enabled = false;
-        //if (txtSearch.Text == "")
-        //{
-        //    BtnClearFilter.Enabled = false;
-        //}
-        //else
-        //{
-        //    BtnClearFilter.Enabled = true;
-        //}
 
-        //if (txtSearch.Text == "")
-        //{
-        //    BtnClearFilter.Enabled = false;
-        //  //  BtnClearFilter.ToolTip = "You are not allowed to make Add New ";
-        //}
-        //else
-        //{
-        //if (txtSearch.Text == "")
-        //{
-        //    BtnClearFilter.Enabled = false;
-        //}
-        //else
-        //{
+        Page_Load(sender, e);
+    //   // BtnClearFilter.Visible = false;
+    //  //  BtnClearFilter.Enabled = false;
+    //    //if (txtSearch.Text == "")
+    //    //{
+    //    //    BtnClearFilter.Enabled = false;
+    //    //}
+    //    //else
+    //    //{
+    //    //    BtnClearFilter.Enabled = true;
+    //    //}
 
-        //    txtSearch.Text = string.Empty;
-        //    ddCriteria.SelectedIndex = 0;
-        //}
+    //    //if (txtSearch.Text == "")
+    //    //{
+    //    //    BtnClearFilter.Enabled = false;
+    //    //  //  BtnClearFilter.ToolTip = "You are not allowed to make Add New ";
+    //    //}
+    //    //else
+    //    //{
+    //    //if (txtSearch.Text == "")
+    //    //{
+    //    //    BtnClearFilter.Enabled = false;
+    //    //}
+    //    //else
+    //    //{
 
-           // ScriptManager.RegisterStartupScript(this, GetType(), "function", "function();", true);
+    //    //    txtSearch.Text = string.Empty;
+    //    //    ddCriteria.SelectedIndex = 0;
+    //    //}
+
+    //       // ScriptManager.RegisterStartupScript(this, GetType(), "function", "function();", true);
         
-           // BtnClearFilter.Enabled = false;
-           // BtnClearFilter.ToolTip = "Click to clear search value ";
-        //}
+    //       // BtnClearFilter.Enabled = false;
+    //       // BtnClearFilter.ToolTip = "Click to clear search value ";
+    //    //}
     }
 
     private string GetConnectionString()
@@ -194,7 +198,7 @@ public partial class TaskStatus : System.Web.UI.Page
 
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-
+        //BtnClearFilter.Enabled = true;
     }
     protected void frmViewAdd_ItemCommand(object sender, FormViewCommandEventArgs e)
     {

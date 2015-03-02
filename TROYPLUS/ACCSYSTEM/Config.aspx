@@ -31,6 +31,33 @@
                 }
             }
         }
+
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtScreenName.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtScreenName.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+        }
+
     </script>
 
     <style id="Style1" runat="server">
@@ -115,7 +142,7 @@
                                         <asp:TextBox ID="txtScreenName" runat="server" SkinID="skinTxtBoxSearch"></asp:TextBox>
                                     </td>
                                     <td class="tblLeftNoPad" style="width: 15%">
-                                        <asp:Button ID="lnkBtnSearchId" runat="server" OnClick="lnkBtnSearch_Click" Text=""
+                                        <asp:Button ID="lnkBtnSearchId" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" OnClick="lnkBtnSearch_Click" Text=""
                                             ToolTip="Click here to submit" CssClass="ButtonSearch6" EnableTheming="false" TabIndex="3" />
                                     </td>
                                     <td style="width: 15%" class="tblLeftNoPad">
