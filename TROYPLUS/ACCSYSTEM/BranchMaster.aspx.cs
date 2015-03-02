@@ -716,6 +716,15 @@ public partial class BranchMaster : System.Web.UI.Page
                     dct = new DataColumn("Branchcode");
                     dtt.Columns.Add(dct);
 
+                    dct = new DataColumn("Add1");
+                    dtt.Columns.Add(dct);
+
+                    dct = new DataColumn("Add2");
+                    dtt.Columns.Add(dct);
+
+                    dct = new DataColumn("Add3");
+                    dtt.Columns.Add(dct);
+
                     dstest.Tables.Add(dtt);
 
 
@@ -731,6 +740,9 @@ public partial class BranchMaster : System.Web.UI.Page
                             drNewt["ContactName"] = "Cash A/c - " + Branchcode;
                             drNewt["Inttrans"] = "NO";
                             drNewt["Branchcode"] = Branchcode;
+                            drNewt["Add1"] = "";
+                            drNewt["Add2"] = "";
+                            drNewt["Add3"] = "";
                         }
                         else if (i == 2)
                         {
@@ -740,13 +752,52 @@ public partial class BranchMaster : System.Web.UI.Page
                             drNewt["ContactName"] = "Sales A/c - " + Branchcode;
                             drNewt["Inttrans"] = "NO";
                             drNewt["Branchcode"] = Branchcode;
+                            drNewt["Add1"] = "";
+                            drNewt["Add2"] = "";
+                            drNewt["Add3"] = "";
+                        }
+                        else if (i == 3)
+                        {
+                            drNewt["GroupID"] = 5;
+                            drNewt["LedgerName"] = "Purchase A/c - " + Branchcode;
+                            drNewt["AliasName"] = "Purchase A/c - " + Branchcode;
+                            drNewt["ContactName"] = "Purchase A/c - " + Branchcode;
+                            drNewt["Inttrans"] = "NO";
+                            drNewt["Branchcode"] = Branchcode;
+                            drNewt["Add1"] = "";
+                            drNewt["Add2"] = "";
+                            drNewt["Add3"] = "";
+                        }
+                        else if (i == 4)
+                        {
+                            drNewt["GroupID"] = 1;
+                            drNewt["LedgerName"] = BranchName;
+                            drNewt["AliasName"] = BranchName;
+                            drNewt["ContactName"] = BranchName;
+                            drNewt["Inttrans"] = "YES";
+                            drNewt["Branchcode"] = Branchcode;
+                            drNewt["Add1"] = BranchAddress1;
+                            drNewt["Add2"] = BranchAddress2;
+                            drNewt["Add3"] = BranchAddress3;
+                        }
+                        else if (i == 5)
+                        {
+                            drNewt["GroupID"] = 2;
+                            drNewt["LedgerName"] = BranchName;
+                            drNewt["AliasName"] = BranchName;
+                            drNewt["ContactName"] = BranchName;
+                            drNewt["Inttrans"] = "YES";
+                            drNewt["Branchcode"] = Branchcode;
+                            drNewt["Add1"] = BranchAddress1;
+                            drNewt["Add2"] = BranchAddress2;
+                            drNewt["Add3"] = BranchAddress3;
                         }
                         dstest.Tables[0].Rows.Add(drNewt);
                     }
 
 
 
-                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation,IsActive, Username);
+                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive, Username, dstest);
                        
                     //MyAccordion.Visible = true;
                     pnlVisitDetails.Visible = false;

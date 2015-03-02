@@ -2915,7 +2915,7 @@ public partial class Purchase : System.Web.UI.Page
                     cmbModel.Enabled = false;
                     cmbBrand.Enabled = false;
                     cmbProdName.Enabled = false;
-                    BtnClearFilter.Enabled = false;
+                    //BtnClearFilter.Enabled = false;
                     cmbCategory.Enabled = false;
                     LoadProducts(this, null);
                 }
@@ -3477,7 +3477,7 @@ public partial class Purchase : System.Web.UI.Page
             cmbProdAdd.Enabled = true;
             cmbProdName.Enabled = true;
             cmbCategory.Enabled = true;
-            BtnClearFilter.Enabled = true;
+            //BtnClearFilter.Enabled = true;
             ClearFilter();
             cmdSaveProduct.Visible = true;
             //Label2.Visible = true;

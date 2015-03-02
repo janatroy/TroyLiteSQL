@@ -28,6 +28,7 @@ public partial class TaskEntry : System.Web.UI.Page
 
                 BindWME("", "");
                 loadEmp();
+                loadBranch();
                 DisableForOffline();
                 //rvASDate.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //rvASDate.MaximumValue = System.DateTime.Now.ToShortDateString();
@@ -136,6 +137,22 @@ public partial class TaskEntry : System.Web.UI.Page
         //drpsIncharge.DataValueField = "empno";
     }
 
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
+
     private void BindWME(string textSearch, string dropDown)
     {
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -196,6 +213,7 @@ public partial class TaskEntry : System.Web.UI.Page
         string ActEndDate = string.Empty;
         string TaskDesc = string.Empty;
         string IsActive = string.Empty;
+        string brncode = string.Empty;
         int ProjectCode = 0;
         int TaskType = 0;
         int DependencyTask = 0;
@@ -277,6 +295,8 @@ public partial class TaskEntry : System.Web.UI.Page
                     TaskDesc = txtTaskDesc.Text.Trim();
                 if (Taskeffortdays.Text.Trim() != string.Empty)
                     effortdays = Convert.ToInt32(Taskeffortdays.Text.Trim());
+                if (drpBranch.Text.Trim() != string.Empty)
+                    brncode = Convert.ToString(drpBranch.SelectedValue);
 
                 string Username = Request.Cookies["LoggedUserName"].Value;
 
@@ -288,7 +308,7 @@ public partial class TaskEntry : System.Web.UI.Page
 
                 //if (checkemp == null || checkemp.Tables[0].Rows.Count == 0)
                 //{
-                bl.InsertTaskEntry(ProjectCode, TaskDate, EWStartDate, EWEndDate, Owner, TaskCode, TaskType, IsActive, DependencyTask, TaskDesc, Username, TaskName,effortdays);
+                bl.InsertTaskEntry(ProjectCode, TaskDate, EWStartDate, EWEndDate, Owner, TaskCode, TaskType, IsActive, DependencyTask, TaskDesc, Username, TaskName, effortdays, brncode);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Task Entry Details Saved Successfully.');", true);
                 Reset();
@@ -329,6 +349,7 @@ public partial class TaskEntry : System.Web.UI.Page
             string status = string.Empty;
             string TaskDesc = string.Empty;
             string IsActive = string.Empty;
+            string brncode = string.Empty;
            // string unitofmeasure = string.Empty;
             int ProjectCode = 0;
             int DependencyTask = 0;
@@ -405,6 +426,8 @@ public partial class TaskEntry : System.Web.UI.Page
                     TaskDesc = txtTaskDesc.Text.Trim();
                 if (Taskeffortdays.Text.Trim() != string.Empty)
                     effortdays = Convert.ToInt32(Taskeffortdays.Text.Trim());
+                if (drpBranch.Text.Trim() != string.Empty)
+                    brncode = Convert.ToString(drpBranch.SelectedValue);
                 //if (drpunitmeasure.Text.Trim() != string.Empty)
                 //    unitofmeasure = drpunitmeasure.Text.Trim();
 
@@ -412,7 +435,7 @@ public partial class TaskEntry : System.Web.UI.Page
 
                 Task_Id = int.Parse(GrdWME.SelectedDataKey.Value.ToString());
 
-                bl.UpdateTaskEntry(ProjectCode, TaskDate, EWStartDate, EWEndDate, Owner, TaskCode, TaskType, IsActive, DependencyTask, TaskDesc, Username, Task_Id, TaskName,effortdays);
+                bl.UpdateTaskEntry(ProjectCode, TaskDate, EWStartDate, EWEndDate, Owner, TaskCode, TaskType, IsActive, DependencyTask, TaskDesc, Username, Task_Id, TaskName, effortdays, brncode);
 
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Task Entry Details Updated Successfully.');", true);
@@ -683,6 +706,14 @@ public partial class TaskEntry : System.Web.UI.Page
                         string sCs = Convert.ToString(ds.Tables[0].Rows[0]["Project_Code"]);
                         drpProjectCode.ClearSelection();
                         ListItem li = drpProjectCode.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCs));
+                        if (li != null) li.Selected = true;
+                    }
+
+                    if (ds.Tables[0].Rows[0]["BranchCode"] != null)
+                    {
+                        string sCs = Convert.ToString(ds.Tables[0].Rows[0]["BranchCode"]);
+                        drpBranch.ClearSelection();
+                        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCs));
                         if (li != null) li.Selected = true;
                     }
                     //if (ds.Tables[0].Rows[0]["Unit_Of_Measure"] != null)

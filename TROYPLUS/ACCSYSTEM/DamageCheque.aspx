@@ -34,7 +34,7 @@
 //        }
 
     </script>
-    <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
+    <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
         <ContentTemplate>
             <table style="width: 100%">
                 <tr style="width: 100%">
@@ -158,7 +158,27 @@
                                                                 <td>
                                                                 </td>
                                                             </tr>
-                     
+                                                               <tr>
+                                                                <td class="ControlLabel" style="width:40%">
+                                                                     Account number *
+                                                                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="ddaccountnumber"
+                                                                                                                    Display="Dynamic" ErrorMessage="Account is Mandatory" Operator="GreaterThan"
+                                                                                                                    ValueToCompare="0">*</asp:CompareValidator>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width:30%">
+                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo"  CssClass="drpDownListMedium" BackColor = "#e7e7e7"
+                                                                        runat="server" SelectedValue='<%# Bind("AccountNo") %>' DataTextField="LedgerName"
+                                                                        DataValueField="LedgerID" Width="100%" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" >
+                                                                     </asp:DropDownList>
+                                                                </td>
+                                                                
+                                                                <td style="width:30%">
+                                                                </td>
+                                                                <td>
+                                                                </td>
+                                                            </tr>
+
+
                                                             <tr>
                                                                 <table style="width:100%">
                                                                     <tr>
@@ -194,7 +214,7 @@
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
-                                                                 <asp:ObjectDataSource ID="srcGroupInfoadd1" runat="server" SelectMethod="ListAccountnumber"
+                                                                 <asp:ObjectDataSource ID="srcGroupInfo1" runat="server" SelectMethod="ListAccountnumber"
                                                                     TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
@@ -226,23 +246,17 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="ControlLabel" style="width:40%">
-                                                                     
                                                                     Bank Name *
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddBankNameAdd"
                                                                                                                     Display="Dynamic" ErrorMessage="Bank Name is Mandatory" Operator="GreaterThan"
                                                                                                                     ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width:30%">
-                                                                  <asp:UpdatePanel ID="UpdatePanel12" runat="server" UpdateMode="Conditional">
-                                                                               <ContentTemplate>
-                                                                    <asp:DropDownList ID="ddBankNameAdd" OnSelectedIndexChanged="ddBankNameAdd_SelectedIndexChanged" AutoPostBack="true" DataSourceID="srcGroupInfoAdd" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
+                                                                    <asp:DropDownList ID="ddBankNameAdd" DataSourceID="srcGroupInfoAdd" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
                                                                         runat="server" SelectedValue='<%# Bind("BankID") %>' DataTextField="LedgerName"  style="border: 1px solid #e7e7e7" height="26px" 
                                                                         DataValueField="LedgerID" Width="98%" AppendDataBoundItems="True" TabIndex="1">
                                                                         <asp:ListItem Selected="True" style="background-color: #e7e7e7" Value="0">Select Bank</asp:ListItem>
                                                                      </asp:DropDownList>
-                                                                            </ContentTemplate>
-                                                                         </asp:UpdatePanel>                        
-                                                                                                
                                                                 </td>
                                                                 
                                                                 <td style="width:30%">
@@ -272,25 +286,16 @@
                                                             </tr>
                                                               <tr>
                                                                 <td class="ControlLabel" style="width:40%">
-                                                                        
                                                                      Account number *
-                                                                 
+                                                                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="ddaccountnumber"
+                                                                                                                    Display="Dynamic" ErrorMessage="Account is Mandatory" Operator="GreaterThan"
+                                                                                                                    ValueToCompare="0">*</asp:CompareValidator>
+                                                                </td>
                                                                 <td class="ControlDrpBorder" style="width:30%">
-                                                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                                                               <ContentTemplate>
-                                                                         <asp:DropDownList ID="ddaccountnumberadd" AutoPostBack="true" CssClass="drpDownListMedium" BackColor="#e7e7e7"
-                                                                        runat="server" DataTextField="AccountNo"
-                                                                        DataValueField="ChequeBookID"  Width="100%" AppendDataBoundItems="True" Style="border: 1px solid #e7e7e7">
-                                                                        <asp:ListItem Text="Select Account" style="background-color: #e7e7e7" Value="0"></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                         </ContentTemplate>
-                                                                         </asp:UpdatePanel>  
-                                                                    
-                                                                     
-                                                                <%--   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfonumber" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
-                                                                        runat="server" SelectedValue='<%# Bind("AccountNo") %>' DataTextField="AccountNo"
-                                                                        DataValueField="ChequeBookID" Width="100%" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" >
-                                                                     </asp:DropDownList>--%>
+                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
+                                                                        runat="server" SelectedValue='<%# Bind("AccountNo") %>' DataTextField="LedgerName"
+                                                                        DataValueField="LedgerID" Width="100%" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" >
+                                                                     </asp:DropDownList>
                                                                 </td>
                                                                 
                                                                 <td style="width:30%">
@@ -340,7 +345,7 @@
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
-                                                                    <asp:ObjectDataSource ID="srcGroupInfonumber" runat="server" SelectMethod="ListAccountnumber"
+                                                                    <asp:ObjectDataSource ID="srcGroupInfo1" runat="server" SelectMethod="ListAccountnumber"
                                                                     TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
@@ -369,8 +374,6 @@
                                 AllowPaging="True" DataKeyNames="ChequeID" EmptyDataText="No Cheque Data Found."
                                 OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                 OnRowDeleted="GrdViewLedger_RowDeleted">
-                                    <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" ForeColor="#0567AE" />
                                 <Columns>
                                     <asp:BoundField DataField="ChequeNo" HeaderText="Cheque No"  HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="ledgername" HeaderText="Bank Name" HeaderStyle-BorderColor="Gray" />
@@ -467,7 +470,7 @@
                                 <asp:Parameter Name="BankName" Type="String" />
                                 <asp:Parameter Name="BankID" Type="Int32" />
                                 <asp:Parameter Name="ChequeNo" Type="String" />
-                                <asp:Parameter Name="AccountNo" Type="String" />
+                                 <asp:Parameter Name="AccountNo" Type="String" />
                                 <asp:Parameter Name="Username" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
