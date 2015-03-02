@@ -1937,17 +1937,23 @@ public class BusinessLogic
     }
 
 
-    public DataSet ListAccountnumber()
+    public DataSet ListAccountnumber(string connection , int bankid)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         //manager.ConnectionString = CreateConnectionString(this.ConnectionString);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
+        int managerid = 0;
 
         try
         {
-            dbQry = string.Format("select AccountNO from  ");
+
+            //if (ds.Tables[0].Rows.Count > 0)
+            //    managerid = Convert.ToInt32(ds.Tables[0].Rows[0]["BankID"].ToString());
+
+
+            dbQry = string.Format("select tblCheque.AccountNo,tblCheque.ChequeBookID from tblCheque where tblCheque.BankID= " + bankid + "  ");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -50050,7 +50056,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "select BankName, BankId, ChequeNo, ChequeId from tblDamageCheque where ChequeId = " + ChequeId.ToString();
+            dbQry = "select BankName, BankId, AccountNo, ChequeNo, ChequeId from tblDamageCheque where ChequeId = " + ChequeId.ToString();
             manager.Open();
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -50096,7 +50102,7 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            dbQry = "select BankName, BankId, ChequeNo, ChequeId from tblDamageCheque where ChequeId = " + ChequeId.ToString();
+            dbQry = "select BankName, BankId, AccountNo, ChequeNo, ChequeId from tblDamageCheque where ChequeId = " + ChequeId.ToString();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
             if (ds != null)
@@ -50139,15 +50145,15 @@ public class BusinessLogic
 
         if (dropDown == "BankName")
         {
-            dbQry = "select tblledger.ledgername, BankId, ChequeNo, ChequeId,BankName from tblDamageCheque inner join tblledger on tblledger.ledgerid=tblDamageCheque.Bankid Where tblledger.ledgername like '" + txtSearch + "' Order By ChequeId";
+            dbQry = "select tblledger.ledgername, BankId,AccountNo, ChequeNo, ChequeId,BankName from tblDamageCheque inner join tblledger on tblledger.ledgerid=tblDamageCheque.Bankid Where tblledger.ledgername like '" + txtSearch + "' Order By ChequeId";
         }
         else if (dropDown == "ChequeNo")
         {
-            dbQry = "select tblledger.ledgername, BankId, ChequeNo, ChequeId,BankName from tblDamageCheque inner join tblledger on tblledger.ledgerid=tblDamageCheque.Bankid Where tblDamageCheque.ChequeNo like '" + txtSearch + "' Order By ChequeId";
+            dbQry = "select tblledger.ledgername, BankId,AccountNo, ChequeNo, ChequeId,BankName from tblDamageCheque inner join tblledger on tblledger.ledgerid=tblDamageCheque.Bankid Where tblDamageCheque.ChequeNo like '" + txtSearch + "' Order By ChequeId";
         }
         else
         {
-            dbQry = string.Format("select tblledger.ledgername, BankId, ChequeNo, ChequeId,BankName from tblDamageCheque inner join tblledger on tblledger.ledgerid=tblDamageCheque.Bankid Order By ChequeId", txtSearch);
+            dbQry = string.Format("select tblledger.ledgername, BankId,AccountNo, ChequeNo, ChequeId,BankName from tblDamageCheque inner join tblledger on tblledger.ledgerid=tblDamageCheque.Bankid Order By ChequeId", txtSearch);
         }
 
         //dbQry = "select BankId, ChequeNo, ChequeId,BankName from tblDamageCheque  Where ChequeNo like '" + txtSearch + "' Order By ChequeId";
@@ -50172,7 +50178,7 @@ public class BusinessLogic
         }
     }
 
-    public void InsertDamageCheque(string connection, string BankName, int BankID, string ChequeNo, string Username)
+    public void InsertDamageCheque(string connection, string BankName, int BankID, string ChequeNo,string AccountNo, string Username)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -50231,8 +50237,8 @@ public class BusinessLogic
 
 
 
-                dbQry = string.Format("INSERT INTO tblDamageCheque(BankName, BankID, ChequeNo) VALUES('{0}',{1},'{2}')",
-                    BankName, BankID, ChequeNo);
+            dbQry = string.Format("INSERT INTO tblDamageCheque(BankName, BankID, ChequeNo,AccountNo) VALUES('{0}',{1},'{2}','{3}')",
+                    BankName, BankID, ChequeNo,AccountNo);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -50914,7 +50920,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "select BankName, BankId, ChequeNo, ChequeId from tblDamageCheque where ChequeNo = '" + ChequeNo + "' ";
+            dbQry = "select BankName, BankId, ChequeNo,  ChequeId from tblDamageCheque where ChequeNo = '" + ChequeNo + "' ";
 
             manager.Open();
             object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
