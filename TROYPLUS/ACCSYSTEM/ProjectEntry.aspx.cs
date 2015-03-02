@@ -29,6 +29,7 @@ public partial class ProjectEntry : System.Web.UI.Page
 
                 BindWME("", "");
                 loadEmp();
+                loadBranch();
                 DisableForOffline();
                 //rvASDate.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //rvASDate.MaximumValue = System.DateTime.Now.ToShortDateString();
@@ -102,6 +103,21 @@ public partial class ProjectEntry : System.Web.UI.Page
         //drpsIncharge.DataValueField = "empno";
     }
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
+
     private void BindWME(string textSearch, string dropDown)
     {
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -172,6 +188,7 @@ public partial class ProjectEntry : System.Web.UI.Page
         string Projectstatus = string.Empty;
         string ProjectCode = string.Empty;
         string unitofmeasure = string.Empty;
+        string brncode = string.Empty;
         int EffortDays = 0;
       //  string ActStartDate = string.Empty;
        // string ActStartDate = string.Empty;
@@ -245,6 +262,8 @@ public partial class ProjectEntry : System.Web.UI.Page
                     ActEndDate =txtacenddate.Text.Trim();
                 if (drpunitmeasure.Text.Trim() != string.Empty)
                     unitofmeasure = drpunitmeasure.Text.Trim();
+                if (drpBranch.Text.Trim() != string.Empty)
+                    brncode = Convert.ToString(drpBranch.SelectedValue);
                 //if (txtacteffortdays.Text.Trim() != string.Empty)
                 //    ActEffortDays = Convert.ToInt32(txtacteffortdays.Text.Trim());
                 //if (txtproclodate.Text.Trim() != string.Empty)
@@ -262,7 +281,7 @@ public partial class ProjectEntry : System.Web.UI.Page
 
                 //if (checkemp == null || checkemp.Tables[0].Rows.Count == 0)
                 //{
-                bl.InsertProjectEntry(ProjectCode, ProjectDate, EWStartDate, EWEndDate, empNO, ProjectName, EffortDays, Projectstatus, ProjectDesc, Username, ActStartDate, ActEndDate,unitofmeasure);
+                bl.InsertProjectEntry(ProjectCode, ProjectDate, EWStartDate, EWEndDate, empNO, ProjectName, EffortDays, Projectstatus, ProjectDesc, Username, ActStartDate, ActEndDate, unitofmeasure, brncode);
 
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('New Project Details Saved Successfully.');", true);
                     Reset();
@@ -305,6 +324,7 @@ public partial class ProjectEntry : System.Web.UI.Page
             string Projectstatus = string.Empty;
             string ProjectCode = string.Empty;
             string unitofmeasure = string.Empty;
+            string brncode = string.Empty;
             int EffortDays = 0;
             int Project_Id = 0;
             string ProjectRecordClosedDate = string.Empty;
@@ -352,7 +372,8 @@ public partial class ProjectEntry : System.Web.UI.Page
                     ProjectDesc = txtProjectDesc.Text.Trim();
                 if (drpunitmeasure.Text.Trim() != string.Empty)
                     unitofmeasure = drpunitmeasure.Text.Trim();
-
+                if (drpBranch.Text.Trim() != string.Empty)
+                    brncode = Convert.ToString(drpBranch.SelectedValue);
                 //if (txtCLSDate.Text.Trim() != string.Empty)
                 //    ProjectRecordClosedDate = txtCLSDate.Text.Trim();
                 if (txtactdate.Text.Trim() != string.Empty)
@@ -374,7 +395,7 @@ public partial class ProjectEntry : System.Web.UI.Page
 
                 Project_Id = int.Parse(GrdWME.SelectedDataKey.Value.ToString());
 
-                bl.UpdateProjectEntry(ProjectCode, ProjectDate, EWStartDate, EWEndDate, empNO, ProjectName, EffortDays, Projectstatus, ProjectDesc, Username, Project_Id, ActStartDate, ActEndDate,unitofmeasure);
+                bl.UpdateProjectEntry(ProjectCode, ProjectDate, EWStartDate, EWEndDate, empNO, ProjectName, EffortDays, Projectstatus, ProjectDesc, Username, Project_Id, ActStartDate, ActEndDate, unitofmeasure, brncode);
 
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Project Details Updated Successfully.');", true);
@@ -1100,6 +1121,9 @@ public partial class ProjectEntry : System.Web.UI.Page
                     if (ds.Tables[0].Rows[0]["Unit_Of_Measure"] != null)
                         drpunitmeasure.SelectedValue = ds.Tables[0].Rows[0]["Unit_Of_Measure"].ToString();
 
+                    if (ds.Tables[0].Rows[0]["BranchCode"] != null)
+                        drpBranch.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+
                      //if (ds.Tables[0].Rows[0]["Actual_Effort_Days"] != null)
                      //    txtacteffortdays.Text = Convert.ToInt32(ds.Tables[0].Rows[0]["Actual_Effort_Days"]).ToString();
 
@@ -1274,6 +1298,7 @@ public partial class ProjectEntry : System.Web.UI.Page
         string Projectstatus = string.Empty;
         string ProjectCode = string.Empty;
         string unitofmeasure = string.Empty;
+        string brncode = string.Empty;
         int EffortDays = 0;
         //string ActStartDate = string.Empty;
         //string ActStartDate = string.Empty;
@@ -1331,6 +1356,8 @@ public partial class ProjectEntry : System.Web.UI.Page
                     ActEndDate =txtacenddate.Text.Trim();
                 if (drpunitmeasure.Text.Trim() != string.Empty)
                     unitofmeasure = drpunitmeasure.Text.Trim();
+                if (drpBranch.Text.Trim() != string.Empty)
+                    brncode = Convert.ToString(drpBranch.SelectedValue);
                 //if (txtacteffortdays.Text.Trim() != string.Empty)
                 //    ActEffortDays = Convert.ToInt32(txtacteffortdays.Text.Trim());
                 //if (txtproclodate.Text.Trim() != string.Empty)
@@ -1348,7 +1375,7 @@ public partial class ProjectEntry : System.Web.UI.Page
 
                 //if (checkemp == null || checkemp.Tables[0].Rows.Count == 0)
                 //{
-                bl.InsertProjectEntry(ProjectCode, ProjectDate, EWStartDate, EWEndDate, empNO, ProjectName, EffortDays, Projectstatus, ProjectDesc, Username, ActStartDate, ActEndDate, unitofmeasure);
+                bl.InsertProjectEntry(ProjectCode, ProjectDate, EWStartDate, EWEndDate, empNO, ProjectName, EffortDays, Projectstatus, ProjectDesc, Username, ActStartDate, ActEndDate, unitofmeasure, brncode);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('New Project Details Saved Successfully.');", true);
                 Reset();

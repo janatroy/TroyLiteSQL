@@ -166,7 +166,7 @@
                                                                                                                     ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width:30%">
-                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo" OnDataBound="ddaccountnumber_DataBound" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
+                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo"  CssClass="drpDownListMedium" BackColor = "#e7e7e7"
                                                                         runat="server" SelectedValue='<%# Bind("AccountNo") %>' DataTextField="LedgerName"
                                                                         DataValueField="LedgerID" Width="100%" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" >
                                                                      </asp:DropDownList>
@@ -292,7 +292,7 @@
                                                                                                                     ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width:30%">
-                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo" OnDataBound="ddaccountnumber_DataBound" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
+                                                                   <asp:DropDownList ID="ddaccountnumber" DataSourceID="srcGroupInfo" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
                                                                         runat="server" SelectedValue='<%# Bind("AccountNo") %>' DataTextField="LedgerName"
                                                                         DataValueField="LedgerID" Width="100%" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" >
                                                                      </asp:DropDownList>

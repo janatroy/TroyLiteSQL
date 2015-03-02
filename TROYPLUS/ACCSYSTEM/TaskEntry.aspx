@@ -559,8 +559,17 @@
                                                                                             </asp:UpdatePanel>
                                                                                          </td>
                                                                                          <td style="width: 5%"></td>
-                                                                                         <td style="width: 27%"></td>
-                                                                                         <td style="width: 25%"></td>
+                                                                                         <td style="width: 27%" class="ControlLabelproject1">
+                                                                                              <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="drpBranch" ErrorMessage="Please select Branch" InitialValue="0" Text="*" ValidationGroup="Save"></asp:RequiredFieldValidator>
+                                                                                            Branch *
+                                                                                         </td>
+                                                                                         <td style="width: 25%" class="ControlDrpBorder">
+                                                                                             <asp:DropDownList ID="drpBranch" TabIndex="4" EnableTheming="False" AppendDataBoundItems="True" CssClass="drpDownListMedium"
+                                                                                                runat="server" Width="100%" DataTextField="BranchName" BackColor="#E7E7E7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                DataValueField="Branchcode">
+                                                                                                <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
+                                                                                            </asp:DropDownList>
+                                                                                         </td>
 
                                                                                     </tr>
                                                                                     <tr style="height: 2px">

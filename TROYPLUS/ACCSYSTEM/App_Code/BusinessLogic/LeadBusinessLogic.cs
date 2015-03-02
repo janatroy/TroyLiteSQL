@@ -828,7 +828,7 @@ public class LeadBusinessLogic : BaseLogic
     }
 
     //public void AddLead(int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string branch, string LeadStatus, double TotalAmount, int ClosingPer, DateTime ClosingDate, int PredictedClosing, DateTime PredictedClosingDate,string Info1,int Info3,int Info4,int businesstype,int category,int area,int InterestLevel, double PotentialPotAmount, double PotentialWeightedAmount, string PredictedClosingPeriod, string usernam, DataSet dsStages, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
-    public void AddLead(string connection,int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
+    public void AddLead(string connection,int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam,string Branchcode, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -848,8 +848,8 @@ public class LeadBusinessLogic : BaseLogic
             //        startDate.ToShortDateString(), LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, branch, LeadStatus, TotalAmount, ClosingPer, ClosingDate, check);
 
 
-            dbQry = string.Format("INSERT INTO tblLeadHeader(Lead_Name,BP_Name,Address,Mobile,Telephone,Doc_Status,Closing_Date,Emp_Name,Emp_Id,Start_Date,Lead_Status,Contact_Name,Bp_Id,chec,Predicted_Closing_Date,Information1,Information3,Information4,BusinessType,Category,Area,InterestLevel) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',{8},'{9}','{10}','{11}',{12},'{13}','{14}','{15}',{16},{17},{18},{19},{20},{21})",
-                LeadName, BpName, address, mobile, Telephone, Status, ClosingDate.ToString("yyyy-MM-dd"), EmpName, EmpId, startDate.ToString("yyyy-MM-dd"), Status, ContactName, BpId, check, PredictedClosingDate.ToString("yyyy-MM-dd"), Info1, Info3, Info4, businesstype, category, area, InterestLevel);
+            dbQry = string.Format("INSERT INTO tblLeadHeader(Lead_Name,BP_Name,Address,Mobile,Telephone,Doc_Status,Closing_Date,Emp_Name,Emp_Id,Start_Date,Lead_Status,Contact_Name,Bp_Id,chec,Predicted_Closing_Date,Information1,Information3,Information4,BusinessType,Category,Area,InterestLevel,BranchCode) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',{8},'{9}','{10}','{11}',{12},'{13}','{14}','{15}',{16},{17},{18},{19},{20},{21},'{22}')",
+                LeadName, BpName, address, mobile, Telephone, Status, ClosingDate.ToString("yyyy-MM-dd"), EmpName, EmpId, startDate.ToString("yyyy-MM-dd"), Status, ContactName, BpId, check, PredictedClosingDate.ToString("yyyy-MM-dd"), Info1, Info3, Info4, businesstype, category, area, InterestLevel, Branchcode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -1113,7 +1113,7 @@ public class LeadBusinessLogic : BaseLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "select Lead_No,Lead_Name,BP_Name,Address,Mobile,Telephone,Doc_Status,Closing_Date,Emp_Name,Emp_Id,Start_Date,Lead_Status,Contact_Name,Bp_Id,chec,Predicted_Closing_Date,Information1,Information3,Information4,BusinessType,Category,Area,InterestLevel from tblLeadHeader Where Lead_No=" + LeadNo;
+        dbQry = "select Lead_No,Lead_Name,BP_Name,Address,Mobile,Telephone,Doc_Status,Closing_Date,Emp_Name,Emp_Id,Start_Date,Lead_Status,Contact_Name,Bp_Id,chec,Predicted_Closing_Date,Information1,Information3,Information4,BusinessType,Category,Area,InterestLevel,BranchCode from tblLeadHeader Where Lead_No=" + LeadNo;
 
         try
         {
@@ -1166,7 +1166,7 @@ public class LeadBusinessLogic : BaseLogic
 
 
 
-    public void UpdateLead(string connection,int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
+    public void UpdateLead(string connection,int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam,string BranchCode, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -1188,7 +1188,7 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.BeginTransaction();
 
-            dbQryData = "select Lead_No,Lead_Name,BP_Name,Address,Mobile,Telephone,Doc_Status,Closing_Date,Emp_Name,Emp_Id,Start_Date,Lead_Status,Contact_Name,Bp_Id,chec,Predicted_Closing_Date,Information1,Information3,Information4,BusinessType,Category,Area,InterestLevel from tblLeadHeader Where Lead_No =" + LeadNo;
+            dbQryData = "select Lead_No,Lead_Name,BP_Name,Address,Mobile,Telephone,Doc_Status,Closing_Date,Emp_Name,Emp_Id,Start_Date,Lead_Status,Contact_Name,Bp_Id,chec,Predicted_Closing_Date,Information1,Information3,Information4,BusinessType,Category,Area,InterestLevel,BranchCode from tblLeadHeader Where Lead_No =" + LeadNo;
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQryData.ToString());
             if (dsOld != null)
             {
@@ -1211,7 +1211,7 @@ public class LeadBusinessLogic : BaseLogic
             //LeadName, BpName, address, mobile, Telephone, Status, ClosingDate, EmpName, EmpId, startDate.ToShortDateString(), Status, ContactName, BpId, check, PredictedClosingDate.ToShortDateString(), Info1, Info3, Info4, businesstype, category, area, InterestLevel);
 
 
-            dbQry = string.Format("Update tblLeadHeader Set Lead_Name='{1}',BP_Name='{2}',Address='{3}',Mobile='{4}',Telephone='{5}',Doc_Status='{6}',Closing_Date='{7}',Emp_Name='{8}',Emp_Id={9},Start_Date='{10}',Lead_Status='{11}',Contact_Name='{12}',Bp_Id={13},chec='{14}', Predicted_Closing_Date='{15}', Information1='{16}',Information3={17},Information4={18},BusinessType={19},Category={20},Area={21},InterestLevel={22}  Where Lead_No={0}", LeadNo, LeadName, BpName, address, mobile, Telephone, Status, ClosingDate.ToString("yyyy-MM-dd"), EmpName, EmpId, startDate.ToString("yyyy-MM-dd"), Status, ContactName, BpId, check, PredictedClosingDate.ToString("yyyy-MM-dd"), Info1, Info3, Info4, businesstype, category, area, InterestLevel);
+            dbQry = string.Format("Update tblLeadHeader Set Lead_Name='{1}',BP_Name='{2}',Address='{3}',Mobile='{4}',Telephone='{5}',Doc_Status='{6}',Closing_Date='{7}',Emp_Name='{8}',Emp_Id={9},Start_Date='{10}',Lead_Status='{11}',Contact_Name='{12}',Bp_Id={13},chec='{14}', Predicted_Closing_Date='{15}', Information1='{16}',Information3={17},Information4={18},BusinessType={19},Category={20},Area={21},InterestLevel={22},BranchCode='{23}'  Where Lead_No={0}", LeadNo, LeadName, BpName, address, mobile, Telephone, Status, ClosingDate.ToString("yyyy-MM-dd"), EmpName, EmpId, startDate.ToString("yyyy-MM-dd"), Status, ContactName, BpId, check, PredictedClosingDate.ToString("yyyy-MM-dd"), Info1, Info3, Info4, businesstype, category, area, InterestLevel, BranchCode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 

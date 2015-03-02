@@ -43,6 +43,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 //loadStages();
                 //loadPotentialAmount();
                 loadEmp();
+                loadBranch();
                 GrdViewLead.PageSize = 8;
 
                 string connection = Request.Cookies["Company"].Value;
@@ -982,7 +983,7 @@ public partial class LeadMgmt : System.Web.UI.Page
             // pnlStage.Visible = false;
             // GrdViewLeadStage.Visible = true;
             loadEmp();
-
+            loadBranch();
             // BtnAddproduct.Visible = true;
             GrdViewLeadproduct.Visible = true;
             pnlproduct.Visible = false;
@@ -1071,6 +1072,21 @@ public partial class LeadMgmt : System.Web.UI.Page
         drpIncharge.DataBind();
         drpIncharge.DataTextField = "empFirstName";
         drpIncharge.DataValueField = "empno";
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
     }
 
     public string GetCurrentDBName(string con)
@@ -2763,6 +2779,8 @@ public partial class LeadMgmt : System.Web.UI.Page
                 drpCategory.SelectedValue = dsDetails.Tables[0].Rows[0]["Category"].ToString();
                 drpArea.SelectedValue = dsDetails.Tables[0].Rows[0]["Area"].ToString();
                 drpIntLevel.SelectedValue = dsDetails.Tables[0].Rows[0]["InterestLevel"].ToString();
+                drpBranch.SelectedValue = dsDetails.Tables[0].Rows[0]["BranchCode"].ToString();
+
 
                 drpLeadStatus.Enabled = true;
                 drpStatus.Enabled = false;
@@ -3237,6 +3255,7 @@ public partial class LeadMgmt : System.Web.UI.Page
         int category = 0;
         int area = 0;
         int intLevel = 0;
+        string BrnCode = "";
 
         double TotalAmount = 0;
         int ClosingPer = 0;
@@ -3331,6 +3350,8 @@ public partial class LeadMgmt : System.Web.UI.Page
                 category = Convert.ToInt32(drpCategory.SelectedValue);//
                 area = Convert.ToInt32(drpArea.SelectedValue);//
                 intLevel = Convert.ToInt32(drpIntLevel.SelectedValue);//
+                BrnCode = Convert.ToString(drpBranch.SelectedValue);
+
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 dsStages = (DataSet)Session["contactDs"];
@@ -3749,7 +3770,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
 
 
-                bl.UpdateLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam, dss1, dss2, dss, check);
+                bl.UpdateLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam,BrnCode, dss1, dss2, dss, check);
 
 
                 string salestype = string.Empty;
@@ -4079,7 +4100,7 @@ public partial class LeadMgmt : System.Web.UI.Page
         int category = 0;
         int area = 0;
         int intLevel = 0;
-
+        string BrnCode ="";
         double TotalAmount = 0;
         int ClosingPer = 0;
         DataSet dsActivity;
@@ -4143,6 +4164,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 EmpName = drpIncharge.SelectedItem.Text;
                 Status = drpStatus.SelectedValue;//doc status
                 LeadStatus = drpLeadStatus.SelectedValue;//   
+               
 
                 if (txtClosingDate.Text == "")//
                 {
@@ -4170,7 +4192,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 category = Convert.ToInt32(drpCategory.SelectedValue);//
                 area = Convert.ToInt32(drpArea.SelectedValue);//
                 intLevel = Convert.ToInt32(drpIntLevel.SelectedValue);//
-
+                BrnCode = Convert.ToString(drpBranch.SelectedValue);
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
@@ -4589,7 +4611,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
 
                 // bl.AddLead(LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, branch, LeadStatus, TotalAmount, ClosingPer, ClosingDate, PredictedClosing, PredictedClosingDate, PotentialPotAmount, PotentialWeightedAmount, PredictedClosingPeriod, InterestLevel, usernam, dsStages, dss1, dss2, dss, check);
-                bl.AddLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam, dss1, dss2, dss, check);
+                bl.AddLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam,BrnCode, dss1, dss2, dss, check);
 
 
                 string salestype = string.Empty;
