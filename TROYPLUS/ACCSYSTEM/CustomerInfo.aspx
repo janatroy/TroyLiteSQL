@@ -461,7 +461,17 @@
                                                                                         <td style="width: 14%;" align="left">
                                                                                             <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                                         </td>
-                                                                                        <td style="width: 28%"></td>
+                                                                                        <td style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel123456" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                runat="server">
+                                                                                                <%--<asp:ListItem style="background-color: #e7e7e7" Text="Select Branch" Value="0"></asp:ListItem>--%>
+                                                                                           
+                                                                                            </asp:DropDownList>
+            </ContentTemplate>
+            </asp:UpdatePanel>
+                                                                                        </td>
                                                                                         <td style="width: 10%;"></td>
                                                                                     </tr>
                                                                                     <tr>
@@ -827,10 +837,21 @@
                                                                                             <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDateadd">
                                                                                             </cc1:CalendarExtender>
                                                                                         </td>
-                                                                                        <td style="width: 14%;" align="left">
+                                                                                        <td style="width: 14%;" class="ControlLabel" align="left">
                                                                                             <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                            Branch
                                                                                         </td>
-                                                                                        <td style="width: 28%"></td>
+                                                                                        <td style="width: 28%" class="ControlDrpBorder">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+                                                                                            <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                runat="server">
+                                                                                                <%--<asp:ListItem style="background-color: #e7e7e7" Text="Select Branch" Value="0"></asp:ListItem>--%>
+                                                                                           
+                                                                                            </asp:DropDownList>
+            </ContentTemplate>
+            </asp:UpdatePanel>
+            </td>
                                                                                         <td style="width: 10%;"></td>
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
@@ -927,11 +948,15 @@
                                                                                         <td class="ControlLabel" style="width: 14%">Payment Source
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
-                                                                                            <asp:DropDownList ID="drpPaymentmadeAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpPaymentmadeAdd_DataBound" CssClass="drpDownListMedium"
+                                                                                            <asp:UpdatePanel ID="UpdatePanel123" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+                                                                                            <asp:DropDownList ID="drpPaymentmadeAdd" TabIndex="10" AutoPostBack="true" runat="server" BackColor="#e7e7e7" OnSelectedIndexChanged="drpPaymentmadeAdd_SelectedIndexChanged" OnDataBound="drpPaymentmadeAdd_DataBound" CssClass="drpDownListMedium"
                                                                                                 Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Paymentmade") %>'>
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
+            </ContentTemplate>
+                                                                                                </asp:UpdatePanel>
 
                                                                                         </td>
                                                                                     </tr>
@@ -941,11 +966,15 @@
                                                                                         <td class="ControlLabel" style="width: 20%">DC
                                                                                         </td>
                                                                                         <td style="width: 25%" class="ControlDrpBorder">
-                                                                                            <asp:DropDownList ID="drpdcAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpdcAdd_DataBound" CssClass="drpDownListMedium"
+                                                                                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+                                                                                            <asp:DropDownList ID="drpdcAdd" TabIndex="10" AutoPostBack="true" runat="server" BackColor="#e7e7e7" OnDataBound="drpdcAdd_DataBound" CssClass="drpDownListMedium" OnSelectedIndexChanged="drpdcAdd_SelectedIndexChanged" 
                                                                                                 Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("dc") %>'>
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
+            </ContentTemplate>
+                                                                                                </asp:UpdatePanel>
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Name on Cheque
                                                                                         </td>

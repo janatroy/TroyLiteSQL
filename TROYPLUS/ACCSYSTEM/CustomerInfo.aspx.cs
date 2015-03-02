@@ -398,12 +398,77 @@ public partial class CustomerInfo : System.Web.UI.Page
 
             ModalPopupExtender1.Show();
 
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+            ds = bl.ListBranchInfo(connection, "", "");
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "0"));
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataSource = ds;
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataTextField = "BranchName";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataValueField = "BranchCode";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataBind();
 
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    protected void drpPaymentmadeAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string connection = Request.Cookies["Company"].Value;
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        ds = bl.ListBranchInfo(connection, "", "");
+
+        if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("drpPaymentmadeAdd")).SelectedValue == "YES")
+        {
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "0"));
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataBind();
+        }
+        else
+        {
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "0"));
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataSource = ds;
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataTextField = "BranchName";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataValueField = "BranchCode";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataBind();
+        }
+        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
+       
+    }
+
+    protected void drpdcAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string connection = Request.Cookies["Company"].Value;
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        ds = bl.ListBranchInfo(connection, "", "");
+
+        if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("drpdcAdd")).SelectedValue == "YES")
+        {
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "0"));
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataBind();
+        }
+        else
+        {
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "0"));
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataSource = ds;
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataTextField = "BranchName";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataValueField = "BranchCode";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataBind();
+        }
+        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
+
     }
 
 

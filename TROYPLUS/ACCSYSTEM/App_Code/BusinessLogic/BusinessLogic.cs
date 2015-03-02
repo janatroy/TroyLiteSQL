@@ -69960,7 +69960,7 @@ public class BusinessLogic
         }
     }
 
-    public void InsertBranch(string connection, string Branchcode, string BranchName, string BranchAddress1, string BranchAddress2, string BranchAddress3, string BranchLocation,string IsActive, string Username)
+    public void InsertBranch(string connection, string Branchcode, string BranchName, string BranchAddress1, string BranchAddress2, string BranchAddress3, string BranchLocation, string IsActive, string Username, DataSet dstest)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -69984,30 +69984,38 @@ public class BusinessLogic
             int BranchID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BranchID) FROM tblBranch"));
 
 
-            //int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
+            
 
-            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
-            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            //dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26})",
-            //    LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact);
+            if (dstest != null)
+            {
+                if (dstest.Tables.Count > 0)
+                {
+                    foreach (DataRow dr in dstest.Tables[0].Rows)
+                    {
+                        int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
 
-            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                        dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26})",
+                            LedgerID + 1, Convert.ToString(dr["LedgerName"]), Convert.ToString(dr["AliasName"]), Convert.ToInt32(dr["GroupID"]), 0, 0, 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), "", 0, "", 0, 0, "", 0, 0, Convert.ToString(dr["Inttrans"]), "NO", "NO", Convert.ToString(dr["LedgerName"]), "YES", "", 3);
 
-            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
-            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            //sAuditStr = "Customer Ledger : " + LedgerName + " added. Record Details :  User :" + Username + " AliasName = " + AliasName + " GroupID= " + GroupID + " ,LedgerCategory = " + LedgerCategory + " ,Mobile=" + Mobile + " Phone :" + Phone;
-            //dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
-            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                        sAuditStr = "Ledger : " + Convert.ToString(dr["LedgerName"]) + " added. Record Details :  User :" + Username + " AliasName = " + Convert.ToString(dr["AliasName"]) + " GroupID= " + Convert.ToInt32(dr["GroupID"]);
+                        dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                       
+                    }
+                }
+            }
 
-
-
-
+            dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Branch : " + BranchName + " added. Record Details :  User :" + Username;
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
-                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
             
 
             manager.CommitTransaction();
