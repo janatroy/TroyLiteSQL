@@ -287,7 +287,7 @@
                                     </td>
                                     <td style="width: 17%" class="tblLeftNoPad">
 
-                                      <%--  <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />--%>
+                                        <%--<asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />--%>
 
                                         <asp:Button ID="BtnClearFilter" runat="server" onkeyup="EnableDisableButton(this,'BtnClearFilter')" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
 
@@ -492,7 +492,7 @@
                                                                                         <td style="width: 14%;" align="left">
                                                                                             <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                                         </td>
-<<<<<<< HEAD
+
                                                                                         <td style="width: 28%">
                                                                                             <asp:UpdatePanel ID="UpdatePanel123456" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
@@ -504,9 +504,9 @@
             </ContentTemplate>
             </asp:UpdatePanel>
                                                                                         </td>
-=======
+
                                                                                         <td style="width: 28%"></td>
->>>>>>> 4eac8672f17f62a153834c7bda0226bfd13ac7b9
+
                                                                                         <td style="width: 10%;"></td>
                                                                                     </tr>
                                                                                     <tr>
@@ -872,7 +872,7 @@
                                                                                             <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDateadd">
                                                                                             </cc1:CalendarExtender>
                                                                                         </td>
-<<<<<<< HEAD
+
                                                                                         <td style="width: 14%;" class="ControlLabel" align="left">
                                                                                             <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                                             Branch
@@ -890,7 +890,7 @@
             </td>
 
                                                                                         <td style="width: 14%;" align="left">
-                                                                                            <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                            <%--<asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />--%>
                                                                                         </td>
                                                                                         <td style="width: 28%"></td>
 
@@ -995,7 +995,7 @@
         <ContentTemplate>
                                                                                             <asp:DropDownList ID="drpPaymentmadeAdd" TabIndex="10" AutoPostBack="true" runat="server" BackColor="#e7e7e7" OnSelectedIndexChanged="drpPaymentmadeAdd_SelectedIndexChanged" OnDataBound="drpPaymentmadeAdd_DataBound" CssClass="drpDownListMedium"
 
-                                                                                            <asp:DropDownList ID="drpPaymentmadeAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpPaymentmadeAdd_DataBound" CssClass="drpDownListMedium"
+                                                                                            
 
                                                                                                 Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Paymentmade") %>'>
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
@@ -1019,8 +1019,7 @@
         <ContentTemplate>
                                                                                             <asp:DropDownList ID="drpdcAdd" TabIndex="10" AutoPostBack="true" runat="server" BackColor="#e7e7e7" OnDataBound="drpdcAdd_DataBound" CssClass="drpDownListMedium" OnSelectedIndexChanged="drpdcAdd_SelectedIndexChanged" 
 
-                                                                                            <asp:DropDownList ID="drpdcAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpdcAdd_DataBound" CssClass="drpDownListMedium"
-
+                                                                                            
                                                                                                 Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("dc") %>'>
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
