@@ -30,7 +30,7 @@ public partial class UserOptions : System.Web.UI.Page
                 //txtpassword.Attributes["type"] = "password";
                 GrdViewCust.PageSize = 8;
                 loadEmp();
-
+                loadBranch();
                 //BindGrid();
 
                 if (Request.Cookies["Company"] != null)
@@ -100,6 +100,21 @@ public partial class UserOptions : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
+
 
     protected void BtnClearFilter_Click(object sender, EventArgs e)
     {
@@ -181,7 +196,7 @@ public partial class UserOptions : System.Web.UI.Page
         //    BusinessLogic bl = new BusinessLogic();
 
         //    string username = Convert.ToString(GrdViewCust.DataKeys[e.RowIndex].Value.ToString());
-            
+
         //    string UserID = Page.User.Identity.Name;
 
         //    string usernam = Request.Cookies["LoggedUserName"].Value;
@@ -355,12 +370,22 @@ public partial class UserOptions : System.Web.UI.Page
                     chkboxdatelock.Checked = bool.Parse(dsd.Tables[0].Rows[0]["DateLock"].ToString());
                     txtUserGroup.Text = dsd.Tables[0].Rows[0]["UserGroup"].ToString();
                     chkhidedeviation.Checked = bool.Parse(dsd.Tables[0].Rows[0]["HideDeviation"].ToString());
+                    chkBranch.Checked = bool.Parse(dsd.Tables[0].Rows[0]["BranchCheck"].ToString());
 
                     if (dsd.Tables[0].Rows[0]["EmpNo"] != null)
                     {
                         string sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["EmpNo"]);
                         drpIncharge.ClearSelection();
                         ListItem li = drpIncharge.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                        if (li != null) li.Selected = true;
+                    }
+
+                    DataSet dsd1 = bl.GetUserbranch(username, connection);
+                    if (dsd1.Tables[0].Rows[0]["DefaultBranchCode"] != null)
+                    {
+                        string sBranch = Convert.ToString(dsd1.Tables[0].Rows[0]["DefaultBranchCode"]);
+                        drpBranch.ClearSelection();
+                        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sBranch));
                         if (li != null) li.Selected = true;
                     }
                 }
@@ -600,12 +625,28 @@ public partial class UserOptions : System.Web.UI.Page
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Your password and Confirm password doesnt match.');", true);
                     return;
                 }
+
+                if (drpBranch.SelectedValue == "0")
+                {
+                    if (chkBranch.Checked == false)
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select branch');", true);
+                        return;
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select default branch');", true);
+                        return;
+                    }
+                }
+
             }
 
             DataSet ds;
             DataTable dt;
             DataRow drNew;
-
+            DataSet dsBranch;
+            DataTable dtBranch;
             DataColumn dc;
 
             ds = new DataSet();
@@ -1546,6 +1587,7 @@ public partial class UserOptions : System.Web.UI.Page
             string connection = string.Empty;
 
             string UserGroup = string.Empty;
+            bool brncheck = chkBranch.Checked;
             bool Locked = chkAccLocked.Checked;
             bool DateLock = chkboxdatelock.Checked;
 
@@ -1567,6 +1609,51 @@ public partial class UserOptions : System.Web.UI.Page
 
             bool HideDeviation = chkhidedeviation.Checked;
 
+
+            DataSet debrninsert = new DataSet();
+            dsBranch = new DataSet();
+            dtBranch = new DataTable();
+
+            dc = new DataColumn("UserName");
+            dtBranch.Columns.Add(dc);
+
+            dc = new DataColumn("BranchCode");
+            dtBranch.Columns.Add(dc);
+
+            dc = new DataColumn("DefaultBranchCode");
+            dtBranch.Columns.Add(dc);
+
+            dsBranch.Tables.Add(dtBranch);
+
+            if (chkBranch.Checked == true)
+            {
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                DataSet dsbr = new DataSet();
+                dsbr = bl.ListBranch();
+
+                for (int vLoop = 0; vLoop < dsbr.Tables[0].Rows.Count; vLoop++)
+                {
+                    drNew = dtBranch.NewRow();
+                    drNew["UserName"] = txtUser.Text;
+                    drNew["BranchCode"] = dsbr.Tables[0].Rows[vLoop]["Branchcode"].ToString();
+                    drNew["DefaultBranchCode"] = drpBranch.SelectedValue;
+                    dsBranch.Tables[0].Rows.Add(drNew);
+                }
+            }
+            else if (chkBranch.Checked == false)
+            {
+                drNew = dtBranch.NewRow();
+                drNew["UserName"] = txtUser.Text;
+                drNew["BranchCode"] = drpBranch.SelectedValue;
+                drNew["DefaultBranchCode"] = drpBranch.SelectedValue;
+                dsBranch.Tables[0].Rows.Add(drNew);
+            }
+
+
+
+
+
+
             if (ds != null)
             {
                 if (ds.Tables[0].Rows.Count > 0)
@@ -1577,7 +1664,7 @@ public partial class UserOptions : System.Web.UI.Page
 
                     if (Session["Show"] == "Add New")
                     {
-                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation))
+                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Created sucessfully.');", true);
                             //BindGrid();
@@ -1585,7 +1672,7 @@ public partial class UserOptions : System.Web.UI.Page
                             string salestype = string.Empty;
                             int ScreenNo = 0;
                             string ScreenName = string.Empty;
-                            
+
                             salestype = "Users";
                             ScreenName = "Users";
 
@@ -1620,9 +1707,9 @@ public partial class UserOptions : System.Web.UI.Page
 
                                             if (ScreenType == 1)
                                             {
-                                                
+
                                                 toAddress = toAdd;
-                                                
+
                                             }
                                             else
                                             {
@@ -1641,7 +1728,7 @@ public partial class UserOptions : System.Web.UI.Page
                                                 {
                                                     emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
                                                 }
-                                                
+
 
                                                 int index312 = emailcontent.IndexOf("@User");
                                                 body = usernam;
@@ -1655,7 +1742,7 @@ public partial class UserOptions : System.Web.UI.Page
                                                 if (index2 >= 0)
                                                 {
                                                     emailcontent = emailcontent.Remove(index2, 9).Insert(index2, body);
-                                                }       
+                                                }
 
                                                 string smtphostname = ConfigurationManager.AppSettings["SmtpHostName"].ToString();
                                                 int smtpport = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPortNumber"]);
@@ -1734,7 +1821,7 @@ public partial class UserOptions : System.Web.UI.Page
                                                 {
                                                     smscontent = smscontent.Remove(index2, 9).Insert(index2, body);
                                                 }
-                                                
+
                                                 if (Session["Provider"] != null)
                                                 {
                                                     utilSMS.SendSMS(Session["Provider"].ToString(), Session["Priority"].ToString(), Session["SenderID"].ToString(), Session["UserName"].ToString(), Session["Password"].ToString(), toAddress, smscontent, true, UserID);
@@ -1759,7 +1846,7 @@ public partial class UserOptions : System.Web.UI.Page
                     }
                     else if (Session["Show"] == "Edit")
                     {
-                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation);
+                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation,dsBranch, brncheck);
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Updated Successfully');", true);
                         //BindGrid();
 
@@ -1956,9 +2043,9 @@ public partial class UserOptions : System.Web.UI.Page
             if (GrdViewCust.SelectedDataKey != null)
                 e.InputParameters["username"] = GrdViewCust.SelectedDataKey.Value;
 
-            string connection="";
+            string connection = "";
             if (Request.Cookies["Company"] != null)
-               connection = Request.Cookies["Company"].Value;
+                connection = Request.Cookies["Company"].Value;
 
             BusinessLogic objBL = new BusinessLogic();
 
@@ -2012,7 +2099,7 @@ public partial class UserOptions : System.Web.UI.Page
                             }
                             if (Email1 == true)
                             {
-                                
+
                                 string body = "\n";
 
 
