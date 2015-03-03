@@ -1001,7 +1001,7 @@
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
-<<<<<<< HEAD
+
             </ContentTemplate>
                                                                                                 </asp:UpdatePanel>
 
