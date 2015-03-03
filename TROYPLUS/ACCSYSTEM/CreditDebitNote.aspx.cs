@@ -336,7 +336,7 @@ public partial class CreditDebitNote : System.Web.UI.Page
             if (HiddenField2.Value == "1")
             {
                 string usernam = Request.Cookies["LoggedUserName"].Value;
-                bl.InsertLedgerInfo(connection, "CreditDebitNoteId", "CreditDebitNoteId", 1, 0, 0, 0, "", "CreditDebitNoteId", "", "", "", "", "Customer", 0, "", "", "NO", "NO", "NO", "CreditDebitNoteId", usernam, "NO","",3,"");
+                bl.InsertLedgerInfo(connection, "CreditDebitNoteId", "CreditDebitNoteId", 1, 0, 0, 0, "", "CreditDebitNoteId", "", "", "", "", "Customer", 0, "", "", "NO", "NO", "NO", "CreditDebitNoteId", usernam, "NO","",3,"","All");
                 HiddenField1.Value = "1";
             }
 

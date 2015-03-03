@@ -62,3 +62,4 @@ C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\bin\Debug\Repor
 C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.csprojResolveAssemblyReference.cache
 C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.dll
 C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.pdb
+C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.csprojResolveAssemblyReference.cache
