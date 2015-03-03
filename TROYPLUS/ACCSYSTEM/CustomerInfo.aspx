@@ -990,22 +990,21 @@
                                                                                         <td class="ControlLabel" style="width: 14%">Payment Source
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
-<<<<<<< HEAD
+
                                                                                             <asp:UpdatePanel ID="UpdatePanel123" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
                                                                                             <asp:DropDownList ID="drpPaymentmadeAdd" TabIndex="10" AutoPostBack="true" runat="server" BackColor="#e7e7e7" OnSelectedIndexChanged="drpPaymentmadeAdd_SelectedIndexChanged" OnDataBound="drpPaymentmadeAdd_DataBound" CssClass="drpDownListMedium"
-=======
-                                                                                            <asp:DropDownList ID="drpPaymentmadeAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpPaymentmadeAdd_DataBound" CssClass="drpDownListMedium"
->>>>>>> 4eac8672f17f62a153834c7bda0226bfd13ac7b9
-                                                                                                Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Paymentmade") %>'>
+                                                                                                  Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Paymentmade") %>'>
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
-<<<<<<< HEAD
+                                                                                            <%--<asp:DropDownList ID="drpPaymentmadeAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpPaymentmadeAdd_DataBound" CssClass="drpDownListMedium"--%>
+
+                                                                                              
+
             </ContentTemplate>
                                                                                                 </asp:UpdatePanel>
-=======
->>>>>>> 4eac8672f17f62a153834c7bda0226bfd13ac7b9
+
 
                                                                                         </td>
                                                                                     </tr>
