@@ -231,9 +231,14 @@
                                                                                         <asp:TextBox ID="txtEmail" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                     </td>
                                                                                     <td style="width: 22%">
-                                                                                        <asp:CheckBox ID="chkboxdatelock" runat="server" Text="Date Lock" Font-Size="15px" AutoPostBack="true" Visible="False" />
-                                                                                        <asp:CheckBox runat="server" ID="chkAccLocked" Visible="False" />
-                                                                                        <asp:CheckBox ID="chkhidedeviation" runat="server" Text="Allow Deviation Checks" Font-Size="15px" AutoPostBack="true" />
+                                                                                        <asp:UpdatePanel runat="server" ID="UpdatePanel1">
+                                                                                            <ContentTemplate>
+                                                                                                <asp:CheckBox ID="chkboxdatelock" runat="server" Text="Date Lock" Font-Size="15px" AutoPostBack="true" Visible="False" />
+                                                                                                <asp:CheckBox runat="server" ID="chkAccLocked" Visible="False" />
+                                                                                                <asp:CheckBox ID="chkhidedeviation" runat="server" Text="Allow Deviation Checks" Font-Size="15px" AutoPostBack="true" />
+                                                                                            </ContentTemplate>
+
+                                                                                        </asp:UpdatePanel>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr style="height: 2px">
@@ -282,7 +287,7 @@
                                                                                 <tr style="height: 2px">
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td class="ControlLabel" style="width: 25%"> Branch  *
+                                                                                    <td class="ControlLabel" style="width: 25%">Branch  *
                                                                                     </td>
                                                                                     <td class="ControlDrpBorder" style="width: 18%">
                                                                                         <asp:DropDownList ID="drpBranch" TabIndex="5" Enabled="True" EnableTheming="false" AppendDataBoundItems="true" CssClass="drpDownListMedium"
@@ -292,7 +297,11 @@
                                                                                         </asp:DropDownList>
                                                                                     </td>
                                                                                     <td style="width: 15%">
-                                                                                        <asp:CheckBox ID="chkBranch" runat="server" Text="All Branch" Font-Size="15px" AutoPostBack="true" />
+                                                                                        <asp:UpdatePanel runat="server" ID="upBranch">
+                                                                                            <ContentTemplate>
+                                                                                                <asp:CheckBox ID="chkBranch" runat="server" Text="All Branch" Font-Size="15px" AutoPostBack="true" />
+                                                                                            </ContentTemplate>
+                                                                                        </asp:UpdatePanel>
                                                                                     </td>
                                                                                     <td style="width: 18%"></td>
                                                                                     <td style="width: 22%"></td>
