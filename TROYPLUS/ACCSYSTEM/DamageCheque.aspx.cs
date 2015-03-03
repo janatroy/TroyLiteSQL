@@ -31,6 +31,9 @@ public partial class DamageCheque : System.Web.UI.Page
                 dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
                 BusinessLogic objChk = new BusinessLogic();
 
+
+               
+
                 if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
                 {
                     lnkBtnAdd.Visible = false;
@@ -184,6 +187,7 @@ public partial class DamageCheque : System.Web.UI.Page
     {
 
     }
+
 
     protected void CancelButton_Click(object sender, EventArgs e)
     {
@@ -1230,6 +1234,9 @@ public partial class DamageCheque : System.Web.UI.Page
         if (((TextBox)this.frmViewAdd.FindControl("txtFromNoAdd")).Text != "")
             e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("txtFromNoAdd")).Text;
 
+        if (((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")).Text != null)
+            e.InputParameters["AccountNo"] = ((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")).SelectedItem.Text;
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
    }
 
@@ -1243,6 +1250,9 @@ public partial class DamageCheque : System.Web.UI.Page
 
         if (((TextBox)this.frmViewAdd.FindControl("txtFromNo")).Text != "")
             e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("txtFromNo")).Text;
+
+        if (((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")) != null)
+            e.InputParameters["AccountNo"] = ((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")).SelectedValue;
 
         e.InputParameters["ChequeId"] = GrdViewLedger.SelectedDataKey.Value;
 
@@ -1273,4 +1283,30 @@ public partial class DamageCheque : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+    protected void ddBankNameAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+          BusinessLogic bl = new BusinessLogic();
+        int bankid = 0;
+
+        string connection = Request.Cookies["Company"].Value;
+
+        DataSet ds = new DataSet();
+
+        //if (((DropDownList)this.frmViewAdd.FindControl("ddBankNameAdd")) != null)
+        //    e.InputParameters["BankID"] = ((DropDownList)this.frmViewAdd.FindControl("ddBankNameAdd")).SelectedValue;
+        bankid =Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("ddBankNameAdd")).SelectedValue);
+
+        ds = bl.ListAccountnumber(connection,bankid);
+        ((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")).DataSource = ds;
+        ((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")).DataBind();
+       ((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")).DataTextField = "AccountNo";
+       ((DropDownList)this.frmViewAdd.FindControl("ddaccountnumberadd")).DataValueField = "ChequeBookID";
+
+      // (UpdatePanelTrigger)this.UpdatePanel16.update();
+     //  UpdatePanel17.Update();
+      // UpdatePanel.Update();
+       ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel1")).Update();
+
+    }
+    
 }

@@ -51,6 +51,7 @@ public partial class ReportExcelDamagedLeaf : System.Web.UI.Page
                 DataTable dt = new DataTable("Damage leaf");
                 dt.Columns.Add(new DataColumn("ChequeNo"));
                 dt.Columns.Add(new DataColumn("BankName"));
+                dt.Columns.Add(new DataColumn("AccountNo"));
                 //dt.Columns.Add(new DataColumn("Address"));
                 //dt.Columns.Add(new DataColumn("TINnumber"));
                 //dt.Columns.Add(new DataColumn("CreditLimit"));
@@ -67,6 +68,7 @@ public partial class ReportExcelDamagedLeaf : System.Web.UI.Page
                     DataRow dr_final1 = dt.NewRow();
                     dr_final1["ChequeNo"] = dr["ChequeNo"];
                     dr_final1["BankName"] = dr["BankName"];
+                    dr_final1["AccountNo"] = dr["AccountNo"];
                     //dr_final1["Address"] = dr["Add1"];
                     //dr_final1["TINnumber"] = dr["TINnumber"];
                     //dr_final1["CreditLimit"] = dr["CreditLimit"];
@@ -94,6 +96,7 @@ public partial class ReportExcelDamagedLeaf : System.Web.UI.Page
                 DataRow dr_final2 = dt.NewRow();
                 dr_final2["ChequeNo"] = "";
                 dr_final2["BankName"] = "";
+                dr_final2["AccountNo"] = "";
                 //dr_final2["Address"] = "";
                 //dr_final2["TINnumber"] = "Grand Total:";
                 //dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
