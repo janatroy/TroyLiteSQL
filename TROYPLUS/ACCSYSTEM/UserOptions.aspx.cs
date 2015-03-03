@@ -497,6 +497,9 @@ public partial class UserOptions : System.Web.UI.Page
             txtconfirmpassword.Attributes.Add("value", "");
 
             drpIncharge.SelectedIndex = 0;
+            drpBranch.SelectedIndex = 0;
+            chkBranch.Checked = false;
+            chkhidedeviation.Checked = false;
             txtUser.Text = "";
             chkAccLocked.Checked = false;
 
