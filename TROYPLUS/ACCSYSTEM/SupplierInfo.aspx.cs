@@ -835,6 +835,7 @@ public partial class SupplierInfo : System.Web.UI.Page
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpModeofContactAdd")).SelectedValue;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+        e.InputParameters["BranchCode"] = "All";       
     }
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)
@@ -929,6 +930,7 @@ public partial class SupplierInfo : System.Web.UI.Page
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpModeofContact")).SelectedValue;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+        e.InputParameters["BranchCode"] = "All";    
     }
 
     protected void drpIncharge_DataBound(object sender, EventArgs e)

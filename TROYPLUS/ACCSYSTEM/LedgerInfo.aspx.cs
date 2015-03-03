@@ -364,6 +364,18 @@ public partial class LedgerInfo : System.Web.UI.Page
             frmViewAdd.ChangeMode(FormViewMode.Insert);
             frmViewAdd.Visible = true;
 
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+            //ds = bl.ListBranchInfo(connection, "", "");
+            ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "All"));
+            //((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataSource = ds;
+            //((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataTextField = "BranchName";
+            //((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataValueField = "BranchCode";
+            ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataBind();
+
             if (frmViewAdd.CurrentMode == FormViewMode.Insert)
             {
                 //GrdViewLedger.Visible = false;
@@ -414,6 +426,15 @@ public partial class LedgerInfo : System.Web.UI.Page
                         }
                     }
                 }
+                DataSet ds = new DataSet();
+                //ds = bl.ListBranchInfo(connection, "", "");
+                ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).Items.Clear();
+                ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "All"));
+                //((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataSource = ds;
+                //((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataTextField = "BranchName";
+                //((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataValueField = "BranchCode";
+                ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataBind();
+
             }
 
             if (frmViewAdd.CurrentMode == FormViewMode.Edit)
@@ -449,6 +470,17 @@ public partial class LedgerInfo : System.Web.UI.Page
 
                     }
                 }
+
+              
+                DataSet ds = new DataSet();
+                //ds = bl.ListBranchInfo(connection, "", "");
+                ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).Items.Clear();
+                ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).Items.Add(new ListItem("All", "All"));
+                //((DropDownList)this.frmViewAdd.FindControl("drpBranch")).DataSource = ds;
+                //((DropDownList)this.frmViewAdd.FindControl("drpBranch")).DataTextField = "BranchName";
+                //((DropDownList)this.frmViewAdd.FindControl("drpBranch")).DataValueField = "BranchCode";
+                ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).DataBind();
+
             }
         }
         catch (Exception ex)
@@ -844,6 +876,9 @@ public partial class LedgerInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("drpModeofContactAdd")) != null)
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeofContactAdd")).SelectedValue;
 
+        if (((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")) != null)
+            e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).SelectedValue;
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
 
@@ -936,6 +971,9 @@ public partial class LedgerInfo : System.Web.UI.Page
 
         if (((DropDownList)this.frmViewAdd.FindControl("drpModeofContact")) != null)
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeofContact")).SelectedValue;
+
+        if (((DropDownList)this.frmViewAdd.FindControl("drpBranch")) != null)
+            e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedValue;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }

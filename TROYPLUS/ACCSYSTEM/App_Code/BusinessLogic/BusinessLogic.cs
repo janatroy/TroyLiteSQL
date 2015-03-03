@@ -1035,6 +1035,37 @@ public class BusinessLogic
             manager.Dispose();
         }
     }
+    public DataSet GetUserbranch(string userId, string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+
+        try
+        {
+            //dbQry = "select username,userpwd,locked,count,Email,DateLock,EmpNo,UserGroup,HideDeviation,BranchCheck from tblUserInfo where LOWER(username) like '" + userId.ToLower() + "'";
+            dbQry = "select distinct DefaultBranchCode from tblUserBranch where LOWER(UserID) = '" + userId.ToLower() + "'";
+            
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count == 1)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
 
     public DataSet GetUserInfo(string userId, string connection)
     {
@@ -1047,7 +1078,13 @@ public class BusinessLogic
 
         try
         {
-            dbQry = "select username,userpwd,locked,count,Email,DateLock,EmpNo,UserGroup,HideDeviation from tblUserInfo where LOWER(username) like '" + userId.ToLower() + "'";
+            dbQry = "select username,userpwd,locked,count,Email,DateLock,EmpNo,UserGroup,HideDeviation,BranchCheck from tblUserInfo where LOWER(username) like '" + userId.ToLower() + "'";
+            //dbQry = " SELECT tblUserInfo.UserName, tblUserInfo.Userpwd, tblUserInfo.Locked, tblUserInfo.Count, tblUserInfo.Email, tblUserInfo.DateLock, tblUserInfo.Empno, " +
+            //       " tblUserInfo.UserGroup, tblUserInfo.HideDeviation, tblUserInfo.BranchCheck, tblUserbranch.BranchCode, tblUserbranch.DefaultBranchCode " +
+            //       " FROM tblUserInfo INNER JOIN tblUserbranch ON tblUserInfo.UserID = tblUserbranch.UserID " +
+            //       " where LOWER(username) like '" + userId.ToLower() + "%'";
+
+
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -1083,11 +1120,18 @@ public class BusinessLogic
         {
             if ((txtSearch != "") && (txtSearch != null))
             {
-                dbQry = "select username,userpwd,locked,count,Email from tblUserInfo where username like '" + txtSearch.ToLower() + "'";
+                dbQry = "select username,userpwd,locked,count,Email,BranchCheck from tblUserInfo where username like '" + txtSearch.ToLower() + "'";
+                //dbQry = " SELECT tblUserInfo.UserName, tblUserInfo.Userpwd, tblUserInfo.Locked, tblUserInfo.Count, tblUserInfo.Email, tblUserInfo.DateLock, tblUserInfo.Empno, " +
+                //  " tblUserInfo.UserGroup, tblUserInfo.HideDeviation, tblUserInfo.BranchCheck, tblUserbranch.BranchCode, tblUserbranch.DefaultBranchCode " +
+                //  " FROM tblUserInfo INNER JOIN tblUserbranch ON tblUserInfo.UserID = tblUserbranch.UserID " +
+                //  " where username like '" + txtSearch.ToLower() + "%'";
             }
             else
             {
-                dbQry = "select username,userpwd,locked,count,Email from tblUserInfo ";
+                dbQry = "select username,userpwd,locked,count,Email,BranchCheck from tblUserInfo ";
+                //dbQry = " SELECT tblUserInfo.UserName, tblUserInfo.Userpwd, tblUserInfo.Locked, tblUserInfo.Count, tblUserInfo.Email, tblUserInfo.DateLock, tblUserInfo.Empno, " +
+                //  " tblUserInfo.UserGroup, tblUserInfo.HideDeviation, tblUserInfo.BranchCheck, tblUserbranch.BranchCode, tblUserbranch.DefaultBranchCode " +
+                //  " FROM tblUserInfo INNER JOIN tblUserbranch ON tblUserInfo.UserID = tblUserbranch.UserID ";                  
             }
 
             manager.Open();
@@ -5826,7 +5870,7 @@ public class BusinessLogic
 
             int LedgerID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger");
 
-            dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}')",
+            dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}')",
                 LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -5845,7 +5889,7 @@ public class BusinessLogic
 
     }
 
-    public void InsertLedgerInfo(string connection, string LedgerName, string AliasName, int GroupID, double OpenBalanceDR, double OpenBalanceCR, double OpenBalance, string DRORCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate)
+    public void InsertLedgerInfo(string connection, string LedgerName, string AliasName, int GroupID, double OpenBalanceDR, double OpenBalanceCR, double OpenBalance, string DRORCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate, string BranchCode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -5920,7 +5964,7 @@ public class BusinessLogic
 
 
                 logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})",
-                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc,"");
+                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, BranchCode);
                 logdescription = logdescription.Trim();
                 if (logdescription.Length > 255)
                 {
@@ -5954,7 +5998,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
-                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate,"");
+                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, BranchCode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -7740,7 +7784,7 @@ public class BusinessLogic
     }
 
 
-    public void UpdateLedgerInfo(string connection, int LedgerID, string LedgerName, string AliasName, double OpenBalance, string DRORCR, int GroupID, double OpenBalanceDR, double OpenBalanceCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate)
+    public void UpdateLedgerInfo(string connection, int LedgerID, string LedgerName, string AliasName, double OpenBalance, string DRORCR, int GroupID, double OpenBalanceDR, double OpenBalanceCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate, string BranchCode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -7814,7 +7858,7 @@ public class BusinessLogic
                 string value3 = string.Empty;
 
                 int middlePos = 0;
-                logdescription = string.Format("Update tblLedger SET LedgerName={0}, AliasName={1}, GroupID={2},OpenBalanceDR={3},ContactName={4},Add1={5}, Add2={6}, Add3={7}, Phone={8}, OpenBalanceCR= {9},LedgerCategory={11},ExecutiveInCharge = {12},TinNumber={13},Mobile={14}, Inttrans={15}, Paymentmade={16}, dc={17} WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc);
+                logdescription = string.Format("Update tblLedger SET LedgerName={0}, AliasName={1}, GroupID={2},OpenBalanceDR={3},ContactName={4},Add1={5}, Add2={6}, Add3={7}, Phone={8}, OpenBalanceCR= {9},LedgerCategory={11},ExecutiveInCharge = {12},TinNumber={13},Mobile={14}, Inttrans={15}, Paymentmade={16}, dc={17},BranchCode={18} WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc,BranchCode);
                 logdescription = logdescription.Trim();
 
                 if (logdescription.Length > 255)
@@ -7844,7 +7888,7 @@ public class BusinessLogic
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
-            dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}', Inttrans='{15}', Paymentmade='{16}', dc='{17}',ChequeName='{18}', unuse='{19}',EmailId='{20}',ModeofContact={21},OpDueDate='{22}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate);
+            dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}', Inttrans='{15}', Paymentmade='{16}', dc='{17}',ChequeName='{18}', unuse='{19}',EmailId='{20}',ModeofContact={21},OpDueDate='{22}',BranchCode='{23}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate,BranchCode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -51807,7 +51851,7 @@ public class BusinessLogic
         }
     }
 
-    public bool InsertUserOptions(DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string password, int EmpNo, string UserGroup, bool HideDeviation)
+    public bool InsertUserOptions(DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string password, int EmpNo, string UserGroup, bool HideDeviation, DataSet dsbranch, bool brncheck)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -51835,7 +51879,7 @@ public class BusinessLogic
             if (exists > 0)
                 return false;
 
-            dbQry = string.Format("Insert Into tblUserInfo(UserID,UserName,Userpwd,UserGroup,Email,Locked,DateLock,EmpNo,HideDeviation) VALUES ('{0}','{1}','{5}','{7}','{2}','{3}' ,'{4}', {6}, '{8}')", UserName, UserName, Email, Locked, DateLock, password, EmpNo, UserGroup, HideDeviation);
+            dbQry = string.Format("Insert Into tblUserInfo(UserID,UserName,Userpwd,UserGroup,Email,Locked,DateLock,EmpNo,HideDeviation,BranchCheck) VALUES ('{0}','{1}','{5}','{7}','{2}','{3}' ,'{4}', {6}, '{8}','{9}')", UserName, UserName, Email, Locked, DateLock, password, EmpNo, UserGroup, HideDeviation, brncheck);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -51870,7 +51914,17 @@ public class BusinessLogic
                 }
             }
 
-
+            if (dsbranch != null)
+            {
+                if (dsbranch.Tables.Count > 0)
+                {
+                    foreach (DataRow dr in dsbranch.Tables[0].Rows)
+                    {
+                        dbQry = string.Format("Insert Into tblUserbranch Values('{0}','{1}','{2}')", Convert.ToString(dr["UserName"]), dr["BranchCode"].ToString(), dr["DefaultBranchCode"].ToString());
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                    }
+                }
+            }
 
 
             sAuditStr = "User Name " + UserName + " Created. Email Id " + Email + " By User " + Userna;
@@ -51972,7 +52026,7 @@ public class BusinessLogic
         }
     }
 
-    public void UpdateUserOptions(string connection, DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string Password, int EmpNo, string UserGroup, bool HideDeviation)
+    public void UpdateUserOptions(string connection, DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string Password, int EmpNo, string UserGroup, bool HideDeviation, DataSet dsbranch, bool brncheck)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -51987,7 +52041,7 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            dbQry = string.Format("Update tblUserInfo SET Email='{0}',Locked='{1}', DateLock='{3}',Userpwd='{4}',EmpNo = {5},UserGroup='{6}', HideDeviation='{7}' Where UserName = '{2}' ", Email, Locked, UserName, DateLock, Password, EmpNo, UserGroup, HideDeviation);
+            dbQry = string.Format("Update tblUserInfo SET Email='{0}',Locked='{1}', DateLock='{3}',Userpwd='{4}',EmpNo = {5},UserGroup='{6}', HideDeviation='{7}',BranchCheck='{8}' Where UserName = '{2}' ", Email, Locked, UserName, DateLock, Password, EmpNo, UserGroup, HideDeviation, brncheck);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -52029,6 +52083,23 @@ public class BusinessLogic
                     foreach (DataRow dr in dsroles.Tables[0].Rows)
                     {
                         dbQry = string.Format("Insert Into tblUserRole Values('{0}','{1}')", Convert.ToString(dr["UserName"]), dr["Role"].ToString());
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                    }
+                }
+            }
+
+
+            dbQry = string.Format("Delete From tblUserbranch  Where UserID = '{0}'", UserName);
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            if (dsbranch != null)
+            {
+                if (dsbranch.Tables.Count > 0)
+                {
+                    foreach (DataRow dr in dsbranch.Tables[0].Rows)
+                    {
+                        dbQry = string.Format("Insert Into tblUserbranch Values('{0}','{1}','{2}')", Convert.ToString(dr["UserName"]), dr["BranchCode"].ToString(), dr["DefaultBranchCode"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }

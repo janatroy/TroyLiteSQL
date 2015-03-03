@@ -28,6 +28,7 @@ public partial class TaskUpdates : System.Web.UI.Page
 
                 BindWME("", "");
                 loadEmp();
+                loadBranch();
                 DisableForOffline();
                 //rvASDate.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //rvASDate.MaximumValue = System.DateTime.Now.ToShortDateString();
@@ -66,6 +67,22 @@ public partial class TaskUpdates : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
+
 
     protected void BtnClearFilter_Click(object sender, EventArgs e)
     {
@@ -775,6 +792,15 @@ public partial class TaskUpdates : System.Web.UI.Page
                         ListItem li = drpIncharge.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
                         if (li != null) li.Selected = true;
                     }
+
+                    if (ds.Tables[0].Rows[0]["BranchCode"] != null)
+                    {
+                        string sBranchCode = Convert.ToString(ds.Tables[0].Rows[0]["BranchCode"]);
+                        drpBranch.ClearSelection();
+                        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sBranchCode));
+                        if (li != null) li.Selected = true;
+                    }
+
                     drpDependencyTask.Items.Clear();
                     drpDependencyTask.Items.Add(new ListItem("Select Dependency Task", "0"));
                     DataSet dsp = bl.GetDependencytaskupdate(connection, Project_Id);
