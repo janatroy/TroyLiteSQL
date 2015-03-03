@@ -343,10 +343,15 @@
                                                                     <cc1:CalendarExtender ID="calBillDate1" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate1" TargetControlID="txtdueDate">
                                                                     </cc1:CalendarExtender>
                                                                 </td>
-                                                                <td style="width: 15%;" align="left">
+                                                                <td style="width: 15%;" align="left"  class="ControlLabel">
                                                                     <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                    Branch
                                                                 </td>
-                                                                <td style="width: 20%"></td>
+                                                                <td style="width: 20%" class="ControlDrpBorder">
+                                                                     <asp:DropDownList ID="drpBranch" TabIndex="14" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                         runat="server">
+                                                                     </asp:DropDownList>
+                                                                </td>
 
                                                             </tr>
 
@@ -633,10 +638,15 @@
                                                                     <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDateadd">
                                                                     </cc1:CalendarExtender>
                                                                 </td>
-                                                                <td style="width: 15%;" align="left">
+                                                                <td style="width: 15%;" align="left" class="ControlLabel">
                                                                     <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                    Branch
                                                                 </td>
-                                                                <td style="width: 20%"></td>
+                                                                <td style="width: 20%" class="ControlDrpBorder">
+                                                                     <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                         runat="server">
+                                                                     </asp:DropDownList>
+                                                                </td>
 
                                                             </tr>
                                                             <%--<tr>
@@ -910,6 +920,7 @@
                                 <asp:Parameter Name="EmailId" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -943,6 +954,7 @@
                                 <asp:Parameter Name="EmailId" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

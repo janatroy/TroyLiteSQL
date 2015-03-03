@@ -5845,7 +5845,7 @@ public class BusinessLogic
 
     }
 
-    public void InsertLedgerInfo(string connection, string LedgerName, string AliasName, int GroupID, double OpenBalanceDR, double OpenBalanceCR, double OpenBalance, string DRORCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate)
+    public void InsertLedgerInfo(string connection, string LedgerName, string AliasName, int GroupID, double OpenBalanceDR, double OpenBalanceCR, double OpenBalance, string DRORCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate, string BranchCode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -5954,7 +5954,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
-                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate,"");
+                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, BranchCode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -7740,7 +7740,7 @@ public class BusinessLogic
     }
 
 
-    public void UpdateLedgerInfo(string connection, int LedgerID, string LedgerName, string AliasName, double OpenBalance, string DRORCR, int GroupID, double OpenBalanceDR, double OpenBalanceCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate)
+    public void UpdateLedgerInfo(string connection, int LedgerID, string LedgerName, string AliasName, double OpenBalance, string DRORCR, int GroupID, double OpenBalanceDR, double OpenBalanceCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string EmailId, int ModeofContact, string OpDueDate, string BranchCode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -7844,7 +7844,7 @@ public class BusinessLogic
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
-            dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}', Inttrans='{15}', Paymentmade='{16}', dc='{17}',ChequeName='{18}', unuse='{19}',EmailId='{20}',ModeofContact={21},OpDueDate='{22}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate);
+            dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}', Inttrans='{15}', Paymentmade='{16}', dc='{17}',ChequeName='{18}', unuse='{19}',EmailId='{20}',ModeofContact={21},OpDueDate='{22}',BranchCode='{23}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, BranchCode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
