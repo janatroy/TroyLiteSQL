@@ -127,9 +127,9 @@
                                                                 <td style="width: 15%"></td>
                                                                 <td style="width: 25%;" class="ControlLabel">Bank Name *
                                                                     <%--<asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="ddBankName"
-                                                                        Display="Dynamic" ErrorMessage="Bank Name is mandatory">*</asp:RequiredFieldValidator>--%>
+                                                                        Display="Dynamic" ErrorMessage="Please select Bank Name. It cannot be blank">*</asp:RequiredFieldValidator>--%>
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddBankName"
-                                                                        Display="Dynamic" ErrorMessage="Bank Name is Mandatory" Operator="GreaterThan"
+                                                                        Display="Dynamic" ErrorMessage="Please select Bank Name. It cannot be blank" Operator="GreaterThan"
                                                                         ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td style="width: 25%" class="ControlDrpBorder">
@@ -148,7 +148,7 @@
                                                                 <td style="width: 10%"></td>
                                                                 <td style="width: 25%" class="ControlLabel">Account No *
                                                                     <asp:RequiredFieldValidator ID="rvAliasNameAdd" runat="server" ControlToValidate="txtAccNoAdd"
-                                                                        Display="Dynamic" ErrorMessage="Account No is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please Enter Account No. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td style="width: 25%;" class="ControlDrpBorder">
                                                                     <asp:TextBox ID="txtAccNoAdd" runat="server" Text='<%# Bind("AccountNo") %>'
@@ -162,7 +162,7 @@
                                                                 <td style="width: 10%"></td>
                                                                 <td style="width: 25%" class="ControlLabel">Cheque No From *
                                                                     <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtFromNoAdd"
-                                                                        Display="Dynamic" ErrorMessage="Cheque From No is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Cheque From No. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtFromNoAdd" runat="server" Text='<%# Bind("FromChequeNo") %>'
@@ -176,7 +176,7 @@
                                                                 <td style="width: 10%"></td>
                                                                 <td style="width: 25%;" class="ControlLabel">Cheque No To *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtToNoAdd"
-                                                                        Display="Dynamic" ErrorMessage="Cheque To No is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Cheque To No. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtToNoAdd" runat="server" Text='<%# Bind("ToChequeNo") %>'

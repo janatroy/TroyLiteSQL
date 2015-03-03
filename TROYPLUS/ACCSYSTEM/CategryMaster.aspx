@@ -153,7 +153,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Category Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtCategoryName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Category Name is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtCategoryName" runat="server" Text='<%# Bind("CategoryName") %>' SkinID="skinTxtBoxGrid"
@@ -168,7 +168,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Category % *
                                                                     <asp:RequiredFieldValidator ID="rvAliasName" runat="server" ControlToValidate="txtCategoryLevel"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Category Level is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Level. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtCategoryLevel" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
@@ -230,7 +230,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -252,7 +252,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Category Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtCategoryNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Category Name is mandatory"></asp:RequiredFieldValidator>
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Name. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtCategoryNameAdd" runat="server" Text='<%# Bind("CategoryName") %>'
@@ -267,7 +267,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Category % *
                                                                     <asp:RequiredFieldValidator ID="rvAliasNameAdd" runat="server" ControlToValidate="txtCategoryLevelAdd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Category Level is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Level. It cannot be left blank. ">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtCategoryLevelAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
@@ -324,7 +324,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">

@@ -154,7 +154,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Brand Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtBrandName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Brand Name is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtBrandName" runat="server" Text='<%# Bind("BrandName") %>' SkinID="skinTxtBoxGrid"
@@ -169,7 +169,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Brand % *
                                                                     <asp:RequiredFieldValidator ID="rvAliasName" runat="server" ControlToValidate="txtBrandLevel"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Brand Level is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand %. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtBrandLevel" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
@@ -185,7 +185,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Allowed Price % *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtDeviation"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Allowed Price is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Allowed Price %. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid123" runat="server" FilterType="Numbers" TargetControlID="txtDeviation" />
 
                                                                 </td>
@@ -248,7 +248,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -270,7 +270,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Brand Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtBrandNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Brand Name is mandatory"></asp:RequiredFieldValidator>
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand Name. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtBrandNameAdd" runat="server" Text='<%# Bind("BrandName") %>'
@@ -285,7 +285,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Brand % *
                                                                     <asp:RequiredFieldValidator ID="rvAliasNameAdd" runat="server" ControlToValidate="txtBrandLevelAdd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Brand Level is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand %. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtBrandLevelAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
@@ -301,7 +301,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Allowed Price % *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDeviationAdd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Allowed Price % is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Allowed Price %. It cannot be left blank.">*</asp:RequiredFieldValidator>
 
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid12" runat="server" FilterType="Numbers" TargetControlID="txtDeviationAdd" />
                                                                 </td>
@@ -359,7 +359,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">

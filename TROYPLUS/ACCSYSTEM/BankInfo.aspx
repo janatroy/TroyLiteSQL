@@ -211,7 +211,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 20%">Bank Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="LedgerName is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Bank Name. It cannot be left bank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtLdgrName" TabIndex="1" runat="server" Text='<%# Bind("LedgerName") %>'
@@ -266,7 +266,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
                                                                         Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
                                                                     <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="txtOpenBal"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtOpenBal" />
                                                                 </td>
                                                                 <td class="ControlNumberBox3" style="width: 26%">
@@ -475,7 +475,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="Trebuchet MS"
+                                                                        ShowSummary="false" HeaderText="" Font-Names="Trebuchet MS"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -498,7 +498,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 20%">Bank Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Name is mandatory"></asp:RequiredFieldValidator>
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Bank Name. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtLdgrNameAdd" TabIndex="1" runat="server" Height="26px" Text='<%# Bind("LedgerName") %>'
@@ -753,7 +753,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="Trebuchet MS"
+                                                                    ShowSummary="false" HeaderText="" Font-Names="Trebuchet MS"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">
