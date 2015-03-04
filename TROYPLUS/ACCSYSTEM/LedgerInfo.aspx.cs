@@ -481,6 +481,36 @@ public partial class LedgerInfo : System.Web.UI.Page
                 //((DropDownList)this.frmViewAdd.FindControl("drpBranch")).DataValueField = "BranchCode";
                 ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).DataBind();
 
+                DataSet dst = bl.GetGroupInfoForId(connection, Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")).SelectedValue));
+                if (dst != null)
+                {
+                    if (dst.Tables.Count > 0)
+                    {
+                        foreach (DataRow dr in dst.Tables[0].Rows)
+                        {
+                            if (Convert.ToString(dr["heading"]) == "InDirect Expenses")
+                            {
+                                ((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")).Enabled = false;
+                                ((TextBox)this.frmViewAdd.FindControl("txtLdgrName")).Enabled = false;
+                                ((TextBox)this.frmViewAdd.FindControl("txtAliasName")).Enabled = false;
+                                ((DropDownList)this.frmViewAdd.FindControl("drpModeofContact")).Enabled = false;
+                                ((TextBox)this.frmViewAdd.FindControl("txtMobile")).Enabled = false;
+                                ((TextBox)this.frmViewAdd.FindControl("txtEmailId")).Enabled = false;
+                                ((TextBox)this.frmViewAdd.FindControl("txtContName")).Enabled = false;
+                            }
+                            else
+                            {
+                                ((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")).Enabled = true;
+                                ((TextBox)this.frmViewAdd.FindControl("txtLdgrName")).Enabled = true;
+                                ((TextBox)this.frmViewAdd.FindControl("txtAliasName")).Enabled = true;
+                                ((DropDownList)this.frmViewAdd.FindControl("drpModeofContact")).Enabled = true;
+                                ((TextBox)this.frmViewAdd.FindControl("txtMobile")).Enabled = true;
+                                ((TextBox)this.frmViewAdd.FindControl("txtEmailId")).Enabled = true;
+                                ((TextBox)this.frmViewAdd.FindControl("txtContName")).Enabled = true;
+                            }
+                        }
+                    }
+                }
             }
         }
         catch (Exception ex)
