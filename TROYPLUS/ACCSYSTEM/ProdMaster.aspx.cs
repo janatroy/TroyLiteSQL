@@ -1768,6 +1768,25 @@ public partial class ProdMaster : System.Web.UI.Page
         }
     }
 
+    protected void BulkEditGridView2_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            //e.Row.Cells[3].Visible = false;
+            //TextBox txt = (TextBox)e.Row.FindControl("txtDate");
+            //TextBox txtet = (TextBox)e.Row.FindControl("txtResult");
+            //if ((txt.Text != "") || (txtet.Text != ""))
+            //{
+            //    e.Row.ForeColor = System.Drawing.Color.Blue;
+            //}
+            //else
+            //{
+            //    e.Row.ForeColor = System.Drawing.Color.SteelBlue;
+            //}
+        }
+    }
+
+
     protected void drpPaymode_SelectedIndexChanged(object sender, EventArgs e)
     {
         try

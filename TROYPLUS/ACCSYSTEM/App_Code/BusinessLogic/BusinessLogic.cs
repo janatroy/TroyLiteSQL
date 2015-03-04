@@ -70490,4 +70490,34 @@ public class BusinessLogic
         }
     }
 
+    public DataSet ListBranch(string connection, string User)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        
+        
+        dbQry = string.Format("select A.BranchId,A.BranchName,A.Branchcode,A.Branchaddress1,A.Branchaddress2,A.Branchaddress3,A.BranchLocation,A.IsActive,A.Branchcode from tblBranch as A Order By A.BranchId");
+    
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
 }

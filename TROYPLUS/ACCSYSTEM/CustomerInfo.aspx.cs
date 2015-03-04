@@ -400,10 +400,11 @@ public partial class CustomerInfo : System.Web.UI.Page
             ModalPopupExtender1.Show();
 
             string connection = Request.Cookies["Company"].Value;
+            string usernam = Request.Cookies["LoggedUserName"].Value;
 
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
-            ds = bl.ListBranchInfo(connection, "", "");
+            ds = bl.ListBranch(connection, usernam);
             ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
             ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "0"));
             ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataSource = ds;
