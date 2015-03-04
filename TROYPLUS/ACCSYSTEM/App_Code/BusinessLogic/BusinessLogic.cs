@@ -921,6 +921,37 @@ public class BusinessLogic
 
     }
 
+    public DataSet GetBranch(string connection,string username)
+    {
+
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            dbQry = " SELECT distinct tblUserbranch.DefaultBranchCode, tblUserInfo.UserName,  tblUserInfo.BranchCheck " +
+                    " FROM tblUserInfo INNER JOIN tblUserbranch ON tblUserInfo.UserID = tblUserbranch.UserID" +
+                    " where UserName='" + username + "'";
+
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            return ds;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
     public DataSet GetAppSettings(string connection)
     {
 
@@ -17130,6 +17161,35 @@ public class BusinessLogic
         string dbQry = string.Empty;
         DataSet ds = new DataSet();
         dbQry = "Select empno,empFirstName From tblEmployee Order By empFirstName";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataSet ListBranchLogin(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+        DataSet ds = new DataSet();
+        dbQry = "Select BranchName,Branchcode From tblBranch where IsActive='YES' Order By BranchName";
 
         try
         {
