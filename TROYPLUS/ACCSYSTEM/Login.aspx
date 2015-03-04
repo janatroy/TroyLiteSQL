@@ -58,7 +58,7 @@
                     </tr>
                     <tr>
                         <td align="left" valign="top" class="textfieldbg">
-                            <asp:TextBox ID="txtLogin" runat="server" TabIndex="1" AutoPostBack="true" CssClass="loginText" MaxLength="50" OnTextChanged="txtLogin_TextChanged"></asp:TextBox>
+                            <asp:TextBox ID="txtLogin" runat="server" TabIndex="1" CssClass="loginText" MaxLength="50"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -74,31 +74,31 @@
                                 MaxLength="15"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr Visible="false" runat="server">
+                    <tr runat="server">
                         <td align="left" valign="top" class="fieldname">
-                        <asp:Label ID="Label2" runat="server" Text="Company Code" Font-Bold="True" ForeColor="Black" Font-Size="Small" Visible="false"></asp:Label>
+                        <asp:Label ID="Label2" runat="server" Text="Company Code" Font-Bold="True" ForeColor="Black" Font-Size="Small"></asp:Label>
                             <asp:RequiredFieldValidator ID="rvCompany" runat="server" ControlToValidate="txtCompany"
                                 Display="Dynamic" ErrorMessage="Company Code Required" SetFocusOnError="true"
                                 CssClass="errorMsg">*</asp:RequiredFieldValidator>
                         </td>
                     </tr>
-                    <tr Visible="false" runat="server">
+                    <tr runat="server">
                         <td align="left" valign="top" class="textfieldbg">
-                            <asp:TextBox ID="txtCompany" runat="server" TabIndex="3" CssClass="loginText upper" Text="DEMO" Visible="false"
+                            <asp:TextBox ID="txtCompany" runat="server" TabIndex="3" CssClass="loginText upper"
                                 MaxLength="50"></asp:TextBox>
                         </td>
                     </tr>
-                    <tr>
+                    <tr runat="server" visible="false">
                         <td align="left" valign="top" class="fieldname">
                         <asp:Label ID="Label3" runat="server" Text="Branch Code" Font-Bold="True" ForeColor="Black" Font-Size="Small"></asp:Label>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="drpBranch"
+                          <%--  <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="drpBranch"
                                 Display="Dynamic" ErrorMessage="Branch Code Required" SetFocusOnError="true"
-                                CssClass="errorMsg">*</asp:RequiredFieldValidator>
+                                CssClass="errorMsg">*</asp:RequiredFieldValidator>--%>
                         </td>
                     </tr>
-                    <tr>
+                    <tr runat="server" visible="false">
                         <td align="left" valign="top" class="ControlDrpBorder">
-                           <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                           <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" >
                            </asp:DropDownList>
                         </td>
                     </tr>

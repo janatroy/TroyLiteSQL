@@ -15,6 +15,8 @@ public partial class LeadReference : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
     string dbfileName = string.Empty;
+    string connection;
+    string usernam;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -34,9 +36,9 @@ public partial class LeadReference : System.Web.UI.Page
 
             if (!Page.IsPostBack)
             {
-                string connection = Request.Cookies["Company"].Value;
-                string usernam = Request.Cookies["LoggedUserName"].Value;
-
+                connection = Request.Cookies["Company"].Value;
+                usernam = Request.Cookies["LoggedUserName"].Value;
+                string branch = Request.Cookies["Branch"].Value;
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
@@ -55,7 +57,7 @@ public partial class LeadReference : System.Web.UI.Page
 
                 //}              
 
-             
+
                 GrdViewLedger.PageSize = 8;
                 //loadReferenceType();
             }
@@ -102,6 +104,7 @@ public partial class LeadReference : System.Web.UI.Page
         //TextBox search = (TextBox)Accordion1.FindControl("txtSearch");
         //DropDownList dropDown = (DropDownList)Accordion1.FindControl("ddCriteria");
         GridSource.SelectParameters.Add(new CookieParameter("connection", "Company"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
     }
@@ -345,6 +348,10 @@ public partial class LeadReference : System.Web.UI.Page
     {
         try
         {
+            string sCustomer = string.Empty;
+            connection = Request.Cookies["Company"].Value;
+            usernam = Request.Cookies["LoggedUserName"].Value;
+
             //if (!Helper.IsLicenced(Request.Cookies["Company"].Value))
             //{
             //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This is Trial Version, Please upgrade to Full Version of this Software. Thank You.');", true);
@@ -355,6 +362,23 @@ public partial class LeadReference : System.Web.UI.Page
             frmViewAdd.Visible = true;
             if (frmViewAdd.CurrentMode == FormViewMode.Insert)
             {
+                BusinessLogic bl = new BusinessLogic();
+                DataSet ds = bl.GetBranch(connection, usernam);
+
+                sCustomer = Convert.ToString(ds.Tables[0].Rows[0]["DefaultBranchCode"]);
+                ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).ClearSelection();
+                ListItem li = ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                if (li != null) li.Selected = true;
+
+                if (ds.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+                {
+                    ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).Enabled = true;
+                }
+                else
+                {
+                    ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).Enabled = false;
+                }
+
                 //GrdViewLedger.Visible = false;
                 //lnkBtnAdd.Visible = false;
                 ////MyAccordion.Visible = false;
@@ -448,6 +472,7 @@ public partial class LeadReference : System.Web.UI.Page
             lnkBtnAdd.Visible = true;
             frmViewAdd.Visible = false;
             GrdViewLedger.Visible = true;
+
         }
         catch (Exception ex)
         {
@@ -484,10 +509,10 @@ public partial class LeadReference : System.Web.UI.Page
             e.InputParameters["Types"] = "ACTIVITY";
         }
 
-        //if (((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedValue != "")
-        //{
-        //    e.InputParameters["Branchcode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedItem.Text;
-        //}
+        if (((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedValue != "")
+        {
+            e.InputParameters["Branchcode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedValue;
+        }
     }
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)
@@ -510,5 +535,36 @@ public partial class LeadReference : System.Web.UI.Page
             e.InputParameters["Types"] = "ACTIVITY";
         }
 
+        if (((DropDownList)this.frmViewAdd.FindControl("drpBranchUpdate")).SelectedValue != "")
+        {
+            e.InputParameters["Branchcode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranchUpdate")).SelectedValue;
+        }
+    }
+    protected void frmViewAdd_ModeChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            if (frmViewAdd.CurrentMode == FormViewMode.Edit)
+            {
+                connection = Request.Cookies["Company"].Value;
+                usernam = Request.Cookies["LoggedUserName"].Value;
+
+                BusinessLogic bl = new BusinessLogic();
+                DataSet ds = bl.GetBranch(connection, usernam);
+
+                if (ds.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+                {
+                    ((DropDownList)this.frmViewAdd.FindControl("drpBranchUpdate")).Enabled = true;
+                }
+                else
+                {
+                    ((DropDownList)this.frmViewAdd.FindControl("drpBranchUpdate")).Enabled = false;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
     }
 }

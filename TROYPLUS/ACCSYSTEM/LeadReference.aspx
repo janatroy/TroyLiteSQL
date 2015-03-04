@@ -131,7 +131,7 @@
                                 <table style="width: 100%;" align="center">
                                     <tr style="width: 100%">
                                         <td style="width: 100%">
-                                            <asp:FormView ID="frmViewAdd" runat="server" Width="100%" DataSourceID="frmSource"
+                                            <asp:FormView ID="frmViewAdd" runat="server" Width="100%" DataSourceID="frmSource" OnModeChanged="frmViewAdd_ModeChanged"
                                                 DataKeyNames="ID" OnItemCommand="frmViewAdd_ItemCommand" DefaultMode="Edit"
                                                 OnItemCreated="frmViewAdd_ItemCreated" Visible="False" OnItemInserting="frmViewAdd_ItemInserting"
                                                 OnItemUpdating="frmViewAdd_ItemUpdating" EmptyDataText="No Records" OnItemInserted="frmViewAdd_ItemInserted"
@@ -148,6 +148,22 @@
                                                             <tr>
                                                                 <td colspan="4" class="headerPopUp">Update Drop-down List
                                                                 </td>
+                                                            </tr>
+                                                             <tr style="height: 5px">
+                                                            </tr>
+                                                             <tr>
+                                                                <td class="ControlLabelproject" style="width: 40%">Select Branch *
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="drpBranchUpdate"
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Branch is mandatory">*</asp:RequiredFieldValidator>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 30%">
+                                                                    <asp:DropDownList ID="drpBranchUpdate" runat="server" Width="100%" AutoPostBack="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium" SelectedValue='<%# Bind("Branchcode") %>' AppendDataBoundItems="true"
+                                                                        DataSourceID="srcBranchLoad" DataTextField="BranchName" DataValueField="Branchcode" TabIndex="2">
+                                                                         <asp:ListItem Text="All" Value="All"></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                                <td style="width: 30%"></td>
+                                                                <td></td>
                                                             </tr>
                                                             <tr style="height: 5px">
                                                             </tr>
@@ -221,7 +237,12 @@
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
-
+                                                                 <asp:ObjectDataSource ID="srcBranchLoad" runat="server" SelectMethod="ListBranchLogin"
+                                                                    TypeName="BusinessLogic" OldValuesParameterFormatString="original_{0}">
+                                                                    <SelectParameters>
+                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                    </SelectParameters>
+                                                                </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
                                                                         ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
@@ -373,6 +394,7 @@
                                                 <asp:BoundField DataField="Row" HeaderText="#" HeaderStyle-HorizontalAlign="Center" ItemStyle-Font-Size="15px" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px" />
                                                 <asp:BoundField DataField="TypeName" HeaderText="Name of Drop-down field" ItemStyle-Font-Size="15px" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
                                                 <asp:BoundField DataField="TextValue" HeaderText="Values of Drop-down field" ItemStyle-Font-Size="15px" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
+                                                <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" ItemStyle-Font-Size="15px" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" ItemStyle-Font-Size="15px" HeaderStyle-BorderColor="Gray"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
@@ -436,7 +458,7 @@
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="ID" Type="Int32" />
-                            </DeleteParameters>
+                            </DeleteParameters>                             
                         </asp:ObjectDataSource>
                         <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetReferenceForId"
                             TypeName="LeadBusinessLogic" OnUpdating="frmSource_Updating" OnInserting="frmSource_Inserting"
@@ -448,11 +470,12 @@
                                 <asp:Parameter Name="TypeName" Type="String" />
                                 <asp:Parameter Name="Types" Type="String" />
                                 <asp:Parameter Name="TypeID" Type="Int32" />
+                                <asp:Parameter Name="Branchcode" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="ID" PropertyName="SelectedValue"
                                     Type="String" />
-                                <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />                               
                             </SelectParameters>
                             <InsertParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
@@ -460,6 +483,7 @@
                                 <asp:Parameter Name="TypeName" Type="String" />
                                 <asp:Parameter Name="Types" Type="String" />
                                 <asp:Parameter Name="TypeID" Type="Int32" />
+                                <asp:Parameter Name="Branchcode" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>
