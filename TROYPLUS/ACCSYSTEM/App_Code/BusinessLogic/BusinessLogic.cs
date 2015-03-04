@@ -17250,6 +17250,8 @@ public class BusinessLogic
 
 
         dbQry = "Select ReferenceType,TypeID From tblLeadReferenceType Order By TypeID";
+        //dbQry = " SELECT tblLeadReferenceType.TypeID, tblLeadReferenceType.ReferenceType, tblBranch.BranchName, tblBranch.Branchcode " +
+              // " FROM tblLeadReferenceType INNER JOIN tblBranch ON tblLeadReferenceType.BranchCode = tblBranch.Branchcode Order By TypeID";
 
         try
         {
@@ -51911,7 +51913,7 @@ public class BusinessLogic
         }
     }
 
-    public bool InsertUserOptions(DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string password, int EmpNo, string UserGroup, bool HideDeviation, DataSet dsbranch, bool brncheck)
+    public bool InsertUserOptions(DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string password, int EmpNo, string UserGroup, bool HideDeviation, DataSet dsbranch, bool brncheck, string defaultbranch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -51939,7 +51941,7 @@ public class BusinessLogic
             if (exists > 0)
                 return false;
 
-            dbQry = string.Format("Insert Into tblUserInfo(UserID,UserName,Userpwd,UserGroup,Email,Locked,DateLock,EmpNo,HideDeviation,BranchCheck) VALUES ('{0}','{1}','{5}','{7}','{2}','{3}' ,'{4}', {6}, '{8}','{9}')", UserName, UserName, Email, Locked, DateLock, password, EmpNo, UserGroup, HideDeviation, brncheck);
+            dbQry = string.Format("Insert Into tblUserInfo(UserID,UserName,Userpwd,UserGroup,Email,Locked,DateLock,EmpNo,HideDeviation,BranchCheck,DefaultBranch) VALUES ('{0}','{1}','{5}','{7}','{2}','{3}' ,'{4}', {6}, '{8}','{9}','{10}')", UserName, UserName, Email, Locked, DateLock, password, EmpNo, UserGroup, HideDeviation, brncheck,defaultbranch);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -52086,7 +52088,7 @@ public class BusinessLogic
         }
     }
 
-    public void UpdateUserOptions(string connection, DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string Password, int EmpNo, string UserGroup, bool HideDeviation, DataSet dsbranch, bool brncheck)
+    public void UpdateUserOptions(string connection, DataSet OptionDS, string Userna, string UserName, string Email, bool Locked, bool DateLock, DataSet dsroles, string Password, int EmpNo, string UserGroup, bool HideDeviation, DataSet dsbranch, bool brncheck, string defaultbranch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -52101,7 +52103,7 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            dbQry = string.Format("Update tblUserInfo SET Email='{0}',Locked='{1}', DateLock='{3}',Userpwd='{4}',EmpNo = {5},UserGroup='{6}', HideDeviation='{7}',BranchCheck='{8}' Where UserName = '{2}' ", Email, Locked, UserName, DateLock, Password, EmpNo, UserGroup, HideDeviation, brncheck);
+            dbQry = string.Format("Update tblUserInfo SET Email='{0}',Locked='{1}', DateLock='{3}',Userpwd='{4}',EmpNo = {5},UserGroup='{6}', HideDeviation='{7}',BranchCheck='{8}',DefaultBranch='{9}' Where UserName = '{2}' ", Email, Locked, UserName, DateLock, Password, EmpNo, UserGroup, HideDeviation, brncheck, defaultbranch);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 

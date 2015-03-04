@@ -1588,7 +1588,7 @@ public partial class UserOptions : System.Web.UI.Page
             string userName = string.Empty;
             string Email = string.Empty;
             string connection = string.Empty;
-
+            string defaultbranch = string.Empty;
             string UserGroup = string.Empty;
             bool brncheck = chkBranch.Checked;
             bool Locked = chkAccLocked.Checked;
@@ -1604,6 +1604,9 @@ public partial class UserOptions : System.Web.UI.Page
             int EmpNo = 0;
             if (drpIncharge.Text.Trim() != string.Empty)
                 EmpNo = Convert.ToInt32(drpIncharge.SelectedValue);
+
+            if (drpBranch.Text.Trim() != string.Empty)
+                defaultbranch = Convert.ToString(drpBranch.SelectedValue);
 
             if (txtUserGroup.Text.Trim() != string.Empty)
                 UserGroup = txtUserGroup.Text.Trim();
@@ -1667,7 +1670,7 @@ public partial class UserOptions : System.Web.UI.Page
 
                     if (Session["Show"] == "Add New")
                     {
-                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck))
+                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Created sucessfully.');", true);
                             //BindGrid();
@@ -1849,7 +1852,7 @@ public partial class UserOptions : System.Web.UI.Page
                     }
                     else if (Session["Show"] == "Edit")
                     {
-                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation,dsBranch, brncheck);
+                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch);
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Updated Successfully');", true);
                         //BindGrid();
 
