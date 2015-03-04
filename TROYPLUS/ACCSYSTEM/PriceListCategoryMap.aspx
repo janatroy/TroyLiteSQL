@@ -151,7 +151,7 @@
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Customer Category is mandatory"
                                                                         Operator="GreaterThan" ValueToCompare="0" />--%>
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="drpCustomerCategory"
-                                                                        Display="Dynamic" ErrorMessage="Customer Category is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Customer Category. It Cannot be left blank ">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
                                                                     <%--<asp:DropDownList ID="drpCustomerCategory" runat="server" OnDataBound="drpCustomerCategory_DataBound" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" DataSourceID="srccuscat" height="26px" style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%">
@@ -174,7 +174,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Price List Name *
                                                                     <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpPriceList"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Price List is mandatory"
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Select Price List. It cannot be left blank "
                                                                         Operator="GreaterThan" ValueToCompare="0" />
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
@@ -234,7 +234,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -259,7 +259,7 @@
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Customer Category is mandatory"
                                                                         Operator="GreaterThan" ValueToCompare="0" />--%>
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="drpCustomerCategoryAdd"
-                                                                        Display="Dynamic" ErrorMessage="Customer Category is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Customer Category. It cannot be left blank">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
                                                                     <%--<asp:DropDownList ID="drpCustomerCategoryAdd" runat="server" AppendDataBoundItems="true" OnDataBound="drpCustomerCategoryAdd_DataBound" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" height="26px" DataSourceID="srccuscatadd" style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%">
@@ -278,7 +278,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 40%">Price List Name *
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="drpPriceListAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Price List is mandatory"
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Select Price List. It cannot be left blank"
                                                                         Operator="GreaterThan" ValueToCompare="0" />
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
@@ -318,7 +318,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                                 <asp:ObjectDataSource ID="srclistpricelistadd" runat="server" SelectMethod="ListPriceList"
                                                                     TypeName="BusinessLogic">

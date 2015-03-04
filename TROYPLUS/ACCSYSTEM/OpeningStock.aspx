@@ -129,7 +129,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 25%;">Category *
                                                                      <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="cmbCategory"
-                                                                         Display="Dynamic" ErrorMessage="Please Select Category" Operator="GreaterThan"
+                                                                         Display="Dynamic" ErrorMessage="Please Select Category. It cannot be left blank." Operator="GreaterThan"
                                                                          Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%;">
@@ -148,7 +148,7 @@
                                                                 </td>
                                                                 <td class="ControlLabel" style="width: 15%;">Brand *
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="cmbBrand"
-                                                                        Display="Dynamic" ErrorMessage="Please Select Brand" Operator="GreaterThan"
+                                                                        Display="Dynamic" ErrorMessage="Please Select Brand.It cannot be let blank." Operator="GreaterThan"
                                                                         Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
@@ -172,7 +172,7 @@
 
                                                                 <td class="ControlLabel" style="width: 25%;">Product Name
                                                                     <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="cmbProdName"
-                                                                        Display="Dynamic" ErrorMessage="Please Select Product Name" Operator="GreaterThan"
+                                                                        Display="Dynamic" ErrorMessage="Please Select Product Name. It cannot be let blank." Operator="GreaterThan"
                                                                         Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%;">
@@ -190,7 +190,7 @@
                                                                 </td>
                                                                 <td class="ControlLabel" style="width: 15%;">Model *
                                                                     <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="cmbModel"
-                                                                        Display="Dynamic" ErrorMessage="Please Select Model" Operator="GreaterThan"
+                                                                        Display="Dynamic" ErrorMessage="Please Select Model. It cannot be let blank." Operator="GreaterThan"
                                                                         Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%;">
@@ -214,7 +214,7 @@
 
                                                                 <td class="ControlLabel" style="width: 25%;">Product Code *
                                                                     <asp:CompareValidator ID="CompareValidator4" runat="server" ControlToValidate="cmbProdAdd"
-                                                                        Display="Dynamic" ErrorMessage="Please Select Product Code" Operator="GreaterThan"
+                                                                        Display="Dynamic" ErrorMessage="Please Select Product Code. It cannot be let blank." Operator="GreaterThan"
                                                                         Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
@@ -234,7 +234,7 @@
                                                                 </td>
                                                                 <td style="width: 15%" class="ControlLabel">Opening Stock *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server" ControlToValidate="txtOpeningStock"
-                                                                        Display="Dynamic" ErrorMessage="Opening Stock is mandatory.">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Opening Stock. It cannot be let blank">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" FilterType="Custom, Numbers"
                                                                         TargetControlID="txtOpeningStock" ValidChars="+" />
                                                                 </td>
@@ -258,7 +258,7 @@
                                                                 </td>
                                                                 <td class="ControlLabel" style="width: 15%">To be adjusted *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtadjusted"
-                                                                        Display="Dynamic" ErrorMessage="Stock to be adjusted is mandatory.">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Stock to be adjusted. It cannot be let blank.">*</asp:RequiredFieldValidator>
                                                                     <%--<cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Custom, Numbers"
                                                                         TargetControlID="txtadjusted" ValidChars="+" />--%>
                                                                 </td>
@@ -274,7 +274,7 @@
 
                                                                 <td class="ControlLabel" style="width: 25%;">
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtDueDate"
-                                                                        Display="Dynamic" ErrorMessage="OpeningStock Due Date is mandatory.">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="please select OpeningStock Due Date. It cannot be let blank.">*</asp:RequiredFieldValidator>
                                                                     Opening Due Date *
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">

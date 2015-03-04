@@ -143,7 +143,7 @@
                                                                 <td style="width: 45%" class="ControlLabelNew">
                                                                     Name of Price Component *
                                                                     <asp:RequiredFieldValidator ID="rvAliasNameAdd" runat="server" ControlToValidate="txtPriceList"
-                                                                        Display="Dynamic" ErrorMessage="Price List is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Name of Price Component. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td style="width: 25%;" class="ControlDrpBorder">
                                                                     <asp:TextBox ID="txtPriceList" runat="server" CssClass="cssTextBox"
@@ -162,7 +162,7 @@
                                                                 <td style="width: 45%" class="ControlLabelNew">
                                                                     Description of Price Component *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDescription"
-                                                                        Display="Dynamic" ErrorMessage="Description is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" ErrorMessage="Please enter Description of Price Component. It cannot be Left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td style="width: 25%;" class="ControlDrpBorder">
                                                                     <asp:TextBox ID="txtDescription" runat="server" CssClass="cssTextBox"

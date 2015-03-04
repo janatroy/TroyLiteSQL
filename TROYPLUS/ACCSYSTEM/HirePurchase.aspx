@@ -198,7 +198,7 @@
                             </div>
                         </div>
                         <asp:ValidationSummary ID="VS" runat="server" Font-Names="'Trebuchet MS'"
-                            Font-Size="12pt" HeaderText="Validation Messages" ShowMessageBox="True"
+                            Font-Size="12pt" HeaderText=" " ShowMessageBox="True"
                             ShowSummary="False" ValidationGroup="salesval" />
                         <input id="dummy" type="button" style="display: none" runat="server" />
                         <input id="Button1" type="button" style="display: none" runat="server" />
@@ -247,7 +247,7 @@
                                                                                                 <td class="ControlLabel" style="width: 20%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ValidationGroup="salesval"
                                                                                                         ControlToValidate="txtbillnonew" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Bill No is mandatory" Text="*"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Bill No. It cannot be left blank." Text="*"></asp:RequiredFieldValidator>
                                                                                                     Bill No *
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 24%;">
@@ -257,7 +257,7 @@
                                                                                                 <td class="ControlLabel" style="width: 20%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ValidationGroup="salesval"
                                                                                                         ControlToValidate="txtbranchrefno" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Branch Ref No is mandatory" Text="*"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Branch Ref No. It cannot be left blank." Text="*"></asp:RequiredFieldValidator>
                                                                                                     Branch Ref No *
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 24%;">
@@ -272,7 +272,7 @@
                                                                                                 <td class="ControlLabel" style="width: 20%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server"
                                                                                                         ControlToValidate="txtBillDate" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="BillDate is mandatory" Text="*"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please select BillDate. It cannot be left blank." Text="*"></asp:RequiredFieldValidator>
                                                                                                     <asp:RangeValidator ID="mrBillDate" runat="server"
                                                                                                         ControlToValidate="txtBillDate" ErrorMessage="Bill date cannot be future date."
                                                                                                         Text="*" Type="Date"></asp:RangeValidator>
@@ -308,7 +308,7 @@
                                                                                                 <td class="ControlLabel" style="width: 25%;">Name *
                                                                                                 <asp:CompareValidator ID="cvCustomer" runat="server"
                                                                                                     ControlToValidate="cmbCustomer" Display="Dynamic"
-                                                                                                    ErrorMessage="Please Select Customer!!" Operator="GreaterThan" Text="*"
+                                                                                                    ErrorMessage="Please Select Customer!!.It cannot be left blank." Operator="GreaterThan" Text="*"
                                                                                                     ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>
                                                                                                 </td>
                                                                                                 <td class="ControlDrpBorder" style="width: 24%;">
@@ -353,7 +353,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server"
                                                                                                         ControlToValidate="txtdob" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Date of birth is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please select Date of birth. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     Date of birth *
 
                                                                                                 </td>
@@ -371,7 +371,7 @@
                                                                                                         ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server"
                                                                                                         ControlToValidate="drpPaymode" Display="Dynamic"
-                                                                                                        ErrorMessage="Please Select Payment Mode" Operator="GreaterThan" Text="*"
+                                                                                                        ErrorMessage="Please Select Payment Mode.It cannot be left blank." Operator="GreaterThan" Text="*"
                                                                                                         ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>
                                                                                                     <asp:Label ID="Label3" runat="server" Width="150px" Text="Payment Mode *"></asp:Label>
                                                                                                 </td>
@@ -396,7 +396,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server"
                                                                                                         ControlToValidate="txtDueDate" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Due Date is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please select Due Date.It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     <%--<asp:RangeValidator ID="mrduedate" runat="server" 
                                                                                                     ControlToValidate="txtDueDate" ErrorMessage="Bill date cannot be future date." 
                                                                                                     Text="*" Type="Date" ValidationGroup="salesval"></asp:RangeValidator>--%>
@@ -420,7 +420,7 @@
                                                                                                         ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server"
                                                                                                         ControlToValidate="txtpuramt" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Purchase Amount is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Purchase Amount. It cannot be left blank" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     <asp:Label ID="Label2" runat="server" Width="150px" Text="Cost *"></asp:Label>
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 24%;">
@@ -439,7 +439,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server"
                                                                                                         ControlToValidate="Txtinipay" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Initial Payment is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Initial Payment.It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     Initial Payment *
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 24%">
@@ -454,7 +454,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server"
                                                                                                         ControlToValidate="Txtlnamt" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Loan Amount is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Loan Amount. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     Loan Amount *
                                                                                                 </td>
 
@@ -475,7 +475,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server"
                                                                                                         ControlToValidate="txtdocchr" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Document Charges is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Document Charges.It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     Document Charges *
                                                                                                 </td>
 
@@ -491,7 +491,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server"
                                                                                                         ControlToValidate="txtintamt" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Interest Amount is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Interest Amount. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     Interest Amount *
                                                                                                 </td>
 
@@ -512,7 +512,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server"
                                                                                                         ControlToValidate="txtfinpay" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Final Payment is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Final Payment. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     Amount to collect *
                                                                                                 </td>
 
@@ -528,7 +528,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
                                                                                                         ControlToValidate="txtnoinst1" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="No of installment is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter No of installment. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     No Of Installment *
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 24%">
@@ -548,7 +548,7 @@
                                                                                                 <td class="ControlLabel" style="width: 15%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server"
                                                                                                         ControlToValidate="txteach" CssClass="lblFont" Display="Dynamic"
-                                                                                                        ErrorMessage="Each Month Payment is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                        ErrorMessage="Please enter Each Month Payment. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     Each Month Payment *
                                                                                                 </td>
 
@@ -673,7 +673,7 @@
                                                                                             <td class="ControlLabel" style="width: 15%;" id="lllklkl" visible="false" runat="server">
                                                                                                 <asp:CompareValidator ID="CompareValidator2" runat="server"
                                                                                                     ControlToValidate="drpBankName" Display="Dynamic"
-                                                                                                    ErrorMessage="Select Bank" Operator="GreaterThan" Text="*"
+                                                                                                    ErrorMessage="Please select Bank Name. It cannot be left blank." Operator="GreaterThan" Text="*"
                                                                                                     ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>
                                                                                                 Bank Name *
                                                                                             </td>
@@ -692,7 +692,7 @@
                                                                                             <td class="ControlLabel" style="width: 15%;">
                                                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server"
                                                                                                     ControlToValidate="txtAccountNumber" CssClass="lblFont" Display="Dynamic"
-                                                                                                    ErrorMessage="Account Number is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                    ErrorMessage="Please enter Account Number. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Custom, Numbers"
                                                                                                     TargetControlID="txtAccountNumber" ValidChars="+" />
                                                                                                 Account Number *
@@ -705,7 +705,7 @@
                                                                                             <td class="ControlLabel" style="width: 25%;">
                                                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server"
                                                                                                     ControlToValidate="txtBranchName" CssClass="lblFont" Display="Dynamic"
-                                                                                                    ErrorMessage="Branch Name is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                    ErrorMessage="Pleas enter Branch Name. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                 Branch Name *
                                                                                             </td>
                                                                                             <td class="ControlTextBox3" style="width: 24%">
@@ -720,7 +720,7 @@
                                                                                             <td class="ControlLabel" style="width: 15%;">
                                                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server"
                                                                                                     ControlToValidate="txtIFSCCode" CssClass="lblFont" Display="Dynamic"
-                                                                                                    ErrorMessage="IFSC Code is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                    ErrorMessage="Please enter IFSC Code. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                 IFSC Code *
                                                                                             </td>
                                                                                             <td class="ControlTextBox3" style="width: 24%">
@@ -731,7 +731,7 @@
                                                                                             <td class="ControlLabel" style="width: 25%;">
                                                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server"
                                                                                                     ControlToValidate="txtpaydate" CssClass="lblFont" Display="Dynamic"
-                                                                                                    ErrorMessage="Day of Payment is mandatory" Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                    ErrorMessage="Please select Day of Payment. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                 Day of Payment *
                                                                                             </td>
                                                                                             <td class="ControlTextBox3" style="width: 24%">

@@ -345,7 +345,7 @@
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%;">Customer / Dealer Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="CustomerName is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Customer / Dealer Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtLdgrName" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"
@@ -375,7 +375,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
                                                                         Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
                                                                                             <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="txtOpenBal"
-                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance is mandatory">*</asp:RequiredFieldValidator>
+                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="please Enter Open Balance. It cannotbe left blank.">*</asp:RequiredFieldValidator>
                                                                                             <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtOpenBal" />
                                                                                         </td>
                                                                                         <td class="ControlNumberBox3" style="width: 28%">
@@ -419,7 +419,7 @@
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Category *
                                                                     <asp:CompareValidator ID="cmpLedCat" runat="server" ControlToValidate="drpLedgerCat"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Category is Mandatory"
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Select Category. It annot be Left blank. "
                                                                         Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
@@ -444,7 +444,7 @@
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mode of Contact *
                                                                     <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="drpModeofContact"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Mode of Contact is mandatory"
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Mode of Contact. It cannot be left blank."
                                                                         Operator="GreaterThan" ValueToCompare="0" />
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 28%">
@@ -675,7 +675,7 @@
                                                                         </SelectParameters>
                                                                     </asp:ObjectDataSource>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="Trebuchet MS"
+                                                                        ShowSummary="false" HeaderText=" " Font-Names="Trebuchet MS"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -713,7 +713,7 @@
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%">Customer / Dealer Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Customer / Dealer Name is mandatory" />
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Customer / Dealer Name. It cannot be left blank. " />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtLdgrNameAdd" TabIndex="1" runat="server" BackColor="#e7e7e7" Text='<%# Bind("LedgerName") %>'
@@ -752,7 +752,7 @@
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Opening Balance should be numeric"
                                                                         Operator="DataTypeCheck" Type="Double" />
                                                                                             <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtOpenBalAdd"
-                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Opening Balance is mandatory" />
+                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank. " />
                                                                                             <cc1:FilteredTextBoxExtender ID="OBvalidAdd" runat="server" FilterType="Numbers"
                                                                                                 TargetControlID="txtOpenBalAdd" />
                                                                                         </td>
@@ -797,7 +797,7 @@
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Category *
                                                                     <asp:CompareValidator ID="cvLedgerAdd" runat="server" ControlToValidate="drpLedgerCatAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Category is mandatory"
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Category. It cannot be left blank. "
                                                                         Operator="GreaterThan" ValueToCompare="0" />
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
@@ -826,7 +826,7 @@
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mode of Contact *
                                                                     <asp:CompareValidator ID="CompareValidator213" runat="server" ControlToValidate="drpModeofContactAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Mode of Contact is mandatory"
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Mode of Contact. It Cannot be left blank. "
                                                                         Operator="GreaterThan" ValueToCompare="0" />
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 28%">
@@ -1086,7 +1086,7 @@
                                                                 <tr style="display: none">
                                                                     <td>
                                                                         <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                            ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                            ShowSummary="false" HeaderText=" " Font-Names="'Trebuchet MS'"
                                                                             Font-Size="12" runat="server" />
                                                                         <asp:ObjectDataSource ID="srccuscatadd" runat="server" SelectMethod="ListCusCategory"
                                                                             TypeName="BusinessLogic">

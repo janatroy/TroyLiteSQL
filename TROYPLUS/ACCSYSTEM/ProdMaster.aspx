@@ -186,7 +186,7 @@
                             </div>
                         </div>
                         <asp:ValidationSummary ID="VS" runat="server" Font-Names="'Trebuchet MS'"
-                            Font-Size="12pt" HeaderText="Validation Messages" ShowMessageBox="True"
+                            Font-Size="12pt" HeaderText="" ShowMessageBox="True"
                             ShowSummary="False" ValidationGroup="salesval" />
                         <input id="dummy" type="button" style="display: none" runat="server" />
                         <input id="Button1" type="button" style="display: none" runat="server" />
@@ -225,7 +225,7 @@
                                                                                                         <td style="width: 20%" class="ControlLabelNew">
                                                                                                             Product ID *
                                                                                                             <asp:RequiredFieldValidator ID="rvItemCodeAdd" runat="server" ControlToValidate="txtItemCodeAdd"
-                                                                                                                Text="*" Display="Dynamic" ValidationGroup="salesval" EnableClientScript="True" ErrorMessage="ProductCode is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" ValidationGroup="salesval" EnableClientScript="True" ErrorMessage="Please enter Product ID. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                             <cc1:FilteredTextBoxExtender ID="fltItemCodeAdd" runat="server" FilterType="LowercaseLetters,UppercaseLetters,Numbers"
                                                                                                                 TargetControlID="txtItemCodeAdd" />
                                                                                                         </td>
@@ -253,7 +253,7 @@
                                                                                                         <td style="width: 20%" class="ControlLabelNew">
                                                                                                             Name of Product *
                                                                                                             <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="txtItemNameAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ValidationGroup="salesval" ErrorMessage="Product Name is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ValidationGroup="salesval" ErrorMessage="Please enter Product Name. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                         </td>
                                                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                                                             <asp:TextBox ID="txtItemNameAdd" runat="server" Text='<%# Bind("ProductName") %>'
@@ -278,7 +278,7 @@
                                                                                                         <td style="width: 20%" class="ControlLabelNew">
                                                                                                             Name of Brand *
                                                                                                             <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtProdDescAdd"
-                                                                                                                Display="Dynamic" ErrorMessage="Brand is Mandatory" ValidationGroup="salesval" Operator="GreaterThan"
+                                                                                                                Display="Dynamic" ErrorMessage="Please Select Name of Brand. It cannot be left blank. " ValidationGroup="salesval" Operator="GreaterThan"
                                                                                                                 Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>
                                                                                                         <td style="width: 25%" class="ControlDrpBorder">
@@ -288,13 +288,13 @@
                                                                                                                 DataValueField="BrandName" style="border: 1px solid #e7e7e7" height="26px"
                                                                                                                 EnableTheming="false"
                                                                                                                 AppendDataBoundItems="True">
-                                                                                                                <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select BrandName</asp:ListItem>
+                                                                                                                <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select Brand Name</asp:ListItem>
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
                                                                                                         <td style="width: 28%" class="ControlLabelNew">
                                                                                                             VAT (%) *
                                                                                                             <asp:RequiredFieldValidator ID="rvVATAdd" runat="server" ControlToValidate="txtVATAdd" ValidationGroup="salesval"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="VAT is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter VAT(%). It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                             <asp:RangeValidator ID="cvVATAdd" runat="server" ControlToValidate="txtVATAdd" Display="Dynamic"
                                                                                                                 Text="*" EnableClientScript="True" MaximumValue="100" Type="Double" MinimumValue="0" ValidationGroup="salesval"
                                                                                                                 ErrorMessage="VAT cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
@@ -341,7 +341,7 @@
                                                                                                             <cc1:FilteredTextBoxExtender ID="FTBXBRAdd" runat="server" FilterType="Custom, Numbers"
                                                                                                                 TargetControlID="txtUnitRateAdd" ValidChars="." />
                                                                                                             <asp:RequiredFieldValidator ID="rvSRateAdd" runat="server" ControlToValidate="txtUnitRateAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Rate is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter MRP. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                         </td>
                                                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                                                             <asp:TextBox ID="txtUnitRateAdd" runat="server" Text="0" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -349,7 +349,7 @@
                                                                                                         <td style="width: 28%" class="ControlLabel">
                                                                                                             MRP Effective date
                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator786" runat="server" ControlToValidate="txtMrpDateAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="MRP Effective date is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select MRP Effective date. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                         </td>
                                                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                                                             <asp:TextBox ID="txtMrpDateAdd" runat="server"
@@ -371,7 +371,7 @@
                                                                                                         <td style="width: 20%" class="ControlLabelNew">
                                                                                                             Name of Category *
                                                                                                             <asp:CompareValidator ID="cvCatergoryAdd" runat="server" ControlToValidate="ddCategoryAdd"
-                                                                                                                Display="Dynamic" ErrorMessage="Category is Mandatory" ValidationGroup="salesval" Operator="GreaterThan"
+                                                                                                                Display="Dynamic" ErrorMessage="Please Select Name of Category. It cannot be left blank." ValidationGroup="salesval" Operator="GreaterThan"
                                                                                                                 Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>
                                                                                                         <td style="width: 25%" class="ControlDrpBorder">
@@ -385,7 +385,7 @@
                                                                                                         <td style="width: 28%" class="ControlLabelNew">
                                                                                                             Reorder Level *
                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtROLAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Stock Level is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Reorder Level. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                             <cc1:FilteredTextBoxExtender ID="fltReorderAdd" runat="server" FilterType="Numbers"
                                                                                                                 TargetControlID="txtROLAdd" />
                                                                                                             
@@ -404,7 +404,7 @@
                                                                                                         <td style="width: 20%" class="ControlLabel">
                                                                                                             Dealer Rate *
                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDealerRateAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Dealer Rate is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Dealer Rate. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                             <cc1:FilteredTextBoxExtender ID="FTDUnitRAdd" runat="server" FilterType="Custom, Numbers"
                                                                                                                 TargetControlID="txtDealerRateAdd" ValidChars="." />
                                                                                                         </td>
@@ -437,7 +437,7 @@
                                                                                                             
                                                                                                             NLC *
                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtNLCAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="NLC is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter NLC. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                         </td>
                                                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                                                             <asp:TextBox ID="txtNLCAdd" runat="server"  Text="0" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -465,7 +465,7 @@
                                                                                                         <td style="width: 20%" class="ControlLabel">
                                                                                                             Sell Discount (%) *
                                                                                                             <asp:RequiredFieldValidator ID="rvDiscDis1" runat="server" ControlToValidate="txtDiscountAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Discount is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Sell Discount (%). It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                             <asp:RangeValidator ID="RangeValidator33" runat="server" ControlToValidate="txtDiscountAdd"
                                                                                                                 Display="Dynamic" MaximumValue="100" Type="Double" MinimumValue="0" Text="*"
                                                                                                                 ErrorMessage="Discount cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
@@ -493,7 +493,7 @@
                                                                                                         <td style="width: 20%" class="ControlLabelNew">
                                                                                                             Name of Model *
                                                                                                             <asp:RequiredFieldValidator ID="rvModelAdd" runat="server" ControlToValidate="txtModelAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ValidationGroup="salesval" ErrorMessage="Model is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ValidationGroup="salesval" ErrorMessage="Please enter Name of Model. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                         </td>
                                                                                                         <td style="width: 25%;" class="ControlTextBox3">
                                                                                                             <asp:TextBox ID="txtModelAdd" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -501,7 +501,7 @@
                                                                                                         <td style="width: 28%" class="ControlLabelNew">
                                                                                                             Allowed Price Deviation % *
                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtAllowedPriceAdd"
-                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Allowed Price is mandatory"></asp:RequiredFieldValidator>
+                                                                                                                Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Allowed Price Deviation %. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Custom, Numbers"
                                                                                                                 TargetControlID="txtAllowedPriceAdd" ValidChars="." />
                                                                                                         </td>
@@ -887,7 +887,7 @@
                                                                         </cc1:TabContainer>
                                                                         </div>
                                                                         <asp:ValidationSummary ID="ValidationSummary1" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                            ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                            ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                             Font-Size="12" runat="server" />
                                                                     
                                                                 </td>
