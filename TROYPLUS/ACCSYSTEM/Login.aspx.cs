@@ -30,7 +30,7 @@ public partial class Login : System.Web.UI.Page
         {
             //ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
             //scriptManager.RegisterPostBackControl(this.btnLogin); 
-          
+
             if (!Page.IsPostBack)
             {
 
@@ -89,12 +89,12 @@ public partial class Login : System.Web.UI.Page
             {
 
                 listComp = (Hashtable)Session["CompanyList"];
-                
-                if (!listComp.Contains(txtCompany.Text.Trim().ToUpper()))
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid Company Code. Please try again.');", true);
-                    return;
-                }
+
+                //if (!listComp.Contains(txtCompany.Text.Trim().ToUpper()))
+                //{
+                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid Company Code. Please try again.');", true);
+                //    return;
+                //}
             }
             else
             {
@@ -117,9 +117,11 @@ public partial class Login : System.Web.UI.Page
 
             HttpCookie cookie = new HttpCookie("Company");
 
+
             if (txtCompany.Text != "")
+            //if (drpBranch.SelectedValue != "0")
             {
-                cookie.Value = txtCompany.Text.ToUpper();
+                cookie.Value = txtCompany.Text;
 
                 if (Response.Cookies["Company"] == null)
                     Response.Cookies.Add(cookie);
@@ -128,6 +130,20 @@ public partial class Login : System.Web.UI.Page
             }
             else
                 return;
+
+            //HttpCookie cookie1 = new HttpCookie("Branch");
+            //if (drpBranch.SelectedValue != "0")
+            //{
+            //    cookie1.Value = drpBranch.SelectedValue;
+
+            //    if (Response.Cookies["Branch"] == null)
+            //        Response.Cookies.Add(cookie1);
+            //    else
+            //        Response.SetCookie(cookie1);
+            //}
+            //else
+            //    return;
+
 
             string localpath = ConfigurationManager.AppSettings["LocalPath"].ToString();
 
@@ -218,7 +234,7 @@ public partial class Login : System.Web.UI.Page
 
                 IsSMSRequired();
 
-               CheckDateLock();
+                CheckDateLock();
 
                 if (!(CheckPasswordExpiry(txtLogin.Text)))
                 {
@@ -227,9 +243,9 @@ public partial class Login : System.Web.UI.Page
 
                 int expdays = 10;
                 if ((expdays == 0) || (expdays < 0))
-                {                    
+                {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Your password is expired. Please Contact Administrator.');", true);
-                    return;                   
+                    return;
                 }
                 else if ((expdays < 7) && (expdays > 0))
                 {
@@ -446,6 +462,7 @@ public partial class Login : System.Web.UI.Page
 
         if (Request.Cookies["Company"] != null)
             connStr = System.Configuration.ConfigurationManager.ConnectionStrings[txtCompany.Text.ToUpper()].ConnectionString;
+        //connStr = System.Configuration.ConfigurationManager.ConnectionStrings[drpBranch.Text].ConnectionString;
         else
             Response.Redirect("~/Login.aspx");
 
@@ -645,4 +662,69 @@ public partial class Login : System.Web.UI.Page
 
     }
 
+    //private void loadBranch()
+    //{
+    //    BusinessLogic bl = new BusinessLogic(sDataSource);
+    //    DataSet ds = new DataSet();
+    //    string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+    //drpBranch.Items.Clear();
+    //drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+    //ds = bl.ListBranch();
+    //drpBranch.DataSource = ds;
+    //drpBranch.DataBind();
+    //drpBranch.DataTextField = "BranchName";
+    //drpBranch.DataValueField = "Branchcode";
+    //}
+
+    protected void txtLogin_TextChanged(object sender, EventArgs e)
+    {
+        string sCustomer = string.Empty;
+
+        BusinessLogic bl = new BusinessLogic();
+        DataSet ds = bl.GetBranch(txtCompany.Text, txtLogin.Text);
+        DataSet dss = new DataSet();
+
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        dss = bl.ListBranchLogin(txtCompany.Text);
+        drpBranch.DataSource = dss;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+
+
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            sCustomer = Convert.ToString(ds.Tables[0].Rows[0]["DefaultBranchCode"]);
+            drpBranch.ClearSelection();
+            ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+            if (li != null) li.Selected = true;
+            txtPassword.Focus();
+            HttpCookie cookie1 = new HttpCookie("Branch");
+
+
+            if (ds.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+            {
+                drpBranch.Enabled = true;
+
+                cookie1.Value = "All";
+                if (Response.Cookies["Branch"] == null)
+                    Response.Cookies.Add(cookie1);
+                else
+                    Response.SetCookie(cookie1);
+            }
+            else
+            {
+                drpBranch.Enabled = false;
+
+                cookie1.Value = drpBranch.SelectedValue;
+                if (Response.Cookies["Branch"] == null)
+                    Response.Cookies.Add(cookie1);
+                else
+                    Response.SetCookie(cookie1);
+            }
+        }
+    }
 }

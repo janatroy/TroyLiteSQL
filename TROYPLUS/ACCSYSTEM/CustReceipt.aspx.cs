@@ -1270,6 +1270,25 @@ public partial class CustReceipt : System.Web.UI.Page
             return;
         }
 
+        if (chk.Checked==true)
+        {
+            if(drpLedger.SelectedValue=="0")
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Customer name. It cannot be left blank.')", true);
+                return;
+
+            }
+
+        }
+        else
+        {
+            if ((txtCustomerName.Text == "" )|| (txtCustomerName.Text == " ") || (txtCustomerName.Text == null))
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Customer name. It cannot be left blank.')", true);
+                return;
+            }
+        }
+
         if (Request.Cookies["Company"] != null)
             sDataSource = Request.Cookies["Company"].Value;
 

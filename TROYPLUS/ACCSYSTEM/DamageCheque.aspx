@@ -125,7 +125,7 @@
                                                                 <td class="ControlLabel" style="width:40%">
                                                                     Bank Name *
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddBankName"
-                                                                                                                    Display="Dynamic" ErrorMessage="Bank Name is Mandatory" Operator="GreaterThan"
+                                                                                                                    Display="Dynamic" ErrorMessage="Please select Bank Name. It cannot be blank" Operator="GreaterThan"
                                                                                                                     ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width:30%">
@@ -146,7 +146,7 @@
                                                                 <td class="ControlLabel" style="width:40%">
                                                                     Cheque No
                                                                     <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="txtFromNo"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Cheque No is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Cheque No. It cannot be blank">*</asp:RequiredFieldValidator>
                                                                     
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width:30%">
@@ -202,7 +202,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td>
@@ -229,7 +229,7 @@
                                                                      
                                                                     Bank Name *
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddBankNameAdd"
-                                                                                                                    Display="Dynamic" ErrorMessage="Bank Name is Mandatory" Operator="GreaterThan"
+                                                                                                                    Display="Dynamic" ErrorMessage="Please select Bank Name. It cannot be left blank" Operator="GreaterThan"
                                                                                                                     ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width:30%">
@@ -257,7 +257,7 @@
                                                                 <td class="ControlLabel" style="width:40%">
                                                                     Cheque No
                                                                     <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtFromNoAdd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Cheque No is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Cheque No. It cannot be left blank">*</asp:RequiredFieldValidator>
                                                                     
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width:30%">
@@ -274,6 +274,9 @@
                                                                 <td class="ControlLabel" style="width:40%">
                                                                         
                                                                      Account number *
+                                                                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="ddaccountnumberadd"
+                                                                                                                    Display="Dynamic" ErrorMessage="Please select Account Number. It cannot be left blank" Operator="GreaterThan"
+                                                                                                                    ValueToCompare="0">*</asp:CompareValidator>
                                                                  
                                                                 <td class="ControlDrpBorder" style="width:30%">
                                                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
@@ -330,7 +333,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">
