@@ -483,11 +483,6 @@ public partial class LeadReference : System.Web.UI.Page
         {
             e.InputParameters["Types"] = "ACTIVITY";
         }
-
-        //if (((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedValue != "")
-        //{
-        //    e.InputParameters["Branchcode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedItem.Text;
-        //}
     }
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)

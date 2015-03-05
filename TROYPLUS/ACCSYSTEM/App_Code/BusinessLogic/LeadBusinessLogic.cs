@@ -573,11 +573,7 @@ public class LeadBusinessLogic : BaseLogic
         else if (dropDown == "ValueDropDown")
         {
             dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.TextValue like '" + txtSearch + "'" + " Order By A.Id desc";
-        }
-        else if (dropDown == "0")
-        {
-            dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.TextValue like '" + txtSearch + "'" + " or A.TypeName like '" + txtSearch + "'" + "Order By A.Id desc";
-        }
+        }    
         else
         {
             dbQry = string.Format("select A.Id,A.Type,A.TextValue,A.TypeName, (Select count(*) from tblLeadReferences where A.Id<=Id) as Row from tblLeadReferences as A Order By A.Id desc", txtSearch);

@@ -90,11 +90,11 @@ public partial class Login : System.Web.UI.Page
 
                 listComp = (Hashtable)Session["CompanyList"];
 
-                //if (!listComp.Contains(txtCompany.Text.Trim().ToUpper()))
-                //{
-                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid Company Code. Please try again.');", true);
-                //    return;
-                //}
+                if (!listComp.Contains(txtCompany.Text.Trim().ToUpper()))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid Company Code. Please try again.');", true);
+                    return;
+                }
             }
             else
             {
@@ -118,8 +118,7 @@ public partial class Login : System.Web.UI.Page
             HttpCookie cookie = new HttpCookie("Company");
 
 
-            if (txtCompany.Text != "")
-            //if (drpBranch.SelectedValue != "0")
+            if (txtCompany.Text != "")            
             {
                 cookie.Value = txtCompany.Text;
 
@@ -130,6 +129,56 @@ public partial class Login : System.Web.UI.Page
             }
             else
                 return;
+
+
+            string sCustomer = string.Empty;
+
+            BusinessLogic bl = new BusinessLogic();
+            DataSet ds1 = bl.GetBranch(txtCompany.Text, txtLogin.Text);
+            DataSet dss = new DataSet();
+
+
+            drpBranch.Items.Clear();
+            drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+            dss = bl.ListBranchLogin(txtCompany.Text);
+            drpBranch.DataSource = dss;
+            drpBranch.DataBind();
+            drpBranch.DataTextField = "BranchName";
+            drpBranch.DataValueField = "Branchcode";
+
+
+            if (ds1.Tables[0].Rows.Count > 0)
+            {
+                sCustomer = Convert.ToString(ds1.Tables[0].Rows[0]["DefaultBranchCode"]);
+                drpBranch.ClearSelection();
+                ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                if (li != null) li.Selected = true;
+                txtPassword.Focus();
+                HttpCookie cookie1 = new HttpCookie("Branch");
+
+
+                if (ds1.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+                {
+                    drpBranch.Enabled = true;
+
+                    cookie1.Value = "All";
+                    if (Response.Cookies["Branch"] == null)
+                        Response.Cookies.Add(cookie1);
+                    else
+                        Response.SetCookie(cookie1);
+                }
+                else
+                {
+                    drpBranch.Enabled = false;
+
+                    cookie1.Value = drpBranch.SelectedValue;
+                    if (Response.Cookies["Branch"] == null)
+                        Response.Cookies.Add(cookie1);
+                    else
+                        Response.SetCookie(cookie1);
+                }
+            }
+
 
             //HttpCookie cookie1 = new HttpCookie("Branch");
             //if (drpBranch.SelectedValue != "0")
@@ -161,7 +210,7 @@ public partial class Login : System.Web.UI.Page
             }
 
 
-            BusinessLogic bl = new BusinessLogic();
+           // BusinessLogic bl = new BusinessLogic();
 
             bool isAuthenticated = IsAuthenticated(txtLogin.Text, txtPassword.Text);
 
@@ -677,54 +726,4 @@ public partial class Login : System.Web.UI.Page
     //drpBranch.DataValueField = "Branchcode";
     //}
 
-    protected void txtLogin_TextChanged(object sender, EventArgs e)
-    {
-        string sCustomer = string.Empty;
-
-        BusinessLogic bl = new BusinessLogic();
-        DataSet ds = bl.GetBranch(txtCompany.Text, txtLogin.Text);
-        DataSet dss = new DataSet();
-
-
-        drpBranch.Items.Clear();
-        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
-        dss = bl.ListBranchLogin(txtCompany.Text);
-        drpBranch.DataSource = dss;
-        drpBranch.DataBind();
-        drpBranch.DataTextField = "BranchName";
-        drpBranch.DataValueField = "Branchcode";
-
-
-        if (ds.Tables[0].Rows.Count > 0)
-        {
-            sCustomer = Convert.ToString(ds.Tables[0].Rows[0]["DefaultBranchCode"]);
-            drpBranch.ClearSelection();
-            ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
-            if (li != null) li.Selected = true;
-            txtPassword.Focus();
-            HttpCookie cookie1 = new HttpCookie("Branch");
-
-
-            if (ds.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
-            {
-                drpBranch.Enabled = true;
-
-                cookie1.Value = "All";
-                if (Response.Cookies["Branch"] == null)
-                    Response.Cookies.Add(cookie1);
-                else
-                    Response.SetCookie(cookie1);
-            }
-            else
-            {
-                drpBranch.Enabled = false;
-
-                cookie1.Value = drpBranch.SelectedValue;
-                if (Response.Cookies["Branch"] == null)
-                    Response.Cookies.Add(cookie1);
-                else
-                    Response.SetCookie(cookie1);
-            }
-        }
-    }
 }

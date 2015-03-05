@@ -100,8 +100,8 @@ public partial class PageMaster : System.Web.UI.MasterPage
             if (!Page.IsPostBack)
             {
                 uiDateTimeLabel.Text = DateTime.Now.ToString("dd MMM yyyy");
-                //lblCompCode.Text = " " + Request.Cookies["Company"].Value.ToLower();
-                lblCompCode.Text = " " + Request.Cookies["Branch"].Value.ToLower();
+                lblCompCode.Text = " " + Request.Cookies["Company"].Value.ToLower();
+                //lblCompCode.Text = " " + Request.Cookies["Branch"].Value.ToLower();
                 //string strImageID = getImageID();
                 //Image1.ImageUrl = "ImageHandler.ashx?ImageID=" + strImageID + "";
 
