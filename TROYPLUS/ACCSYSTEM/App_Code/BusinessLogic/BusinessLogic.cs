@@ -3764,6 +3764,10 @@ public class BusinessLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+            dbQry = string.Format("Delete From tblProductStock Where ItemCode = '{0}'", ItemCode);
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
             sAuditStr = "Product got deleted : User = " + Username + " old Record Details ItemCode=" + ItemCode;
 
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
@@ -5660,7 +5664,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet ListCustomerInfo(string connection, string txtSearch, string dropDown)
+    public DataSet ListCustomerInfo(string connection, string txtSearch, string dropDown, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -5670,15 +5674,15 @@ public class BusinessLogic
 
         if (dropDown == "LedgerName")
         {
-            dbQry = "select LedgerID,LedgerName, AliasName, tblGroups.GroupID,GroupName, IIF(OpenBalanceDR <> 0,'DR','CR') AS DRORCR ,IIF(OpenBalanceDR <> 0,OpenBalanceDR,OpenBalanceCR) AS OpenBalance,ContactName,Add1, Add2, Add3,Debit,Credit, Phone,LedgerCategory,ExecutiveIncharge,TinNumber,CreditLimit,CreditDays,Paymentmade,dc,Unuse,EmailId,ModeofContact,OpDueDate from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID Where LedgerName like '" + txtSearch + "'" + " AND GroupName = 'Sundry Debtors' Order By LedgerName";
+            dbQry = "select LedgerID,LedgerName, AliasName, tblGroups.GroupID,GroupName, IIF(OpenBalanceDR <> 0,'DR','CR') AS DRORCR ,IIF(OpenBalanceDR <> 0,OpenBalanceDR,OpenBalanceCR) AS OpenBalance,ContactName,Add1, Add2, Add3,Debit,Credit, Phone,LedgerCategory,ExecutiveIncharge,TinNumber,CreditLimit,CreditDays,Paymentmade,dc,Unuse,EmailId,ModeofContact,OpDueDate,BranchCode from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID Where LedgerName like '" + txtSearch + "'" + " AND GroupName = 'Sundry Debtors' Order By LedgerName";
         }
         else if (dropDown == "AliasName")
         {
-            dbQry = "select LedgerID,LedgerName, AliasName, tblGroups.GroupID,GroupName,IIF(OpenBalanceDR <> 0,'DR','CR') AS DRORCR ,IIF(OpenBalanceDR <> 0,OpenBalanceDR,OpenBalanceCR) AS OpenBalance,ContactName,Add1, Add2, Add3,Debit,Credit, Phone,LedgerCategory,ExecutiveIncharge,TinNumber,CreditLimit,CreditDays,Paymentmade,dc,Unuse,EmailId,ModeofContact,OpDueDate from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID Where AliasName like '" + txtSearch + "'" + " AND GroupName = 'Sundry Debtors' Order By LedgerName";
+            dbQry = "select LedgerID,LedgerName, AliasName, tblGroups.GroupID,GroupName,IIF(OpenBalanceDR <> 0,'DR','CR') AS DRORCR ,IIF(OpenBalanceDR <> 0,OpenBalanceDR,OpenBalanceCR) AS OpenBalance,ContactName,Add1, Add2, Add3,Debit,Credit, Phone,LedgerCategory,ExecutiveIncharge,TinNumber,CreditLimit,CreditDays,Paymentmade,dc,Unuse,EmailId,ModeofContact,OpDueDate,BranchCode from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID Where AliasName like '" + txtSearch + "'" + " AND GroupName = 'Sundry Debtors' Order By LedgerName";
         }
         else
         {
-            dbQry = string.Format("select LedgerID,LedgerName, AliasName, tblGroups.GroupID,GroupName, IIF(OpenBalanceDR <> 0,'DR','CR') AS DRORCR ,IIF(OpenBalanceDR <> 0,OpenBalanceDR,OpenBalanceCR) AS OpenBalance,ContactName,Add1, Add2, Add3,Debit,Credit,Phone,LedgerCategory,ExecutiveIncharge,TinNumber,CreditLimit,CreditDays,Paymentmade,dc,Unuse,EmailId,ModeofContact,OpDueDate from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID Where (LedgerName like '{0}' or AliasName like '{0}') AND GroupName = 'Sundry Debtors' Order By LedgerName", txtSearch);
+            dbQry = string.Format("select LedgerID,LedgerName, AliasName, tblGroups.GroupID,GroupName, IIF(OpenBalanceDR <> 0,'DR','CR') AS DRORCR ,IIF(OpenBalanceDR <> 0,OpenBalanceDR,OpenBalanceCR) AS OpenBalance,ContactName,Add1, Add2, Add3,Debit,Credit,Phone,LedgerCategory,ExecutiveIncharge,TinNumber,CreditLimit,CreditDays,Paymentmade,dc,Unuse,EmailId,ModeofContact,OpDueDate,BranchCode from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID Where (LedgerName like '{0}' or AliasName like '{0}') AND GroupName = 'Sundry Debtors' Order By LedgerName", txtSearch);
         }
 
         try
@@ -8594,7 +8598,7 @@ public class BusinessLogic
         }
     }
 
-    public void InsertProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, int BuyUnit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int deviation, string IsActive, DataSet dsprice) //Jolo Barcode
+    public void InsertProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, int BuyUnit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int deviation, string IsActive, DataSet dsprice, DataSet dsstock) //Jolo Barcode
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -8733,6 +8737,22 @@ public class BusinessLogic
                                     ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToString(dr["PriceName"]), Convert.ToDouble(dr["Price"]), Convert.ToDouble(dr["Discount"]), Convert.ToInt32(dr["Id"]), Username);
 
                         manager.ExecuteDataSet(CommandType.Text, dbQry2);
+
+                    }
+                }
+            }
+
+
+            if (dsstock != null)
+            {
+                if (dsstock.Tables.Count > 0)
+                {
+                    foreach (DataRow dr in dsstock.Tables[0].Rows)
+                    {
+                        dbQry = string.Format("INSERT INTO tblProductStock(Branchcode,BranchName,Stock,CategoryID,Model,ItemCode,ProductName,ProductDesc) VALUES('{0}','{1}',{2},{3},'{4}','{5}','{6}','{7}')",
+                            Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["BranchName"]), Convert.ToDouble(dr["Stock"]), Convert.ToInt32(dr["CategoryID"]), Convert.ToString(dr["Model"]), Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["ProductDesc"]));
+
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                     }
                 }
@@ -70502,6 +70522,37 @@ public class BusinessLogic
         
         dbQry = string.Format("select A.BranchId,A.BranchName,A.Branchcode,A.Branchaddress1,A.Branchaddress2,A.Branchaddress3,A.BranchLocation,A.IsActive,A.Branchcode from tblBranch as A Order By A.BranchId");
     
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+
+    public DataSet ListProductStocks(string connection, string ItemCode)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        //txtSearch = "%" + txtSearch + "%";
+
+        dbQry = string.Format("select A.BranchName,A.Branchcode,A.ItemCode,A.Stock, A.Id, (Select count(*) from tblProductStock where A.Id>=Id and ItemCode = '" + ItemCode + "') as Row  from tblProductStock as A where A.ItemCode = '" + ItemCode + "' Order By A.Id");
+
         try
         {
             manager.Open();

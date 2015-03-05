@@ -678,6 +678,7 @@
                                                                                                         <EmptyDataRowStyle CssClass="HeadataRow" Font-Bold="true" />
                                                                                                         <HeaderStyle CssClass="HeadataRow" Wrap="false" />
                                                                                                         <FooterStyle CssClass="dataRow" />--%>
+                                                                                                        <RowStyle Font-Bold="True" HorizontalAlign="Center" Height="30px" ForeColor="#0567AE"  Font-Size="15px"/>
                                                                                                         <Columns>
                                                                                                             <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="#" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="7%">
                                                                                                                 <ItemTemplate>
@@ -688,48 +689,30 @@
                                                                                                                     </asp:Label>
                                                                                                                 </ItemTemplate>
                                                                                                             </asp:TemplateField>
-                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" Visible="false" HeaderStyle-ForeColor="Black" HeaderText="ID" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
-                                                                                                                <ItemTemplate>
-                                                                                                                    <asp:TextBox ID="txtId" runat="server" Width="85%"  Text='<%# Eval("Id")%>' Enabled="false" Height="26px"
-                                                                                                                        ></asp:TextBox>
-                                                                                                                </ItemTemplate>
-                                                                                                            </asp:TemplateField>
-                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Price Component" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
+                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Branch Name" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
                                                                                                                 <ItemTemplate>
                                                                                                                     <%--<asp:TextBox ID="txtPriceName" runat="server" Width="90%"  Text='<%# Eval("PriceName")%>' Enabled="false" Height="26px"
                                                                                                                         ></asp:TextBox>--%>
-                                                                                                                    <asp:Label ID="txtPriceName" runat="server" Text='<%# Eval("PriceName")%>' Font-Bold="true">
+                                                                                                                    <asp:Label ID="txtBranchName" runat="server" Text='<%# Eval("BranchName")%>' Font-Bold="true">
 
                                                                                                                     </asp:Label>
                                                                                                                 </ItemTemplate>
                                                                                                             </asp:TemplateField>
-                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Price" HeaderStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
+                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Branch Code" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderStyle-ForeColor="Black" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
                                                                                                                 <ItemTemplate>
-                                                                                                                    <cc1:FilteredTextBoxExtender ID="fltReorderAd" runat="server" FilterType="Numbers"
-                                                                                                                TargetControlID="txtPrice" />
-                                                                                                                    <asp:TextBox ID="txtPrice" runat="server" Width="100%" Style="text-align: center" Text='<%# Eval("Price")%>' CssClass="cssTextBoxGrid" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
-                                                                                                                        ></asp:TextBox>
+                                                                                                                    <asp:Label ID="txtBranchcode" runat="server" Text='<%# Eval("Branchcode")%>' Font-Bold="true">
+
+                                                                                                                    </asp:Label>
                                                                                                                 </ItemTemplate>
                                                                                                                 <ItemStyle VerticalAlign="Middle" />
                                                                                                             </asp:TemplateField>
-                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" HeaderText="Date Effective From" ItemStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
+                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Stock" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"  HeaderStyle-ForeColor="Black" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
                                                                                                                 <ItemTemplate>
-                                                                                                                    <asp:TextBox ID="txtEffDate" runat="server" Width="70%" Style="text-align: Center"  Text='<%# Eval("EffDate","{0:dd/MM/yyyy}")%>'  CssClass="cssTextBoxGrid1" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
-                                                                                                                        ></asp:TextBox>
-                                                                                                                    <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"
-                                                                                                                            PopupButtonID="btnBillDate" TargetControlID="txtEffDate" Enabled="True">
-                                                                                                                    </cc1:CalendarExtender>
-                                                                                                                    <asp:ImageButton ID="btnBillDate" ImageUrl="App_Themes/NewTheme/images/cal.gif"
-                                                                                                                                CausesValidation="False" Width="20px" runat="server" />   
+                                                                                                                    <asp:Label ID="txtStock" runat="server" Text='<%# Eval("Stock")%>' Font-Bold="true">
+
+                                                                                                                    </asp:Label>
                                                                                                                 </ItemTemplate>
-                                                                                                            </asp:TemplateField>
-                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Discount %" ItemStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
-                                                                                                                <ItemTemplate>
-                                                                                                                    <cc1:FilteredTextBoxExtender ID="FTBRadeA" runat="server" FilterType="Custom, Numbers"
-                                                                                                    TargetControlID="txtDiscount1" ValidChars="." />
-                                                                                                                    <asp:TextBox ID="txtDiscount1" runat="server" Width="90%" Style="text-align: Center"  Text='<%# Eval("Discount")%>'  CssClass="cssTextBoxGrid" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
-                                                                                                                        ></asp:TextBox>
-                                                                                                                </ItemTemplate>
+                                                                                                                <ItemStyle VerticalAlign="Middle" />
                                                                                                             </asp:TemplateField>
                                                                                                         </Columns>
                                                                                                     </rwg:BulkEditGridView>
