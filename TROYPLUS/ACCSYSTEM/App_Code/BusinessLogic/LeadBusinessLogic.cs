@@ -557,7 +557,7 @@ public class LeadBusinessLogic : BaseLogic
     }
 
 
-    public DataSet ListReferenceInfo(string connection, string txtSearch, string dropDown, string branch)
+    public DataSet ListReferenceInfo(string connection, string txtSearch, string dropDown)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -567,20 +567,16 @@ public class LeadBusinessLogic : BaseLogic
 
         if (dropDown == "NameDropDown")
         {
-            dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName,A.BranchCode, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.BranchCode = '" + branch + "' and A.TypeName like '" + txtSearch + "'" + " Order By A.Id desc";
+            dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.TypeName like '" + txtSearch + "'" + " Order By A.Id desc";
             //dbQry = "select A.Task_Status_Name,A.Task_Status_Id, (Select count(*) from tblTaskStatus where A.Task_Status_Id>=Task_Status_Id) as Row from tblTaskStatus as A Where A.Task_Status_Name like '" + txtSearch + "'" + " Order By A.Task_Status_Id";
         }
         else if (dropDown == "ValueDropDown")
         {
-            dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName,A.BranchCode, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.BranchCode = '" + branch + "' and A.TextValue like '" + txtSearch + "'" + " Order By A.Id desc";
-        }
-        else if (branch != "All")
-        {
-            dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName,A.BranchCode, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.BranchCode = '" + branch + "' and A.TextValue like '" + txtSearch + "'" + " and A.TypeName like '" + txtSearch + "'" + "Order By A.Id desc";
-        }
+            dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.TextValue like '" + txtSearch + "'" + " Order By A.Id desc";
+        }    
         else
         {
-            dbQry = string.Format("select A.Id,A.Type,A.TextValue,A.TypeName,A.BranchCode, (Select count(*) from tblLeadReferences where A.Id<=Id) as Row from tblLeadReferences as A Order By A.Id desc", txtSearch);
+            dbQry = string.Format("select A.Id,A.Type,A.TextValue,A.TypeName, (Select count(*) from tblLeadReferences where A.Id<=Id) as Row from tblLeadReferences as A Order By A.Id desc", txtSearch);
         }
 
         try
@@ -648,7 +644,7 @@ public class LeadBusinessLogic : BaseLogic
 
 
 
-    public void InsertReference(string connection, string TextValue, string TypeName, string Types, int TypeID,string branchcode)
+    public void InsertReference(string connection, string TextValue, string TypeName, string Types, int TypeID)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -674,8 +670,8 @@ public class LeadBusinessLogic : BaseLogic
 
             //int IDD = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ID) FROM tblLeadReferences");
 
-            dbQry = string.Format("INSERT INTO tblLeadReferences(TextValue, TypeName,Type,TypeID,BranchCode) VALUES('{0}','{1}','{2}',{3},'{4}')",
-                TextValue, TypeName, Types, TypeID, branchcode);
+            dbQry = string.Format("INSERT INTO tblLeadReferences(TextValue, TypeName,Type,TypeID) VALUES('{0}','{1}','{2}',{3})",
+                TextValue, TypeName, Types, TypeID);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -735,7 +731,7 @@ public class LeadBusinessLogic : BaseLogic
 
         try
         {
-            dbQry = "select ID,TextValue,TypeName,Type,TypeID,BranchCode from tblLeadReferences where ID = " + ID.ToString();
+            dbQry = "select ID,TextValue,TypeName,Type,TypeID from tblLeadReferences where ID = " + ID.ToString();
             manager.Open();
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
