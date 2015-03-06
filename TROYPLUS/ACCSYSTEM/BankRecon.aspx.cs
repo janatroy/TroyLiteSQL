@@ -2050,6 +2050,9 @@ public partial class BankRecon : System.Web.UI.Page
             dc = new DataColumn("Result");
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("BranchCode");
+            dt.Columns.Add(dc);
+
             ds.Tables.Add(dt);
 
             DateTime textdate;
@@ -2115,6 +2118,7 @@ public partial class BankRecon : System.Web.UI.Page
                         drNew["ReconcilatedBy"] = GrdViewItems.Rows[vLoop].Cells[10].Text;
                         drNew["Reconcilateddate"] = textdate;
                         drNew["Result"] = text2;
+                        drNew["BranchCode"] = GrdViewItems.Rows[vLoop].Cells[14].Text;
                         ds.Tables[0].Rows.Add(drNew);
                     }
                 }

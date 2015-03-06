@@ -74,6 +74,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
         GridSource.SelectParameters.Add(new CookieParameter("connection", "Company"));
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
     }
 
     private string GetConnectionString()
@@ -888,6 +889,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
 
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+
     }
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)

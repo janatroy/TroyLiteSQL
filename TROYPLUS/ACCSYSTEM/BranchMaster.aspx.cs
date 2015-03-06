@@ -795,9 +795,64 @@ public partial class BranchMaster : System.Web.UI.Page
                         dstest.Tables[0].Rows.Add(drNewt);
                     }
 
+                    DataSet dstestt = new DataSet();
 
+                    DataSet dst = bl.ListProducts(connection, "", "");
+                    if (dst != null)
+                    {
+                        if (dst.Tables[0].Rows.Count > 0)
+                        {
+                            
 
-                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive, Username, dstest);
+                            DataTable dttt;
+                            DataRow drNewtt;
+                            DataColumn dctt;
+
+                            dttt = new DataTable();
+
+                            dctt = new DataColumn("CategoryID");
+                            dttt.Columns.Add(dctt);
+
+                            dctt = new DataColumn("BranchName");
+                            dttt.Columns.Add(dctt);
+
+                            dctt = new DataColumn("Branchcode");
+                            dttt.Columns.Add(dctt);
+
+                            dctt = new DataColumn("ProductName");
+                            dttt.Columns.Add(dctt);
+
+                            dctt = new DataColumn("Stock");
+                            dttt.Columns.Add(dctt);
+
+                            dctt = new DataColumn("ProductDesc");
+                            dttt.Columns.Add(dctt);
+
+                            dctt = new DataColumn("Model");
+                            dttt.Columns.Add(dctt);
+
+                            dctt = new DataColumn("ItemCode");
+                            dttt.Columns.Add(dctt);
+
+                            dstestt.Tables.Add(dttt);
+
+                            foreach (DataRow dr in dst.Tables[0].Rows)
+                            {
+                                drNewtt = dttt.NewRow();
+                                drNewtt["CategoryID"] = Convert.ToInt32(dr["CategoryID"]);
+                                drNewtt["BranchName"] = BranchName;
+                                drNewtt["Branchcode"] = Branchcode;
+                                drNewtt["Stock"] = "0";
+                                drNewtt["ProductName"] = Convert.ToString(dr["ProductName"]);
+                                drNewtt["ItemCode"] = Convert.ToString(dr["ItemCode"]);
+                                drNewtt["Model"] = Convert.ToString(dr["Model"]);
+                                drNewtt["ProductDesc"] = Convert.ToString(dr["ProductDesc"]);
+                                dstestt.Tables[0].Rows.Add(drNewtt);
+                            }
+                        }
+                    }
+
+                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive, Username, dstest, dstestt);
                        
                     //MyAccordion.Visible = true;
                     pnlVisitDetails.Visible = false;

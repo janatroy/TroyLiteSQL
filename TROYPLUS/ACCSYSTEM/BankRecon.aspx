@@ -62,7 +62,7 @@
                                     <table cellspacing="2px" cellpadding="3px" border="0" width="99.8%"
                                         class="searchbg" style="margin: -2px 0px 0px 1px;">
                                         <tr>
-                                            <td style="width: 75%; font-size: 22px; color: White;">Bank Reconciliation
+                                            <td style="width: 25%; font-size: 22px; color: White;">Bank Reconciliation
                                             </td>
                                             <td style="width: 0%">
                                                 <div style="text-align: right;">
@@ -72,17 +72,17 @@
                                                     </asp:Panel>
                                                 </div>
                                             </td>
-                                            <td style="width: 23%; color: White;" align="right">Ref No.
+                                            <td style="width: 5%; color: White;" align="right">Ref No.
                                             </td>
-                                            <td style="width: 5%; text-align: center" class="NewBox">
+                                            <td style="width: 15%; text-align: center" class="NewBox">
                                                 <asp:TextBox ValidationGroup="search" ID="txtBillnoSrc" runat="server" MaxLength="8"
                                                     CssClass="cssTextBox" Width="75%"></asp:TextBox>
                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="txtBillnoSrc"
                                                     FilterType="Numbers" />
                                             </td>
-                                            <td style="width: 40%; color: White;" align="right">Trans No.
+                                            <td style="width: 5%; color: White;" align="right">Trans No.
                                             </td>
-                                            <td style="width: 3%" class="NewBox">
+                                            <td style="width: 15%" class="NewBox">
                                                 <asp:TextBox ValidationGroup="search" ID="txtTransNo" runat="server" MaxLength="8"
                                                     CssClass="cssTextBox" Width="75%"></asp:TextBox>
                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender10" runat="server" TargetControlID="txtTransNo"
@@ -305,6 +305,7 @@
                                                                                                         <HeaderStyle CssClass="HeadataRow" Wrap="false" />
                                                                                                         <FooterStyle CssClass="dataRow" />
                                                                                                         <Columns>
+                                                                                                            
                                                                                                             <asp:BoundField DataField="TransNo" HeaderText="TransNo" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="60px" />
                                                                                                             <asp:BoundField DataField="TransDate" HeaderText="Trans Date" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="60px" />
                                                                                                             <asp:BoundField DataField="Debtor" HeaderText="Name" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="80px" />
@@ -349,6 +350,7 @@
                                                                                                                     <asp:TextBox ID="txtResult" runat="server" Width="100px" Text='<%# Bind("Result") %>'></asp:TextBox>
                                                                                                                 </ItemTemplate>
                                                                                                             </asp:TemplateField>
+                                                                                                            <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="60px" />
                                                                                                         </Columns>
                                                                                                     </rwg:BulkEditGridView>
                                                                                                 </div>
@@ -407,7 +409,7 @@
                     <tr style="width: 100%">
                         <td style="width: 90%; text-align: left">
                             <asp:Panel ID="PanelBill" Direction="LeftToRight" runat="server">
-                                <table width="100%" style="text-align: left; margin: -6px 0px 0px 0px;">
+                                <table width="100%" style="text-align: left; margin: -4px 0px 0px 0px;">
                                     <tr>
                                         <td>
                                             <asp:GridView ID="GrdViewPurchase" runat="server" AllowSorting="True" AutoGenerateColumns="False"
@@ -424,6 +426,7 @@
                                                     <asp:BoundField DataField="Ledger" HeaderStyle-Width="130px" HeaderText="Ledger Name"  HeaderStyle-BorderColor="blue"/>
                                                     <asp:BoundField DataField="Type" Visible="false" HeaderText="Types"  HeaderStyle-BorderColor="blue"/>
                                                     <asp:BoundField DataField="UserName" HeaderStyle-Width="130px" HeaderText="User Name"  HeaderStyle-BorderColor="blue"/>--%>
+                                                    <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="60px" />
                                                     <asp:BoundField DataField="TransNo" HeaderText="TransNo" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="60px" />
                                                     <asp:BoundField DataField="RefNo" HeaderText="RefNo" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="50px" />
                                                     <asp:BoundField DataField="TransDate" HeaderText="Trans Date" DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="60px" />
