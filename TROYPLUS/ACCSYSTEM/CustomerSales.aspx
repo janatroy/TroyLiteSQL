@@ -1713,6 +1713,9 @@
                                                         <asp:BoundField DataField="PurchaseReturn" HeaderText="Purchase Return" HeaderStyle-Width="60px" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small"
                                                             HeaderStyle-BorderColor="Gray"
                                                             HeaderStyle-Wrap="true" />
+                                                         <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Width="60px" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small"
+                                                            HeaderStyle-BorderColor="Gray"
+                                                            HeaderStyle-Wrap="true" />
                                                         <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="45px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                             <ItemStyle HorizontalAlign="Center" />
                                                             <ItemTemplate>

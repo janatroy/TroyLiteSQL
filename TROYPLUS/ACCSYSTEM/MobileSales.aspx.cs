@@ -335,7 +335,7 @@ public partial class MobileSales : System.Web.UI.Page
                     return;
                 }
 
-                ds = bl.ListSalesProductPriceDetails(cmbProdAdd.SelectedItem.Value, lblledgerCategory.Text);
+                ds = bl.ListSalesProductPriceDetails(cmbProdAdd.SelectedItem.Value, lblledgerCategory.Text,"");
 
                 string category = lblledgerCategory.Text;
 
