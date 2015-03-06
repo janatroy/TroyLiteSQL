@@ -269,6 +269,25 @@
                                                                                             <center>
                                                                                                 <table style="width: 1000px;" cellpadding="1" cellspacing="1">
                                                                                                     <tr style="width: 1000px">
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">  
+                                                                                                              <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                            Select Branch  *
+                                                                                                        <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                                                            Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                        </td>                                                                                                        
+                                                                                                        </td>
+                                                                                                        <td class="ControlDrpBorder" style="width: 20%;">
+                                                                                                            <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranch_SelectedIndexChanged">
+                                                                                                            </asp:DropDownList>
+                                                                                                        </td>
+                                                                                                        <td style="width: 15%;" />
+                                                                                                        <td style="width: 20%;"></td>
+                                                                                                        <td style="width: 20%;"></td>
+                                                                                                        <td style="width: 5%;"></td>
+                                                                                                    </tr>
+                                                                                                    <tr style="height: 2px;" />
+                                                                                                    <tr style="height: 30px">
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">Lead ID
                                                                                                         </td>
                                                                                                         <td class="ControlTextBox3" style="width: 20%;">
@@ -499,10 +518,10 @@
                                                                                                     <tr style="height: 2px;" />
                                                                                                     <tr style="height: 30px">
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">  
-                                                                                                              <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpBranch" Display="Dynamic" x="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                              <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Select Branch  *
                                                                                                         <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
-                                                                                                            Display="Dynamic" ErrorMessage="Please select Branch. It cannot be left blank." Operator="GreaterThan"
+                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
                                                                                                             Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>                                                                                                        
                                                                                                         </td>
@@ -1448,6 +1467,7 @@
                                                 <asp:BoundField DataField="Lead_Status" HeaderText="Status of Lead" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="270px" />
                                                 <asp:BoundField DataField="Activity_Name" HeaderText="Lead Activity" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
                                                 <asp:BoundField DataField="Next_Activity" HeaderText="Follow-up Activity" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
+                                                <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" CausesValidation="false" runat="server" SkinID="edit"

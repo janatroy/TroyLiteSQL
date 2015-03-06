@@ -1148,6 +1148,7 @@
                                                 <asp:BoundField DataField="LedgerCategory" HeaderText="Category" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="CreditLimit" HeaderText="Credit Limit" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="CreditDays" HeaderText="Credit Days" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" ItemStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CommandName="Select" />
@@ -1260,6 +1261,7 @@
                                 <asp:Parameter Name="Email" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="string" />
+                                <asp:Parameter Name="BranchCode" Type="string" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -1295,6 +1297,7 @@
                                 <asp:Parameter Name="Email" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="string" />
+                                <asp:Parameter Name="BranchCode" Type="string" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

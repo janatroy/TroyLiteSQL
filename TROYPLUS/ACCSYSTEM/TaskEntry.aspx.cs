@@ -14,6 +14,9 @@ using System.Xml.Linq;
 public partial class TaskEntry : System.Web.UI.Page
 {
     private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
@@ -39,8 +42,8 @@ public partial class TaskEntry : System.Web.UI.Page
                 GrdWME.PageSize = 8;
 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-                string connection = Request.Cookies["Company"].Value;
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+                 connection = Request.Cookies["Company"].Value;
+                 usernam = Request.Cookies["LoggedUserName"].Value;
 
                 if (bl.CheckUserHaveAdd(usernam, "TCreate"))
                 {
@@ -161,8 +164,9 @@ public partial class TaskEntry : System.Web.UI.Page
         string connection = Request.Cookies["Company"].Value;
 
         string Username = Request.Cookies["LoggedUserName"].Value;
+        string branch = Request.Cookies["Branch"].Value;
 
-        DataSet ds = bl.GetUserTaskList(connection, textSearch, dropDown,Username);
+        DataSet ds = bl.GetUserTaskList(connection, textSearch, dropDown, Username, branch);
 
         if (ds != null)
         {
@@ -656,7 +660,28 @@ public partial class TaskEntry : System.Web.UI.Page
             
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
             loadEmp();
-            
+
+
+            string sCustomer = string.Empty;
+            connection = Request.Cookies["Company"].Value;
+            usernam = Request.Cookies["LoggedUserName"].Value;
+            BusinessLogic bl = new BusinessLogic();
+            DataSet ds = bl.GetBranch(connection, usernam);
+
+            sCustomer = Convert.ToString(ds.Tables[0].Rows[0]["DefaultBranchCode"]);
+            drpBranch.ClearSelection();
+            ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+            if (li != null) li.Selected = true;
+
+            if (ds.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+            {
+                drpBranch.Enabled = true;
+            }
+            else
+            {
+                drpBranch.Enabled = false;
+            }
+
             ModalPopupExtender1.Show();
         }
         catch (Exception ex)
@@ -772,7 +797,7 @@ public partial class TaskEntry : System.Web.UI.Page
                 }
             }
 
-            
+            drpBranch.Enabled = false;
             btnUpdate.Enabled = true;
             pnsSave.Visible = true;
             btnCancel.Enabled = true;

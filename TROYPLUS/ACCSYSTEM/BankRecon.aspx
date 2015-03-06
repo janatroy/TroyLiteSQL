@@ -144,7 +144,7 @@
                                                                                                 ValidationGroup="purchaseval"></asp:RequiredFieldValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 20%">
-                                                                                            <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10"
+                                                                                            <asp:TextBox ID="txtStartDate" CssClass="cssTextBox" Width="100px" MaxLength="10"
                                                                                                 runat="server" />
                                                                                             <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"
                                                                                                 PopupButtonID="btnBillDate" TargetControlID="txtStartDate" Enabled="True">

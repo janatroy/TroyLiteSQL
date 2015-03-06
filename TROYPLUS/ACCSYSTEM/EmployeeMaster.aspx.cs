@@ -12,10 +12,13 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 public partial class EmployeeMaster : System.Web.UI.Page
 {
     private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -46,7 +49,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
 
                 BindEmp();
                 loadEmp();
-
+                loadBranch();
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -113,6 +116,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
         string dropd = string.Empty;
 
         string connection = Request.Cookies["Company"].Value;
+        string branch = Request.Cookies["Branch"].Value;
 
         //if (txtSEmpno.Text.Trim() != string.Empty)
         //    empNO = Convert.ToInt32(txtSEmpno.Text.Trim());
@@ -130,7 +134,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
         dropd = ddCriteria.SelectedValue;
 
 
-        DataSet ds = bl.SearchEmployee(connection,textt, dropd);
+        DataSet ds = bl.SearchEmployee(connection, textt, dropd, branch);
         GrdEmp.DataSource = ds;
         GrdEmp.DataBind();
     }
@@ -173,6 +177,8 @@ public partial class EmployeeMaster : System.Web.UI.Page
             string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
             txtDoj.Text = dtaa;
             loadEmp();
+
+            BranchEnable_Disable();
             ModalPopupExtender2.Show();
             //BusinessLogic bl = new BusinessLogic(sDataSource);
             //int empnum = bl.GetNextEmpno();
@@ -183,6 +189,29 @@ public partial class EmployeeMaster : System.Web.UI.Page
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
         }
     }
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -213,6 +242,10 @@ public partial class EmployeeMaster : System.Web.UI.Page
             string sDesig = string.Empty;
             string sRemarks = string.Empty;
             string sTitle = string.Empty;
+            string sEmailID = string.Empty;
+            string sMobNo = string.Empty;           
+            string sBranch = string.Empty;
+            
             int ManagerId = 0;
 
             //string dDOJ = string.Empty;
@@ -244,19 +277,36 @@ public partial class EmployeeMaster : System.Web.UI.Page
                     ManagerId = Convert.ToInt32(drpIncharge.SelectedValue);
                 if (txtUserGroup.Text.Trim() != string.Empty)
                     UserGroup = txtUserGroup.Text.Trim();
+                if (txtEmailID.Text.Trim() != string.Empty)
+                    sEmailID = txtEmailID.Text.Trim();
+                if (txtMobNo.Text.Trim() != string.Empty)
+                    sMobNo = txtMobNo.Text.Trim();
 
                 sTitle = drpTitle.SelectedItem.Text;
+                sBranch = drpBranch.SelectedValue;
                 string stype = drptype.SelectedItem.Text;
 
                 string connection = Request.Cookies["Company"].Value;
-
+                string branch = Request.Cookies["Branch"].Value;
                 //DataSet checkemp = bl.SearchEmp(empNO, "", "", "");
-                DataSet checkemp = bl.SearchEmployee(connection, sempNO, "PartnerNo");
+                DataSet checkemp = bl.SearchEmployee(connection, sempNO, "PartnerNo", branch);
 
                 if (checkemp == null || checkemp.Tables[0].Rows.Count == 0)
                 {
+
+                    if (txtEmailID.Text != "")
+                    {
+                        bool isEmail = Regex.IsMatch(txtEmailID.Text.Trim(), @"\A(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)\Z");
+
+                        if (!isEmail)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email Id is invalid')", true);
+                            return;
+                        }
+                    }
+
                     //int empno = bl.InsertEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, stype);
-                    int empno = bl.InsertEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup);
+                    int empno = bl.InsertEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup, sEmailID, sMobNo, sBranch);
 
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Business Partner Details Saved Successfully.');", true);
                     Reset();
@@ -297,6 +347,9 @@ public partial class EmployeeMaster : System.Web.UI.Page
             string sTitle = string.Empty;
             int ManagerId = 0;
             string UserGroup = string.Empty;
+            string sEmailID = string.Empty;
+            string sMobNo = string.Empty;
+            string sBranch = string.Empty;
             //string dDOJ = string.Empty;
             //string dDOB = string.Empty;
 
@@ -319,6 +372,12 @@ public partial class EmployeeMaster : System.Web.UI.Page
                     dDOB =Convert.ToDateTime(txtDOB.Text.Trim().ToString());
                 if (txtRemarks.Text.Trim() != string.Empty)
                     sRemarks = txtRemarks.Text.Trim();
+                if (txtEmailID.Text.Trim() != string.Empty)
+                    sEmailID = txtEmailID.Text.Trim();
+                if (txtMobNo.Text.Trim() != string.Empty)
+                    sMobNo = txtMobNo.Text.Trim();
+
+                sBranch = drpBranch.SelectedValue;
                 sTitle = drpTitle.SelectedItem.Text;
                 string stype = drptype.SelectedItem.Text;
 
@@ -328,7 +387,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
                     UserGroup = txtUserGroup.Text.Trim();
 
                 //int empno = bl.UpdateEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, stype);
-                int empno = bl.UpdateEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup);
+                int empno = bl.UpdateEmpDetails(empNO, sTitle, sEmpFName, sEmpMName, sEmpSName, sDesig, sRemarks, dDOJ, dDOB, ManagerId, UserGroup, sEmailID,sMobNo,sBranch);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Business Partner Details Updated Successfully. Partner No " + empno + "');", true);
 
@@ -381,6 +440,11 @@ public partial class EmployeeMaster : System.Web.UI.Page
         txtRemarks.Text = "";
         txtDesig.Text = "";
         txtDoj.Text = "";
+        txtEmailID.Text = "";
+        txtMobNo.Text = "";
+        txtUserGroup.Text = "";
+        txtDoj.Text = "";
+        drpBranch.SelectedIndex = 0;
         drpTitle.SelectedIndex = 0;
 
     }
@@ -438,6 +502,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
         try
         {
             loadEmp();
+            loadBranch();
             GridViewRow row = GrdEmp.SelectedRow;
 
             int empNo = Convert.ToInt32(GrdEmp.SelectedDataKey.Value);
@@ -468,7 +533,15 @@ public partial class EmployeeMaster : System.Web.UI.Page
                 txtDoj.Text = DateTime.Parse(ds.Tables[0].Rows[0]["empDOJ"].ToString()).ToShortDateString();
                 txtDOB.Text = DateTime.Parse(ds.Tables[0].Rows[0]["empDOB"].ToString()).ToShortDateString();
                 txtDesig.Text = ds.Tables[0].Rows[0]["empdesig"].ToString();
-                txtRemarks.Text = ds.Tables[0].Rows[0]["empRemarks"].ToString(); ;
+                txtRemarks.Text = ds.Tables[0].Rows[0]["empRemarks"].ToString();
+                txtEmailID.Text = ds.Tables[0].Rows[0]["EmailID"].ToString();
+                txtMobNo.Text = ds.Tables[0].Rows[0]["MobileNo"].ToString();
+
+                drpBranch.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+                //ListItem li21 = drpBranch.Items.FindByText(ds.Tables[0].Rows[0]["BranchCode"].ToString());
+                //if (li21 != null) li21.Selected = true;
+
+                drpBranch.Enabled = false;
                 rowremarks.Visible = true;
                 //BindEmp();
                 btnUpdate.Visible = true;
@@ -486,6 +559,21 @@ public partial class EmployeeMaster : System.Web.UI.Page
         }
     }
 
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("All", "All"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
     protected void GrdEmp_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         try

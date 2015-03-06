@@ -89,7 +89,7 @@
                                         <td style="width: 16%">
                                             <div style="text-align: right;">
                                                 <%--<asp:Panel ID="pnlSearch" runat="server" Width="100px">--%>
-                                              
+
                                                 <%--</asp:Panel>--%>
                                             </div>
                                         </td>
@@ -189,7 +189,7 @@
                                                             <div align="left">
                                                                 <table style="width: 100%; border: 0px solid #86b2d1" align="center" cellpadding="3" cellspacing="1">
                                                                     <tr style="height: 20px">
-                                                                        <td style="width: 25%" class="ControlLabel">
+                                                                        <td style="width: 25%" class="ControlLabelproject">
                                                                             <asp:RequiredFieldValidator ValidationGroup="Save" ID="rq" runat="server" ErrorMessage="Emp no is mandatory"
                                                                                 Text="*" ControlToValidate="txtEmpno"></asp:RequiredFieldValidator>
                                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="txtEmpno"
@@ -199,13 +199,13 @@
                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                             <asp:TextBox ID="txtEmpno" runat="server" SkinID="skinTxtBox"></asp:TextBox>
                                                                         </td>
-                                                                        <td style="width: 15%" class="ControlLabel">Type
+                                                                        <td style="width: 15%" class="ControlLabelproject">Type
                                                                             <%--<asp:RequiredFieldValidator ID="reqSuppllier" runat="server" ControlToValidate="drptype"
                                                                                 ErrorMessage="Partner Type is mandatory" InitialValue="0" Text="*"
                                                                                 ValidationGroup="Save"></asp:RequiredFieldValidator>--%>
                                                                         </td>
                                                                         <td style="width: 25%" class="ControlDrpBorder">
-                                                                            <asp:DropDownList ID="drptype" runat="server" Width="100%" CssClass="drpDownListMedium" BackColor="#90c9fc" Style="border: 1px solid #90c9fc" Height="26px">
+                                                                            <asp:DropDownList ID="drptype" runat="server" Width="100%" BackColor="#E7E7E7" CssClass="drpDownListMedium" Style="border: 1px solid #E7E7E7" Height="26px">
                                                                                 <asp:ListItem Value="0" Selected="True">Select Type</asp:ListItem>
                                                                                 <asp:ListItem Value="Partner">Partner</asp:ListItem>
                                                                                 <asp:ListItem Value="Employee">Employee</asp:ListItem>
@@ -217,16 +217,16 @@
                                                                     <tr>
                                                                     </tr>
                                                                     <tr style="vertical-align: bottom">
-                                                                        <td style="width: 25%" class="ControlLabel">Title
+                                                                        <td style="width: 25%" class="ControlLabelproject">Title
                                                                         </td>
                                                                         <td style="width: 25%" class="ControlDrpBorder">
-                                                                            <asp:DropDownList ID="drpTitle" runat="server" Width="100%" CssClass="drpDownListMedium" BackColor="#90c9fc" Style="border: 1px solid #90c9fc" Height="26px">
+                                                                            <asp:DropDownList ID="drpTitle" runat="server" Width="100%" BackColor="#E7E7E7" CssClass="drpDownListMedium" Style="border: 1px solid #E7E7E7" Height="26px">
                                                                                 <asp:ListItem Value="Mr" Selected="True">Mr</asp:ListItem>
                                                                                 <asp:ListItem Value="Mrs">Mrs</asp:ListItem>
                                                                                 <asp:ListItem Value="Miss">Miss</asp:ListItem>
                                                                             </asp:DropDownList>
                                                                         </td>
-                                                                        <td style="width: 15%" class="ControlLabel">
+                                                                        <td style="width: 15%" class="ControlLabelproject">
                                                                             <asp:RequiredFieldValidator ValidationGroup="Save" ID="RequiredFieldValidator1" runat="server"
                                                                                 ErrorMessage="Emp First Name is mandatory" Text="*" ControlToValidate="txtEmpFName"></asp:RequiredFieldValidator>
                                                                             Partner Name *
@@ -238,12 +238,12 @@
                                                                     <tr>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td style="width: 25%" class="ControlLabel">Surname
+                                                                        <td style="width: 25%" class="ControlLabelproject">Surname
                                                                         </td>
                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                             <asp:TextBox ID="txtEmpSName" runat="server" SkinID="skinTxtBox"></asp:TextBox>
                                                                         </td>
-                                                                        <td style="width: 15%" class="ControlLabel">
+                                                                        <td style="width: 15%" class="ControlLabelproject">
                                                                             <asp:RequiredFieldValidator ValidationGroup="Save" ID="RequiredFieldValidator4" runat="server"
                                                                                 Text="*" ErrorMessage="Date Of Birth is mandatory" ControlToValidate="txtDOB"></asp:RequiredFieldValidator>
                                                                             Date Of Birth *
@@ -262,7 +262,7 @@
                                                                     <tr>
                                                                     </tr>
                                                                     <tr style="width: 100%">
-                                                                        <td style="width: 25%" class="ControlLabel">
+                                                                        <td style="width: 25%" class="ControlLabelproject">
                                                                             <asp:RequiredFieldValidator ValidationGroup="Save" ID="RequiredFieldValidator3" runat="server"
                                                                                 Text="*" ErrorMessage="Designation is mandatory" ControlToValidate="txtDesig"></asp:RequiredFieldValidator>
                                                                             Designation *
@@ -270,7 +270,7 @@
                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                             <asp:TextBox ID="txtDesig" runat="server" SkinID="skinTxtBox"> </asp:TextBox>
                                                                         </td>
-                                                                        <td style="width: 15%" class="ControlLabel">
+                                                                        <td style="width: 15%" class="ControlLabelproject">
                                                                             <asp:RequiredFieldValidator ValidationGroup="Save" ID="RequiredFieldValidator2" runat="server"
                                                                                 Text="*" ErrorMessage="Date OF Joining is mandatory" ControlToValidate="txtDoj"></asp:RequiredFieldValidator>
                                                                             Date Of Joining *
@@ -287,16 +287,16 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr style="vertical-align: bottom">
-                                                                        <td style="width: 25%" class="ControlLabel">Manager
+                                                                        <td style="width: 25%" class="ControlLabelproject">Manager
                                                                         </td>
                                                                         <td style="width: 25%" class="ControlDrpBorder">
-                                                                            <asp:DropDownList ID="drpIncharge" TabIndex="11" Enabled="True" EnableTheming="false" AppendDataBoundItems="true" CssClass="drpDownListMedium"
-                                                                                runat="server" Width="100%" DataTextField="empFirstName" BackColor="#90c9fc" Style="border: 1px solid #90c9fc" Height="26px"
+                                                                            <asp:DropDownList ID="drpIncharge" TabIndex="11" Enabled="True" EnableTheming="false" AppendDataBoundItems="true" BackColor="#E7E7E7" CssClass="drpDownListMedium"
+                                                                                runat="server" Width="100%" DataTextField="empFirstName" Style="border: 1px solid #E7E7E7" Height="26px"
                                                                                 DataValueField="empno">
                                                                                 <asp:ListItem Text="Select Manager" Value="0"></asp:ListItem>
                                                                             </asp:DropDownList>
                                                                         </td>
-                                                                        <td style="width: 15%" class="ControlLabel">
+                                                                        <td style="width: 15%" class="ControlLabelproject">
                                                                             <%--<asp:RequiredFieldValidator ValidationGroup="Save" ID="RequiredFieldValidator5" runat="server"
                                                                                 ErrorMessage="User Group is mandatory" Text="*" ControlToValidate="txtUserGroup"></asp:RequiredFieldValidator>--%>
                                                                             User Group
@@ -304,6 +304,34 @@
                                                                         <td style="width: 25%" class="ControlTextBox3">
                                                                             <asp:TextBox ID="txtUserGroup" runat="server" CssClass="cssTextBox" Width="92%"></asp:TextBox>
                                                                         </td>
+                                                                    </tr>
+                                                                    <tr style="vertical-align: bottom">
+                                                                        <td style="width: 25%" class="ControlLabelproject">Mobile Number
+                                                                        </td>
+                                                                        <td style="width: 25%" class="ControlDrpBorder">
+                                                                            <asp:TextBox ID="txtMobNo" runat="server" MaxLength="10" CssClass="cssTextBox" Width="92%"></asp:TextBox>
+                                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxEx" runat="server" FilterType="Numbers" TargetControlID="txtMobNo" />
+                                                                        </td>
+                                                                        <td style="width: 15%" class="ControlLabelproject">EmailID
+                                                                        </td>
+                                                                        <td style="width: 25%" class="ControlTextBox3">
+                                                                            <asp:TextBox ID="txtEmailID" runat="server" CssClass="cssTextBox" Width="92%"></asp:TextBox>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr style="vertical-align: bottom">
+                                                                        <td style="width: 25%" class="ControlLabelproject">
+                                                                            Select Branch 
+                                                                          <%-- <asp:CompareValidator ID="CompareValidator6" runat="server" ControlToValidate="drpBranch"
+                                                                             ValidationGroup="Save" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                             Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
+                                                                        </td>
+
+                                                                        <td style="width: 25%" class="ControlDrpBorder">
+                                                                            <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                                                            </asp:DropDownList>
+                                                                        </td>
+                                                                        <td style="width: 15%"></td>
+                                                                        <td style="width: 25%"></td>
                                                                     </tr>
                                                                     <tr style="width: 100%">
                                                                         <td colspan="4" style="width: 100%">
@@ -329,15 +357,16 @@
                                                                     <tr>
                                                                         <td style="width: 30%"></td>
                                                                         <td style="width: 20%;" align="center">
-                                                                            <asp:Button ID="btnCancel" runat="server" CssClass="cancelbutton6" EnableTheming="false"
-                                                                                SkinID="skinBtnCancel" OnClick="btnCancel_Click" />
-                                                                        </td>
-                                                                        <td style="width: 20%;" align="center">
                                                                             <asp:Button ID="btnSave" ValidationGroup="Save" runat="server" CssClass="savebutton1231"
                                                                                 EnableTheming="false" SkinID="skinBtnSave" OnClick="btnSave_Click" />
                                                                             <asp:Button ID="btnUpdate" runat="server" ValidationGroup="Save" CssClass="Updatebutton1231"
                                                                                 EnableTheming="false" SkinID="skinBtnSave" OnClick="btnUpdate_Click" />
                                                                         </td>
+                                                                        <td style="width: 20%;" align="center">
+                                                                            <asp:Button ID="btnCancel" runat="server" CssClass="cancelbutton6" EnableTheming="false"
+                                                                                SkinID="skinBtnCancel" OnClick="btnCancel_Click" />
+                                                                        </td>
+
                                                                         <td style="width: 30%"></td>
                                                                     </tr>
                                                                 </table>
@@ -679,6 +708,7 @@
                                                 <%--<asp:BoundField DataField="empType" HeaderText="Type"  HeaderStyle-BorderColor="Gray"/>--%>
                                                 <asp:BoundField DataField="empDesig" HeaderText="Designation" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="empRemarks" HeaderText="Remarks" Visible="false" HeaderStyle-BorderColor="Gray" />
+                                                  <asp:BoundField DataField="BranchCode" HeaderText="Branch Code"  HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CommandName="Select" />
@@ -747,11 +777,11 @@
     </asp:UpdatePanel>
     <table width="100%">
         <tr>
-            <td style="width:50%" align="right" >
-                  <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
-                                                    EnableTheming="false" Text=""></asp:Button>
+            <td style="width: 50%" align="right">
+                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                    EnableTheming="false" Text=""></asp:Button>
             </td>
-            <td style="width:50%">
+            <td style="width: 50%">
                 <asp:Button ID="btnExportToExcel" runat="server" CssClass="exportexl6" OnClientClick="window.open('ReportExcelEmployee.aspx ','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');"
                     EnableTheming="false"></asp:Button>
             </td>

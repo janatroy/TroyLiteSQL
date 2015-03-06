@@ -18,6 +18,8 @@ public partial class LeadMgmt : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
     string dbfileName = string.Empty;
+    string connection;
+    string usernam;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -39,15 +41,15 @@ public partial class LeadMgmt : System.Web.UI.Page
                 Session["ActivityDs"] = null;
                 Session["ProductDs"] = null;
                 Session["Date"] = null;
-                loadDropDowns();
+                //loadDropDowns();
                 //loadStages();
                 //loadPotentialAmount();
                 loadEmp();
                 loadBranch();
                 GrdViewLead.PageSize = 8;
 
-                string connection = Request.Cookies["Company"].Value;
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+                connection = Request.Cookies["Company"].Value;
+                usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
                 if (bl.CheckUserHaveAdd(usernam, "LDMNGT"))
@@ -334,7 +336,9 @@ public partial class LeadMgmt : System.Web.UI.Page
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
-        ds = bl.ListSundryDebtorsExceptIsActive(sDataSource);
+        ds = bl.ListSundryDebtorsExceptIsActive(sDataSource,drpBranch.SelectedValue);
+        cmbCustomer.Items.Clear();
+        cmbCustomer.Items.Add(new ListItem("Select Customer", "0"));
         cmbCustomer.DataSource = ds;
         cmbCustomer.DataBind();
         cmbCustomer.DataTextField = "LedgerName";
@@ -652,13 +656,13 @@ public partial class LeadMgmt : System.Web.UI.Page
     private void BindGrid(string textSearch, string dropDown)
     {
         string connection = Request.Cookies["Company"].Value;
-
+        string branch = Request.Cookies["Branch"].Value;
         DataSet ds = new DataSet();
         LeadBusinessLogic bl = new LeadBusinessLogic(sDataSource);
 
         object usernam = Session["LoggedUserName"];
 
-        ds = bl.ListLead(connection, textSearch, dropDown);
+        ds = bl.ListLead(connection, textSearch, dropDown,branch);
 
         if (ds != null)
         {
@@ -954,6 +958,7 @@ public partial class LeadMgmt : System.Web.UI.Page
             //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This is Trial Version, Please upgrade to Full Version of this Software. Thank You.');", true);
             //    return;
             //}
+          
             Reset();
             ModalPopupExtender2.Show();
             UpdateButton.Visible = false;
@@ -1052,10 +1057,35 @@ public partial class LeadMgmt : System.Web.UI.Page
             loadArea();
             loadInterestlevel();
 
+            BranchEnable_Disable();
+            loadDropDowns();
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
         }
     }
 
@@ -1427,7 +1457,7 @@ public partial class LeadMgmt : System.Web.UI.Page
     {
         txtLeadNo.Text = "";
         txtAddress.Text = "";
-        cmbCustomer.SelectedIndex = 0;
+        //cmbCustomer.SelectedIndex = 0;
         txtMobile.Text = "";
         txtLeadName.Text = "";
         txtTelephone.Text = "";
@@ -2698,8 +2728,14 @@ public partial class LeadMgmt : System.Web.UI.Page
 
             textt = txtSearch.Text;
             dropd = ddCriteria.SelectedValue;
-
-            BindGrid(textt, dropd);
+            if (textt == "")
+            {
+                BindGrid("Open", "DocStatus");
+            }
+            else
+            {
+                BindGrid(textt, dropd);
+            }
         }
         catch (Exception ex)
         {
@@ -2710,7 +2746,8 @@ public partial class LeadMgmt : System.Web.UI.Page
     protected void GrdViewLead_SelectedIndexChanged(object sender, EventArgs e)
     {
         try
-        {
+        {          
+            
             GridViewRow row = GrdViewLead.SelectedRow;
             int LeadNo = Convert.ToInt32(GrdViewLead.SelectedDataKey.Value.ToString());
             LeadBusinessLogic bl = new LeadBusinessLogic(GetConnectionString());
@@ -2726,6 +2763,9 @@ public partial class LeadMgmt : System.Web.UI.Page
             if (dsDetails != null && dsDetails.Tables[0].Rows.Count > 0)
             {
                 Session["Date"] = "Edit";
+
+                drpBranch.SelectedValue = dsDetails.Tables[0].Rows[0]["BranchCode"].ToString();
+                loadDropDowns();
 
                 txtLeadNo.Text = dsDetails.Tables[0].Rows[0]["Lead_No"].ToString();
                 txtCreationDate.Text = Convert.ToDateTime(dsDetails.Tables[0].Rows[0]["Start_Date"]).ToString("dd/MM/yyyy");
@@ -2911,7 +2951,8 @@ public partial class LeadMgmt : System.Web.UI.Page
                     txtremarks.Text = itemDsAct.Tables[0].Rows[vLoop]["Remarks"].ToString();
                 }
                 //close activity tab
-                
+                //BranchEnable_Disable();
+                drpBranch.Enabled = false;
                 UpdateButton.Visible = true;
                 AddButton.Visible = false;
                 ModalPopupExtender2.Show();
@@ -3770,7 +3811,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
 
 
-                bl.UpdateLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam,BrnCode, dss1, dss2, dss, check);
+                bl.UpdateLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam,BrnCode, dss1, dss2, dss, check,usernam);
 
 
                 string salestype = string.Empty;
@@ -4611,7 +4652,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
 
                 // bl.AddLead(LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, branch, LeadStatus, TotalAmount, ClosingPer, ClosingDate, PredictedClosing, PredictedClosingDate, PotentialPotAmount, PotentialWeightedAmount, PredictedClosingPeriod, InterestLevel, usernam, dsStages, dss1, dss2, dss, check);
-                bl.AddLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam,BrnCode, dss1, dss2, dss, check);
+                bl.AddLead(connection, LeadNo, startDate, LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, LeadStatus, ClosingDate, PredictedClosingDate, info1, info3, info4, businesstype, category, area, intLevel, usernam, BrnCode, dss1, dss2, dss, check, usernam);
 
 
                 string salestype = string.Empty;
@@ -5715,5 +5756,9 @@ public partial class LeadMgmt : System.Web.UI.Page
             drpStatus.Text = "Closed";
             drpStatus.Enabled = false;
         }
+    }
+    protected void drpBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        loadDropDowns();
     }
 }

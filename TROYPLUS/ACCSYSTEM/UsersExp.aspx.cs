@@ -444,7 +444,7 @@ public partial class UsersExp : System.Web.UI.Page
 
                     if (Session["Show"] == "Add New")
                     {
-                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsd, "", EmpNo, UserGroup, DateLoc, dsbranch,false))
+                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsd, "", EmpNo, UserGroup, DateLoc, dsbranch,false,""))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Saved Successfully');", true);
                             //BindGrid();
@@ -458,7 +458,7 @@ public partial class UsersExp : System.Web.UI.Page
                     }
                     else if (Session["Show"] == "Edit")
                     {
-                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsd, "", EmpNo, UserGroup, DateLoc, dsbranch, false);
+                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsd, "", EmpNo, UserGroup, DateLoc, dsbranch, false,"");
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Updated Successfully');", true);
                         //BindGrid();
                     }

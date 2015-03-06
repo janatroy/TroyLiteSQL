@@ -161,8 +161,9 @@ public partial class TaskUpdates : System.Web.UI.Page
 
         string connection = Request.Cookies["Company"].Value;
         string Username = Request.Cookies["LoggedUserName"].Value;
+        string branch = Request.Cookies["Branch"].Value;
 
-        DataSet ds = bl.GetUsersTaskList(connection, textSearch, dropDown, Username);
+        DataSet ds = bl.GetUsersTaskList(connection, textSearch, dropDown, Username, branch);
 
         if (ds != null)
         {
