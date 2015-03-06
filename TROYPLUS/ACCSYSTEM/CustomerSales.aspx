@@ -311,7 +311,7 @@
                                                                                                     <table class="headerPopUp" width="95%">
                                                                                                         <tr>
                                                                                                             <td style="width: 95%">
-                                                                                                                 <asp:Label ID="lblHeading" Text="Sales Invoice Details" runat="server"></asp:Label>
+                                                                                                                <asp:Label ID="lblHeading" Text="Sales Invoice Details" runat="server"></asp:Label>
                                                                                                             </td>
                                                                                                         </tr>
                                                                                                     </table>
@@ -357,12 +357,21 @@
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                     </td>
-                                                                                                                                     <td style="width: 7%;"></td>
-                                                                                                                                     <td style="width: 10%;"></td>
-                                                                                                                                     <td style="width: 24%;"></td>
-                                                                                                                                     <td style="width: 13%;"></td>
+                                                                                                                                    <td style="width: 7%;"></td>
+                                                                                                                                    <td class="ControlLabelproject" style="width: 10%;">
+                                                                                                                                        <asp:CompareValidator ID="CompareValidator5" ValidationGroup="salesval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                                        Select Branch  *
+                                                                                                        <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                                                            Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                                    </td>
+                                                                                                                                    <td class="ControlDrpBorder" style="width: 24%;">
+                                                                                                                                        <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranch_SelectedIndexChanged">
+                                                                                                                                        </asp:DropDownList>
+                                                                                                                                    </td>
+                                                                                                                                    <td style="width: 13%;"></td>
                                                                                                                                 </tr>
-                                                                                                                                 <tr style="height: 2px;">
+                                                                                                                                <tr style="height: 2px;">
                                                                                                                                 </tr>
                                                                                                                                 <tr>
                                                                                                                                     <td class="ControlLabelproject" style="width: 25%;">Bill No. </td>
@@ -560,33 +569,33 @@
                                                                                                                                         <asp:TextBox ID="txtdespatced" runat="server" BackColor="#e7e7e7" MaxLength="10" SkinID="skinTxtBoxGrid" TabIndex="8" Width="200px"></asp:TextBox>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 7%;"></td>
-                                                                                                                                      <td class="ControlLabelproject" style="width: 10%;" valign="middle">
+                                                                                                                                    <td class="ControlLabelproject" style="width: 10%;" valign="middle">
                                                                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtfixedtotal" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please enter  Rounded off Total. It cannot be left blank. " Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                                                         Rounded off Total *
                                                                                                                             <td class="ControlTextBox3" style="width: 24%;">
                                                                                                                                 <asp:TextBox ID="txtfixedtotal" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" TabIndex="9" Width="500px"></asp:TextBox>
                                                                                                                             </td>
-                                                                                                                                    <td style="width: 13%;"></td>
+                                                                                                                                        <td style="width: 13%;"></td>
                                                                                                                                 </tr>
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
-                                                                                                                                <tr>                         
-                                                                                                                                     <td style="width: 25%;">
-                                                                                                                                          <td style="width: 24%;">                                                                                                         
-                                                                                                                                        <td style="width: 7%;">
-                                                                                                                                            <td class="ControlLabel" style="width: 10%;"></td>
-                                                                                                                                            <td style="width: 24%">
-                                                                                                                                                <div>
-                                                                                                                                                    <asp:DropDownList ID="drpMobile1" runat="server" TabIndex="2" CssClass="chzn-select" Width="313px" Visible="false">
-                                                                                                                                                        <%-- <asp:DropDownList ID="drpMobile1" runat="server" TabIndex="2" CssClass="chzn-select" Width="313px">--%>
-                                                                                                                                                    </asp:DropDownList>
-                                                                                                                                                </div>
-                                                                                                                                            </td>
+                                                                                                                                <tr>
+                                                                                                                                    <td style="width: 25%;">
+                                                                                                                                        <td style="width: 24%;">
+                                                                                                                                            <td style="width: 7%;">
+                                                                                                                                                <td class="ControlLabel" style="width: 10%;"></td>
+                                                                                                                                                <td style="width: 24%">
+                                                                                                                                                    <div>
+                                                                                                                                                        <asp:DropDownList ID="drpMobile1" runat="server" TabIndex="2" CssClass="chzn-select" Width="313px" Visible="false">
+                                                                                                                                                            <%-- <asp:DropDownList ID="drpMobile1" runat="server" TabIndex="2" CssClass="chzn-select" Width="313px">--%>
+                                                                                                                                                        </asp:DropDownList>
+                                                                                                                                                    </div>
+                                                                                                                                                </td>
 
-                                                                                                                                        </td>
-                                                                                                                                               <td style="width: 10%;">
-                                                                                                                                                    <td style="width: 24%;">
-                                                                                                                                        <td align="left" style="width: 13%;"></td>
+                                                                                                                                            </td>
+                                                                                                                                            <td style="width: 10%;">
+                                                                                                                                                <td style="width: 24%;">
+                                                                                                                                                    <td align="left" style="width: 13%;"></td>
                                                                                                                                 </tr>
                                                                                                                                 <%--<tr style="height: 2px;">
                                                                                                                             
