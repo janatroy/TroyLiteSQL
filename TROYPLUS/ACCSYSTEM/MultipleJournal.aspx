@@ -150,7 +150,7 @@
                             </input>
                                             </input>
                                             <asp:ValidationSummary ID="ValidationSummary2" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                HeaderText="Validation Messages" ShowMessageBox="true" ShowSummary="true" ValidationGroup="contact" />
+                                                HeaderText="" ShowMessageBox="true" ShowSummary="true" ValidationGroup="contact" />
                             <asp:Panel ID="pnlMethod" runat="server" Style="width: 60%; display: none">
                                 <asp:UpdatePanel ID="updatePnlMethod" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
@@ -242,10 +242,10 @@
                                                     <tr>
                                                         <td>
                                                             <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                ShowSummary="false" ValidationGroup="product" HeaderText="Validation Messages"
+                                                                ShowSummary="false" ValidationGroup="product" HeaderText=""
                                                                 Font-Names="'Trebuchet MS'" Font-Size="12" runat="server" />
                                                             <asp:ValidationSummary ID="VS" DisplayMode="BulletList" ShowMessageBox="true" ShowSummary="false"
-                                                                ValidationGroup="purchaseval" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                ValidationGroup="purchaseval" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                 Font-Size="12" runat="server" />
                                                             <input id="dummyPurchase" type="button" style="display: none" runat="server" />
                                                             <input id="BtnPopUpCancel1" type="button" style="display: none" runat="server" />
@@ -653,7 +653,7 @@
                                                                                         </input>
                                                         </input>
                                                         &nbsp;<asp:ValidationSummary ID="VSContact" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                            HeaderText="Validation Messages" ShowMessageBox="true" ShowSummary="true" ValidationGroup="contact" />
+                                                            HeaderText="" ShowMessageBox="true" ShowSummary="true" ValidationGroup="contact" />
                                                                                         <asp:Panel ID="pnlContact" runat="server" Width="700px" CssClass="modalPopup">
                                                                                             <asp:UpdatePanel ID="updatePnlContact" runat="server" UpdateMode="Conditional">
                                                                                                 <ContentTemplate>
@@ -669,7 +669,7 @@
                                                                                                                 <tr>
                                                                                                                     <td class="ControlLabel" style="width: 20%">Ref. No. *
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtRefnum"
-                                                                                            ValidationGroup="editVal" Display="Dynamic" EnableClientScript="true" ErrorMessage="Ref. No. is mandatory">*</asp:RequiredFieldValidator>
+                                                                                            ValidationGroup="editVal" Display="Dynamic" EnableClientScript="true" ErrorMessage="Please enter Ref. No. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                     </td>
                                                                                                                     <td class="ControlTextBox3" style="width: 27%">
                                                                                                                         <asp:TextBox ID="txtRefnum" runat="server" ValidationGroup="editVal"
@@ -678,7 +678,7 @@
                                                                                                                     <td class="ControlLabel" style="width: 15%">Date *
                                                                                         <asp:RequiredFieldValidator ID="rvStock" runat="server" ValidationGroup="editVal"
                                                                                             ControlToValidate="txtTransDate" Display="Dynamic" EnableClientScript="true"
-                                                                                            ErrorMessage="Trasaction Date is mandatory">*</asp:RequiredFieldValidator>
+                                                                                            ErrorMessage="Please select Date. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                         <%--<asp:RangeValidator ID="myRangeValidator" runat="server" ControlToValidate="txtTransDate"
                                                                                             Display="Dynamic" EnableClientScript="true" ErrorMessage="Journal date cannot be future date."
                                                                                             ValidationGroup="editVal" Text="*" Type="Date"></asp:RangeValidator>--%>
@@ -708,7 +708,7 @@
                                                                                                                 </tr>
                                                                                                                 <tr>
                                                                                                                     <td class="ControlLabel" style="width: 20%">Debtor *
-                                                                                        <asp:RequiredFieldValidator ID="reqDebtor" ErrorMessage="Debtor is mandatory" InitialValue="0"
+                                                                                        <asp:RequiredFieldValidator ID="reqDebtor" ErrorMessage="Please select Debtor. It cannot be left blank." InitialValue="0"
                                                                                             EnableClientScript="true" Text="*" ControlToValidate="cmbDebtor" runat="server"
                                                                                             ValidationGroup="editVal" Display="Dynamic" />
                                                                                                                     </td>
@@ -720,7 +720,7 @@
                                                                                                                         </asp:DropDownList>
                                                                                                                     </td>
                                                                                                                     <td class="ControlLabel" style="width: 15%">Creditor *
-                                                                                        <asp:RequiredFieldValidator ID="reqCreditor" ErrorMessage="Creditor is mandatory"
+                                                                                        <asp:RequiredFieldValidator ID="reqCreditor" ErrorMessage="Please select Creditor. It cannot be left blank."
                                                                                             EnableClientScript="true" InitialValue="0" ControlToValidate="cmbCreditor" runat="server"
                                                                                             ValidationGroup="editVal" Text="*" Display="Dynamic" />
                                                                                                                     </td>
@@ -738,7 +738,7 @@
                                                                                                                 <tr>
                                                                                                                     <td class="ControlLabel" style="width: 20%">Amount *
                                                                                         <asp:RequiredFieldValidator ID="rvModel" runat="server" ControlToValidate="txtAmount"
-                                                                                            Display="Dynamic" EnableClientScript="true" ValidationGroup="editVal" ErrorMessage="Amount is mandatory">*</asp:RequiredFieldValidator>
+                                                                                            Display="Dynamic" EnableClientScript="true" ValidationGroup="editVal" ErrorMessage="Please enter Amount. it cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                         <cc1:FilteredTextBoxExtender ID="fltAmt" runat="server" TargetControlID="txtAmount"
                                                                                                                             ValidChars="." FilterType="Numbers, Custom" />
                                                                                                                     </td>
@@ -748,7 +748,7 @@
                                                                                                                     </td>
                                                                                                                     <td class="ControlLabel" style="width: 15%">Narration *
                                                                                         <asp:RequiredFieldValidator ID="rvNarration" runat="server" ControlToValidate="txtNarr"
-                                                                                            ValidationGroup="editVal" Display="Dynamic" EnableClientScript="true" ErrorMessage="Narration is mandatory">*</asp:RequiredFieldValidator>
+                                                                                            ValidationGroup="editVal" Display="Dynamic" EnableClientScript="true" ErrorMessage="Please enter Narration. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                     </td>
                                                                                                                     <td class="ControlTextBox3" style="width: 27%">
                                                                                                                         <asp:TextBox ID="txtNarr" runat="server" ValidationGroup="editVal"
@@ -785,7 +785,7 @@
                                                                                                                 <td></td>
                                                                                                                 <td>
                                                                                                                     <asp:ValidationSummary ID="ValidationSummary1" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                                                                        ShowSummary="false" HeaderText="Validation Messages" ValidationGroup="editVal"
+                                                                                                                        ShowSummary="false" HeaderText="" ValidationGroup="editVal"
                                                                                                                         Font-Names="'Trebuchet MS'" Font-Size="12" runat="server" />
                                                                                                                 </td>
                                                                                                                 <td></td>
@@ -814,7 +814,7 @@
                                                                                         </input>
                                                         </input>
                                                         &nbsp;<asp:ValidationSummary ID="ValidationSummary5" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                            HeaderText="Validation Messages" ShowMessageBox="true" ShowSummary="true" ValidationGroup="contact" />
+                                                            HeaderText="" ShowMessageBox="true" ShowSummary="true" ValidationGroup="contact" />
                                                                                         <asp:Panel ID="Panel8" runat="server" Width="85%" CssClass="modalPopup">
                                                                                             <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
                                                                                                 <ContentTemplate>
@@ -1022,7 +1022,7 @@
                                                                                                                 <td></td>
                                                                                                                 <td>
                                                                                                                     <asp:ValidationSummary ID="ValidationSummary6" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                                                                        ShowSummary="false" HeaderText="Validation Messages" ValidationGroup="editVal"
+                                                                                                                        ShowSummary="false" HeaderText="" ValidationGroup="editVal"
                                                                                                                         Font-Names="'Trebuchet MS'" Font-Size="12" runat="server" />
                                                                                                                 </td>
                                                                                                                 <td></td>
@@ -1051,7 +1051,7 @@
                                                                                         </input>
                                                         </input>
                                                         &nbsp;<asp:ValidationSummary ID="ValidationSummary3" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                            HeaderText="Validation Messages" ShowMessageBox="true" ShowSummary="true" ValidationGroup="ValidationSummary3" />
+                                                            HeaderText="" ShowMessageBox="true" ShowSummary="true" ValidationGroup="ValidationSummary3" />
                                                                                         <asp:Panel ID="Panel2" runat="server" Width="85%" CssClass="modalPopup">
                                                                                             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                                                                 <ContentTemplate>
@@ -1066,7 +1066,7 @@
                                                                                                                 </tr>
                                                                                                                 <tr>
                                                                                                                     <td class="ControlLabel" style="width: 35%">Debtor *
-                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ErrorMessage="Debtor is mandatory" InitialValue="0"
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ErrorMessage="Please select Debtor. It cannot be left blank." InitialValue="0"
                                                                                             EnableClientScript="true" Text="*" ControlToValidate="drpDebtor" runat="server"
                                                                                             ValidationGroup="ValidationSummary3" Display="Dynamic" />
                                                                                                                     </td>
@@ -1205,7 +1205,7 @@
                                                                                         </input>
                                                         </input>
                                                         &nbsp;<asp:ValidationSummary ID="ValidationSummary4" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                            HeaderText="Validation Messages" ShowMessageBox="true" ShowSummary="true" ValidationGroup="ValidationSummary4" />
+                                                            HeaderText="" ShowMessageBox="true" ShowSummary="true" ValidationGroup="ValidationSummary4" />
                                                                                         <asp:Panel ID="Panel6" runat="server" Width="85%" CssClass="modalPopup">
                                                                                             <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                                                                 <ContentTemplate>
@@ -1220,7 +1220,7 @@
                                                                                                                 </tr>
                                                                                                                 <tr>
                                                                                                                     <td class="ControlLabel" style="width: 35%">Creditor *
-                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ErrorMessage="Creditor is mandatory" InitialValue="0"
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ErrorMessage="Please select Creditor. It cannot be left blank." InitialValue="0"
                                                                                             EnableClientScript="true" Text="*" ControlToValidate="drpCreditor1" runat="server"
                                                                                             ValidationGroup="ValidationSummary4" Display="Dynamic" />
                                                                                                                     </td>

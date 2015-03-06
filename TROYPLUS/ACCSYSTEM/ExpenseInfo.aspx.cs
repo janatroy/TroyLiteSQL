@@ -74,6 +74,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
         GridSource.SelectParameters.Add(new CookieParameter("connection", "Company"));
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
     }
 
     private string GetConnectionString()
@@ -306,7 +307,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
                 string obdate = ((TextBox)this.frmViewAdd.FindControl("txtOpenBalAdd")).Text;
                 if (obdate != null && obdate != "0")
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('OB due date is mandatory')", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Select OB due date. It cannot be left blank.')", true);
                     check = true;
                     ModalPopupExtender1.Show();
                     frmViewAdd.Visible = true;
@@ -555,7 +556,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
                 string obdate = ((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text;
                 if (obdate != null && obdate != "0")
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('OB due date is mandatory')", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select OB due date. It cannot be left blank.')", true);
                     check = true;
                     ModalPopupExtender1.Show();
                     frmViewAdd.Visible = true;
@@ -888,6 +889,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
 
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+
     }
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)

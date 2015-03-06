@@ -21,6 +21,8 @@ public partial class CreateFormula : System.Web.UI.Page
     {
         try
         {
+           
+
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
             string dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
@@ -270,7 +272,7 @@ public partial class CreateFormula : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
             ds = bl.CreateFormulaSearch(seach);
-
+          //  DataSet dsd = new DataSet();
             if (ds != null)
             {
                 if (ds.Tables[0].Rows.Count > 0)
@@ -332,7 +334,7 @@ public partial class CreateFormula : System.Web.UI.Page
     {
         try
         {
-
+            heading1.Text = "List of Added components";
             string formulaName = txtFormulaName.Text.Trim().ToUpper();
             string ItemCode = cmbProdAdd.SelectedValue.Trim();
             string Qty = txtQtyAdd.Text;
@@ -479,6 +481,7 @@ public partial class CreateFormula : System.Web.UI.Page
             prodPanel.Visible = true;
             //tabContol.Visible = true;
             Button1.Visible = true;
+            GrdViewItems.Visible = false;
         }
         catch (Exception ex)
         {
@@ -1208,7 +1211,23 @@ public partial class CreateFormula : System.Web.UI.Page
                 GrdViewItems.DataSource = ds;
                 GrdViewItems.DataBind();
                 Session["TemplateItems"] = ds;
+
+                if (GrdViewItems.Rows.Count==0)
+                {
+                    heading1.Text = "";
+                }
             }
+
+      
+           // Page_Load(sender, e);
+
+            //if( GrdViewItems.Rows[e.RowIndex])
+
+            //{
+            //    heading1.Text = "";
+            //}
+            
+           
         }
         catch (Exception ex)
         {
@@ -1489,6 +1508,7 @@ public partial class CreateFormula : System.Web.UI.Page
             UpdatePanelFormula.Update();
             ModalPopupExtender1.Hide();
             UpdatePanel16.Update();
+            titlehead.Text = "";
         }
         catch (Exception ex)
         {
@@ -1599,6 +1619,7 @@ public partial class CreateFormula : System.Web.UI.Page
     }
     protected void Button1_Click(object sender, EventArgs e)
     {
+        GrdViewItems.Visible = true;
         try
         {
             if (txtFormulaName.Text == null || txtFormulaName.Text == "")
@@ -1611,6 +1632,9 @@ public partial class CreateFormula : System.Web.UI.Page
                 salesPanel.Visible = true;
                 ModalPopupExtender1.Show();
             }
+
+            titlehead.Text = "Select the Component to be Added";
+            Button1.Visible = false;
         }
         catch (Exception ex)
         {

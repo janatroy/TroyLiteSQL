@@ -268,7 +268,7 @@
                                                                                         <div style="text-align: left; width: 1200px">
                                                                                             <center>
                                                                                                 <table style="width: 1000px;" cellpadding="1" cellspacing="1">
-                                                                                                       <tr style="width: 1000px">
+                                                                                                    <tr style="width: 1000px">
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">  
                                                                                                               <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Select Branch  *
@@ -304,7 +304,7 @@
                                                                                                     <tr style="height: 2px;" />
                                                                                                     <tr style="height: 30px">
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">Lead Name *
-                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtLeadName" Display="Dynamic" ErrorMessage="Lead Name is mandatory">*</asp:RequiredFieldValidator>
+                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtLeadName" Display="Dynamic" ErrorMessage="Please enter Lead Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                         </td>
                                                                                                         <td class="ControlTextBox3" style="width: 20%;">
                                                                                                             <asp:TextBox ID="txtLeadName" runat="server" SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
@@ -314,7 +314,7 @@
                                                                                                             <asp:CompareValidator ID="CompareValidator13" runat="server" ControlToValidate="drpStatus" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Interest Level *
                                                                                                         <asp:CompareValidator ID="CompareValidator14" runat="server" ControlToValidate="drpIntLevel"
-                                                                                                            Display="Dynamic" ErrorMessage="Please Select Interest level" Operator="GreaterThan"
+                                                                                                            Display="Dynamic" ErrorMessage="Please select Interest level. It cannot be left blank." Operator="GreaterThan"
                                                                                                             Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
@@ -329,7 +329,7 @@
                                                                                                             <asp:CompareValidator ID="cvModeOfContact" runat="server" ControlToValidate="drpStatus" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Employee Responsible *
                                                                                                <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpIncharge"
-                                                                                                   Display="Dynamic" ErrorMessage="Please Select Employee" Operator="GreaterThan"
+                                                                                                   Display="Dynamic" ErrorMessage="Please select Employee Responsible. It cannot be left blank." Operator="GreaterThan"
                                                                                                    Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
@@ -341,7 +341,7 @@
                                                                                                         <td style="width: 15%;" />
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">
                                                                                                             <asp:RequiredFieldValidator ID="rvStock" runat="server" ControlToValidate="txtCreationDate"
-                                                                                                                ErrorMessage="Start Date is mandatory" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                                                                                                ErrorMessage="Please select Lead Start Date. It cannot be left blank." Display="Dynamic">*</asp:RequiredFieldValidator>
                                                                                                             <asp:CompareValidator ControlToValidate="txtCreationDate" Operator="DataTypeCheck" Type="Date"
                                                                                                                 ErrorMessage="Please enter a valid date" runat="server" ID="cmpValtxtDate">*</asp:CompareValidator>
                                                                                                             Lead Start Date *
@@ -423,7 +423,7 @@
                                                                                                         </td>
                                                                                                         <td style="width: 15%;" />
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">
-                                                                                                            <asp:CompareValidator ID="CompareValidator17" runat="server" ControlToValidate="drpLeadStatus" Display="Dynamic" ErrorMessage="Please Select Lead Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                            <asp:CompareValidator ID="CompareValidator17" runat="server" ControlToValidate="drpLeadStatus" Display="Dynamic" ErrorMessage="Please select Lead Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Status of Lead *
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
@@ -459,7 +459,7 @@
                                                                                                             <asp:CompareValidator ID="CompareValidator4" runat="server" ControlToValidate="drpStatus" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Type of Business *
                                                                                                          <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="drpBusinessType"
-                                                                                                             Display="Dynamic" ErrorMessage="Please Select Business Type" Operator="GreaterThan"
+                                                                                                             Display="Dynamic" ErrorMessage="Please select Business Type. It cannotbe left blank." Operator="GreaterThan"
                                                                                                              Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
@@ -479,7 +479,7 @@
                                                                                                             <asp:CompareValidator ID="CompareValidator11" runat="server" ControlToValidate="drpStatus" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Location *
                                                                                                          <asp:CompareValidator ID="CompareValidator12" runat="server" ControlToValidate="drpArea"
-                                                                                                             Display="Dynamic" ErrorMessage="Please Select Area" Operator="GreaterThan"
+                                                                                                             Display="Dynamic" ErrorMessage="Please select Location. It cannot be left blank" Operator="GreaterThan"
                                                                                                              Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
@@ -500,7 +500,7 @@
                                                                                                             <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="drpStatus" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Type of Category *
                                                                                                         <asp:CompareValidator ID="CompareValidator6" runat="server" ControlToValidate="drpCategory"
-                                                                                                            Display="Dynamic" ErrorMessage="Please Select Category" Operator="GreaterThan"
+                                                                                                            Display="Dynamic" ErrorMessage="Please select Category Type. It cannot be left blank." Operator="GreaterThan"
                                                                                                             Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 20%;">
@@ -515,7 +515,26 @@
                                                                                                         </td>
                                                                                                         <td style="width: 5%;"></td>
                                                                                                     </tr>
-                                                                                                    <tr style="height: 2px;" />                                                                                                 
+                                                                                                    <tr style="height: 2px;" />
+                                                                                                    <tr style="height: 30px">
+                                                                                                        <td class="ControlLabelproject" style="width: 20%;">  
+                                                                                                              <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                            Select Branch  *
+                                                                                                        <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                                                            Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                        </td>                                                                                                        
+                                                                                                        </td>
+                                                                                                        <td class="ControlDrpBorder" style="width: 20%;">
+                                                                                                            <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                                                                                            </asp:DropDownList>
+                                                                                                        </td>
+                                                                                                        <td style="width: 15%;" />
+                                                                                                        <td style="width: 20%;"></td>
+                                                                                                        <td style="width: 20%;"></td>
+                                                                                                        <td style="width: 5%;"></td>
+                                                                                                    </tr>
+                                                                                                    <tr style="height: 2px;" />
                                                                                                     <tr>
                                                                                                         <td>
                                                                                                             <asp:Label runat="server" ID="Error" ForeColor="Red"></asp:Label>
@@ -523,7 +542,7 @@
                                                                                                     </tr>
                                                                                                 </table>
                                                                                             </center>
-                                                                                            <asp:ValidationSummary ID="valSum" ShowMessageBox="True" ShowSummary="False" HeaderText="Validation Messages"
+                                                                                            <asp:ValidationSummary ID="valSum" ShowMessageBox="True" ShowSummary="False" HeaderText=""
                                                                                                 Font-Names="'Trebuchet MS'" Font-Size="12pt" runat="server" />
                                                                                         </div>
 
@@ -667,7 +686,7 @@
                                                                                                         <td style="text-align: left; width: 750px">
 
                                                                                                             <asp:ValidationSummary ID="ValidationSummary3" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                                                                                HeaderText="Validation Messages" ShowMessageBox="true" ValidationGroup="product" ShowSummary="false" />
+                                                                                                                HeaderText="" ShowMessageBox="true" ValidationGroup="product" ShowSummary="false" />
                                                                                                             <asp:Panel ID="pnlproduct" runat="server" CssClass="modalPopup">
                                                                                                                 <asp:UpdatePanel ID="updatePnlProduct" runat="server" UpdateMode="Conditional">
                                                                                                                     <ContentTemplate>
@@ -898,7 +917,7 @@
                                                                                                 <tr>
                                                                                                     <td style="text-align: left; width: 750px">
                                                                                                         <asp:ValidationSummary ID="ValidationSummary2" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                                                                            HeaderText="Validation Messages" ShowMessageBox="true" ValidationGroup="Activities" ShowSummary="false" />
+                                                                                                            HeaderText="" ShowMessageBox="true" ValidationGroup="Activities" ShowSummary="false" />
                                                                                                         <asp:Panel ID="pnlActivity" runat="server" Visible="false">
                                                                                                             <div style="text-align: left; width: 750px">
                                                                                                                 <table style="width: 750px; border: 0px solid #86b2d1" align="center" cellpadding="2" cellspacing="2">
@@ -910,7 +929,7 @@
                                                                                                                     <tr>
                                                                                                                         <td class="ControlLabel" style="width: 23%;">
                                                                                                                             <asp:CompareValidator ID="CompareValidator9" runat="server" ControlToValidate="drpActivityName"
-                                                                                                                                ValidationGroup="Activities" ErrorMessage="Please Select Activity Name" Operator="GreaterThan"
+                                                                                                                                ValidationGroup="Activities" ErrorMessage="Please select Activity Name. It cannot be left blank" Operator="GreaterThan"
                                                                                                                                 Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                             Activity Name *
                                                                                                                         </td>
@@ -936,7 +955,7 @@
                                                                                                                     <tr>
                                                                                                                         <td class="ControlLabel" style="width: 23%;">
                                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server" ControlToValidate="txtActivityDate"
-                                                                                                                                ErrorMessage="Activity Start Date is mandatory" ValidationGroup="Activities" Text="*"></asp:RequiredFieldValidator>
+                                                                                                                                ErrorMessage="Please select Activity Date is mandatory. It cannot be left blank." ValidationGroup="Activities" Text="*"></asp:RequiredFieldValidator>
                                                                                                                             Activity Date *
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 25%;">
@@ -968,7 +987,7 @@
                                                                                                                     </td>--%>
                                                                                                                         <td class="ControlLabel" style="width: 23%;">
                                                                                                                             <asp:CompareValidator ID="CompareValidator8" runat="server" ControlToValidate="drpNextActivity"
-                                                                                                                                ValidationGroup="Activities" ErrorMessage="Please Select Next Activity" Operator="GreaterThan"
+                                                                                                                                ValidationGroup="Activities" ErrorMessage="Please select Next Activity. It cannot be left blank." Operator="GreaterThan"
                                                                                                                                 Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                             Next Activity *
                                                                                                                         </td>
@@ -986,7 +1005,7 @@
                                                                                                                     <tr>
                                                                                                                         <td class="ControlLabel" style="width: 14%;">
                                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator23" runat="server" ControlToValidate="txtNextActivityDate"
-                                                                                                                                ErrorMessage="Next Activity Date is mandatory" ValidationGroup="Activities">*</asp:RequiredFieldValidator>
+                                                                                                                                ErrorMessage="Please select Next Activity Date. It cannot be left blank." ValidationGroup="Activities">*</asp:RequiredFieldValidator>
                                                                                                                             Next Activity Date *
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 25%;">
@@ -1002,7 +1021,7 @@
                                                                                                                         </td>
                                                                                                                         <td class="ControlLabel" style="width: 20%;">Employee *
                                                                                                                     <asp:CompareValidator ID="CompareValidator10" runat="server" ControlToValidate="drpActivityEmployee"
-                                                                                                                        ValidationGroup="Activities" ErrorMessage="Please Select Employee" Operator="GreaterThan"
+                                                                                                                        ValidationGroup="Activities" ErrorMessage="Please select Employee. It cannot be left blank." Operator="GreaterThan"
                                                                                                                         Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                         </td>
                                                                                                                         <td class="ControlDrpBorder" style="width: 25%;">
@@ -1029,7 +1048,7 @@
                                                                                                                     </td>--%>
                                                                                                                         <td class="ControlLabel" style="width: 13%;">
                                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtModeofCnt"
-                                                                                                                                ErrorMessage="Mode of Contact is mandatory" ValidationGroup="Activities">*</asp:RequiredFieldValidator>
+                                                                                                                                ErrorMessage="Please select Mode of Contact. It cannot be left blank." ValidationGroup="Activities">*</asp:RequiredFieldValidator>
                                                                                                                             Mode of Contact *
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 25%;">
@@ -1069,7 +1088,7 @@
                                                                                                                                 <tr>
                                                                                                                                     <td class="ControlLabel" style="width: 22%;">
                                                                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server" ControlToValidate="txtActivityRemarks"
-                                                                                                                                            ErrorMessage="Remarks is mandatory" ValidationGroup="Activities" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                                                                                                                            ErrorMessage="Please enter Remarks. It cannot be left blank." ValidationGroup="Activities" Display="Dynamic">*</asp:RequiredFieldValidator>
                                                                                                                                         Remarks *
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlTextBox3" style="width: 72%;">
@@ -1241,7 +1260,7 @@
                                                                                                     <tr>
                                                                                                         <td style="text-align: left; width: 750px">
                                                                                                             <asp:ValidationSummary ID="ValidationSummary1" runat="server" Font-Names="'Trebuchet MS'" Font-Size="12pt"
-                                                                                                                HeaderText="Validation Messages" ShowMessageBox="true" ValidationGroup="Competitor" ShowSummary="false" />
+                                                                                                                HeaderText="" ShowMessageBox="true" ValidationGroup="Competitor" ShowSummary="false" />
                                                                                                             <asp:Panel ID="pnlCompetitor" runat="server" Visible="false">
                                                                                                                 <div style="text-align: left; width: 750px">
                                                                                                                     <table style="width: 750px; border: 0px solid #86b2d1" align="center" cellpadding="2" cellspacing="2">
@@ -1263,7 +1282,7 @@
                                                                                                                             <td style="width: 8%;" align="left"></td>
                                                                                                                             <td class="ControlLabel" style="width: 13%;">
                                                                                                                                 <asp:CompareValidator ID="CompareValidator7" runat="server" ControlToValidate="drpThreatLevel"
-                                                                                                                                    ValidationGroup="Competitor" ErrorMessage="Please Select Threat Level" Operator="GreaterThan"
+                                                                                                                                    ValidationGroup="Competitor" ErrorMessage="Please select Threat Level. It cannot be left blank" Operator="GreaterThan"
                                                                                                                                     Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                                 Threat Level
                                                                                                                             </td>

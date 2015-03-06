@@ -212,10 +212,10 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 20%">Expense Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="LedgerName is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Expense Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtLdgrName" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"
+                                                                    <asp:TextBox ID="txtLdgrName" Enabled="false" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="1"></asp:TextBox>
                                                                 </td>
 
@@ -224,7 +224,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Alias is mandatory">*</asp:RequiredFieldValidator>--%>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtAliasName" runat="server" Text='<%# Bind("AliasName") %>' SkinID="skinTxtBoxGrid"
+                                                                    <asp:TextBox ID="txtAliasName" runat="server" Enabled="false" Text='<%# Bind("AliasName") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="4"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 10%"></td>
@@ -237,7 +237,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
                                                                         Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
                                                                     <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="txtOpenBal"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtOpenBal" />
                                                                 </td>
                                                                 <td class="ControlNumberBox3" style="width: 25%">
@@ -454,7 +454,7 @@
                                                                 </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -476,7 +476,7 @@
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 20%">Expense Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Name is mandatory"></asp:RequiredFieldValidator>
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Expense Name. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
                                                                     <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("LedgerName") %>'
@@ -501,7 +501,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
                                                                         Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
                                                                     <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtOpenBalAdd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalidAdd" runat="server" FilterType="Numbers"
                                                                         TargetControlID="txtOpenBalAdd" />
                                                                 </td>
@@ -701,7 +701,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="3">
@@ -750,6 +750,7 @@
                                                 <asp:BoundField DataField="Phone" HeaderText="Phone No." Visible="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="LedgerCategory" HeaderText="Category" Visible="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="TinNumber" HeaderText="TIN#" Visible="false" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Branchcode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" HeaderStyle-BorderColor="Gray"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
@@ -829,7 +830,7 @@
                         </asp:ObjectDataSource>
                         <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetLedgerInfoForId"
                             TypeName="BusinessLogic" OnUpdating="frmSource_Updating" OnInserting="frmSource_Inserting"
-                            InsertMethod="InsertLedgerInfo" UpdateMethod="UpdateLedgerInfo">
+                            InsertMethod="InsertExpenseInfo" UpdateMethod="UpdateExpenseInfo">
                             <UpdateParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="LedgerID" Type="Int32" />

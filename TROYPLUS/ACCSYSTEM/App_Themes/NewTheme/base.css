@@ -1174,7 +1174,7 @@ h2
     color: #FFF;
     font-size: 12px;
     padding: 7px 6px 6px 3px;
-    height: 39px !important;
+    height: 25px !important;
     font-weight: bolder;
     border:1px solid Gray;
 }
@@ -1404,6 +1404,20 @@ h2
 
 }
 
+.ControlLabelmanufacture1
+{
+    height:25px;    
+    padding-right:5px;
+    text-align:right;
+    vertical-align:middle;
+    color:#0567AE;
+    font-family:'ARIAL';
+    font-size:14px;
+    font-weight:bold;
+    text-decoration:none;
+
+}
+
 
 .ControlLabel
 {
@@ -1460,6 +1474,17 @@ h2
     height:20px;
     border:1px solid #c3c3c3;
     background-color:#e7e7e7;
+    padding-left:1px;
+    padding-right:30px;
+}
+
+
+.ControlTextBoxmanu
+{
+    width:110px;
+    height:20px;
+    border:1px solid #c3c3c3;
+    background-color:white;
     padding-left:1px;
     padding-right:30px;
 }
@@ -1687,6 +1712,16 @@ h2
     font-family: 'Trebuchet MS';
     font-size: 13px;
     width: 100%;
+}
+
+.cssTextBoxmanufa {
+    background: transparent url(images/loginText.jpg) repeat-x left top;
+    background-color: White;
+    border: 1px solid White;
+    padding: 1px;
+    overflow: hidden;
+    font-family: 'Trebuchet MS';
+    font-size: 13px;
 }
 
 .cssTextBox666
@@ -4692,6 +4727,12 @@ fieldset
     border : 1px solid Gray ;
 }
 
+.someClassnew td
+{
+    font-size: 11px;
+    /*border :none ;*/
+}
+
 .someclass1
 {
     font-size:15px;
@@ -6394,7 +6435,7 @@ h2
     color: #FFF;
     font-size: 12px;
     padding: 7px 6px 6px 3px;
-    height: 39px !important;
+    height: 25px !important;
     font-weight: bolder;
     border:1px solid Gray;
 }
@@ -6668,6 +6709,16 @@ h2
     height:20px;
     border:1px solid #c3c3c3;
     background-color:#e7e7e7;
+    padding-left:1px;
+    padding-right:30px;
+}
+
+.ControlTextBoxmanu
+{
+    width:100%;
+    height:20px;
+    border:1px solid #c3c3c3;
+    background-color:white;
     padding-left:1px;
     padding-right:30px;
 }
@@ -9860,6 +9911,13 @@ fieldset
 {
     font-size: 15px;
     border : 1px solid Gray ;
+    
+}
+
+.someClassnew td
+{
+    font-size: 11px;
+    /*border : none ;*/
     
 }
 
