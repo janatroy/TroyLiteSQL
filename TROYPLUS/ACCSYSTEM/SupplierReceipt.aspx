@@ -470,6 +470,25 @@
                                                             <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
+                                                                <td class="ControlLabel" style="width: 24%">
+
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 25%">
+                                                                    
+                                                                </td>
+                                                                <td class="ControlLabel" style="width: 15%">
+                                                                   
+                                                                </td>
+                                                                <td style="width: 25%">
+                                                                   
+                                                                </td>
+                                                                <td style="width: 10%" align="left">
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 3px">
+                                                            </tr>
+                                                            <tr>
                                                                 <td class="ControlLabel" style="width: 24%">Ref. No. *
                                                                     <asp:RequiredFieldValidator ID="rvRefNoAdd" runat="server" ErrorMessage="Please enter Ref. No. It cannot be left blank."
                                                                         ControlToValidate="txtRefNoAdd" Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
@@ -589,10 +608,10 @@
                                                                                     Bank Name *
                                                                                 </td>
                                                                                 <td style="width: 25%;" class="ControlDrpBorder">
-                                                                                    <asp:DropDownList ID="ddBanksAdd" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Style="border: 1px solid #e7e7e7" Height="26px" Width="100%" SelectedValue='<%# Bind("CreditorID") %>'
+                                                                                    <asp:DropDownList ID="ddBanksAdd" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Style="border: 0px solid #e7e7e7" Height="26px" Width="100%" SelectedValue='<%# Bind("CreditorID") %>'
                                                                                         DataSourceID="srcBanksAdd" DataTextField="LedgerName" DataValueField="LedgerID"
                                                                                         AppendDataBoundItems="True">
-                                                                                        <asp:ListItem style="background-color: #e7e7e7" Selected="True" Value="0">Select Bank</asp:ListItem>
+                                                                                        <asp:ListItem Selected="True" Value="0">Select Bank</asp:ListItem>
                                                                                     </asp:DropDownList>
                                                                                 </td>
                                                                                 <td style="width: 15%" class="ControlLabel">
@@ -784,6 +803,7 @@
                                 <asp:Parameter Name="Paymode" Type="String" />
                                 <asp:Parameter Name="NewTransNo" Type="Int32" Direction="Output" />
                                 <asp:Parameter Name="Username" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewReceipt" Name="TransNo" PropertyName="SelectedValue"
@@ -803,6 +823,7 @@
                                 <asp:Parameter Name="Paymode" Type="String" />
                                 <asp:Parameter Name="NewTransNo" Type="Int32" Direction="Output" />
                                 <asp:Parameter Name="Username" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

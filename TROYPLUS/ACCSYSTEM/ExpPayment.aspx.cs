@@ -1603,7 +1603,7 @@ public partial class ExpPayment : System.Web.UI.Page
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                bl.InsertPayment(out OutPut, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, BillNo, usernam);
+                bl.InsertPayment(out OutPut, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, BillNo, usernam,"");
                 ichequestatus = bl.UpdateChequeused_conn(ChequeNo, CreditorID, conn);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payment Saved Successfully. Transaction No : " + OutPut.ToString() + "');", true);
