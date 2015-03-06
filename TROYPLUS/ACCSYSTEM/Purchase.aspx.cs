@@ -3898,7 +3898,7 @@ public partial class Purchase : System.Web.UI.Page
         DataSet dsa = new DataSet();
         if (SundryType == "Sundry Debtors")
         {
-            ds = bl.ListSundryDebtorsExceptIsActive(sDataSource);
+            ds = bl.ListSundryDebtorsExceptIsActive(sDataSource,"");
         }
 
         if (SundryType == "Sundry Creditors")

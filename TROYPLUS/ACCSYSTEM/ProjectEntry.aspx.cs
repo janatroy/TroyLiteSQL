@@ -127,8 +127,9 @@ public partial class ProjectEntry : System.Web.UI.Page
 
         string connection = Request.Cookies["Company"].Value;
         string Username = Request.Cookies["LoggedUserName"].Value;
+        string branch = Request.Cookies["Branch"].Value;
 
-        DataSet ds = bl.GetUserProjectList(connection, textSearch, dropDown,Username);
+        DataSet ds = bl.GetUserProjectList(connection, textSearch, dropDown,Username,branch);
 
         if (ds != null)
         {
@@ -1169,7 +1170,7 @@ public partial class ProjectEntry : System.Web.UI.Page
                     }
                 }
             }
-
+            drpBranch.Enabled = false;
             drpIncharge.Enabled = false;
             drpProjectstatus.Enabled = true;
             btnUpdate.Enabled = true;

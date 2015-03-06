@@ -874,6 +874,7 @@
                         <asp:BoundField DataField="Actual_End_Date" HeaderText="Actual end date" 
                             DataFormatString="{0:dd/MM/yyyy}"  HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true"  ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"   HeaderStyle-BorderColor="Gray" />
                         <asp:BoundField DataField="empfirstname" HeaderText="Owner" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true"  ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"   HeaderStyle-BorderColor="Gray" />
+                        <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Left" ItemStyle-Height="30px" ItemStyle-Font-Bold="true"  ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"   HeaderStyle-BorderColor="Gray" />
                         <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray"
                             ItemStyle-HorizontalAlign="Center">
                             <ItemTemplate>
