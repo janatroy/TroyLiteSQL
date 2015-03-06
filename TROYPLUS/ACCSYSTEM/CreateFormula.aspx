@@ -151,17 +151,17 @@
                                                                                 <tr style="height:5px">
                                                                                                     </tr>
                                                                                 <tr>
-                                                                                    <td class="ControlLabelproject1" style="width: 33%">
+                                                                                    <td class="ControlLabelproject1" style="width: 28%">
                                                                                         Name of Product to be Manufactured
                                                                                     </td>
                                                                                     <td style="width: 2%">
                                                                                         
                                                                                     </td>
-                                                                                    <td style="width: 20%" class="ControlTextBox3">
+                                                                                    <td style="width: 25%" class="ControlTextBox3">
                                                                                         <asp:TextBox ValidationGroup="salesval" Style="text-transform: uppercase" ID="txtFormulaName"
                                                                                             runat="server" CssClass="cssTextBox" Width="95%" MaxLength="150"></asp:TextBox>
                                                                                     </td>
-                                                                                    <td style="width: 5%">
+                                                                                    <td style="width: 4.5%">
                                                                                         
                                                                                     </td>
                                                                                     <td style="width: 25%; text-align: left">
@@ -194,13 +194,13 @@
                                                                                     <td  style="font-size:14px; width:15%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
                                                                                         Component Name
                                                                                     </td>
-                                                                                    <td  style="font-size:14px; width:13%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
+                                                                                    <td  style="font-size:14px; width:31%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
                                                                                         Description
                                                                                     </td>
                                                                                     <td  style="font-size:14px; width:5%; background:#cccccc; font-weight:bold; border: 1px solid Gray;">
                                                                                         Qty.
                                                                                     </td>
-                                                                                    <td  style="font-size:14px; width:16%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
+                                                                                    <td  style="font-size:14px; width:12%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
                                                                                       Type of Component
                                                                                     </td>
                                                                                       <td style="font-size:14px; width:16%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
@@ -218,21 +218,21 @@
                                                                                             </asp:DropDownList>
                                                                                         </div>
                                                                                     </td>
-                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:15%;">
-                                                                                        <asp:TextBox ID="lblProdNameAdd" ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" CssClass="cssTextBoxmanu" Width="98%"
+                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:15%;"> 
+                                                                                        <asp:TextBox ID="lblProdNameAdd" ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server"  Width="100%" style="text-align:left; border:1px solid #fff"
                                                                                             ReadOnly="true"></asp:TextBox>
                                                                                     </td>
                                                                                     <td valign="top" class="ControlTextBoxmanu"  style=" width:13%;">
-                                                                                        <asp:TextBox ID="lblProdDescAdd" ForeColor="#0567AE" Font-Size="15px" runat="server" Font-Bold="true" CssClass="cssTextBoxmanu" Width="98%"
+                                                                                        <asp:TextBox ID="lblProdDescAdd" ForeColor="#0567AE" Font-Size="15px" BorderColor="White"  runat="server" Font-Bold="true"  Width="100%" style="text-align:left; border:1px solid #fff"
                                                                                             ReadOnly="true"></asp:TextBox>
                                                                                     </td>
                                                                                     <td  class="ControlTextBoxmanu"  style=" width:5%;">
                                                                                          <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtQtyAdd" />
-                                                                                        <asp:TextBox ID="txtQtyAdd" style="text-align:center" ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" Width="98%" CssClass="cssTextBoxmanu" ValidationGroup="product"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txtQtyAdd" style="text-align:center; border:1px solid #fff"  ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" Width="221%" ValidationGroup="product"></asp:TextBox>
                                                                                     </td>
-                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:16%;">
+                                                                                    <td valign="top" style=" width:15%;  border:1px solid #c3c3c3;  height:20px;  background-color:white;">
                                                                                        
-                                                                                            <asp:DropDownList ID="ddType"  ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" CssClass="drpDownListMedium"  Width="117%" height="25px" >
+                                                                                            <asp:DropDownList ID="ddType"  ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" CssClass="drpDownListMedium"  Width="100%" height="25px" >
                                                                                                 <asp:ListItem Text="Raw Material" Value="Raw Material"></asp:ListItem>
                                                                                                 <asp:ListItem Text="Product" Value="Product"></asp:ListItem>
                                                                                                  <%-- <asp:ListItem Text="By-Product" Value="OUT"></asp:ListItem>--%>
@@ -241,7 +241,7 @@
                                                                                     </td>
                                                                                     <td valign="top" class="ControlTextBoxmanu"  style=" width:16%;">
                                                                                       
-                                                                                            <asp:DropDownList ID="ddUnit" ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server"  Width="117%"  DataTextField="Unit" DataValueField="Unit" DataSourceID="srcUnitMntAdd" CssClass="drpDownListMedium" height="25px" >
+                                                                                            <asp:DropDownList ID="ddUnit" style="text-align:center;"  ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server"  Width="117%"  DataTextField="Unit" DataValueField="Unit" DataSourceID="srcUnitMntAdd" CssClass="drpDownListMedium" height="25px" >
                                                                                                
                                                                                             </asp:DropDownList>
                                                                                        
@@ -314,7 +314,7 @@
                                                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" ForeColor="#0567AE"/>
                                                                                 <EmptyDataRowStyle Font-Bold="false" /> 
                                                                                 <Columns>
-                                                                                    <asp:TemplateField HeaderText="Component ID" HeaderStyle-Width="21.5%"  HeaderStyle-BackColor="#cccccc"  HeaderStyle-Font-Bold="true">
+                                                                                    <asp:TemplateField HeaderText="Component ID" HeaderStyle-Width="19%"  HeaderStyle-BackColor="#cccccc"  HeaderStyle-Font-Bold="true">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("itemcode")%>
                                                                                         </ItemTemplate>
@@ -322,7 +322,7 @@
                                                                                             <asp:Label runat="server"  ID="lblCode" Text='<%# Eval("itemcode")%>'></asp:Label>
                                                                                         </EditItemTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Component Name" HeaderStyle-Width="16.5%" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Component Name"  ItemStyle-HorizontalAlign="Left" HeaderStyle-Width="15%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("ProductName")%>
                                                                                         </ItemTemplate>
@@ -330,7 +330,7 @@
                                                                                             <asp:Label runat="server" ID="lblProdname" Text='<%# Eval("ProductName")%>'></asp:Label>
                                                                                         </EditItemTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Description" HeaderStyle-Width="14.5%" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Description" ItemStyle-HorizontalAlign="Left" HeaderStyle-Width="31%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("ProductDesc")%>
                                                                                         </ItemTemplate>
@@ -338,7 +338,7 @@
                                                                                             <asp:Label runat="server" ID="lblDesc" Text='<%# Eval("ProductDesc")%>'></asp:Label>
                                                                                         </EditItemTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Qty." HeaderStyle-Width="12%" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Qty." ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="4.5%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("Qty")%>
                                                                                         </ItemTemplate>
@@ -355,7 +355,7 @@
                                                                                         <FooterTemplate>
                                                                                         </FooterTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Type of component" HeaderStyle-Width="18%" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Type of component"  ItemStyle-HorizontalAlign="Left" HeaderStyle-Width="15.5%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("InOut")%>
                                                                                         </ItemTemplate>
@@ -365,7 +365,7 @@
                                                                                         <FooterTemplate>
                                                                                         </FooterTemplate>
                                                                                     </asp:TemplateField>
-                                                                                     <asp:TemplateField HeaderText="UOM" HeaderStyle-BorderColor="Gray">
+                                                                                     <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="7%" ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("Unit_Of_Measure")%>
                                                                                         </ItemTemplate>
@@ -376,8 +376,8 @@
                                                                                         </FooterTemplate>
                                                                                     </asp:TemplateField>
                                                                                     
-                                                                                    <asp:TemplateField HeaderText="Edit" HeaderStyle-BorderColor="Gray">
-                                                                                        <ItemStyle Width="7%" HorizontalAlign="Center" />
+                                                                                    <asp:TemplateField HeaderText="Edit" HeaderStyle-Width="2%" HeaderStyle-BorderColor="Gray">
+                                                                                        <ItemStyle Width="4%" HorizontalAlign="Center" />
                                                                                         <ItemTemplate>
                                                                                             <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CausesValidation="False"
                                                                                                 CommandName="Edit" />
@@ -389,14 +389,14 @@
                                                                                                 Text="Cancel" SkinID="GridCancel"></asp:ImageButton>
                                                                                         </EditItemTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Delete" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Delete" HeaderStyle-Width="3%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <cc1:ConfirmButtonExtender ID="CnrfmDel" TargetControlID="lnkB" ConfirmText="Are you sure you want to delete this Component?"
                                                                                                 runat="server">
                                                                                             </cc1:ConfirmButtonExtender>
                                                                                             <asp:ImageButton ID="lnkB" SkinID="delete" runat="Server" CommandName="Delete"></asp:ImageButton>
                                                                                         </ItemTemplate>
-                                                                                        <HeaderStyle Width="4%" />
+                                                                                       
                                                                                         <ItemStyle HorizontalAlign="Center" CssClass="command" />
                                                                                     </asp:TemplateField>
                                                                                 </Columns>
