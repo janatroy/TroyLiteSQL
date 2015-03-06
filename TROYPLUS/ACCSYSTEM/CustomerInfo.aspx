@@ -489,23 +489,32 @@
                                                                                             <cc1:CalendarExtender ID="calBillDate1" runat="server" Format="dd/MM/yyyy" PopupButtonID="btnBillDate1" TargetControlID="txtdueDate">
                                                                                             </cc1:CalendarExtender>
                                                                                         </td>
-                                                                                        <td style="width: 14%;" align="left">
+                                                                                        <td style="width: 14%;" align="left" class="ControlLabel">
                                                                                             <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                            Branch
                                                                                         </td>
 
-                                                                                        <td style="width: 28%">
+                                                                                        <td style="width: 28%" class="ControlDrpBorder">
                                                                                             <asp:UpdatePanel ID="UpdatePanel123456" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" Width="100%" AppendDataBoundItems="True" Enabled="false" CssClass="drpDownListMedium" DataSourceID="ObjectDataSource1" DataTextField="BranchName" DataValueField="BranchCode" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" OnDataBound="drpBranch_DataBound"
                                                                                                 runat="server">
-                                                                                                <%--<asp:ListItem style="background-color: #e7e7e7" Text="Select Branch" Value="0"></asp:ListItem>--%>
+                                                                                                <asp:ListItem style="background-color: #e7e7e7" Text="All" Value="All"></asp:ListItem>
                                                                                            
                                                                                             </asp:DropDownList>
             </ContentTemplate>
             </asp:UpdatePanel>
                                                                                         </td>
 
-                                                                                        <td style="width: 28%"></td>
+                                                                                        <td style="width: 28%">
+                                                                                            <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="ListBranch"
+                                                                    TypeName="BusinessLogic">
+                                                                    <SelectParameters>
+                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                        <asp:CookieParameter Name="User" CookieName="LoggedUserName" Type="String" />
+                                                                    </SelectParameters>
+                                                                </asp:ObjectDataSource>
+                                                                                        </td>
 
                                                                                         <td style="width: 10%;"></td>
                                                                                     </tr>
@@ -667,6 +676,7 @@
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
+                                                                
                                                                 <td>
                                                                     <asp:ObjectDataSource ID="srccuscat" runat="server" SelectMethod="ListCusCategory"
                                                                         TypeName="BusinessLogic">

@@ -516,7 +516,7 @@
                                                                                                         <td style="width: 5%;"></td>
                                                                                                     </tr>
                                                                                                     <tr style="height: 2px;" />
-                                                                                                    <tr style="height: 30px">
+                                                                                               <%--     <tr style="height: 30px">
                                                                                                         <td class="ControlLabelproject" style="width: 20%;">  
                                                                                                               <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                             Select Branch  *
@@ -533,7 +533,7 @@
                                                                                                         <td style="width: 20%;"></td>
                                                                                                         <td style="width: 20%;"></td>
                                                                                                         <td style="width: 5%;"></td>
-                                                                                                    </tr>
+                                                                                                    </tr>--%>
                                                                                                     <tr style="height: 2px;" />
                                                                                                     <tr>
                                                                                                         <td>

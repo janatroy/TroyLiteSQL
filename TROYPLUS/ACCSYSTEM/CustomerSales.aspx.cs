@@ -195,7 +195,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 }
                 loadBanks();
                 loadEmp();
-
+                //loadBranch();
                 //loadCustomer();
                 loadSupplier("Sundry Debtors");
                 loadCategories();
@@ -267,6 +267,37 @@ public partial class CustomerSales : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+    }
+
+    private void loadDropDowns()
+    {
+        //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        ds = bl.ListSundryDebtorsExceptIsActive(sDataSource, drpBranch.SelectedValue);
+        cmbCustomer.Items.Clear();
+        cmbCustomer.Items.Add(new ListItem("Select Customer", "0"));
+        cmbCustomer.DataSource = ds;
+        cmbCustomer.DataBind();
+        cmbCustomer.DataTextField = "LedgerName";
+        cmbCustomer.DataValueField = "LedgerID";
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
     }
 
     private void BindList()
@@ -6605,6 +6636,7 @@ public partial class CustomerSales : System.Web.UI.Page
             {
                 Labelll.Text = "VAT EXCLUSIVE";
             }
+            loadBranch();
             FirstGridViewRow();
             ModalPopupMethod.Show();
             //ModalPopupExtender1.Show();
@@ -11782,6 +11814,10 @@ public partial class CustomerSales : System.Web.UI.Page
             }
         }
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+    }
+    protected void drpBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        loadDropDowns();
     }
 }
 
