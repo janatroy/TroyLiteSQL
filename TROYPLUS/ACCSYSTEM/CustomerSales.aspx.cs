@@ -554,7 +554,7 @@ public partial class CustomerSales : System.Web.UI.Page
             }
             else
             {
-                ds = bl.ListSundryDebtorsExceptIsActive(sDataSource);
+                ds = bl.ListSundryDebtorsExceptIsActive(sDataSource,"");
             }
         }
 

@@ -600,13 +600,13 @@ public class LeadBusinessLogic : BaseLogic
 
     }
 
-    public void UpdateReference(string connection, int ID, string TextValue, string TypeName, string Types, int TypeID)
+    public void UpdateReference(string connection, int ID, string TextValue, string TypeName, string Types, int TypeID, string username)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
-
+        string sAuditStr = string.Empty;
         try
         {
             manager.Open();
@@ -628,6 +628,11 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+            sAuditStr = "Lead Rererence Text Value: " + TextValue + " got edited. Record Details : User: " + username;
+
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
             manager.CommitTransaction();
 
         }
@@ -644,13 +649,13 @@ public class LeadBusinessLogic : BaseLogic
 
 
 
-    public void InsertReference(string connection, string TextValue, string TypeName, string Types, int TypeID)
+    public void InsertReference(string connection, string TextValue, string TypeName, string Types, int TypeID, string username)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
-
+        string sAuditStr = string.Empty;
         try
         {
             manager.Open();
@@ -675,6 +680,11 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+            sAuditStr = "Lead Rererence Text Value: " + TextValue + " added. Record Details : User: " + username;
+
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
             manager.CommitTransaction();
 
         }
@@ -690,13 +700,13 @@ public class LeadBusinessLogic : BaseLogic
     }
 
 
-    public void DeleteReference(string connection, int ID)
+    public void DeleteReference(string connection, int ID, string username)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
-
+        string sAuditStr = string.Empty;
         try
         {
             manager.Open();
@@ -705,6 +715,12 @@ public class LeadBusinessLogic : BaseLogic
 
             dbQry = string.Format("Delete From tblLeadReferences Where ID = {0}", ID);
 
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
+
+            sAuditStr = "Lead Management Lead No: " + ID + " Deleted. Record Details : User: " + username;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -824,14 +840,14 @@ public class LeadBusinessLogic : BaseLogic
     }
 
     //public void AddLead(int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string branch, string LeadStatus, double TotalAmount, int ClosingPer, DateTime ClosingDate, int PredictedClosing, DateTime PredictedClosingDate,string Info1,int Info3,int Info4,int businesstype,int category,int area,int InterestLevel, double PotentialPotAmount, double PotentialWeightedAmount, string PredictedClosingPeriod, string usernam, DataSet dsStages, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
-    public void AddLead(string connection,int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam,string Branchcode, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
+    public void AddLead(string connection,int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam,string Branchcode, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check,string username)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
         int LeadIDD = 0;
-
+        string sAuditStr = string.Empty;
         try
         {
 
@@ -889,6 +905,12 @@ public class LeadBusinessLogic : BaseLogic
                 }
             }
 
+            sAuditStr = "Lead Management Lead Name: " + LeadName + " added. Record Details : User: " + username;
+
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
             manager.CommitTransaction();
         }
         catch (Exception ex)
@@ -901,57 +923,118 @@ public class LeadBusinessLogic : BaseLogic
         }
     }
 
-    public DataSet ListLead(string connection, string txtSearch, string dropDown)
+    public DataSet ListLead(string connection, string txtSearch, string dropDown,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
         string dQry = string.Empty;
-        dbQry = "select A.Lead_No,A.Lead_Name,A.BP_Name,A.Address,A.Mobile,A.Telephone,A.Doc_Status,A.Closing_Date,A.Emp_Name,A.Emp_Id,A.Start_Date,A.Lead_Status,A.Contact_Name,A.Bp_Id,A.chec,A.Predicted_Closing_Date,A.Information1,A.Information3,A.Information4,A.BusinessType,A.Category,A.Area,A.InterestLevel, (Select count(*) from tblLeadHeader where A.Lead_No>=Lead_No) as Row from tblLeadHeader as A Where 1 = 1 ";
+        
        // dbQry = "select A.Id,A.Type,A.TextValue,A.TypeName, (Select count(*) from tblLeadReferences where A.Id>=Id) as Row from tblLeadReferences as A Where A.TextValue like '" + txtSearch + "'" + " and A.TypeName = 'Mode of Contact' Order By A.Id";
 
         if (txtSearch == "" || txtSearch == null)
         {
-
+            if (branchcode != "All")
+            {
+                dbQry = "select A.Lead_No,A.Lead_Name,A.BP_Name,A.Address,A.Mobile,A.Telephone,A.Doc_Status,A.Closing_Date,A.Emp_Name,A.Emp_Id,A.Start_Date,A.Lead_Status,A.Contact_Name,A.Bp_Id,A.chec,A.Predicted_Closing_Date,A.Information1,A.Information3,A.Information4,A.BusinessType,A.Category,A.Area,A.InterestLevel,A.BranchCode, (Select count(*) from tblLeadHeader where A.Lead_No>=Lead_No) as Row from tblLeadHeader as A Where 1 = 1 AND A.BranchCode = '" + branchcode + "'";
+            }
+            else
+            {
+                dbQry = "select A.Lead_No,A.Lead_Name,A.BP_Name,A.Address,A.Mobile,A.Telephone,A.Doc_Status,A.Closing_Date,A.Emp_Name,A.Emp_Id,A.Start_Date,A.Lead_Status,A.Contact_Name,A.Bp_Id,A.chec,A.Predicted_Closing_Date,A.Information1,A.Information3,A.Information4,A.BusinessType,A.Category,A.Area,A.InterestLevel,A.BranchCode, (Select count(*) from tblLeadHeader where A.Lead_No>=Lead_No) as Row from tblLeadHeader as A Where 1 = 1 ";
+            }
         }
         else
         {
+            dbQry = "select A.Lead_No,A.Lead_Name,A.BP_Name,A.Address,A.Mobile,A.Telephone,A.Doc_Status,A.Closing_Date,A.Emp_Name,A.Emp_Id,A.Start_Date,A.Lead_Status,A.Contact_Name,A.Bp_Id,A.chec,A.Predicted_Closing_Date,A.Information1,A.Information3,A.Information4,A.BusinessType,A.Category,A.Area,A.InterestLevel,A.BranchCode, (Select count(*) from tblLeadHeader where A.Lead_No>=Lead_No) as Row from tblLeadHeader as A Where 1 = 1 ";
             if (dropDown == "StartDate")
             {
-                dbQry = dbQry + " AND A.Start_Date = #" + DateTime.Parse(txtSearch.ToString()).ToString("MM/dd/yyyy") + "#";
+                if (branchcode != "All")
+                {
+                    dbQry = dbQry + " AND A.BranchCode = '" + branchcode + "' AND A.Start_Date = #" + DateTime.Parse(txtSearch.ToString()).ToString("MM/dd/yyyy") + "#";
+                }
+                else
+                {
+                    dbQry = dbQry + " AND A.Start_Date = #" + DateTime.Parse(txtSearch.ToString()).ToString("MM/dd/yyyy") + "#";
+                }
             }
             else if (dropDown == "BPName")
             {
-                dbQry = dbQry + " AND A.BP_Name like '%" + txtSearch + "%'";
+                if (branchcode != "All")
+                {
+                    dbQry = dbQry + " AND A.BranchCode = '" + branchcode + "' AND A.BP_Name like '%" + txtSearch + "%'";
+                }
+                else
+                {
+                    dbQry = dbQry + " AND A.BP_Name like '%" + txtSearch + "%'";
+                }
             }
             else if (dropDown == "LeadNo")
             {
-                dbQry = dbQry + " AND A.Lead_No = " + txtSearch + " ";
+                if (branchcode != "All")
+                {
+                    dbQry = dbQry + " AND A.BranchCode = '" + branchcode + "' AND A.Lead_No = " + txtSearch + " ";
+                }
+                else
+                {
+                    dbQry = dbQry + " AND A.Lead_No = " + txtSearch + " ";
+                }
             }
             else if (dropDown == "LeadStatus")
             {
-                dbQry = dbQry + " AND A.Lead_Status like '%" + txtSearch + "%'";
+                if (branchcode != "All")
+                {
+                    dbQry = dbQry + "AND A.BranchCode = '" + branchcode + "' AND A.Lead_Status like '%" + txtSearch + "%'";
+                }
+                else
+                {
+                    dbQry = dbQry + " AND A.Lead_Status like '%" + txtSearch + "%'";
+                }
             }
             else if (dropDown == "DocStatus")
             {
-                dbQry = dbQry + " AND A.Doc_Status like '%" + txtSearch + "%'";
+                if (branchcode != "All")
+                {
+                    dbQry = dbQry + " AND A.BranchCode = '" + branchcode + "' AND A.Doc_Status like '%" + txtSearch + "%'";
+                }
+                else
+                {
+                    dbQry = dbQry + " AND A.Doc_Status like '%" + txtSearch + "%'";
+                }
             }
             else if (dropDown == "Mobile")
             {
-                dbQry = dbQry + " AND A.Mobile like '%" + txtSearch + "%'";
+                if (branchcode != "All")
+                {
+                    dbQry = dbQry + "AND A.BranchCode = '" + branchcode + "' AND A.Mobile like '%" + txtSearch + "%'";
+                }
+                else
+                {
+                    dbQry = dbQry + " AND A.Mobile like '%" + txtSearch + "%'";
+                }
             }
             else if (dropDown == "LeadName")
             {
-                dbQry = dbQry + " AND A.Lead_Name like '%" + txtSearch + "%'";
+                if (branchcode != "All")
+                {
+                    dbQry = dbQry + "AND A.BranchCode = '" + branchcode + "' AND A.Lead_Name like '%" + txtSearch + "%'";
+                }
+                else
+                {
+                    dbQry = dbQry + " AND A.Lead_Name like '%" + txtSearch + "%'";
+                }
             }
             else if (dropDown == "All" || dropDown=="0")
             {
                 
             }
+            else if(branchcode != "All")
+            {
+                dbQry = dbQry + " AND A.BranchCode = '" + branchcode + "'";
+            }
         }
 
-        dbQry = dbQry + " Order By A.Lead_No Desc";
+        dbQry = dbQry + "Order By A.Lead_No Desc";
 
         try
         {
@@ -1015,6 +1098,8 @@ public class LeadBusinessLogic : BaseLogic
                 dc = new DataColumn("Activity_Name");
                 dt.Columns.Add(dc);
                 dc = new DataColumn("Next_Activity");
+                dt.Columns.Add(dc);
+                dc = new DataColumn("BranchCode");
                 dt.Columns.Add(dc);
                 dc = new DataColumn("Row");
                 dt.Columns.Add(dc);
@@ -1082,6 +1167,8 @@ public class LeadBusinessLogic : BaseLogic
                         drNew["Contact_Name"] = dr["Contact_Name"].ToString();
                     if (dr["Bp_Id"] != null)
                         drNew["Bp_Id"] = dr["Bp_Id"].ToString();
+                    if (dr["BranchCode"] != null)
+                        drNew["BranchCode"] = dr["BranchCode"].ToString();
                     if (dr["Row"] != null)
                         drNew["Row"] = co;// dr["Row"].ToString();
                     co = co + 1;
@@ -1162,7 +1249,7 @@ public class LeadBusinessLogic : BaseLogic
 
 
 
-    public void UpdateLead(string connection,int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam,string BranchCode, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check)
+    public void UpdateLead(string connection, int LeadNo, DateTime startDate, string LeadName, string address, string mobile, string Telephone, string BpName, int BpId, string ContactName, int EmpId, string EmpName, string Status, string LeadStatus, DateTime ClosingDate, DateTime PredictedClosingDate, string Info1, int Info3, int Info4, int businesstype, int category, int area, int InterestLevel, string usernam, string BranchCode, DataSet dsCompetitor, DataSet dsActivity, DataSet dsProduct, string check, string username)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -1260,9 +1347,8 @@ public class LeadBusinessLogic : BaseLogic
 
             sAuditStr = "Lead Management LeadNo: " + LeadNo + " got edited. Old Record Details : Lead No=" + OldTransNo + " Bp Name=" + OldCustomer + ", Lead Name = " + OldContact + ", Start Date=" + Olddcreationdate + " DateTime:" + DateTime.Now.ToString("yyyy-MM-dd") + " User: " + usernam;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command) VALUES('{0}','{1}')", sAuditStr, "Edit and Update");
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
-
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);           
 
             manager.CommitTransaction();
         }

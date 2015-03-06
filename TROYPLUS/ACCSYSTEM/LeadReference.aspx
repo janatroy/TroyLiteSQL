@@ -413,6 +413,7 @@
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="ID" Type="Int32" />
+                                <asp:CookieParameter Name="Username" CookieName="LoggedUserName" Type="String" />
                             </DeleteParameters>
                         </asp:ObjectDataSource>
                         <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetReferenceForId"
@@ -425,6 +426,7 @@
                                 <asp:Parameter Name="TypeName" Type="String" />
                                 <asp:Parameter Name="Types" Type="String" />
                                 <asp:Parameter Name="TypeID" Type="Int32" />
+                                <asp:Parameter Name="Username" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="ID" PropertyName="SelectedValue"
@@ -437,6 +439,7 @@
                                 <asp:Parameter Name="TypeName" Type="String" />
                                 <asp:Parameter Name="Types" Type="String" />
                                 <asp:Parameter Name="TypeID" Type="Int32" />
+                                <asp:Parameter Name="Username" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

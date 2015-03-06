@@ -178,7 +178,7 @@
                                                                 <td class="ControlDrpBorder" style="width: 25%;">
                                                                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Always">
                                                                         <ContentTemplate>
-                                                                            <asp:DropDownList ID="cmbProdName" runat="server" Width="100%" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium"
+                                                                            <asp:DropDownList ID="cmbProdName" runat="server" Width="100%" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="chzn-select"
                                                                                 AutoPostBack="true" OnSelectedIndexChanged="LoadForProductName" AppendDataBoundItems="True">
                                                                                 <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select Product</asp:ListItem>
                                                                             </asp:DropDownList>

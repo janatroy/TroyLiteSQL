@@ -164,8 +164,9 @@ public partial class TaskEntry : System.Web.UI.Page
         string connection = Request.Cookies["Company"].Value;
 
         string Username = Request.Cookies["LoggedUserName"].Value;
+        string branch = Request.Cookies["Branch"].Value;
 
-        DataSet ds = bl.GetUserTaskList(connection, textSearch, dropDown,Username);
+        DataSet ds = bl.GetUserTaskList(connection, textSearch, dropDown, Username, branch);
 
         if (ds != null)
         {
@@ -796,7 +797,7 @@ public partial class TaskEntry : System.Web.UI.Page
                 }
             }
 
-            
+            drpBranch.Enabled = false;
             btnUpdate.Enabled = true;
             pnsSave.Visible = true;
             btnCancel.Enabled = true;

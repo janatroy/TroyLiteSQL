@@ -8,7 +8,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
    <script language="javascript" type="text/javascript">
 
-         window.onload = function Showalert() {
+        window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter1.ClientID %>");
@@ -332,11 +332,14 @@
                                                                                                                                 ValidationGroup="purchaseval" Width="80%"></asp:TextBox>
 
                                                                                                                             <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy"
-                                                                                                                                OnClientDateSelectionChanged="checkDate" PopupButtonID="ImageButton1"
+                                                                                                                                 PopupButtonID="ImageButton1"
                                                                                                                                 TargetControlID="txtInvoiveDate" Enabled="True">
                                                                                                                             </cc1:CalendarExtender>
                                                                                                                         </td>
-                                                                                                                        <td style="width: 10%;"></td>
+                                                                                                                       <td style="width: 10%;">&nbsp;
+                                                                                                        <asp:ImageButton ID="ImageButton1" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="False"
+                                                                                                            Width="20px" runat="server" />
+                                                                                                                        </td>
                                                                                                                     </tr>
                                                                                                                     <tr style="height: 2px">
                                                                                                                     </tr>

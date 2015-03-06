@@ -30,7 +30,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                 PanelTemplatesList.Visible = false;
                 PanelTemplateGrids.Visible = false;
                 PanelProductsList.Visible = true;
-                lblMsg.Visible = false;
+               // lblMsg.Visible = false;
                 string dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
                 dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
                 BusinessLogic objChk = new BusinessLogic();
@@ -163,7 +163,9 @@ public partial class FormulaExecution : System.Web.UI.Page
     {
         txtEndDate.Text = "";
         txtStartDate.Text = "";
+        rdoIsPros.Checked = false;
         BindProductsGrid("", "", rdoIsPros.Checked);
+
         //ddCriteria.SelectedIndex = 0;
     }
 
@@ -281,7 +283,7 @@ public partial class FormulaExecution : System.Web.UI.Page
             String strBillno = string.Empty;
             string strTransNo = string.Empty;
 
-            BindFormulasGrid(string.Empty);
+            BindTemplatesGrid(string.Empty);
             ModalPopupExtender1.Show();
             PanelTemplatesList.Visible = true;
         }
@@ -296,7 +298,7 @@ public partial class FormulaExecution : System.Web.UI.Page
         try
         {
             GridViewTemplates.PageIndex = e.NewPageIndex;
-            BindFormulasGrid(string.Empty);
+            BindTemplatesGrid(string.Empty);
             ModalPopupExtender1.Show();
             PanelTemplatesList.Visible = true;
         }
@@ -331,8 +333,8 @@ public partial class FormulaExecution : System.Web.UI.Page
             //cmdUpdate.Enabled = false;
             //cmdUpdate.Visible = false;
             GridViewTemplates.Visible = false;
-            lblMsg.Text = "Please enter the Product Processing Details";
-            lblMsg.Visible = true;
+          //  lblMsg.Text = "Please enter the Product Processing Details";
+           // lblMsg.Visible = true;
             BtnDefnBack.Visible = false;
             //cmdRelease.Visible = false;
             rdComplete.Enabled = true;
@@ -716,8 +718,8 @@ public partial class FormulaExecution : System.Web.UI.Page
             GridViewTemplates.Visible = true;
             lnkBtnAdd.Visible = false;
             //MyAccordion.Visible = false;
-            lblMsg.Visible = true;
-            lblMsg.Text = "Please select one of the available Product Stocks.";
+           // lblMsg.Visible = true;
+          //  lblMsg.Text = "Please select one of the available Product Stocks.";
             BtnDefnBack.Visible = true;
             ModalPopupExtender1.Show();
         }
@@ -735,10 +737,10 @@ public partial class FormulaExecution : System.Web.UI.Page
             PanelTemplatesList.Visible = false;
             PanelTemplateGrids.Visible = false;
             PanelProductsList.Visible = true;
-            lblMsg.Text = string.Empty;
+          //  lblMsg.Text = string.Empty;
             lnkBtnAdd.Visible = true;
             //MyAccordion.Visible = true;
-            lblMsg.Visible = false;
+          //  lblMsg.Visible = false;
             BtnDefnBack.Visible = false;
 
             BusinessLogic objChk = new BusinessLogic();
@@ -877,7 +879,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         string itemCode = string.Empty;
                         DateTime date;
                         string formula = lblFormula.Text;
-                        string inOut = "IN";
+                        string inOut = "Raw Material";
                         string isAssembly = "Y";
                         string dbQry = string.Empty;
                         string comments = txtComments.Text;
@@ -938,7 +940,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                             }
                         }
 
-                        inOut = "OUT";
+                        inOut = "Product";
                         StockLimit = string.Empty;
 
                         foreach (GridViewRow gr in grdOut.Rows)
@@ -975,8 +977,8 @@ public partial class FormulaExecution : System.Web.UI.Page
                         //errorDisplay.AddItem("Added Sucesssfully.", DisplayIcons.GreenTick, false);
                         BindProductsGrid(string.Empty, string.Empty, rdoIsPros.Checked);
                         lnkBtnAdd.Visible = true;
-                        lblMsg.Text = string.Empty;
-                        lblMsg.Visible = false;
+                       // lblMsg.Text = string.Empty;
+                       // lblMsg.Visible = false;
                         //MyAccordion.Visible = true;
                         ModalPopupExtender1.Hide();
 
@@ -1273,7 +1275,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         string itemCode = string.Empty;
                         string date = txtDate.Text;
                         string CompID = GridViewProducts.SelectedDataKey.Value.ToString();
-                        string inOut = "IN";
+                        string inOut = "Raw Material";
                         string isAssembly = "Y";
                         string dbQry = string.Empty;
                         string comments = txtComments.Text;
@@ -1316,7 +1318,7 @@ public partial class FormulaExecution : System.Web.UI.Page
 
                         }
 
-                        inOut = "OUT";
+                        inOut = "Product";
                         StockLimit = string.Empty;
 
                         foreach (GridViewRow gr in grdOut.Rows)
@@ -1435,14 +1437,48 @@ public partial class FormulaExecution : System.Web.UI.Page
         DataSet ds = new DataSet();
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        ds = bl.GetFormulaForName(strFormula);
+        DataSet dstt = bl.GetFormulaForName(strFormula);
 
+        if (dstt != null)
+        {
+            DataTable dttt;
+            DataRow drNew;
+            DataColumn dct;
+            DataSet dstd = new DataSet();
+            dttt = new DataTable();
+
+
+
+            dct = new DataColumn("Row");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("FormulaName");
+            dttt.Columns.Add(dct);
+
+            dstd.Tables.Add(dttt);
+
+            int sno = 1;
 
         if (ds != null)
         {
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                GridViewTemplates.DataSource = ds.Tables[0].DefaultView;
+            if (dstt.Tables[0].Rows.Count > 0)
+                {
+                    for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                    {
+                          drNew = dttt.NewRow();
+                        drNew["Row"] = sno;
+                        drNew["FormulaName"] = Convert.ToString(dstt.Tables[0].Rows[i]["FormulaName"]);
+                        dstd.Tables[0].Rows.Add(drNew);
+                        //if (ds.Tables[0].Rows.Count > 0)
+                        //{
+                        //    drNew = dttt.NewRow();
+                        //    drNew["Row"] = sno;
+                        sno = sno + 1;
+                        //}
+                    }
+                }
+
+            GridViewTemplates.DataSource = dstd.Tables[0].DefaultView;
                 GridViewTemplates.DataBind();
             }
         }
@@ -1512,13 +1548,13 @@ public partial class FormulaExecution : System.Web.UI.Page
                 DataSet dsDetails = new DataSet();
                 command.Transaction = transaction;
 
-                command.CommandText = string.Format("SELECT E.ID,E.CompID,E.ItemCode,P.ProductDesc,P.ProductName,P.Stock,E.Qty FROM tblExecution E Inner Join tblProductMaster P ON P.ItemCode = E.ItemCode Where E.InOut='IN' and E.CompID = {0}", CompID);
+                command.CommandText = string.Format("SELECT E.ID,E.CompID,E.ItemCode,P.ProductDesc,P.ProductName,P.Stock,E.Qty FROM tblExecution E Inner Join tblProductMaster P ON P.ItemCode = E.ItemCode Where E.InOut='Raw Material' and E.CompID = {0}", CompID);
                 adapter = new SqlDataAdapter(command);
                 adapter.Fill(dsIn);
                 grdIn.DataSource = dsIn;
                 grdIn.DataBind();
 
-                command.CommandText = string.Format("SELECT E.ID,E.CompID,E.ItemCode,P.ProductDesc,P.ProductName,P.Stock,E.Qty FROM tblExecution E Inner Join tblProductMaster P ON P.ItemCode = E.ItemCode Where E.InOut='OUT' and E.CompID = {0}", CompID);
+                command.CommandText = string.Format("SELECT E.ID,E.CompID,E.ItemCode,P.ProductDesc,P.ProductName,P.Stock,E.Qty FROM tblExecution E Inner Join tblProductMaster P ON P.ItemCode = E.ItemCode Where E.InOut='Product' and E.CompID = {0}", CompID);
                 adapter = new SqlDataAdapter(command);
                 adapter.Fill(dsOut);
                 grdOut.DataSource = dsOut;

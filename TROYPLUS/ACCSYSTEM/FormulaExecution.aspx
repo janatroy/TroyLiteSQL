@@ -37,29 +37,52 @@
         }
 
         window.onload = function Showalert() {
+       
 
             var txt = document.getElementById("<%= txtStartDate.ClientID %>");
             var txt1 = document.getElementById("<%= txtEndDate.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
-            if (txt.value == "" || txt1.value == "") {
-                // alert(txt.value);
+            var check = document.getElementById("<%= rdoIsPros.ClientID %>");
+
+            var status = $('#rdoIsPros').is(':checked');
+
+           // alert(status);
+
+            //if (status)
+            //{
+
+            //}
+
+            if (txt.value == "" || txt1.value == "" || ($("#rdoIsPros").prop('checked') == true)) {
+               // alert(check);
                 btn.style.visibility = "hidden";
+
+                //if ($("#rdoIsPros-1").prop('checked') == true) {
+                //    //do something
+                //    alert('hi');
+                //    btn.style.visibility = "hidden";
+                //}
                 // when the window is loaded, hide the button if the textbox is empty
             }
 
         }
 
         function EnableDisableButton(sender, target) {
+         
             var first = document.getElementById('<%=txtStartDate.ClientID %>');
 
             var first1 = document.getElementById('<%=txtEndDate.ClientID %>');
 
+            var check1 = document.getElementById("<%= rdoIsPros.ClientID %>");
+
             if (sender.value.length >= 1 && first.value.length >= 1) {
+
+                alert('alert');
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
 
             }
 
-            if (sender.value.length < 1 && first.value.length < 1) {
+            if (sender.value.length < 1 && first.value.length < 1 ) {
 
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
             }
@@ -156,31 +179,39 @@
                                         <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" Width="80px" runat="server"
                                             MaxLength="10" ValidationGroup="salesval">
                                         </asp:TextBox>
+                                           <cc1:CalendarExtender ID="CalEWStartDate" runat="server" Animated="true" Format="dd/MM/yyyy"
+                                                                                                        PopupButtonID="BtnCalDate2" PopupPosition="BottomLeft" TargetControlID="txtStartDate">
+                                                                                                    </cc1:CalendarExtender>
 
 
 
 
                                     </td>
                                     <td style="width: 2%;">
-                                        <script type="text/javascript" language="JavaScript">
+                                         <asp:ImageButton ID="BtnCalDate2" ImageUrl="App_Themes/NewTheme/images/cal.gif"
+                                                   CausesValidation="False" Width="20px" runat="server" TabIndex="8" />
+                                       <%-- <script type="text/javascript" language="JavaScript">
                                             new tcal({ 'formname': 'aspnetForm', 'controlname': GettxtBoxName('txtStartDate') });
-                                        </script>
+                                        </script>--%>
                                     </td>
                                     <td style="width: 15%" class="NewBox">
                                         <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" Width="80px" runat="server" MaxLength="10"
                                             ValidationGroup="salesval"></asp:TextBox>
 
-
-
+                                           <cc1:CalendarExtender ID="CalEWEndDate" runat="server" Animated="true" Format="dd/MM/yyyy"
+                                                     PopupButtonID="BtnCalDate21" PopupPosition="BottomLeft" TargetControlID="txtEndDate">
+                                                                                                    </cc1:CalendarExtender>
 
                                     </td>
                                     <td style="width: 2%;">
-                                        <script type="text/javascript" language="JavaScript">
+                                         <asp:ImageButton ID="BtnCalDate21" ImageUrl="App_Themes/NewTheme/images/cal.gif"
+                                                   CausesValidation="False" Width="20px" runat="server" TabIndex="8" />
+                                       <%-- <script type="text/javascript" language="JavaScript">
                                             new tcal({ 'formname': 'aspnetForm', 'controlname': GettxtBoxName('txtEndDate') });
-                                        </script>
+                                        </script>--%>
                                     </td>
                                     <td style="width: 6%; color: #000000;">
-                                        <asp:CheckBox ID="rdoIsPros" runat="server" Text="Processed" />
+                                        <asp:CheckBox  ID="rdoIsPros" runat="server" Text="Processed" />
                                     </td>
                                     <td style="width: 8%; text-align: left">
                                         <asp:Button ValidationGroup="search" ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" OnClick="btnSearch_Click" runat="server"
@@ -214,23 +245,28 @@
                                     </tr>
                                     <tr style="width: 100%;">
                                         <td style="width: 100%">
-                                            <div style="text-align: center">
+                                          <%--  <div style="text-align: center">
                                                 <asp:Label ID="lblMsg" runat="server" Font-Bold="true" Font-Size="15px" Width="90%" CssClass="info" SkinID="skinHistoryMsg"></asp:Label>
-                                            </div>
+                                            </div>--%>
                                             <asp:Panel ID="PanelTemplatesList" runat="server" Visible="false" Style="text-align: center">
                                                 <asp:GridView ID="GridViewTemplates" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                                                     Width="814px" AllowPaging="True" DataKeyNames="FormulaName" EmptyDataText="No Stock Definations found. Please add new Stock Mgmt Defination."
                                                     OnPageIndexChanging="GridViewTemplates_PageIndexChanging" OnSelectedIndexChanged="GridViewTemplates_SelectedIndexChanged"
-                                                    PageSize="7" OnRowCreated="GridViewTemplates_RowCreated" OnRowDataBound="GridViewTemplates_RowDataBound" CssClass="someClass">
+                                                    PageSize="7" OnRowCreated="GridViewTemplates_RowCreated" OnRowDataBound="GridViewTemplates_RowDataBound" >
                                                     <EmptyDataRowStyle CssClass="GrdContent" />
+                                                    
                                                     <Columns>
-                                                        <asp:BoundField DataField="FormulaName" HeaderText="Process Products" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px" HeaderStyle-BorderColor="Gray" />
-                                                        <asp:CommandField ShowSelectButton="True" ControlStyle-ForeColor="#3464cc" SelectText="Process this Product" ControlStyle-Font-Size="small" HeaderStyle-BackColor="#cccccc" HeaderStyle-BorderColor="Gray">
-                                                            <ItemStyle Width="20%" HorizontalAlign="Center" />
-                                                            <ControlStyle ForeColor="#3464CC"></ControlStyle>
+                                                         <asp:BoundField DataField="Row" HeaderText="#"  HeaderStyle-Font-Bold="true" HeaderStyle-Width="45px" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px" HeaderStyle-BorderColor="Gray" />
+                                                        <asp:BoundField DataField="FormulaName" HeaderText="Name of the Products to be process" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-HorizontalAlign="Left" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px" HeaderStyle-BorderColor="Gray" />
+                                                       
+                                                        <asp:CommandField ShowSelectButton="True" ItemStyle-BorderColor="White" ControlStyle-BorderColor="White"  FooterStyle-BorderWidth="0px" HeaderStyle-BorderWidth="0px" ItemStyle-BorderWidth="0px" ItemStyle-HorizontalAlign="Left" ButtonType="Image" ControlStyle-ForeColor="Black" SelectText=" Process " ControlStyle-Font-Size="13px" >
+                                                            <ItemStyle Width="20%" HorizontalAlign="Left" />
+                                                            <ControlStyle></ControlStyle>
                                                         </asp:CommandField>
+                                                           
                                                     </Columns>
                                                     <EmptyDataRowStyle CssClass="GrdContent" />
+                                                    
                                                     <PagerTemplate>
                                                         <table>
                                                             <tr>
@@ -272,18 +308,18 @@
                                                     <cc1:TabContainer ID="tabs2" runat="server" Width="100%" ActiveTabIndex="0" CssClass="fancy fancy-green">
                                                         <cc1:TabPanel ID="tabMaster" runat="server" HeaderText="Process Products">
                                                             <ContentTemplate>
-                                                                <table style="width: 800px; border: 0px solid #86b2d1" align="left" cellpadding="0"
+                                                                <table style="width: 811px; border: 0px solid #86b2d1" align="left" cellpadding="0"
                                                                     cellspacing="0" class="accordionContent">
                                                                     <tr class="tblLeft" style="width: 100%">
                                                                         <td style="width: 100%" colspan="5">
                                                                             <table width="100%">
                                                                                 <tr>
-                                                                                    <td style="width: 25%" class="ControlLabelproject1">Name of Product 
+                                                                                    <td style="width: 25%" class="ControlLabelmanufacture1">Name of Product 
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:Label ID="lblFormula" runat="server" Font-Bold="True"></asp:Label>
                                                                                     </td>
-                                                                                    <td style="width: 20%" class="ControlLabelproject1">
+                                                                                    <td style="width: 23%" class="ControlLabelmanufacture1">
                                                                                         <asp:CompareValidator ControlToValidate="txtDate" Operator="DataTypeCheck" Type="Date"
                                                                                             ValidationGroup="FormulaInfo" ErrorMessage="Please Select a valid date(dd/MM/yyyy)"
                                                                                             runat="server" ID="cmpValtxtDate"></asp:CompareValidator>
@@ -306,8 +342,10 @@
 
                                                                                     <td align="left" style="width: 10%"></td>
                                                                                 </tr>
+                                                                              <tr style="height:3px">
+                                                                                                    </tr>
                                                                                 <tr class="tblLeft">
-                                                                                    <td style="width: 25%" class="ControlLabelproject1">Processing Completed?
+                                                                                    <td style="width: 25%" class="ControlLabelmanufacture1">Processing Completed?
                                                                                     </td>
                                                                                     <td style="width: 20%;" class="ControlTextBox3">
                                                                                         <asp:RadioButtonList ID="rdComplete" runat="server" RepeatDirection="Horizontal">
@@ -315,7 +353,7 @@
                                                                                             <asp:ListItem Text="No" Selected="True" Value="N"></asp:ListItem>
                                                                                         </asp:RadioButtonList>
                                                                                     </td>
-                                                                                    <td style="width: 20%" class="ControlLabelproject1">Comments
+                                                                                    <td style="width: 20%" class="ControlLabelmanufacture1">Comments
                                                                                     </td>
                                                                                     <td style="width: 17%;" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtComments" runat="server" Width="50px" MaxLength="250" Height="30px"
@@ -329,38 +367,42 @@
                                                                     <tr class="tblLeft">
                                                                         <td>
                                                                             <table width="100%">
+                                                                                 <tr style="height:25px">
+                                                                                                    </tr>
                                                                                 <tr>
                                                                                     <td style="width: 100%; font-size: larger; font-weight: bold">Raw Materials
                                                                                     </td>
                                                                                 </tr>
+                                                                                 <tr style="height:12px">
+                                                                                                    </tr>
                                                                                 <tr>
                                                                                     <td style="width: 100%">
-                                                                                        <asp:GridView ID="grdIn" runat="server" Width="100%" AutoGenerateColumns="False" CssClass="someClass"
+                                                                                           <div style="text-align: left; margin: -2px 0px 0px 0px;">
+                                                                                        <asp:GridView ID="grdIn" runat="server" Width="100%" AutoGenerateColumns="False" 
                                                                                             AllowPaging="True" OnRowCreated="grdIn_RowCreated" DataKeyNames="ID" EmptyDataText="No Input Products to Found."
                                                                                             OnDataBound="grdIn_DataBound" OnRowDataBound="grdIn_RowDataBound">
                                                                                             <EmptyDataRowStyle Font-Bold="False" />
 
-                                                                                            <HeaderStyle Height="30px" Width="20%" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
-                                                                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" ForeColor="#0567AE" />
+                                                                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
+                                                                                              <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
 
                                                                                             <Columns>
                                                                                                 <asp:BoundField HeaderText="Component ID" ReadOnly="True" DataField="itemCode" HeaderStyle-Width="20%" HeaderStyle-BorderColor="Gray" />
 
-                                                                                                <asp:BoundField HeaderText="Description" ReadOnly="True" HeaderStyle-Width="20%" DataField="ProductDesc" HeaderStyle-BorderColor="Gray" />
+                                                                                                <asp:BoundField HeaderText="Description" ReadOnly="True" HeaderStyle-Width="30%" DataField="ProductDesc" HeaderStyle-BorderColor="Gray" />
 
                                                                                                 <asp:BoundField HeaderText="Component Name" ReadOnly="True" HeaderStyle-Width="20%" DataField="ProductName" HeaderStyle-BorderColor="Gray" />
 
                                                                                                 <asp:TemplateField HeaderText="Qty." HeaderStyle-BorderColor="Gray">
-                                                                                                    <ItemStyle Width="20%" />
+                                                                                                    <ItemStyle Width="10%" />
                                                                                                     <ItemTemplate>
-                                                                                                        <br />
-                                                                                                        <asp:TextBox ID="txtQty" runat="server" Text='<%# Bind("Qty") %>' CssClass="cssTextBox"
+                                                                                                        <asp:TextBox ID="txtQty" runat="server" Text='<%# Bind("Qty") %>' CssClass="cssTextBoxmanufa"
                                                                                                             Width="50px"></asp:TextBox>
                                                                                                         <asp:HiddenField ID="lblID" runat="Server" Value='<%# Bind("ID") %>' />
                                                                                                         <asp:HiddenField ID="hdStockLimlt" runat="Server" Value='<%# Bind("Stock") %>' />
                                                                                                         <asp:RequiredFieldValidator ValidationGroup="FormulaInfo" ID="rqQty" runat="server"
                                                                                                             Display="Dynamic" ControlToValidate="txtQty" ErrorMessage="*"></asp:RequiredFieldValidator>
-                                                                                                        <br />
+                                                                                                        
                                                                                                     </ItemTemplate>
                                                                                                 </asp:TemplateField>
                                                                                                 <asp:BoundField HeaderText="Stock Limit" HeaderStyle-Width="20%" ReadOnly="True" DataField="Stock" HeaderStyle-BorderColor="Gray" />
@@ -395,34 +437,39 @@
                                                                                                 </table>
                                                                                             </PagerTemplate>
                                                                                         </asp:GridView>
+                                                                                               </div>
                                                                                     </td>
                                                                                 </tr>
+                                                                                 <tr style="height:25px">
+                                                                                                    </tr>
                                                                                 <tr>
-                                                                                    <td style="width: 100%; font-size: larger; font-weight: bold">Product
+                                                                                    <td style="width: 100%; font-size: larger; font-weight: bold">Products
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tr>
+                                                                                 <tr style="height:12px">
+                                                                                                    </tr>
+                                                                                <tr >
                                                                                     <td style="width: 100%">
-                                                                                        <asp:GridView ID="grdOut" runat="server" Width="100%" AutoGenerateColumns="False" CssClass="someClass"
+                                                                                           <div style="text-align: left; margin: -2px 0px 0px 0px;">
+                                                                                        <asp:GridView ID="grdOut" runat="server" Width="100%" AutoGenerateColumns="False" 
                                                                                             OnRowDataBound="grdOut_RowDataBound" AllowPaging="True" OnRowCreated="grdOut_RowCreated"
                                                                                             DataKeyNames="ID" EmptyDataText="No Input Products to Found.">
                                                                                             <EmptyDataRowStyle Font-Bold="False" />
 
-                                                                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
-                                                                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" ForeColor="#0567AE" />
+                                                                                            <HeaderStyle Height="30px"  HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
+                                                                                              <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
 
                                                                                             <Columns>
 
                                                                                                 <asp:BoundField HeaderText="Component ID" HeaderStyle-Width="20%" ReadOnly="True" DataField="itemCode" HeaderStyle-BorderColor="Gray" />
-                                                                                                <asp:BoundField HeaderText="Description" HeaderStyle-Width="20%" ReadOnly="True" DataField="ProductDesc" HeaderStyle-BorderColor="Gray" />
-                                                                                                <asp:BoundField HeaderText="Component Name" ReadOnly="True" HeaderStyle-Width="20%" DataField="ProductName" HeaderStyle-BorderColor="Gray" />
+                                                                                                <asp:BoundField HeaderText="Description" HeaderStyle-Width="30%" ReadOnly="True" DataField="ProductDesc" HeaderStyle-BorderColor="Gray" />
+                                                                                                <asp:BoundField HeaderText="Component Name" ReadOnly="True" HeaderStyle-Width="30%" DataField="ProductName" HeaderStyle-BorderColor="Gray" />
 
-                                                                                                <asp:TemplateField HeaderText="Qty." HeaderStyle-Width="20%" HeaderStyle-BorderColor="Gray">
+                                                                                                <asp:TemplateField HeaderText="Qty." HeaderStyle-BorderColor="Gray">
 
                                                                                                     <ItemStyle Width="20%" />
-                                                                                                    <ItemTemplate>
-                                                                                                        <br />
-                                                                                                        <asp:TextBox ID="txtQty" runat="server" Text='<%# Bind("Qty") %>' CssClass="cssTextBox"
+                                                                                                    <ItemTemplate>                                                                                                  
+                                                                                                        <asp:TextBox ID="txtQty" runat="server" Text='<%# Bind("Qty") %>' CssClass="cssTextBoxmanufa"
                                                                                                             Width="50px"></asp:TextBox>
                                                                                                         <asp:HiddenField ID="hdStockLimlt" runat="Server" Value='<%# Bind("Stock") %>' />
                                                                                                         <asp:RequiredFieldValidator ValidationGroup="FormulaInfo" ID="rqQty" runat="server"
@@ -433,7 +480,7 @@
                                                                                                             ID="cmpValtxtDate"></asp:CompareValidator>
                                                                                                     </ItemTemplate>
                                                                                                 </asp:TemplateField>
-                                                                                                <asp:BoundField HeaderText="  " ReadOnly="True" HeaderStyle-Width="20%" HeaderStyle-BorderColor="Gray" />
+                                                                                            <%--   <asp:BoundField HeaderText="  " ReadOnly="True" HeaderStyle-Width="20%" HeaderStyle-BorderColor="Gray" />--%>
                                                                                             </Columns>
                                                                                             <PagerTemplate>
                                                                                                 <table style="border-color: white">
@@ -465,6 +512,7 @@
                                                                                                 </table>
                                                                                             </PagerTemplate>
                                                                                         </asp:GridView>
+                                                                                               </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -475,6 +523,8 @@
                                                                         <td style="width: 100%;">
 
                                                                             <table style="width: 100%;">
+                                                                                 <tr style="height:12px">
+                                                                                                    </tr>
                                                                                 <tr>
                                                                                     <td style="width: 25%"></td>
                                                                                     <td style="width: 25%" align="right">
@@ -525,7 +575,7 @@
                                                 <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                                 <Columns>
                                                     <asp:BoundField DataField="CDate" HeaderText="Date Created" DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="FormulaName" HeaderText="Definition" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="FormulaName" ItemStyle-HorizontalAlign="Left" HeaderText="Definition" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="IsReleased" HeaderText="Processed" HeaderStyle-BorderColor="Gray" />
                                                     <asp:TemplateField ItemStyle-CssClass="command" ItemStyle-Width="50px" HeaderText="Process" HeaderStyle-BorderColor="Gray">
                                                         <ItemTemplate>

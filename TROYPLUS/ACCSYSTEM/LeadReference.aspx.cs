@@ -483,6 +483,8 @@ public partial class LeadReference : System.Web.UI.Page
         {
             e.InputParameters["Types"] = "ACTIVITY";
         }
+
+        e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)
@@ -504,6 +506,6 @@ public partial class LeadReference : System.Web.UI.Page
         {
             e.InputParameters["Types"] = "ACTIVITY";
         }
-
+        e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
 }
