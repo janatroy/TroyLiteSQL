@@ -572,6 +572,58 @@ public partial class ProdMaster : System.Web.UI.Page
                 GrdViewItems.DataBind();
             }
 
+
+
+
+            DataSet dstt = bl.ListBranchInfo(connection, "", "");
+
+            DataTable dttt;
+            DataRow drNewt;
+            DataColumn dctt;
+            DataSet dsttt = new DataSet();
+            dttt = new DataTable();
+
+            dctt = new DataColumn("Row");
+            dttt.Columns.Add(dctt);
+
+            dctt = new DataColumn("BranchName");
+            dttt.Columns.Add(dctt);
+
+            dctt = new DataColumn("Branchcode");
+            dttt.Columns.Add(dctt);
+
+            dctt = new DataColumn("Stock");
+            dttt.Columns.Add(dctt);
+
+            dsttt.Tables.Add(dttt);
+
+            if (dstt != null)
+            {
+                if (dstt.Tables[0].Rows.Count > 0)
+                {
+                    for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                    {
+                        drNewt = dttt.NewRow();
+                        drNewt["Row"] = Convert.ToInt32(dstt.Tables[0].Rows[i]["Row"]);
+                        drNewt["BranchName"] = Convert.ToString(dstt.Tables[0].Rows[i]["BranchName"]);
+                        drNewt["Branchcode"] = Convert.ToString(dstt.Tables[0].Rows[i]["Branchcode"]);
+                        drNewt["Stock"] = "0";
+                        dsttt.Tables[0].Rows.Add(drNewt);
+                    }
+                }
+
+                BulkEditGridView2.DataSource = dsttt.Tables[0].DefaultView;
+                BulkEditGridView2.DataBind();
+            }
+            else
+            {
+
+                BulkEditGridView2.DataSource = null;
+                BulkEditGridView2.DataBind();
+            }
+
+
+
             BulkEditGridView1.DataSource = null;
             BulkEditGridView1.DataBind();
 
@@ -1437,6 +1489,19 @@ public partial class ProdMaster : System.Web.UI.Page
                         GrdViewItems.DataBind();
                     }
 
+
+                    DataSet dsttt = bl.ListProductStocks(connection, ItemCode);
+                    if (dsttt != null && dsttt.Tables[0].Rows.Count > 0)
+                    {
+                        BulkEditGridView2.DataSource = dsttt.Tables[0];
+                        BulkEditGridView2.DataBind();
+                    }
+                    else
+                    {
+                        BulkEditGridView2.DataSource = null;
+                        BulkEditGridView2.DataBind();
+                    }
+
                     DataSet dstt = bl.ListProductPriceHistory(connection, ItemCode);
                     if (dstt != null && dstt.Tables[0].Rows.Count > 0)
                     {
@@ -2039,7 +2104,68 @@ public partial class ProdMaster : System.Web.UI.Page
                 Deviation = Convert.ToInt32(txtAllowedPriceAdd.Text);       
                 IsActive = drpIsActiveAdd.SelectedValue;
 
-                bl.InsertProduct(connection, ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Stock, Rate, Unit, BuyUnit, VAT, Discount, BuyRate, BuyVAT, BuyDiscount, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, productlevel, MRPEffDate, DPEffDate, NLCEffDate, Username, Outdated, Deviation, IsActive, dstest);
+
+                DataSet dstest1 = new DataSet();
+                
+                DataTable dttt;
+                DataRow drNewtt;
+                DataColumn dctt;
+
+                dttt = new DataTable();
+
+                dctt = new DataColumn("CategoryID");
+                dttt.Columns.Add(dctt);
+
+                dctt = new DataColumn("BranchName");
+                dttt.Columns.Add(dctt);
+
+                dctt = new DataColumn("Branchcode");
+                dttt.Columns.Add(dctt);
+
+                dctt = new DataColumn("ProductName");
+                dttt.Columns.Add(dctt);
+
+                dctt = new DataColumn("Stock");
+                dttt.Columns.Add(dctt);
+
+                dctt = new DataColumn("ProductDesc");
+                dttt.Columns.Add(dctt);
+
+                dctt = new DataColumn("Model");
+                dttt.Columns.Add(dctt);
+
+                dctt = new DataColumn("ItemCode");
+                dttt.Columns.Add(dctt);
+
+                dstest1.Tables.Add(dttt);
+
+                string BranchName1 = "";
+                string Branchcode1 = "";
+                string Stock1 = "";
+
+                for (int vLoop = 0; vLoop < BulkEditGridView2.Rows.Count; vLoop++)
+                {
+                    Label BranchName = (Label)BulkEditGridView2.Rows[vLoop].FindControl("txtBranchName");
+                    BranchName1 = BranchName.Text;
+                    Label Branchcode = (Label)BulkEditGridView2.Rows[vLoop].FindControl("txtBranchcode");
+                    Branchcode1 = Branchcode.Text;
+                    Label Stock2 = (Label)BulkEditGridView2.Rows[vLoop].FindControl("txtStock");
+                    Stock1 = Stock2.Text;
+                    
+                    drNewtt = dttt.NewRow();
+                    drNewtt["CategoryID"] = CategoryID;
+                    drNewtt["BranchName"] = BranchName1;
+                    drNewtt["Branchcode"] = Branchcode1;
+                    drNewtt["Stock"] = Stock1;
+                    drNewtt["ProductName"] = ProductName;
+                    drNewtt["ItemCode"] = ItemCode;
+                    drNewtt["Model"] = Model;
+                    drNewtt["ProductDesc"] = ProductDesc;
+                    dstest1.Tables[0].Rows.Add(drNewtt);
+                }
+
+
+                bl.InsertProduct(connection, ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Stock, Rate, Unit, BuyUnit, VAT, Discount, BuyRate, BuyVAT, BuyDiscount, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, productlevel, MRPEffDate, DPEffDate, NLCEffDate, Username, Outdated, Deviation, IsActive, dstest, dstest1);
 
                 GrdViewProduct.DataBind();
 

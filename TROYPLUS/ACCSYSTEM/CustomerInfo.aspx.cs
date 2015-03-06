@@ -54,6 +54,8 @@ public partial class CustomerInfo : System.Web.UI.Page
 
                 GrdViewLedger.PageSize = 8;
 
+                string branch = Request.Cookies["Branch"].Value;
+
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -108,6 +110,7 @@ public partial class CustomerInfo : System.Web.UI.Page
         GridSource.SelectParameters.Add(new CookieParameter("connection", "Company"));
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
     }
 
     private string GetConnectionString()
