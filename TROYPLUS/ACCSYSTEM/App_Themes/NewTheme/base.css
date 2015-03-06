@@ -8137,7 +8137,7 @@ legend
 .cssTextBox
 {
     background: transparent;
-    width: 96% !important;
+    width: 100% !important;
     float: left;
     margin: 0px 0px 0px 1px;
     border: none;
@@ -8146,7 +8146,7 @@ legend
 .cssTextBoxmanu
 {
     background: transparent;
-    width: 96px !important;
+    width: 30px !important;
     float: left;
     margin: 0px 0px 0px 1px;
     border: none;

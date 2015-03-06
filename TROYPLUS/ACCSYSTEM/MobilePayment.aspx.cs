@@ -170,7 +170,7 @@ public partial class MobilePayment : System.Web.UI.Page
 
             BusinessLogic objBus = new BusinessLogic(conn);
             int transNo = 0;
-            objBus.InsertPayment(out transNo, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, "0", Request.Cookies["LoggedUserName"].Value);
+            objBus.InsertPayment(out transNo, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, "0", Request.Cookies["LoggedUserName"].Value,"");
 
             txtAmountAdd.Text = string.Empty;
             txtRefNoAdd.Text = string.Empty;
