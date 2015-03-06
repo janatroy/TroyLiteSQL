@@ -343,8 +343,6 @@ public partial class LeadMgmt : System.Web.UI.Page
         cmbCustomer.DataBind();
         cmbCustomer.DataTextField = "LedgerName";
         cmbCustomer.DataValueField = "LedgerID";
-
-
     }
 
     private void loadStages()
