@@ -6,55 +6,51 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <style id="Style1" runat="server">
-        
-        
-        .fancy-green .ajax__tab_header
-        {
-	        background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
-	        cursor:pointer;
+        .fancy-green .ajax__tab_header {
+            background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
+            cursor: pointer;
         }
-        .fancy-green .ajax__tab_hover .ajax__tab_outer, .fancy-green .ajax__tab_active .ajax__tab_outer
-        {
-	        background: url(App_Themes/NewTheme/Images/green_left_Tab.gif) no-repeat left top;
+
+        .fancy-green .ajax__tab_hover .ajax__tab_outer, .fancy-green .ajax__tab_active .ajax__tab_outer {
+            background: url(App_Themes/NewTheme/Images/green_left_Tab.gif) no-repeat left top;
         }
-        .fancy-green .ajax__tab_hover .ajax__tab_inner, .fancy-green .ajax__tab_active .ajax__tab_inner
-        {
-	        background: url(App_Themes/NewTheme/Images/green_right_Tab.gif) no-repeat right top;
+
+        .fancy-green .ajax__tab_hover .ajax__tab_inner, .fancy-green .ajax__tab_active .ajax__tab_inner {
+            background: url(App_Themes/NewTheme/Images/green_right_Tab.gif) no-repeat right top;
         }
-        .fancy .ajax__tab_header
-        {
-	        font-size: 13px;
-	        font-weight: bold;
-	        color: #000;
-	        font-family: sans-serif;
+
+        .fancy .ajax__tab_header {
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+            font-family: sans-serif;
         }
-        .fancy .ajax__tab_active .ajax__tab_outer, .fancy .ajax__tab_header .ajax__tab_outer, .fancy .ajax__tab_hover .ajax__tab_outer
-        {
-	        height: 46px;
+
+            .fancy .ajax__tab_active .ajax__tab_outer, .fancy .ajax__tab_header .ajax__tab_outer, .fancy .ajax__tab_hover .ajax__tab_outer {
+                height: 46px;
+            }
+
+            .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
+                height: 46px;
+                margin-left: 16px; /* offset the width of the left image */
+            }
+
+            .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
+                margin: 16px 16px 0px 0px;
+            }
+
+        .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_active .ajax__tab_tab {
+            color: #fff;
         }
-        .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner
-        {
-	        height: 46px;
-	        margin-left: 16px; /* offset the width of the left image */
+
+        .fancy .ajax__tab_body {
+            font-family: Arial;
+            font-size: 10pt;
+            border-top: 0;
+            border: 1px solid #999999;
+            padding: 8px;
+            background-color: #ffffff;
         }
-        .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab
-        {
-	        margin: 16px 16px 0px 0px;
-        }
-        .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_active .ajax__tab_tab
-        {
-	        color: #fff;
-        }
-        .fancy .ajax__tab_body
-        {
-	        font-family: Arial;
-	        font-size: 10pt;
-	        border-top: 0;
-	        border:1px solid #999999;
-	        padding: 8px;
-	        background-color: #ffffff;
-        }
-        
     </style>
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
@@ -155,7 +151,7 @@
                                                                                 <tr style="height:5px">
                                                                                                     </tr>
                                                                                 <tr>
-                                                                                    <td class="ControlLabelproject1" style="width: 28%">
+                                                                                    <td class="ControlLabelproject1" style="width: 33%">
                                                                                         Name of Product to be Manufactured
                                                                                     </td>
                                                                                     <td style="width: 2%">
@@ -169,8 +165,8 @@
                                                                                         
                                                                                     </td>
                                                                                     <td style="width: 25%; text-align: left">
-                                                                                        <asp:Button ID="Button1" Style="width: 200px; height:23px;" ValidationGroup="salesval" runat="server" Text="Define Specification"  Font-Bold="true" Font-Size="15px" BackColor="Wheat"  EnableTheming="false" 
-                                                                                            SkinID="skinBtnAddProduct" OnClick="Button1_Click" />
+                                                                                        <asp:Button ID="Button1" Style="width: 148px; height:23px;" ValidationGroup="salesval" runat="server" Text="Define Specification"  Font-Bold="true" Font-Size="12px"  Width="40%"  EnableTheming="false" 
+                                                                                            OnClick="Button1_Click" />
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr style="height:5px">
@@ -179,72 +175,79 @@
                                                                                                     </tr>
                                                                                 <tr style="height:5px">
                                                                                                     </tr>
+                                                                                <tr align="left" style="font-size:12px; font-weight:bold">
+                                                                                    <td>
+                                                                                        <asp:Label ID="titlehead" ForeColor="#0567AE" Font-Size="14px" runat="server" ></asp:Label>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                 <tr style="height:10px">
+                                                                                                    </tr>
                                                                                
                                                                             </table>
                                                                         </asp:Panel>
                                                                         <asp:Panel ID="salesPanel" runat="server" Visible="False">
-                                                                            <table  width="100%" cellpadding="1"   style=" font-size:12px; font-weight:bold; border: 1px solid #5078B3" ;>
-                                                                                <tr class="HeadataRow" >
-                                                                                    <td style="font-size:14px; width:14%; background:#cccccc; font-weight:bold;">
+                                                                            <table  width="100%" cellpadding="1"   style=" font-size:12px; font-weight:bold;">
+                                                                                <tr runat="server" style="height:30px;">
+                                                                                    <td style="font-size:14px; width:14%; background:#cccccc; font-weight:bold; border: 1px solid Gray;">
                                                                                         Component ID
                                                                                     </td>
-                                                                                    <td  style="font-size:14px; width:15%; background:#cccccc; font-weight:bold;">
+                                                                                    <td  style="font-size:14px; width:15%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
                                                                                         Component Name
                                                                                     </td>
-                                                                                    <td  style="font-size:14px; width:13%; background:#cccccc; font-weight:bold;">
+                                                                                    <td  style="font-size:14px; width:13%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
                                                                                         Description
                                                                                     </td>
-                                                                                    <td  style="font-size:14px; width:5%; background:#cccccc; font-weight:bold;">
+                                                                                    <td  style="font-size:14px; width:5%; background:#cccccc; font-weight:bold; border: 1px solid Gray;">
                                                                                         Qty.
                                                                                     </td>
-                                                                                    <td  style="font-size:14px; width:16%; background:#cccccc; font-weight:bold;">
-                                                                                      Types of Component
+                                                                                    <td  style="font-size:14px; width:16%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
+                                                                                      Type of Component
                                                                                     </td>
-                                                                                      <td style="font-size:14px; width:16%; background:#cccccc; font-weight:bold;">
-                                                                                        UOM
+                                                                                      <td style="font-size:14px; width:16%; background:#cccccc; font-weight:bold;  border: 1px solid Gray;">
+                                                                                        Unit of Measure
                                                                                     </td>
 
                                                                                 </tr>
                                                                                 <tr valign="middle">
                                                                                     <td class="ControlDrpBorder" style=" width:14%;">
                                                                                         <div style="font-family: 'Trebuchet MS';">
-                                                                                            <asp:DropDownList ID="cmbProdAdd"  Width="219px" Height="23px" ItemStyle-Font-Size="15px" runat="server" Font-Bold="false" AppendDataBoundItems="true" 
+                                                                                            <asp:DropDownList ID="cmbProdAdd"   Width="219px" Height="23px" Font-Size="15px" ItemStyle-Font-Size="15px" runat="server" Font-Bold="false" AppendDataBoundItems="true" 
                                                                                                  AutoPostBack="true" ForeColor="#0567AE" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" 
                                                                                                 OnSelectedIndexChanged="cmbProdAdd_SelectedIndexChanged">
                                                                                                 <asp:ListItem  Text="Select Component" Value="0"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                         </div>
                                                                                     </td>
-                                                                                    <td valign="top" class="ControlTextBox3"  style=" width:15%;">
-                                                                                        <asp:TextBox ID="lblProdNameAdd" runat="server" CssClass="cssTextBoxmanu" Width="98%"
+                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:15%;">
+                                                                                        <asp:TextBox ID="lblProdNameAdd" ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" CssClass="cssTextBoxmanu" Width="98%"
                                                                                             ReadOnly="true"></asp:TextBox>
                                                                                     </td>
-                                                                                    <td valign="top" class="ControlTextBox3"  style=" width:13%;">
-                                                                                        <asp:TextBox ID="lblProdDescAdd" runat="server" CssClass="cssTextBoxmanu" Width="98%"
+                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:13%;">
+                                                                                        <asp:TextBox ID="lblProdDescAdd" ForeColor="#0567AE" Font-Size="15px" runat="server" Font-Bold="true" CssClass="cssTextBoxmanu" Width="98%"
                                                                                             ReadOnly="true"></asp:TextBox>
                                                                                     </td>
-                                                                                    <td  class="ControlTextBox3"  style=" width:5%;">
+                                                                                    <td  class="ControlTextBoxmanu"  style=" width:5%;">
                                                                                          <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtQtyAdd" />
-                                                                                        <asp:TextBox ID="txtQtyAdd" style="text-align:center" runat="server" Width="98%" CssClass="cssTextBoxmanu" ValidationGroup="product"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txtQtyAdd" style="text-align:center" ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" Width="98%" CssClass="cssTextBoxmanu" ValidationGroup="product"></asp:TextBox>
                                                                                     </td>
-                                                                                    <td valign="top" class="ControlTextBox30"  style=" width:16%;">
+                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:16%;">
                                                                                        
-                                                                                            <asp:DropDownList ID="ddType"  runat="server" CssClass="drpDownListMedium"  BackColor = "#cccccc" Width="98%" height="25px" style="border:1px solid black">
+                                                                                            <asp:DropDownList ID="ddType"  ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server" CssClass="drpDownListMedium"  Width="117%" height="25px" >
                                                                                                 <asp:ListItem Text="Raw Material" Value="Raw Material"></asp:ListItem>
                                                                                                 <asp:ListItem Text="Product" Value="Product"></asp:ListItem>
                                                                                                  <%-- <asp:ListItem Text="By-Product" Value="OUT"></asp:ListItem>--%>
                                                                                             </asp:DropDownList>
                                                                                        
                                                                                     </td>
-                                                                                    <td valign="top" class="ControlTextBox30"  style=" width:16%;">
+                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:16%;">
                                                                                       
-                                                                                            <asp:DropDownList ID="ddUnit" runat="server"  Width="98%"  DataTextField="Unit" DataValueField="Unit" DataSourceID="srcUnitMntAdd" CssClass="drpDownListMedium"  BackColor = "#cccccc" height="25px" style="border:1px solid black">
+                                                                                            <asp:DropDownList ID="ddUnit" ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server"  Width="117%"  DataTextField="Unit" DataValueField="Unit" DataSourceID="srcUnitMntAdd" CssClass="drpDownListMedium" height="25px" >
                                                                                                
                                                                                             </asp:DropDownList>
                                                                                        
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tr>
+                                                                              <tr>
                                                                                     <td  style=" width:14%;">
                                                                                         <asp:RequiredFieldValidator ID="rv1" ValidationGroup="product" ErrorMessage="Please Select Component ID.It Cannot be left Blank"
                                                                                             Text="*" InitialValue="0" ControlToValidate="cmbProdAdd" runat="server" />
@@ -264,11 +267,24 @@
                                                                                     <td style=" width:16%;" ></td>
                                                                                     <td align="right" style=" width:16%;">
                                                                                         <asp:HiddenField ID="hdStock" runat="server" />
-                                                                                        <asp:Button ID="cmdSaveProduct" Style="width: 129px;" runat="server" Text="Add Component" Font-Bold="true" Font-Size="14px" BackColor="Wheat"
-                                                                                            EnableTheming="false" SkinID="skinBtnAddProduct" OnClick="cmdSaveProduct_Click"
+                                                                                        <asp:Button ID="cmdSaveProduct" Style="width: 129px;" runat="server" Text="Add Component" Font-Bold="true" Font-Size="12px"
+                                                                                            EnableTheming="false" Width="40%"  OnClick="cmdSaveProduct_Click"
                                                                                             ValidationGroup="product" />
                                                                                     </td>
                                                                                 </tr>
+                                                                                <tr style="height: 10px">
+                                                                                                    </tr>
+                                                                              
+                                                                <tr align="left" > 
+                                                                    <td>
+                                                                  <asp:Label ID="heading1" ForeColor="#0567AE" Font-Size="14px" runat="server">
+                                                                      </asp:Label>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="height: 10px">
+                                                                                                    </tr>
+                                                          
+                                                                           
                                                                             </table>
                                                                         </asp:Panel>
                                                                         <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
@@ -284,21 +300,21 @@
                                                                                                             </asp:ObjectDataSource>
                                                                        
                                                                         <asp:Panel ID="PanelItems"  Height="50%" runat="server" Visible="False">
-                                                                            <table  width="100%" cellpadding="1" >
+                                                                            <table  width="100%" cellpadding="1" style="border-color:White; border-width:1px;" >
                                                                                 <tr >
                                                                                     <td>
                                                                             <asp:GridView ID="GrdViewItems" AutoGenerateColumns="false" runat="server" AllowSorting="True" Width="100%"  DataKeyNames="FormulaID"
                                                                                 AllowPaging="True" OnRowEditing="GrdViewItems_RowEditing" OnRowCancelingEdit="GrdViewItems_RowCancelingEdit"
-                                                                                 EmptyDataText="No Product Added. Please add products by Clicking Define Specification." EmptyDataRowStyle-CssClass="someclass1"
+                                                                                 EmptyDataText="No Product Added. Please add products by Clicking Define Specification."
                                                                                 OnPageIndexChanging="GrdViewItems_PageIndexChanging" OnRowDataBound="GrdViewItems_RowDataBound"
                                                                                 OnRowUpdating="GrdViewItems_RowUpdating" OnRowDeleting="GrdViewItems_RowDeleting"
-                                                                                OnRowCreated="GrdViewItems_RowCreated" CssClass="someClass" >
-                                                                                <EmptyDataRowStyle  Font-Bold="true" Font-Size="Larger" HorizontalAlign="Center" />
+                                                                                OnRowCreated="GrdViewItems_RowCreated" >
+                                                                                <EmptyDataRowStyle  Font-Bold="true" Font-Size="11px" HorizontalAlign="Left" ForeColor="Red" BorderColor="White" BorderWidth="1px"  />
                                                                                     <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="14px"/>
                                                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" ForeColor="#0567AE"/>
                                                                                 <EmptyDataRowStyle Font-Bold="false" /> 
                                                                                 <Columns>
-                                                                                    <asp:TemplateField HeaderText="Component ID" HeaderStyle-Width="19.5%"  HeaderStyle-BackColor="#cccccc"  HeaderStyle-Font-Bold="true">
+                                                                                    <asp:TemplateField HeaderText="Component ID" HeaderStyle-Width="21.5%"  HeaderStyle-BackColor="#cccccc"  HeaderStyle-Font-Bold="true">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("itemcode")%>
                                                                                         </ItemTemplate>
@@ -306,7 +322,7 @@
                                                                                             <asp:Label runat="server"  ID="lblCode" Text='<%# Eval("itemcode")%>'></asp:Label>
                                                                                         </EditItemTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Component Name" HeaderStyle-Width="18.5%" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Component Name" HeaderStyle-Width="16.5%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("ProductName")%>
                                                                                         </ItemTemplate>
@@ -314,7 +330,7 @@
                                                                                             <asp:Label runat="server" ID="lblProdname" Text='<%# Eval("ProductName")%>'></asp:Label>
                                                                                         </EditItemTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Description" HeaderStyle-Width="18%" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Description" HeaderStyle-Width="14.5%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("ProductDesc")%>
                                                                                         </ItemTemplate>
@@ -322,7 +338,7 @@
                                                                                             <asp:Label runat="server" ID="lblDesc" Text='<%# Eval("ProductDesc")%>'></asp:Label>
                                                                                         </EditItemTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Qty." HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Qty." HeaderStyle-Width="12%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("Qty")%>
                                                                                         </ItemTemplate>
@@ -339,7 +355,7 @@
                                                                                         <FooterTemplate>
                                                                                         </FooterTemplate>
                                                                                     </asp:TemplateField>
-                                                                                    <asp:TemplateField HeaderText="Type of component" HeaderStyle-BorderColor="Gray">
+                                                                                    <asp:TemplateField HeaderText="Type of component" HeaderStyle-Width="18%" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("InOut")%>
                                                                                         </ItemTemplate>

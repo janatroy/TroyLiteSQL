@@ -154,7 +154,7 @@
                                                             <tr>
                                                                 <td class="ControlLabelproject" style="width: 40%">Name of Drop-down field *
                                                                     <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="ddTypedd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Reference Type is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Name of Drop-down field. It cannot be left blank">*</asp:RequiredFieldValidator>
 
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
@@ -172,7 +172,7 @@
                                                             <tr>
                                                                 <td class="ControlLabelproject" style="width: 40%">Value of Drop-down field *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Text Value is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Value of Drop-down field. It cannot be left blank">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtLdgrName" runat="server" Text='<%# Bind("TextValue") %>' SkinID="skinTxtBoxGrid"
@@ -224,7 +224,7 @@
 
                                                                 <td>
                                                                     <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                        ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                        ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                         Font-Size="12" runat="server" />
                                                                 </td>
                                                                 <td></td>
@@ -246,7 +246,7 @@
                                                             <tr>
                                                                 <td class="ControlLabelproject" style="width: 40%">Name of Drop-down field *
                                                                     <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="ddType"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Reference Type is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Name of Drop-down field. It cannot be left blank">*</asp:RequiredFieldValidator>
 
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
@@ -263,7 +263,7 @@
                                                             <tr>
                                                                 <td class="ControlLabelproject" style="width: 40%">Value of Drop-down field *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
-                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Text ValueName is mandatory"></asp:RequiredFieldValidator>
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Value of Drop-down field. It cannot be left blank"></asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("TextValue") %>'
@@ -301,7 +301,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <asp:ValidationSummary ID="valSumAdd" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                    ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                    ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                     Font-Size="12" runat="server" />
                                                             </td>
                                                             <td colspan="2">

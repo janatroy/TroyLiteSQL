@@ -135,7 +135,7 @@
                                                                     <tr>
                                                                         <td class="ControlLabel" style="width: 33%">Group Name
                                                                         <asp:RequiredFieldValidator ID="rvEEstMnds" runat="server" ControlToValidate="txtGroupName"
-                                                                            Display="Dynamic" EnableClientScript="true" ErrorMessage="Estimated Mandays is Mandatory">*</asp:RequiredFieldValidator>
+                                                                            Display="Dynamic" EnableClientScript="true" ErrorMessage="Please enter Group Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                         </td>
                                                                         <td class="ControlTextBox3" style="width: 40%">
                                                                             <asp:TextBox ID="txtGroupName" runat="server" Text='<%# Bind("GroupName") %>' Width="100%"
@@ -148,7 +148,7 @@
                                                                     <tr>
                                                                         <td class="ControlLabel" style="width: 33%">Heading
                                                                         <asp:CompareValidator ID="cvHeading" runat="server" ControlToValidate="ddHeading"
-                                                                            Display="Dynamic" EnableClientScript="true" ErrorMessage="Please select the Item"
+                                                                            Display="Dynamic" EnableClientScript="true" ErrorMessage="Please select Heading. It cannot be left blank."
                                                                             Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                         </td>
                                                                         <td class="ControlDrpBorder" style="width: 40%">
@@ -204,7 +204,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <asp:ValidationSummary ID="VSEdit" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                            ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                            ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                             Font-Size="12" runat="server" />
                                                                     </td>
                                                                     <td></td>
@@ -224,7 +224,7 @@
                                                                     <tr>
                                                                         <td class="ControlLabel" style="width: 33%">Group Name
                                                                         <asp:RequiredFieldValidator ID="rvIgroupAdd" runat="server" ControlToValidate="txtIGroupAdd"
-                                                                            Display="Dynamic" EnableClientScript="true" ErrorMessage="Group Name is Mandatory">*</asp:RequiredFieldValidator>
+                                                                            Display="Dynamic" EnableClientScript="true" ErrorMessage="Pleas enter Group Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                         </td>
                                                                         <td class="ControlTextBox3" style="width: 40%">
                                                                             <asp:TextBox ID="txtIGroupAdd" runat="server" Text='<%# Bind("GroupName") %>' SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -237,7 +237,7 @@
                                                                     <tr>
                                                                         <td class="ControlLabel" style="width: 33%">Heading
                                                                         <asp:CompareValidator ID="cvHeadingAdd" runat="server" ControlToValidate="ddIHeadingAdd"
-                                                                            ErrorMessage="Heading is Mandatory" Operator="GreaterThan" ValueToCompare="0"
+                                                                            ErrorMessage="Please select Heading. It cannot be left blank." Operator="GreaterThan" ValueToCompare="0"
                                                                             EnableClientScript="true">*</asp:CompareValidator>
                                                                         </td>
                                                                         <td class="ControlDrpBorder" style="width: 40%">
@@ -286,7 +286,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <asp:ValidationSummary ID="ValidationSummary1" DisplayMode="BulletList" ShowMessageBox="true"
-                                                                            ShowSummary="false" HeaderText="Validation Messages" Font-Names="'Trebuchet MS'"
+                                                                            ShowSummary="false" HeaderText="" Font-Names="'Trebuchet MS'"
                                                                             Font-Size="12" runat="server" />
                                                                     </td>
                                                                     <td></td>

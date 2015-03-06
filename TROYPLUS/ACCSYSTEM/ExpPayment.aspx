@@ -428,7 +428,7 @@
                                                                                                         </tr>
                                                                                                         <tr>
                                                                                                             <td class="ControlLabel" style="width: 24%">Ref. No. *
-                                                                                                                    <asp:RequiredFieldValidator ID="rvRefNo" runat="server" ErrorMessage="Ref. No. is mandatory"
+                                                                                                                    <asp:RequiredFieldValidator ID="rvRefNo" runat="server" ErrorMessage="Please enter Ref. No. It cannot be left blank."
                                                                                                                         ControlToValidate="txtRefNo" Display="Dynamic">*</asp:RequiredFieldValidator>
                                                                                                                 <cc1:FilteredTextBoxExtender ID="OBvalidAdd" runat="server" FilterType="Numbers"
                                                                                                                     TargetControlID="txtRefNo" />
@@ -441,7 +441,7 @@
                                                                                                                 <asp:Label ID="Label1" runat="server"
                                                                                                                     Width="120px" Text="Date *"></asp:Label>
                                                                                                                 <asp:RequiredFieldValidator ID="rvStock" runat="server" ControlToValidate="txtTransDate"
-                                                                                                                    ErrorMessage="Trasaction Date is mandatory" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                                                                                                    ErrorMessage="Please select Date. It cannot be left blank." Display="Dynamic">*</asp:RequiredFieldValidator>
                                                                                                                 <asp:CompareValidator ControlToValidate="txtTransDate" Operator="DataTypeCheck" Type="Date"
                                                                                                                     ErrorMessage="Please enter a valid date" runat="server" ID="cmpValtxtDate">*</asp:CompareValidator>
                                                                                                                 <%--<asp:RangeValidator ID="myRangeValidator" runat="server" ControlToValidate="txtTransDate"
@@ -487,7 +487,7 @@
                                                                                                         <tr>
                                                                                                             <td class="ControlLabel" style="width: 24%">Paid To *
                                                                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddReceivedFrom"
-                                                                                                                        Display="Dynamic" ErrorMessage="Received From is Mandatory" Operator="GreaterThan"
+                                                                                                                        Display="Dynamic" ErrorMessage="Please select Paid To. It cannot be left blank." Operator="GreaterThan"
                                                                                                                         ValueToCompare="0">*</asp:CompareValidator>
                                                                                                             </td>
                                                                                                             <td class="ControlDrpBorder" style="width: 25%">
@@ -499,7 +499,7 @@
                                                                                                             </td>
                                                                                                             <td class="ControlLabel" style="width: 16%">Amount *
                                                                                                                     <asp:RequiredFieldValidator ID="rvModel" runat="server" ControlToValidate="txtAmount"
-                                                                                                                        ErrorMessage="Amount is mandatory" Display="Dynamic">*</asp:RequiredFieldValidator>
+                                                                                                                        ErrorMessage="Please enter Amount. It cannot be left blank." Display="Dynamic">*</asp:RequiredFieldValidator>
                                                                                                                 <cc1:FilteredTextBoxExtender ID="fltAmt" runat="server" TargetControlID="txtAmount"
                                                                                                                     ValidChars="." FilterType="Custom, Numbers" Enabled="True" />
                                                                                                             </td>
@@ -512,7 +512,7 @@
                                                                                                         <tr>
                                                                                                             <td class="ControlLabel" style="width: 24%">Payment Made By *
                                                                                                                     <asp:RequiredFieldValidator ID="rvBDate" runat="server" ControlToValidate="chkPayTo"
-                                                                                                                        Display="Dynamic" ErrorMessage="Item Name is mandatory.">*</asp:RequiredFieldValidator>
+                                                                                                                        Display="Dynamic" ErrorMessage="Please select Payment Made By. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                             </td>
                                                                                                             <td class="ControlTextBox3" style="width: 25%">
                                                                                                                 <asp:RadioButtonList ID="chkPayTo" runat="server" onclick="javascript:AdvancedTest(this.id);"
@@ -522,7 +522,7 @@
                                                                                                                 </asp:RadioButtonList>
                                                                                                             </td>
                                                                                                             <td class="ControlLabel" style="width: 16%">Narration *
-                                                                                                                    <asp:RequiredFieldValidator ID="rvNarration" runat="server" ErrorMessage="Narration is mandatory"
+                                                                                                                    <asp:RequiredFieldValidator ID="rvNarration" runat="server" ErrorMessage="Please enter Narration. It cannot be left blank."
                                                                                                                         ControlToValidate="txtNarration" Display="Dynamic">*</asp:RequiredFieldValidator>
                                                                                                             </td>
                                                                                                             <td class="ControlTextBox3" style="width: 25%">
@@ -555,7 +555,7 @@
                                                                                                                                     </td>
                                                                                                                                     <td id="Td7" class="ControlLabel" runat="server" style="width: 16%">
                                                                                                                                         <asp:RequiredFieldValidator ID="rvChequeNo" runat="server" ControlToValidate="cmbChequeNo"
-                                                                                                                                            ErrorMessage="Cheque No. is mandatory" Display="Dynamic" EnableClientScript="False">*</asp:RequiredFieldValidator>
+                                                                                                                                            ErrorMessage="Please enter Cheque No. It cannot be left blank." Display="Dynamic" EnableClientScript="False">*</asp:RequiredFieldValidator>
                                                                                                                                         Cheque No. *
                                                                                                                                     </td>
                                                                                                                                     <td id="Td8" runat="server" class="ControlDrpBorder" style="width: 25%">

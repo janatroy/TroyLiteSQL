@@ -19005,17 +19005,17 @@ public class BusinessLogic
             if ((name != null) && (name != ""))
             {
                 // dbQry.Append("SELECT FormulaName ,(Select count(*) from tblFormula where A.FormulaID>=FormulaID) as Row ");
-                //dbQry.Append("  from tblFormula as A ");
+               //  dbQry.Append("  from tblFormula as A ");
                 dbQry.Append("SELECT FormulaName");
                 dbQry.Append(" FROM tblFormula");
-                dbQry.Append(" Where FormulaName like %" + name + "%");
-                dbQry.Append(" Group By FormulaName ");
+                dbQry.Append(" Where A.FormulaName like %" + name + "%");
+                dbQry.Append(" Group By A.FormulaName ");
             }
             else
             {
-                //dbQry.Append("SELECT FormulaName ,(Select count(*) from tblFormula where A.FormulaID>=FormulaID) as Row ");
-                //dbQry.Append("  from tblFormula as A ");
-                //dbQry.Append(" Group By A.FormulaName ");
+               // dbQry.Append("SELECT FormulaName ,(Select count(*) from tblFormula where A.FormulaID>=FormulaID) as Row ");
+               // dbQry.Append("  from tblFormula as A ");
+               // dbQry.Append(" Group By A.FormulaName ");
                 dbQry.Append("SELECT FormulaName");
                 dbQry.Append(" FROM tblFormula");
                 dbQry.Append(" Group By FormulaName ");
@@ -19097,7 +19097,7 @@ public class BusinessLogic
 
             if (formula != "")
             {
-                dbQry.Append(" Where InOut = 'IN' and FormulaName = '" + formula + "'");
+                dbQry.Append(" Where InOut = 'Raw Material' and FormulaName = '" + formula + "'");
             }
 
             dbQry.Append(" ORDER BY FormulaName Asc");
@@ -19135,7 +19135,7 @@ public class BusinessLogic
 
             if (formula != "")
             {
-                dbQry.Append(" Where InOut = 'OUT' and FormulaName = '" + formula + "'");
+                dbQry.Append(" Where InOut = 'Product' and FormulaName = '" + formula + "'");
             }
 
             dbQry.Append(" ORDER BY FormulaName Asc");
@@ -19169,7 +19169,7 @@ public class BusinessLogic
 
             dbQry.Append("SELECT ItemCode,Qty ");
             dbQry.Append("FROM tblExecution ");
-            dbQry.Append(" Where InOut = 'OUT' and CompID = " + CompID.ToString() + "");
+            dbQry.Append(" Where InOut = 'Product' and CompID = " + CompID.ToString() + "");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -35478,7 +35478,36 @@ public class BusinessLogic
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
             if (ds.Tables[0].Rows.Count > 0)
-                return ds;
+            {
+                DataTable dttt;
+                DataRow drNew;
+                DataColumn dct;
+                 DataSet dsd = new DataSet();
+                DataSet dstd = new DataSet();
+                dttt = new DataTable();
+
+                   dct = new DataColumn("Row");
+                dttt.Columns.Add(dct);
+
+                dct = new DataColumn("FormulaName");
+                dttt.Columns.Add(dct);
+
+                dstd.Tables.Add(dttt);
+
+                 int sno = 1;
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Row"] = sno;
+                    drNew["FormulaName"] = Convert.ToString(ds.Tables[0].Rows[i]["FormulaName"]);
+                    dstd.Tables[0].Rows.Add(drNew);
+                 
+                    sno = sno + 1;
+                   // dstd.Tables[0].Rows.Add(drNew);   
+                    //}
+                }
+                return dstd;
+            }       
             else
                 return null;
         }
@@ -40992,7 +41021,7 @@ public class BusinessLogic
 
         DataSet dsINOUT = new DataSet();
 
-        sQry = "select  (c.Cdate) as billdate,'IN' As 'Purchase/Sale',c.compid,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='IN' and d.itemcode='" + itemCode + "' order by c.cdate union all  select * from ( select  (c.Cdate) as billdate,'IN' As 'Purchase/Sale',c.compid, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='OUT' and d.itemcode='" + itemCode + "' ) order by 1,2";
+        sQry = "select  (c.Cdate) as billdate,'Raw Material' As 'Purchase/Sale',c.compid,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='Raw Material' and d.itemcode='" + itemCode + "' order by c.cdate union all  select * from ( select  (c.Cdate) as billdate,'Raw Material' As 'Purchase/Sale',c.compid, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='Product' and d.itemcode='" + itemCode + "' ) order by 1,2";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
