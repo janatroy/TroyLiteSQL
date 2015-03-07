@@ -340,10 +340,25 @@
                                                                                                                                 </tr>
                                                                                                                                 <tr>
                                                                                                                                     <td style="width: 25%;" class="ControlLabelproject">
+                                                                                                                                        <asp:CompareValidator ID="CompareValidator5" ValidationGroup="salesval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                                        Select Branch  *
+                                                                                                        <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                                                            Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                                    </td>
+                                                                                                                                    <td class="ControlDrpBorder" style="width: 24%">
+                                                                                                                                        <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranch_SelectedIndexChanged">
+                                                                                                                                        </asp:DropDownList>
+                                                                                                                                    </td>
+                                                                                                                                    <td style="width: 7%;"></td>
+                                                                                                                                    <td class="ControlLabelproject" style="width: 10%;">
+
                                                                                                                                         <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Purchase InvoiceNo. It cannot be left blank. " Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                                         Purchase InvoiceNo *
                                                                                                                                     </td>
-                                                                                                                                    <td class="ControlDrpBorder" style="width: 24%">
+                                                                                                                                    <td class="ControlDrpBorder" style="width: 24%;">
+
+
                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
                                                                                                                                                 <asp:DropDownList ID="drpPurID" runat="server" AutoPostBack="true" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="PurchaseID" DataValueField="PurchaseID" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" Width="100%" OnSelectedIndexChanged="drpPurID_SelectedIndexChanged">
@@ -356,18 +371,6 @@
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
-                                                                                                                                    </td>
-                                                                                                                                    <td style="width: 7%;"></td>
-                                                                                                                                    <td class="ControlLabelproject" style="width: 10%;">
-                                                                                                                                        <asp:CompareValidator ID="CompareValidator5" ValidationGroup="salesval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
-                                                                                                                                        Select Branch  *
-                                                                                                        <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
-                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
-                                                                                                            Text="*" ValueToCompare="0"></asp:CompareValidator>
-                                                                                                                                    </td>
-                                                                                                                                    <td class="ControlDrpBorder" style="width: 24%;">
-                                                                                                                                        <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranch_SelectedIndexChanged">
-                                                                                                                                        </asp:DropDownList>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 13%;"></td>
                                                                                                                                 </tr>
@@ -1070,7 +1073,7 @@
 
                                                                                                                                                                 <Columns>
                                                                                                                                                                     <asp:BoundField DataField="RowNumber" HeaderText="#" ItemStyle-Width="45px" ItemStyle-Font-Size="15px" HeaderStyle-ForeColor="Black" />
-                                                                                                                                                                    <asp:TemplateField HeaderText="Product Code-Name-Model"  ItemStyle-Width="1px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
+                                                                                                                                                                    <asp:TemplateField HeaderText="Product Code-Name-Model" ItemStyle-Width="1px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <asp:DropDownList ID="drpPrd" Width="230px" runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged">
                                                                                                                                                                             </asp:DropDownList>
@@ -1711,6 +1714,9 @@
                                                             HeaderStyle-BorderColor="Gray"
                                                             HtmlEncode="false" />
                                                         <asp:BoundField DataField="PurchaseReturn" HeaderText="Purchase Return" HeaderStyle-Width="60px" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small"
+                                                            HeaderStyle-BorderColor="Gray"
+                                                            HeaderStyle-Wrap="true" />
+                                                        <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Width="60px" HeaderStyle-HorizontalAlign="Center" HeaderStyle-Height="20px" ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="Small"
                                                             HeaderStyle-BorderColor="Gray"
                                                             HeaderStyle-Wrap="true" />
                                                         <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="45px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">

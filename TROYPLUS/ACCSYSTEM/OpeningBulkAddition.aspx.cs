@@ -410,7 +410,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                     }
                     else
                     {
-                        if (objBL.IsItemAlreadyInOpening(connection, item))
+                        if (objBL.IsItemAlreadyInOpening(connection, item,""))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product code " + item + " already added in opening stock');", true);
                             return;

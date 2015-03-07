@@ -245,7 +245,7 @@
                                     width="100%">
                                     <tr>
                                         <td>
-                                            <asp:FormView ID="frmViewAdd" runat="server" Width="100%" DataSourceID="frmSource"
+                                            <asp:FormView ID="frmViewAdd" runat="server" Width="100%" DataSourceID="frmSource" OnDataBound="frmViewAdd_DataBound" OnModeChanged="frmViewAdd_ModeChanged"
                                                 OnItemCommand="frmViewAdd_ItemCommand" DefaultMode="Edit" DataKeyNames="TransNo"
                                                 OnItemUpdated="frmViewAdd_ItemUpdated" OnItemCreated="frmViewAdd_ItemCreated"
                                                 Visible="False" OnItemInserting="frmViewAdd_ItemInserting" EmptyDataText="No Records"
@@ -264,6 +264,30 @@
                                                                 </td>
                                                             </tr>
                                                             <tr style="height: 5px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabel" style="width: 25%">Branch *
+                                                                    <asp:CompareValidator ID="CompareValidator123" runat="server" ControlToValidate="drpBranch"
+                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
+                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 25%">
+                                                                    <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                 runat="server">
+                                                                                                <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
+                                                                                             </asp:DropDownList>
+                                                                </td>
+                                                                <td class="ControlLabel" style="width: 15%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 25%">
+                                                                   
+                                                                </td>
+                                                                <td align="left">
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 25%">Ref. No. *
@@ -410,6 +434,13 @@
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
+                                                                <asp:ObjectDataSource ID="srcBranch" runat="server" SelectMethod="ListBranch"
+                                                                    TypeName="BusinessLogic">
+                                                                    <SelectParameters>
+                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                        <asp:CookieParameter Name="User" CookieName="LoggedUserName" Type="String" />
+                                                                    </SelectParameters>
+                                                                </asp:ObjectDataSource>
                                                             </td>
                                                             <td>
                                                                 <asp:ObjectDataSource ID="srcCreditorDebitor" runat="server" SelectMethod="ListBanks"
@@ -438,6 +469,31 @@
                                                                 </td>
                                                             </tr>
                                                             <tr style="height: 5px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabel" style="width: 20%">
+                                                                     Branch *
+                                                                                            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="drpBranchAdd"
+                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
+                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
+                                                                  
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 27%">
+                                                                   <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                 runat="server">
+                                                                                             </asp:DropDownList>
+                                                                </td>
+                                                                <td class="ControlLabel" style="width: 15%">
+                                                                   
+                                                                </td>
+                                                                <td style="width: 27%">
+                                                                   
+                                                                </td>
+                                                                <td align="left">
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
                                                                 <td class="ControlLabel" style="width: 20%">Ref. No. *
@@ -636,6 +692,7 @@
                                                 <asp:BoundField DataField="Debi" HeaderText="Bank Name / Cash" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Narration" HeaderText="Narration" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="BranchCode" HeaderStyle-Wrap="false" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CommandName="Select" />
@@ -729,6 +786,7 @@
                                 <asp:Parameter Name="Paymode" Type="String" />
                                 <asp:Parameter Name="NewTransNo" Type="Int32" Direction="Output" />
                                 <asp:Parameter Name="Username" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewReceipt" Name="TransNo" PropertyName="SelectedValue"
@@ -748,6 +806,7 @@
                                 <asp:Parameter Name="Paymode" Type="String" />
                                 <asp:Parameter Name="NewTransNo" Type="Int32" Direction="Output" />
                                 <asp:Parameter Name="Username" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

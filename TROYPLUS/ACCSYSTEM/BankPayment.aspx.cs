@@ -103,6 +103,7 @@ public partial class BankPayment : System.Web.UI.Page
         //DropDownList dropDown = (DropDownList)Accordion1.FindControl("ddCriteria");
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
     }
 
     private void CheckSMSRequired()
@@ -377,6 +378,39 @@ public partial class BankPayment : System.Web.UI.Page
             //{
             //    lnkBtnAdd.Visible = false;
             //}
+
+            string connection = Request.Cookies["Company"].Value;
+            string usernam = Request.Cookies["LoggedUserName"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet dst = new DataSet();
+            dst = bl.ListBranch(connection, usernam);
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("Select Branch", "0"));
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataSource = dst;
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataTextField = "BranchName";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataValueField = "BranchCode";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataBind();
+
+            string sCustomer = string.Empty;
+
+            DataSet ds = bl.GetBranch(connection, usernam);
+
+            sCustomer = Convert.ToString(ds.Tables[0].Rows[0]["DefaultBranchCode"]);
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).ClearSelection();
+            ListItem li = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+            if (li != null) li.Selected = true;
+
+            if (ds.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+            {
+                ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Enabled = true;
+            }
+            else
+            {
+                ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Enabled = false;
+            }
+
+
         }
         catch (Exception ex)
         {
@@ -1202,6 +1236,9 @@ public partial class BankPayment : System.Web.UI.Page
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
+        if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")) != null)
+            e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue;
+
     }
 
     private void setInsertParameters(ObjectDataSourceMethodEventArgs e)
@@ -1247,9 +1284,12 @@ public partial class BankPayment : System.Web.UI.Page
 
 
         e.InputParameters["VoucherType"] = "Payment";
-
+     
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+
+        if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")) != null)
+            e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).SelectedValue;
 
     }
 
@@ -1289,6 +1329,31 @@ public partial class BankPayment : System.Web.UI.Page
             if (frmV.DataItem != null)
             {
                 string creditorID = ((DataRowView)frmV.DataItem)["CreditorID"].ToString();
+
+                ddl.ClearSelection();
+
+                ListItem li = ddl.Items.FindByValue(creditorID);
+                if (li != null) li.Selected = true;
+
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    protected void drpBranch_DataBound(object sender, EventArgs e)
+    {
+        try
+        {
+            DropDownList ddl = (DropDownList)sender;
+
+            FormView frmV = (FormView)((AjaxControlToolkit.TabContainer)((AjaxControlToolkit.TabPanel)ddl.NamingContainer).NamingContainer).NamingContainer;
+
+            if (frmV.DataItem != null)
+            {
+                string creditorID = ((DataRowView)frmV.DataItem)["BranchCode"].ToString();
 
                 ddl.ClearSelection();
 
@@ -1856,11 +1921,43 @@ public partial class BankPayment : System.Web.UI.Page
     }
     protected void frmViewAdd_DataBound(object sender, EventArgs e)
     {
-
+        frmViewAdd_ModeChanged(sender, e);
     }
     protected void frmViewAdd_ModeChanged(object sender, EventArgs e)
     {
+        if (frmViewAdd.CurrentMode == FormViewMode.Insert)
+        {
+            string usernam = Request.Cookies["LoggedUserName"].Value;
 
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            string connection = Request.Cookies["Company"].Value;
+
+            DataSet dst = bl.ListBranch(connection, usernam);
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "All"));
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataSource = dst;
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataTextField = "BranchName";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataValueField = "BranchCode";
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).DataBind();
+
+            string sCustomer = string.Empty;
+
+            DataSet ds = bl.GetBranch(connection, usernam);
+
+            sCustomer = Convert.ToString(ds.Tables[0].Rows[0]["DefaultBranchCode"]);
+            ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).ClearSelection();
+            ListItem li = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+            if (li != null) li.Selected = true;
+
+            if (ds.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+            {
+                ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Enabled = true;
+            }
+            else
+            {
+                ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Enabled = false;
+            }
+        }
     }
 
     private bool CheckDate(DateTime dateTime)

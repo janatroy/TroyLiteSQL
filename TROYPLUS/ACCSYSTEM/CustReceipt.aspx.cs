@@ -758,6 +758,32 @@ public partial class CustReceipt : System.Web.UI.Page
         }
     }
 
+
+    protected void drpBranch_DataBound(object sender, EventArgs e)
+    {
+        try
+        {
+            DropDownList ddl = (DropDownList)sender;
+
+            FormView frmV = (FormView)ddl.NamingContainer;
+
+            if (frmV.DataItem != null)
+            {
+                string creditorID = ((DataRowView)frmV.DataItem)["BranchCode"].ToString();
+
+                ddl.ClearSelection();
+
+                ListItem li = ddl.Items.FindByValue(creditorID);
+                if (li != null) li.Selected = true;
+
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
