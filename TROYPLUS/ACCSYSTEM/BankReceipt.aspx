@@ -692,6 +692,7 @@
                                                 <asp:BoundField DataField="Debi" HeaderText="Bank Name / Cash" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Narration" HeaderText="Narration" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="BranchCode" HeaderStyle-Wrap="false" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CommandName="Select" />

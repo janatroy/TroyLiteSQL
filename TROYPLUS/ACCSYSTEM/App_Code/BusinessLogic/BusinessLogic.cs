@@ -4866,7 +4866,7 @@ public class BusinessLogic
     }
 
 
-    public DataSet ListCustomerPayments(string connection, string txtSearch, string dropDown)
+    public DataSet ListCustomerPayments(string connection, string txtSearch, string dropDown, string Branch)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -4886,7 +4886,7 @@ public class BusinessLogic
             manager.Open();
             object reconDate = manager.ExecuteScalar(CommandType.Text, "Select recon_date from last_recon");
 
-            dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+            dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.BranchCode, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
             dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo, Payment.Paymode,Payment.Billno FROM ((((tblDayBook INNER JOIN ");
             dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) INNER JOIN ");
             dbQry.Append("tblPayMent Payment ON tblDayBook.TransNo = Payment.JournalID) INNER JOIN tblGroups G ON G.GroupID = Debitor.GroupID) ");
@@ -4920,6 +4920,11 @@ public class BusinessLogic
                 dbQry.Append("Where tblDayBook.VoucherType = 'Payment' ");
             }
 
+            if (Branch != "All")
+            {
+                dbQry.Append(" AND tblDayBook.BranchCode = '" + Branch + "' ");
+            }
+
             dbQry.Append(" AND G.GroupName = 'Sundry Debtors' AND tblDayBook.TransDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
             dbQry.Append(" Order By tblDayBook.TransDate,tblDayBook.TransNo Desc ");
 
@@ -4943,7 +4948,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet ListBankPayments(string connection, string txtSearch, string dropDown)
+    public DataSet ListBankPayments(string connection, string txtSearch, string dropDown, string Branch)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -4962,7 +4967,7 @@ public class BusinessLogic
             manager.Open();
             object reconDate = manager.ExecuteScalar(CommandType.Text, "Select recon_date from last_recon");
 
-            dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+            dbQry.Append("SELECT  tblDayBook.TransNo,tblDayBook.BranchCode, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
             dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo, Payment.Paymode,Payment.Billno FROM ((((tblDayBook INNER JOIN ");
             dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) INNER JOIN ");
             dbQry.Append("tblPayMent Payment ON tblDayBook.TransNo = Payment.JournalID) INNER JOIN tblGroups G ON G.GroupID = Debitor.GroupID) ");
@@ -4990,6 +4995,11 @@ public class BusinessLogic
             else
             {
                 dbQry.Append("Where tblDayBook.VoucherType = 'Payment' ");
+            }
+
+            if (Branch != "All")
+            {
+                dbQry.Append(" AND tblDayBook.BranchCode = '" + Branch + "' ");
             }
 
             dbQry.Append(" AND G.GroupName = 'Bank Accounts' AND tblDayBook.TransDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
@@ -5436,78 +5446,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet ListReceiptsSuppliers(string connection, string txtSearch, string dropDown)
-    {
-
-        DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(connection);
-        DataSet ds = new DataSet();
-        StringBuilder dbQry = new StringBuilder();
-
-
-        if (dropDown == "TransDate" || dropDown == "RefNo" || dropDown == "TransNo")
-            txtSearch = txtSearch;
-        else
-            txtSearch = "%" + txtSearch + "%";
-
-        try
-        {
-            manager.Open();
-            object reconDate = manager.ExecuteScalar(CommandType.Text, "Select recon_date from last_recon");
-
-            dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
-            dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo, Receipt.Paymode FROM  ((((tblDayBook INNER JOIN ");
-            dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) LEFT JOIN ");
-            dbQry.Append("tblReceipt Receipt ON tblDayBook.TransNo = Receipt.JournalID) INNER JOIN tblGroups G ON Creditor.GroupID = G.GroupID) ");
-
-            if (dropDown == "RefNo" && txtSearch != null)
-            {
-                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and tblDayBook.RefNo = {0} ", txtSearch);
-            }
-            else if (dropDown == "TransNo" && txtSearch != null)
-            {
-                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and tblDayBook.TransNo = {0} ", txtSearch);
-            }
-            else if (dropDown == "TransDate" && txtSearch != null)
-            {
-                dbQry.AppendFormat("WHERE tblDayBook.VoucherType= 'Receipt' and [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
-            }
-            else if (dropDown == "LedgerName" && txtSearch != null)
-            {
-                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and Creditor.LedgerName like '{0}' ", txtSearch);
-            }
-            else if (dropDown == "Narration" && txtSearch != null)
-            {
-                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and tblDayBook.Narration like '{0}' ", txtSearch);
-            }
-            else
-            {
-                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' ");
-            }
-
-            dbQry.Append(" AND G.GroupName = 'Sundry Creditors' AND tblDayBook.TransDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
-            dbQry.Append("Order By tblDayBook.TransDate Desc");
-
-
-            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
-
-            if (ds.Tables[0].Rows.Count > 0)
-                return ds;
-            else
-                return null;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-        finally
-        {
-            if (manager != null)
-                manager.Dispose();
-        }
-    }
-
-    public DataSet ListReceiptsBank(string connection, string txtSearch, string dropDown)
+    public DataSet ListReceiptsSuppliers(string connection, string txtSearch, string dropDown, string Branch)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -5554,6 +5493,87 @@ public class BusinessLogic
             else
             {
                 dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' ");
+            }
+
+            if (Branch != "All")
+            {
+                dbQry.Append(" AND tblDayBook.BranchCode = '" + Branch + "' ");
+            }
+
+            dbQry.Append(" AND G.GroupName = 'Sundry Creditors' AND tblDayBook.TransDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
+            dbQry.Append("Order By tblDayBook.TransDate Desc");
+
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataSet ListReceiptsBank(string connection, string txtSearch, string dropDown, string Branch)
+    {
+
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+
+
+        if (dropDown == "TransDate" || dropDown == "RefNo" || dropDown == "TransNo")
+            txtSearch = txtSearch;
+        else
+            txtSearch = "%" + txtSearch + "%";
+
+        try
+        {
+            manager.Open();
+            object reconDate = manager.ExecuteScalar(CommandType.Text, "Select recon_date from last_recon");
+
+            dbQry.Append("SELECT  tblDayBook.TransNo,tblDayBook.BranchCode, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+            dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo, Receipt.Paymode FROM  ((((tblDayBook INNER JOIN ");
+            dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) LEFT JOIN ");
+            dbQry.Append("tblReceipt Receipt ON tblDayBook.TransNo = Receipt.JournalID) INNER JOIN tblGroups G ON Creditor.GroupID = G.GroupID) ");
+
+            if (dropDown == "RefNo" && txtSearch != null)
+            {
+                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and tblDayBook.RefNo = {0} ", txtSearch);
+            }
+            else if (dropDown == "TransNo" && txtSearch != null)
+            {
+                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and tblDayBook.TransNo = {0} ", txtSearch);
+            }
+            else if (dropDown == "TransDate" && txtSearch != null)
+            {
+                dbQry.AppendFormat("WHERE tblDayBook.VoucherType= 'Receipt' and [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+            }
+            else if (dropDown == "LedgerName" && txtSearch != null)
+            {
+                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and Creditor.LedgerName like '{0}' ", txtSearch);
+            }
+            else if (dropDown == "Narration" && txtSearch != null)
+            {
+                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and tblDayBook.Narration like '{0}' ", txtSearch);
+            }
+            else
+            {
+                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' ");
+            }
+
+            if (Branch != "All")
+            {
+                dbQry.Append(" AND tblDayBook.BranchCode = '" + Branch + "' ");
             }
 
             dbQry.Append(" AND G.GroupName = 'Bank Accounts' AND tblDayBook.TransDate > " + DateTime.Parse(reconDate.ToString()).ToString("yyyy-MM-dd") + "");
@@ -6232,16 +6252,16 @@ public class BusinessLogic
             }
 
 
-            dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26},'{27}','{28}')",
                 LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, OpDueDate, BranchCode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             sAuditStr = "Customer Ledger : " + LedgerName + " added. Record Details :  User :" + Username + " AliasName = " + AliasName + " GroupID= " + GroupID + " ,LedgerCategory = " + LedgerCategory + " ,Mobile=" + Mobile + " Phone :" + Phone;
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
@@ -7125,7 +7145,7 @@ public class BusinessLogic
 
     }
 
-    public void InsertSupplierReceipt(out int NewTransNo, string connection, string RefNo, DateTime TransDate, int DebitorID, int CreditorID, double Amount, string Narration, string VoucherType, string ChequeNo, string Paymode, string Username, string Mobile)
+    public void InsertSupplierReceipt(out int NewTransNo, string connection, string RefNo, DateTime TransDate, int DebitorID, int CreditorID, double Amount, string Narration, string VoucherType, string ChequeNo, string Paymode, string Username, string Mobile, string BranchCode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -7152,6 +7172,15 @@ public class BusinessLogic
 
             manager.BeginTransaction();
 
+
+            int cid = 0;
+            if (Paymode == "Cash")
+            {
+                cid = getCashACLedgerId(connection, BranchCode);
+                DebitorID = cid;
+            }
+
+
             dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
@@ -7159,16 +7188,16 @@ public class BusinessLogic
 
             if (Logsave == "YES")
             {
-                logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
-                        TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9})",
+                        TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
                 logdescription = logdescription.Trim();
                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                      DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertSupplierReceipt");
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}')",
+                TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -7176,7 +7205,7 @@ public class BusinessLogic
 
             if (Logsave == "YES")
             {
-                logdescription = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},{2})", CreditorID, TransNo, Paymode);
+                logdescription = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},{2},{3}, BranchCode)", CreditorID, TransNo, Paymode, BranchCode);
                 logdescription = logdescription.Trim();
                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                      DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertSupplierReceipt");
@@ -7184,7 +7213,7 @@ public class BusinessLogic
             }
 
 
-            dbQry = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},'{2}')", CreditorID, TransNo, Paymode);
+            dbQry = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode, BranchCode) Values({0},{1},'{2}','{3}')", CreditorID, TransNo, Paymode, BranchCode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -30787,8 +30816,8 @@ public class BusinessLogic
 
             if (Logsave == "YES")
             {
-                logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo) VALUES(Format({0},{1},{2},{3},{4},{5},{6},{7})",
-                        NoteDate.ToShortDateString(), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0);
+                logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo,BranchCode) VALUES(Format({0},{1},{2},{3},{4},{5},{6},{7},{8})",
+                        NoteDate.ToShortDateString(), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0,"All");
                 logdescription = logdescription.Trim();
                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                      DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertCreditDebitNote");
@@ -30796,8 +30825,8 @@ public class BusinessLogic
             }
 
 
-            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7})",
-            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0);
+            dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo,BranchCode) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},'{8}')",
+            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0, "All");
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -30830,8 +30859,8 @@ public class BusinessLogic
 
             if (Logsave == "YES")
             {
-                logdescription = string.Format("INSERT INTO tblCreditDebitNote(NoteID,CDType,RefNo,Amount,NoteDate,LedgerID,[Note],TransNo,BillNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
-                        MaxNoteID, CDType, RefNo, Amount, NoteDate.ToShortDateString(), LedgerID, Note, NewTransNo, BillNo);
+                logdescription = string.Format("INSERT INTO tblCreditDebitNote(NoteID,CDType,RefNo,Amount,NoteDate,LedgerID,[Note],TransNo,BillNo,BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9})",
+                        MaxNoteID, CDType, RefNo, Amount, NoteDate.ToShortDateString(), LedgerID, Note, NewTransNo, BillNo, "All");
                 logdescription = logdescription.Trim();
                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                      DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertCreditDebitNote");
@@ -30839,8 +30868,8 @@ public class BusinessLogic
             }
 
 
-            dbQry = string.Format("INSERT INTO tblCreditDebitNote(NoteID,CDType,RefNo,Amount,NoteDate,LedgerID,[Note],TransNo,BillNo) VALUES({0},'{1}','{2}',{3},'{4}',{5},'{6}',{7},'{8}')",
-                MaxNoteID, CDType, RefNo, Amount, NoteDate.ToString("yyyy-MM-dd"), LedgerID, Note, NewTransNo, BillNo);
+            dbQry = string.Format("INSERT INTO tblCreditDebitNote(NoteID,CDType,RefNo,Amount,NoteDate,LedgerID,[Note],TransNo,BillNo,BranchCode) VALUES({0},'{1}','{2}',{3},'{4}',{5},'{6}',{7},'{8}','{9}')",
+                MaxNoteID, CDType, RefNo, Amount, NoteDate.ToString("yyyy-MM-dd"), LedgerID, Note, NewTransNo, BillNo, "All");
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -35701,7 +35730,7 @@ public class BusinessLogic
 
     // Senthil Sep 21
 
-    public void UpdateSupplierReceipt(out int NewTransNo, string connection, int TransNo, string RefNo, DateTime TransDate, int DebitorID, int CreditorID, double Amount, string Narration, string VoucherType, string ChequeNo, string Paymode, string Mobile, string Username)
+    public void UpdateSupplierReceipt(out int NewTransNo, string connection, int TransNo, string RefNo, DateTime TransDate, int DebitorID, int CreditorID, double Amount, string Narration, string VoucherType, string ChequeNo, string Paymode, string Mobile, string Username, string BranchCode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -35780,6 +35809,14 @@ public class BusinessLogic
                 //manager.BeginTransaction();
 
 
+                int cid = 0;
+                if (Paymode == "Cash")
+                {
+                    cid = getCashACLedgerId(connection, BranchCode);
+                    DebitorID = cid;
+                }
+
+
                 dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
                 dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
                 if (dsd.Tables[0].Rows.Count > 0)
@@ -35787,21 +35824,21 @@ public class BusinessLogic
 
                 if (Logsave == "YES")
                 {
-                    logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
-                    TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                    logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9})",
+                    TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
                     logdescription = logdescription.Trim();
                     description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                          DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateSupplierReceipt");
                     manager.ExecuteNonQuery(CommandType.Text, description);
                 }
 
-                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}')",
+                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}')",
+                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -35809,7 +35846,7 @@ public class BusinessLogic
 
                 if (Logsave == "YES")
                 {
-                    logdescription = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},{2})", CreditorID, TransNum, Paymode);
+                    logdescription = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode, BranchCode) Values({0},{1},{2},{3})", CreditorID, TransNum, Paymode, BranchCode);
                     logdescription = logdescription.Trim();
                     description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                          DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, TransNum, "UpdateSupplierReceipt");
@@ -35818,13 +35855,13 @@ public class BusinessLogic
 
 
 
-                dbQry = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode) Values({0},{1},'{2}')", CreditorID, TransNum, Paymode);
+                dbQry = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode, BranchCode) Values({0},{1},'{2}','{3}')", CreditorID, TransNum, Paymode, BranchCode);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 int recNum = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ReceiptNo) FROM tblReceipt"));
 
-                dbQry = string.Format("Insert Into tblAuditReceipt(ReceiptNo,CreditorID,JournalID,Paymode) Values({0},{1},{2},'{3}')", recNum, CreditorID, TransNum, Paymode);
+                dbQry = string.Format("Insert Into tblAuditReceipt(ReceiptNo,CreditorID,JournalID,Paymode, BranchCode) Values({0},{1},{2},'{3}','{4}')", recNum, CreditorID, TransNum, Paymode, BranchCode);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -36249,7 +36286,7 @@ public class BusinessLogic
     }
 
 
-    public void UpdateCustPayment(out int NewTransNo, string connection, int TransNo, string RefNo, DateTime TransDate, int DebitorID, int CreditorID, double Amount, string Narration, string VoucherType, string ChequeNo, string Paymode, string Billno, string Username)
+    public void UpdateCustPayment(out int NewTransNo, string connection, int TransNo, string RefNo, DateTime TransDate, int DebitorID, int CreditorID, double Amount, string Narration, string VoucherType, string ChequeNo, string Paymode, string Billno, string Username, string BranchCode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -36325,6 +36362,12 @@ public class BusinessLogic
                     throw new Exception("Invalid Date");
                 }
 
+                int cid = 0;
+                if (Paymode == "Cash")
+                {
+                    cid = getCashACLedgerId(connection, BranchCode);
+                    CreditorID = cid;
+                }
 
                 dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
                 dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
@@ -36333,19 +36376,19 @@ public class BusinessLogic
 
                 if (Logsave == "YES")
                 {
-                    logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8})",
-                    TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                    logdescription = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9})",
+                    TransDate.ToShortDateString(), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
                     logdescription = logdescription.Trim();
                     description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                          DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateCustPayment");
                     manager.ExecuteNonQuery(CommandType.Text, description);
                 }
 
-                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblAuditDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}')",
+                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
 
-                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8})",
-                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo);
+                dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo, BranchCode) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}')",
+                    TransDate.ToString("yyyy-MM-dd"), DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, 0, RefNo, BranchCode);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -36353,7 +36396,7 @@ public class BusinessLogic
 
                 if (Logsave == "YES")
                 {
-                    logdescription = string.Format("Insert Into tblPayment(JournalID,Paymode,BillNo) Values({0},{1},{2})", TransNum, Paymode, Billno);
+                    logdescription = string.Format("Insert Into tblPayment(JournalID,Paymode,BillNo, BranchCode) Values({0},{1},{2},{3})", TransNum, Paymode, Billno, BranchCode);
                     logdescription = logdescription.Trim();
                     description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                          DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateCustPayment");
@@ -36363,13 +36406,13 @@ public class BusinessLogic
                 //dbQry = string.Format("Insert Into tblAuditPayment(JournalID,Paymode,BillNo) Values({0},'{1}','{2}')", TransNum, Paymode, BillNo);
                 //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                dbQry = string.Format("Insert Into tblPayment(JournalID,Paymode,BillNo) Values({0},'{1}','{2}')", TransNum, Paymode, Billno);
+                dbQry = string.Format("Insert Into tblPayment(JournalID,Paymode,BillNo, BranchCode) Values({0},'{1}','{2}','{3}')", TransNum, Paymode, Billno, BranchCode);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 int Voucher = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(VoucherNo) FROM tblPayment"));
 
-                dbQry = string.Format("Insert Into tblAuditPayment(VoucherNo,JournalID,Paymode,BillNo) Values({0},{1},'{2}','{3}')", Voucher, TransNum, Paymode, Billno);
+                dbQry = string.Format("Insert Into tblAuditPayment(VoucherNo,JournalID,Paymode,BillNo, BranchCode) Values({0},{1},'{2}','{3}','{4}')", Voucher, TransNum, Paymode, Billno, BranchCode);
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -71254,5 +71297,38 @@ public class BusinessLogic
         }
     }
 
+    public DataSet ListSundryDebitorsbranch(string connection, string branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        if (connection.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
+            manager.ConnectionString = CreateConnectionString(connection);
+        else
+            manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}','{2}','{3}','{4}') OR tblGroups.HeadingID IN (11) Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors", "Bank Accounts", "Cash in Hand", "InCome");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where GroupName = 'Sundry Debtors' and branchcode ='" + branch + "' ORDER By LedgerName");
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
 
 }

@@ -198,7 +198,7 @@
         }
     </style>
 
-    <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
+    <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
 
             <table style="width: 100%">
@@ -275,7 +275,7 @@
                                     width="100%">
                                     <tr>
                                         <td>
-                                            <asp:FormView ID="frmViewAdd" runat="server" Width="100%" DataSourceID="frmSource"
+                                            <asp:FormView ID="frmViewAdd" runat="server" Width="100%" DataSourceID="frmSource" OnDataBound="frmViewAdd_DataBound" OnModeChanged="frmViewAdd_ModeChanged"
                                                 OnItemCommand="frmViewAdd_ItemCommand" DefaultMode="Edit" DataKeyNames="TransNo"
                                                 OnItemUpdated="frmViewAdd_ItemUpdated" OnItemCreated="frmViewAdd_ItemCreated"
                                                 Visible="False" OnItemInserting="frmViewAdd_ItemInserting" EmptyDataText="No Records"
@@ -300,6 +300,29 @@
                                                                             <ContentTemplate>
                                                                                 <table style="width: 800px; vertical-align: text-top; border: 0px solid #86b2d1;"
                                                                                     align="center" cellspacing="2" cellpadding="3">
+                                                                                    <tr>
+                                                                                        <td class="ControlLabel" style="width: 25%">
+                                                                                            Branch *
+                                                                    <asp:CompareValidator ID="CompareValidator123" runat="server" ControlToValidate="drpBranch"
+                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
+                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
+                                                                                        </td>
+                                                                                        <td class="ControlDrpBorder" style="width: 25%">
+                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                 runat="server">
+                                                                                                <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
+                                                                                             </asp:DropDownList>
+                                                                                        </td>
+                                                                                        <td class="ControlLabel" style="width: 15%">
+
+                                                                                        </td>
+                                                                                        <td style="width: 25%">
+                                                                                            
+                                                                                        </td>
+
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 25%">Ref. No. *
                                                                                             <asp:RequiredFieldValidator ID="rvRefNo" runat="server" ControlToValidate="txtRefNo"
@@ -480,6 +503,13 @@
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
+                                                                <asp:ObjectDataSource ID="srcBranch" runat="server" SelectMethod="ListBranch"
+                                                                    TypeName="BusinessLogic">
+                                                                    <SelectParameters>
+                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                        <asp:CookieParameter Name="User" CookieName="LoggedUserName" Type="String" />
+                                                                    </SelectParameters>
+                                                                </asp:ObjectDataSource>
                                                                 <td>
                                                                     <asp:ObjectDataSource ID="srcCreditorDebitor" runat="server" SelectMethod="ListSundryDebitors"
                                                                         TypeName="BusinessLogic">
@@ -565,6 +595,31 @@
                                                                                     <tr style="<%--height:3px">
                                                                                     </tr>--%>
                                                                                     <tr>
+                                                                                       <td class="ControlLabel" style="width: 25%">
+                                                                    Branch *
+                                                                                            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="drpBranchAdd"
+                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
+                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 25.2%">
+                                                                    <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional">
+                                                                                                                                <ContentTemplate>
+                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" AutoPostBack="true" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                 runat="server">
+                                                                                             </asp:DropDownList>
+                                                                                                                                    </ContentTemplate>
+                                                                                                                           </asp:UpdatePanel>
+                                                                </td>
+                                                                                        <td style="width: 15%" class="ControlLabel">
+                                                                                           
+                                                                                        </td>
+                                                                                        <td style="width: 25%">
+                                                                                         
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                    <tr>
                                                                                         <td style="width: 25%" class="ControlLabel">Ref. No. *
                                                                                             <asp:RequiredFieldValidator ID="rvRefNoAdd" runat="server" ControlToValidate="txtRefNoAdd"
                                                                                                 ErrorMessage="Please enter Ref. No. It cannot be left blank." Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
@@ -605,11 +660,18 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                         </td>
                                                                                         <td style="width: 25%" class="ControlDrpBorder">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                                                                                                                <ContentTemplate>
                                                                                             <asp:DropDownList ID="ComboBox2Add" runat="server" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium" BackColor="#e7e7e7" AutoPostBack="false"
-                                                                                                DataSourceID="srcCreditorDebitorAdd" DataValueField="LedgerID" DataTextField="LedgerName" Width="100%"
+                                                                                                Width="100%"
                                                                                                 AppendDataBoundItems="true">
-                                                                                                <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer" Value="0"></asp:ListItem>
+                                                                                                <%--<asp:ListItem Text="Select Customer" Value="0"></asp:ListItem>--%>
                                                                                             </asp:DropDownList>
+                                                                                                                                    </ContentTemplate>
+                                                                                                <Triggers>
+                                                                                                                                    <asp:AsyncPostBackTrigger ControlID="drpBranchAdd" EventName="SelectedIndexChanged" />
+                                                                                                                                </Triggers>
+                                                                                                                           </asp:UpdatePanel>
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 15%">Amount *
                                                                                             <asp:RequiredFieldValidator ID="rvModelAdd" runat="server" ControlToValidate="txtAmountAdd"
@@ -996,6 +1058,7 @@
                                 <asp:Parameter Name="BillNo" Type="String" />
                                 <asp:Parameter Name="NewTransNo" Type="Int32" Direction="Output" />
                                 <asp:Parameter Name="Username" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewPayment" Name="TransNo" PropertyName="SelectedValue"
@@ -1015,6 +1078,7 @@
                                 <asp:Parameter Name="PaymentMode" Type="String" />
                                 <asp:Parameter Name="NewTransNo" Type="Int32" Direction="Output" />
                                 <asp:Parameter Name="Username" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>
