@@ -51,6 +51,11 @@
             padding: 8px;
             background-color: #ffffff;
         }
+
+         select.myDropDownList {
+            text-align: right;
+          }
+
     </style>
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
@@ -239,9 +244,9 @@
                                                                                             </asp:DropDownList>
                                                                                        
                                                                                     </td>
-                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:16%;">
+                                                                                    <td valign="top" class="ControlTextBoxmanu"  style=" width:16%; text-align: right">
                                                                                       
-                                                                                            <asp:DropDownList ID="ddUnit" style="text-align:center;"  ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server"  Width="117%"  DataTextField="Unit" DataValueField="Unit" DataSourceID="srcUnitMntAdd" CssClass="drpDownListMedium" height="25px" >
+                                                                                            <asp:DropDownList ID="ddUnit"  style="text-align:center;"  ForeColor="#0567AE" Font-Bold="true" Font-Size="15px" runat="server"  Width="117%"  DataTextField="Unit" DataValueField="Unit" DataSourceID="srcUnitMntAdd" CssClass="drpDownListMedium" height="25px" >
                                                                                                
                                                                                             </asp:DropDownList>
                                                                                        
@@ -249,7 +254,7 @@
                                                                                 </tr>
                                                                               <tr>
                                                                                     <td  style=" width:14%;">
-                                                                                        <asp:RequiredFieldValidator ID="rv1" ValidationGroup="product" ErrorMessage="Please Select Component ID.It Cannot be left Blank"
+                                                                                        <asp:RequiredFieldValidator ID="rv1" ValidationGroup="product" ErrorMessage="Please Select Component ID. It Cannot be left Blank"
                                                                                             Text="*" InitialValue="0" ControlToValidate="cmbProdAdd" runat="server" />
                                                                                     </td>
                                                                                     <td  style=" width:15%;">
@@ -262,7 +267,7 @@
                                                                                     </td>
                                                                                     <td style=" width:5%;">
                                                                                         <asp:RequiredFieldValidator ValidationGroup="product" ID="rqQty" runat="server" Display="Dynamic"
-                                                                                            ControlToValidate="txtQtyAdd" Text="*" ErrorMessage="Please Enter Qty.It Cannot be left Blank"></asp:RequiredFieldValidator>
+                                                                                            ControlToValidate="txtQtyAdd" Text="*" ErrorMessage="Please Enter Qty. It Cannot be left Blank"></asp:RequiredFieldValidator>
                                                                                     </td>
                                                                                     <td style=" width:16%;" ></td>
                                                                                     <td align="right" style=" width:16%;">
@@ -305,7 +310,7 @@
                                                                                     <td>
                                                                             <asp:GridView ID="GrdViewItems" AutoGenerateColumns="false" runat="server" AllowSorting="True" Width="100%"  DataKeyNames="FormulaID"
                                                                                 AllowPaging="True" OnRowEditing="GrdViewItems_RowEditing" OnRowCancelingEdit="GrdViewItems_RowCancelingEdit"
-                                                                                 EmptyDataText="No Product Added. Please add products by Clicking Define Specification."
+                                                                                 EmptyDataText="No Component has been added. Please add Component above."
                                                                                 OnPageIndexChanging="GrdViewItems_PageIndexChanging" OnRowDataBound="GrdViewItems_RowDataBound"
                                                                                 OnRowUpdating="GrdViewItems_RowUpdating" OnRowDeleting="GrdViewItems_RowDeleting"
                                                                                 OnRowCreated="GrdViewItems_RowCreated" >
@@ -365,7 +370,7 @@
                                                                                         <FooterTemplate>
                                                                                         </FooterTemplate>
                                                                                     </asp:TemplateField>
-                                                                                     <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="7%" ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="Gray">
+                                                                                     <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="7%" ItemStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="Gray">
                                                                                         <ItemTemplate>
                                                                                             <%# Eval("Unit_Of_Measure")%>
                                                                                         </ItemTemplate>

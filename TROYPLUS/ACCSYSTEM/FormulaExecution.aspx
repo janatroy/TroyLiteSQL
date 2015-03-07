@@ -469,12 +469,12 @@
                                                                                                 <asp:BoundField HeaderText="Description" ItemStyle-HorizontalAlign="Left" HeaderStyle-Width="30%" ReadOnly="True" DataField="ProductDesc" HeaderStyle-BorderColor="Gray" />
                                                                                                 <asp:BoundField HeaderText="Component Name" ItemStyle-HorizontalAlign="Left" ReadOnly="True" HeaderStyle-Width="30%" DataField="ProductName" HeaderStyle-BorderColor="Gray" />
 
-                                                                                                <asp:TemplateField HeaderText="Qty." HeaderStyle-BorderColor="Gray">
+                                                                                                <asp:TemplateField HeaderText="Qty." ItemStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="Gray">
 
                                                                                                     <ItemStyle Width="20%" />
                                                                                                     <ItemTemplate>                                                                                                  
-                                                                                                        <asp:TextBox ID="txtQty" style="text-align:center" runat="server" Text='<%# Bind("Qty") %>' CssClass="cssTextBoxmanufa"
-                                                                                                            Width="50px"></asp:TextBox>
+                                                                                                        <asp:TextBox ID="txtQty" style="text-align:right" runat="server" Text='<%# Bind("Qty") %>' CssClass="cssTextBoxmanufa"
+                                                                                                            Width="60px"></asp:TextBox>
                                                                                                         <asp:HiddenField ID="hdStockLimlt" runat="Server" Value='<%# Bind("Stock") %>' />
                                                                                                         <asp:RequiredFieldValidator ValidationGroup="FormulaInfo" ID="rqQty" runat="server"
                                                                                                             Display="Dynamic" ControlToValidate="txtQty" ErrorMessage="*"></asp:RequiredFieldValidator>
@@ -580,10 +580,10 @@
                                                 <Columns>
                                                     <asp:BoundField DataField="CDate" HeaderText="Date Created" DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="FormulaName" ItemStyle-HorizontalAlign="Left" HeaderText="Definition" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="IsReleased" HeaderText="Processed" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:TemplateField ItemStyle-CssClass="command" ItemStyle-Width="50px" HeaderText="Process" HeaderStyle-BorderColor="Gray">
+                                                    <asp:BoundField DataField="IsReleased" HeaderText="Processed"  HeaderStyle-BorderColor="Gray" />
+                                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="120px" ItemStyle-Width="50px" HeaderText="Release Product" HeaderStyle-BorderColor="Gray">
                                                         <ItemTemplate>
-                                                            <cc1:ConfirmButtonExtender ID="CnrfmDel" TargetControlID="btnRelease" ConfirmText="Are you sure to complete the processing?"
+                                                            <cc1:ConfirmButtonExtender ID="CnrfmDel" TargetControlID="btnRelease" ConfirmText="Are you sure want to Release Product"
                                                                 runat="server">
                                                             </cc1:ConfirmButtonExtender>
                                                             <asp:ImageButton ID="btnRelease" runat="server" SkinID="GridRelease" ToolTip="Click here to complete the processing."

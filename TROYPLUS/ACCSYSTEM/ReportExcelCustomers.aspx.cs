@@ -149,6 +149,7 @@ public partial class Customers : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("ExecutiveIncharge"));
                 dt.Columns.Add(new DataColumn("Mobile"));
                 dt.Columns.Add(new DataColumn("CreditDays"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     DataRow dr_final1 = dt.NewRow();
@@ -163,6 +164,7 @@ public partial class Customers : System.Web.UI.Page
                     dr_final1["LedgerCategory"] = dr["LedgerCategory"];
                     dr_final1["ExecutiveIncharge"] = dr["ExecutiveIncharge"];
                     dr_final1["CreditDays"] = dr["CreditDays"];
+                    dr_final1["BranchCode"] = dr["BranchCode"];
                     dt.Rows.Add(dr_final1);
 
                     GtotalCreditlimit = GtotalCreditlimit + Convert.ToDecimal(dr["CreditLimit"]);
@@ -187,6 +189,7 @@ public partial class Customers : System.Web.UI.Page
                 dr_final2["LedgerCategory"] = "";
                 dr_final2["ExecutiveIncharge"] = "";
                 dr_final2["CreditDays"] = "";
+                dr_final2["BranchCode"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }

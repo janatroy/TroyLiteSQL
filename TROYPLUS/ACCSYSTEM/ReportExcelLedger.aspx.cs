@@ -10,6 +10,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
+using ClosedXML.Excel;
+
 
 public partial class ReportExcelLedger : System.Web.UI.Page
 {
@@ -40,7 +43,7 @@ public partial class ReportExcelLedger : System.Web.UI.Page
 
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Ledger");
                 dt.Columns.Add(new DataColumn("LedgerName"));
                 dt.Columns.Add(new DataColumn("GroupName"));
                 dt.Columns.Add(new DataColumn("AliasName"));
@@ -51,7 +54,7 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("OpenBal"));
                 dt.Columns.Add(new DataColumn("Phone"));
                 dt.Columns.Add(new DataColumn("LedgerCategory"));
-                //dt.Columns.Add(new DataColumn("ExecutiveIncharge"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
                 //dt.Columns.Add(new DataColumn("Mobile"));
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
@@ -68,6 +71,7 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                     dr_final1["LedgerCategory"] = dr["LedgerCategory"];
                     //dr_final1["ExecutiveIncharge"] = dr["ExecutiveIncharge"];
                     dr_final1["GroupName"] = dr["GroupName"];
+                    dr_final1["BranchCode"] = dr["BranchCode"];
                     dt.Rows.Add(dr_final1);
 
                     //GtotalOpenDR = GtotalOpenDR + Convert.ToDecimal(dr["OpenBalanceDR"]);
@@ -96,6 +100,7 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                 dr_final2["LedgerCategory"] = "";
                 //dr_final2["ExecutiveIncharge"] = "";
                 dr_final2["GroupName"] = "";
+                dr_final2["BranchCode"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }
@@ -208,7 +213,7 @@ public partial class ReportExcelLedger : System.Web.UI.Page
             string connection = string.Empty;
             connection = Request.Cookies["Company"].Value;
 
-            ds = objBL.ListLedgerInfo(connection,txtsearch, dropdown);
+            ds = objBL.ListLedgerInfo(connection, txtsearch, dropdown);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -217,14 +222,14 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("AliasName"));
                 dt.Columns.Add(new DataColumn("Address"));
                 dt.Columns.Add(new DataColumn("TINnumber"));
-               // dt.Columns.Add(new DataColumn("CreditLimit"));
+                // dt.Columns.Add(new DataColumn("CreditLimit"));
                 //dt.Columns.Add(new DataColumn("OpenBalanceDR"));
                 dt.Columns.Add(new DataColumn("OpenBal"));
                 dt.Columns.Add(new DataColumn("Phone"));
                 dt.Columns.Add(new DataColumn("LedgerCategory"));
                 dt.Columns.Add(new DataColumn("ExecutiveIncharge"));
-              //  dt.Columns.Add(new DataColumn("Mobile"));
-               // dt.Columns.Add(new DataColumn("CreditDays"));
+                //  dt.Columns.Add(new DataColumn("Mobile"));
+                // dt.Columns.Add(new DataColumn("CreditDays"));
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     DataRow dr_final1 = dt.NewRow();
@@ -232,13 +237,13 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                     dr_final1["AliasName"] = dr["AliasName"];
                     dr_final1["Address"] = dr["Add1"];
                     dr_final1["TINnumber"] = dr["TINnumber"];
-                  //  dr_final1["CreditLimit"] = dr["CreditLimit"];
+                    //  dr_final1["CreditLimit"] = dr["CreditLimit"];
                     //dr_final1["OpenBalanceDR"] = dr["OpenBalanceDR"];
                     dr_final1["OpenBal"] = dr["OpenBalance"];
                     dr_final1["Phone"] = dr["Phone"];
                     dr_final1["LedgerCategory"] = dr["LedgerCategory"];
                     dr_final1["ExecutiveIncharge"] = dr["ExecutiveIncharge"];
-                   // dr_final1["CreditDays"] = dr["CreditDays"];
+                    // dr_final1["CreditDays"] = dr["CreditDays"];
                     dt.Rows.Add(dr_final1);
 
                     //GtotalOpenDR = GtotalOpenDR + Convert.ToDecimal(dr["OpenBalanceDR"]);
@@ -259,14 +264,14 @@ public partial class ReportExcelLedger : System.Web.UI.Page
                 dr_final2["AliasName"] = "";
                 dr_final2["Address"] = "";
                 dr_final2["TINnumber"] = "Grand Total:";
-              //  dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
+                //  dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
                 //dr_final2["OpenBalanceDR"] = Convert.ToDecimal(GtotalOpenDR);
                 //dr_final2["OpenBal"] = Convert.ToDecimal(GtotalOpenCR);
                 dr_final2["OpenBal"] = "";
                 dr_final2["Phone"] = "";
                 dr_final2["LedgerCategory"] = "";
                 dr_final2["ExecutiveIncharge"] = "";
-               // dr_final2["CreditDays"] = "";
+                // dr_final2["CreditDays"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }
@@ -279,7 +284,7 @@ public partial class ReportExcelLedger : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
-    }
+    }    
     public override void VerifyRenderingInServerForm(Control control)
     {
 
@@ -290,24 +295,23 @@ public partial class ReportExcelLedger : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            string filename = "LedgerDownloadExcel.xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "LedgerExcelReport.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 

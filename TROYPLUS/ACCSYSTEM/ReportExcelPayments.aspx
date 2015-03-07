@@ -39,7 +39,7 @@
                     <asp:Label ID="Label7" runat="server" Text="StartDate"></asp:Label>
                 </td>
                 <td  class="ControlTextBox3" style="width:25%">
-                    <asp:TextBox ID="txtStrtDt" runat="server" CssClass="textbox" style="border: 1px solid #90c9fc"  BackColor = "#90c9fc"></asp:TextBox>
+                    <asp:TextBox ID="txtStrtDt" runat="server"   SkinID="skinTxtBoxGrid"  ></asp:TextBox>
                     <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" 
                             Format="dd/MM/yyyy"
                             PopupButtonID="ImageButton2" TargetControlID="txtStrtDt">
@@ -60,7 +60,7 @@
                     <asp:Label ID="Label9" runat="server" Text="EndDate"></asp:Label>
                 </td>
                 <td  class="ControlTextBox3" style="width:25%">
-                    <asp:TextBox ID="txtEndDt" runat="server" CssClass="textbox" style="border: 1px solid #90c9fc"  BackColor = "#90c9fc"></asp:TextBox>
+                    <asp:TextBox ID="txtEndDt" runat="server" SkinID="skinTxtBoxGrid" ></asp:TextBox>
                     <cc1:CalendarExtender ID="CalendarExtender123" runat="server" Enabled="True" 
                             Format="dd/MM/yyyy"
                             PopupButtonID="ImageButton1" TargetControlID="txtEndDt">
@@ -83,7 +83,7 @@
                     <asp:Label ID="Label10" runat="server" Text="Categories"></asp:Label>
                 </td>
                 <td  class="ControlDrpBorder" style="width:25%">
-                    <asp:DropDownList ID="ddlCategory" runat="server" Width="100%" AutoPostBack="True"  CssClass="drpDownListMedium" Height="30px" style="border: 1px solid #90c9fc"  BackColor = "#90c9fc"
+                    <asp:DropDownList ID="ddlCategory" runat="server" Width="100%" AutoPostBack="True"  CssClass="drpDownListMedium" Height="30px" 
                         OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged">
                     </asp:DropDownList>
                 </td>
@@ -94,7 +94,7 @@
                     <asp:Label ID="Label15" runat="server" Text="SubCategories"></asp:Label>
                 </td>
                 <td  class="ControlDrpBorder" style="width:25%">
-                    <asp:DropDownList ID="ddlsubcategory" runat="server" Width="100%" Height="30px" CssClass="drpDownListMedium"  style="border: 1px solid #90c9fc"  BackColor = "#90c9fc">
+                    <asp:DropDownList ID="ddlsubcategory" runat="server" Width="100%" Height="30px" CssClass="drpDownListMedium" >
                     </asp:DropDownList>
                 </td>
                 <td style="width:4%">
@@ -107,7 +107,7 @@
                     <asp:Label ID="Label16" runat="server" Text="Payment Mode"></asp:Label>
                 </td>
                 <td  class="ControlDrpBorder" style="width:25%">
-                    <asp:DropDownList ID="ddlPayment" runat="server"  Width="100%" AutoPostBack="True" CssClass="drpDownListMedium"  Height="30px" style="border: 1px solid #90c9fc"  BackColor = "#90c9fc"
+                    <asp:DropDownList ID="ddlPayment" runat="server"  Width="100%" AutoPostBack="True" CssClass="drpDownListMedium"  Height="30px" 
                         OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged">
                     </asp:DropDownList>
                 </td>
@@ -118,7 +118,7 @@
                     <asp:Label ID="Label11" runat="server" Text="FirstLevel"></asp:Label>
                 </td>
                 <td  class="ControlDrpBorder" style="width:25%">
-                    <asp:DropDownList ID="ddlfirstlvl" runat="server"  Width="100%" CssClass="drpDownListMedium"  OnTextChanged="ddlfirstlvl_SelectedIndexChanged" AutoPostBack="true" Height="30px" style="border: 1px solid #90c9fc"  BackColor = "#90c9fc">
+                    <asp:DropDownList ID="ddlfirstlvl" runat="server"  Width="100%" CssClass="drpDownListMedium"  OnTextChanged="ddlfirstlvl_SelectedIndexChanged" AutoPostBack="true" Height="30px" >
                     </asp:DropDownList>
                 </td>
                 <td style="width:4%">
@@ -131,7 +131,7 @@
                     <asp:Label ID="Label12" runat="server" Text="SecondLevel"></asp:Label>
                 </td>
                 <td  class="ControlDrpBorder" style="width:25%">
-                    <asp:DropDownList ID="ddlsecondlvl" runat="server"  Width="100%" CssClass="drpDownListMedium"  OnTextChanged="ddlsecondlvl_SelectedIndexChanged" AutoPostBack="true" Height="30px" style="border: 1px solid #90c9fc"  BackColor = "#90c9fc">
+                    <asp:DropDownList ID="ddlsecondlvl" runat="server"  Width="100%" CssClass="drpDownListMedium"  OnTextChanged="ddlsecondlvl_SelectedIndexChanged" AutoPostBack="true" Height="30px" >
                     </asp:DropDownList>
                 </td>
                 <td style="width:3%">
@@ -141,7 +141,7 @@
                     <asp:Label ID="Label14" runat="server" Text="ThirdLevel"></asp:Label>
                 </td>
                 <td  class="ControlDrpBorder" style="width:25%">
-                    <asp:DropDownList ID="ddlthirdlvl" runat="server" Height="30px" CssClass="drpDownListMedium"  Width="100%" style="border: 1px solid #90c9fc"  BackColor = "#90c9fc">
+                    <asp:DropDownList ID="ddlthirdlvl" runat="server" Height="30px" CssClass="drpDownListMedium"  Width="100%" >
                     </asp:DropDownList>
                 </td>
                 <td style="width:4%">

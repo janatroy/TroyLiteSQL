@@ -644,7 +644,7 @@ font:normal 10px 'Trebuchet MS';
 {    
 color:#000000;
 font:normal 13px 'Trebuchet MS';
-text-align:center;	
+text-align:"center";	
 vertical-align:middle;
 height:26px;
 background-color:white;

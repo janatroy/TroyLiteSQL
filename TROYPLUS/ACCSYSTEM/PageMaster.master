@@ -751,7 +751,7 @@
                                                 </li>
                                                 <li class="color submenumenu"><a href="#">Transactions<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="./FormulaExecution.aspx" runat="server" id="lnkTransferExecution">Manufacturing Process&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                        <li class="color submenumenu"><a href="./FormulaExecution.aspx" runat="server" id="lnkTransferExecution">Process Manufacturing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
