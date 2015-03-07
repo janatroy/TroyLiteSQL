@@ -327,7 +327,7 @@ public partial class MobileSales : System.Web.UI.Page
             {
 
                 itemCode = cmbProdAdd.SelectedItem.Value;
-                double chk = bl.getStockInfo(itemCode);
+                double chk = bl.getStockInfo(itemCode,"");
                 if (chk <= 0)
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Current Stock Limit : " + chk + "')", true);

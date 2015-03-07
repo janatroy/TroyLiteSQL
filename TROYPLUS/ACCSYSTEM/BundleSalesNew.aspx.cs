@@ -316,7 +316,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
             {
 
                 itemCode = cmbProdAdd.SelectedItem.Value;
-                double chk = bl.getStockInfo(itemCode);
+                double chk = bl.getStockInfo(itemCode,"");
                 if (chk <= 0)
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Current Stock Limit " + chk + "')", true);
@@ -453,7 +453,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
             {
 
                 itemCode = cmbProdAdd.SelectedItem.Value;
-                double chk = bl.getStockInfo(itemCode);
+                double chk = bl.getStockInfo(itemCode,"");
                 if (chk <= 0)
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Current Stock Limit " + chk + "')", true);
@@ -626,7 +626,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
 
             if (Page.IsValid)
             {
-                stock = bl.getStockInfo(cmbProdAdd.SelectedItem.Value);
+                stock = bl.getStockInfo(cmbProdAdd.SelectedItem.Value,"");
 
 
                 if (Request.Cookies["Company"]  != null)
@@ -641,7 +641,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
                     return;
                 }
                 prodItem = cmbProdAdd.SelectedItem.Text.Split('-');
-                double chk = bl.getStockInfo(Convert.ToString(prodItem[0]));
+                double chk = bl.getStockInfo(Convert.ToString(prodItem[0]),"");
                 double curQty = Convert.ToDouble(txtQtyAdd.Text);
                 /*Start March 15 Modification */
                 double QtyEdit = Convert.ToDouble(hdEditQty.Value);
@@ -800,7 +800,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
                     return;
                 }
                 prodItem = cmbProdAdd.SelectedItem.Text.Split('-');
-                double chk = bl.getStockInfo(Convert.ToString(prodItem[0]));
+                double chk = bl.getStockInfo(Convert.ToString(prodItem[0]),"");
                 double curQty = Convert.ToDouble(txtQtyAdd.Text);
 
                 if (curQty > chk)

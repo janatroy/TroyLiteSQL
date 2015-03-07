@@ -140,7 +140,7 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
         else
             Response.Redirect("Login.aspx");
 
-        ds = objBL.ListOpeningProductStock(connection, "", "");
+        ds = objBL.ListOpeningProductStock(connection, "", "","");
 
         if (ds.Tables[0].Rows.Count > 0)
         {

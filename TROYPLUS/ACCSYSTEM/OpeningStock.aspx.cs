@@ -15,6 +15,9 @@ public partial class OpeningStock : System.Web.UI.Page
 {
     private string sDataSource = string.Empty;
 
+    string connection;
+    string usernam;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
@@ -48,7 +51,7 @@ public partial class OpeningStock : System.Web.UI.Page
 
                 LoadProducts(this, null);
                 loadCategories();
-
+                loadBranch();
                 //UpdatePanel16.Update();
                 if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
                 {
@@ -61,8 +64,8 @@ public partial class OpeningStock : System.Web.UI.Page
 
                 GrdViewSerVisit.PageSize = 8;
 
-                string connection = Request.Cookies["Company"].Value;
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+                 connection = Request.Cookies["Company"].Value;
+                 usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
                 if (bl.CheckUserHaveAdd(usernam, "OPNSTK"))
@@ -111,6 +114,44 @@ public partial class OpeningStock : System.Web.UI.Page
         }
     }
 
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+    }
     protected void BtnClearFilter_Click(object sender, EventArgs e)
     {
         try
@@ -153,6 +194,7 @@ public partial class OpeningStock : System.Web.UI.Page
                 string ditemCode = string.Empty;
                 string dProductName = string.Empty;
                 string dProductDesc = string.Empty;
+                string branch = string.Empty;
                 int dcatid = 0;
 
                 string Username = Request.Cookies["LoggedUserName"].Value;
@@ -165,7 +207,7 @@ public partial class OpeningStock : System.Web.UI.Page
                 dopening = Convert.ToInt32(txtOpeningStock.Text);
                 dCurrentStock = Convert.ToInt32(txtCurrentStock.Text);
                 dadjustedStock = Convert.ToInt32(txtadjusted.Text);
-
+                branch = drpBranch.SelectedValue;
                 string[] sDate;
                 DateTime sDueDate;
                 string delim = "/";
@@ -214,7 +256,7 @@ public partial class OpeningStock : System.Web.UI.Page
 
                 try
                 {
-                    double Stock = bl.UpdateOpeningStock(connection, ditemCode, dProductName, dProductDesc, dmodel, dcatid, dopening, dCurrentStock, dadjustedStock, Username, sDueDate);
+                    double Stock = bl.UpdateOpeningStock(connection, ditemCode, dProductName, dProductDesc, dmodel, dcatid, dopening, dCurrentStock, dadjustedStock, Username, sDueDate,branch);
 
                     pnlVisitDetails.Visible = false;
                     lnkBtnAdd.Visible = true;
@@ -424,7 +466,8 @@ public partial class OpeningStock : System.Web.UI.Page
                     }
 
 
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Opening Stock Updated Successfully For ItemCode " + ditemCode + " , New Opening Stock is " + dopening + " And New Current Stock is " + Stock + " ');", true);
+                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Opening Stock Updated Successfully For ItemCode " + ditemCode + " , New Opening Stock is " + dopening + " And New Current Stock is " + Stock + " ');", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Opening Stock Updated Successfully For ItemCode " + ditemCode + " , New Opening Stock is " + dopening + " And New Current Stock is " + Stock + " And Branch Code is " + branch + " ');", true);
                     return;
                 }
                 catch (Exception ex)
@@ -961,6 +1004,8 @@ public partial class OpeningStock : System.Web.UI.Page
 
                     txtOpeningStock.Text = row.Cells[5].Text;
                     txtCurrentStock.Text = row.Cells[6].Text;
+                    drpBranch.SelectedValue = row.Cells[7].Text;
+                    drpBranch.Enabled = false;
                     txtadjusted.Focus();
 
                     UpdateButton.Visible = true;
@@ -1016,6 +1061,8 @@ public partial class OpeningStock : System.Web.UI.Page
             //UpdatePanel16.Update();
             rowstk.Visible = false;
             txtOpeningStock.Enabled = true;
+            //drpBranch.Enabled = true;
+            BranchEnable_Disable();
         }
         catch (Exception ex)
         {
@@ -1281,7 +1328,7 @@ public partial class OpeningStock : System.Web.UI.Page
                 string dProductName = string.Empty;
                 string dProductDesc = string.Empty;
                 string dmodel = string.Empty;
-
+                string branch = string.Empty;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
                 string[] sDate;
@@ -1299,10 +1346,11 @@ public partial class OpeningStock : System.Web.UI.Page
                 dopening = Convert.ToInt32(txtOpeningStock.Text);
                 sDate = txtDueDate.Text.Trim().Split(delimA);
                 sDueDate = new DateTime(Convert.ToInt32(sDate[2].ToString()), Convert.ToInt32(sDate[1].ToString()), Convert.ToInt32(sDate[0].ToString()));
-                
-                if (bl.IsItemAlreadyInOpening(connection, ditemCode))
+                branch = drpBranch.SelectedValue;
+
+                if (bl.IsItemAlreadyInOpening(connection, ditemCode,branch))
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product code " + ditemCode + " already added in opening stock');", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product code " + ditemCode + "  already added in opening stock for Branch Code " + branch + "');", true);
                     ModalPopupExtender1.Show();
                     return;
                 }
@@ -1323,7 +1371,7 @@ public partial class OpeningStock : System.Web.UI.Page
 
                 try
                 {
-                    double Stock = bl.InsertOpeningStock(connection, ditemCode, dProductName, dProductDesc, dmodel, dcatid, dopening, Username, sDueDate);
+                    double Stock = bl.InsertOpeningStock(connection, ditemCode, dProductName, dProductDesc, dmodel, dcatid, dopening, Username, sDueDate,branch);
 
                     pnlVisitDetails.Visible = false;
                     lnkBtnAdd.Visible = true;

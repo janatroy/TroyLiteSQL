@@ -426,7 +426,7 @@ public partial class CustomerSales : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
 
-        ds = bl.ListPurchaseID();
+        ds = bl.ListPurchaseID(drpBranch.SelectedValue);
         drpPurID.Items.Clear();
         drpPurID.Items.Add(new ListItem("Select Purchase InvoiceNo", "0"));
         drpPurID.DataSource = ds;
@@ -1642,7 +1642,7 @@ public partial class CustomerSales : System.Web.UI.Page
             {
 
                 itemCode = cmbProdAdd.SelectedItem.Value;
-                double chk = bl.getStockInfo(itemCode);
+                double chk = bl.getStockInfo(itemCode,drpBranch.SelectedValue);
                 if (chk <= 0)
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Current Stock Limit : " + chk + "')", true);
@@ -1776,7 +1776,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         return;
                     }
 
-                    double chk = bl.getStockInfo(itemCode);
+                    double chk = bl.getStockInfo(itemCode,drpBranch.SelectedValue);
 
                     txtstock.Text = Convert.ToString(chk);
 
@@ -2084,7 +2084,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             if (Page.IsValid)
             {
-                stock = bl.getStockInfo(cmbProdAdd.SelectedItem.Value);
+                stock = bl.getStockInfo(cmbProdAdd.SelectedItem.Value,drpBranch.SelectedValue);
 
                 if (Request.Cookies["Company"] != null)
                     connection = Request.Cookies["Company"].Value;
@@ -2240,7 +2240,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     }
                 }
 
-                double chk = bl.getStockInfo(cmbProdAdd.SelectedItem.Value);
+                double chk = bl.getStockInfo(cmbProdAdd.SelectedItem.Value,drpBranch.SelectedValue);
                 double curQty = Convert.ToDouble(txtQtyAdd.Text);
                 /*Start March 15 Modification */
                 double QtyEdit = Convert.ToDouble(hdEditQty.Value);
@@ -2635,7 +2635,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
                 prodItem = cmbProdAdd.SelectedItem.Text.Split('-');
-                double chk = bl.getStockInfo(cmbProdAdd.SelectedValue);
+                double chk = bl.getStockInfo(cmbProdAdd.SelectedValue,drpBranch.SelectedValue);
                 double curQty = Convert.ToDouble(txtQtyAdd.Text);
 
                 if (curQty > chk)
@@ -5474,8 +5474,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             //old code
                             //int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, Convert.ToInt32(executive), dFreight, dLU, dss, sOtherCusName, intTrans, userID, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, receiptData, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, MultiPayment, Types, snarr, cuscategory);
 
-                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType,branchcode);
-
+                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType,branchcode,connection);
 
 
                             if (billNo == -1)
@@ -6397,7 +6396,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 rowmanual.Visible = false;
 
                 loadPurchaseID();
-
+                FirstGridViewRow();
             }
             else if (optionmethod.SelectedValue == "ManualSales")
             {
@@ -11841,7 +11840,9 @@ public partial class CustomerSales : System.Web.UI.Page
         {
             loadDropDowns();
         }
-        FirstGridViewRow();     
+        FirstGridViewRow();  
+        loadPurchaseID();
+         
     }
 
     private void BranchEnable_Disable()

@@ -725,7 +725,7 @@ public partial class StockListReport : System.Web.UI.Page
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
 
-            currStock = bl.getStockInfo(itemCode);
+            currStock = bl.getStockInfo(itemCode,"");
 
             string[] stkArray = drpLedgerName.SelectedItem.Value.Split('@');
             lblItem.Text = cmbProdName.Text;
@@ -938,7 +938,7 @@ public partial class StockListReport : System.Web.UI.Page
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
 
-            currStock = bl.getStockInfo(itemCode);
+            currStock = bl.getStockInfo(itemCode,"");
 
             string[] stkArray = drpLedgerName.SelectedItem.Value.Split('@');
             lblItem.Text = cmbProdName.Text;
