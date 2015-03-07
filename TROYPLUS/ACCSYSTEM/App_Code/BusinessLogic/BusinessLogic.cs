@@ -8926,7 +8926,7 @@ public class BusinessLogic
             // dbQry = string.Format("SELECT ItemCode,ItemCode + ' - ' +  ProductName + ' - ' + Model + ' - ' + ProductDesc as ProductName FROM tblProductMaster where stock > 0");
 
 
-            dbQry = string.Format("SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.CategoryID, " +
+            dbQry = string.Format("SELECT tblProductMaster.ItemCode,tblProductMaster.ItemCode + ' - ' + tblProductMaster.ProductName + ' - ' + tblProductMaster.Model + ' - ' + tblProductMaster.ProductDesc as ProductName, tblProductMaster.Model, tblProductMaster.CategoryID, " +
                                 " tblProductMaster.Rate, tblProductMaster.VAT, tblProductMaster.Discount, tblProductStock.Stock, tblProductStock.BranchCode, " +
                                 " tblProductStock.BranchName FROM tblProductMaster INNER JOIN tblProductStock ON tblProductMaster.ItemCode = tblProductStock.ItemCode " +
                                 " where BranchCode='" + branchcode + "' and tblProductStock.Stock > 0");
@@ -12437,10 +12437,11 @@ public class BusinessLogic
 
     }
 
-    public int InsertSalesNewSeries(string Series, string BillDate, int sCustomerID, string sCustomerName, string sCustomerAddress, string sCustomerContact, int paymode, string sCreditCardno, int BankName, double Amount, string purchasereturn, string prreason, double freight, double dLU, DataSet salesDS, string sOtherCusName, string intTrans, DataSet receiptData, string MultiPayment, string deliveryNote, string sCustomerAddress2, string sCustomerAddress3, string sexecutivename, string despatchedfrom, double fixedtotal, int manualno, double TotalWORndOff, string usernam, string ManualSales, string NormalSales, string Types, string narration2, string DuplicateCopy, string check, int CustomerIdMobile, string cuscategory, string distype, int iPurID, string branchcode)
+    public int InsertSalesNewSeries(string Series, string BillDate, int sCustomerID, string sCustomerName, string sCustomerAddress, string sCustomerContact, int paymode, string sCreditCardno, int BankName, double Amount, string purchasereturn, string prreason, double freight, double dLU, DataSet salesDS, string sOtherCusName, string intTrans, DataSet receiptData, string MultiPayment, string deliveryNote, string sCustomerAddress2, string sCustomerAddress3, string sexecutivename, string despatchedfrom, double fixedtotal, int manualno, double TotalWORndOff, string usernam, string ManualSales, string NormalSales, string Types, string narration2, string DuplicateCopy, string check, int CustomerIdMobile, string cuscategory, string distype, int iPurID, string branchcode, string connection)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
+        //string connection = Request.Cookies["Company"].Value;
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -12498,10 +12499,19 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
 
             manager.BeginTransaction();
-            //Start Retriving the old Debtor and CreditorID
 
-            if (paymode == 1)
-                DebtorID = 1;
+            int cid = 0;
+            cid = getSalesACLedgerId(connection, branchcode);
+            creditorID = cid;           
+
+
+            //Start Retriving the old Debtor and CreditorID
+            int did = 0;
+            if (paymode == 1)           
+            {
+                did = getCashACLedgerId(connection, branchcode);
+                DebtorID = did;
+            }
             else if (paymode == 2)
                 DebtorID = BankName;
             else
@@ -13107,7 +13117,7 @@ public class BusinessLogic
 
                     manager.ExecuteNonQuery(CommandType.Text, qryReceipt);
 
-                    int ReceiptTransNo = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook");
+                    int ReceiptTransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
 
 
                     if (Logsave == "YES")
@@ -48643,7 +48653,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet ListSundryDebtorsExcept(string connection)
+    public DataSet ListSundryDebtorsExcept(string connection, string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         if (connection.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
@@ -48657,7 +48667,7 @@ public class BusinessLogic
         try
         {
             //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}') Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors");
-            dbQry = string.Format("select LedgerId, LedgerName, Mobile from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName='Sundry Debtors' and tblLedger.dc ='NO' and tblLedger.Inttrans ='NO' Order By ledgerName");
+            dbQry = string.Format("select LedgerId, LedgerName, Mobile from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where BranchCode='" + branchcode + "' and tblGroups.GroupName='Sundry Debtors' and tblLedger.dc ='NO' and tblLedger.Inttrans ='NO' Order By ledgerName");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -71308,6 +71318,39 @@ public class BusinessLogic
             manager.Open();
 
             string check = "Cash A/c - " + BranchCode;
+            dbQry.Append("SELECT ledgerid From tblLedger WHERE LedgerName = '" + check + "' ");
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return Convert.ToInt32(ds.Tables[0].Rows[0]["ledgerid"]);
+            else
+                return 0;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public int getSalesACLedgerId(string connection, string BranchCode)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);// +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            string check = "Sales A/c - " + BranchCode;
             dbQry.Append("SELECT ledgerid From tblLedger WHERE LedgerName = '" + check + "' ");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());

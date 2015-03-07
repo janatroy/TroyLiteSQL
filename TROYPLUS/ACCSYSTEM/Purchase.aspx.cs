@@ -28,7 +28,8 @@ public partial class Purchase : System.Web.UI.Page
     public double WholeTotal;
     string BarCodeRequired = string.Empty;
     string EnableVat = string.Empty;
-
+    string connection;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
@@ -96,8 +97,8 @@ public partial class Purchase : System.Web.UI.Page
             {
 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-                string connection = Request.Cookies["Company"].Value;
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+                 connection = Request.Cookies["Company"].Value;
+                 usernam = Request.Cookies["LoggedUserName"].Value;
 
                 if (bl.CheckUserHaveAdd(usernam, "PURCHS"))
                 {
@@ -153,7 +154,7 @@ public partial class Purchase : System.Web.UI.Page
 
                 loadBilts("0");
                 loadCategories();
-
+                
                 if (Session["SMSREQUIRED"] != null)
                 {
                     if (Session["SMSREQUIRED"].ToString() == "NO")
@@ -195,6 +196,22 @@ public partial class Purchase : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
     }
 
     private void FirstGridViewRow()
@@ -3768,12 +3785,36 @@ public partial class Purchase : System.Web.UI.Page
             optionmethod.SelectedIndex = 0;
             ModalPopupMethod.Show();
             loadBanks();
-
+            loadBranch();
+            BranchEnable_Disable();
             Session["Method"] = "Add";
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
         }
     }
 
@@ -3938,7 +3979,7 @@ public partial class Purchase : System.Web.UI.Page
         if (SundryType == "Sundry Debtors")
         {
             //ds = bl.ListSundryDebtors(sDataSource);
-            ds = bl.ListSundryDebtorsExcept(sDataSource);
+            ds = bl.ListSundryDebtorsExcept(sDataSource,"");
         }
 
         if (SundryType == "Sundry Creditors")

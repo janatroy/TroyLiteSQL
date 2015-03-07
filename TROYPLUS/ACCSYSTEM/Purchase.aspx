@@ -308,9 +308,19 @@
                                                                                                                                 </Triggers>
                                                                                                                             </asp:UpdatePanel>
                                                                                                                         </td>
-                                                                                                                         <td style="width: 10%;"></td>
-                                                                                                                         <td style="width: 10%;"></td>
-                                                                                                                         <td style="width: 24%;"></td>
+                                                                                                                         <td style="width: 10%;">                                                                                                                         
+                                                                                                                         </td>
+                                                                                                                         <td class="ControlLabelproject" style="width: 10%;">
+                                                                                                                               <asp:CompareValidator ID="CompareValidator5" ValidationGroup="purchaseval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                                        Select Branch  *
+                                                                                                        <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                                                                            Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                                                            Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                         </td>
+                                                                                                                         <td class="ControlDrpBorder" style="width: 24%;">
+                                                                                                                              <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" >
+                                                                                                                                        </asp:DropDownList>
+                                                                                                                         </td>
                                                                                                                          <td style="width: 10%;"></td>
                                                                                                                     </tr>
                                                                                                                     <tr style="height: 2px">

@@ -588,7 +588,7 @@ public partial class CustomerSales : System.Web.UI.Page
             }
             else
             {
-                ds = bl.ListSundryDebtorsExceptIsActive(sDataSource,"");
+                ds = bl.ListSundryDebtorsExceptIsActive(sDataSource, drpBranch.SelectedValue);
             }
         }
 
@@ -647,7 +647,7 @@ public partial class CustomerSales : System.Web.UI.Page
             }
             else
             {
-                ds = bl.ListSundryDebtorsExcept(sDataSource);
+                ds = bl.ListSundryDebtorsExcept(sDataSource,drpBranch.SelectedValue);
             }
         }
 
@@ -4111,7 +4111,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         }
                         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode);
+                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode, connection);
                         if (purchaseReturn == "YES")
                         {
                             iUpdateRtnQty = bl.UpdatePurchaseRtnStatus(iPurID);
@@ -6247,8 +6247,8 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
             EmptyRow();
-
-
+            loadBanks();
+            FirstGridViewRow();
             if (optionmethod.SelectedValue == "NormalSales")
             {
                 lblHeading.Text = "Sales Invoice Details";
@@ -6445,8 +6445,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 loadSupplier("Sundry Creditors");
             }
 
-            loadBanks();
-            FirstGridViewRow();           
+            //loadDropDowns();
             //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
             //    string connection = string.Empty;
@@ -7686,6 +7685,13 @@ public partial class CustomerSales : System.Web.UI.Page
                             drpPurchaseReturn.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["PurchaseReturn"]).ToUpper();
                     }
 
+                    if (ds.Tables[0].Rows[0]["BranchCode"] != null)
+                    {
+                        drpBranch.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+                        drpBranch.Enabled = false;
+                    }
+
+
                     if (drpPurchaseReturn.SelectedValue == "NO")
                     {
                         loadSupplierEdit("Sundry Debtors");
@@ -7704,11 +7710,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         if (li != null) li.Selected = true;
                     }
 
-                    if (ds.Tables[0].Rows[0]["BranchCode"] != null)
-                    {
-                        drpBranch.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
-                        drpBranch.Enabled = false;                       
-                    }
+                   
 
                     if (ds.Tables[0].Rows[0]["cuscategory"] != null)
                     {
