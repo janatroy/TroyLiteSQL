@@ -69,7 +69,6 @@
                                     </td>
                                     <td style="width: 16%">
                                         <div style="text-align: right;">
-                                         
                                         </div>
                                     </td>
                                     <td style="width: 15%; color: White;" align="right">Search
@@ -115,7 +114,7 @@
                                                         width="100%">
                                                         <tr>
                                                             <tr>
-                                                                <td colspan="5">
+                                                                <td colspan="6">
                                                                     <table class="headerPopUp" width="100%">
                                                                         <tr>
                                                                             <td>Opening Stock
@@ -146,6 +145,7 @@
                                                                     </asp:UpdatePanel>
 
                                                                 </td>
+                                                                <td style="width: 5%"></td>
                                                                 <td class="ControlLabel" style="width: 15%;">Brand *
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="cmbBrand"
                                                                         Display="Dynamic" ErrorMessage="Please Select Brand.It cannot be let blank." Operator="GreaterThan"
@@ -188,6 +188,7 @@
                                                                                                         </Triggers>--%>
                                                                     </asp:UpdatePanel>
                                                                 </td>
+                                                                <td style="width: 5%"></td>
                                                                 <td class="ControlLabel" style="width: 15%;">Model *
                                                                     <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="cmbModel"
                                                                         Display="Dynamic" ErrorMessage="Please Select Model. It cannot be let blank." Operator="GreaterThan"
@@ -232,6 +233,7 @@
                                                                     </asp:UpdatePanel>
 
                                                                 </td>
+                                                                <td style="width: 5%"></td>
                                                                 <td style="width: 15%" class="ControlLabel">Opening Stock *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server" ControlToValidate="txtOpeningStock"
                                                                         Display="Dynamic" ErrorMessage="Please enter Opening Stock. It cannot be let blank">*</asp:RequiredFieldValidator>
@@ -256,6 +258,7 @@
                                                                         Enabled="False"></asp:TextBox>
 
                                                                 </td>
+                                                                <td style="width: 5%"></td>
                                                                 <td class="ControlLabel" style="width: 15%">To be adjusted *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtadjusted"
                                                                         Display="Dynamic" ErrorMessage="Please enter Stock to be adjusted. It cannot be let blank.">*</asp:RequiredFieldValidator>
@@ -284,11 +287,26 @@
                                                                         PopupButtonID="btnDate3" PopupPosition="BottomLeft" TargetControlID="txtDueDate">
                                                                     </cc1:CalendarExtender>
                                                                 </td>
-                                                                <td style="width: 15%" align="left">
+
+                                                                <td style="width: 5%" align="left">
                                                                     <asp:ImageButton ID="btnDate3" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
                                                                         Width="20px" runat="server" />
                                                                 </td>
-                                                                <td style="width: 25%"></td>
+                                                                <td class="ControlLabel" style="width: 15%">
+                                                                    <asp:CompareValidator ID="CompareValidator6" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                    Select Branch  *
+                                                                    <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                                        Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                                        Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 25%">
+                                                                    <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Always">
+                                                                        <ContentTemplate>
+                                                                            <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                                                            </asp:DropDownList>
+                                                                        </ContentTemplate>
+                                                                    </asp:UpdatePanel>
+                                                                </td>
                                                                 <td style="width: 10%"></td>
                                                             </tr>
 
@@ -349,6 +367,7 @@
                                                 <asp:BoundField DataField="ProductDesc" HeaderText="Brand" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="OpeningStock" HeaderText="Opening Stock" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Stock" HeaderText="Current Stock" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" CausesValidation="false" SkinID="edit"
@@ -409,6 +428,9 @@
                     <td style="width: 918px" align="left">
                         <asp:ObjectDataSource ID="GridSource" runat="server" SelectMethod="ListOpeningProductStock"
                             TypeName="BusinessLogic" DeleteMethod="DeleteOpeningStock" OnDeleting="GridSource_Deleting">
+                            <SelectParameters>
+                                <asp:CookieParameter Name="branch" CookieName="Branch" Type="String" />
+                            </SelectParameters>
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="ItemCode" Type="String" />
@@ -428,13 +450,12 @@
                 <tr align="center">
                     <table style="width: 100%">
                         <tr>
-                             <td style="width: 20%">
-                                 </td>
+                            <td style="width: 20%"></td>
                             <td style="width: 15%">
-                                   <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
-                                                    EnableTheming="false" Width="80px" Text=""></asp:Button>
-                                            </asp:Panel>
+                                <asp:Panel ID="pnlSearch" runat="server" Width="100px">
+                                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                                        EnableTheming="false" Width="80px" Text=""></asp:Button>
+                                </asp:Panel>
                             </td>
                             <td style="width: 15%">
                                 <asp:Button ID="Button2" runat="server" CssClass="bulkaddition" OnClientClick="window.open('OpeningBulkAddition.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');"

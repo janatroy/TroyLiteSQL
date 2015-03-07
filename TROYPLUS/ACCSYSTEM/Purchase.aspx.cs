@@ -28,7 +28,8 @@ public partial class Purchase : System.Web.UI.Page
     public double WholeTotal;
     string BarCodeRequired = string.Empty;
     string EnableVat = string.Empty;
-
+    string connection;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
@@ -96,8 +97,8 @@ public partial class Purchase : System.Web.UI.Page
             {
 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-                string connection = Request.Cookies["Company"].Value;
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+                connection = Request.Cookies["Company"].Value;
+                usernam = Request.Cookies["LoggedUserName"].Value;
 
                 if (bl.CheckUserHaveAdd(usernam, "PURCHS"))
                 {
@@ -195,6 +196,22 @@ public partial class Purchase : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
     }
 
     private void FirstGridViewRow()
@@ -908,6 +925,7 @@ public partial class Purchase : System.Web.UI.Page
                 string intTrans = string.Empty;
                 string deliveryNote = string.Empty;
                 string srReason = string.Empty;
+                string branchcode = string.Empty;
 
                 string recondat = txtInvoiveDate.Text.Trim();
                 if (!bll.IsValidDate(connection, Convert.ToDateTime(recondat)))
@@ -1115,7 +1133,7 @@ public partial class Purchase : System.Web.UI.Page
                 /*End Purchase Loading / Unloading Freight Change - March 16*/
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
-
+                branchcode = drpBranch.SelectedValue;
 
                 BusinessLogic blg = new BusinessLogic(sDataSource);
                 double checktotal = 0;
@@ -1345,7 +1363,7 @@ public partial class Purchase : System.Web.UI.Page
                                 return;
                             }
                             else if (Convert.ToInt32(txtQty.Text) < Convert.ToInt32(txtRtnQty.Text))
-                            {                               
+                            {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Return qty is greater than Available Quantity in row " + col + " ')", true);
                                 return;
                             }
@@ -1518,7 +1536,7 @@ public partial class Purchase : System.Web.UI.Page
 
                         /*Start Purchase Loading / Unloading Freight Change - March 16*/
                         /*Start InvoiceNo and InvoiceDate - Jan 26*/
-                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID);
+                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection);
                         //if(deliveryNote=="YES")
                         if (ddDeliveryNote.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
                         {
@@ -1950,10 +1968,12 @@ public partial class Purchase : System.Web.UI.Page
                 string intTrans = string.Empty;
                 string deliveryNote = string.Empty;
                 string srReason = string.Empty;
+                string branchcode = string.Empty;
                 salesReturn = drpSalesReturn.SelectedItem.Text;
                 intTrans = drpIntTrans.SelectedValue;
                 deliveryNote = ddDeliveryNote.SelectedValue;
                 srReason = txtSRReason.Text.Trim();
+                branchcode = drpBranch.SelectedValue;
                 string narration2 = string.Empty;
 
                 //if (Session["PurchaseProductDs"] == null)
@@ -2373,7 +2393,8 @@ public partial class Purchase : System.Web.UI.Page
                                     txtQty.Focus();
                                     return;
                                 }
-                                else if (txtRate.Text == "" || txtRate.Text == "0")
+                                //else if (txtRate.Text == "" || txtRate.Text == "0")
+                                else if ((Convert.ToInt32(txtRate.Text) < 0))
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Rate in row " + col + " ')", true);
                                     txtRate.Focus();
@@ -2496,7 +2517,7 @@ public partial class Purchase : System.Web.UI.Page
 
                             //*******************************
 
-                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2);
+                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, connection, branchcode);
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
                             /*Start March 15 Modification */
                             if (iPurchaseId == -2)
@@ -3689,7 +3710,7 @@ public partial class Purchase : System.Web.UI.Page
                 cmdPaymode.SelectedValue = "3";
 
                 DataSet dsa = new DataSet();
-                dsa = bl.ListDeliveryreturn(sDataSource);
+                dsa = bl.ListDeliveryreturn(sDataSource, drpBranch.SelectedValue);
                 drpSalesID.Items.Clear();
                 ListItem lii = new ListItem("Select Invoice Number", "0");
                 lii.Attributes.Add("style", "color:Black");
@@ -3727,7 +3748,7 @@ public partial class Purchase : System.Web.UI.Page
 
 
                 DataSet dsa = new DataSet();
-                dsa = bl.ListSalesreturn(sDataSource);
+                dsa = bl.ListSalesreturn(sDataSource, drpBranch.SelectedValue);
                 drpSalesID.Items.Clear();
                 ListItem lii = new ListItem("Select Invoice Number", "0");
                 lii.Attributes.Add("style", "color:Black");
@@ -3768,12 +3789,36 @@ public partial class Purchase : System.Web.UI.Page
             optionmethod.SelectedIndex = 0;
             ModalPopupMethod.Show();
             loadBanks();
-
+            loadBranch();
+            BranchEnable_Disable();
             Session["Method"] = "Add";
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
         }
     }
 
@@ -3898,7 +3943,7 @@ public partial class Purchase : System.Web.UI.Page
         DataSet dsa = new DataSet();
         if (SundryType == "Sundry Debtors")
         {
-            ds = bl.ListSundryDebtorsExceptIsActive(sDataSource,"");
+            ds = bl.ListSundryDebtorsExceptIsActive(sDataSource, drpBranch.SelectedValue);
         }
 
         if (SundryType == "Sundry Creditors")
@@ -3938,7 +3983,7 @@ public partial class Purchase : System.Web.UI.Page
         if (SundryType == "Sundry Debtors")
         {
             //ds = bl.ListSundryDebtors(sDataSource);
-            ds = bl.ListSundryDebtorsExcept(sDataSource);
+            ds = bl.ListSundryDebtorsExcept(sDataSource,"");
         }
 
         if (SundryType == "Sundry Creditors")
@@ -4066,9 +4111,9 @@ public partial class Purchase : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
         object usernam = Session["LoggedUserName"];
-
+        string branch = Request.Cookies["Branch"].Value;
         //if (strBillno == "0" && strTransNo == "0")
-        ds = bl.GetPurchaseList(textSearch, dropDown);
+        ds = bl.GetPurchaseList(textSearch, dropDown, branch);
         //else
         //    ds = bl.GetPurchaseForId(strBillno, strTransNo);
 
@@ -4180,7 +4225,7 @@ public partial class Purchase : System.Web.UI.Page
 
             //txtInvoiveNo.Enabled = false;
             loadBanksEdit();
-
+            loadBranch();
             purchaseID = Convert.ToInt32(GrdViewPurchase.SelectedDataKey.Value);
 
             /*Start Purchase Loading / Unloading Freight Change - March 16*/
@@ -4300,6 +4345,12 @@ public partial class Purchase : System.Web.UI.Page
                 cmbSupplier.ClearSelection();
                 ListItem li = cmbSupplier.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(SupplierID.ToString()));
                 if (li != null) li.Selected = true;
+            }
+
+            if ((ds.Tables[0].Rows[0]["BranchCode"] != null) && (ds.Tables[0].Rows[0]["BranchCode"].ToString() != ""))
+            {
+                drpBranch.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+                drpBranch.Enabled = false;
             }
 
             txtSupplier.Visible = false;
@@ -7651,6 +7702,46 @@ public partial class Purchase : System.Web.UI.Page
                     return;
                 }
             }
+        }
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+    }
+    protected void drpBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        if (optionmethod.SelectedValue == "DeliveryNote")
+        {
+            DataSet dsa = new DataSet();
+            dsa = bl.ListDeliveryreturn(sDataSource, drpBranch.SelectedValue);
+            drpSalesID.Items.Clear();
+            ListItem lii = new ListItem("Select Invoice Number", "0");
+            lii.Attributes.Add("style", "color:Black");
+            drpSalesID.Enabled = true;
+            drpSalesID.Items.Add(lii);
+            drpSalesID.DataSource = dsa;
+            drpSalesID.Items[0].Attributes.Add("background-color", "color:#bce1fe");
+            drpSalesID.DataBind();
+            drpSalesID.DataTextField = "BillNo";
+            drpSalesID.DataValueField = "BillNo";
+
+            FirstGridViewRow();
+        }
+        else if (optionmethod.SelectedValue == "SalesReturn")
+        {
+            DataSet dsa = new DataSet();
+            dsa = bl.ListSalesreturn(sDataSource, drpBranch.SelectedValue);
+            drpSalesID.Items.Clear();
+            ListItem lii = new ListItem("Select Invoice Number", "0");
+            lii.Attributes.Add("style", "color:Black");
+            drpSalesID.Enabled = true;
+            drpSalesID.Items.Add(lii);
+            drpSalesID.DataSource = dsa;
+            drpSalesID.Items[0].Attributes.Add("background-color", "color:#bce1fe");
+            drpSalesID.DataBind();
+            drpSalesID.DataTextField = "BillNo";
+            drpSalesID.DataValueField = "BillNo";
+            FirstGridViewRow();
+
+            loadSupplier("Sundry Debtors");
         }
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
     }
