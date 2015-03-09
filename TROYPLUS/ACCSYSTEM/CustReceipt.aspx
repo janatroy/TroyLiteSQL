@@ -458,7 +458,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                                 </td>
                                                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                                                   <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                   <asp:DropDownList ID="drpBranch" TabIndex="10" Enabled="false" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                  runat="server">
                                                                                                 <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
                                                                                              </asp:DropDownList>
@@ -517,9 +517,9 @@
                                                                                                 </td>
                                                                                                 <td class="ControlDrpBorder" style="width: 25%">
                                                                                                     <asp:DropDownList ID="ddReceivedFrom" runat="server" AutoPostBack="True" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
-                                                                                                        DataSourceID="srcCreditorDebitor" DataValueField="LedgerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" Height="26px"
-                                                                                                        DataTextField="LedgerName" AppendDataBoundItems="True">
-                                                                                                        <asp:ListItem Text="Select Customer" Value="0"></asp:ListItem>
+                                                                                                        OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        AppendDataBoundItems="True">
+                                                                                                        <%--<asp:ListItem Text="Select Customer" Value="0"></asp:ListItem>--%>
                                                                                                     </asp:DropDownList>
                                                                                                 </td>
                                                                                                 <td class="ControlLabel" style="width: 16%">Amount *
@@ -991,7 +991,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                                                             </td>
                                                                                                                             <td class="ControlDrpBorder" style="width: 22%">
-                                                                                                                                <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                                                <asp:DropDownList ID="drpBranchAdd" TabIndex="10" AutoPostBack="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                  runat="server">
                                                                                              </asp:DropDownList>
                                                                                                                                 </td>
@@ -1128,8 +1128,8 @@
                                                                                                                                 <asp:UpdatePanel ID="UpdatePanel9" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
                                                                                                                                         <asp:DropDownList ID="drpLedger" runat="server" OnSelectedIndexChanged="drpLedger_SelectedIndexChanged" AutoPostBack="True" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
-                                                                                                                                            DataSourceID="srcCreditorDebitorIsActive" DataValueField="LedgerID" Style="border: 1px solid #e7e7e7" Height="26px"
-                                                                                                                                            DataTextField="LedgerName" AppendDataBoundItems="True">
+                                                                                                                                            Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                                                            AppendDataBoundItems="True">
                                                                                                                                             <asp:ListItem Text="Select Customer" Value="0"></asp:ListItem>
                                                                                                                                         </asp:DropDownList>
                                                                                                                                         <asp:TextBox ID="txtCustomerName" runat="server" SkinID="skinTxtBoxGrid" Visible="false"></asp:TextBox>
@@ -1580,6 +1580,7 @@
                                                 <asp:BoundField DataField="Debi" HeaderText="Bank Name / Cash" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Narration" HeaderText="Narration" Visible="false" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Branchcode" HeaderText="Branch Code" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" CausesValidation="false" runat="server" SkinID="edit"

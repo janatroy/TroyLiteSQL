@@ -108,6 +108,30 @@ public partial class CustReceipt : System.Web.UI.Page
         return (refDate.Date != today) && (refDate > today);
     }
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        //ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
+
+
     protected void txtDate_TextChanged(object sender, EventArgs e)
     {
 
@@ -792,6 +816,7 @@ public partial class CustReceipt : System.Web.UI.Page
         //DropDownList dropDown = (DropDownList)Accordion1.FindControl("ddCriteria");
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
     }
 
     protected void GrdViewReceipt_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -807,6 +832,29 @@ public partial class CustReceipt : System.Web.UI.Page
             GrdViewReceipt.Visible = false;
             //if (frmViewAdd.CurrentMode == FormViewMode.Edit)
                 //Accordion1.SelectedIndex = 1;*/
+        }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranchAdd.Enabled = true;
+        }
+        else
+        {
+            drpBranchAdd.Enabled = false;
         }
     }
 
@@ -833,6 +881,8 @@ public partial class CustReceipt : System.Web.UI.Page
             drpCustomerCategoryAdd.DataTextField = "CusCategory_Name";
             drpCustomerCategoryAdd.DataValueField = "CusCategory_Value";
 
+            loadBranch();
+
 
             if (!bl.IsValidDate(connection, Convert.ToDateTime(recondate)))
             {
@@ -847,6 +897,10 @@ public partial class CustReceipt : System.Web.UI.Page
                 {
                     txtRefNo.Text = ds.Tables[0].Rows[0]["RefNo"].ToString();
                     txtTransDate.Text = DateTime.Parse(ds.Tables[0].Rows[0]["TransDate"].ToString()).ToShortDateString();
+
+                    drpBranch.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+
+                    loadLedgersEdit(drpBranch.SelectedValue);
 
                     ddReceivedFrom.SelectedValue = ds.Tables[0].Rows[0]["CreditorID"].ToString();
                     txtAmount.Text = ds.Tables[0].Rows[0]["Amount"].ToString();
@@ -871,9 +925,13 @@ public partial class CustReceipt : System.Web.UI.Page
 
                     txtChequeNo.Text = ds.Tables[0].Rows[0]["ChequeNo"].ToString();
 
+                    
+
                     string creditorID = ds.Tables[0].Rows[0]["DebtorID"].ToString();
 
                     ddBanks.ClearSelection();
+
+                    
 
                     ListItem li = ddBanks.Items.FindByValue(creditorID);
                     if (li != null) li.Selected = true;
@@ -1217,6 +1275,10 @@ public partial class CustReceipt : System.Web.UI.Page
             totalrow123.Visible = false;
             totalrow1.Visible = false;
             totalrow.Visible = false;
+
+            loadBranch();
+            BranchEnable_Disable();
+            loadLedgers(drpBranchAdd.SelectedValue);
 
         }
         catch (Exception ex)
@@ -1991,10 +2053,10 @@ public partial class CustReceipt : System.Web.UI.Page
             }
 
 
+            string Branchcode = drpBranchAdd.SelectedValue;
 
 
-
-            bl.InsertMultipleCustReceipt(conn, ds, CreditorID, dsttt, usernam);
+            bl.InsertMultipleCustReceipt(conn, ds, CreditorID, dsttt, usernam, Branchcode);
 
             string salestype = string.Empty;
             int ScreenNo = 0;
@@ -2586,6 +2648,45 @@ public partial class CustReceipt : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        loadLedgers(drpBranchAdd.SelectedValue);
+    }
+
+    private void loadLedgers(string Branch)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        
+        drpLedger.Items.Clear();
+        drpLedger.Items.Add(new ListItem("Select Customer", "0"));
+        ds = bl.ListSundryDebitorsIsActive(connection, Branch);
+        drpLedger.DataSource = ds;
+        drpLedger.DataBind();
+        drpLedger.DataTextField = "LedgerName";
+        drpLedger.DataValueField = "LedgerID";
+
+    }
+
+    private void loadLedgersEdit(string Branch)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+
+        ddReceivedFrom.Items.Clear();
+        ddReceivedFrom.Items.Add(new ListItem("Select Customer", "0"));
+        ds = bl.ListSundryDebitors(connection, Branch);
+        ddReceivedFrom.DataSource = ds;
+        ddReceivedFrom.DataBind();
+        ddReceivedFrom.DataTextField = "LedgerName";
+        ddReceivedFrom.DataValueField = "LedgerID";
+
     }
 
     protected void drpLedger_SelectedIndexChanged(object sender, EventArgs e)
@@ -4318,6 +4419,8 @@ public partial class CustReceipt : System.Web.UI.Page
 
                 string connection = Request.Cookies["Company"].Value;
 
+                string Branchcode = drpBranch.SelectedValue;
+
                 //if (chkPayTo.SelectedValue == "Cheque")
                 //{
                 //    if (ChequeNo != "")
@@ -4388,7 +4491,7 @@ public partial class CustReceipt : System.Web.UI.Page
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                bl.UpdateCustReceipt(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, ds, usernam);
+                bl.UpdateCustReceipt(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, ds, usernam, Branchcode);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Receipt Updated Successfully. Transaction No : " + OutPut.ToString() + "');", true);
 
