@@ -18,6 +18,9 @@ public partial class Creditnote : System.Web.UI.Page
 {
     //DBClass objdb = new DBClass();
     BusinessLogic objBL;
+    private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -117,7 +120,12 @@ public partial class Creditnote : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStrtDt.Text);
         endDate = Convert.ToDateTime(txtEndDt.Text);
 
-        ds = objBL.getDebitsNote(startDate, endDate);
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+
+
+        ds = objBL.getDebitsNote(startDate, endDate,usernam);
 
         if (ds != null)
         {
@@ -129,6 +137,7 @@ public partial class Creditnote : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Debitor"));
                 dt.Columns.Add(new DataColumn("Amount"));
                 dt.Columns.Add(new DataColumn("Narration"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     if ((Refno == 0 || Refno != Convert.ToInt32(dr["RefNo"])))
@@ -144,6 +153,7 @@ public partial class Creditnote : System.Web.UI.Page
                         dr_final1["Debitor"] = dr["Debitor"];
                         dr_final1["Amount"] = dr["Amount"];
                         dr_final1["Narration"] = dr["Narration"];
+                        dr_final1["BranchCode"] = dr["BranchCode"];
                         dt.Rows.Add(dr_final1);
                         Gtotal = Gtotal + Convert.ToDecimal(dr["Amount"]);
                     }
@@ -154,6 +164,7 @@ public partial class Creditnote : System.Web.UI.Page
                 dr_final2["Debitor"] = "Grand Total:";
                 dr_final2["Amount"] = Convert.ToDecimal(Gtotal);
                 dr_final2["Narration"] = "";
+                dr_final2["BranchCode"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }
@@ -240,7 +251,12 @@ public partial class Creditnote : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStrtDt.Text);
         endDate = Convert.ToDateTime(txtEndDt.Text);
 
-        ds = objBL.getCreditsNote(startDate, endDate);
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+
+        ds = objBL.getCreditsNote(startDate, endDate,usernam);
 
         if (ds != null)
         {
@@ -252,6 +268,7 @@ public partial class Creditnote : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Creditor"));
                 dt.Columns.Add(new DataColumn("Amount"));
                 dt.Columns.Add(new DataColumn("Narration"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     if ((Refno == 0 || Refno != Convert.ToInt32(dr["RefNo"])))
@@ -266,6 +283,7 @@ public partial class Creditnote : System.Web.UI.Page
                         dr_final1["Creditor"] = dr["Creditor"];
                         dr_final1["Amount"] = dr["Amount"];
                         dr_final1["Narration"] = dr["Narration"];
+                        dr_final1["BranchCode"] = dr["BranchCode"];
                         dt.Rows.Add(dr_final1);
                         Gtotal = Gtotal + Convert.ToDecimal(dr["Amount"]);
                     }
@@ -276,6 +294,7 @@ public partial class Creditnote : System.Web.UI.Page
                 dr_final2["Creditor"] = "Grand Total:";
                 dr_final2["Amount"] = Convert.ToDecimal(Gtotal);
                 dr_final2["Narration"] = "";
+                dr_final2["BranchCode"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }

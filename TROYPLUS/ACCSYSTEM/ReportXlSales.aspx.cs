@@ -29,6 +29,10 @@ public partial class ReportXLSales : System.Web.UI.Page
    
 
     BusinessLogic objBL;
+
+    private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -1654,9 +1658,13 @@ public partial class ReportXLSales : System.Web.UI.Page
         getgroupByAndselColumn();
 
         DataSet ds = new DataSet();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+
         //DataTable dt = new DataTable();
         DataTable dt = new DataTable("Sales");
-        ds = objBL.getSales1(selColumn,field2,condtion, groupBy,ordrby);
+        ds = objBL.getSales1(selColumn,field2,condtion, groupBy,ordrby,usernam);
         if (ds.Tables[0].Rows.Count > 0)
         {
             if ((ddlFirstLvl.SelectedItem.Text != "None") || (ddlSecondLvl.SelectedItem.Text != "None") || (ddlThirdLvl.SelectedItem.Text != "None") || (ddlFourthLvl.SelectedItem.Text != "None") || (ddlFifthLvl.SelectedItem.Text != "None") || (ddlSixthLvl.SelectedItem.Text != "None") || (ddlSeventhLvl.SelectedItem.Text != "None"))
@@ -1733,6 +1741,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                 //dt.Columns.Add(new DataColumn("Qty"));
                 //dt.Columns.Add(new DataColumn("Rate"));
                 dt.Columns.Add(new DataColumn("Amount"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
             }
             else if ((chkboxCategory.Checked == true) || (chkboxBrand.Checked == true) || (chkboxProductCode.Checked == true) || (chkboxProductName.Checked == true) || (chkboxInternalTransfer.Checked == true) || (chkboxBillDate.Checked == true) || (chkboxCustomer.Checked == true) || (ChkboxPaymode.Checked == true) || (chkboxPurchaseReturn.Checked == true) || (chkboxModel.Checked == true) || (ChkboxCustaddr.Checked == true) || (ChkboxCustphone.Checked == true) || (ChkboxEmpname.Checked == true) || (chkboxBillno.Checked == true) || (chkboxStock.Checked == true) || (chkboxRate.Checked == true) || (chkboxDiscount.Checked == true) || (chkboxFreight.Checked == true) || (chkboxTransNo.Checked == true) || (chkboxNarration.Checked == true) || (chkboxDesFrom.Checked == true))
             {
@@ -1830,6 +1839,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("despatchedfrom"));
                 }
                 dt.Columns.Add(new DataColumn("Amount"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
 
             }
 
@@ -2853,6 +2863,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                     }
                     dr_final5["Amount"] = dr["Amount"];
 
+                    dr_final5["BranchCode"] = dr["BranchCode"];
+
                     if (chkboxTransNo.Checked == true)
                     {
                         dr_final5["TransNo"] = dr["JournalID"];
@@ -3149,6 +3161,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                  }
 
                  dr_final5["Amount"] = dr["Amount"];
+                 dr_final5["BranchCode"] = dr["BranchCode"];
                  dt.Rows.Add(dr_final5);
                  if (chkboxStock.Checked == true)
                  {
@@ -3703,6 +3716,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                     {
                         dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                     }
+                    dr_final6["BranchCode"] = "";
                     dt.Rows.Add(dr_final6);
                 }
 
@@ -3831,6 +3845,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                     {
                         dr_final6["despatchedfrom"] = "";
                     }
+                    dr_final6["BranchCode"] = "";
                     dt.Rows.Add(dr_final6);
                 }
             }
@@ -4446,11 +4461,15 @@ public partial class ReportXLSales : System.Web.UI.Page
          condtion = getCond();
          getgroupByAndselColumn();
          DataSet ds = new DataSet();
+
+         BusinessLogic bl = new BusinessLogic(sDataSource);
+         connection = Request.Cookies["Company"].Value;
+         usernam = Request.Cookies["LoggedUserName"].Value;
          //DataTable dt = new DataTable();
          DataTable dt = new DataTable("Sales");
          string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "", sixlvlsub = "", sevenlvlsub = "", eightlvlsub = "";
 
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,usernam);
 
          if (ds.Tables[0].Rows.Count > 0)
          {
@@ -4502,6 +4521,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                  }
 
                  dt.Columns.Add(new DataColumn("Amount"));
+                 dt.Columns.Add(new DataColumn("BranchCode"));
              }
              else if ((firstsub.SelectedItem.Text != "None") || (secondsub.SelectedItem.Text != "None") || (thirdsub.SelectedItem.Text != "None") || (foursub.SelectedItem.Text != "None") || (fivesub.SelectedItem.Text != "None"))
              {
@@ -6279,6 +6299,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                      }
                      dt.Columns.Add(new DataColumn("Amount"));
 
+                     dt.Columns.Add(new DataColumn("BranchCode"));
+
                  //}
              }
              else if ((chkboxCategory.Checked == true) || (chkboxBrand.Checked == true) || (chkboxProductCode.Checked == true) || (chkboxProductName.Checked == true) || (chkboxInternalTransfer.Checked == true) || (chkboxBillDate.Checked == true) || (chkboxCustomer.Checked == true) || (ChkboxPaymode.Checked == true) || (chkboxPurchaseReturn.Checked == true) || (chkboxModel.Checked == true) || (ChkboxCustaddr.Checked == true) || (ChkboxCustphone.Checked == true) || (ChkboxEmpname.Checked == true) || (chkboxBillno.Checked == true) || (chkboxStock.Checked == true) || (chkboxRate.Checked == true) || (chkboxDiscount.Checked == true) || (chkboxFreight.Checked == true))
@@ -6361,6 +6383,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                  }
                  dt.Columns.Add(new DataColumn("Amount"));
 
+                 dt.Columns.Add(new DataColumn("BranchCode"));
              }
 
              DataRow dr_final8888 = dt.NewRow();
@@ -6517,6 +6540,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(Pttls));
@@ -6605,6 +6629,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(modelTotal));
@@ -6692,6 +6717,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
@@ -6778,6 +6804,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal));
@@ -6863,6 +6890,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal1));
@@ -6947,6 +6975,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal2));
@@ -7030,6 +7059,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal3));
@@ -7287,6 +7317,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          dr_final5["Rate"] = dr["Rate"];
                      }
                      dr_final5["Amount"] = dr["Amount"];
+                     dr_final5["BranchCode"] = dr["BranchCode"];
                      dt.Rows.Add(dr_final5);
                      if (chkboxStock.Checked == true)
                      {
@@ -9412,6 +9443,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -9577,6 +9609,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if (eightsub.SelectedItem.Text != "None")
@@ -9745,6 +9778,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -9914,6 +9948,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if ((sixsub.SelectedItem.Text != "None") || (sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -10083,6 +10118,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final7["BranchCode"] = "";
 
                                  dt.Rows.Add(dr_final7);
 
@@ -10274,7 +10310,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
-
+                                 dr_final8["BranchCode"] = "";
                                  dt.Rows.Add(dr_final8);
 
                                  if ((foursub.SelectedItem.Text == "None") || (fivesub.SelectedItem.Text == "None"))
@@ -10463,6 +10499,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final8["BranchCode"] = "";
 
                                  dt.Rows.Add(dr_final8);
 
@@ -10634,6 +10671,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      PayModeTotal = 0;
                                  }
 
+                                 dr_final8["BranchCode"] = "";
                                  dt.Rows.Add(dr_final8);
 
                                  DataRow dr_final888 = dt.NewRow();
@@ -13402,6 +13440,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final5["Rate"] = dr["Rate"];
                              }
                              dr_final5["Amount"] = dr["Amount"];
+                             dr_final5["branchCode"] = dr["BranchCode"];
 
                              dt.Rows.Add(dr_final5);
                          }
@@ -13599,6 +13638,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -13761,6 +13801,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if (eightsub.SelectedItem.Text != "None")
@@ -13923,6 +13964,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -14080,6 +14122,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
+                             dr_final17["BranchCode"] = "";
                              dt.Rows.Add(dr_final17);
                              modelTotal1 = 0;
                          }
@@ -14229,6 +14272,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
+                             dr_final7["BranchCode"] = "";
                              dt.Rows.Add(dr_final7);
 
                              Pttls = 0;
@@ -14376,7 +14420,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
-
+                             dr_final8["BranchCode"] = "";
                              dt.Rows.Add(dr_final8);
 
 
@@ -14525,7 +14569,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
-
+                             dr_final8["BranchCode"] = "";
                              dt.Rows.Add(dr_final8);
 
                              brandTotal = 0;
@@ -14686,6 +14730,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
+                             dr_final8["BranchCode"] = "";
                              dt.Rows.Add(dr_final8);
 
                              catIDTotal = 0;
@@ -14746,6 +14791,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
 
                  }
@@ -14824,6 +14870,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(Pttls));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          Pttls = 0;
                      }
@@ -15403,11 +15450,14 @@ public partial class ReportXLSales : System.Web.UI.Page
          condtion = getCond();
          getgroupByAndselColumn();
          DataSet ds = new DataSet();
+         BusinessLogic bl = new BusinessLogic(sDataSource);
+         connection = Request.Cookies["Company"].Value;
+         usernam = Request.Cookies["LoggedUserName"].Value;
          //DataTable dt = new DataTable();
          DataTable dt = new DataTable("Sales");
          string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "",sixlvlsub="",sevenlvlsub="",eightlvlsub="";
 
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,usernam);
 
          if (ds.Tables[0].Rows.Count > 0)
          {
@@ -15459,6 +15509,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                  }
                  
                  dt.Columns.Add(new DataColumn("Amount"));
+                 dt.Columns.Add(new DataColumn("BranchCode"));
              }
              else if ((firstsub.SelectedItem.Text != "None") || (secondsub.SelectedItem.Text != "None") || (thirdsub.SelectedItem.Text != "None") || (foursub.SelectedItem.Text != "None") || (fivesub.SelectedItem.Text != "None"))
              {
@@ -16563,6 +16614,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          dt.Columns.Add(new DataColumn("Rate"));
                      }
                      dt.Columns.Add(new DataColumn("Amount"));
+                     dt.Columns.Add(new DataColumn("Branchcode"));
 
                  }
              }
@@ -16645,6 +16697,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("Rate"));
                  }
                  dt.Columns.Add(new DataColumn("Amount"));
+                 dt.Columns.Add(new DataColumn("BranchCode"));
 
              }
 
@@ -16802,6 +16855,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(Pttls));
@@ -16890,6 +16944,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(modelTotal));
@@ -16977,6 +17032,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
@@ -17063,6 +17119,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal));
@@ -17148,6 +17205,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal1));
@@ -17232,6 +17290,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal2));
@@ -17315,6 +17374,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal3));
@@ -17572,6 +17632,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          dr_final5["Rate"] = dr["Rate"];
                      }
                      dr_final5["Amount"] = dr["Amount"];
+                     dr_final5["BranchCode"] = dr["BranchCode"];
                      dt.Rows.Add(dr_final5);
                      if (chkboxStock.Checked == true)
                      {
@@ -18923,6 +18984,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -19085,6 +19147,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if (eightsub.SelectedItem.Text != "None")
@@ -19250,6 +19313,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -19416,6 +19480,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if ((sixsub.SelectedItem.Text != "None") || (sevensub.SelectedItem.Text != "None")||(eightsub.SelectedItem.Text != "None"))
@@ -19582,6 +19647,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final7["BranchCode"] = "";
 
                                  dt.Rows.Add(dr_final7);
 
@@ -19770,7 +19836,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
-
+                                 dr_final8["BranchCode"] = "";
                                  dt.Rows.Add(dr_final8);
 
                                  if ((foursub.SelectedItem.Text == "None") || (fivesub.SelectedItem.Text == "None"))
@@ -19956,6 +20022,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final8["BranchCode"] = "";
 
                                  dt.Rows.Add(dr_final8);
 
@@ -20122,7 +20189,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
-
+                                 dr_final8["BranchCode"] = "";
                                  dt.Rows.Add(dr_final8);
 
                                  DataRow dr_final888 = dt.NewRow();
@@ -22128,6 +22195,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
                              dr_final5["Amount"] = dr["Amount"];
 
+                             dr_final5["BranchCode"] = dr["BranchCode"];
+
                              dt.Rows.Add(dr_final5);
                          }
                      }
@@ -22323,6 +22392,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -22485,6 +22555,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if (eightsub.SelectedItem.Text != "None")
@@ -22647,6 +22718,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                      dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                      PayModeTotal = 0;
                                  }
+                                 dr_final17["BranchCode"] = "";
                                  dt.Rows.Add(dr_final17);
 
                                  if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -22804,6 +22876,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
+                             dr_final17["BranchCode"] = "";
                              dt.Rows.Add(dr_final17);
                              modelTotal1 = 0;
                          }
@@ -22953,6 +23026,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
+                             dr_final7["BranchCode"] = "";
                              dt.Rows.Add(dr_final7);
 
                              Pttls = 0;
@@ -23101,6 +23175,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  PayModeTotal = 0;
                              }
 
+                             dr_final8["BranchCode"] = "";
                              dt.Rows.Add(dr_final8);
 
                             
@@ -23250,6 +23325,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  PayModeTotal = 0;
                              }
 
+                             dr_final8["BranchCode"] = "";
                              dt.Rows.Add(dr_final8);
                              
                              brandTotal = 0;
@@ -23404,6 +23480,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                                  dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                  PayModeTotal = 0;
                              }
+                             dr_final8["BranchCode"] = "";
                              dt.Rows.Add(dr_final8);
 
                              catIDTotal = 0;
@@ -23464,6 +23541,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
 
                  }
@@ -23542,6 +23620,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(Pttls));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          Pttls = 0;
                      }
@@ -23615,6 +23694,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(modelTotal));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          modelTotal = 0;
                      }
@@ -23683,6 +23763,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          catIDTotal = 0;
                      }
@@ -23748,6 +23829,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal = 0;
                      }
@@ -23808,6 +23890,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal1));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal1 = 0;
                      }
@@ -23864,6 +23947,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal2));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal2 = 0;
                      }
@@ -23915,6 +23999,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal3));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal3 = 0;
                      }
@@ -23992,6 +24077,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Rate"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
                  }
 
@@ -24103,6 +24189,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Rate"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
                  }
              }
@@ -24122,8 +24209,11 @@ public partial class ReportXLSales : System.Web.UI.Page
          condtion = getCond();
          getgroupByAndselColumn();
          DataSet ds = new DataSet();
+         BusinessLogic bl = new BusinessLogic(sDataSource);
+         connection = Request.Cookies["Company"].Value;
+         usernam = Request.Cookies["LoggedUserName"].Value;
          DataTable dt = new DataTable();
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,usernam);
 
          if (ds.Tables[0].Rows.Count > 0)
          {
@@ -24175,6 +24265,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                  }
 
                  dt.Columns.Add(new DataColumn("Amount"));
+
+                 dt.Columns.Add(new DataColumn("BranchCode"));
              }
              else if ((chkboxCategory.Checked == true) || (chkboxBrand.Checked == true) || (chkboxProductCode.Checked == true) || (chkboxProductName.Checked == true) || (chkboxInternalTransfer.Checked == true) || (chkboxBillDate.Checked == true) || (chkboxCustomer.Checked == true) || (ChkboxPaymode.Checked == true) || (chkboxPurchaseReturn.Checked == true) || (chkboxModel.Checked == true) || (ChkboxCustaddr.Checked == true) || (ChkboxCustphone.Checked == true) || (ChkboxEmpname.Checked == true) || (chkboxBillno.Checked == true) || (chkboxStock.Checked == true) || (chkboxRate.Checked == true) || (chkboxDiscount.Checked == true) || (chkboxFreight.Checked == true))
              {
@@ -24255,6 +24347,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("Rate"));
                  }
                  dt.Columns.Add(new DataColumn("Amount"));
+                 dt.Columns.Add(new DataColumn("BranchCode"));
 
              }
 
@@ -24414,6 +24507,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(Pttls));
                              }
+                             dr_final7["BranchCode"] = "";
                              dt.Rows.Add(dr_final7);
                              Pttls = 0;
                          }
@@ -24498,6 +24592,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(modelTotal));
@@ -24585,6 +24680,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
@@ -24671,6 +24767,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal));
@@ -24756,6 +24853,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal1));
@@ -24840,6 +24938,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal2));
@@ -24923,6 +25023,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                              }
 
                              dr_final7["Amount"] = "";
+
+                             dr_final7["BranchCode"] = "";
                              if (chkboxRate.Checked == true)
                              {
                                  dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal3));
@@ -25205,6 +25307,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                          dr_final5["Rate"] = dr["Rate"];
                      }
                      dr_final5["Amount"] = dr["Amount"];
+
+                     dr_final5["BranchCode"] = dr["BranchCode"];
                      dt.Rows.Add(dr_final5);
                      if (chkboxStock.Checked == true)
                      {
@@ -25404,6 +25508,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          dr_final5["Rate"] = dr["Rate"];
                      }
                      dr_final5["Amount"] = dr["Amount"];
+                     dr_final5["BranchCode"] = dr["BranchCode"];
                      dt.Rows.Add(dr_final5);
                      if (chkboxStock.Checked == true)
                      {
@@ -25504,6 +25609,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(Pttls));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          Pttls = 0;
                      }
@@ -25577,6 +25683,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(modelTotal));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          modelTotal = 0;
                      }
@@ -25645,6 +25752,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          catIDTotal = 0;
                      }
@@ -25710,6 +25818,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal = 0;
                      }
@@ -25770,6 +25879,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal1));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal1 = 0;
                      }
@@ -25826,6 +25936,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal2));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal2 = 0;
                      }
@@ -25877,6 +25988,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          {
                              dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal3));
                          }
+                         dr_final7["BranchCode"] = "";
                          dt.Rows.Add(dr_final7);
                          brandTotal3 = 0;
                      }
@@ -25954,6 +26066,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Rate"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
                  }
 
@@ -26065,6 +26178,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Rate"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
                  }
              }
@@ -26671,8 +26785,11 @@ public partial class ReportXLSales : System.Web.UI.Page
          getgroupByAndselColumn();
 
          DataSet ds = new DataSet();
+         BusinessLogic bl = new BusinessLogic(sDataSource);
+         connection = Request.Cookies["Company"].Value;
+         usernam = Request.Cookies["LoggedUserName"].Value;
          DataTable dt = new DataTable();
-         ds = objBL.getSales1(selColumn, field2, condtion, groupBy, ordrby);
+         ds = objBL.getSales1(selColumn, field2, condtion, groupBy, ordrby,usernam);
          if (ds.Tables[0].Rows.Count > 0)
          {
              if ((ddlFirstLvl.SelectedItem.Text != "None") || (ddlSecondLvl.SelectedItem.Text != "None") || (ddlThirdLvl.SelectedItem.Text != "None") || (ddlFourthLvl.SelectedItem.Text != "None") || (ddlFifthLvl.SelectedItem.Text != "None") || (ddlSixthLvl.SelectedItem.Text != "None") || (ddlSeventhLvl.SelectedItem.Text != "None"))
@@ -26748,6 +26865,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                  //dt.Columns.Add(new DataColumn("Qty"));
                  //dt.Columns.Add(new DataColumn("Rate"));
                  dt.Columns.Add(new DataColumn("Amount"));
+                 dt.Columns.Add(new DataColumn("BranchCode"));
              }
              else if ((chkboxCategory.Checked == true) || (chkboxBrand.Checked == true) || (chkboxProductCode.Checked == true) || (chkboxProductName.Checked == true) || (chkboxInternalTransfer.Checked == true) || (chkboxBillDate.Checked == true) || (chkboxCustomer.Checked == true) || (ChkboxPaymode.Checked == true) || (chkboxPurchaseReturn.Checked == true) || (chkboxModel.Checked == true) || (ChkboxCustaddr.Checked == true) || (ChkboxCustphone.Checked == true) || (ChkboxEmpname.Checked == true) || (chkboxBillno.Checked == true) || (chkboxStock.Checked == true) || (chkboxRate.Checked == true) || (chkboxDiscount.Checked == true) || (chkboxFreight.Checked == true))
              {
@@ -26833,6 +26951,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("Rate"));
                  }
                  dt.Columns.Add(new DataColumn("Amount"));
+                 dt.Columns.Add(new DataColumn("BranchCode"));
 
              }
 
@@ -27855,6 +27974,8 @@ public partial class ReportXLSales : System.Web.UI.Page
                          dr_final5["Rate"] = dr["Rate"];
                      }
                      dr_final5["Amount"] = dr["Amount"];
+
+                     dr_final5["BranchCode"] = dr["BranchCode"];
                      dt.Rows.Add(dr_final5);
                      if (chkboxStock.Checked == true)
                      {
@@ -28108,6 +28229,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                          dr_final5["Rate"] = dr["Rate"];
                      }
                      dr_final5["Amount"] = dr["Amount"];
+                     dr_final5["BranchCode"] = dr["BranchCode"];
                      dt.Rows.Add(dr_final5);
                      if (chkboxStock.Checked == true)
                      {
@@ -28662,6 +28784,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
                  }
 
@@ -28776,6 +28899,7 @@ public partial class ReportXLSales : System.Web.UI.Page
                      {
                          dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                      }
+                     dr_final6["BranchCode"] = "";
                      dt.Rows.Add(dr_final6);
                  }
              }

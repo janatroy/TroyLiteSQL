@@ -49,7 +49,7 @@
                         <asp:Label ID="Label7" runat="server" Text="StartDate"></asp:Label>
                     </td>
                     <td style="width:30%" class="ControlTextBox3">
-                        <asp:TextBox ID="txtStrtDt" runat="server" CssClass="textbox" style="border:1px solid #90c9fc"  BackColor = "#90c9fc" TabIndex="1"></asp:TextBox>
+                        <asp:TextBox ID="txtStrtDt" runat="server" CssClass="textbox" SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                         <cc1:CalendarExtender ID="calStartDate" runat="server" Enabled="True" 
                             Format="dd/MM/yyyy"
                             PopupButtonID="btnStartDate" TargetControlID="txtStrtDt">
@@ -67,7 +67,7 @@
                         <asp:Label ID="Label9" runat="server" Text="EndDate"></asp:Label>
                     </td>
                     <td class="ControlTextBox3"  style="width:30%">
-                        <asp:TextBox ID="txtEndDt" runat="server" CssClass="textbox" style="border:1px solid #90c9fc" BackColor = "#90c9fc" TabIndex="2"></asp:TextBox>
+                        <asp:TextBox ID="txtEndDt" runat="server" CssClass="textbox" SkinID="skinTxtBoxGrid" TabIndex="2"></asp:TextBox>
                         <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" 
                             Format="dd/MM/yyyy"
                             PopupButtonID="ImageButton1" TargetControlID="txtEndDt">

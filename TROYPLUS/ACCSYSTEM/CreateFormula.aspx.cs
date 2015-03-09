@@ -613,7 +613,7 @@ public partial class CreateFormula : System.Web.UI.Page
 
                     if ((InCount == 0) || (OutCount == 0))
                     {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Minimum one Raw Materials and one Products should be added.');", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Minimum one Raw Material and one Product should be added.');", true);
                         return;
                     }
                     bl.UpdateFormulaItem(FormulaName, ds);
@@ -622,7 +622,7 @@ public partial class CreateFormula : System.Web.UI.Page
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
                     //int billNo = bl.InsertSales(sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, Convert.ToInt32(executive), ds);
                     Reset();
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Update Successfully.')", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Updated Successfully.')", true);
                     //ResetProduct();
                     if (File.Exists(Server.MapPath("Reports\\" + hdFilename.Value + "_template.xml")))
                         File.Delete(Server.MapPath("Reports\\" + hdFilename.Value + "_template.xml"));
@@ -916,7 +916,7 @@ public partial class CreateFormula : System.Web.UI.Page
 
                 if ((InCount == 0) || (OutCount == 0))
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Minimum one Raw Materials and one Products should be added.');", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Minimum one Raw Material and one Product should be added.');", true);
                     return;
                 }
 
@@ -1634,6 +1634,7 @@ public partial class CreateFormula : System.Web.UI.Page
             }
 
             titlehead.Text = "Select the Component to be Added";
+            heading1.Text = "";
             Button1.Visible = false;
         }
         catch (Exception ex)
