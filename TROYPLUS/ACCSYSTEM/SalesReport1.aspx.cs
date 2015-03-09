@@ -365,7 +365,7 @@ public partial class SalesReport1 : System.Web.UI.Page
 
         //ds = objBL.getSalesreport(startDate, endDate, "All", "All", "All");
 
-        ds= objBL.getSales1(selColumn, field2, condtion, "", "");
+        ds= objBL.getSales1(selColumn, field2, condtion, "", "","");
 
         if (ds.Tables[0].Rows.Count > 0)
         {

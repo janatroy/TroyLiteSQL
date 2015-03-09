@@ -122,7 +122,7 @@ public partial class CustomerPayment : System.Web.UI.Page
         string connection = Request.Cookies["Company"].Value;
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
-        ds = bl.ListSundryDebtorsExceptIsActive(connection, drpBranchAdd.SelectedValue);
+        ds = bl.ListSundryDebtorsExceptIsActive(connection, ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).SelectedValue);
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).Items.Clear();
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).Items.Add(new ListItem("Select Customer", "0"));
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataSource = ds;
@@ -131,7 +131,7 @@ public partial class CustomerPayment : System.Web.UI.Page
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataValueField = "LedgerID";
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataBind();
 
-        UpdatePanel1.Update();
+        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
     }
 
     private void loadChequeNo(int bnkId)
@@ -704,7 +704,7 @@ public partial class CustomerPayment : System.Web.UI.Page
             ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataValueField = "LedgerID";
             ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataBind();
 
-            UpdatePanel1.Update();
+            ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
         }
         catch (Exception ex)
         {
@@ -2241,9 +2241,9 @@ public partial class CustomerPayment : System.Web.UI.Page
             ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataValueField = "LedgerID";
             ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataBind();
 
-           
 
-            UpdatePanel1.Update();
+
+            ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
 
 
 
