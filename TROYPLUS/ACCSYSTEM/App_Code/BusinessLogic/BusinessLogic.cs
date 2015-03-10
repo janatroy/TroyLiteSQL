@@ -44272,7 +44272,10 @@ public class BusinessLogic
 
         try
         {
-            dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' ");
+            //dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' ");
+            dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
+                                 " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
+                                 " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblChequeitems.Status='N'");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -44403,7 +44406,10 @@ public class BusinessLogic
 
         try
         {
-            dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' and tblchequeitems.Bankid  = " + BankID + " ");
+           // dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' and tblchequeitems.Bankid  = " + BankID + " ");
+            dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
+                                 " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
+                                 " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblCheque.BankID=" + BankID + " and tblChequeitems.Status='N'");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 

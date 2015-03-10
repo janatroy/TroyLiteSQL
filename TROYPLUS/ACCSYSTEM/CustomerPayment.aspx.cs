@@ -114,7 +114,8 @@ public partial class CustomerPayment : System.Web.UI.Page
 
     protected void ddBanksAdd_SelectedIndexChanged(object sender, EventArgs e)
     {
-        loadChequeNo(Convert.ToInt32(ddBanksAdd.SelectedItem.Value));        
+        loadChequeNo(Convert.ToInt32(ddBanksAdd.SelectedItem.Value));
+        //ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "AdvancedAdd('" + ((HtmlTable)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("tblBankAdd")) + "');", true);
     }
 
     protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
@@ -132,6 +133,8 @@ public partial class CustomerPayment : System.Web.UI.Page
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ComboBox2Add")).DataBind();
 
         ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
+        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel4")).Update();
+        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel6")).Update();
     }
 
     private void loadChequeNo(int bnkId)
@@ -145,8 +148,20 @@ public partial class CustomerPayment : System.Web.UI.Page
         //cmbChequeNo.DataSource = ds;
         //cmbChequeNo.DataBind();
         //cmbChequeNo.DataTextField = "ChequeNo";
-        //cmbChequeNo.DataValueField = "ChequeNo";       
+        //cmbChequeNo.DataValueField = "ChequeNo";
 
+
+        ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).Items.Clear();
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        //ds = bl.ListChequeNo(bnkId);
+        ds = bl.ListChequeNosBank(sDataSource,Convert.ToString(bnkId));
+        ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).DataSource = ds;
+        ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).DataBind();
+        ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).DataTextField = "ChequeNo";
+        ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).DataValueField = "ChequeNo";
+        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel2")).Update();
     }
 
 
@@ -2530,4 +2545,8 @@ public partial class CustomerPayment : System.Web.UI.Page
     //}
 
 
+    protected void ddBanksAdd_DataBound(object sender, EventArgs e)
+    {
+        //loadChequeNo(Convert.ToInt32(ddBanksAdd.SelectedItem.Value));       
+    }
 }
