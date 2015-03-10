@@ -10715,14 +10715,19 @@ public class BusinessLogic
     }
 
 
-    public DataSet ListProductDetails(string itemCode)
+    public DataSet ListProductDetails(string itemCode,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);// System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "select itemcode,ProductName,ProductDesc,Model,Discount,Vat,Rate,CST,Stock,dealerdiscount,dealervat,dealerrate,Accept_Role,Rate as NLP from tblProductMaster Where itemCode='" + itemCode + "'";
+       // dbQry = "select itemcode,ProductName,ProductDesc,Model,Discount,Vat,Rate,CST,Stock,dealerdiscount,dealervat,dealerrate,Accept_Role,Rate as NLP from tblProductMaster Where itemCode='" + itemCode + "'";
+        dbQry = " SELECT tblProductMaster.ItemCode,tblProductMaster.ProductName,tblProductMaster.ProductDesc, tblProductMaster.Model, tblProductMaster.Discount," +
+               " tblProductMaster.VAT,tblProductMaster.Rate, tblProductMaster.CST,tblProductMaster.dealerdiscount,tblProductMaster.dealervat,tblProductMaster.dealerrate, " +
+               " tblProductMaster.Accept_Role,tblProductMaster.Rate as NLP ,tblProductStock.Stock, tblProductStock.BranchCode, " +
+               " tblProductStock.BranchName FROM tblProductMaster INNER JOIN tblProductStock ON tblProductMaster.ItemCode = tblProductStock.ItemCode " +
+               " where tblProductMaster.ItemCode='" + itemCode + "' and tblProductStock.BranchCode='" + branchcode + "' and tblProductStock.Stock > 0 ";
 
         try
         {
@@ -11920,7 +11925,7 @@ public class BusinessLogic
     }
 
     /*Start Purchase Stock Negative Change - March 16 -- (return type changed from void to int method)*/
-    public int DeletePurchase(int purchaseID, string Billno, string usernam)
+    public int DeletePurchase(int purchaseID, string Billno, string usernam,string branchcode)
     {
         /*End Purchase Stock Negative Change - March 16 -- (Commented the below method)*/
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -11979,7 +11984,7 @@ public class BusinessLogic
 
 
             //Start Save in Log table
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE key='SAVELOG'";
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAVELOG'";
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
             if (dsd.Tables[0].Rows.Count > 0)
                 Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
@@ -11994,10 +11999,10 @@ public class BusinessLogic
                     {
                         foreach (DataRow dr in pDS.Tables[0].Rows)
                         {
-                            logdescription = string.Format("UPDATE tblProductMaster SET tblProductMaster.Stock = tblProductMaster.Stock - {0} WHERE ItemCode={1}", Convert.ToDouble(dr["Qty"]), Convert.ToString(dr["ItemCode"]).Trim());
+                            logdescription = string.Format("UPDATE tblProductStock SET tblProductStock.Stock = tblProductStock.Stock - {0} WHERE ItemCode={1} and BranchCode={2}", Convert.ToDouble(dr["Qty"]), Convert.ToString(dr["ItemCode"]).Trim(),branchcode);
                             logdescription = logdescription.Trim();
-                            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}')",
-                                 DateTime.Now.ToString(), logdescription.ToString(), usernam, Billno, "DeletePurchase");
+                            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+                                 DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), usernam, Billno, "DeletePurchase");
                             manager.ExecuteNonQuery(CommandType.Text, description);
                         }
                     }
@@ -12063,13 +12068,13 @@ public class BusinessLogic
                     {
                         /*Start Purchase Stock Negative Change - March 16 */
                         itmCode = Convert.ToString(dr["ItemCode"]).Trim();
-                        currStock = getStockInfo(Convert.ToString(dr["ItemCode"]).Trim(), "");
+                        currStock = getStockInfo(Convert.ToString(dr["ItemCode"]).Trim(),branchcode);
                         arrivedStock = currStock - Convert.ToDouble(dr["Qty"]);
 
                         if (arrivedStock >= 0)
                         {
                             /*End Purchase Stock Negative Change - March 16 */
-                            dbQry = string.Format("UPDATE tblProductMaster SET tblProductMaster.Stock = tblProductMaster.Stock - {0} WHERE ItemCode='{1}'", Convert.ToDouble(dr["Qty"]), Convert.ToString(dr["ItemCode"]).Trim());
+                            dbQry = string.Format("UPDATE tblProductStock SET tblProductStock.Stock = tblProductStock.Stock - {0} WHERE ItemCode='{1}' and BranchCode='{2}'", Convert.ToDouble(dr["Qty"]), Convert.ToString(dr["ItemCode"]).Trim(),branchcode);
 
                             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -12139,7 +12144,7 @@ public class BusinessLogic
             }
 
             sAuditStr = "Purchase Transaction: " + TransNo + " got deleted old Record Details : User =" + usernam + " BillNo=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Delete", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             /*Start Purchase Stock Negative Change - March 16 -- (changed based on return type)*/
             int del = manager.ExecuteNonQuery(CommandType.Text, dbQry);
             /*End Purchase Stock Negative Change - March 16 -- (Commented the below method)*/
@@ -12582,7 +12587,7 @@ public class BusinessLogic
                         if (dsd.Tables[0].Rows.Count > 0)
                             TransSaleno = Convert.ToInt32(dsd.Tables[0].Rows[0]["StartBillNo"]);
 
-                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where InternalTransfer ='YES' ");
+                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where InternalTransfer ='YES' and BranchCode='" + branchcode + "'");
 
                         if ((retBillVal != null) && (retBillVal != DBNull.Value))
                         {
@@ -12622,7 +12627,7 @@ public class BusinessLogic
                         if (dsd.Tables[0].Rows.Count > 0)
                             TransSaleno = Convert.ToInt32(dsd.Tables[0].Rows[0]["StartBillNo"]);
 
-                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where deliveryNote ='YES' ");
+                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where deliveryNote ='YES' and BranchCode='" + branchcode + "' ");
 
                         if ((retBillVal != null) && (retBillVal != DBNull.Value))
                         {
@@ -12662,7 +12667,7 @@ public class BusinessLogic
                         if (dsd.Tables[0].Rows.Count > 0)
                             TransSaleno = Convert.ToInt32(dsd.Tables[0].Rows[0]["StartBillNo"]);
 
-                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where purchasereturn ='YES' ");
+                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where purchasereturn ='YES' and BranchCode='" + branchcode + "' ");
 
                         if ((retBillVal != null) && (retBillVal != DBNull.Value))
                         {
@@ -12702,7 +12707,7 @@ public class BusinessLogic
                         if (dsd.Tables[0].Rows.Count > 0)
                             TransSaleno = Convert.ToInt32(dsd.Tables[0].Rows[0]["StartBillNo"]);
 
-                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where Manualsales ='YES' ");
+                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where Manualsales ='YES' and BranchCode='" + branchcode + "' ");
 
                         if ((retBillVal != null) && (retBillVal != DBNull.Value))
                         {
@@ -12742,7 +12747,7 @@ public class BusinessLogic
                         if (dsd.Tables[0].Rows.Count > 0)
                             TransSaleno = Convert.ToInt32(dsd.Tables[0].Rows[0]["StartBillNo"]);
 
-                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where NormalSales ='YES' ");
+                        object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where NormalSales ='YES' and BranchCode='" + branchcode + "' ");
 
                         if ((retBillVal != null) && (retBillVal != DBNull.Value))
                         {
@@ -12779,7 +12784,7 @@ public class BusinessLogic
                 }
                 else
                 {
-                    object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales");
+                    object retBillVal = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BillNo)+1 FROM tblSales where BranchCode='" + branchcode + "'");
 
                     if ((retBillVal != null) && (retBillVal != DBNull.Value))
                     {
@@ -13039,7 +13044,7 @@ public class BusinessLogic
 
                             if (Logsave == "YES")
                             {
-                                logdescription = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20})", salesID, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0);
+                                logdescription = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty,BranchCode) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20},'{21}')", salesID, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0,branchcode);
                                 logdescription = logdescription.Trim();
                                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                                      DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), usernam, salesBillno, "InsertSalesNewSeries");
@@ -13053,7 +13058,7 @@ public class BusinessLogic
                                 manager.ExecuteNonQuery(CommandType.Text, description);
                             }
                             string dbQry1;
-                            dbQry1 = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20})", salesID, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0);
+                            dbQry1 = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty,BranchCode) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20},'{21}')", salesID, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0, branchcode);
                             manager.ExecuteNonQuery(CommandType.Text, dbQry1);
 
                             //dbQry = string.Format("UPDATE tblProductMaster SET tblProductMaster.Stock =  tblProductMaster.Stock - {0} WHERE ItemCode='{1}'", Convert.ToDouble(dr["Qty"]), Convert.ToString(dr["Prd"]).Trim());
@@ -14025,7 +14030,7 @@ public class BusinessLogic
                 {
                     dbQryData.Append("SELECT tblSales.Billno,Format(tblSales.Billdate, 'dd/MM/yyyy') As BillDate,tblSales.CustomerID,tblSales.CustomerName,tblSales.CustomerAddress,tblSales.CustomerContacts,tblSales.Paymode,tblDayBook.Amount,tblDayBook.narration,tblDayBook.CreditCardNo,tblSales.JournalID,Debtor.LedgerID As DebtorID, Debtor.LedgerName As Debtor,tblSales.purchasereturn,tblSales.purchasereturnreason,freight,LoadUnload,OtherCusName,tblSales.CustomerAddress2,tblSales.CustomerAddress3");
                     dbQryData.Append(" FROM (((tblDayBook  INNER JOIN  tblSales ON tblSales.JournalID = tblDayBook.Transno)INNER JOIN tblLedger Debtor ON tblDaybook.DebtorID = Debtor.LedgerID))");
-                    dbQryData.Append(" Where tblSales.Billno=" + Billno + " AND tblSales.BillDate > " + DateTime.Parse(recDateVal.ToString()).ToString("MM/dd/yyyy") + " ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
+                    dbQryData.Append(" Where tblSales.Billno=" + Billno + " AND tblSales.BranchCode='" + branchcode + "' AND tblSales.BillDate > " + DateTime.Parse(recDateVal.ToString()).ToString("MM/dd/yyyy") + " ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
                 }
                 else
                 {
@@ -14089,7 +14094,7 @@ public class BusinessLogic
 
                     if (Logsave == "YES")
                     {
-                        logdescription = string.Format("Delete From tblSalesItems Where BillNo={0}", Billno);
+                        logdescription = string.Format("Delete From tblSalesItems Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
                         logdescription = logdescription.Trim();
                         description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                              DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), usernam, Billno, "UpdateSalesNew");
@@ -14097,7 +14102,7 @@ public class BusinessLogic
                     }
 
 
-                    dbQry = string.Format("SELECT Qty,ItemCode,RoleID,isRole From tblSalesItems Where Billno={0}", Billno);
+                    dbQry = string.Format("SELECT Qty,ItemCode,RoleID,isRole From tblSalesItems Where Billno={0} and BranchCode='{1}'", Billno,branchcode);
                     DataSet salesDSData = (DataSet)manager.ExecuteDataSet(CommandType.Text, dbQry);
 
                     if (salesDSData != null)
@@ -14123,10 +14128,10 @@ public class BusinessLogic
 
                     //Create log entries in Audit table before deleting.
 
-                    dbQry = string.Format("INSERT INTO tblAuditSalesItems Select * From tblSalesItems Where BillNo={0}", Billno);
+                    dbQry = string.Format("INSERT INTO tblAuditSalesItems Select * From tblSalesItems Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                    dbQry = string.Format("Delete From tblSalesItems Where BillNo={0}", Billno);
+                    dbQry = string.Format("Delete From tblSalesItems Where BillNo={0} and BranchCode='{1}'", Billno, branchcode);
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 }
@@ -14176,8 +14181,8 @@ public class BusinessLogic
                          DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), usernam, Billno, "UpdateSalesNew");
                     manager.ExecuteNonQuery(CommandType.Text, description);
 
-                    logdescription = string.Format("UPDATE tblSales SET SeriesID={28},BillDate={1},JournalID={2},CustomerID={3},CustomerName={4},CustomerAddress={5},CustomerContacts={6},Paymode={7},purchaseReturn={8},purchaseReturnReason={9},executive={10},freight={11},LoadUnload={12},OtherCusName={13}, InternalTransfer={15},DeliveryNote={16},CustomerAddress2={17},CustomerAddress3={18},executivename={19}, despatchedfrom ={20} , manualNo ={21},TotalWORndOff={22},Total={23},MultiPayment={24},narration2={25},cuscategory={26},Discounttype={27},InvoiceReturnStatus={28} WHERE Billno={0}",
-                        Billno, sBilldate.ToString("yyyy-MM-dd"), TransNo, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, paymode, purchasereturn, prreason, freight, dLU, sOtherCusName, Series, intTrans, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, manualno, TotalWORndOff, Amount, MultiPayment, narration2, cuscategory, Series, "NO");
+                    logdescription = string.Format("UPDATE tblSales SET SeriesID={28},BillDate={1},JournalID={2},CustomerID={3},CustomerName={4},CustomerAddress={5},CustomerContacts={6},Paymode={7},purchaseReturn={8},purchaseReturnReason={9},executive={10},freight={11},LoadUnload={12},OtherCusName={13}, InternalTransfer={15},DeliveryNote={16},CustomerAddress2={17},CustomerAddress3={18},executivename={19}, despatchedfrom ={20} , manualNo ={21},TotalWORndOff={22},Total={23},MultiPayment={24},narration2={25},cuscategory={26},Discounttype={27},InvoiceReturnStatus={28} WHERE Billno={0} and BranchCode={29}",
+                        Billno, sBilldate.ToString("yyyy-MM-dd"), TransNo, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, paymode, purchasereturn, prreason, freight, dLU, sOtherCusName, Series, intTrans, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, manualno, TotalWORndOff, Amount, MultiPayment, narration2, cuscategory, Series, "NO",branchcode);
                     logdescription = logdescription.Trim();
 
 
@@ -14268,8 +14273,8 @@ public class BusinessLogic
                 sBilldate.ToString("yyyy-MM-dd"), DebtorID, creditorID, Amount, sNarration, sVoucherType, sCreditCardno, 0, TransNo, branchcode);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                dbQry = string.Format("UPDATE tblSales SET SeriesID={25},BillDate='{1}',JournalID={2},CustomerID={3},CustomerName='{4}',CustomerAddress='{5}',CustomerContacts='{6}',Paymode={7},purchaseReturn='{8}',purchaseReturnReason='{9}',freight={10},LoadUnload={11},OtherCusName='{12}', InternalTransfer='{13}',DeliveryNote='{14}',CustomerAddress2='{15}',CustomerAddress3='{16}', despatchedfrom ='{17}' , manualNo ={18},TotalWORndOff={19},Total={20},MultiPayment='{21}',Types='{22}',narration2='{23}',cuscategory='{24}',Discounttype='{25}',InvoiceReturnStatus='{26}' WHERE Billno={0}",
-                Billno, sBilldate.ToString("yyyy-MM-dd"), TransNo, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, paymode, purchasereturn, prreason, freight, dLU, sOtherCusName, intTrans, deliveryNote, sCustomerAddress2, sCustomerAddress3, despatchedfrom, manualno, TotalWORndOff, Amount, MultiPayment, Types, narration2, cuscategory, Series, distype, "NO");
+                dbQry = string.Format("UPDATE tblSales SET SeriesID={25},BillDate='{1}',JournalID={2},CustomerID={3},CustomerName='{4}',CustomerAddress='{5}',CustomerContacts='{6}',Paymode={7},purchaseReturn='{8}',purchaseReturnReason='{9}',freight={10},LoadUnload={11},OtherCusName='{12}', InternalTransfer='{13}',DeliveryNote='{14}',CustomerAddress2='{15}',CustomerAddress3='{16}', despatchedfrom ='{17}' , manualNo ={18},TotalWORndOff={19},Total={20},MultiPayment='{21}',Types='{22}',narration2='{23}',cuscategory='{24}',Discounttype='{25}',InvoiceReturnStatus='{26}' WHERE Billno={0} and BranchCode='{27}'",
+                Billno, sBilldate.ToString("yyyy-MM-dd"), TransNo, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, paymode, purchasereturn, prreason, freight, dLU, sOtherCusName, intTrans, deliveryNote, sCustomerAddress2, sCustomerAddress3, despatchedfrom, manualno, TotalWORndOff, Amount, MultiPayment, Types, narration2, cuscategory, Series, distype, "NO",branchcode);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                 //Adding the Sales Items Table
@@ -14299,7 +14304,7 @@ public class BusinessLogic
                             {
                                 //logdescription = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,Subtotal) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15})", Billno, Convert.ToString(dr["ItemCode"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["Discount"]), Convert.ToDouble(dr["VAT"]), iSno, Convert.ToString(dr["isRole"]), Convert.ToDouble(dr["CST"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExecCharge"]), Convert.ToDouble(dr["Vatamount"]), rateinclu, 0);
                                 //logdescription = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18})", salesID, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), rateinclu, 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]));
-                                logdescription = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20})", Billno, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0);
+                                logdescription = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty,BranchCode) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20},'{21}')", Billno, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0,branchcode);
                                 logdescription = logdescription.ToString().Trim();
                                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                                      DateTime.Now.ToString("yyyy-MM-dd"), logdescription, usernam, Billno, "UpdateSalesNew");
@@ -14315,7 +14320,7 @@ public class BusinessLogic
 
                             //dbQry = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,Subtotal) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15})", Billno, Convert.ToString(dr["ItemCode"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["Discount"]), Convert.ToDouble(dr["VAT"]), iSno, Convert.ToString(dr["isRole"]), Convert.ToDouble(dr["CST"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExecCharge"]), Convert.ToDouble(dr["Vatamount"]), Convert.ToDouble(dr["TotalMrp"]), 0);
                             // dbQry = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18})", Billno, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), rateinclu, 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]));
-                            dbQry = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20})", Billno, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0);
+                            dbQry = string.Format("INSERT INTO tblSalesItems(BillNo,ItemCode,Qty,Rate,Discount,Vat,SlNo,isrole,CST,Bundles,Rods,ExecIncharge,ExecCharge,Vatamount,TotalMrp,subtotal,executivename,TotalPrice,PriceBeforeVATAmt,PrdReturnStatus,ReturnQty,BranchCode) VALUES({0},'{1}',{2},{3},{4},{5},{6},'{7}',{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}',{20},'{21}')", Billno, Convert.ToString(dr["Prd"]), Convert.ToDouble(dr["Qty"]), Convert.ToDouble(dr["Rate"]), Convert.ToDouble(dr["DisPre"]), Convert.ToDouble(dr["VATPre"]), iSno, Convert.ToString(dr["IsRole"]), Convert.ToDouble(dr["CSTPre"]), Convert.ToInt32(dr["Bundles"]), Convert.ToInt32(dr["Rods"]), 0, Convert.ToDouble(dr["ExeComm"]), Convert.ToDouble(dr["VATAmt"]), Convert.ToDouble(dr["TotalMrp"]), 0, Convert.ToInt32(dr["Emp"]), Convert.ToDouble(dr["TotPrice"]), Convert.ToDouble(dr["PrBefVATAmt"]), "NO", 0, branchcode);
                             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                             dbQry = string.Format("UPDATE tblProductStock SET tblProductStock.Stock =  tblProductStock.Stock - {0} WHERE ItemCode='{1}' and BranchCode='{2}'", Convert.ToDouble(dr["Qty"]), Convert.ToString(dr["Prd"]).Trim(), branchcode);
@@ -15083,7 +15088,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
             //Start Retriving the old Debtor and CreditorID
-            dsOld = GetSalesForId(connection, Billno);
+            dsOld = GetSalesForId(connection, Billno,branchcode);
 
             if (dsOld != null)
             {
@@ -15123,7 +15128,7 @@ public class BusinessLogic
 
             if (Logsave == "YES")
             {
-                description = string.Format("SELECT Qty,ItemCode,RoleID,isRole From tblSalesItems Where Billno={0}", Billno);
+                description = string.Format("SELECT Qty,ItemCode,RoleID,isRole From tblSalesItems Where Billno={0} and BranchCode='{1}'", Billno,branchcode);
                 DataSet salDS = (DataSet)manager.ExecuteDataSet(CommandType.Text, description);
                 if (salDS != null)
                 {
@@ -15175,7 +15180,7 @@ public class BusinessLogic
             //Step 2 - Start
             //Start Delete the old record         
 
-            dbQry = string.Format("SELECT Qty,ItemCode,RoleID,isRole From tblSalesItems Where Billno={0}", Billno);
+            dbQry = string.Format("SELECT Qty,ItemCode,RoleID,isRole From tblSalesItems Where Billno={0} and BranchCode='{1}'", Billno,branchcode);
             DataSet salesDS = (DataSet)manager.ExecuteDataSet(CommandType.Text, dbQry);
 
             if (salesDS != null)
@@ -15221,13 +15226,13 @@ public class BusinessLogic
                         DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), UserID, TransNo, "DeleteSalesNew");
                 manager.ExecuteNonQuery(CommandType.Text, description);
 
-                logdescription = string.Format("Delete From tblSales Where BillNo={0}", Billno);
+                logdescription = string.Format("Delete From tblSales Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
                 logdescription = logdescription.Trim();
                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                         DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), UserID, Billno, "DeleteSalesNew");
                 manager.ExecuteNonQuery(CommandType.Text, description);
 
-                logdescription = string.Format("Delete From tblSalesItems Where BillNo={0}", Billno);
+                logdescription = string.Format("Delete From tblSalesItems Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
                 logdescription = logdescription.Trim();
                 description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
                         DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), UserID, Billno, "DeleteSalesNew");
@@ -15241,16 +15246,16 @@ public class BusinessLogic
             dbQry = string.Format("Delete From tblDayBook Where TransNo={0}", TransNo);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("INSERT INTO tblAuditSales Select * From tblSales Where BillNo={0}", Billno);
+            dbQry = string.Format("INSERT INTO tblAuditSales Select * From tblSales Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("Delete From tblSales Where BillNo={0}", Billno);
+            dbQry = string.Format("Delete From tblSales Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("INSERT INTO tblAuditSalesItems Select * From tblSalesItems Where BillNo={0}", Billno);
+            dbQry = string.Format("INSERT INTO tblAuditSalesItems Select * From tblSalesItems Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("Delete From tblSalesItems Where BillNo={0}", Billno);
+            dbQry = string.Format("Delete From tblSalesItems Where BillNo={0} and BranchCode='{1}'", Billno,branchcode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
             //End Deleting the old record
 
@@ -15339,7 +15344,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet GetSalesForId(int Billno)
+    public DataSet GetSalesForId(int Billno,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -15362,14 +15367,14 @@ public class BusinessLogic
 
                 dbQry.Append("SELECT tblDayBook.Transno,tblSales.Billno,tblSales.DeliveryNote,tblSales.InternalTransfer,tblSales.cuscategory,tblSales.SeriesID,Format(tblSales.Billdate, 'dd/MM/yyyy') As BillDate,tblSales.DuplicateCopy,tblSales.Check1,tblSales.CustomerIdMobile,tblSales.CustomerID,tblSales.CustomerName,tblSales.CustomerAddress,tblSales.CustomerContacts,tblSales.Paymode,tblDayBook.Amount,tblDayBook.narration,tblDayBook.CreditCardNo,tblSales.JournalID,Debtor.LedgerID As DebtorID, Debtor.LedgerName As Debtor,tblSales.purchasereturn,tblSales.purchasereturnreason,freight,LoadUnload,OtherCusName, Customer.ContactName, MultiPayment,tblSales.CustomerAddress2,tblSales.CustomerAddress3, tblSales.despatchedfrom, tblSales.manualNo, tblSales.manualsales, tblSales.normalsales,tblSales.Types,tblsales.narration2,tblSales.BranchCode ");
                 dbQry.Append(" FROM ((((tblDayBook  INNER JOIN  tblSales ON tblSales.JournalID = tblDayBook.Transno)INNER JOIN tblLedger Debtor ON tblDaybook.DebtorID = Debtor.LedgerID) INNER JOIN tblLedger Customer ON tblSales.CustomerID = Customer.LedgerID))");
-                dbQry.Append(" Where tblSales.Billno=" + Billno + " AND tblSales.BillDate > " + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + " ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
+                dbQry.Append(" Where tblSales.BranchCode='" + branchcode + "' and tblSales.Billno=" + Billno + " AND tblSales.BillDate > " + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + " ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
 
             }
             else
             {
                 dbQry.Append("SELECT tblDayBook.Transno,tblSales.Billno,tblSales.DeliveryNote,tblSales.InternalTransfer,tblSales.cuscategory,tblSales.SeriesID,Format(tblSales.Billdate, 'dd/MM/yyyy') As BillDate,tblSales.DuplicateCopy,tblSales.CustomerID,tblSales.Check1,tblSales.CustomerIdMobile,tblSales.CustomerName,tblSales.CustomerAddress,tblSales.CustomerContacts,tblSales.Paymode,tblDayBook.Amount,tblDayBook.narration,tblDayBook.CreditCardNo,tblSales.JournalID,Debtor.LedgerID As DebtorID,Debtor.LedgerName As Debtor,tblSales.purchasereturn,tblSales.purchasereturnreason,freight,LoadUnload,OtherCusName, Customer.ContactName,MultiPayment,tblSales.CustomerAddress2,tblSales.CustomerAddress3,  tblSales.despatchedfrom, tblSales.manualNo, tblSales.manualsales, tblSales.normalsales,tblSales.Types,tblsales.narration2,tblSales.BranchCode");
                 dbQry.Append(" FROM ((((tblDayBook  INNER JOIN  tblSales ON tblSales.JournalID = tblDayBook.Transno)INNER JOIN tblLedger Debtor ON tblDaybook.DebtorID = Debtor.LedgerID) INNER JOIN tblLedger Customer ON tblSales.CustomerID = Customer.LedgerID))");
-                dbQry.Append(" ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
+                dbQry.Append(" Where tblSales.BranchCode='" + branchcode + "' ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
             }
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -15390,7 +15395,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet GetSalesForId(string connection, int Billno)
+    public DataSet GetSalesForId(string connection, int Billno,string branchcode)
     {
         //DBManager manager = new DBManager(DataProvider.SqlServer);
         //manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -15413,7 +15418,7 @@ public class BusinessLogic
 
                 dbQry.Append("SELECT tblDayBook.Transno,tblSales.Billno,tblSales.DeliveryNote,tblSales.InternalTransfer,tblSales.SeriesID,Format(tblSales.Billdate, 'dd/MM/yyyy') As BillDate,tblSales.CustomerID,tblSales.CustomerName,tblSales.CustomerAddress,tblSales.CustomerContacts,tblSales.Paymode,tblDayBook.Amount,tblDayBook.narration,tblDayBook.CreditCardNo,tblSales.JournalID,Debtor.LedgerID As DebtorID, Debtor.LedgerName As Debtor,tblSales.purchasereturn,tblSales.purchasereturnreason,freight,LoadUnload,OtherCusName, Customer.ContactName, MultiPayment,tblSales.CustomerAddress2,tblSales.CustomerAddress3, tblSales.despatchedfrom, tblSales.manualNo, tblSales.manualsales, tblSales.normalsales");
                 dbQry.Append(" FROM ((((tblDayBook  INNER JOIN  tblSales ON tblSales.JournalID = tblDayBook.Transno)INNER JOIN tblLedger Debtor ON tblDaybook.DebtorID = Debtor.LedgerID) INNER JOIN tblLedger Customer ON tblSales.CustomerID = Customer.LedgerID))");
-                dbQry.Append(" Where tblSales.Billno=" + Billno + " AND tblSales.BillDate > " + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + " ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
+                dbQry.Append(" Where tblSales.Billno=" + Billno + " AND tblSales.BranchCode='" + branchcode + "' AND tblSales.BillDate > " + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + " ORDER BY tblSales.BillDate Desc,tblSales.Billno Desc");
 
             }
             else
@@ -16183,7 +16188,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
             //Start Retriving the old Debtor and CreditorID
-            dsOld = GetSalesForId(Billno);
+            dsOld = GetSalesForId(Billno,"");
 
 
             if (dsOld.Tables[0].Rows[0]["JournalID"] != null)
@@ -16440,7 +16445,7 @@ public class BusinessLogic
     }
 
 
-    public DataSet GetSalesItemsForPurId(int Billno)
+    public DataSet GetSalesItemsForPurId(int Billno,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -16450,8 +16455,9 @@ public class BusinessLogic
         try
         {
             dbQry.Append("Select tblSalesitems.ItemCode,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblSalesitems.Rate,tblProductMaster.Measure_Unit, tblSalesitems.Qty,IIF((tblEmployee.empno IS NULL),' --NA-- ',tblEmployee.empno) as executivename, ");
-            dbQry.Append("tblSalesitems.discount,tblSalesitems.Vat,tblSalesitems.CST,tblSalesitems.Vatamount,tblSalesitems.Totalmrp,tblSalesitems.subtotal,tblSalesitems.billno,tblSalesItems.SlNo,tblSalesItems.RoleID,tblSalesItems.isRole,tblSalesItems.TotalPrice,tblSalesItems.PrdReturnStatus,tblSalesItems.ReturnQty,tblProductMaster.Model,tblSalesItems.Bundles,tblSalesItems.Rods,tblSalesItems.ExecIncharge,tblProductmaster.Stock,tblSalesItems.ExecCharge,tblSalesItems.PriceBeforeVATAmt FROM ((tblSalesitems INNER JOIN tblProductmaster ON tblSalesitems.itemCode = tblProductMaster.itemCode ) LEFT JOIN tblEmployee ON tblEmployee.empno = tblSalesItems.executivename)");
-            dbQry.Append(" Where PrdReturnStatus='NO' and tblSalesitems.Billno = " + Billno);
+            dbQry.Append("tblSalesitems.discount,tblSalesitems.Vat,tblSalesitems.CST,tblSalesitems.Vatamount,tblSalesitems.Totalmrp,tblSalesitems.subtotal,tblSalesitems.billno,tblSalesItems.SlNo,tblSalesItems.RoleID,tblSalesItems.isRole,tblSalesItems.TotalPrice,tblSalesItems.PrdReturnStatus,tblSalesItems.ReturnQty,tblProductMaster.Model,tblSalesItems.Bundles,tblSalesItems.Rods,tblSalesItems.ExecIncharge,tblProductmaster.Stock,tblSalesItems.ExecCharge,tblSalesItems.PriceBeforeVATAmt,tblSalesItems.BranchCode ");
+            dbQry.Append(" FROM ((tblSalesitems INNER JOIN tblProductmaster ON tblSalesitems.itemCode = tblProductMaster.itemCode ) LEFT JOIN tblEmployee ON tblEmployee.empno = tblSalesItems.executivename)");
+            dbQry.Append(" Where tblSalesItems.BranchCode='" + branchcode + "' and PrdReturnStatus='NO' and tblSalesitems.Billno = " + Billno);
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -16484,18 +16490,32 @@ public class BusinessLogic
             //dbQry.Append("Select tblSalesitems.ItemCode,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblSalesitems.Rate,tblProductMaster.Measure_Unit, tblSalesitems.Qty,IIF((tblEmployee.empno IS NULL),'0',tblEmployee.empno) as executivename, ");
             //dbQry.Append("tblSalesitems.discount,tblSalesitems.Vat,tblSalesitems.CST,tblSalesitems.Vatamount,tblSalesitems.Totalmrp,tblSalesitems.subtotal,tblSalesitems.billno,tblSalesItems.SlNo,tblSalesItems.RoleID,tblSalesItems.isRole,tblSalesItems.TotalPrice,tblSalesItems.PrdReturnStatus,tblSalesItems.ReturnQty,tblProductMaster.Model,tblSalesItems.Bundles,tblSalesItems.Rods,tblSalesItems.ExecIncharge,tblProductmaster.Stock,tblSalesItems.ExecCharge,tblSalesItems.PriceBeforeVATAmt FROM ((tblSalesitems INNER JOIN tblProductmaster ON tblSalesitems.itemCode = tblProductMaster.itemCode ) LEFT JOIN tblEmployee ON tblEmployee.empno = tblSalesItems.executivename)");
             //dbQry.Append(" Where tblSalesitems.Billno = " + Billno);
-            dbQry.Append("SELECT tblSalesItems.ItemCode, tblSalesItems.Rate, tblSalesItems.Qty, tblSalesItems.Discount, tblSalesItems.Vat, tblSalesItems.CST,");
-            dbQry.Append("tblSalesItems.Vatamount,tblSalesItems.TotalMrp, tblSalesItems.SubTotal, tblSalesItems.BillNo, tblSalesItems.SlNo, ");
-            dbQry.Append("tblSalesItems.RoleID, tblSalesItems.IsRole, tblSalesItems.TotalPrice,tblSalesItems.PrdReturnStatus, tblSalesItems.ReturnQty, ");
-            dbQry.Append("tblSalesItems.Bundles, tblSalesItems.Rods, tblSalesItems.ExecIncharge, tblSalesItems.ExecCharge, ");
-            dbQry.Append("tblSalesItems.PriceBeforeVATAmt, tblProductStock.Stock, tblProductStock.BranchCode, tblProductMaster.ProductName, tblProductMaster.ProductDesc, ");
-            dbQry.Append("tblProductMaster.Measure_Unit,IIF((tblEmployee.empno IS NULL),'0',tblEmployee.empno) as executivename,tblSales.BranchCode ");
-            dbQry.Append("FROM tblSalesItems INNER JOIN ");
-            dbQry.Append("tblProductMaster ON tblSalesItems.ItemCode = tblProductMaster.ItemCode INNER JOIN ");
-            dbQry.Append("tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN ");
-            dbQry.Append("tblSales ON tblSalesItems.BillNo = tblSales.BillNo ");
-            dbQry.Append("LEFT JOIN tblEmployee ON tblEmployee.empno = tblSalesItems.executivename ");
-            dbQry.Append("Where tblProductStock.BranchCode='" + branchcode + "' and tblSalesitems.Billno = " + Billno);
+
+            //dbQry.Append("SELECT tblSalesItems.ItemCode, tblSalesItems.Rate, tblSalesItems.Qty, tblSalesItems.Discount, tblSalesItems.Vat, tblSalesItems.CST,");
+            //dbQry.Append("tblSalesItems.Vatamount,tblSalesItems.TotalMrp, tblSalesItems.SubTotal, tblSalesItems.BillNo, tblSalesItems.SlNo, ");
+            //dbQry.Append("tblSalesItems.RoleID, tblSalesItems.IsRole, tblSalesItems.TotalPrice,tblSalesItems.PrdReturnStatus, tblSalesItems.ReturnQty, ");
+            //dbQry.Append("tblSalesItems.Bundles, tblSalesItems.Rods, tblSalesItems.ExecIncharge, tblSalesItems.ExecCharge, ");
+            //dbQry.Append("tblSalesItems.PriceBeforeVATAmt, tblProductStock.Stock, tblProductStock.BranchCode, tblProductMaster.ProductName, tblProductMaster.ProductDesc, ");
+            //dbQry.Append("tblProductMaster.Measure_Unit,IIF((tblEmployee.empno IS NULL),'0',tblEmployee.empno) as executivename,tblSales.BranchCode ");
+            //dbQry.Append("FROM tblSalesItems INNER JOIN ");
+            //dbQry.Append("tblProductMaster ON tblSalesItems.ItemCode = tblProductMaster.ItemCode INNER JOIN ");
+            //dbQry.Append("tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN ");
+            //dbQry.Append("tblSales ON tblSalesItems.BillNo = tblSales.BillNo ");
+            //dbQry.Append("LEFT JOIN tblEmployee ON tblEmployee.empno = tblSalesItems.executivename ");
+            //dbQry.Append("Where tblProductStock.BranchCode='" + branchcode + "' and tblSalesitems.Billno = " + Billno);
+
+
+            dbQry.Append(" SELECT tblSales.BillNo, tblSales.BranchCode, tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.ProductDesc, tblProductMaster.Measure_Unit, ");
+            dbQry.Append(" tblProductStock.Stock, tblSalesItems.Rate, tblSalesItems.Qty, tblSalesItems.Discount, tblSalesItems.Vat, tblSalesItems.CST, tblSalesItems.Vatamount,  ");
+            dbQry.Append(" tblSalesItems.TotalMrp, tblSalesItems.SubTotal, tblSalesItems.BillNo AS Expr1, tblSalesItems.SlNo, tblSalesItems.RoleID, tblSalesItems.IsRole,  ");
+            dbQry.Append(" tblSalesItems.TotalPrice, tblSalesItems.PrdReturnStatus, tblSalesItems.ReturnQty, tblSalesItems.Bundles, tblSalesItems.Rods, tblSalesItems.ExecIncharge,  ");
+            dbQry.Append(" tblSalesItems.ExecCharge, tblSalesItems.PriceBeforeVATAmt,IIF((tblEmployee.empno IS NULL),'0',tblEmployee.empno) as executivename ");
+            dbQry.Append(" FROM tblProductMaster INNER JOIN ");
+            dbQry.Append(" tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode INNER JOIN ");
+            dbQry.Append(" tblProductStock ON tblProductMaster.ItemCode = tblProductStock.ItemCode AND tblSalesItems.BranchCode = tblProductStock.BranchCode INNER JOIN ");
+            dbQry.Append(" tblSales ON tblSalesItems.BillNo = tblSales.BillNo AND tblSalesItems.BranchCode = tblSales.BranchCode ");
+            dbQry.Append(" LEFT JOIN tblEmployee ON tblEmployee.empno = tblSalesItems.executivename");
+            dbQry.Append(" Where tblSales.BranchCode='" + branchcode + "' and tblSalesItems.Billno = " + Billno);
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -16589,7 +16609,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
             //Start Retriving the old Debtor and CreditorID
-            dsOld = GetSalesForId(Billno);
+            dsOld = GetSalesForId(Billno,"");
 
 
             if (dsOld.Tables[0].Rows[0]["JournalID"] != null)
@@ -19255,7 +19275,7 @@ public class BusinessLogic
 
     #region Formula
 
-    public DataSet GetFormulaForName(string name)
+    public DataSet GetFormulaForName(string name,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -19271,19 +19291,32 @@ public class BusinessLogic
             {
                 // dbQry.Append("SELECT FormulaName ,(Select count(*) from tblFormula where A.FormulaID>=FormulaID) as Row ");
                 //  dbQry.Append("  from tblFormula as A ");
-                dbQry.Append("SELECT FormulaName");
-                dbQry.Append(" FROM tblFormula");
-                dbQry.Append(" Where A.FormulaName like %" + name + "%");
-                dbQry.Append(" Group By A.FormulaName ");
+                if (branchcode != "All")
+                {
+                    dbQry.Append("SELECT FormulaName,BranchCode");
+                    dbQry.Append(" FROM tblFormula");
+                    dbQry.Append(" Where A.BranchCode='" + branchcode + "' and A.FormulaName like %" + name + "%");
+                    dbQry.Append(" Group By A.FormulaName,A.BranchCode ");
+                }
             }
             else
             {
                 // dbQry.Append("SELECT FormulaName ,(Select count(*) from tblFormula where A.FormulaID>=FormulaID) as Row ");
                 // dbQry.Append("  from tblFormula as A ");
                 // dbQry.Append(" Group By A.FormulaName ");
-                dbQry.Append("SELECT FormulaName");
-                dbQry.Append(" FROM tblFormula");
-                dbQry.Append(" Group By FormulaName ");
+                if (branchcode != "All")
+                {
+                    dbQry.Append("SELECT FormulaName,BranchCode");
+                    dbQry.Append(" FROM tblFormula");
+                    dbQry.Append(" Where BranchCode='" + branchcode + "'");
+                    dbQry.Append(" Group By FormulaName,BranchCode ");
+                }
+                else
+                {
+                    dbQry.Append("SELECT FormulaName,BranchCode");
+                    dbQry.Append(" FROM tblFormula");                 
+                    dbQry.Append(" Group By FormulaName,BranchCode ");
+                }
             }
 
             //dbQry.Append(" ORDER BY FormulaID Asc ");
@@ -19317,13 +19350,13 @@ public class BusinessLogic
 
             if (formName != "")
             {
-                dbQry.Append("SELECT FormulaID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Unit_Of_Measure ");
+                dbQry.Append("SELECT FormulaID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Unit_Of_Measure,BranchCode ");
                 dbQry.Append(" FROM tblFormula Inner Join tblProductMaster On tblFormula.ItemCode = tblProductMaster.ItemCode ");
                 dbQry.Append(" Where FormulaName = '" + formName + "'");
             }
             else
             {
-                dbQry.Append("SELECT FormulaID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Unit_Of_Measure ");
+                dbQry.Append("SELECT FormulaID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Unit_Of_Measure,BranchCode ");
                 dbQry.Append(" FROM tblFormula Inner Join tblProductMaster On tblFormula.ItemCode = tblProductMaster.ItemCode ");
             }
 
@@ -19345,7 +19378,7 @@ public class BusinessLogic
     }
 
 
-    public DataSet GetINsForFromula(string formula)
+    public DataSet GetINsForFromula(string formula,string branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -19357,12 +19390,15 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT FormulaID as ID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Stock ");
-            dbQry.Append(" FROM tblFormula Inner Join tblProductMaster On tblFormula.ItemCode = tblProductMaster.ItemCode ");
+            //dbQry.Append("SELECT FormulaID as ID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Stock,tblFormula.BranchCode  ");
+            //dbQry.Append(" FROM tblFormula Inner Join tblProductStock On tblFormula.ItemCode = tblProductStock.ItemCode where tblFormula.BranchCode='" + branch + "'");
+            dbQry.Append("SELECT tblFormula.FormulaID as ID,tblFormula.FormulaName,tblFormula.ItemCode,tblProductStock.ProductName,tblProductStock.ProductDesc, ");
+            dbQry.Append("tblFormula.Qty, tblFormula.InOut, tblFormula.Unit_Of_Measure, tblFormula.BranchCode, tblProductStock.Stock FROM tblFormula INNER JOIN ");
+            dbQry.Append("tblProductStock ON tblFormula.BranchCode = tblProductStock.BranchCode AND tblFormula.ItemCode = tblProductStock.ItemCode where tblFormula.BranchCode='" + branch + "'");
 
             if (formula != "")
             {
-                dbQry.Append(" Where InOut = 'Raw Material' and FormulaName = '" + formula + "'");
+                dbQry.Append("and InOut = 'Raw Material' and FormulaName = '" + formula + "'");
             }
 
             dbQry.Append(" ORDER BY FormulaName Asc");
@@ -19383,7 +19419,7 @@ public class BusinessLogic
     }
 
 
-    public DataSet GetOUTsForFromula(string formula)
+    public DataSet GetOUTsForFromula(string formula,string branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -19395,12 +19431,18 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT FormulaID as ID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Stock ");
-            dbQry.Append(" FROM tblFormula Inner Join tblProductMaster On tblFormula.ItemCode = tblProductMaster.ItemCode ");
+            //dbQry.Append("SELECT FormulaID as ID,FormulaName,tblFormula.ItemCode,ProductName,ProductDesc,Qty,InOut,Stock ");
+            //dbQry.Append(" FROM tblFormula Inner Join tblProductMaster On tblFormula.ItemCode = tblProductMaster.ItemCode ");
+
+            dbQry.Append("SELECT tblFormula.FormulaID as ID,tblFormula.FormulaName,tblFormula.ItemCode,tblProductStock.ProductName,tblProductStock.ProductDesc, ");
+            dbQry.Append("tblFormula.Qty, tblFormula.InOut, tblFormula.Unit_Of_Measure, tblFormula.BranchCode, tblProductStock.Stock FROM tblFormula INNER JOIN ");
+            dbQry.Append("tblProductStock ON tblFormula.BranchCode = tblProductStock.BranchCode AND tblFormula.ItemCode = tblProductStock.ItemCode where tblFormula.BranchCode='" + branch + "'");
+
+
 
             if (formula != "")
             {
-                dbQry.Append(" Where InOut = 'Product' and FormulaName = '" + formula + "'");
+                dbQry.Append(" and InOut = 'Product' and FormulaName = '" + formula + "'");
             }
 
             dbQry.Append(" ORDER BY FormulaName Asc");
@@ -19536,7 +19578,7 @@ public class BusinessLogic
     }
 
 
-    public void InsertFormulaItem(string FormulaName, DataSet ds)
+    public void InsertFormulaItem(string FormulaName, DataSet ds,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -19554,7 +19596,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        dbQry = string.Format("Insert Into tblFormula(FormulaName,ItemCode,Qty,InOut,Unit_Of_Measure) Values('{0}','{1}',{2},'{3}','{4}')", FormulaName, dr["ItemCode"].ToString(), Convert.ToDouble(dr["Qty"].ToString()), dr["InOut"].ToString(), dr["Unit_Of_Measure"].ToString());
+                        dbQry = string.Format("Insert Into tblFormula(FormulaName,ItemCode,Qty,InOut,Unit_Of_Measure,BranchCode) Values('{0}','{1}',{2},'{3}','{4}','{5}')", FormulaName, dr["ItemCode"].ToString(), Convert.ToDouble(dr["Qty"].ToString()), dr["InOut"].ToString(), dr["Unit_Of_Measure"].ToString(), branchcode);
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
@@ -19601,7 +19643,7 @@ public class BusinessLogic
     }
 
 
-    public void UpdateFormulaItem(string FormulaName, DataSet ds)
+    public void UpdateFormulaItem(string FormulaName, DataSet ds,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -19623,7 +19665,7 @@ public class BusinessLogic
 
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        dbQry = string.Format("Insert Into tblFormula(FormulaName,ItemCode,Qty,InOut,Unit_Of_Measure) Values('{0}','{1}',{2},'{3}','{4}')", FormulaName, dr["ItemCode"].ToString(), Convert.ToDouble(dr["Qty"].ToString()), dr["InOut"].ToString(), dr["Unit_Of_Measure"].ToString());
+                        dbQry = string.Format("Insert Into tblFormula(FormulaName,ItemCode,Qty,InOut,Unit_Of_Measure,BranchCode) Values('{0}','{1}',{2},'{3}','{4}','{5}')", FormulaName, dr["ItemCode"].ToString(), Convert.ToDouble(dr["Qty"].ToString()), dr["InOut"].ToString(), dr["Unit_Of_Measure"].ToString(), branchcode);
                         //dbQry = string.Format("Insert Into tblFormula(FormulaName,ItemCode,Qty,InOut) Values('{0}','{1}',{2},'{3}')", FormulaName, dr["ItemCode"].ToString(), Convert.ToInt32(dr["Qty"].ToString()), dr["InOut"].ToString());
                         // dbQry = string.Format("Update tblFormula Set FormulaName='{0}', ItemCode='{1}', Qty={2}, InOut='{3}',Unit_Of_Measure='{4}' Where FormulaID={5}", FormulaName, dr["ItemCode"].ToString(), Convert.ToInt32(dr["Qty"].ToString()), dr["InOut"].ToString(),dr["Unit_Of_Measure"].ToString(), dr["FormulaID"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -19642,7 +19684,7 @@ public class BusinessLogic
     }
 
 
-    public DataSet listCompProducts(DateTime startDate, DateTime endDate, bool isProcessed)
+    public DataSet listCompProducts(DateTime startDate, DateTime endDate, bool isProcessed, string branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -19666,7 +19708,14 @@ public class BusinessLogic
 
             dbQry.Append(" AND CDate <= '" + endDate.ToString("yyyy-MM-dd").Trim() + "' ");
 
-            dbQry.Append(" Order By CDate Desc");
+            if (branch != "All")
+            {
+                dbQry.Append(" and BranchCode='" + branch + "' Order By CDate Desc");
+            }
+            else
+            {
+                dbQry.Append(" Order By CDate Desc");
+            }
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
@@ -28706,7 +28755,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
             //Start Retriving the old Debtor and CreditorID
-            dsOld = GetSalesForId(Billno);
+            dsOld = GetSalesForId(Billno,"");
 
             if (dsOld != null)
             {
@@ -39362,7 +39411,7 @@ public class BusinessLogic
 
     }
 
-    public int UpdateSalesRtnStatus(int iSalesID)
+    public int UpdateSalesRtnStatus(int iSalesID,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -39375,7 +39424,7 @@ public class BusinessLogic
         try
         {
             //dbQ = "SELECT ReturnQty From tblSalesItems Where BillNo=" + iSalesID + " and ItemCode='" + Convert.ToString(dr["Prd"]) + "'";
-            dbQ = "SELECT distinct PrdReturnStatus from tblsalesitems where BillNo=" + iSalesID + " group by PrdReturnStatus";
+            dbQ = "SELECT distinct PrdReturnStatus from tblsalesitems where BranchCode='" + branchcode + "' and BillNo=" + iSalesID + " group by PrdReturnStatus";
             manager.Open();
             dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
             if (dsd.Tables[0].Rows.Count == 1)
@@ -39384,7 +39433,7 @@ public class BusinessLogic
 
                 if (rtnstatus == "YES")
                 {
-                    dbQry = string.Format("Update tblSales Set InvoiceReturnStatus='YES' Where BillNo=" + iSalesID + "");
+                    dbQry = string.Format("Update tblSales Set InvoiceReturnStatus='YES' Where BillNo=" + iSalesID + " and BranchCode='" + branchcode + "'");
                     manager.Open();
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 

@@ -1540,7 +1540,7 @@ public partial class Purchase : System.Web.UI.Page
                         //if(deliveryNote=="YES")
                         if (ddDeliveryNote.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
                         {
-                            iUpdateRtnQty = bl.UpdateSalesRtnStatus(iSalesID);
+                            iUpdateRtnQty = bl.UpdateSalesRtnStatus(iSalesID,branchcode);
                         }
                         ichequestatus = bl.UpdateChequeused(sChequeno, Convert.ToInt32(iBank));
                         /*End InvoiceNo and InvoiceDate - Jan 26*/
@@ -2394,7 +2394,7 @@ public partial class Purchase : System.Web.UI.Page
                                     return;
                                 }
                                 //else if (txtRate.Text == "" || txtRate.Text == "0")
-                                else if ((Convert.ToInt32(txtRate.Text) < 0))
+                                else if (Convert.ToDouble(txtRate.Text) < 0)
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Rate in row " + col + " ')", true);
                                     txtRate.Focus();
@@ -3038,7 +3038,7 @@ public partial class Purchase : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                int del = bl.DeletePurchase(iPurchase, sBillNo, usernam);
+                int del = bl.DeletePurchase(iPurchase, sBillNo, usernam,drpBranch.SelectedValue);
                 /*Start Purchase Stock Negative Change - March 16*/
                 if (del == -2)
                 {
@@ -3095,12 +3095,17 @@ public partial class Purchase : System.Web.UI.Page
             }
             int iPurchase = 0;
             string sBillNo = GrdViewPurchase.Rows[e.RowIndex].Cells[2].Text.Trim();
+
+            GridViewRow row = GrdViewPurchase.SelectedRow;            
+
+
             iPurchase = Convert.ToInt32(GrdViewPurchase.DataKeys[e.RowIndex].Value.ToString());
+            string branchcode = row.Cells[10].Text;
             //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
             BusinessLogic bl = new BusinessLogic(sDataSource);
             string usernam = Request.Cookies["LoggedUserName"].Value;
 
-            int del = bl.DeletePurchase(iPurchase, sBillNo, usernam);
+            int del = bl.DeletePurchase(iPurchase, sBillNo, usernam, branchcode);
             /*Start Purchase Stock Negative Change - March 16*/
             if (del == -2)
             {
@@ -4821,7 +4826,7 @@ public partial class Purchase : System.Web.UI.Page
         string strEmpName = string.Empty;
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        ds = bl.GetSalesItemsForPurId(salesID);
+        ds = bl.GetSalesItemsForPurId(salesID,drpBranch.SelectedValue);
 
         if (ds != null)
         {
@@ -5613,7 +5618,7 @@ public partial class Purchase : System.Web.UI.Page
 
             if (!dupFlag)
             {
-                ds = bl.ListProductDetails(itemCode);
+                ds = bl.ListProductDetails(itemCode,"");
 
                 if (ds != null)
                 {
@@ -7412,7 +7417,7 @@ public partial class Purchase : System.Web.UI.Page
         PanelCmd.Visible = true;
 
         salesID = Convert.ToInt32(drpSalesID.SelectedValue);
-        DataSet ds = bl.GetSalesForId(salesID);
+        DataSet ds = bl.GetSalesForId(salesID,drpBranch.SelectedValue);
 
         if (ds != null)
         {

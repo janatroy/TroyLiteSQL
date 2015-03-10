@@ -199,7 +199,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
         if (strBillno == 0)
             ds = bl.GetSales();
         else
-            ds = bl.GetSalesForId(strBillno);
+            ds = bl.GetSalesForId(strBillno,"");
         if (ds != null)
         {
             if (ds.Tables[0].Rows.Count > 0)
@@ -342,7 +342,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
                 {
                     hdOpr.Value = "New";
                     hdCurrRole.Value = "";
-                    ds = bl.ListProductDetails(itemCode);
+                    ds = bl.ListProductDetails(itemCode,"");
 
                     string category = lblledgerCategory.Text;
 
@@ -479,7 +479,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
                 {
                     hdOpr.Value = "New";
                     hdCurrRole.Value = "";
-                    ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value);
+                    ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value,"");
 
                     string category = lblledgerCategory.Text;
 
@@ -2020,7 +2020,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
             if (row.Cells[0].Text != "&nbsp;")
                 salesID = Convert.ToInt32(row.Cells[0].Text);
 
-            DataSet ds = bl.GetSalesForId(salesID);
+            DataSet ds = bl.GetSalesForId(salesID,"");
 
             hdsales.Value = salesID.ToString();
 

@@ -258,7 +258,7 @@
                                                     <Columns>
                                                          <asp:BoundField DataField="Row" HeaderText="#"  HeaderStyle-Font-Bold="true" HeaderStyle-Width="61px" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px" />
                                                         <asp:BoundField DataField="FormulaName" HeaderText="Name of the Product to be processed" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-HorizontalAlign="Left" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px"  />
-                                                       
+                                                        <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-HorizontalAlign="Left" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px"  />
                                                         <asp:CommandField ShowSelectButton="True" HeaderStyle-Width="8%" ItemStyle-BorderColor="White" ControlStyle-BorderColor="White"  FooterStyle-BorderWidth="0px" HeaderStyle-BorderWidth="0px" ItemStyle-BorderWidth="0px" ItemStyle-HorizontalAlign="Left" ButtonType="Image" ControlStyle-ForeColor="Black" SelectText=" Process " ControlStyle-Font-Size="14px" >
                                                             <ItemStyle  HorizontalAlign="Left" />
                                                             <ControlStyle></ControlStyle>
@@ -364,6 +364,22 @@
                                                                                         </asp:RadioButtonList>
                                                                                     </td>
                                                                                     <td style="width: 10%"></td>
+                                                                                </tr>
+                                                                                 <tr style="height:3px">
+                                                                                                    </tr>
+                                                                                <tr class="tblLeft">
+                                                                                    <td style="width: 15%" class="ControlLabelmanufacture1">Branch
+                                                                                    </td>
+                                                                                     <td style="width: 21%;" class="ControlDrpBorder">
+                                                                                         <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" Enabled="false">
+                                                                                         </asp:DropDownList>
+                                                                                         </td>
+                                                                                    <td style="width: 27%">
+                                                                                    </td>
+                                                                                    <td style="width: 15%">
+                                                                                    </td>
+                                                                                    <td style="width: 10%">
+                                                                                    </td>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
@@ -581,6 +597,7 @@
                                                     <asp:BoundField DataField="CDate" HeaderText="Date Created" DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="FormulaName" ItemStyle-HorizontalAlign="Left" HeaderText="Definition" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="IsReleased" HeaderText="Processed" HeaderStyle-BorderColor="Gray" />
+                                                     <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
                                                     <asp:TemplateField ItemStyle-CssClass="command" ItemStyle-Width="50px" HeaderText="Process" HeaderStyle-BorderColor="Gray">
                                                         <ItemTemplate>
                                                             <cc1:ConfirmButtonExtender ID="CnrfmDel" TargetControlID="btnRelease" ConfirmText="Are you sure to complete the processing?"

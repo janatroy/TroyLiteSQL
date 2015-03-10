@@ -16,12 +16,13 @@ using SMSLibrary;
 public partial class CreateFormula : System.Web.UI.Page
 {
     private string sDataSource = string.Empty;
-
+    string connection;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
-           
+
 
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
@@ -34,7 +35,7 @@ public partial class CreateFormula : System.Web.UI.Page
 
 
                 BindGrid(string.Empty);
-                loadProducts();
+                // loadProducts();
                 if (Session["TemplateItems"] != null)
                 {
                     Session["TemplateItems"] = null;
@@ -43,8 +44,8 @@ public partial class CreateFormula : System.Web.UI.Page
                 //Session["Filename"] = "Reports//" + hdFilename.Value + "_template.xml";
 
 
-                string connection = Request.Cookies["Company"].Value;
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+                connection = Request.Cookies["Company"].Value;
+                usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
                 if (bl.CheckUserHaveAdd(usernam, "STKMST"))
@@ -95,7 +96,8 @@ public partial class CreateFormula : System.Web.UI.Page
                 cmdUpdate.Enabled = false;
                 cmdSave.Enabled = false;
             }
-
+            // loadBranch();
+            // BranchEnable_Disable();
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
 
         }
@@ -201,8 +203,11 @@ public partial class CreateFormula : System.Web.UI.Page
         DataSet ds = new DataSet();
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
+        string connection = Request.Cookies["Company"].Value;
+        string branch = Request.Cookies["Branch"].Value;
 
-        DataSet dstt = bl.GetFormulaForName(strFormName);
+
+        DataSet dstt = bl.GetFormulaForName(strFormName, branch);
 
 
         if (dstt != null)
@@ -221,6 +226,9 @@ public partial class CreateFormula : System.Web.UI.Page
             dct = new DataColumn("FormulaName");
             dttt.Columns.Add(dct);
 
+            dct = new DataColumn("BranchCode");
+            dttt.Columns.Add(dct);
+
             dstd.Tables.Add(dttt);
 
             int sno = 1;
@@ -234,6 +242,7 @@ public partial class CreateFormula : System.Web.UI.Page
                         drNew = dttt.NewRow();
                         drNew["Row"] = sno;
                         drNew["FormulaName"] = Convert.ToString(dstt.Tables[0].Rows[i]["FormulaName"]);
+                        drNew["BranchCode"] = Convert.ToString(dstt.Tables[0].Rows[i]["BranchCode"]);
                         dstd.Tables[0].Rows.Add(drNew);
                         //if (ds.Tables[0].Rows.Count > 0)
                         //{
@@ -272,7 +281,7 @@ public partial class CreateFormula : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
             ds = bl.CreateFormulaSearch(seach);
-          //  DataSet dsd = new DataSet();
+            //  DataSet dsd = new DataSet();
             if (ds != null)
             {
                 if (ds.Tables[0].Rows.Count > 0)
@@ -482,6 +491,9 @@ public partial class CreateFormula : System.Web.UI.Page
             //tabContol.Visible = true;
             Button1.Visible = true;
             GrdViewItems.Visible = false;
+            loadBranch();
+            BranchEnable_Disable();
+            loadProduct();
         }
         catch (Exception ex)
         {
@@ -524,12 +536,15 @@ public partial class CreateFormula : System.Web.UI.Page
 
             if (cmbProdAdd.SelectedIndex != 0)
             {
-                ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value);
+                ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value, drpBranch.SelectedValue);
                 //string category = lblledgerCategory.Text;
                 if (ds != null)
                 {
                     lblProdNameAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["productname"]);
                     lblProdDescAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["productdesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[0]["model"]);
+                    txtQtyAdd.Focus();
+                    Updpname.Update();
+                    Updpdesc.Update();
                 }
                 else
                 {
@@ -616,7 +631,7 @@ public partial class CreateFormula : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Minimum one Raw Materials and one Products should be added.');", true);
                         return;
                     }
-                    bl.UpdateFormulaItem(FormulaName, ds);
+                    bl.UpdateFormulaItem(FormulaName, ds,drpBranch.SelectedValue);
 
                     //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -925,7 +940,7 @@ public partial class CreateFormula : System.Web.UI.Page
                 {
 
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
-                    bl.InsertFormulaItem(FormulaName, ds);
+                    bl.InsertFormulaItem(FormulaName, ds, drpBranch.SelectedValue);
 
                     //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -946,7 +961,7 @@ public partial class CreateFormula : System.Web.UI.Page
 
                     salestype = "Create Formula";
                     ScreenName = "Create Formula";
-                    
+
 
                     bool mobile = false;
                     bool Email = false;
@@ -976,9 +991,9 @@ public partial class CreateFormula : System.Web.UI.Page
 
                                     if (ScreenType == 1)
                                     {
-                                      
-                                            toAddress = toAdd;
-                                       
+
+                                        toAddress = toAdd;
+
                                     }
                                     else
                                     {
@@ -1078,9 +1093,9 @@ public partial class CreateFormula : System.Web.UI.Page
 
                                     if (ScreenType == 1)
                                     {
-                                        
-                                            toAddress = toAdd;
-                                        
+
+                                        toAddress = toAdd;
+
                                     }
                                     else
                                     {
@@ -1212,22 +1227,22 @@ public partial class CreateFormula : System.Web.UI.Page
                 GrdViewItems.DataBind();
                 Session["TemplateItems"] = ds;
 
-                if (GrdViewItems.Rows.Count==0)
+                if (GrdViewItems.Rows.Count == 0)
                 {
                     heading1.Text = "";
                 }
             }
 
-      
-           // Page_Load(sender, e);
+
+            // Page_Load(sender, e);
 
             //if( GrdViewItems.Rows[e.RowIndex])
 
             //{
             //    heading1.Text = "";
             //}
-            
-           
+
+
         }
         catch (Exception ex)
         {
@@ -1436,8 +1451,18 @@ public partial class CreateFormula : System.Web.UI.Page
             //BindGrid(txtFormName.Text);
             heading.Text = "Update Product Specification";
             ModalPopupExtender1.Show();
+            loadBranch();
+            BranchEnable_Disable();
+            up1.Update();
+
             string formName = GridViewFormula.SelectedDataKey.Value.ToString();
+            GridViewRow row = GridViewFormula.SelectedRow;
+            drpBranch.SelectedValue = row.Cells[2].Text;
+            drpBranch.Enabled = false;
+
             hdMode.Value = "Edit";
+           
+
             hdFormula.Value = formName;
             formXml();
 
@@ -1617,6 +1642,60 @@ public partial class CreateFormula : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    private void loadProduct()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+
+        cmbProdAdd.Items.Clear();
+        cmbProdAdd.Items.Add(new ListItem("Select Component", "0"));
+        ds = bl.ListProdForDynammicrow(sDataSource, drpBranch.SelectedValue);
+        cmbProdAdd.DataSource = ds;
+        cmbProdAdd.DataBind();
+        cmbProdAdd.DataTextField = "ProductName";
+        cmbProdAdd.DataValueField = "ItemCode";
+        updname.Update();
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
+    }
+
     protected void Button1_Click(object sender, EventArgs e)
     {
         GrdViewItems.Visible = true;
@@ -1625,6 +1704,11 @@ public partial class CreateFormula : System.Web.UI.Page
             if (txtFormulaName.Text == null || txtFormulaName.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Name is Required.It cannot be Left blank.');", true);
+                return;
+            }
+            else if (drpBranch.SelectedValue == "0")
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select Branch');", true);
                 return;
             }
             else
@@ -1667,4 +1751,14 @@ public partial class CreateFormula : System.Web.UI.Page
     //}
 
 
+    protected void drpBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        loadProduct();
+        lblProdNameAdd.Text = "";
+        lblProdDescAdd.Text = "";
+        txtQtyAdd.Text = "";
+        Updpname.Update();
+        Updpdesc.Update();
+        Updqty.Update();
+    }
 }
