@@ -19801,7 +19801,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT tblExecution.CompID, tblExecution.FormulaName,tblExecution.CompID,tblExecution.ItemCode,tblExecution.Qty,tblExecution.InOut,tblCompProduct.CDate,tblCompProduct.Comments,tblCompProduct.IsReleased FROM tblCompProduct inner join tblExecution on tblExecution.CompId=tblCompProduct.CompId ");
+            dbQry.Append("SELECT tblExecution.CompID, tblExecution.FormulaName,tblExecution.CompID,tblExecution.BranchCode,tblExecution.ItemCode,tblExecution.Qty,tblExecution.InOut,tblCompProduct.CDate,tblCompProduct.Comments,tblCompProduct.IsReleased FROM tblCompProduct inner join tblExecution on tblExecution.CompId=tblCompProduct.CompId ");
 
             //if (isProcessed)
             //    dbQry.Append(" Where IsReleased ='Y' ");
@@ -57248,12 +57248,12 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                dbQry.Append("SELECT tblHirePurchase.Billdate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,tblHirePurchase.paydate,tblHirePurchase.startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront ");
+                dbQry.Append("SELECT tblHirePurchase.Billdate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,tblHirePurchase.paydate,tblHirePurchase.startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront,tblHirePurchase.BranchCode ");
                 dbQry.Append(" FROM tblHirePurchase INNER JOIN tblLedger Debtor ON tblHirePurchase.Customerid = Debtor.LedgerID Where tblHirePurchase.BillDate > " + DateTime.Parse(retVal.ToString()).ToString("yyyy-MM-dd") + " ");
             }
             else
             {
-                dbQry.Append("SELECT tblHirePurchase.Billdate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,tblHirePurchase.paydate,tblHirePurchase.startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront ");
+                dbQry.Append("SELECT tblHirePurchase.Billdate,Slno,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,tblHirePurchase.paydate,tblHirePurchase.startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront,tblHirePurchase.BranchCode ");
                 dbQry.Append(" FROM tblHirePurchase INNER JOIN tblLedger Debtor ON tblHirePurchase.Customerid = Debtor.LedgerID Where 1=1 ");
             }
 
@@ -57937,11 +57937,11 @@ public class BusinessLogic
 
         if (customer == "0")
         {
-            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay FROM tblHirePurchase Where BillDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + endDate.ToString("yyyy-MM-dd") + "' ";
+            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay,BranchCode FROM tblHirePurchase Where BillDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + endDate.ToString("yyyy-MM-dd") + "' ";
         }
         else
         {
-            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay FROM tblHirePurchase Where BillDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + endDate.ToString("yyyy-MM-dd") + "' and customerid = " + customer + " ";
+            sQry = "SELECT slno,CustomerID,billdate,customername,puramt,StartDate,noinst,eachpay,finpay,BranchCode FROM tblHirePurchase Where BillDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + endDate.ToString("yyyy-MM-dd") + "' and customerid = " + customer + " ";
         }
 
         if (customer != "0")
@@ -59918,7 +59918,7 @@ public class BusinessLogic
                         }
 
                         dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
-                            LedgerID + 1, Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), 8, 0, 0, 0, 0, Convert.ToString(dr1["ContactName"]), Convert.ToString(dr1["Add1"]), Convert.ToString(dr1["Add2"]), Convert.ToString(dr1["Add3"]), 0, 0, "0", "0", "0", "0", "NO", "NO", "NO", Convert.ToString(dr1["LedgerName"]), "YES", "", 0, "", Convert.ToString(dr["Branchcode"]));
+                            LedgerID + 1, Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), 8, Convert.ToDouble(dr1["OpenBalanceDR"]), Convert.ToDouble(dr1["OpenBalanceCR"]), 0, 0, Convert.ToString(dr1["ContactName"]), Convert.ToString(dr1["Add1"]), Convert.ToString(dr1["Add2"]), Convert.ToString(dr1["Add3"]), 0, 0, "0", "0", "0", "0", "NO", "NO", "NO", Convert.ToString(dr1["LedgerName"]), "YES", "", 0, "", Convert.ToString(dr["Branchcode"]));
 
                         //dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
                         //    LedgerID + 1, LedgerName + " - " + Convert.ToString(dr["Branchcode"]), AliasName + " - " + Convert.ToString(dr["Branchcode"]), GroupID, 0, 0, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, Convert.ToString(dr["Branchcode"]));
@@ -62341,6 +62341,7 @@ public class BusinessLogic
         string sLedgerName = string.Empty, sConStr = string.Empty, sAliasName = string.Empty, sQry = string.Empty;
         string sLedgerId = string.Empty;
         string sLedgerPhone = string.Empty;
+        string sLedgerbranch = string.Empty;
         SqlConnection oleConn;
         SqlCommand oleCmd;
         SqlDataAdapter oleAdp;
@@ -62353,7 +62354,7 @@ public class BusinessLogic
 
         //sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.mobile,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID = 1 and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
 
-        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.mobile,tblLedger.AliasName, (IIF((tblLedger.OpenBalanceDR IS NULL),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount IS NULL),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR IS NULL),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount IS NULL),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE tblDayBook.TransDate<='" + startDate.ToString("yyyy-MM-dd") + "' and DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE tblDayBook.TransDate<='" + startDate.ToString("MM/dd/yyyy") + "' and CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID = 1 and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF((tblLedger.OpenBalanceDR IS NULL),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount IS NULL),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR IS NULL),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount IS NULL),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
+        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.mobile,tblLedger.AliasName,tblLedger.BranchCode, (IIF((tblLedger.OpenBalanceDR IS NULL),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount IS NULL),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR IS NULL),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount IS NULL),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE tblDayBook.TransDate<='" + startDate.ToString("yyyy-MM-dd") + "' and DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE tblDayBook.TransDate<='" + startDate.ToString("MM/dd/yyyy") + "' and CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID = 1 and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF((tblLedger.OpenBalanceDR IS NULL),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount IS NULL),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR IS NULL),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount IS NULL),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -62379,6 +62380,8 @@ public class BusinessLogic
         dt.Columns.Add(dc);
         dc = new DataColumn("Credit");
         dt.Columns.Add(dc);
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
         ds.Tables.Add(dt);
         try
         {
@@ -62389,6 +62392,7 @@ public class BusinessLogic
                 drNew["AliasName"] = string.Empty;
                 drNew["LedgerID"] = string.Empty;
                 drNew["Mobile"] = string.Empty;
+                drNew["BranchCode"] = string.Empty;
                 drNew["Debit"] = "0.00";
                 drNew["Credit"] = "0.00";
                 ds.Tables[0].Rows.Add(drNew);
@@ -62405,6 +62409,8 @@ public class BusinessLogic
                         sLedgerId = drParentQry["LedgerID"].ToString();
                     if (drParentQry["Mobile"] != null)
                         sLedgerPhone = drParentQry["Mobile"].ToString();
+                    if (drParentQry["BranchCode"] != null)
+                        sLedgerbranch = drParentQry["BranchCode"].ToString();
                     if ((drParentQry["balance"] != null) && (drParentQry["balance"].ToString() != ""))
                         temp_balance = decimal.Parse(drParentQry["balance"].ToString(), System.Globalization.NumberStyles.Float);
                     else
@@ -62416,6 +62422,7 @@ public class BusinessLogic
                         drNew["AliasName"] = sAliasName;
                         drNew["LedgerID"] = sLedgerId;
                         drNew["Mobile"] = sLedgerPhone;
+                        drNew["Branchcode"] = sLedgerbranch;
                         drNew["Debit"] = temp_balance;
                         drNew["Credit"] = "0.00";
                         ds.Tables[0].Rows.Add(drNew);
@@ -62427,6 +62434,7 @@ public class BusinessLogic
                         drNew["AliasName"] = sAliasName;
                         drNew["LedgerID"] = sLedgerId;
                         drNew["Mobile"] = sLedgerPhone;
+                        drNew["Branchcode"] = sLedgerbranch;
                         drNew["Debit"] = "0.00";
                         drNew["Credit"] = Math.Abs(temp_balance).ToString(); /* convert the negative to positive */
                         ds.Tables[0].Rows.Add(drNew);
@@ -63414,12 +63422,12 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                dbQry.Append("SELECT tblProjects.Project_Id,tblProjects.Project_Code,tblProjects.Project_Date,tblProjects.Expected_Start_Date,tblProjects.Expected_End_Date,tblProjects.Project_Manager_Id,tblProjects.Project_Name,tblProjects.Expected_Effort_Days,tblProjects.Project_Status,tblProjects.Project_Description,tblEmployee.empfirstname ");
+                dbQry.Append("SELECT tblProjects.Project_Id,tblProjects.Project_Code,tblProjects.Project_Date,tblProjects.Expected_Start_Date,tblProjects.Expected_End_Date,tblProjects.Project_Manager_Id,tblProjects.Project_Name,tblProjects.Expected_Effort_Days,tblProjects.Project_Status,tblProjects.Project_Description,tblEmployee.empfirstname,tblProjects.BranchCode ");
                 dbQry.Append(" FROM tblProjects INNER JOIN  tblEmployee ON tblProjects.Project_Manager_Id = tblEmployee.empno Where tblProjects.Project_Date > " + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + " ");
             }
             else
             {
-                dbQry.Append("SELECT tblProjects.Project_Id,tblProjects.Project_Code,tblProjects.Project_Date,tblProjects.Expected_Start_Date,tblProjects.Expected_End_Date,tblProjects.Project_Manager_Id,tblProjects.Project_Name,tblProjects.Expected_Effort_Days,tblProjects.Project_Status,tblProjects.Project_Description,tblEmployee.empfirstname ");
+                dbQry.Append("SELECT tblProjects.Project_Id,tblProjects.Project_Code,tblProjects.Project_Date,tblProjects.Expected_Start_Date,tblProjects.Expected_End_Date,tblProjects.Project_Manager_Id,tblProjects.Project_Name,tblProjects.Expected_Effort_Days,tblProjects.Project_Status,tblProjects.Project_Description,tblEmployee.empfirstname,tblProjects.BranchCode ");
                 dbQry.Append(" FROM tblProjects INNER JOIN  tblEmployee ON tblProjects.Project_Manager_Id = tblEmployee.empno Where 1=1 ");
             }
 
@@ -63584,12 +63592,12 @@ public class BusinessLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                dbQry.Append("SELECT tblTasks.Task_Id,tblTasks.Task_Code,tblTasks.Task_Name,tblTasks.Task_Date,tblTasks.Expected_Start_Date,tblTasks.Expected_End_Date,tblTasks.Actual_Start_Date,tblTasks.Actual_End_Date,tblTasks.Owner,tblTasks.Task_Type,tblTasks.IsActive,tblTasks.Task_Description,tblEmployee.empfirstname,tblTasks.Dependency_Task,tblTasks.Project_Code, tblProjects.Project_Code as ProjectCode, tblProjects.Project_Name as ProjectName  ");
+                dbQry.Append("SELECT tblTasks.Task_Id,tblTasks.Task_Code,tblTasks.BranchCode,tblTasks.Task_Name,tblTasks.Task_Date,tblTasks.Expected_Start_Date,tblTasks.Expected_End_Date,tblTasks.Actual_Start_Date,tblTasks.Actual_End_Date,tblTasks.Owner,tblTasks.Task_Type,tblTasks.IsActive,tblTasks.Task_Description,tblEmployee.empfirstname,tblTasks.Dependency_Task,tblTasks.Project_Code, tblProjects.Project_Code as ProjectCode, tblProjects.Project_Name as ProjectName  ");
                 dbQry.Append(" FROM (tblTasks INNER JOIN  tblEmployee ON tblTasks.Owner = tblEmployee.empno) inner join tblProjects ON tblTasks.Project_Code = tblProjects.Project_Id Where tblTasks.Task_Date > " + DateTime.Parse(retVal.ToString()).ToString("MM/dd/yyyy") + " ");
             }
             else
             {
-                dbQry.Append("SELECT tblTasks.Task_Id,tblTasks.Task_Code,tblTasks.Task_Name,tblTasks.Task_Date,tblTasks.Expected_Start_Date,tblTasks.Expected_End_Date,tblTasks.Actual_Start_Date,tblTasks.Actual_End_Date,tblTasks.Owner,tblTasks.Task_Type,tblTasks.IsActive,tblTasks.Task_Description,tblEmployee.empfirstname,tblTasks.Dependency_Task,tblTasks.Project_Code, tblProjects.Project_Code as ProjectCode, tblProjects.Project_Name as ProjectName ");
+                dbQry.Append("SELECT tblTasks.Task_Id,tblTasks.Task_Code,tblTasks.BranchCode,tblTasks.Task_Name,tblTasks.Task_Date,tblTasks.Expected_Start_Date,tblTasks.Expected_End_Date,tblTasks.Actual_Start_Date,tblTasks.Actual_End_Date,tblTasks.Owner,tblTasks.Task_Type,tblTasks.IsActive,tblTasks.Task_Description,tblEmployee.empfirstname,tblTasks.Dependency_Task,tblTasks.Project_Code, tblProjects.Project_Code as ProjectCode, tblProjects.Project_Name as ProjectName ");
                 dbQry.Append(" FROM (tblTasks INNER JOIN  tblEmployee ON tblTasks.Owner = tblEmployee.empno) inner join tblProjects ON tblTasks.Project_Code = tblProjects.Project_Id Where 1=1 ");
             }
 
@@ -63920,14 +63928,14 @@ public class BusinessLogic
 
             if (txtSearch == "History")
             {
-                dbQry.Append("SELECT tblTaskUpdatesHistory.Task_Update_Id,tblTaskUpdatesHistory.Task_Update_Date,tblTaskUpdatesHistory.Actual_Start_Date,tblTaskUpdatesHistory.Actual_End_Date,tblTaskStatus.Task_Status_Name,tblTaskUpdatesHistory.Per_of_Completion,tblTaskUpdatesHistory.Blocked_Flag,tblTaskUpdatesHistory.Blocking_Reason,tblTaskUpdatesHistory.Effort_Spend_Last_Update,tblTaskUpdatesHistory.Effort_Remaining,tblTaskUpdatesHistory.Task_update ");
-                dbQry.Append(" FROM tblTaskUpdatesHistory INNER JOIN tblTaskStatus ON tblTaskUpdatesHistory.Task_Status = tblTaskStatus.Task_Status_Id ");
+                dbQry.Append("SELECT tblTaskUpdatesHistory.Task_Update_Id,tblTaskUpdatesHistory.Task_Update_Date,tblTaskUpdatesHistory.Actual_Start_Date,tblTaskUpdatesHistory.Actual_End_Date,tblTaskStatus.Task_Status_Name,tblTaskUpdatesHistory.Per_of_Completion,tblTaskUpdatesHistory.Blocked_Flag,tblTaskUpdatesHistory.Blocking_Reason,tblTaskUpdatesHistory.Effort_Spend_Last_Update,tblTaskUpdatesHistory.Effort_Remaining,tblTaskUpdatesHistory.Task_update,tblTasks.BranchCode ");
+                dbQry.Append(" FROM (tblTaskUpdatesHistory INNER JOIN tblTaskStatus ON tblTaskUpdatesHistory.Task_Status = tblTaskStatus.Task_Status_Id) inner join tblTasks on tblTasks.Task_Id=tblTaskUpdatesHistory.Task_id ");
                 dbQry.Append(" ORDER BY tblTaskUpdatesHistory.Task_Update_Date Desc");
             }
             else
             {
-                dbQry.Append("SELECT tblTaskUpdates.Task_Update_Id,tblTaskUpdates.Task_Update_Date,tblTaskUpdates.Actual_Start_Date,tblTaskUpdates.Actual_End_Date,tblTaskStatus.Task_Status_Name,tblTaskUpdates.Per_of_Completion,tblTaskUpdates.Blocked_Flag,tblTaskUpdates.Blocking_Reason,tblTaskUpdates.Task_update ");
-                dbQry.Append(" FROM tblTaskUpdates INNER JOIN tblTaskStatus ON tblTaskUpdates.Task_Status = tblTaskStatus.Task_Status_Id ");
+                dbQry.Append("SELECT tblTaskUpdates.Task_Update_Id,tblTaskUpdates.Task_Update_Date,tblTaskUpdates.Actual_Start_Date,tblTaskUpdates.Actual_End_Date,tblTaskStatus.Task_Status_Name,tblTaskUpdates.Per_of_Completion,tblTaskUpdates.Blocked_Flag,tblTaskUpdates.Blocking_Reason,tblTaskUpdates.Task_update,tbltasks.BranchCode ");
+                dbQry.Append(" FROM (tblTaskUpdates INNER JOIN tblTaskStatus ON tblTaskUpdates.Task_Status = tblTaskStatus.Task_Status_Id) inner join tblTasks on tblTasks.Task_Id=tblTaskUpdates.Task_id ");
                 dbQry.Append(" ORDER BY tblTaskUpdates.Task_Update_Date Desc");
             }
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());

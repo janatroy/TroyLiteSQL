@@ -196,6 +196,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Debit"));
                 dt.Columns.Add(new DataColumn("Credit"));
                 dt.Columns.Add(new DataColumn("Balance"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
 
                 DataRow dr_export1 = dt.NewRow();
                 dt.Rows.Add(dr_export1);
@@ -207,6 +208,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                     dr_export["Debit"] = dr["Debit"];
                     dr_export["Credit"] = dr["Credit"];
                     dr_export["Mobile"] = dr["phone"];
+                    dr_export["BranchCode"] = dr["BranchCode"];
 
                     debit = Convert.ToDouble(dr["Debit"]);
                     credit = Convert.ToDouble(dr["Credit"]);
@@ -301,6 +303,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                 dr_lastexport1["Bill No"] = "";
                 dr_lastexport1["Bill Date"] = "";
                 dr_lastexport1["Mobile"] = "";
+                dr_lastexport1["BranchCode"] = "";
                 dt.Rows.Add(dr_lastexport1);
 
                 DataRow dr_lastexport2 = dt.NewRow();
@@ -311,6 +314,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                 dr_lastexport2["Bill No"] = "";
                 dr_lastexport2["Bill Date"] = "";
                 dr_lastexport2["Mobile"] = "";
+                dr_lastexport2["BranchCode"] = "";
                 dt.Rows.Add(dr_lastexport2);
 
                 DataRow dr_lastexport3 = dt.NewRow();
@@ -321,6 +325,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                 dr_lastexport3["Bill No"] = "";
                 dr_lastexport3["Bill Date"] = "";
                 dr_lastexport3["Mobile"] = "";
+                dr_lastexport3["BranchCode"] = "";
                 dt.Rows.Add(dr_lastexport3);
 
                 DataRow dr_de = dt.NewRow();
@@ -339,6 +344,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                 dr_de["Bill No"] = "";
                 dr_de["Bill Date"] = "";
                 dr_de["Mobile"] = "";
+                dr_de["BranchCode"] = "";
                 dt.Rows.Add(dr_de);
 
                 ExportToExcel(dt);
@@ -365,6 +371,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Debit"));
         dt.Columns.Add(new DataColumn("Credit"));
         dt.Columns.Add(new DataColumn("Balance"));
+        dt.Columns.Add(new DataColumn("BranchCode"));
         ds.Tables.Add(dt);
 
         return ds;
@@ -856,6 +863,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Debit"));
         dt.Columns.Add(new DataColumn("Credit"));
         dt.Columns.Add(new DataColumn("Balance"));
+        dt.Columns.Add(new DataColumn("BranchCode"));
 
         ds.Tables.Add(dt);
 
@@ -1188,6 +1196,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Debit"));
                 dt.Columns.Add(new DataColumn("Credit"));
                 dt.Columns.Add(new DataColumn("Balance"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
 
                 DataRow dr_export1 = dt.NewRow();
                 dt.Rows.Add(dr_export1);
@@ -1201,6 +1210,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                     dr_export["Debit"] = "";
                     dr_export["Credit"] = "";
                     dr_export["Mobile"] = "";
+                    dr_export["BranchCode"] = "";
                     dr_export["Balance"] = dr["Balance"];
 
                     dt.Rows.Add(dr_export);
@@ -1214,6 +1224,7 @@ public partial class HireOutstandingReport : System.Web.UI.Page
                 dr_lastexport1["Bill No"] = "";
                 dr_lastexport1["Bill Date"] = "";
                 dr_lastexport1["Mobile"] = "";
+                dr_lastexport1["BranchCode"] = "";
                 dt.Rows.Add(dr_lastexport1);
 
                 ExportToExcel(dt);

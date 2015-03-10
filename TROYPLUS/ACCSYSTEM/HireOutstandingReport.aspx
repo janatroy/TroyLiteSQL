@@ -279,6 +279,7 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Mobile" HeaderText="Mobile" />
+                     <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="BranchCode" HeaderText="BranchCode" />
                 </Columns>
                 <PagerTemplate>
                 </PagerTemplate>
