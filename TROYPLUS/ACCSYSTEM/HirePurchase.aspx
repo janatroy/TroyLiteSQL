@@ -245,6 +245,29 @@
                                                                                         <table style="width: 770px;" align="center" cellpadding="1" cellspacing="2">
                                                                                             <tr>
                                                                                                 <td class="ControlLabel" style="width: 20%;">
+                                                                                                    Branch *
+                                                                    <asp:CompareValidator ID="CompareValidator123" runat="server" ControlToValidate="drpBranch" ValidationGroup="salesval"
+                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
+                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
+                                                                                                </td>
+                                                                                                <td class="ControlTextBox3" style="width: 24%;">
+                                                                                                    <asp:DropDownList ID="drpBranch" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AutoPostBack="true" OnSelectedIndexChanged="drpBranch_SelectedIndexChanged" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                        <%--<asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>--%>
+                                                                                                    </asp:DropDownList>
+                                                                                                </td>
+                                                                                                <td class="ControlLabel" style="width: 20%;">
+                                                                                                    
+                                                                                                </td>
+                                                                                                <td style="width: 24%;">
+                                                                                                   
+                                                                                                </td>
+                                                                                                <td align="left" style="width: 5%;"></td>
+                                                                                            </tr>
+                                                                                            <tr style="height: 2px">
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="ControlLabel" style="width: 20%;">
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ValidationGroup="salesval"
                                                                                                         ControlToValidate="txtbillnonew" CssClass="lblFont" Display="Dynamic"
                                                                                                         ErrorMessage="Please enter Bill No. It cannot be left blank." Text="*"></asp:RequiredFieldValidator>
@@ -320,7 +343,7 @@
                                                                                                                 OnSelectedIndexChanged="cmbCustomer_SelectedIndexChanged"
                                                                                                                 Style="border: 1px solid #e7e7e7" TabIndex="5" ValidationGroup="salesval"
                                                                                                                 Width="100%">
-                                                                                                                <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer" Value="0"></asp:ListItem>
+                                                                                                                <asp:ListItem Text="Select Customer" Value="0"></asp:ListItem>
                                                                                                             </asp:DropDownList>
                                                                                                         </ContentTemplate>
                                                                                                     </asp:UpdatePanel>
@@ -1091,7 +1114,9 @@
                                                 <asp:BoundField DataField="CustomerName" HeaderText="CustomerName" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="puramt" HeaderText="Cost" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="noinst" HeaderText="No of Inst" HeaderStyle-BorderColor="Gray" />
+                                                 
                                                 <asp:BoundField DataField="startdate" HeaderText="Start Due Date" HeaderStyle-BorderColor="Gray" DataFormatString="{0:dd/MM/yyyy}"/>
+                                                <asp:BoundField DataField="Branchcode" HeaderText="Branch Code" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" CausesValidation="false" SkinID="edit"

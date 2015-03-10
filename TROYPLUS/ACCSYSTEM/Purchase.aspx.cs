@@ -4400,6 +4400,8 @@ public partial class Purchase : System.Web.UI.Page
                     if (cli != null) cli.Selected = true;
                 }
 
+                loadChequeNo(Convert.ToInt32(cmbBankName.SelectedItem.Value));
+
                 if (ds.Tables[0].Rows[0]["Chequeno"] != null)
                 {
                     // txtChequeNo.Text = ds.Tables[0].Rows[0]["Chequeno"].ToString();

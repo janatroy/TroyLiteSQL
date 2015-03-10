@@ -296,6 +296,9 @@ public partial class BulkReceiptECS : System.Web.UI.Page
                 dc = new DataColumn("Paymode");
                 dt.Columns.Add(dc);
 
+                dc = new DataColumn("Branchcode");
+                dt.Columns.Add(dc);
+
                 ds.Tables.Add(dt);
 
                 for (int vLoop = 0; vLoop < gvSales.Rows.Count; vLoop++)
@@ -323,6 +326,15 @@ public partial class BulkReceiptECS : System.Web.UI.Page
                     {
                         drNew["Paymode"] = "Cheque";
                         drNew["DebitorID"] = gvSales.Rows[vLoop].Cells[8].Text;
+                    }
+
+                    if (gvSales.Rows[vLoop].Cells[9].Text == "&nbsp;")
+                    {
+                        drNew["Branchcode"] = "";
+                    }
+                    else
+                    {
+                        drNew["Branchcode"] = gvSales.Rows[vLoop].Cells[9].Text;
                     }
 
                     ds.Tables[0].Rows.Add(drNew);

@@ -42,7 +42,7 @@ public partial class HirePurchase : System.Web.UI.Page
                 loadBanks();
 
                 GrdViewLead.PageSize = 7;
-                loadSupplier();
+                //loadSupplier();
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -109,12 +109,12 @@ public partial class HirePurchase : System.Web.UI.Page
         }
     }
 
-    private void loadSupplier()
+    private void loadSupplier(string Branch)
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
 
-        ds = bl.ListSundryDebtors(sDataSource);
+        ds = bl.ListSundryDebtors(sDataSource, Branch);
 
         cmbCustomer.Items.Clear();
         cmbCustomer.Items.Add(new ListItem("Select Customer", "0"));
@@ -142,6 +142,23 @@ public partial class HirePurchase : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        
     }
 
     protected void txtdocchr_TextChanged(object sender, EventArgs e)
@@ -407,9 +424,11 @@ public partial class HirePurchase : System.Web.UI.Page
         DataSet ds = new DataSet();
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
+        string Branch = Request.Cookies["Branch"].Value;
+
         object usernam = Session["LoggedUserName"];
 
-        ds = bl.GetHireList(connection, textSearch, dropDown);
+        ds = bl.GetHireList(connection, textSearch, dropDown, Branch);
 
         if (ds != null)
         {
@@ -557,10 +576,39 @@ public partial class HirePurchase : System.Web.UI.Page
             txtbillnonew.Focus();
 
             lblBillNo.Text = "- TBA -";
+
+            cmbCustomer.Enabled = true;
+
+            loadBranch();
+            BranchEnable_Disable();
+            loadSupplier(drpBranch.SelectedValue);
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
         }
     }
 
@@ -608,7 +656,7 @@ public partial class HirePurchase : System.Web.UI.Page
         txtdown1.Text = "0";
         txtBillDate.Text = DateTime.Now.ToShortDateString();
 
-        cmbCustomer.SelectedIndex = 0;
+        //cmbCustomer.SelectedIndex = 0;
         txtAccountNumber.Text = "";
         txtBranchName.Text = "";
         txtIFSCCode.Text = "";
@@ -1459,6 +1507,11 @@ public partial class HirePurchase : System.Web.UI.Page
         }
     }
 
+    protected void drpBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        loadSupplier(drpBranch.SelectedValue);
+    }
+
     protected void GrdViewLead_SelectedIndexChanged(object sender, EventArgs e)
     {
         try
@@ -1470,6 +1523,10 @@ public partial class HirePurchase : System.Web.UI.Page
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
             DataSet ds = bl.GetHirePurchaseForId(Billno);
+
+            drpBranch.Enabled = false;
+
+            
 
             if (ds != null)
             {
@@ -1573,6 +1630,23 @@ public partial class HirePurchase : System.Web.UI.Page
                         ListItem li = drpPaymode.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(Paymode.ToString()));
                         if (li != null) li.Selected = true;
                     }
+
+
+
+                    //string CusID = string.Empty;
+                    //if ((ds.Tables[0].Rows[0]["BranchCode"] != null) && (ds.Tables[0].Rows[0]["BranchCode"].ToString() != ""))
+                    //{
+                    //    CusID = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+                    //    drpBranch.ClearSelection();
+                    //    ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(CusID.ToString()));
+                    //    if (li != null) li.Selected = true;
+                    //}
+
+                    loadBranch();
+
+                    drpBranch.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+
+                    loadSupplier(drpBranch.SelectedValue);
 
                     int CustomerID = 0;
                     if ((ds.Tables[0].Rows[0]["CustomerID"] != null) && (ds.Tables[0].Rows[0]["CustomerID"].ToString() != ""))
@@ -2021,6 +2095,8 @@ public partial class HirePurchase : System.Web.UI.Page
 
                 paymode = Convert.ToInt32(drpPaymode.SelectedItem.Value);
 
+                string Branchcode = drpBranch.SelectedValue;
+
                 if (drpPaymode.SelectedValue == "3")
                 {
                     bankid = Convert.ToInt32(drpBankName.SelectedItem.Value);
@@ -2136,7 +2212,7 @@ public partial class HirePurchase : System.Web.UI.Page
                 }
 
 
-                iSlno = bl.UpdateHirePurchase(iSllno, sBilldate, sCustomerID, sCustomerName, dpurAmt, dlnAmt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydate, dstartdate, deachpay, Username, dsContact, BillNoNew, BranchRefNo, down, down1, emi, emiper, upfront, ddob, dmobile, bankid, BranchName, AccountNumber, Dayofpayment, IFSCCode, paymode, ds);
+                iSlno = bl.UpdateHirePurchase(iSllno, sBilldate, sCustomerID, sCustomerName, dpurAmt, dlnAmt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydate, dstartdate, deachpay, Username, dsContact, BillNoNew, BranchRefNo, down, down1, emi, emiper, upfront, ddob, dmobile, bankid, BranchName, AccountNumber, Dayofpayment, IFSCCode, paymode, ds, Branchcode);
 
 
 
@@ -2753,6 +2829,7 @@ public partial class HirePurchase : System.Web.UI.Page
                 paymode = Convert.ToInt32(drpPaymode.SelectedItem.Value);
 
 
+                string Branchcode = drpBranch.SelectedValue;
 
 
                 if (dpurAmt == 0)
@@ -2888,7 +2965,7 @@ public partial class HirePurchase : System.Web.UI.Page
                     ds = null;
                 }
 
-                int billNo = bl.InsertHirePurchase(sBilldate, sCustomerID, sCustomerName, dpurAmt, dlnAmt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydate, dstartdate, deachpay, Username, dsContact, billnonew, branchrefno, down, down1, emi, emiper, upfront,ddob,dmobile,bankid,BranchName,AccountNumber,Dayofpayment,IFSCCode,paymode, ds);
+                int billNo = bl.InsertHirePurchase(sBilldate, sCustomerID, sCustomerName, dpurAmt, dlnAmt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydate, dstartdate, deachpay, Username, dsContact, billnonew, branchrefno, down, down1, emi, emiper, upfront, ddob, dmobile, bankid, BranchName, AccountNumber, Dayofpayment, IFSCCode, paymode, ds, Branchcode);
 
                 GrdViewLead.DataBind();
 

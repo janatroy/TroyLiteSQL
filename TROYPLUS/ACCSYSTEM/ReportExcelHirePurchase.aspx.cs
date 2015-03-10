@@ -34,7 +34,7 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
             else
                 Response.Redirect("Login.aspx");
 
-            ds = objBL.GetHireList(connection, "", "");
+            ds = objBL.GetHireList(connection, "", "","");
 
             if (ds != null)
             {
@@ -209,7 +209,7 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
             else
                 Response.Redirect("Login.aspx");
 
-            ds = objBL.GetHireList(connection, "", "");
+            ds = objBL.GetHireList(connection, "", "", "");
 
             if (ds != null)
             {

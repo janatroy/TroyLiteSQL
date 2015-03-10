@@ -569,7 +569,7 @@ public partial class SuppPayment : System.Web.UI.Page
                         ListItem li = ddBanks.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(creditorID));
                         if (li != null) li.Selected = true;
                     }
-
+                    loadChequeNo(Convert.ToInt32(ddBanks.SelectedItem.Value));
                     //loacheque(Convert.ToString(ds.Tables[0].Rows[0]["CreditorID"]));
 
                     //string cheque = bl.GetCheque(connection, ds.Tables[0].Rows[0]["ChequeNo"].ToString());
