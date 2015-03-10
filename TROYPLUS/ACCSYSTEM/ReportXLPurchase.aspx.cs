@@ -48,7 +48,9 @@ public partial class ReportXLPurchase : System.Web.UI.Page
 
     BusinessLogic objBL;
 
-
+    //private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
 //    BusinessLogic objBL;
     
     protected void Page_Load(object sender, EventArgs e)
@@ -1887,9 +1889,13 @@ public partial class ReportXLPurchase : System.Web.UI.Page
         condtion = getCond();
         getgroupByAndselColumn();
         DataSet ds = new DataSet();
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
         //DataTable dt = new DataTable();
         DataTable dt = new DataTable("Purchase");
-        ds = objBL.getPurchase1(selColumn,field2,condtion, groupBy,ordrby);
+        ds = objBL.getPurchase1(selColumn,field2,condtion, groupBy,ordrby,usernam);
         if (ds.Tables[0].Rows.Count > 0)
         {
             if ((ddlFirstLvl.SelectedIndex > 0) || (ddlSecondLvl.SelectedIndex > 0) || (ddlThirdLvl.SelectedIndex > 0) || (ddlFourthLvl.SelectedIndex > 0) || (ddlFifthLvl.SelectedIndex > 0) || (ddlSixthLvl.SelectedIndex > 0) || (ddlSeventhLvl.SelectedIndex > 0))
@@ -1940,6 +1946,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                 }
 
                 dt.Columns.Add(new DataColumn("Amount"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
             }
             else if ((chkboxCategory.Checked) || (chkboxBrand.Checked) || (chkboxProductCode.Checked) || (chkboxProductName.Checked) || (chkboxInternalTransfer.Checked) || (chkboxBillDate.Checked) || (chkboxSupplier.Checked) || (chkboxSalesReturn.Checked) || (chkboxModel.Checked) || (ChkboxCustaddr.Checked) || (ChkboxCustphone.Checked) || (chkboxBillno.Checked) || (chkboxStock.Checked) || (chkboxRate.Checked) || (chkboxDiscount.Checked) || (chkboxFreight.Checked) || (chkboxVoucherNo.Checked) || (chkboxTransNo.Checked) || (chkboxNarration.Checked) || (chkPurEntyDate.Checked))
             {
@@ -2030,6 +2037,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("PurchaseEntryDate"));
                 }
                 dt.Columns.Add(new DataColumn("Amount"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
 
             }
 
@@ -3709,6 +3717,8 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                     }
                     dr_final5["Amount"] = dr["Amount"];
 
+                    dr_final5["BranchCode"] = dr["BranchCode"];
+
                     if (chkboxTransNo.Checked == true)
                     {
                         dr_final5["TransNo"] = dr["JournalID"];
@@ -3877,6 +3887,8 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                         dr_final5["Rate"] = dr["Rate"];
                     }
                     dr_final5["Amount"] = dr["Amount"];
+
+                    dr_final5["BranchCode"] = dr["BranchCode"];
                     if (chkboxTransNo.Checked == true)
                     {
                         dr_final5["TransNo"] = dr["JournalID"];
@@ -4423,6 +4435,9 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                     {
                         dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                     }
+
+                    dr_final6["BranchCode"] = "";
+
                     if (chkboxTransNo.Checked == true)
                     {
                         dr_final6["TransNo"] = "";
@@ -6268,11 +6283,14 @@ public partial class ReportXLPurchase : System.Web.UI.Page
         condtion = getCond();
         getgroupByAndselColumn();
         DataSet ds = new DataSet();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
         //DataTable dt = new DataTable();
         DataTable dt = new DataTable("Purchase");
         string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "", sixlvlsub = "", sevenlvlsub = "", eightlvlsub = "";
 
-        ds = objBL.getPurchase1sub(selColumn, field2, condtion, groupBy, sordrby);
+        ds = objBL.getPurchase1sub(selColumn, field2, condtion, groupBy, sordrby,usernam);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -6324,6 +6342,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                 }
 
                 dt.Columns.Add(new DataColumn("Amount"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
             }
             else if ((firstsub.SelectedItem.Text != "None") || (secondsub.SelectedItem.Text != "None") || (thirdsub.SelectedItem.Text != "None") || (foursub.SelectedItem.Text != "None") || (fivesub.SelectedItem.Text != "None"))
             {
@@ -8100,6 +8119,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                         dt.Columns.Add(new DataColumn("Rate"));
                     }
                     dt.Columns.Add(new DataColumn("Amount"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
 
                 }
             }
@@ -10457,6 +10477,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -10618,6 +10639,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if (eightsub.SelectedItem.Text != "None")
@@ -10783,6 +10805,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -10944,6 +10967,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if ((sixsub.SelectedItem.Text != "None") || (sixsub.SelectedItem.Text == "None") || (sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -11110,6 +11134,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final7["BranchCode"] = "";
 
                                 dt.Rows.Add(dr_final7);
 
@@ -11298,6 +11323,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final8["BranchCode"] = "";
 
                                 dt.Rows.Add(dr_final8);
 
@@ -11477,6 +11503,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final8["BranchCode"] = "";
 
                                 dt.Rows.Add(dr_final8);
 
@@ -11642,7 +11669,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
-
+                                dr_final8["BranchCode"] = "";
                                 dt.Rows.Add(dr_final8);
 
                                 DataRow dr_final888 = dt.NewRow();
@@ -14538,6 +14565,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             }
                             dr_final5["Amount"] = dr["Amount"];
 
+                            dr_final5["BranchCode"] = dr["BranchCode"];
                             dt.Rows.Add(dr_final5);
                         }
                     }
@@ -14731,6 +14759,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                         dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                         PayModeTotal = 0;
                                     }
+                                    dr_final17["BranchCode"] = "";
                                     dt.Rows.Add(dr_final17);
 
                                     //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -14893,6 +14922,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                         dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                         PayModeTotal = 0;
                                     }
+                                    dr_final17["BranchCode"] = "";
                                     dt.Rows.Add(dr_final17);
 
                                     if (eightsub.SelectedItem.Text != "None")
@@ -15053,6 +15083,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                         dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                         PayModeTotal = 0;
                                     }
+                                    dr_final17["BranchCode"] = "";
                                     dt.Rows.Add(dr_final17);
 
                                     if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -15208,6 +15239,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
                                 modelTotal1 = 0;
                             }
@@ -15357,6 +15389,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final7["BranchCode"] = "";
                                 dt.Rows.Add(dr_final7);
 
                                 Pttls = 0;
@@ -15504,6 +15537,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final8["BranchCode"] = "";
 
                                 dt.Rows.Add(dr_final8);
 
@@ -15653,7 +15687,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
-
+                                dr_final8["BranchCode"] = "";
                                 dt.Rows.Add(dr_final8);
 
                                 brandTotal = 0;
@@ -15805,6 +15839,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final8["BranchCode"] = "";
                                 dt.Rows.Add(dr_final8);
 
                                 catIDTotal = 0;
@@ -15865,6 +15900,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                         {
                             dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                         }
+                        dr_final6["BranchCode"] = "";
                         dt.Rows.Add(dr_final6);
 
                     }
@@ -16205,11 +16241,14 @@ public partial class ReportXLPurchase : System.Web.UI.Page
         condtion = getCond();
         getgroupByAndselColumn();
         DataSet ds = new DataSet();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
         //DataTable dt = new DataTable();
         DataTable dt = new DataTable("Purchase");
         string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "", sixlvlsub = "", sevenlvlsub = "", eightlvlsub = "";
 
-        ds = objBL.getPurchase1sub(selColumn, field2, condtion, groupBy, sordrby);
+        ds = objBL.getPurchase1sub(selColumn, field2, condtion, groupBy, sordrby,usernam);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -16261,6 +16300,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                 }
 
                 dt.Columns.Add(new DataColumn("Amount"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
             }
             else if ((firstsub.SelectedItem.Text != "None") || (secondsub.SelectedItem.Text != "None") || (thirdsub.SelectedItem.Text != "None") || (foursub.SelectedItem.Text != "None") || (fivesub.SelectedItem.Text != "None"))
             {
@@ -17365,6 +17405,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                         dt.Columns.Add(new DataColumn("Rate"));
                     }
                     dt.Columns.Add(new DataColumn("Amount"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
 
                 }
             }
@@ -17447,6 +17488,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Rate"));
                 }
                 dt.Columns.Add(new DataColumn("Amount"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
 
             }
 
@@ -17604,6 +17646,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             }
 
                             dr_final7["Amount"] = "";
+                            dr_final7["BranchCode"] = "";
                             if (chkboxRate.Checked == true)
                             {
                                 dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(Pttls));
@@ -17696,6 +17739,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             {
                                 dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(modelTotal));
                             }
+                            dr_final7["BranchCode"] = "";
                             dt.Rows.Add(dr_final7);
                             modelTotal = 0;
                         }
@@ -17783,6 +17827,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             {
                                 dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
                             }
+                            dr_final7["BranchCode"] = "";
                             dt.Rows.Add(dr_final7);
                             catIDTotal = 0;
                         }
@@ -17869,6 +17914,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             {
                                 dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal));
                             }
+                            dr_final7["BranchCode"] = "";
                             dt.Rows.Add(dr_final7);
                             brandTotal = 0;
                         }
@@ -17950,6 +17996,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             }
 
                             dr_final7["Amount"] = "";
+                            dr_final7["BranchCode"] = "";
                             if (chkboxRate.Checked == true)
                             {
                                 dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal1));
@@ -18034,6 +18081,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             }
 
                             dr_final7["Amount"] = "";
+                            dr_final7["BranchCode"] = "";
                             if (chkboxRate.Checked == true)
                             {
                                 dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal2));
@@ -18117,6 +18165,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             }
 
                             dr_final7["Amount"] = "";
+                            dr_final7["BranchCode"] = "";
                             if (chkboxRate.Checked == true)
                             {
                                 dr_final7["Rate"] = Convert.ToString(Convert.ToDecimal(brandTotal3));
@@ -18374,6 +18423,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                         dr_final5["Rate"] = dr["Rate"];
                     }
                     dr_final5["Amount"] = dr["Amount"];
+                    dr_final5["BranchCode"] = dr["BranchCode"];
                     dt.Rows.Add(dr_final5);
                     if (chkboxStock.Checked == true)
                     {
@@ -19854,6 +19904,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -20015,6 +20066,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if (eightsub.SelectedItem.Text != "None")
@@ -20180,6 +20232,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -20341,6 +20394,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if ((sixsub.SelectedItem.Text != "None") || (sixsub.SelectedItem.Text == "None") || (sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -20507,7 +20561,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
-
+                                dr_final7["BranchCode"] = "";
                                 dt.Rows.Add(dr_final7);
 
                                 if (fivesub.SelectedItem.Text == "None")
@@ -20695,7 +20749,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
-
+                                dr_final8["BranchCode"] = "";
                                 dt.Rows.Add(dr_final8);
 
                                 if ((foursub.SelectedItem.Text == "None") || (fivesub.SelectedItem.Text == "None"))
@@ -20874,7 +20928,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
-
+                                dr_final8["BranchCode"] = "";
                                 dt.Rows.Add(dr_final8);
 
 
@@ -21039,7 +21093,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
-
+                                dr_final8["BranchCode"] = "";
                                 dt.Rows.Add(dr_final8);
 
                                 DataRow dr_final888 = dt.NewRow();
@@ -23059,6 +23113,8 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                             }
                             dr_final5["Amount"] = dr["Amount"];
 
+                            dr_final5["BranchCode"] = dr["BranchCode"];
+
                             dt.Rows.Add(dr_final5);
                         }
                     }
@@ -23252,6 +23308,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 //if ((sevensub.SelectedItem.Text != "None") || (eightsub.SelectedItem.Text != "None"))
@@ -23414,6 +23471,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if (eightsub.SelectedItem.Text != "None")
@@ -23574,6 +23632,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                     dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                     PayModeTotal = 0;
                                 }
+                                dr_final17["BranchCode"] = "";
                                 dt.Rows.Add(dr_final17);
 
                                 if ((sevensub.SelectedItem.Text == "None") || (eightsub.SelectedItem.Text == "None"))
@@ -23729,6 +23788,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                 dr_final17["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                 PayModeTotal = 0;
                             }
+                            dr_final17["BranchCode"] = "";
                             dt.Rows.Add(dr_final17);
                             modelTotal1 = 0;
                         }
@@ -23878,6 +23938,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                 dr_final7["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                 PayModeTotal = 0;
                             }
+                            dr_final7["BranchCode"] = "";
                             dt.Rows.Add(dr_final7);
 
                             Pttls = 0;
@@ -24025,6 +24086,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                 dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                 PayModeTotal = 0;
                             }
+                            dr_final8["BranchCode"] = "";
 
                             dt.Rows.Add(dr_final8);
 
@@ -24174,7 +24236,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                 dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                 PayModeTotal = 0;
                             }
-
+                            dr_final8["BranchCode"] = "";
                             dt.Rows.Add(dr_final8);
 
                             brandTotal = 0;
@@ -24326,6 +24388,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                                 dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(PayModeTotal));
                                 PayModeTotal = 0;
                             }
+                            dr_final8["BranchCode"] = "";
                             dt.Rows.Add(dr_final8);
 
                             catIDTotal = 0;
@@ -24386,6 +24449,7 @@ public partial class ReportXLPurchase : System.Web.UI.Page
                     {
                         dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                     }
+                    dr_final6["BranchCode"] = "";
                     dt.Rows.Add(dr_final6);
 
                 }

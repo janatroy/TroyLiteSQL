@@ -2533,7 +2533,7 @@ public partial class ReportXLGProfit : System.Web.UI.Page
 
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
-        ds = objBL.getSales1(selColumn,field2,condtion, groupBy,ordrby);
+        ds = objBL.getSales1(selColumn,field2,condtion, groupBy,ordrby,"");
         if (ds.Tables[0].Rows.Count > 0)
         {
             if ((ddlFirstLvl.SelectedItem.Text != "None") || (ddlSecondLvl.SelectedItem.Text != "None") || (ddlThirdLvl.SelectedItem.Text != "None") || (ddlFourthLvl.SelectedItem.Text != "None") || (ddlFifthLvl.SelectedItem.Text != "None") || (ddlSixthLvl.SelectedItem.Text != "None") || (ddlSeventhLvl.SelectedItem.Text != "None"))
@@ -4714,7 +4714,7 @@ public partial class ReportXLGProfit : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStrtDt.Text.Trim());
         endDate = Convert.ToDateTime(txtEndDt.Text.Trim());
        
-        ds = objBL.getSales1(selColumn, field2, condtion, groupBy, ordrby);
+        ds = objBL.getSales1(selColumn, field2, condtion, groupBy, ordrby,"");
         
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -6618,7 +6618,7 @@ public partial class ReportXLGProfit : System.Web.UI.Page
 
          string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "", sixlvlsub = "", sevenlvlsub = "", eightlvlsub = "";
 
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,"");
 
          if (ds.Tables[0].Rows.Count > 0)
          {
@@ -17726,7 +17726,7 @@ public partial class ReportXLGProfit : System.Web.UI.Page
 
          string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "",sixlvlsub="",sevenlvlsub="",eightlvlsub="";
 
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,"");
 
          if (ds.Tables[0].Rows.Count > 0)
          {
@@ -26490,7 +26490,7 @@ public partial class ReportXLGProfit : System.Web.UI.Page
 
          string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "", sixlvlsub = "", sevenlvlsub = "", eightlvlsub = "";
 
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,"");
 
          if (ds.Tables[0].Rows.Count > 0)
          {
@@ -37933,7 +37933,7 @@ public partial class ReportXLGProfit : System.Web.UI.Page
 
          string FLvlSub = "", SLvlSub = "", TLvlSub = "", FourLvlSub = "", FiveLvlSUb = "", sixlvlsub = "", sevenlvlsub = "", eightlvlsub = "";
 
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,"");
 
          if (ds.Tables[0].Rows.Count > 0)
          {
@@ -46972,7 +46972,7 @@ public partial class ReportXLGProfit : System.Web.UI.Page
          getgroupByAndselColumn();
          DataSet ds = new DataSet();
          DataTable dt = new DataTable();
-         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby);
+         ds = objBL.getSales1Sub(selColumn, field2, condtion, groupBy, sordrby,"");
 
          if (ds.Tables[0].Rows.Count > 0)
          {

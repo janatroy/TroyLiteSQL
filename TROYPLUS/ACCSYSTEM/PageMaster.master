@@ -450,12 +450,11 @@
                                     <ul id="custom-nav-menu">
                                         <li class="color Mainmenu1"><a href="#">
                                             <img src="App_Themes/NewTheme/Images/TroyDashboard.png" /></a>
-
                                         </li>
                                         <li class="color Mainmenu2"><a href="#">
                                             <img src="App_Themes/NewTheme/Images/TroySales.png" /></a>
                                             <ul>
-                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Master Data</a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">►</span>Master Data</a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="./PriceListCategoryMap.aspx" runat="server" id="A17">Customer Category</a></li>
                                                         <li class="color submenumenu"><a href="./CustomerInfo.aspx" runat="server" id="lnkCustomerInfo">Customers</a></li>
@@ -631,7 +630,7 @@
                                         <li class="color Mainmenu8"><a href="#">
                                             <img src="App_Themes/NewTheme/Images/TroyHumanResources.png" /></a>
                                             <ul>
-                                                <li class="color submenumenu"><a href="#">Master Data<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Master Data</a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="./EmployeeMaster.aspx" runat="server" id="lnkEmployeeMast">Employee Master</a></li>
                                                         <li class="color submenumenu"><a href="./HRAdminSettings.aspx" runat="server" id="A10">Administration</a></li>
@@ -641,9 +640,9 @@
                                                         <li class="color submenumenu"><a href="./HRAdminEmployeeRoleList.aspx" runat="server" id="A23">Define Employee Role</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="color submenumenu"><a href="#">Transactions<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Transactions</a>
                                                     <ul style="left: -170px !important">
-                                                        <li class="color submenumenu"><a href="#">Employee Maintenance <span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>&nbsp;&nbsp;</a>
+                                                        <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Employee Maintenance</a>
                                                             <ul>
                                                                 <li class="color submenumenu"><a href="./EmployeeAttendance.aspx" runat="server" id="A12">Attendance</a></li>
                                                                 <li class="color submenumenu"><a href="./EmployeeLeave.aspx" runat="server" id="A13">Leave Requests</a></li>
@@ -653,7 +652,7 @@
                                                                 <li class="color submenumenu"><a href="./EmployeePayroll.aspx" runat="server" id="A16">Payroll</a></li>
                                                             </ul>
                                                         </li>
-                                                        <li class="color submenumenu"><a href="#">Time Sheet<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>&nbsp;&nbsp;</a>
+                                                        <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Time Sheet&nbsp;&nbsp;</a>
                                                             <ul>
                                                                 <li class="color submenumenu"><a href="./TimeSheet.aspx" runat="server" id="lnkTimeSheet">Time Sheet Entries</a></li>
                                                             </ul>
@@ -744,14 +743,14 @@
                                         <li class="color Mainmenu9"><a href="#">
                                             <img src="App_Themes/NewTheme/Images/TroyManufacturing.png" /></a>
                                             <ul>
-                                                <li class="color submenumenu"><a href="#">Master Data<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Master Data</a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="./CreateFormula.aspx" runat="server" id="lnkTransferDefn">Define Product Specification</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="color submenumenu"><a href="#">Transactions<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Transactions</a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="./FormulaExecution.aspx" runat="server" id="lnkTransferExecution">Manufacturing Process&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                                                        <li class="color submenumenu"><a href="./FormulaExecution.aspx" runat="server" id="lnkTransferExecution">Process Manufacturing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -771,16 +770,16 @@
                                         <li class="color Mainmenu10"><a href="#">
                                             <img src="App_Themes/NewTheme/Images/TroyProjects.png" /></a>
                                             <ul>
-                                                <li class="color submenumenu"><a href="#">Master Data<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Master Data</a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="./TaskStatus.aspx" runat="server" id="A3">Define Status of Tasks</a></li>
                                                         <li class="color submenumenu"><a href="./TaskTypes.aspx" runat="server" id="A4">Define Types of Tasks</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="color submenumenu"><a href="#">Transactions<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Transactions</a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="./ProjectEntry.aspx" runat="server" id="A5">Manage Projects</a></li>
-                                                        <li class="color submenumenu"><a href="#">Manage Tasks<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                        <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Manage Tasks</a>
                                                             <ul>
                                                                 <li class="color submenumenu"><a href="./TaskEntry.aspx" runat="server" id="A6">Create Tasks</a></li>
                                                                 <li class="color submenumenu"><a href="./TaskUpdates.aspx" runat="server" id="A7">Update Tasks</a></li>
@@ -788,7 +787,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <li class="color submenumenu"><a href="#" id="lnkprojectreport" runat="server">Reports <span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span></a>
+                                                <li class="color submenumenu"><a href="#" id="lnkprojectreport" runat="server"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Reports </a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProjectReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Project Report</a>
                                                     </ul>
@@ -850,9 +849,9 @@
                                                 <li class="color submenumenu"><a href="./DBYearEnd.aspx" runat="server" id="A20">Year End</a></li>
                                                 <%--<li class="color submenumenu"><a href="./Configuration.aspx" runat="server" id="lnkConfiguration">Online & Offline Mode</a></li>--%>
                                                 <li class="color submenumenu"><a href="./UserOptions.aspx" runat="server" id="lnkuserlock">User Access Control Settings</a></li>
-                                                <li class="color submenumenu"><a href="#">Security<span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span> </a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Security</a>
                                                     <ul style="left: -170px !important">
-                                                        <li class="color submenumenu"><a href="#">Password Administration <span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>&nbsp;&nbsp;</a>                                                            
+                                                        <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Password Administration &nbsp;&nbsp;</a>                                                            
                                                             <ul>
                                                                 <li class="color submenumenu"><a href="./ResetPassword.aspx">Reset Password</a></li>
                                                                 <li class="color submenumenu"><a href="./ChangePassword.aspx" runat="server" id="lnkChangePassword">Change Password</a></li>
@@ -862,7 +861,7 @@
                                                         <li class="color submenumenu"><a href="./ReconDate.aspx" runat="server" id="lnkReconDate">Lock Transactions</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span> License</a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; License</a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="#">License Administration&nbsp;&nbsp;&nbsp;</a></li>
                                                         <li class="color submenumenu"><a href="#">License Agreement&nbsp;&nbsp;&nbsp;</a></li>

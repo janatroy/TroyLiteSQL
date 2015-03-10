@@ -56,7 +56,7 @@ public partial class ReportExcelExpenses : System.Web.UI.Page
                 //dt.Columns.Add(new DataColumn("CreditLimit"));
                 dt.Columns.Add(new DataColumn("OpenBalanceDR"));
                 dt.Columns.Add(new DataColumn("OpenBalanceCR"));
-                //dt.Columns.Add(new DataColumn("OpenBal"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
                 //dt.Columns.Add(new DataColumn("Phone"));
                 //dt.Columns.Add(new DataColumn("LedgerCategory"));
                 //dt.Columns.Add(new DataColumn("ExecutiveIncharge"));
@@ -67,7 +67,7 @@ public partial class ReportExcelExpenses : System.Web.UI.Page
                     DataRow dr_final1 = dt.NewRow();
                     dr_final1["LedgerName"] = dr["LedgerName"];
                     dr_final1["AliasName"] = dr["AliasName"];
-                    //dr_final1["Address"] = dr["Add1"];
+                    dr_final1["Branchcode"] = dr["BranchCode"];
                     //dr_final1["TINnumber"] = dr["TINnumber"];
                     //dr_final1["CreditLimit"] = dr["CreditLimit"];
                     dr_final1["OpenBalanceDR"] = dr["OpenBalanceDR"];
@@ -94,7 +94,7 @@ public partial class ReportExcelExpenses : System.Web.UI.Page
                 DataRow dr_final2 = dt.NewRow();
                 dr_final2["LedgerName"] = "";
                 dr_final2["AliasName"] = "";
-                //dr_final2["Address"] = "";
+                dr_final2["BranchCode"] = "";
                 //dr_final2["TINnumber"] = "Grand Total:";
                 //dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
                 //dr_final2["OpenBalanceDR"] = Convert.ToDecimal(GtotalOpenDR);

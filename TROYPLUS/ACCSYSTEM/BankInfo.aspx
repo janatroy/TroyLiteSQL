@@ -923,6 +923,7 @@
                                 <asp:Parameter Name="EmailId" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -956,6 +957,7 @@
                                 <asp:Parameter Name="EmailId" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
+                                <asp:Parameter Name="BranchCode" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

@@ -437,6 +437,30 @@
                                                                                             <tr style="height: 10%">
                                                                                             </tr>
                                                                                             <tr>
+                                                                                                <td class="ControlLabel" style="width: 24%">
+                                                                                                   Branch *
+                                                                                                    <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpBranchAdd"
+                                                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
+                                                                                                        Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
+                                                                                                </td>
+                                                                                                <td class="ControlDrpBorder" style="width: 25%">
+                                                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                                                                                </td>
+                                                                                                <td class="ControlLabel" style="width: 16%">
+                                                                                                 
+                                                                                                </td>
+                                                                                                <td style="width: 25%">
+                                                                                                   
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr style="height: 2px">
+                                                                                            </tr>
+                                                                                            <tr>
                                                                                                 <td class="ControlLabel" style="width: 24%">Ref. No. *
                                                                                                     <asp:RequiredFieldValidator ID="rvRefNo" runat="server" ErrorMessage="Pleas enter Ref. No. It cannot be lefdt blank."
                                                                                                         ControlToValidate="txtRefNo" Display="Dynamic">*</asp:RequiredFieldValidator>
@@ -935,6 +959,7 @@
                                                 <asp:BoundField DataField="LedgerName" HeaderText="Bank Name / Cash" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Narration" HeaderText="Narration" Visible="false" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Branchcode" HeaderText="Branch Code" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" CausesValidation="false" runat="server" SkinID="edit"

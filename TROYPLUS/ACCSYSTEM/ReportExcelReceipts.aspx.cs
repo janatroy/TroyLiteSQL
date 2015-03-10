@@ -26,6 +26,9 @@ public partial class Receipts : System.Web.UI.Page
     string orderBy = "", selColumn = "", selLevels = "";
     //DBClass objdb = new DBClass();
     BusinessLogic objBL;
+    private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -192,7 +195,7 @@ public partial class Receipts : System.Web.UI.Page
                 condtion = getCond();
                 getorderByAndselColumn();
                 DataSet ds = new DataSet();
-                ds = objBL.getRceipts(selColumn, condtion, orderBy);
+                ds = objBL.getRceipts(selColumn, condtion, orderBy,usernam);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     GridRcpts.DataSource = ds;
@@ -401,7 +404,13 @@ public partial class Receipts : System.Web.UI.Page
     {
         bool dispLastTotal = false;
         DataSet ds = new DataSet();
-        ds = objBL.getRceipts(selColumn, condtion, orderBy);
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+
+
+        ds = objBL.getRceipts(selColumn, condtion, orderBy,usernam);
         DataTable dt = new DataTable("Receipt Details");
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -428,6 +437,7 @@ public partial class Receipts : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("Cheque No"));
             dt.Columns.Add(new DataColumn("Amount"));
             dt.Columns.Add(new DataColumn("Narration"));
+            dt.Columns.Add(new DataColumn("BranchCode"));
 
 
             //initialize column values for entire row
@@ -478,6 +488,7 @@ public partial class Receipts : System.Web.UI.Page
                         dr_final8["Cheque No"] = "";
                         dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(modelTotal));
                         dr_final8["Narration"] = "";
+                        dr_final8["Branchcode"] = "";
                         dt.Rows.Add(dr_final8);
                         //dt.Rows.Add(dr_final8);
                         modelTotal = 0;
@@ -513,6 +524,7 @@ public partial class Receipts : System.Web.UI.Page
                         dr_final8["Cheque No"] = "";
                         dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
                         dr_final8["Narration"] = "";
+                        dr_final8["Branchcode"] = "";
                         dt.Rows.Add(dr_final8);
                         catIDTotal = 0;
                     }
@@ -545,6 +557,7 @@ public partial class Receipts : System.Web.UI.Page
                         dr_final8["Cheque No"] = "";
                         dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(fLvlTotal));
                         dr_final8["Narration"] = "";
+                        dr_final8["Branchcode"] = "";
                         dt.Rows.Add(dr_final8);
                         fLvlTotal = 0;
                     }
@@ -578,6 +591,7 @@ public partial class Receipts : System.Web.UI.Page
                         dr_final1["Cheque No"] = "";
                         dr_final1["Amount"] = "";
                         dr_final1["Narration"] = "";
+                        dr_final1["Branchcode"] = "";
                         dt.Rows.Add(dr_final1);
                     }
                 }
@@ -619,6 +633,7 @@ public partial class Receipts : System.Web.UI.Page
                         dr_final2["Cheque No"] = "";
                         dr_final2["Amount"] = "";
                         dr_final2["Narration"] = "";
+                        dr_final2["Branchcode"] = "";
                         dt.Rows.Add(dr_final2);
                     }
                 }
@@ -662,6 +677,7 @@ public partial class Receipts : System.Web.UI.Page
                         dr_final1["Cheque No"] = "";
                         dr_final1["Amount"] = "";
                         dr_final1["Narration"] = "";
+                        dr_final1["Branchcode"] = "";
                         dt.Rows.Add(dr_final1);
                     }
                 }
@@ -695,6 +711,7 @@ public partial class Receipts : System.Web.UI.Page
                 dr_final5["Cheque No"] = dr["CNo"];
                 dr_final5["Amount"] = dr["Amount"];
                 dr_final5["Narration"] = dr["Narration"];
+                dr_final5["BranchCode"] = dr["BranchCode"];
 
                 dt.Rows.Add(dr_final5);
                 Gtotal = Gtotal + Convert.ToDecimal(dr["Amount"]);
@@ -737,6 +754,7 @@ public partial class Receipts : System.Web.UI.Page
                     dr_final8["Cheque No"] = "";
                     dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(modelTotal));
                     dr_final8["Narration"] = "";
+                    dr_final8["Branchcode"] = "";
                     dt.Rows.Add(dr_final8);
                     modelTotal = 0;
                 }
@@ -768,6 +786,7 @@ public partial class Receipts : System.Web.UI.Page
                     dr_final9["Cheque No"] = "";
                     dr_final9["Amount"] = Convert.ToString(Convert.ToDecimal(catIDTotal));
                     dr_final9["Narration"] = "";
+                    dr_final9["Branchcode"] = "";
                     dt.Rows.Add(dr_final9);
                     catIDTotal = 0;
                 }
@@ -799,6 +818,7 @@ public partial class Receipts : System.Web.UI.Page
                     dr_final10["Cheque No"] = "";
                     dr_final10["Amount"] = Convert.ToString(Convert.ToDecimal(brandTotal));
                     dr_final10["Narration"] = "";
+                    dr_final10["Branchcode"] = "";
                     dt.Rows.Add(dr_final10);
                     brandTotal = 0;
                 }
@@ -829,6 +849,7 @@ public partial class Receipts : System.Web.UI.Page
                 dr_final6["Cheque No"] = "";
                 dr_final6["Amount"] = Convert.ToString(Convert.ToDecimal(Gtotal));
                 dr_final6["Narration"] = "";
+                dr_final6["Branchcode"] = "";
                 dt.Rows.Add(dr_final6);
             }
             ExportToExcel(dt);

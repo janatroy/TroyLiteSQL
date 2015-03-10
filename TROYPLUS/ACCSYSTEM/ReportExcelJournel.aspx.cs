@@ -17,6 +17,9 @@ public partial class Journel : System.Web.UI.Page
 {
     //DBClass objdb = new DBClass();
     BusinessLogic objBL;
+    private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -91,7 +94,11 @@ public partial class Journel : System.Web.UI.Page
 
 
             DataSet ds = new DataSet();
-            ds = objBL.getJournals();
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            connection = Request.Cookies["Company"].Value;
+            usernam = Request.Cookies["LoggedUserName"].Value;
+
+            ds = objBL.getJournals(usernam);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 GridJournl.DataSource = ds;
@@ -177,7 +184,12 @@ public partial class Journel : System.Web.UI.Page
         objBL.EndDate = Convert.ToDateTime(aaa).ToString("yyyy-MM-dd");
 
         DataSet ds = new DataSet();
-        ds = objBL.getJournals();
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+
+        ds = objBL.getJournals(usernam);
         if (ds.Tables[0].Rows.Count > 0)
         {
             DataTable dt = new DataTable("Journal");
@@ -188,6 +200,7 @@ public partial class Journel : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("Debtor"));
             dt.Columns.Add(new DataColumn("Amount"));
             dt.Columns.Add(new DataColumn("Narration"));
+            dt.Columns.Add(new DataColumn("BranchCode"));
 
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
@@ -198,6 +211,7 @@ public partial class Journel : System.Web.UI.Page
                 dr_final1["Debtor"] = dr["Debtor"];
                 dr_final1["Creditor"] = dr["Creditor"];
                 dr_final1["Narration"] = dr["Narration"];
+                dr_final1["BranchCode"] = dr["BranchCode"];
                 dr_final1["Amount"] = dr["Amount"];
                 dt.Rows.Add(dr_final1);
                 Gtotal = Gtotal + Convert.ToDecimal(dr["Amount"]);
@@ -208,6 +222,7 @@ public partial class Journel : System.Web.UI.Page
             dr_final2["Debtor"] = "Grand Total :";
             dr_final2["Creditor"] = "";
             dr_final2["Narration"] = "";
+            dr_final2["BranchCode"] = "";
             dr_final2["Amount"] = Convert.ToDecimal(Gtotal);
             dt.Rows.Add(dr_final2);
             ExportToExcel(dt);

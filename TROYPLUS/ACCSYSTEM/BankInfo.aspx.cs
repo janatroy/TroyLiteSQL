@@ -925,6 +925,9 @@ public partial class BankInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("drpModeofContactAdd")) != null)
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeofContactAdd")).SelectedValue;
 
+
+        e.InputParameters["BranchCode"] = "All";
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
 
@@ -1017,6 +1020,8 @@ public partial class BankInfo : System.Web.UI.Page
 
         if (((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")) != null)
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")).SelectedValue;
+
+        e.InputParameters["BranchCode"] = "All";
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
