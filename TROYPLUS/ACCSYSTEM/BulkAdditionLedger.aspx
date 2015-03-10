@@ -41,92 +41,89 @@
 </head>
 <body style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: center">
     <form id="form1" runat="server">
-    <br />
-    <br />
-    <div id="div1" runat="server" align="center">
-        <table cellpadding="1" cellspacing="2" width="450px"
-            style="border: 1px solid blue;">
-            <tr class="headerPopUp">
-                <td colspan="4">
-                    Bulk Customer Addition
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <table style="width:100%">
-                        <tr style="height:15px">
-
-                        </tr>
-                        <tr>
-                            <td  style="width:30%">
-
-                            </td>
-                            <td  style="width:35%">
-                                <div>
-                                    <%--<asp:FileUpload ID="FileUpload1" runat="server" />
+        <br />
+        <br />
+        <div id="div1" runat="server" align="center">
+            <table cellpadding="1" cellspacing="2" width="450px"
+                style="border: 1px solid blue;">
+                <tr class="headerPopUp">
+                    <td colspan="4">Bulk Customer Addition
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <table style="width: 100%">
+                            <tr style="height: 15px">
+                            </tr>
+                            <tr>
+                                <td style="width: 30%"></td>
+                                <td style="width: 35%">
+                                    <div>
+                                        <%--<asp:FileUpload ID="FileUpload1" runat="server" />
                                     <asp:Button ID="btnUpload" runat="server" Text="Upload" OnClick="btnUpload_Click" AccessKey="s" />
                                     <br />--%>
-                                    <%--<asp:Label ID="Label1" runat="server" Text="Has Header ?"></asp:Label>--%>
-                                    <%--<asp:RadioButtonList ID="rbHDR" runat="server">
+                                        <%--<asp:Label ID="Label1" runat="server" Text="Has Header ?"></asp:Label>--%>
+                                        <%--<asp:RadioButtonList ID="rbHDR" runat="server">
                                         <asp:ListItem Text = "Yes" Value = "Yes" Selected = "True" ></asp:ListItem>
                                         <asp:ListItem Text = "No" Value = "No"></asp:ListItem>
                                     </asp:RadioButtonList>
                                     <asp:GridView ID="GridView1" runat="server" AllowPaging = "true"  >
                                     </asp:GridView>--%>
 
-                                    <asp:FileUpload ID="FileUpload1" runat="server" />
-                                    
-                                    <asp:GridView ID="GridView1" runat="server">
-                                    </asp:GridView>
-                                </div>
-                            </td>
-                            <td  style="width:35%">
+                                        <asp:FileUpload ID="FileUpload1" runat="server" />
 
-                            </td>
-                        </tr>
-                        <tr style="height:6px">
+                                        <asp:GridView ID="GridView1" runat="server">
+                                        </asp:GridView>
+                                    </div>
+                                </td>
+                                <td style="width: 35%"></td>
+                            </tr>
+                            <tr style="height: 6px">
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 25%;" class="ControlLabelproject">
+                                             <%--   <asp:CompareValidator ID="CompareValidator5" ValidationGroup="salesval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
+                                                Select Branch  *
+                                                 <%-- <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                      Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                      Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
+                                            </td>
+                                            <td class="ControlDrpBorder" style="width: 24%">
+                                               <asp:DropDownList ID="drpBranch" TabIndex="4" EnableTheming="False" AppendDataBoundItems="True" CssClass="drpDownListMedium"
+                                                                                                runat="server" Width="100%" DataTextField="BranchName" BackColor="#E7E7E7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                DataValueField="Branchcode">
+                                                                                                <asp:ListItem Text="All Branch" Value="All"></asp:ListItem>
+                                                                                            </asp:DropDownList>
+                                            </td>
+                                            <td style="width: 35%" align="center">
+                                                <asp:Button ID="btnUpload" runat="server" Height="21px" SkinID="skinButtonCol2" Text="Upload" Width="100px" OnClick="btnUpload_Click" />
+                                            </td>
 
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <table style="width:100%">
-                                    <tr>
-                                        <td style="width:30%">
-                                        
-                                        </td>
-                                        <td style="width:35%" align="center">
-                                            <asp:Button ID="btnUpload" runat="server" Height="21px"  SkinID="skinButtonCol2" Text="Upload" Width="100px" onclick="btnUpload_Click"/>
-                                        </td>
-                                        <td style="width:35%">
-                                        
-                                        </td>
-                                    </tr>
-                                    <tr style="height:10px">
+                                        </tr>
+                                        <tr style="height: 10px">
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 30%"></td>
+                                            <td style="width: 35%" align="center">
+                                                <asp:Button ID="Button2" runat="server" SkinID="skinButtonCol2" Text="Download Sample Excel Format" Height="21px" Width="200px" OnClick="btnFormat_Click" />
+                                            </td>
+                                            <td style="width: 35%"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-                                    </tr>
-                                    <tr>
-                                        <td style="width:30%">
-                                        
-                                        </td>
-                                        <td style="width:35%" align="center" >
-                                            <asp:Button ID="Button2" runat="server" SkinID="skinButtonCol2" Text="Download Sample Excel Format" Height="21px"  Width="200px" onclick="btnFormat_Click"/>
-                                        </td>
-                                        <td style="width:35%">
-                                        
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            
-                
-        </table>
-        
-    </div>
-    
+
+            </table>
+
+        </div>
+
     </form>
 </body>
 </html>

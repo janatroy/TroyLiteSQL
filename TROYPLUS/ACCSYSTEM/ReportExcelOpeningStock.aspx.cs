@@ -29,21 +29,23 @@ public partial class ReportExcelOpeningStock : System.Web.UI.Page
 
             string connection = string.Empty;
 
-            if (Request.Cookies["Company"] != null)
-                connection = Request.Cookies["Company"].Value;
-            else
-                Response.Redirect("Login.aspx");
+            //if (Request.Cookies["Company"] != null)
+            //    connection = Request.Cookies["Company"].Value;
+            //else
+            //    Response.Redirect("Login.aspx");
 
-            ds = objBL.ListOpeningProductStock(connection, "", "","");
+            string usernam = Request.Cookies["LoggedUserName"].Value;
+            ds = objBL.listopeningstocks(usernam);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Opening Stock");
                 dt.Columns.Add(new DataColumn("ProductName"));
                 dt.Columns.Add(new DataColumn("ItemCode"));
                 dt.Columns.Add(new DataColumn("Model"));
                 dt.Columns.Add(new DataColumn("Brand"));
                 dt.Columns.Add(new DataColumn("Opening Stock"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
 
                 DataRow dr_final123 = dt.NewRow();
                 dt.Rows.Add(dr_final123);
@@ -56,6 +58,7 @@ public partial class ReportExcelOpeningStock : System.Web.UI.Page
                     dr_final1["Model"] = dr["Model"];
                     dr_final1["Brand"] = dr["productdesc"];
                     dr_final1["Opening Stock"] = dr["OpeningStock"];
+                    dr_final1["BranchCode"] = dr["BranchCode"];
                     dt.Rows.Add(dr_final1);
                 }
                 DataRow dr_final2 = dt.NewRow();
@@ -64,6 +67,7 @@ public partial class ReportExcelOpeningStock : System.Web.UI.Page
                 dr_final2["Model"] = "";
                 dr_final2["Brand"] = "";
                 dr_final2["Opening Stock"] = "";
+                dr_final2["BranchCode"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }
@@ -167,12 +171,12 @@ public partial class ReportExcelOpeningStock : System.Web.UI.Page
 
             string connection = string.Empty;
 
-            if (Request.Cookies["Company"] != null)
-                connection = Request.Cookies["Company"].Value;
-            else
-                Response.Redirect("Login.aspx");
-
-            ds = objBL.ListOpeningProductStock(connection, "", "","");
+            //if (Request.Cookies["Company"] != null)
+            //    connection = Request.Cookies["Company"].Value;
+            //else
+            //    Response.Redirect("Login.aspx");
+            string usernam = Request.Cookies["LoggedUserName"].Value;
+            ds = objBL.listopeningstocks(usernam);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -185,6 +189,7 @@ public partial class ReportExcelOpeningStock : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Model"));
                 dt.Columns.Add(new DataColumn("Brand"));
                 dt.Columns.Add(new DataColumn("Opening Stock"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
 
                 DataRow dr_final123 = dt.NewRow();
                 dt.Rows.Add(dr_final123);
@@ -197,6 +202,7 @@ public partial class ReportExcelOpeningStock : System.Web.UI.Page
                     dr_final1["Model"] = dr["Model"];
                     dr_final1["Brand"] = dr["productdesc"];
                     dr_final1["Opening Stock"] = dr["OpeningStock"];
+                    dr_final1["BranchCode"] = dr["BranchCode"];
                     dt.Rows.Add(dr_final1);
                 }
                 DataRow dr_final2 = dt.NewRow();
@@ -205,6 +211,7 @@ public partial class ReportExcelOpeningStock : System.Web.UI.Page
                 dr_final2["Model"] = "";
                 dr_final2["Brand"] = "";
                 dr_final2["Opening Stock"] = "";
+                dr_final2["BranchCode"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }
