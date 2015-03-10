@@ -121,6 +121,29 @@ public partial class SuppPayment : System.Web.UI.Page
 
     }
 
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranchAdd.Enabled = true;
+        }
+        else
+        {
+            drpBranchAdd.Enabled = false;
+        }
+    }
+
     private void loadLedgersEdit()
     {
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
@@ -180,6 +203,21 @@ public partial class SuppPayment : System.Web.UI.Page
         GrdViewSales.DataSource = dsSales;
         GrdViewSales.DataBind();
         GrdViewSales.PageSize = 6;
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
     }
 
     protected void BtnClearFilter_Click(object sender, EventArgs e)
@@ -368,6 +406,7 @@ public partial class SuppPayment : System.Web.UI.Page
         //DropDownList dropDown = (DropDownList)Accordion1.FindControl("ddCriteria");
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
     }
 
     protected void GrdViewPayment_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -444,6 +483,11 @@ public partial class SuppPayment : System.Web.UI.Page
         ddBanks.DataValueField = "LedgerID";
     }
 
+    //protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    //loadDropDowns();
+    //}
+
     protected void GrdViewPayment_SelectedIndexChanged(object sender, EventArgs e)
     {
         try
@@ -463,6 +507,10 @@ public partial class SuppPayment : System.Web.UI.Page
             bl.InsertChequeStatus(connection, Trans);
 
             hdPayment.Value = Convert.ToString(GrdViewPayment.SelectedDataKey.Value);
+            
+
+            drpBranchAdd.Enabled = false;
+            loadBranch();
             loadLedgersEdit();
 
             if (!bl.IsValidDate(connection, Convert.ToDateTime(recondate)))
@@ -480,6 +528,7 @@ public partial class SuppPayment : System.Web.UI.Page
                     txtTransDate.Text = DateTime.Parse(ds.Tables[0].Rows[0]["TransDate"].ToString()).ToShortDateString();
 
                     ddReceivedFrom.SelectedValue = ds.Tables[0].Rows[0]["DebtorID"].ToString();
+                    drpBranchAdd.SelectedValue = ds.Tables[0].Rows[0]["Branchcode"].ToString();
                     txtAmount.Text = ds.Tables[0].Rows[0]["Amount"].ToString();
                     txtMobile.Text = ds.Tables[0].Rows[0]["Mobile"].ToString();
                     chkPayTo.SelectedValue = ds.Tables[0].Rows[0]["paymode"].ToString();
@@ -783,6 +832,8 @@ public partial class SuppPayment : System.Web.UI.Page
             ClearPanel();
             ShowPendingBills();
 
+            
+
             DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
             string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
             txtTransDate.Text = dtaa;
@@ -795,7 +846,15 @@ public partial class SuppPayment : System.Web.UI.Page
             ddBanks.Items.Clear();
             ddBanks.Items.Insert(0, new ListItem("Select Bank", "0"));
             loadBanks();
+
+            drpBranchAdd.Enabled = true;
+
+            loadBranch();
+            BranchEnable_Disable();
             loadLedgers();
+
+            
+            ddReceivedFrom.SelectedValue = "0";
 
             if (chkPayTo.SelectedItem != null)
             {
@@ -829,7 +888,7 @@ public partial class SuppPayment : System.Web.UI.Page
         txtNarration.Text = "";
         txtChequeNo.Text = "";
         txtAmount.Text = "";
-        ddReceivedFrom.SelectedValue = "0";
+        
         txtMobile.Text = "";
         ddBanks.SelectedValue = "0";
         GrdBills.DataSource = null;
@@ -1797,6 +1856,8 @@ public partial class SuppPayment : System.Web.UI.Page
                 VoucherType = "Payment";
                 ChequeNo = cmbChequeNo.SelectedItem.Text;
 
+                string Branchcode = drpBranchAdd.SelectedValue;
+
                 BusinessLogic bl = new BusinessLogic();
 
                 string connection = Request.Cookies["Company"].Value;
@@ -1882,7 +1943,7 @@ public partial class SuppPayment : System.Web.UI.Page
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                bl.InsertSuppPayment(out OutPut, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, ds, usernam);
+                bl.InsertSuppPayment(out OutPut, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, ds, usernam, Branchcode);
                 ichequestatus = bl.UpdateChequeused_conn(ChequeNo, CreditorID, conn);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payment Saved Successfully. Transaction No : " + OutPut.ToString() + "');", true);
@@ -2292,6 +2353,8 @@ public partial class SuppPayment : System.Web.UI.Page
                 ChequeNo = cmbChequeNo.SelectedItem.Text; 
                 BusinessLogic bl = new BusinessLogic();
 
+                string Branchcode = drpBranchAdd.SelectedValue;
+
                 string connection = Request.Cookies["Company"].Value;
 
                 TransNo = int.Parse(GrdViewPayment.SelectedDataKey.Value.ToString());
@@ -2369,7 +2432,7 @@ public partial class SuppPayment : System.Web.UI.Page
 
                 DataSet ds = (DataSet)Session["BillData"];
                 string usernam = Request.Cookies["LoggedUserName"].Value;
-                bl.UpdateSuppPayment(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, ds, usernam);
+                bl.UpdateSuppPayment(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, ds, usernam, Branchcode);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payment Updated Successfully. Transaction No : " + OutPut.ToString() + "');", true);
 

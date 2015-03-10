@@ -46,7 +46,7 @@ public partial class printsalesbill : System.Web.UI.Page
                 //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 DataSet dsBill = new DataSet();
-                dsBill = bl.GetSalesForId(Convert.ToInt32(Session["salesID"]));
+                dsBill = bl.GetSalesForId(Convert.ToInt32(Session["salesID"]),"");
                 int customerID = 0;
                 if (dsBill.Tables[0].Rows.Count > 0)
                 {
@@ -180,7 +180,7 @@ public partial class printsalesbill : System.Web.UI.Page
             reportXMLWriter.WriteStartDocument();
             reportXMLWriter.WriteStartElement("Purchase");
             DataSet dsBill = new DataSet();
-            dsBill = bl.GetSalesForId(salesID);
+            dsBill = bl.GetSalesForId(salesID,"");
             if (dsBill.Tables[0].Rows.Count == 0)
             {
                 reportXMLWriter.WriteStartElement("Bill");

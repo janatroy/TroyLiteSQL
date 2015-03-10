@@ -2132,7 +2132,7 @@ public partial class PurchaseOrder : System.Web.UI.Page
 
             if (!dupFlag)
             {
-                ds = bl.ListProductDetails(itemCode);
+                ds = bl.ListProductDetails(itemCode,"");
 
                 if (ds != null)
                 {

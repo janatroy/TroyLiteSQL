@@ -727,7 +727,7 @@ public partial class CustomerSales : System.Web.UI.Page
         if (strBillno == 0)
             ds = bl.GetSales();
         else
-            ds = bl.GetSalesForId(strBillno);
+            ds = bl.GetSalesForId(strBillno,"");
 
         //PanelBill.Visible = true;
         return ds;
@@ -969,7 +969,7 @@ public partial class CustomerSales : System.Web.UI.Page
             if (lblBillNo.Text != "Auto Generated.No need to enter")
             {
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text));
+                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
@@ -1255,7 +1255,7 @@ public partial class CustomerSales : System.Web.UI.Page
             if (lblBillNo.Text != "Auto Generated.No need to enter")
             {
                 string receivedBill = "";
-                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text));
+                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text),drpBranch.SelectedValue);
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
@@ -1494,7 +1494,7 @@ public partial class CustomerSales : System.Web.UI.Page
             if (lblBillNo.Text != "Auto Generated.No need to enter")
             {
                 string receivedBill = "";
-                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text));
+                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
@@ -1670,7 +1670,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 {
                     hdOpr.Value = "New";
                     hdCurrRole.Value = "";
-                    ds = bl.ListProductDetails(itemCode);
+                    ds = bl.ListProductDetails(itemCode,"");
 
                     //string category = lblledgerCategory.Text;
                     string category = drpCustomerCategoryAdd.SelectedValue;
@@ -6049,7 +6049,7 @@ public partial class CustomerSales : System.Web.UI.Page
             if (lblBillNo.Text != "Auto Generated.No need to enter")
             {
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text));
+                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
@@ -7045,7 +7045,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             if (lblBillNo.Text != "Auto Generated.No need to enter")
             {
-                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text));
+                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
@@ -7212,7 +7212,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             if (lblBillNo.Text != "Auto Generated.No need to enter")
             {
-                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text));
+                var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
@@ -7609,10 +7609,10 @@ public partial class CustomerSales : System.Web.UI.Page
 
             if (GrdViewSales.SelectedDataKey.Value != null && GrdViewSales.SelectedDataKey.Value.ToString() != "")
                 salesID = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value.ToString());
-
+            string branchcode = row.Cells[9].Text;
             loadBranch();
-           
-            DataSet ds = bl.GetSalesForId(salesID);
+
+            DataSet ds = bl.GetSalesForId(salesID, branchcode);
 
             hdsales.Value = salesID.ToString();
             //txtBillDate.Focus();
@@ -8872,10 +8872,14 @@ public partial class CustomerSales : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
                 string recondate = string.Empty;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
+               
 
+                GridViewRow row = GrdViewSales.SelectedRow;
+               
                 //if (GrdViewSales.SelectedDataKey != null)
                 //{
-                int sBillNo = Convert.ToInt32(GrdViewSales.DataKeys[e.RowIndex].Value.ToString());
+                int sBillNo = Convert.ToInt32(GrdViewSales.DataKeys[e.RowIndex].Value.ToString());                
+                string branchcode = row.Cells[9].Text;
                 //int sBillNo = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value);
                 //}
 
@@ -8883,7 +8887,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                var salesData = bl.GetSalesForId(sBillNo);
+                var salesData = bl.GetSalesForId(sBillNo, branchcode);
 
                 if (salesData != null && salesData.Tables[0].Rows.Count > 0)
                 {

@@ -833,7 +833,7 @@ public partial class BankReconciliation : System.Web.UI.Page
             //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
             BusinessLogic bl = new BusinessLogic(sDataSource);
             string usernam = Request.Cookies["LoggedUserName"].Value;
-            int del = bl.DeletePurchase(iPurchase, sBillNo, usernam);
+            int del = bl.DeletePurchase(iPurchase, sBillNo, usernam,"");
             /*Start Purchase Stock Negative Change - March 16*/
             if (del == -2)
             {

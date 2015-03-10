@@ -93,7 +93,7 @@ public partial class ExpPayment : System.Web.UI.Page
                 loadHeading();
                 loadGroup("0");
 
-                loadLedger("0");
+                loadLedger("0", drpBranchAdd.SelectedValue);
 
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
@@ -158,6 +158,21 @@ public partial class ExpPayment : System.Web.UI.Page
         loadChequeNo(Convert.ToInt32(ddBanks.SelectedItem.Value));
     }
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
+    }
+
     private void loadChequeNo(int bnkId)
     {
         cmbChequeNo.Items.Clear();
@@ -206,6 +221,11 @@ public partial class ExpPayment : System.Web.UI.Page
 
     }
 
+    protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        loadLedger(drpGroup.SelectedValue,drpBranchAdd.SelectedValue);
+    }
+
     protected void drpHeading_SelectedIndexChanged(object sender, EventArgs e)
     {
         try
@@ -213,16 +233,39 @@ public partial class ExpPayment : System.Web.UI.Page
             loadGroup(drpHeading.SelectedValue);
             if (Session["State"] == "Edit")
             {
-                loadLedgerEdit(drpGroup.SelectedValue);
+                loadLedgerEdit(drpGroup.SelectedValue, drpBranchAdd.SelectedValue);
             }
             else
             {
-                loadLedger(drpGroup.SelectedValue);
+                loadLedger(drpGroup.SelectedValue, drpBranchAdd.SelectedValue);
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranchAdd.Enabled = true;
+        }
+        else
+        {
+            drpBranchAdd.Enabled = false;
         }
     }
 
@@ -232,11 +275,11 @@ public partial class ExpPayment : System.Web.UI.Page
         {
             if (Session["State"] == "Edit")
             {
-                loadLedgerEdit(drpGroup.SelectedValue);
+                loadLedgerEdit(drpGroup.SelectedValue, drpBranchAdd.SelectedValue);
             }
             else
             {
-                loadLedger(drpGroup.SelectedValue);
+                loadLedger(drpGroup.SelectedValue, drpBranchAdd.SelectedValue);
             }
         }
         catch (Exception ex)
@@ -245,12 +288,12 @@ public partial class ExpPayment : System.Web.UI.Page
         }
     }
 
-    private void loadLedger(string GroupID)
+    private void loadLedger(string GroupID, string Branch)
     {
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
-        ds = bl.ListLedgerForGroupIsActive(GroupID);
+        ds = bl.ListLedgerForGroupIsActive(GroupID, Branch);
         ddReceivedFrom.Items.Clear();
         ddReceivedFrom.Items.Add(new ListItem("Select Ledger", "0"));
         ddReceivedFrom.DataSource = ds;
@@ -261,12 +304,12 @@ public partial class ExpPayment : System.Web.UI.Page
 
     }
 
-    private void loadLedgerEdit(string GroupID)
+    private void loadLedgerEdit(string GroupID, string Branch)
     {
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
-        ds = bl.ListLedgerForGroup(GroupID);
+        ds = bl.ListLedgerForGroup(GroupID, Branch);
         ddReceivedFrom.Items.Clear();
         ddReceivedFrom.Items.Add(new ListItem("Select Ledger", "0"));
         ddReceivedFrom.DataSource = ds;
@@ -446,6 +489,7 @@ public partial class ExpPayment : System.Web.UI.Page
         //DropDownList dropDown = (DropDownList)Accordion1.FindControl("ddCriteria");
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+        GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
     }
 
     protected void GrdViewPayment_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -563,6 +607,8 @@ public partial class ExpPayment : System.Web.UI.Page
             bl.InsertChequeStatus(connection, Trans);
             loadBanksEdit();
 
+            loadBranch();
+
             hdPayment.Value = Convert.ToString(GrdViewPayment.SelectedDataKey.Value);
 
             if (!bl.IsValidDate(connection, Convert.ToDateTime(recondate)))
@@ -586,12 +632,15 @@ public partial class ExpPayment : System.Web.UI.Page
                         drpHeading.SelectedValue = dsd.Tables[0].Rows[0]["HeadingId"].ToString();
                         loadGroup(drpHeading.SelectedValue);
 
+                        drpBranchAdd.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+
                         drpGroup.SelectedValue = dsd.Tables[0].Rows[0]["GroupId"].ToString();
-                        loadLedgerEdit(drpGroup.SelectedValue);
+                        loadLedgerEdit(drpGroup.SelectedValue, drpBranchAdd.SelectedValue);
 
                         ddReceivedFrom.SelectedValue = ds.Tables[0].Rows[0]["DebtorID"].ToString();
                     }
 
+                    drpBranchAdd.Enabled = false;
 
                     txtAmount.Text = ds.Tables[0].Rows[0]["Amount"].ToString();
                     //txtMobile.Text = ds.Tables[0].Rows[0]["Mobile"].ToString();
@@ -890,8 +939,15 @@ public partial class ExpPayment : System.Web.UI.Page
 
             drpGroup.SelectedValue = "8";
 
-            loadLedger("8");
+            
             Session["State"] = "Add";
+
+            drpBranchAdd.Enabled = true;
+
+
+            loadBranch();
+            BranchEnable_Disable();
+            loadLedger(drpGroup.SelectedValue, drpBranchAdd.SelectedValue);
         }
         catch (Exception ex)
         {
@@ -1519,6 +1575,7 @@ public partial class ExpPayment : System.Web.UI.Page
                 BillNo = txtBillAdd.Text;
                 BusinessLogic bl = new BusinessLogic();
 
+                string Branch = drpBranchAdd.SelectedValue;
                 string connection = Request.Cookies["Company"].Value;
 
                 if (chkPayTo.SelectedValue == "Cheque")
@@ -1603,7 +1660,7 @@ public partial class ExpPayment : System.Web.UI.Page
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                bl.InsertPayment(out OutPut, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, BillNo, usernam,"");
+                bl.InsertPayment(out OutPut, conn, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, BillNo, usernam, Branch);
                 ichequestatus = bl.UpdateChequeused_conn(ChequeNo, CreditorID, conn);
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payment Saved Successfully. Transaction No : " + OutPut.ToString() + "');", true);
@@ -2040,11 +2097,12 @@ public partial class ExpPayment : System.Web.UI.Page
                 string conn = GetConnectionString();
                 int OutPut = 0;
 
+                string Branch = drpBranchAdd.SelectedValue;
                 DataSet ds = (DataSet)Session["BillData"];
                 string usernam = Request.Cookies["LoggedUserName"].Value;
-                bl.UpdatePaymentExp(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, Billno, usernam);
+                bl.UpdatePaymentExp(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, Billno, usernam, Branch);
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payment Updated Successfully. Transaction No : " + OutPut.ToString() + "');", true);
+                
 
 
                 string salestype = string.Empty;
@@ -2322,12 +2380,16 @@ public partial class ExpPayment : System.Web.UI.Page
                 //    }
                 //}
 
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payment Updated Successfully. Transaction No : " + OutPut.ToString() + "');", true);
+
                 pnlEdit.Visible = false;
                 //lnkBtnAdd.Visible = true;
                 ////MyAccordion.Visible = true;
                 //GrdViewReceipt.Visible = true;
                 //ModalPopupExtender2.Hide();
                 //popUp.Visible = false;
+                ModalPopupExtender2.Hide();
+
                 GrdViewPayment.DataBind();
                 ClearPanel();
                 UpdatePanelPage.Update();
