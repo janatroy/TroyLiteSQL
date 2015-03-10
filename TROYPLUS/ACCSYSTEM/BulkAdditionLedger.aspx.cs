@@ -34,7 +34,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                 //lblBillDate.Text = DateTime.Now.ToShortDateString();
                 //SalesPanel.Visible = false;
 
-
+                loadBranch();
 
                 //NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
                 //Label1.Text = nics[0].GetPhysicalAddress().ToString();
@@ -338,6 +338,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                 DataTable dtExcelSheetName = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
                 string getExcelSheetName = dtExcelSheetName.Rows[0]["Table_Name"].ToString();
                 cmd.CommandText = "SELECT * FROM [" + getExcelSheetName + "]";
+               // drpBranch.SelectedItem.Text();
                 dAdapter.SelectCommand = cmd;
                 dAdapter.Fill(dtExcelRecords);
                 DataSet ds = new DataSet();
@@ -422,6 +423,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                 int i = 1;
                 int ii = 1;
                 string itemc = string.Empty;
+                string brncode = string.Empty;
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     itemc = Convert.ToString(dr["LedgerName"]);
@@ -433,6 +435,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                     {
                         foreach (DataRow drd in ds.Tables[0].Rows)
                         {
+                           
                             if (ii == i)
                             {
                             }
@@ -450,8 +453,10 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                     i = i + 1;
                     ii = 1;
                 }
+                if (drpBranch.Text.Trim() != string.Empty)
+                    brncode = Convert.ToString(drpBranch.SelectedValue);
 
-                objBL.InsertBulkLedgerCustomer(connection, ds, usernam);
+                objBL.InsertBulkLedgerCustomer(connection, ds, usernam,brncode);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customers Uploaded Successfully');", true);
 
                 //GridView1.DataSource = dtExcelRecords;
@@ -464,5 +469,20 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
-    } 
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("All Branch", "All"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+    }
 }

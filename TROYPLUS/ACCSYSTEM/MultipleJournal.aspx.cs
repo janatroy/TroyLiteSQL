@@ -2650,7 +2650,12 @@ public partial class MultipleJournal : System.Web.UI.Page
                     TextBox TextBoxAmount =
                       (TextBox)gdm.Rows[rowIndex].Cells[4].FindControl("txtAmountM");
                     TextBox TextBoxNarration =
-                     (TextBox)gdm.Rows[rowIndex].Cells[5].FindControl("txtNarrationM");                           
+                     (TextBox)gdm.Rows[rowIndex].Cells[5].FindControl("txtNarrationM");
+                   Label label =
+                  (Label)gdm.Rows[rowIndex].Cells[6].FindControl("unitmultiplecre");
+                //  Label label1 =
+                //   (Label)gdm.Rows[rowIndex].Cells[7].FindControl("unitmultiple");
+                  //  UpdatePanel upt = (UpdatePanel)gdm.Rows[rowIndex].Cells[7].FindControl("UpdatePanel123");   
 
                     drCurrentRow = dtCurrentTable.NewRow();
                     drCurrentRow["RowNumber"] = i + 1;
@@ -2662,6 +2667,8 @@ public partial class MultipleJournal : System.Web.UI.Page
                     dtCurrentTable.Rows[i - 1]["Col4"] = DrpCreditor.SelectedValue;
                     dtCurrentTable.Rows[i - 1]["Col5"] = TextBoxAmount.Text;
                     dtCurrentTable.Rows[i - 1]["Col6"] = TextBoxNarration.Text;
+                    dtCurrentTable.Rows[i - 1]["Col7"] = label.Text;
+                  //  dtCurrentTable.Rows[i - 1]["Col7"] = label1.Text;
                     
                     
                     rowIndex++;
@@ -2703,6 +2710,8 @@ public partial class MultipleJournal : System.Web.UI.Page
                       (TextBox)GrdViewItems.Rows[rowIndex].Cells[4].FindControl("txtAmount");
                     TextBox TextBoxNarration =
                      (TextBox)GrdViewItems.Rows[rowIndex].Cells[4].FindControl("txtNarration");
+                    Label label =
+                  (Label)GrdViewItems.Rows[rowIndex].Cells[5].FindControl("unitdebt");
 
                     drCurrentRow = dtCurrentTable.NewRow();
                     drCurrentRow["RowNumber"] = i + 1;
@@ -2713,7 +2722,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                     dtCurrentTable.Rows[i - 1]["Col3"] = DrpCreditor.SelectedValue;
                     dtCurrentTable.Rows[i - 1]["Col4"] = TextBoxAmount.Text;
                     dtCurrentTable.Rows[i - 1]["Col5"] = TextBoxNarration.Text;
-
+                    dtCurrentTable.Rows[i - 1]["Col6"] = label.Text;
 
                     rowIndex++;
                 }
@@ -2754,6 +2763,8 @@ public partial class MultipleJournal : System.Web.UI.Page
                       (TextBox)BulkEditGridView1.Rows[rowIndex].Cells[4].FindControl("txtAmount");
                     TextBox TextBoxNarration =
                      (TextBox)BulkEditGridView1.Rows[rowIndex].Cells[4].FindControl("txtNarration");
+                    Label label =
+                 (Label)BulkEditGridView1.Rows[rowIndex].Cells[5].FindControl("unitdcreb");
 
                     drCurrentRow = dtCurrentTable.NewRow();
                     drCurrentRow["RowNumber"] = i + 1;
@@ -2764,6 +2775,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                     dtCurrentTable.Rows[i - 1]["Col3"] = DrpDebtor.SelectedValue;
                     dtCurrentTable.Rows[i - 1]["Col4"] = TextBoxAmount.Text;
                     dtCurrentTable.Rows[i - 1]["Col5"] = TextBoxNarration.Text;
+                    dtCurrentTable.Rows[i - 1]["Col6"] = label.Text;
 
 
                     rowIndex++;
@@ -2804,6 +2816,10 @@ public partial class MultipleJournal : System.Web.UI.Page
                       (TextBox)gdm.Rows[rowIndex].Cells[4].FindControl("txtAmountM");
                     TextBox TextBoxNarration =
                      (TextBox)gdm.Rows[rowIndex].Cells[5].FindControl("txtNarrationM");
+                    Label label =
+                (Label)gdm.Rows[rowIndex].Cells[6].FindControl("unitmultiplecre");
+             //      Label label1 =
+            //   (Label)gdm.Rows[rowIndex].Cells[7].FindControl("unitmultiple");
 
 
                     TextBoxRefNo.Text = dt.Rows[i]["Col1"].ToString();
@@ -2812,7 +2828,8 @@ public partial class MultipleJournal : System.Web.UI.Page
                     DrpCreditor.SelectedValue = dt.Rows[i]["Col4"].ToString();
                     TextBoxAmount.Text = dt.Rows[i]["Col5"].ToString();
                     TextBoxNarration.Text = dt.Rows[i]["Col6"].ToString();
-                   
+                    label.Text = dt.Rows[i]["Col7"].ToString();
+                   // label1.Text = dt.Rows[i]["Col7"].ToString();
                     rowIndex++;
 
                 }
@@ -2840,6 +2857,9 @@ public partial class MultipleJournal : System.Web.UI.Page
                       (TextBox)BulkEditGridView1.Rows[rowIndex].Cells[4].FindControl("txtAmount");
                     TextBox TextBoxNarration =
                      (TextBox)BulkEditGridView1.Rows[rowIndex].Cells[4].FindControl("txtNarration");
+                    Label label =
+            (Label)BulkEditGridView1.Rows[rowIndex].Cells[5].FindControl("unitdcreb");
+
 
 
                     TextBoxRefNo.Text = dt.Rows[i]["Col1"].ToString();
@@ -2847,6 +2867,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                     DrpDebtor.SelectedValue = dt.Rows[i]["Col3"].ToString();
                     TextBoxAmount.Text = dt.Rows[i]["Col4"].ToString();
                     TextBoxNarration.Text = dt.Rows[i]["Col5"].ToString();
+                    label.Text = dt.Rows[i]["Col6"].ToString();
 
                     rowIndex++;
 
@@ -2875,6 +2896,8 @@ public partial class MultipleJournal : System.Web.UI.Page
                       (TextBox)GrdViewItems.Rows[rowIndex].Cells[4].FindControl("txtAmount");
                     TextBox TextBoxNarration =
                      (TextBox)GrdViewItems.Rows[rowIndex].Cells[4].FindControl("txtNarration");
+                    Label label =
+                  (Label)GrdViewItems.Rows[rowIndex].Cells[5].FindControl("unitdebt");
 
 
                     TextBoxRefNo.Text = dt.Rows[i]["Col1"].ToString();
@@ -2882,6 +2905,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                     DrpCreditor.SelectedValue = dt.Rows[i]["Col3"].ToString();
                     TextBoxAmount.Text = dt.Rows[i]["Col4"].ToString();
                     TextBoxNarration.Text = dt.Rows[i]["Col5"].ToString();
+                    label.Text = dt.Rows[i]["Col6"].ToString();
 
                     rowIndex++;
 
@@ -6743,5 +6767,361 @@ public partial class MultipleJournal : System.Web.UI.Page
         //GrdViewItems.Rows[0].Cells[6].Text = null;
     }
 
+    //protected void drpprojectcode_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        BusinessLogic bl = new BusinessLogic(sDataSource);
+    //        int Project_Id = 0;
 
+    //        string connection = Request.Cookies["Company"].Value;
+
+
+    //        Project_Id = Convert.ToInt32(drpProjectCode.SelectedValue);
+    //        //if (GrdWME.SelectedDataKey.Value != null && GrdWME.SelectedDataKey.Value.ToString() != "")
+    //        //    Project_Id = Convert.ToInt32(GrdWME.SelectedDataKey.Value.ToString());
+
+    //        drpDependencyTask.Items.Clear();
+    //        drpDependencyTask.Items.Add(new ListItem("Select Dependency Task", "0"));
+    //        DataSet ds = bl.GetDependencytask(connection, Project_Id);
+
+    //        drpDependencyTask.DataSource = ds;
+    //        drpDependencyTask.DataBind();
+    //        drpDependencyTask.DataTextField = "Task_Name";
+    //        drpDependencyTask.DataValueField = "Task_Id";
+    //        UpdatePanel2.Update();
+    //        DataSet dst = bl.GetProjectForId(connection, Project_Id);
+    //        if (dst != null)
+    //        {
+    //            if (dst.Tables[0].Rows.Count > 0)
+    //            {
+    //                unitofmeasureheading.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["Unit_Of_Measure"].ToString()) + ")";
+    //                UpdatePanel4.Update();
+    //            }
+    //        }
+    //    }
+
+    //    catch (Exception ex)
+    //    {
+    //        TroyLiteExceptionManager.HandleException(ex);
+    //    }
+    //    // UpdatePanel2.Update();
+    //}
+
+
+
+    protected void cmbDebtor_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+      
+
+            ledgerid = Convert.ToInt32(cmbDebtor.SelectedValue);
+
+
+            DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+            if (dst != null)
+            {
+                if (dst.Tables[0].Rows.Count > 0)
+                {
+                    unitofmeasureheading.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                    UpdatePanel4.Update();
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+        // UpdatePanel2.Update();
+    }
+    protected void cmbCreditor_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+
+
+            ledgerid = Convert.ToInt32(cmbCreditor.SelectedValue);
+
+
+            DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+            if (dst != null)
+            {
+                if (dst.Tables[0].Rows.Count > 0)
+                {
+                    unit.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                    UpdatePanel5.Update();
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+       
+    }
+    protected void drpDebtorM_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+            
+           
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+
+
+
+
+            for (int vLoop = 0; vLoop < gdm.Rows.Count; vLoop++)
+            {
+                Label txttt = (Label)gdm.Rows[vLoop].FindControl("unitmultiple");
+
+                DropDownList txttt1 = (DropDownList)gdm.Rows[vLoop].FindControl("drpDebtorM");
+                UpdatePanel txttt2 = (UpdatePanel)gdm.Rows[vLoop].FindControl("UpdatePanel123");
+                ledgerid = Convert.ToInt32(txttt1.SelectedValue);
+
+                DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+
+                if (dst != null)
+                {
+                    if (dst.Tables[0].Rows.Count > 0)
+                    {
+                        txttt.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                        txttt2.Update();                        //  updatePnlMethod.Update();
+
+                    }
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
+    protected void drpDebtor_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+
+
+            ledgerid = Convert.ToInt32(drpDebtor.SelectedValue);
+
+
+            DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+            if (dst != null)
+            {
+                if (dst.Tables[0].Rows.Count > 0)
+                {
+                    unitdeb1.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                    UpdatePanel12.Update();
+
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
+    protected void drpCreditor1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+
+
+            ledgerid = Convert.ToInt32(drpCreditor1.SelectedValue);
+
+
+            DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+            if (dst != null)
+            {
+                if (dst.Tables[0].Rows.Count > 0)
+                {
+                    unitcre1.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                    UpdatePanel13.Update();
+
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
+    protected void drpCreditorM_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+
+
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+
+
+
+
+            for (int vLoop = 0; vLoop < gdm.Rows.Count; vLoop++)
+            {
+                Label txttt = (Label)gdm.Rows[vLoop].FindControl("unitmultiplecre");
+
+                DropDownList txttt1 = (DropDownList)gdm.Rows[vLoop].FindControl("drpCreditorM");
+                UpdatePanel txttt2 = (UpdatePanel)gdm.Rows[vLoop].FindControl("UpdatePanel1234");
+                ledgerid = Convert.ToInt32(txttt1.SelectedValue);
+
+                DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+
+                if (dst != null)
+                {
+                    if (dst.Tables[0].Rows.Count > 0)
+                    {
+                        txttt.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                        txttt2.Update();                        //  updatePnlMethod.Update();
+
+                    }
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
+    protected void drpCreditor_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+
+
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+
+
+
+
+            for (int vLoop = 0; vLoop < GrdViewItems.Rows.Count; vLoop++)
+            {
+                Label txttt = (Label)GrdViewItems.Rows[vLoop].FindControl("unitdebt");
+
+                DropDownList txttt1 = (DropDownList)GrdViewItems.Rows[vLoop].FindControl("drpCreditor");
+                UpdatePanel txttt2 = (UpdatePanel)GrdViewItems.Rows[vLoop].FindControl("UpdatePanel45");
+                ledgerid = Convert.ToInt32(txttt1.SelectedValue);
+
+                DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+
+                if (dst != null)
+                {
+                    if (dst.Tables[0].Rows.Count > 0)
+                    {
+                        txttt.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                        txttt2.Update();                        //  updatePnlMethod.Update();
+
+                    }
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
+    protected void drpDebtor1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        try
+        {
+            int ledgerid = 0;
+
+
+            string connection = Request.Cookies["Company"].Value;
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = new DataSet();
+
+
+
+
+
+            for (int vLoop = 0; vLoop < BulkEditGridView1.Rows.Count; vLoop++)
+            {
+                Label txttt = (Label)BulkEditGridView1.Rows[vLoop].FindControl("unitdcreb");
+
+                DropDownList txttt1 = (DropDownList)BulkEditGridView1.Rows[vLoop].FindControl("drpDebtor1");
+                UpdatePanel txttt2 = (UpdatePanel)BulkEditGridView1.Rows[vLoop].FindControl("UpdatePanel456");
+                ledgerid = Convert.ToInt32(txttt1.SelectedValue);
+
+                DataSet dst = bl.GetLedgerInfoForId(connection, ledgerid);
+
+                if (dst != null)
+                {
+                    if (dst.Tables[0].Rows.Count > 0)
+                    {
+                        txttt.Text = "(" + Convert.ToString(dst.Tables[0].Rows[0]["BranchCode"].ToString()) + ")";
+                        txttt2.Update();                        //  updatePnlMethod.Update();
+
+                    }
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
 }
