@@ -159,11 +159,11 @@ public partial class BulkReceiptCheque : System.Web.UI.Page
             DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
             string dtaa = Convert.ToDateTime(indianStd).AddDays(5).ToString("dd/MM/yyyy");
 
-            if (dDate > Convert.ToDateTime(dtaa))
-            {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date cannot be more than 5 days from today');", true);
-                return;
-            }
+            //if (dDate > Convert.ToDateTime(dtaa))
+            //{
+            //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date cannot be more than 5 days from today');", true);
+            //    return;
+            //}
 
             DateTime startDate, endDate;
             if (Request.Cookies["Company"] != null)
@@ -295,6 +295,9 @@ public partial class BulkReceiptCheque : System.Web.UI.Page
                 dc = new DataColumn("Paymode");
                 dt.Columns.Add(dc);
 
+                dc = new DataColumn("Branchcode");
+                dt.Columns.Add(dc);
+
                 ds.Tables.Add(dt);
 
                 for (int vLoop = 0; vLoop < gvSales.Rows.Count; vLoop++)
@@ -322,6 +325,15 @@ public partial class BulkReceiptCheque : System.Web.UI.Page
                     {
                         drNew["Paymode"] = "Cheque";
                         drNew["DebitorID"] = gvSales.Rows[vLoop].Cells[8].Text;
+                    }
+
+                    if (gvSales.Rows[vLoop].Cells[9].Text == "&nbsp;")
+                    {
+                        drNew["Branchcode"] = "";
+                    }
+                    else
+                    {
+                        drNew["Branchcode"] = gvSales.Rows[vLoop].Cells[9].Text;
                     }
 
                     ds.Tables[0].Rows.Add(drNew);

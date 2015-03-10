@@ -333,6 +333,7 @@
                     <asp:BoundField DataField="Paymentmode" HeaderText="Payment Mode"  HeaderStyle-BorderColor="Gray"/>
                     <asp:BoundField DataField="Customerid" HeaderText="Customer id"  HeaderStyle-BorderColor="Gray"/>
                     <asp:BoundField DataField="BankId" HeaderText="Bank Id"  HeaderStyle-BorderColor="Gray"/>
+                     <asp:BoundField DataField="Branchcode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
                 </Columns>
                 <PagerTemplate>
                 </PagerTemplate>
