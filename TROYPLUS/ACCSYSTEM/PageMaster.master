@@ -454,7 +454,7 @@
                                         <li class="color Mainmenu2"><a href="#">
                                             <img src="App_Themes/NewTheme/Images/TroySales.png" /></a>
                                             <ul>
-                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">►</span>Master Data</a>
+                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: right">►</span>Master Data</a>
                                                     <ul>
                                                         <li class="color submenumenu"><a href="./PriceListCategoryMap.aspx" runat="server" id="A17">Customer Category</a></li>
                                                         <li class="color submenumenu"><a href="./CustomerInfo.aspx" runat="server" id="lnkCustomerInfo">Customers</a></li>

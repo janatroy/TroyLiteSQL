@@ -183,7 +183,7 @@ public partial class PrintProductSalesBill : System.Web.UI.Page
         double totalll = 0;
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet dsBill = new DataSet();
-        dsBill = bl.GetSalesForId(Convert.ToInt32(Request.QueryString["SID"].ToString()));
+        dsBill = bl.GetSalesForId(Convert.ToInt32(Request.QueryString["SID"].ToString()),"");
 
         int customerID = 0;
         string custAdd = string.Empty;

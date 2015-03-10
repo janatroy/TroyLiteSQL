@@ -107,7 +107,7 @@ public partial class BundlePrintProductSalesBill : System.Web.UI.Page
         }
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet dsBill = new DataSet();
-        dsBill = bl.GetSalesForId(Convert.ToInt32(Session["salesID"]));
+        dsBill = bl.GetSalesForId(Convert.ToInt32(Session["salesID"]),"");
         int customerID = 0;
         if (dsBill.Tables[0].Rows.Count > 0)
         {

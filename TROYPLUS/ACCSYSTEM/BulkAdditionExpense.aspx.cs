@@ -392,24 +392,24 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
                 //        }
                 //    }
                 //}
+            //    string item = Convert.ToString(dr["LedgerName"]);
 
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string item = Convert.ToString(dr["LedgerName"]);
+                    if ((Convert.ToString(dr["LedgerName"]) == null) || (Convert.ToString(dr["LedgerName"]) == ""))
+                    {
 
-                //foreach (DataRow dr in ds.Tables[0].Rows)
-                //{
-                //    string item = Convert.ToString(dr["ItemCode"]);
-                //    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
-                //    {
-
-                //    }
-                //    else
-                //    {
-                //        if (objBL.CheckIfItemCodeDuplicate(item))
-                //        {
-                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product with item code - " + item + " - already exists in the master.');", true);
-                //            return;
-                //        }
-                //    }
-                //}
+                    }
+                    else
+                    {
+                        if (objBL.Checkexpenseexistornot(item))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Expense  with Name - " + item + " - already exists in the Expense Master.');", true);
+                            return;
+                        }
+                    }
+                }
 
 
                 int i = 1;
@@ -443,6 +443,7 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
                     i = i + 1;
                     ii = 1;
                 }
+              //  string item1 = Convert.ToString(dr["LedgerName"]);
 
                 objBL.InsertBulkLedgerExpense(connection, ds, usernam);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Expenses Uploaded Successfully');", true);
