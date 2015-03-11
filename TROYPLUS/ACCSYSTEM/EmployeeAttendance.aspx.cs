@@ -44,16 +44,16 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
                     Response.Redirect("~/Login.aspx");
 
 
-                string dbfileName = connStr.Remove(0, connStr.LastIndexOf(@"App_Data\") + 9);
-                dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
-                BusinessLogic objChk = new BusinessLogic();
+                //string dbfileName = connStr.Remove(0, connStr.LastIndexOf(@"App_Data\") + 9);
+                //dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
+                //BusinessLogic objChk = new BusinessLogic();
 
-                if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
-                {
-                    lnkBtnAddAttendance.Visible = false;
-                    //grdViewAttendanceSummary.Columns[7].Visible = false;
-                    //grdViewAttendanceSummary.Columns[8].Visible = false;
-                }
+                //if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
+                //{
+                //    lnkBtnAddAttendance.Visible = false;
+                //    //grdViewAttendanceSummary.Columns[7].Visible = false;
+                //    //grdViewAttendanceSummary.Columns[8].Visible = false;
+                //}
                 grdViewAttendanceSummary.PageSize = 8;
 
                 string connection = Request.Cookies["Company"].Value;
@@ -246,6 +246,7 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
     {
         try
         {
+            string validationMsg = string.Empty;
             if (SaveAttendanceDetails() > 0)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
@@ -258,7 +259,7 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
             else
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
-                    @"alert('Unable to save attendance details, please contact your Administrator.');", true);
+                  @"alert('Unable to save attendance details. Please contact your Administrator.');", true);
             }
         }
         catch (Exception ex)
@@ -271,41 +272,91 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
     {
         try
         {
-            int attendanceID = -1;
-
-            attendanceID = SaveAttendanceDetails();
-            if (attendanceID > 0)
-            {
-                if (SubmitAttendance(attendanceID))
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
-                   @"alert('Attendance details saved and submitted successfully');", true);
-                    if (ddlSearchCriteria.SelectedIndex >= 0)
-                    {
-                        BindAttendanceSummaryGrid(ddlSearchCriteria.SelectedValue);
-                    }
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
-                   @"alert('Attendance details saved but not submitted, please contact your Administrator.');", true);
-                    if (ddlSearchCriteria.SelectedIndex >= 0)
-                    {
-                        BindAttendanceSummaryGrid(ddlSearchCriteria.SelectedValue);
-                    }
-                }
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
-                    @"alert('Unable to save attendance details, please contact your Administrator.');", true);
-            }
-
+            InitiateAttendanceSubmission();
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void InitiateAttendanceSubmission()
+    {
+        int attendanceID = -1;
+        string validationMsg = string.Empty;
+        attendanceID = SaveAttendanceDetails();
+        if (attendanceID > 0)
+        {
+            if (SubmitAttendance(attendanceID, ref validationMsg))
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
+               @"alert('Attendance details saved and submitted successfully');", true);
+                if (ddlSearchCriteria.SelectedIndex >= 0)
+                {
+                    BindAttendanceSummaryGrid(ddlSearchCriteria.SelectedValue);
+                }
+            }
+            else
+            {
+                lblAutoApplyLeaveMsg.Text = "ATTENDANCE SUBMISSION FAILED" + Environment.NewLine + validationMsg + Environment.NewLine + "Click Submit to apply leave automatically for the above mentioned employee";
+                ModalPopupAutoApplyLeave.Show();
+                ModalPopupExtender1.Show();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
+                                                        @"alert('Attendance details saved but not submitted.');", true);
+            }
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(),
+                @"alert('Unable to save attendance details. Please contact your Administrator.');", true);
+        }
+    }
+
+    protected void btnAutoApplyLeave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            // Apply leaves.
+            if (CheckAndAutoApplyLeaveForAbsent())
+            {
+                // Submit attendance.
+                InitiateAttendanceSubmission();
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    private bool CheckAndAutoApplyLeaveForAbsent()
+    {
+        DataTable dtAttendanceDetail = GetReArrangedDataTable(Session["DtAttendanceDetails"] as DataTable);
+        DataRow[] drAbsentRecords = dtAttendanceDetail.Select("Remarks = 'Absent'");
+        if (drAbsentRecords.Count() > 0)
+        {
+            string connection = Request.Cookies["Company"].Value;
+            string username = Request.Cookies["LoggedUserName"].Value;
+            BusinessLogic bl = new BusinessLogic(connection);
+            foreach (DataRow dr in drAbsentRecords)
+            {
+                string empNo = dr[0].ToString();
+                DateTime absentDate = DateTime.Parse(dr[1].ToString());
+                string leaveTypeId = ConfigurationManager.AppSettings["AutoApplyLeaveType"];
+                if (string.IsNullOrEmpty(leaveTypeId))
+                {
+                    leaveTypeId = "1";
+                }
+                if (bl.ApplyLeave(empNo, absentDate, "FN", absentDate, "AN", DateTime.Now, leaveTypeId, "Leave auto applied by " + username, string.Empty, string.Empty, string.Empty, "Approved") > 0)
+                {
+                    dr["Remarks"] = "Leave";
+                    dr.AcceptChanges();
+                }
+            }
+            dtAttendanceDetail.AcceptChanges();
+
+        }
+        return true;
     }
 
     protected void ddlSearchCriteria_SelectedIndexChanged(object sender, EventArgs e)
@@ -332,23 +383,35 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
             // verify the value and change the next applicable value for the button
             if (btnSender.Text == "Present")
             {
+                // Present can be changed to Absent only.
                 if (isUpdate)
                 {
-                    btnSender.Text = "Leave";
+                    btnSender.Text = "Absent";
                     btnSender.CssClass = "btnBts btnBts-warning";
                 }
                 else
                     btnSender.CssClass = "btnBts btnBts-default";
             }
-            else if (btnSender.Text == "Leave")
+            else if (btnSender.Text == "Absent")
             {
                 if (isUpdate)
                 {
-                    CheckCompOffOptionsForTheRequest(btnSender);
+                    btnSender.Text = "Present";
+                    btnSender.CssClass = "btnBts btnBts-default";
                 }
-                else { btnSender.CssClass = "btnBts btnBts-warning"; }
-
+                else
+                    btnSender.CssClass = "btnBts btnBts-warning";
             }
+            //else if (btnSender.Text == "Leave")
+            //{
+            //    // Leave can be updated to Present provided week-off or comp-off.
+            //    if (isUpdate)
+            //    {
+            //        CheckCompOffOptionsForTheRequest(btnSender);
+            //    }
+            //    else { btnSender.CssClass = "btnBts btnBts-warning"; }
+
+            //}
             else if (btnSender.Text == "Week Off")
             {
                 if (isUpdate)
@@ -414,6 +477,7 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
         DateTime.TryParse(string.Format("{0}-{1}-{2}", year, month, dayOfMonth), out requestDate);
         return requestDate;
     }
+
     private bool ShowCompOffRotaPopup(Button btnSender)
     {
         if (btnSender != null)
@@ -509,50 +573,10 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
 
     private int SaveAttendanceDetails()
     {
-        DataTable dtAttendanceDetail = new DataTable();
         int attendanceId = 0;
-
-        dtAttendanceDetail.Columns.Add(new DataColumn("EmpNo"));
-        dtAttendanceDetail.Columns.Add(new DataColumn("Date"));
-        dtAttendanceDetail.Columns.Add(new DataColumn("Remarks"));
         if (Session["DtAttendanceDetails"] != null)
         {
-            DataTable dtGridSource = Session["DtAttendanceDetails"] as DataTable;
-            int rowIndex = 0;
-            foreach (GridViewRow row in GridViewAttendanceDetail.Rows)
-            {
-                string[] rowItem = new string[3];
-                int cellIndex = 0;
-                foreach (TableCell cell in row.Cells)
-                {
-                    if (cellIndex == 0)
-                    {
-                        rowItem[0] = dtGridSource.Rows[rowIndex][cellIndex].ToString();
-                    }
-
-                    if (cell.Controls.Count > 1)
-                    {
-                        if (cell.Controls[1].ToString().Equals("System.Web.UI.WebControls.Button"))
-                        {
-                            Button btn = cell.Controls[1] as Button;
-                            if (!btn.Text.Equals(string.Empty) && !btn.Text.Equals("NA"))
-                            {
-                                // Get date value
-                                string dateValue = GridViewAttendanceDetail.Columns[cellIndex].HeaderText.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).First();
-                                rowItem[1] = dateValue;
-                                // Get attendance mark
-                                rowItem[2] = btn.Text;
-
-                                dtAttendanceDetail.Rows.Add(rowItem.ToArray());
-                            }
-                        }
-                    }
-                    cellIndex++;
-
-                }
-                rowIndex++;
-            }
-
+            DataTable dtAttendanceDetail = GetReArrangedDataTable(Session["DtAttendanceDetails"] as DataTable);
             // Update records in the database
             string connection = Request.Cookies["Company"].Value;
             string username = Request.Cookies["LoggedUserName"].Value;
@@ -566,7 +590,10 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
             {
                 if (!createSummary)
                     int.TryParse(hdnfAttendanceID.Value, out attendanceId);
-                hdnfAttendanceID.Value = string.Empty;
+                else
+                {
+                    hdnfAttendanceID.Value = attendanceId.ToString();
+                }
                 hdnfIsNewAttendance.Value = string.Empty;
                 return attendanceId;
             }
@@ -574,12 +601,57 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
         return attendanceId;
     }
 
-    private bool SubmitAttendance(int attendanceID)
+    private DataTable GetReArrangedDataTable(DataTable dtGridSource)
+    {
+        DataTable dtAttendanceDetail = new DataTable();
+        dtAttendanceDetail.Columns.Add(new DataColumn("EmpNo"));
+        dtAttendanceDetail.Columns.Add(new DataColumn("Date"));
+        dtAttendanceDetail.Columns.Add(new DataColumn("Remarks"));
+
+        int rowIndex = 0;
+        foreach (GridViewRow row in GridViewAttendanceDetail.Rows)
+        {
+            string[] rowItem = new string[3];
+            int cellIndex = 0;
+            foreach (TableCell cell in row.Cells)
+            {
+                if (cellIndex == 0)
+                {
+                    rowItem[0] = dtGridSource.Rows[rowIndex][cellIndex].ToString();
+                }
+
+                if (cell.Controls.Count > 1)
+                {
+                    if (cell.Controls[1].ToString().Equals("System.Web.UI.WebControls.Button"))
+                    {
+                        Button btn = cell.Controls[1] as Button;
+                        if (!btn.Text.Equals(string.Empty) && !btn.Text.Equals("NA"))
+                        {
+                            // Get date value
+                            string dateValue = GridViewAttendanceDetail.Columns[cellIndex].HeaderText.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).First();
+                            rowItem[1] = dateValue;
+                            // Get attendance mark
+                            rowItem[2] = btn.Text;
+
+                            dtAttendanceDetail.Rows.Add(rowItem.ToArray());
+                        }
+                    }
+                }
+                cellIndex++;
+
+            }
+            rowIndex++;
+        }
+        return dtAttendanceDetail;
+    }
+
+    private bool SubmitAttendance(int attendanceID, ref string validationMsg)
     {
         string connection = Request.Cookies["Company"].Value;
         string username = Request.Cookies["LoggedUserName"].Value;
         BusinessLogic bl = new BusinessLogic(connection);
-        return bl.SubmitAttendance(attendanceID);
+        return bl.SubmitAttendance(attendanceID, username, ViewState["AttendanceYear"].ToString(),
+                ViewState["AttendanceMonth"].ToString(), ref validationMsg);
     }
 
     private void BindAttendanceSummaryGrid(string attendanceYear)

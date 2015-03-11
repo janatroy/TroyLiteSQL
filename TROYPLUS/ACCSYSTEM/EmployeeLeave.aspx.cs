@@ -25,16 +25,16 @@ public partial class EmployeeLeave : System.Web.UI.Page
                 Response.Redirect("~/Login.aspx");
 
 
-            string dbfileName = connStr.Remove(0, connStr.LastIndexOf(@"App_Data\") + 9);
-            dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
-            BusinessLogic objChk = new BusinessLogic();
+            //string dbfileName = connStr.Remove(0, connStr.LastIndexOf(@"App_Data\") + 9);
+            //dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
+            //BusinessLogic objChk = new BusinessLogic();
 
-            if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
-            {
-                lnkBtnApplyLeave.Visible = false;
-                //grdViewAttendanceSummary.Columns[7].Visible = false;
-                //grdViewAttendanceSummary.Columns[8].Visible = false;
-            }
+            //if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
+            //{
+            //    lnkBtnApplyLeave.Visible = false;
+            //    //grdViewAttendanceSummary.Columns[7].Visible = false;
+            //    //grdViewAttendanceSummary.Columns[8].Visible = false;
+            //}
             grdViewLeaveSummary.PageSize = 8;
 
             string connection = Request.Cookies["Company"].Value;
@@ -230,6 +230,7 @@ public partial class EmployeeLeave : System.Web.UI.Page
     protected void txtEndDate_TextChanged(object sender, EventArgs e)
     {
         txtTotalLeaveDays.Text = string.Empty;
+        SetBalanceLeave();
         ModalPopupExtender1.Show();
     }
 
@@ -242,7 +243,7 @@ public partial class EmployeeLeave : System.Web.UI.Page
             if (!string.IsNullOrEmpty(txtStartDate.Text) && !string.IsNullOrEmpty(txtEndDate.Text))
             {
                 DateTime StartDate = DateTime.Parse(txtStartDate.Text.Trim());
-                string StartDateSession = ddlStartDateSession.SelectedValue.Trim(); ;
+                string StartDateSession = ddlStartDateSession.SelectedValue.Trim();
                 DateTime EndDate = DateTime.Parse(txtEndDate.Text.Trim());
                 string EndDateSession = ddlEndDateSession.SelectedValue.Trim();
 
@@ -334,7 +335,8 @@ public partial class EmployeeLeave : System.Web.UI.Page
         string PhoneContact = txtPhoneContact.Text.Trim();
 
         BusinessLogic bl = new BusinessLogic(connection);
-        int leaveId = bl.ApplyLeave(EmployeeNo, StartDate, StartDateSession, EndDate, EndDateSession, DateApplied, LeaveTypeId, Reason, Approver, EmailContact, PhoneContact);
+        UserInfo userInfo = bl.GetUserInfoByName(EmployeeNo);
+        int leaveId = bl.ApplyLeave(userInfo.EmpNo.ToString(), StartDate, StartDateSession, EndDate, EndDateSession, DateApplied, LeaveTypeId, Reason, Approver, EmailContact, PhoneContact);
         if (leaveId > 0)
         {
             return true;
@@ -446,13 +448,19 @@ public partial class EmployeeLeave : System.Web.UI.Page
                 double leaveBalance = 0;
                 string username = Request.Cookies["LoggedUserName"].Value;
                 int employeeNo = bl.GetUserInfoByName(username).EmpNo;
-                double leaveLimit = double.Parse(bl.GetLeaveLimit(leaveTypeId, employeeNo).ToString());
+                if (string.IsNullOrEmpty(txtStartDate.Text))
+                {
+                    txtStartDate.Text = DateTime.Today.ToString("dd/MM/yyyy");
+                }
+                DateTime startDate = DateTime.Parse(txtStartDate.Text);
+                double leaveLimit = double.Parse(bl.GetLeaveLimit(leaveTypeId, employeeNo, startDate).ToString());
                 if (leaveLimit != 0)
                 {
                     double leavesTaken = bl.GetTotalLeavesTaken(DateTime.Today.Year, leaveTypeId, employeeNo);
                     leaveBalance = (leaveLimit - leavesTaken);
                 }
-                txtBalanceLeaves.Text = string.Format("{0}", leaveBalance.ToString());
+
+                txtBalanceLeaves.Text = leaveBalance.ToString();
 
             }
         }

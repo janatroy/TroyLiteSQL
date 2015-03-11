@@ -194,10 +194,10 @@ namespace DataAccessLayer
 
         public DBManager()
         {
-
+            this.providerType = DataProvider.SqlServer;
         }
 
-        public DBManager(DataProvider providerType)
+        public DBManager(DataProvider providerType = DataProvider.SqlServer)
         {
             this.providerType = providerType;
         }

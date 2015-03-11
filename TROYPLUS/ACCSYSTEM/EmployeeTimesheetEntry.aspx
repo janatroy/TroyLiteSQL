@@ -150,12 +150,17 @@
                                                                             <asp:Label ID="lblStatus" runat="server" ForeColor="Red" Text="" />
                                                                             <table>
                                                                                 <tr>
-                                                                                    <td colspan="4">
-                                                                                        <asp:Label ID="lblTSDateTime" runat="server" Text=""></asp:Label>
+                                                                                    <td class="ControlLabel" style="width: 40%">Date</td>
+                                                                                    <td class="ControlNumberBox3" style="width: 30%">
+                                                                                        <asp:Panel ID="Panel1" runat="server">
+                                                                                            <asp:DropDownList ID="ddlTSDate" runat="server" BackColor="#90c9fc" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid blue" TabIndex="3" Width="100%">
+                                                                                            </asp:DropDownList>                                                                                            
+                                                                                        </asp:Panel>
                                                                                     </td>
+                                                                                    <td style="width: 25%"></td>
+                                                                                    <td style="width: 5%"></td>
                                                                                 </tr>
                                                                                 <tr>
-
                                                                                     <td class="ControlLabel" style="width: 40%">
                                                                                         <asp:RadioButton ID="rbtnTimeEntry1" runat="server" AutoPostBack="true" CausesValidation="false" Checked="true" GroupName="TimeEntryOption" OnCheckedChanged="rbtnTimeEntry_CheckedChanged" Text="Start Time" ToolTip="Enter by Start time and End time" />
                                                                                     </td>
@@ -242,12 +247,12 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr style="width: 100%">
-                                                                    <td style="width: 14%">
-                                                                        <%--<div id="TimesheetDetailGridDay1" class="mainGridHoldPopup">--%>
-                                                                            <asp:LinkButton ID="lblDay1Header" runat="server" Width="100%" Text=""></asp:LinkButton>                                                                            
-                                                                            <asp:GridView ID="GridViewTimesheetDetailDay1" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
-                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailDay1_RowDataBound" Visible="false" Width="200px"
-                                                                                OnRowCommand="GridViewTimesheetDetailDay1_RowCommand">
+                                                                    <td style="width: 14%; vertical-align:top">
+                                                                        <%--<div id="TimesheetDetailGridMonday" class="mainGridHoldPopup">--%>
+                                                                            <asp:LinkButton ID="lblMondayHeader" runat="server" Width="100%" Text=""></asp:LinkButton>                                                                            
+                                                                            <asp:GridView ID="GridViewTimesheetDetailMonday" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
+                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailMonday_RowDataBound" Visible="false" Width="200px"
+                                                                                OnRowCommand="GridViewTimesheetDetailMonday_RowCommand">
                                                                                 <Columns>
                                                                                     <asp:BoundField AccessibleHeaderText="Id" DataField="Id" HeaderText="Id" ReadOnly="true" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="TsDate" DataField="TsDate" HeaderText="TsDate" Visible="false" />
@@ -277,12 +282,12 @@
                                                                         <%--</div>--%>
                                                                     </td>
                                                                     <%--Day 2--%>
-                                                                    <td style="width: 14%">
-                                                                        <%--<div id="TimesheetDetailGridDay2" class="mainGridHoldPopup">--%>
-                                                                            <asp:LinkButton ID="lblDay2Header" runat="server" Width="100%" Text=""></asp:LinkButton>
-                                                                            <asp:GridView ID="GridViewTimesheetDetailDay2" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
-                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailDay1_RowDataBound" Visible="false" Width="200px"
-                                                                                OnRowCommand="GridViewTimesheetDetailDay1_RowCommand">
+                                                                    <td style="width: 14%; vertical-align:top">
+                                                                        <%--<div id="TimesheetDetailGridTuesday" class="mainGridHoldPopup">--%>
+                                                                            <asp:LinkButton ID="lblTuesdayHeader" runat="server" Width="100%" Text=""></asp:LinkButton>
+                                                                            <asp:GridView ID="GridViewTimesheetDetailTuesday" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
+                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailMonday_RowDataBound" Visible="false" Width="200px"
+                                                                                OnRowCommand="GridViewTimesheetDetailMonday_RowCommand">
                                                                                 <Columns>
                                                                                     <asp:BoundField AccessibleHeaderText="Id" DataField="Id" HeaderText="Id" ReadOnly="true" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="TsDate" DataField="TsDate" HeaderText="TsDate" Visible="false" />
@@ -312,12 +317,12 @@
                                                                         <%--</div>--%>
                                                                     </td>
                                                                     <%--Day 3--%>
-                                                                    <td style="width: 14%">
-                                                                        <%--<div id="TimesheetDetailGridDay3" class="mainGridHoldPopup">--%>
-                                                                            <asp:LinkButton ID="lblDay3Header" runat="server" Width="100%" Text=""></asp:LinkButton>
-                                                                            <asp:GridView ID="GridViewTimesheetDetailDay3" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
-                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailDay1_RowDataBound" Visible="false" Width="200px"
-                                                                                OnRowCommand="GridViewTimesheetDetailDay1_RowCommand">
+                                                                    <td style="width: 14%; vertical-align:top">
+                                                                        <%--<div id="TimesheetDetailGridWednesday" class="mainGridHoldPopup">--%>
+                                                                            <asp:LinkButton ID="lblWednesdayHeader" runat="server" Width="100%" Text=""></asp:LinkButton>
+                                                                            <asp:GridView ID="GridViewTimesheetDetailWednesday" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
+                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailMonday_RowDataBound" Visible="false" Width="200px"
+                                                                                OnRowCommand="GridViewTimesheetDetailMonday_RowCommand">
                                                                                 <Columns>
                                                                                     <asp:BoundField AccessibleHeaderText="Id" DataField="Id" HeaderText="Id" ReadOnly="true" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="TsDate" DataField="TsDate" HeaderText="TsDate" Visible="false" />
@@ -347,12 +352,12 @@
                                                                         <%--</div>--%>
                                                                     </td>
                                                                     <%--Day 4--%>
-                                                                    <td style="width: 14%" >
-                                                                        <%--<div id="TimesheetDetailGridDay4" class="mainGridHoldPopup">--%>
-                                                                            <asp:LinkButton ID="lblDay4Header" runat="server" Width="100%" Text=""></asp:LinkButton>
-                                                                            <asp:GridView ID="GridViewTimesheetDetailDay4" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
-                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailDay1_RowDataBound" Visible="false" Width="200px"
-                                                                                OnRowCommand="GridViewTimesheetDetailDay1_RowCommand">
+                                                                    <td style="width: 14%; vertical-align:top" >
+                                                                        <%--<div id="TimesheetDetailGridThursday" class="mainGridHoldPopup">--%>
+                                                                            <asp:LinkButton ID="lblThursdayHeader" runat="server" Width="100%" Text=""></asp:LinkButton>
+                                                                            <asp:GridView ID="GridViewTimesheetDetailThursday" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
+                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailMonday_RowDataBound" Visible="false" Width="200px"
+                                                                                OnRowCommand="GridViewTimesheetDetailMonday_RowCommand">
                                                                                 <Columns>
                                                                                     <asp:BoundField AccessibleHeaderText="Id" DataField="Id" HeaderText="Id" ReadOnly="true" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="TsDate" DataField="TsDate" HeaderText="TsDate" Visible="false" />
@@ -382,12 +387,12 @@
                                                                         <%--</div>--%>
                                                                     </td>
                                                                     <%--Day 5--%>
-                                                                    <td style="width: 14%" >
-                                                                        <%--<div id="TimesheetDetailGridDay5" class=mainGridHoldPopup">--%>
-                                                                            <asp:LinkButton ID="lblDay5Header" runat="server" Width="100%" Text=""></asp:LinkButton>
-                                                                            <asp:GridView ID="GridViewTimesheetDetailDay5" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
-                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailDay1_RowDataBound" Visible="false" Width="200px"
-                                                                                OnRowCommand="GridViewTimesheetDetailDay1_RowCommand">
+                                                                    <td style="width: 14%; vertical-align:top" >
+                                                                        <%--<div id="TimesheetDetailGridFriday" class=mainGridHoldPopup">--%>
+                                                                            <asp:LinkButton ID="lblFridayHeader" runat="server" Width="100%" Text=""></asp:LinkButton>
+                                                                            <asp:GridView ID="GridViewTimesheetDetailFriday" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
+                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailMonday_RowDataBound" Visible="false" Width="200px"
+                                                                                OnRowCommand="GridViewTimesheetDetailMonday_RowCommand">
                                                                                 <Columns>
                                                                                     <asp:BoundField AccessibleHeaderText="Id" DataField="Id" HeaderText="Id" ReadOnly="true" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="TsDate" DataField="TsDate" HeaderText="TsDate" Visible="false" />
@@ -417,12 +422,12 @@
                                                                         <%--</div>--%>
                                                                     </td>
                                                                     <%--Day 6--%>
-                                                                    <td style="width: 14%" >
-                                                                        <%--<div id="TimesheetDetailGridDay6" class="mainGridHoldPopup">--%>
-                                                                            <asp:LinkButton ID="lblDay6Header" runat="server" Width="100%" Text=""></asp:LinkButton>
-                                                                            <asp:GridView ID="GridViewTimesheetDetailDay6" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
-                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailDay1_RowDataBound" Visible="false" Width="200px"
-                                                                                OnRowCommand="GridViewTimesheetDetailDay1_RowCommand">
+                                                                    <td style="width: 14%; vertical-align:top" >
+                                                                        <%--<div id="TimesheetDetailGridSaturday" class="mainGridHoldPopup">--%>
+                                                                            <asp:LinkButton ID="lblSaturdayHeader" runat="server" Width="100%" Text=""></asp:LinkButton>
+                                                                            <asp:GridView ID="GridViewTimesheetDetailSaturday" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
+                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailMonday_RowDataBound" Visible="false" Width="200px"
+                                                                                OnRowCommand="GridViewTimesheetDetailMonday_RowCommand">
                                                                                 <Columns>
                                                                                     <asp:BoundField AccessibleHeaderText="Id" DataField="Id" HeaderText="Id" ReadOnly="true" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="TsDate" DataField="TsDate" HeaderText="TsDate" Visible="false" />
@@ -452,18 +457,18 @@
                                                                         <%--</div>--%>
                                                                     </td>
                                                                     <%--Day 7--%>
-                                                                    <td style="width: 14%" >
-                                                                        <%--<div id="TimesheetDetailGridDay7" class="mainGridHoldPopup">--%>
-                                                                            <asp:LinkButton ID="lblDay7Header" runat="server" Width="100%" Text=""></asp:LinkButton>
-                                                                            <asp:GridView ID="GridViewTimesheetDetailDay7" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
-                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailDay1_RowDataBound" Visible="false" Width="200px"
-                                                                                OnRowCommand="GridViewTimesheetDetailDay1_RowCommand">
+                                                                    <td style="width: 14%; vertical-align:top" >
+                                                                        <%--<div id="TimesheetDetailGridSunday" class="mainGridHoldPopup">--%>
+                                                                            <asp:LinkButton ID="lblSundayHeader" runat="server" Width="100%" Text=""></asp:LinkButton>
+                                                                            <asp:GridView ID="GridViewTimesheetDetailSunday" runat="server" AllowPaging="false" AutoGenerateColumns="false" CssClass="someClass" DataKeyNames="Id"
+                                                                                EmptyDataText="No entries found." Font-Names="Trebuchet MS" OnRowDataBound="GridViewTimesheetDetailMonday_RowDataBound" Visible="false" Width="200px"
+                                                                                OnRowCommand="GridViewTimesheetDetailMonday_RowCommand">
                                                                                 <Columns>
                                                                                     <asp:BoundField AccessibleHeaderText="Id" DataField="Id" HeaderText="Id" ReadOnly="true" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="TsDate" DataField="TsDate" HeaderText="TsDate" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="StartTime" DataField="StartTime" HeaderText="StartTime" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="EndTime" DataField="EndTime" HeaderText="EndTime" Visible="false" />
-                                                                                    <asp:BoundField AccessibleHeaderText="Description" DataField="Description" HeaderText="Description" ItemStyle-Wrap="false" ItemStyle-Width="100px" ReadOnly="true" />
+                                                                                    <asp:BoundField AccessibleHeaderText="Description" DataField="Description" HeaderText="Description" ItemStyle-Wrap="true" ItemStyle-Width="100px" ReadOnly="true" />
                                                                                     <asp:BoundField AccessibleHeaderText="TotalHours" DataField="TotalHours" HeaderText="Total Hours" />
                                                                                     <asp:BoundField AccessibleHeaderText="Status" DataField="Status" HeaderText="Status" Visible="false" />
                                                                                     <asp:BoundField AccessibleHeaderText="ApproverComments" DataField="ApproverComments" HeaderText="ApproverComments" Visible="false" />
