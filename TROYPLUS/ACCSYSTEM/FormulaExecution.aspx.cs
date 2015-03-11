@@ -381,10 +381,11 @@ public partial class FormulaExecution : System.Web.UI.Page
                         string itemCode = string.Empty;
                         string date = txtDate.Text;
                         string formula = lblFormula.Text;
-                        string dbQry = string.Empty;
+                        string dbQry = string.Empty;                 
                         string comments = txtComments.Text;
                         int CompID = int.Parse(GridViewProducts.DataKeys[e.RowIndex].Value.ToString());
-                        GridViewRow row = GridViewProducts.SelectedRow;
+                        //GridViewRow row = GridViewProducts.SelectedRow;
+                        GridViewRow row = (GridViewRow)GridViewProducts.Rows[e.RowIndex];
                         string branch = row.Cells[3].Text;
                         string StockLimit = string.Empty;
                         string stockHold = string.Empty;
@@ -416,6 +417,12 @@ public partial class FormulaExecution : System.Web.UI.Page
                                 command.ExecuteNonQuery();
                             }
                         }
+
+                        string Username = Request.Cookies["LoggedUserName"].Value;
+
+                        string sAuditStr = "User Name: " + Username + " ItemCode: " + itemCode + " Branch: " + branch ;
+                        command.CommandText = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Product Release", DateTime.Now.ToString("yyyy-MM-dd"));
+                        command.ExecuteNonQuery();
 
                    
 
@@ -842,6 +849,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                             }
                         }
 
+                      
                         
 
                         transaction.Commit();
@@ -995,6 +1003,11 @@ public partial class FormulaExecution : System.Web.UI.Page
                                     command.ExecuteNonQuery();
                                 }
                             }
+                            string Username = Request.Cookies["LoggedUserName"].Value;
+
+                            string sAuditStr = "User Name " + Username + " Formula " + formula + " Branch " + branch;
+                            command.CommandText = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Manufacturing Process", DateTime.Now.ToString("yyyy-MM-dd"));
+                            command.ExecuteNonQuery();
                         }
 
                         transaction.Commit();
