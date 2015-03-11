@@ -20,6 +20,7 @@ public partial class CreateFormula : System.Web.UI.Page
     string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
 
@@ -631,7 +632,10 @@ public partial class CreateFormula : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Minimum one Raw Materials and one Products should be added.');", true);
                         return;
                     }
-                    bl.UpdateFormulaItem(FormulaName, ds,drpBranch.SelectedValue);
+
+                    string Username = Request.Cookies["LoggedUserName"].Value;
+
+                    bl.UpdateFormulaItem(FormulaName, ds,drpBranch.SelectedValue,Username);
 
                     //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -938,9 +942,10 @@ public partial class CreateFormula : System.Web.UI.Page
 
                 if (ds != null)
                 {
+                    string Username = Request.Cookies["LoggedUserName"].Value;
 
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
-                    bl.InsertFormulaItem(FormulaName, ds, drpBranch.SelectedValue);
+                    bl.InsertFormulaItem(FormulaName, ds, drpBranch.SelectedValue,Username);
 
                     //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -1467,7 +1472,7 @@ public partial class CreateFormula : System.Web.UI.Page
             formXml();
 
             BindItemsGrid();
-            cmdSaveProduct.Visible = false;
+            cmdSaveProduct.Visible = true;
             GrdViewItems.Columns[6].Visible = true;
             //BusinessLogic bl = new BusinessLogic(sDataSource);
             //DataSet ds = bl.GetFormulaForID(formName);
@@ -1486,9 +1491,10 @@ public partial class CreateFormula : System.Web.UI.Page
             //MyAccordion.Visible = false;
             cmdUpdate.Visible = true;
             cmdSave.Visible = false;
-            salesPanel.Visible = false;
+            salesPanel.Visible = true;
             prodPanel.Visible = true;
             Button1.Visible = false;
+            loadProduct();
             //tabContol.Visible = true;
             DisableForOffline();
         }

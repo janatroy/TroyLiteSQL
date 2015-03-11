@@ -360,7 +360,7 @@
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 25%">
                                                                                             <asp:DropDownList ID="ComboBox2" runat="server" CssClass="drpDownListMedium" Style="border: 1px solid #e7e7e7" Height="26px" BackColor="#e7e7e7" Width="100%" AutoPostBack="False"
-                                                                                                DataSourceID="srcCreditorDebitor" DataValueField="LedgerID" DataTextField="LedgerName"
+                                                                                                
                                                                                                 AppendDataBoundItems="true" OnDataBound="ComboBox2_DataBound">
                                                                                                 <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer" Value="0"></asp:ListItem>
                                                                                             </asp:DropDownList>
@@ -781,7 +781,7 @@
                                                                                     CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="InsertButton_Click"></asp:Button>
                                                                             </td>
                                                                             <td align="center" style="width: 20%;">
-                                                                                <asp:Button ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
+                                                                                <asp:Button ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName=""
                                                                                     CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="InsertCancelButton_Click"></asp:Button>
                                                                             </td>
                                                                             <td align="left" style="width: 30%;">

@@ -28,13 +28,14 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
             DataSet ds = new DataSet();
 
             string connection = string.Empty;
+           string Branch = Request.Cookies["Branch"].Value;
 
             if (Request.Cookies["Company"] != null)
                 connection = Request.Cookies["Company"].Value;
             else
                 Response.Redirect("Login.aspx");
 
-            ds = objBL.GetHireList(connection, "", "","");
+            ds = objBL.GetHireList(connection, "", "", Branch);
 
             if (ds != null)
             {

@@ -735,7 +735,7 @@ public partial class CustomerPayment : System.Web.UI.Page
             lnkBtnAdd.Visible = true;
             frmViewAdd.Visible = false;
 
-            frmViewAdd.ChangeMode(FormViewMode.Insert);
+           // frmViewAdd.ChangeMode(FormViewMode.Insert);
         }
         catch (Exception ex)
         {
@@ -2263,21 +2263,21 @@ public partial class CustomerPayment : System.Web.UI.Page
 
 
         }
-        //if (frmViewAdd.CurrentMode == FormViewMode.Edit)
-        //{
+        if (frmViewAdd.CurrentMode == FormViewMode.Edit)
+        {
 
-        //    BusinessLogic bl = new BusinessLogic(sDataSource);
-        //    string connection = Request.Cookies["Company"].Value;
-        //    DataSet dstt = new DataSet();
-        //    dstt = bl.ListSundryDebitorsbranch(connection, ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue);
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Clear();
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Add(new ListItem("Select Customer", "0"));
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataSource = dstt;
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            string connection = Request.Cookies["Company"].Value;
+            DataSet dstt = new DataSet();
+            dstt = bl.ListSundryDebitors(connection, ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue);
+            ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Clear();
+            ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Add(new ListItem("Select Customer", "0"));
+            ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataSource = dstt;
 
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataTextField = "LedgerName";
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataValueField = "LedgerID";
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataBind();
-        //}
+            ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataTextField = "LedgerName";
+            ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataValueField = "LedgerID";
+            ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataBind();
+        }
         
     }
 
