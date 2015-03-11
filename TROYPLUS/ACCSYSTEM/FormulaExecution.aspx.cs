@@ -1007,7 +1007,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         ModalPopupExtender1.Hide();
 
                         if (stockHold == "N")
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Processed Successfully. However the Product is not Released to the stock.');", true);
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Processed Successfully. However the Product is not Released.');", true);
                         else
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Processed and Released Successfully');", true);
 
