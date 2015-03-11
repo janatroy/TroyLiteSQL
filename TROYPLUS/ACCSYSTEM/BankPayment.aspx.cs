@@ -183,7 +183,7 @@ public partial class BankPayment : System.Web.UI.Page
 
     protected void ddBanks_SelectedIndexChanged(object sender, EventArgs e)
     {
-        loadChequeNo(Convert.ToInt32(ddBanks.SelectedItem.Value));
+        loadChequeNo(Convert.ToInt32(ddBanks.SelectedItem.Value));       
     }
 
     protected void ddBanksAdd_SelectedIndexChanged(object sender, EventArgs e)
@@ -1232,9 +1232,11 @@ public partial class BankPayment : System.Web.UI.Page
                 e.InputParameters["Paymode"] = "Cheque";
             }
 
-            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text != "")
-                e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text;
+            //if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text != "")
+            //    e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text;
 
+            if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")) != null)
+                e.InputParameters["ChequeNo"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).SelectedValue;
         }
 
         if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtAmount")).Text != "")
@@ -1356,6 +1358,9 @@ public partial class BankPayment : System.Web.UI.Page
                 if (li != null) li.Selected = true;
 
             }
+
+            string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue;
+            loadChequeNoEdit(Convert.ToInt32(dfg));  
         }
         catch (Exception ex)
         {
@@ -1980,8 +1985,8 @@ public partial class BankPayment : System.Web.UI.Page
         }
         if (frmViewAdd.CurrentMode == FormViewMode.Edit)
         {
-            string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue;
-            loadChequeNoEdit(Convert.ToInt32(dfg));
+            //string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue;
+            //loadChequeNoEdit(Convert.ToInt32(dfg));
         }
     }
 
@@ -2079,9 +2084,11 @@ public partial class BankPayment : System.Web.UI.Page
            
             if (frmV.DataItem != null)
             {
+                
                 string creditorID = ((DataRowView)frmV.DataItem)["ChequeNo"].ToString();
                 ddl.ClearSelection();
                 ListItem li = new ListItem(((DataRowView)frmV.DataItem)["ChequeNo"].ToString(), "0");
+                ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Insert(((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Count - 1, li);
                 li = ddl.Items.FindByText(((DataRowView)frmV.DataItem)["ChequeNo"].ToString());
                 if (li != null) li.Selected = true;
             }

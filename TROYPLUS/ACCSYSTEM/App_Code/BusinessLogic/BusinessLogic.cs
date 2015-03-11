@@ -36719,7 +36719,7 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
         DataSet dsOldRec = new DataSet();
         string dbQry123 = string.Empty;
-
+        int oldcheno = 0;
 
         try
         {
@@ -36731,7 +36731,7 @@ public class BusinessLogic
 
                 manager.BeginTransaction();
 
-                dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,RefNo from tblDaybook Where TransNo={0}", TransNo);
+                dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,RefNo,ChequeNo from tblDaybook Where TransNo={0}", TransNo);
                 dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
                 if (dsOld != null)
                 {
@@ -36742,6 +36742,7 @@ public class BusinessLogic
                         oldAmt = Convert.ToDouble(dsOld.Tables[0].Rows[0]["Amount"]);
                         oldtrandate = Convert.ToString(dsOld.Tables[0].Rows[0]["transdate"]);
                         oldBillNo = dsOld.Tables[0].Rows[0]["RefNo"].ToString();
+                        oldcheno = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"]);
                     }
 
                 }
@@ -36892,6 +36893,14 @@ public class BusinessLogic
 
                 //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+
+                dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + oldcheno + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+                dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
                 NewTransNo = TransNo;
 
                 sAuditStr = "Payment Transaction: " + TransNo + " got edited. Updated Record Details : User=" + Username + " Bill No=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt + " New Trans No :" + NewTransNo + " DateTime:" + oldtrandate;
@@ -36964,7 +36973,8 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
         DataSet dsOldRec = new DataSet();
         string dbQry123 = string.Empty;
-
+        int oldcheno = 0;
+        int newcheno = 0;
         try
         {
             manager.Open();
@@ -36972,7 +36982,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
 
-            dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,Refno from tblDaybook Where TransNo={0}", TransNo);
+            dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,Refno,ChequeNo from tblDaybook Where TransNo={0}", TransNo);
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
             if (dsOld != null)
             {
@@ -36983,6 +36993,7 @@ public class BusinessLogic
                     oldAmt = Convert.ToDouble(dsOld.Tables[0].Rows[0]["Amount"]);
                     oldtrandate = Convert.ToString(dsOld.Tables[0].Rows[0]["transdate"]);
                     oldBillNo = dsOld.Tables[0].Rows[0]["RefNo"].ToString();
+                    oldcheno = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"]);
                 }
 
             }
@@ -37117,8 +37128,11 @@ public class BusinessLogic
 
 
 
+                dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + oldcheno + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-
+                dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 //dbQry = string.Format("Select Debit from tblLedger Where LedgerID={0}", DebitorID);
                 //double Debit = (double)manager.ExecuteScalar(CommandType.Text, dbQry);
 
