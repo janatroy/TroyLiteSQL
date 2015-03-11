@@ -107,7 +107,7 @@
         }
 
         function AdvancedAdd(id) {
-            alert(id);
+
             var panel = document.getElementById('ctl00_cplhControlPanel_frmViewAdd_tablInsert_tabInsMain_tblBankAdd');
             var adv = document.getElementById('ctl00_cplhControlPanel_hidAdvancedState');
             var grd = document.getElementById("<%= frmViewAdd.ClientID %>");
@@ -405,8 +405,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td colspan="4" width="100%">
-                                                                                            <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-
+                                                                                          <asp:UpdatePanel ID="upedit" runat="server">
                                                                                                 <ContentTemplate>
                                                                                                     <asp:Panel ID="PanelBank" runat="server">
                                                                                                         <table width="100%" id="tblBank" runat="server" cellpadding="0" cellspacing="0">
@@ -433,7 +432,7 @@
                                                                                                                 </td>
                                                                                                                 <td class="ControlTextBox3" style="width: 25%">
                                                                                                                     <asp:TextBox ID="txtChequeNo" runat="server" Text='<%# Bind("ChequeNo") %>' SkinID="skinTxtBoxGridBank" MaxLength="10" Visible="false"></asp:TextBox>
-                                                                                                                    <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%">
+                                                                                                                    <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%" OnDataBound="cmbChequeNo_DataBound">
                                                                                                                         <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                                     </asp:DropDownList>
                                                                                                                 </td>
@@ -484,7 +483,7 @@
                                                                                     CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="UpdateButton_Click"></asp:Button>
                                                                             </td>
                                                                             <td align="center" style="width: 18%;">
-                                                                                <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
+                                                                                <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName=""
                                                                                     CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="UpdateCancelButton_Click"></asp:Button>
                                                                             </td>
                                                                             <td style="width: 30%;"></td>
@@ -684,9 +683,9 @@
                                                                                             <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="chkPayToAdd"
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Payment Made By. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                         </td>
-                                                                                        <td class="ControlTextBox3" style="width: 25%">
-                                                                                            <asp:RadioButtonList ID="chkPayToAdd" runat="server" OnDataBound="chkPayToAdd_DataBound"
-                                                                                                onclick="javascript:AdvancedAdd(this.id);" AutoPostBack="false" Width="100%"
+                                                                                        <td class="ControlTextBox3" style="width: 25%">                                                                                           
+                                                                                                     <asp:RadioButtonList ID="chkPayToAdd" runat="server" OnDataBound="chkPayToAdd_DataBound"
+                                                                                                onclick="javascript:AdvancedAdd(this.id);" AutoPostBack="false" Width="80%"
                                                                                                 OnSelectedIndexChanged="chkPayToAdd_SelectedIndexChanged">
                                                                                                 <asp:ListItem Text="Cash" Selected="true"></asp:ListItem>
                                                                                                 <asp:ListItem Text="Cheque"></asp:ListItem>
@@ -705,8 +704,8 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td colspan="4" align="center">
-                                                                                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
-                                                                                                <ContentTemplate>
+                                                                                           <%-- <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>--%>
                                                                                                     <asp:Panel ID="PanelBankAdd" runat="server">
                                                                                                         <table width="100%" id="tblBankAdd" cellpadding="0" cellspacing="0" runat="server">
                                                                                                             <tr>
@@ -723,6 +722,9 @@
                                                                                                                                 <asp:ListItem Selected="True" style="background-color: #e7e7e7" Value="0">Select Bank</asp:ListItem>
                                                                                                                             </asp:DropDownList>
                                                                                                                         </ContentTemplate>
+                                                                                                                         <Triggers>
+                                                                                                    <asp:AsyncPostBackTrigger ControlID="chkPayToAdd" EventName="SelectedIndexChanged" />
+                                                                                                </Triggers>
                                                                                                                     </asp:UpdatePanel>
                                                                                                                 </td>
                                                                                                                 <td class="ControlLabel" style="width: 15%">Cheque No. *
@@ -734,14 +736,14 @@
                                                                                                                             <asp:DropDownList ID="cmbChequeNo1" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%">
                                                                                                                                 <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                                             </asp:DropDownList>
-                                                                                                                        </ContentTemplate>
+                                                                                                                        </ContentTemplate>                                                                                                                        
                                                                                                                     </asp:UpdatePanel>
                                                                                                                 </td>
                                                                                                             </tr>
                                                                                                         </table>
                                                                                                     </asp:Panel>
-                                                                                                </ContentTemplate>
-                                                                                            </asp:UpdatePanel>
+                                                                                              <%--  </ContentTemplate>                                                                                               
+                                                                                            </asp:UpdatePanel>--%>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>

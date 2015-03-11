@@ -37,7 +37,10 @@ public class AdminBusinessLogic
         newConnection = connectionString.Remove(connectionString.LastIndexOf("Password=") + 9);
 
         newConnection = newConnection + Helper.GetPasswordForDB(connectionString);
-
+        if (connectionString.ToUpper().Contains("ATTACHDBFILENAME"))
+        {
+            return connectionString;
+        }
         return newConnection;
 
     }
@@ -47,7 +50,7 @@ public class AdminBusinessLogic
 
     public void CheckQueueAndGeneratePayRoll()
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         try
@@ -70,7 +73,7 @@ public class AdminBusinessLogic
                     {
                         int.TryParse(drQueue[1].ToString(), out year);
                         int.TryParse(drQueue[2].ToString(), out month);
-                        GeneratePayRoll(payrollId, year, month);
+                        //GeneratePayRoll(payrollId, year, month);
                     }
                 }
             }
@@ -87,10 +90,10 @@ public class AdminBusinessLogic
         }
     }
 
-    public bool GeneratePayRoll(int payrollId, int year, int month)
+    public bool GeneratePayRoll(int payrollId, int year, int month, DataSet dsAdditionalPayComponent)
     {
         bool isPayrollGenerated = false;
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         try
         {
@@ -112,6 +115,9 @@ public class AdminBusinessLogic
                     dtPaySlipInfo.Columns.Add(new DataColumn("Deductions"));
                     dtPaySlipInfo.Columns.Add(new DataColumn("Payments"));
                     dtPaySlipInfo.Columns.Add(new DataColumn("LossOfPayDays"));
+                    dtPaySlipInfo.Columns.Add(new DataColumn("OtherAllowance"));
+                    dtPaySlipInfo.Columns.Add(new DataColumn("OtherDeductions"));
+
                     UpdatePayrollStatus(payrollId, "In Progress");
 
                     // Validate necessary payroll associated details
@@ -135,13 +141,20 @@ public class AdminBusinessLogic
                     {
                         // Prepare payroll generation logtable.
                         bool payrollGenerationResult = true;
+                        bool hasAdditionalPaycomponent = false;
+
+                        if (dsAdditionalPayComponent.Tables.Count > 0)
+                        {
+                            hasAdditionalPaycomponent = true;
+                        }
+
                         foreach (DataRow drEmployee in ds.Tables[0].Rows)
                         {
                             int employeeNo = 0;
                             DataRow drPayslip = dtPaySlipInfo.NewRow();
                             if (int.TryParse(drEmployee[0].ToString(), out employeeNo))
                             {
-                                if (GetPayRollDetailsForEmployee(employeeNo, year, month, drPayslip, ref logMessage))
+                                if (GetPayRollDetailsForEmployee(employeeNo, year, month, drPayslip, dsAdditionalPayComponent, ref logMessage))
                                 {
                                     dtPaySlipInfo.Rows.Add(drPayslip);
                                     InsertPayrollLog("Payroll processed", payrollId, employeeNo);
@@ -188,9 +201,95 @@ public class AdminBusinessLogic
 
     }
 
+    private double GetOtherAllowanceForTheEmployee(DataSet dsPayComponent, int empNo)
+    {
+        DataTable dtEmployeePayComponent = dsPayComponent.Tables[0];
+        DataTable dtEmployeeRolePayComponent = dsPayComponent.Tables[1];
+
+        double otherAllowance = 0;
+        int roleId = 0;
+        UserInfo userInfo = new BusinessLogic(this.ConnectionString).GetUserInfoByEmpNo(empNo);
+        if (userInfo != null)
+        {
+            roleId = userInfo.RoleId;
+        }
+
+        otherAllowance = (from dr in dtEmployeePayComponent.AsEnumerable()
+                          where dr.Field<string>("EmpNo").Equals(empNo.ToString())
+                          select dr.Field<double>("PayableAmount") == null ? 0 : dr.Field<double>("PayableAmount")).FirstOrDefault();
+
+
+        otherAllowance += (from dr in dtEmployeeRolePayComponent.AsEnumerable()
+                           where dr.Field<string>("RoleId").Equals(roleId.ToString())
+                           select dr.Field<double>("PayableAmount") == null ? 0 : dr.Field<double>("PayableAmount")).FirstOrDefault();
+
+        return otherAllowance;
+    }
+
+    private double GetOtherDeductionForTheEmployee(DataSet dsPayComponent, int empNo)
+    {
+        DataTable dtEmployeePayComponent = dsPayComponent.Tables[0];
+        DataTable dtEmployeeRolePayComponent = dsPayComponent.Tables[1];
+
+        double otherDeduction = 0;
+        int roleId = 0;
+
+        UserInfo userInfo = new BusinessLogic(this.ConnectionString).GetUserInfoByEmpNo(empNo);
+        if (userInfo != null)
+        {
+            roleId = userInfo.RoleId;
+        }
+
+        otherDeduction = (from dr in dtEmployeePayComponent.AsEnumerable()
+                          where dr.Field<string>("EmpNo").Equals(empNo.ToString())
+                          select dr.Field<double>("DeductionAmount") == null ? 0 : dr.Field<double>("DeductionAmount")).FirstOrDefault();
+
+
+
+        otherDeduction += (from dr in dtEmployeeRolePayComponent.AsEnumerable()
+                           where dr.Field<string>("RoleId").Equals(roleId.ToString())
+                           select dr.Field<double>("DeductionAmount") == null ? 0 : dr.Field<double>("DeductionAmount")).FirstOrDefault();
+
+        return otherDeduction;
+    }
+
+    public DataTable GetEmployeeList()
+    {
+        DBManager manager = new DBManager();
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        string dbQuery = "SELECT EmpNo, EmpFirstName FROM tblEmployee";
+        manager.Open();
+        DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQuery);
+        if (ds != null && ds.Tables.Count > 0)
+        {
+            return ds.Tables[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public DataTable GetEmployeeRolesList()
+    {
+        DBManager manager = new DBManager();
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        string dbQuery = "SELECT ID, Role_Name FROM tblEmployeeRoles WHERE Is_Active =true";
+        manager.Open();
+        DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQuery);
+        if (ds != null && ds.Tables.Count > 0)
+        {
+            return ds.Tables[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     private void ClearPayrollGenerationLog(int payrollId)
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQuery = string.Format("DELETE * FROM tblPayrollGenerationLog l WHERE PayRollId={0}", payrollId);
         manager.Open();
@@ -209,8 +308,8 @@ public class AdminBusinessLogic
             {
                 int employeeNo = 0;
                 int.TryParse(dr[0].ToString(), out employeeNo);
-                dbQry = string.Format(@"INSERT INTO tblEmployeePayslip (EmployeeId,PayrollDate,PayrollMonth,Deductions,Payments,PayrollId,PayrollYear,LossOfPayDays) 
-                                    VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7})", employeeNo, DateTime.Now.Date, month, dr[1], dr[2], payrollId, year, dr["LossOfPayDays"]);
+                dbQry = string.Format(@"INSERT INTO tblEmployeePayslip (EmployeeId,PayrollDate,PayrollMonth,Deductions,Payments,PayrollId,PayrollYear,LossOfPayDays,OtherAllowance,OtherDeductions) 
+                                    VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9})", employeeNo, DateTime.Now.Date, month, dr[1], dr[2], payrollId, year, dr["LossOfPayDays"], dr["OtherAllowance"], dr["OtherDeductions"]);
 
                 if (manager.ExecuteNonQuery(CommandType.Text, dbQry) <= 0)
                 {
@@ -240,7 +339,7 @@ public class AdminBusinessLogic
 
     private void UpdatePayrollStatus(int payrollId, string status)
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         try
@@ -272,7 +371,7 @@ public class AdminBusinessLogic
 
     private void InsertPayrollLog(string logMessage, int payrollId, int employeeNo)
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         try
@@ -296,7 +395,7 @@ public class AdminBusinessLogic
 
     }
 
-    public bool GetPayRollDetailsForEmployee(int employeeNo, int year, int month, DataRow payslipInfoRow, ref string logMessage)
+    public bool GetPayRollDetailsForEmployee(int employeeNo, int year, int month, DataRow payslipInfoRow, DataSet dsAdditionalPayComponent, ref string logMessage)
     {
         string dbQry = string.Empty;
         logMessage = string.Empty;
@@ -306,7 +405,15 @@ public class AdminBusinessLogic
             int totalPayable = GetEmployeeTotalPayComponent(employeeNo, year, month);
             int totalDeductions = GetEmployeeTotalDeduction(employeeNo, year, month);
 
-            // Get declared role based payable/deductiable amount for the employee.
+            // Get additional payable/deductiable amount for the employee.
+            double otherAllowance = 0;
+            double otherDeduction = 0;
+            if (dsAdditionalPayComponent != null && dsAdditionalPayComponent.Tables.Count > 0)
+            {
+                otherAllowance = GetOtherAllowanceForTheEmployee(dsAdditionalPayComponent, employeeNo);
+                otherDeduction = GetOtherDeductionForTheEmployee(dsAdditionalPayComponent, employeeNo);
+            }
+
 
             // Get loss of pay leaves.
             DataTable dtEmpLeavesApplied = GetEmployeeLOPLeavesAppliedForTheMonth(employeeNo, year, month);
@@ -320,6 +427,8 @@ public class AdminBusinessLogic
             payslipInfoRow[1] = totalDeductions;
             payslipInfoRow[2] = totalPayable;
             payslipInfoRow[3] = totalLeavesDaysAppliedLeaves;
+            payslipInfoRow[4] = otherAllowance;
+            payslipInfoRow[5] = otherDeduction;
 
             return true;
         }
@@ -337,7 +446,7 @@ public class AdminBusinessLogic
 
     private int GetEmployeeTotalPayComponent(int employeeNo, int year, int month)
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         int empPayComponent = 0;
@@ -393,7 +502,7 @@ public class AdminBusinessLogic
 
     private int GetEmployeeTotalDeduction(int employeeNo, int year, int month)
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         int empPayComponent = 0;
@@ -484,7 +593,7 @@ public class AdminBusinessLogic
                                         GROUP BY a.Remarks", year, month, "Approved");
 
 
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         manager.Open();
         DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQuery);
@@ -498,7 +607,7 @@ public class AdminBusinessLogic
         }
     }
 
-    private bool HaveAppliedTheLeavesTaken(int empNo, int year, int month, ref string logMessage)
+    public bool HaveAppliedTheLeavesTaken(int empNo, int year, int month, ref string logMessage)
     {
         logMessage = string.Empty;
         DataTable dtEmpAttendanceSummary = GetEmployeeAttendanceSummaryForTheMonth(empNo, year, month);
@@ -507,6 +616,7 @@ public class AdminBusinessLogic
         {
             double totalLeaveDaysByAttendance = GetTotalLeavesInTheAttendance(dtEmpAttendanceSummary);
             double totalLeavesDaysAppliedLeaves = Math.Floor(GetTotalLeavesInTheLeaveSummary(dtEmpLeavesApplied, year, month));
+            TroyLiteExceptionManager.HandleException(new Exception(string.Format("totalLeaveDaysByAttendance {0} - totalLeavesDaysAppliedLeaves {1}", totalLeaveDaysByAttendance, totalLeavesDaysAppliedLeaves)));
             if (!totalLeaveDaysByAttendance.Equals(totalLeavesDaysAppliedLeaves))
             {
                 logMessage = string.Format("Leave entries and attendance records mismatching for the employee {1}({0}) [Attendance Leave Entry-{2} LeavesApplied-{3}]", empNo, string.Empty, totalLeaveDaysByAttendance, totalLeavesDaysAppliedLeaves);
@@ -523,12 +633,16 @@ public class AdminBusinessLogic
     private double GetTotalLeavesInTheAttendance(DataTable dtEmpAttendanceSummary)
     {
         double totalLeavesByAttendance = 0;
-        DataRow[] drLeaves = dtEmpAttendanceSummary.Select("Remarks='Leave'");
+        DataRow[] drLeaves = dtEmpAttendanceSummary.Select("Remarks IN ('Leave','Absent')");
         if (drLeaves.Count() > 0)
         {
-            if (double.TryParse(drLeaves[0][1].ToString(), out totalLeavesByAttendance))
+            foreach (DataRow dr in drLeaves)
             {
-                return totalLeavesByAttendance;
+                double tempValue = 0;
+                if (double.TryParse(dr[1].ToString(), out tempValue))
+                {
+                    totalLeavesByAttendance += tempValue;
+                }
             }
         }
         return totalLeavesByAttendance;
@@ -562,7 +676,7 @@ public class AdminBusinessLogic
 
     private DataTable GetEmployeeLeavesAppliedForTheMonth(int empNo, int year, int month)
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -596,7 +710,7 @@ public class AdminBusinessLogic
 
     private DataTable GetEmployeeLOPLeavesAppliedForTheMonth(int empNo, int year, int month)
     {
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -641,7 +755,7 @@ public class AdminBusinessLogic
                                         GROUP BY a.Remarks", empNo, year, month, "Approved");
 
 
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         manager.Open();
         DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQuery);
@@ -656,7 +770,7 @@ public class AdminBusinessLogic
 
     }
 
-    private bool HaveUnApprovedLeavesForTheMonth(int empNo, int year, int month, ref string logMessage)
+    public bool HaveUnApprovedLeavesForTheMonth(int empNo, int year, int month, ref string logMessage)
     {
         logMessage = string.Empty;
         string dbQuery = string.Format(@"Select a.EmployeeNo,e1.EmpFirstName as EmpName,a.Approver,e2.EmpFirstName as ApproverName from ((tblEmployeeLeave a
@@ -667,7 +781,7 @@ public class AdminBusinessLogic
                                         AND a.Status ='{3}'", empNo, year, month, "Submitted");
 
 
-        DBManager manager = new DBManager(DataProvider.OleDb);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         manager.Open();
         DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQuery);

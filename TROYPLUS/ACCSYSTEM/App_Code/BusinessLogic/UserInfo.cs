@@ -18,8 +18,10 @@ public class UserInfo
     public int ManagerEmpNo { get; set; }
     public string ManagerEmpName { get; set; }
 
-	public UserInfo()
-	{
-		
-	}
+    public int RoleId { get; set; }
+
+    public UserInfo()
+    {
+
+    }
 }

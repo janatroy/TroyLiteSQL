@@ -63,3 +63,8 @@ C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\bin\Debug\Repor
 C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.dll
 C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.pdb
 C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.csprojResolveAssemblyReference.cache
+D:\TroyLite_SQL080315\TroyLiteSQL\TROYPLUS\ReportsBL\bin\Debug\ReportsBL.dll
+D:\TroyLite_SQL080315\TroyLiteSQL\TROYPLUS\ReportsBL\bin\Debug\ReportsBL.pdb
+D:\TroyLite_SQL080315\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.csprojResolveAssemblyReference.cache
+D:\TroyLite_SQL080315\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.dll
+D:\TroyLite_SQL080315\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Debug\ReportsBL.pdb

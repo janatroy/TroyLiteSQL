@@ -875,7 +875,11 @@ public class BusinessLogic
         newConnection = connectionString.Remove(connectionString.LastIndexOf("Password=") + 9);
 
         newConnection = newConnection + Helper.GetPasswordForDB(connectionString);
-
+        //if (connectionString.ToUpper().Contains("ATTACHDBFILENAME"))
+        //{
+        //    return connectionString;
+        //}
+        //return connectionString;
         return newConnection;
 
     }
@@ -1958,7 +1962,7 @@ public class BusinessLogic
         {
             dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
                                   " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
-                                  " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblCheque.BankID=" + bnkid + " and tblChequeitems.Status='N'");
+                                  " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblCheque.BankID=" + bnkid + " and tblChequeitems.Status='N' and tblChequeitems.DamageCheque='N'");
             //dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
             //                     " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
             //                     " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblChequeitems.Status='N'"); 
@@ -3244,7 +3248,7 @@ public class BusinessLogic
         string oldBillNo = "";
         int oldBilitID = 0;
         double oldAmt = 0;
-
+        int CheNo=0;
         string oldtrandate = string.Empty;
         string description = string.Empty;
         string logdescription = string.Empty;
@@ -3258,10 +3262,14 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            ds = manager.ExecuteDataSet(CommandType.Text, "Select Amount,DebtorID,CreditorID,TransDate from tblDayBook Where TransNo=" + TransNo);
+            ds = manager.ExecuteDataSet(CommandType.Text, "Select Amount,DebtorID,CreditorID,TransDate,ChequeNo from tblDayBook Where TransNo=" + TransNo);
 
             int DebitorID = Convert.ToInt32(ds.Tables[0].Rows[0]["DebtorID"].ToString());
             int CreditorID = Convert.ToInt32(ds.Tables[0].Rows[0]["CreditorID"].ToString());
+            if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                 CheNo = Convert.ToInt32(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+            }
             double Amount = Convert.ToDouble(ds.Tables[0].Rows[0]["Amount"].ToString());
             DateTime TransDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["TransDate"].ToString());
 
@@ -3347,6 +3355,11 @@ public class BusinessLogic
                     }
                 }
 
+                if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+                {
+                    dbQry = string.Format("Update tblChequeitems Set DamageCheque='Y' Where ChequeNo='" + CheNo + "' and BankID=" + CreditorID + "");
+                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                }
 
                 sAuditStr = "Payment Transaction: " + TransNo + " got deleted old Record Details : User=" + Username + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + Amount;
 
@@ -6469,6 +6482,10 @@ public class BusinessLogic
 
             dbQry = string.Format("Insert Into tblPayment(JournalID,Paymode,BillNo, BranchCode) Values({0},'{1}','{2}','{3}')", TransNo, PaymentMode, BillNo, BranchCode);
 
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
+            dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");          
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             //dbQry = string.Format("Select Debit from tblLedger Where LedgerID={0}", DebitorID);
@@ -12095,6 +12112,7 @@ public class BusinessLogic
         DataSet dsOld = new DataSet();
         int oldDebitID = 0;
         int oldCreditID = 0;
+        int CreditID = 0;
         string oldBillNo = "";
         double oldAmt = 0;
         string sNarration = string.Empty;
@@ -12105,6 +12123,7 @@ public class BusinessLogic
         string description = string.Empty;
         string logdescription = string.Empty;
         string Logsave = string.Empty;
+        int CheNo = 0; 
         try
         {
             manager.Open();
@@ -12113,6 +12132,13 @@ public class BusinessLogic
             manager.BeginTransaction();
             //Start Retriving the old Debtor and CreditorID
             dsOld = GetPurchaseForId(purchaseID);
+
+            if (dsOld.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                CheNo = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"].ToString());
+                CreditID = Convert.ToInt32(dsOld.Tables[0].Rows[0]["CreditorID"]);
+            } 
+
 
             if (dsOld.Tables[0].Rows[0]["JournalID"] != null)
             {
@@ -12125,7 +12151,7 @@ public class BusinessLogic
                     oldBillNo = dsOld.Tables[0].Rows[0]["BillNo"].ToString();
             }
 
-            dbQry = string.Format("Select DebtorID,CreditorID,Amount,transdate from tblDaybook Where TransNo={0}", TransNo);
+            dbQry = string.Format("Select DebtorID,CreditorID,Amount,transdate,ChequeNo from tblDaybook Where TransNo={0}", TransNo);
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
             if (dsOld != null)
             {
@@ -12135,6 +12161,9 @@ public class BusinessLogic
                     oldCreditID = Convert.ToInt32(dsOld.Tables[0].Rows[0]["CreditorID"]);
                     oldAmt = Convert.ToDouble(dsOld.Tables[0].Rows[0]["Amount"]);
                     transdate = Convert.ToString(dsOld.Tables[0].Rows[0]["transdate"]);
+
+                    CheNo = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"].ToString());
+                    CreditID = Convert.ToInt32(dsOld.Tables[0].Rows[0]["CreditorID"]);
                 }
             }
 
@@ -12298,6 +12327,13 @@ public class BusinessLogic
                 dbQry = string.Format("Update tblBilti SET Status = 'Open' Where ID={0}", BilitID);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
+
+
+            if (dsOld.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                dbQry = string.Format("Update tblChequeitems Set DamageCheque='Y' Where ChequeNo='" + CheNo + "' and BankID=" + CreditID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            } 
 
             sAuditStr = "Purchase Transaction: " + TransNo + " got deleted old Record Details : User =" + usernam + " BillNo=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt;
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
@@ -36796,7 +36832,7 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
         DataSet dsOldRec = new DataSet();
         string dbQry123 = string.Empty;
-
+        int oldcheno = 0;
 
         try
         {
@@ -36808,7 +36844,7 @@ public class BusinessLogic
 
                 manager.BeginTransaction();
 
-                dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,RefNo from tblDaybook Where TransNo={0}", TransNo);
+                dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,RefNo,ChequeNo from tblDaybook Where TransNo={0}", TransNo);
                 dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
                 if (dsOld != null)
                 {
@@ -36819,6 +36855,7 @@ public class BusinessLogic
                         oldAmt = Convert.ToDouble(dsOld.Tables[0].Rows[0]["Amount"]);
                         oldtrandate = Convert.ToString(dsOld.Tables[0].Rows[0]["transdate"]);
                         oldBillNo = dsOld.Tables[0].Rows[0]["RefNo"].ToString();
+                        oldcheno = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"]);
                     }
 
                 }
@@ -36969,6 +37006,14 @@ public class BusinessLogic
 
                 //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+
+                dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + oldcheno + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+                dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
                 NewTransNo = TransNo;
 
                 sAuditStr = "Payment Transaction: " + TransNo + " got edited. Updated Record Details : User=" + Username + " Bill No=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt + " New Trans No :" + NewTransNo + " DateTime:" + oldtrandate;
@@ -37041,7 +37086,8 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
         DataSet dsOldRec = new DataSet();
         string dbQry123 = string.Empty;
-
+        int oldcheno = 0;
+        int newcheno = 0;
         try
         {
             manager.Open();
@@ -37049,7 +37095,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
 
-            dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,Refno from tblDaybook Where TransNo={0}", TransNo);
+            dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,Refno,ChequeNo from tblDaybook Where TransNo={0}", TransNo);
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
             if (dsOld != null)
             {
@@ -37060,6 +37106,7 @@ public class BusinessLogic
                     oldAmt = Convert.ToDouble(dsOld.Tables[0].Rows[0]["Amount"]);
                     oldtrandate = Convert.ToString(dsOld.Tables[0].Rows[0]["transdate"]);
                     oldBillNo = dsOld.Tables[0].Rows[0]["RefNo"].ToString();
+                    oldcheno = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"]);
                 }
 
             }
@@ -37194,8 +37241,11 @@ public class BusinessLogic
 
 
 
+                dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + oldcheno + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-
+                dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 //dbQry = string.Format("Select Debit from tblLedger Where LedgerID={0}", DebitorID);
                 //double Debit = (double)manager.ExecuteScalar(CommandType.Text, dbQry);
 
@@ -39676,6 +39726,32 @@ public class BusinessLogic
         }
     }
 
+    public int RevertChequeused_conn(string Chequeno, int BankName, string conn)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(conn);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        int chqID = 0;
+
+        try
+        {
+            dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + Chequeno + "' and BankID=" + BankName + "");
+            manager.Open();
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            return chqID = 1;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
     public int UpdateChequeused_conn(string Chequeno, int BankName, string conn)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -39728,6 +39804,31 @@ public class BusinessLogic
 
     }
 
+    public int RevertChequeused(string Chequeno, int BankName)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        int chqID = 0;
+
+        try
+        {
+            dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + Chequeno + "' and BankID=" + BankName + "");
+            manager.Open();
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            return chqID = 1;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
 
     public int UpdateChequeused(string Chequeno, int BankName)
     {
@@ -43839,7 +43940,7 @@ public class BusinessLogic
         DataSet dsOld = new DataSet();
         DataSet dsOldRec = new DataSet();
         string sAuditStr = string.Empty;
-
+        int CheNo = 0; 
         int TTransNo = 0;
         int oldDebitID = 0;
         int oldCreditID = 0;
@@ -43867,6 +43968,10 @@ public class BusinessLogic
             double Amount = Convert.ToDouble(ds.Tables[0].Rows[0]["Amount"].ToString());
             DateTime TransDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["TransDate"].ToString());
             string cheque = Convert.ToString(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+            if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                CheNo = Convert.ToInt32(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+            } 
 
             dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,RefNo from tblDaybook Where TransNo={0}", TransNo);
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -43952,6 +44057,13 @@ public class BusinessLogic
             //dbQry = string.Format("Update tblchequeitems SET status = '{1}' Where chequeno='{0}'", cheque, State);
 
             //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                dbQry = string.Format("Update tblChequeitems Set DamageCheque='Y' Where ChequeNo='" + CheNo + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            }
+
 
             if (requireValidation)
             {
@@ -44187,16 +44299,16 @@ public class BusinessLogic
             {
                 if (g == 0)
                 {
-                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status) VALUES({0},'{1}',{2},{3},'{4}')",
-                    ChequeBookId, AccountNo, BankID, FromChequeNo, Status);
+                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status,DamageCheque) VALUES({0},'{1}',{2},{3},'{4}','{5}')",
+                    ChequeBookId, AccountNo, BankID, FromChequeNo, Status,"N");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry2);
 
                     ChequeNo = Convert.ToDouble(FromChequeNo) + 1;
                 }
                 else
                 {
-                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status) VALUES({0},'{1}',{2},{3},'{4}')",
-                    ChequeBookId, AccountNo, BankID, ChequeNo, Status);
+                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status,DamageCheque) VALUES({0},'{1}',{2},{3},'{4}','{5}')",
+                    ChequeBookId, AccountNo, BankID, ChequeNo, Status,"N");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry2);
 
                     ChequeNo = ChequeNo + 1;
@@ -44388,7 +44500,7 @@ public class BusinessLogic
             //dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' ");
             dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
                                  " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
-                                 " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblChequeitems.Status='N'");
+                                 " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblChequeitems.Status='N' and tblChequeitems.DamageCheque='N'");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -51160,6 +51272,10 @@ public class BusinessLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+            dbQry = string.Format("Update tblChequeitems set DamageCheque='Y' where ChequeNo='" + ChequeNo + "' and BankID='" + BankID + "' and AccountNo='" + AccountNo + "'");               
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
             int ChequeBookId = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ChequeID) FROM tblDamageCheque"));
 
 
@@ -53115,19 +53231,31 @@ public class BusinessLogic
             if (branch == "All")
             {
                 //dbQry = "select tblStock.ItemCode,tblStock.ProductName, tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode";
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                                " Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
+              
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //                " Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
+                dbQry=string.Format(" SELECT tblCategories.CategoryName, tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, " +
+                                    " tblStock.Model, tblStock.ProductDesc,tblStock.BranchCode FROM tblStock INNER JOIN " +
+                                    " tblProductStock ON tblStock.ID = tblProductStock.Id INNER JOIN " +
+                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID " +
+                                    " Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
             }
             else
             {
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                               " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                               " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                               " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                               " Where tblStock.BranchCode='" + branch + "' and tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //               " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //               " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //               " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //               " Where tblStock.BranchCode='" + branch + "' and tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
+
+                  dbQry=string.Format(" SELECT tblCategories.CategoryName, tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, " +
+                                    " tblStock.Model, tblStock.ProductDesc,tblStock.BranchCode FROM tblStock INNER JOIN " +
+                                    " tblProductStock ON tblStock.ID = tblProductStock.Id INNER JOIN " +
+                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID " +
+                                    " Where tblStock.BranchCode='" + branch + "' and tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
             }
         }
         else if (dropDown == "ProductName")
@@ -65803,6 +65931,7 @@ public class BusinessLogic
 
     #endregion
 
+
     #region Attendance Methods
     public DataSet GetAttendanceDetails(int attendanceID, string createdByUserId)
     {
@@ -65810,7 +65939,7 @@ public class BusinessLogic
         DataSet dsResult = new DataSet();
         if (dtAttendanceSummary != null && dtAttendanceSummary.Rows.Count > 0)
         {
-            DBManager manager = new DBManager(DataProvider.SqlServer);
+            DBManager manager = new DBManager();
             manager.ConnectionString = CreateConnectionString(this.ConnectionString);
             string dbQry = string.Empty;
 
@@ -65824,7 +65953,7 @@ public class BusinessLogic
             int.TryParse(dtAttendanceSummary.Rows[0][2].ToString(), out month);
             int.TryParse(dtAttendanceSummary.Rows[0][1].ToString(), out year);
 
-            dbQry = string.Format(@"SELECT EmployeeNo, AttendanceDate, Remarks FROM   tblAttendanceDetail a WHERE (EmployeeNo IN {0}) and YEAR(AttendanceDate)={1} and MONTH(AttendanceDate)={2}", reporteesFilter, year, month);
+            dbQry = string.Format(@"SELECT EmployeeNo, AttendanceDate, Remarks FROM   tblAttendanceDetail a WHERE (EmployeeNo IN {0}) and YEAR(AttendanceDate)={1} and MONTH(AttendanceDate)={2} ORDER BY EmployeeNo,AttendanceDate ASC", reporteesFilter, year, month);
 
             try
             {
@@ -65855,7 +65984,7 @@ public class BusinessLogic
 
     public DataSet GetAttendanceSummary(string txtSearchInput, string userId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -65939,13 +66068,13 @@ public class BusinessLogic
                 {
                     rowDefaultAttendanceData.Add("Holiday");
                 }
-                else if (dateValue.DayOfWeek.ToString().Equals("Sunday") || rotaWeekOffDays.Contains(dateValue.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)))
-                {
-                    rowDefaultAttendanceData.Add("Week Off");
-                }
                 else if (HasAppliedleave(dateValue, empNo))
                 {
                     rowDefaultAttendanceData.Add("Leave");
+                }
+                else if (dateValue.DayOfWeek.ToString().Equals("Sunday") || rotaWeekOffDays.Contains(dateValue.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)))
+                {
+                    rowDefaultAttendanceData.Add("Week Off");
                 }
                 else
                 {
@@ -65975,7 +66104,7 @@ public class BusinessLogic
 
     private List<string> GetRotaWeekOffList(string empNo, int year, int month)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66014,7 +66143,7 @@ public class BusinessLogic
 
     public bool HasAppliedleave(DateTime dateValue, string empNo)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66023,8 +66152,9 @@ public class BusinessLogic
         dbQry = string.Format(@"SELECT a.LeaveId, a.EmployeeNo, a.StartDate,a.StartDateSession, a.EndDate,a.EndDateSession
                                 FROM tblEmployeeLeave a
                                 WHERE a.EmployeeNo ={0}
-                                AND ((a.StartDate)<=#{1}#) AND ((a.EndDate)>=#{1}#) AND (Status <>'Rejected' OR Status <> 'Cancelled')"
-            , empNo.ToString(), dateValue.ToShortDateString());
+                                AND (a.StartDate<='{1}' 
+								AND a.EndDate>='{1}') AND (Status <>'Rejected' OR Status <> 'Cancelled')"
+            , empNo.ToString(), dateValue.ToString("MM/dd/yyyy"));
 
         try
         {
@@ -66072,7 +66202,7 @@ public class BusinessLogic
 
     public bool SaveAttendanceDetail(DataTable dtAttendanceDetail, string createdByUserId, string managerUserID, string year, string month, bool createSummary, out int attendanceId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         manager.Open();
         manager.BeginTransaction();
@@ -66082,7 +66212,11 @@ public class BusinessLogic
             if (createSummary)
             {
                 if (string.IsNullOrEmpty(managerUserID))
-                    managerUserID = GetManagerUserID(createdByUserId);
+                {
+                    UserInfo userInfo = GetUserInfoByName(createdByUserId);
+                    managerUserID = userInfo.ManagerUserId;
+
+                }
 
                 attendanceId = InsertAttendanceDetailSummary(manager, year, month, createdByUserId, managerUserID, "In Progress");
             }
@@ -66094,6 +66228,7 @@ public class BusinessLogic
             }
             else
             {
+                attendanceId = 0;
                 manager.RollbackTransaction();
                 return false;
             }
@@ -66110,19 +66245,57 @@ public class BusinessLogic
         }
     }
 
-    public bool SubmitAttendance(int attendanceID)
+    public bool SubmitAttendance(int attendanceID, string userName, string year, string month, ref string validationMsg)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
 
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format(@"UPDATE tblAttendanceSummary SET DateSubmitted='{0}',Status='{1}' WHERE AttendanceId ={2}", DateTime.Now.ToString(), "Submitted", attendanceID.ToString());
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            // validate atttendance submission process.
+            validationMsg = string.Empty;
+            Dictionary<string, string> employeeNos = GetReporteesBySupervisorId(userName);
+            string unApprovedLeavesMsg = string.Empty;
+            string unAppliedLeavesMsg = string.Empty;
+
+            foreach (string empNoStr in employeeNos.Keys)
+            {
+                int empNo = 0;
+                if (int.TryParse(empNoStr, out empNo))
+                {
+                    int attYear = int.Parse(year);
+                    int attMonth = int.Parse(month);
+
+                    AdminBusinessLogic adminBL = new AdminBusinessLogic(this.ConnectionString);
+                    //bool hasUnapprovedLeave = adminBL.HaveUnApprovedLeavesForTheMonth(empNo, attYear, attMonth, ref unApprovedLeavesMsg);
+                    bool hasUnapprovedLeave = false;
+                    bool hasPendingLeaveEntries = !adminBL.HaveAppliedTheLeavesTaken(empNo, attYear, attMonth, ref unAppliedLeavesMsg);
+                    if (hasPendingLeaveEntries || hasUnapprovedLeave)
+                    {
+                        validationMsg += unApprovedLeavesMsg + Environment.NewLine + unAppliedLeavesMsg + Environment.NewLine;
+                    }
+
+                }
+                else
+                {
+                    validationMsg += "Unable to recogonize the Employee number: " + empNoStr + Environment.NewLine;
+                }
+            }
+
+            if (string.IsNullOrEmpty(validationMsg))
+            {
+                dbQry = string.Format(@"UPDATE tblAttendanceSummary SET DateSubmitted='{0}',Status='{1}' WHERE AttendanceId ={2}", DateTime.Now.ToString(), "Submitted", attendanceID.ToString());
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
         catch (Exception ex)
         {
@@ -66139,7 +66312,7 @@ public class BusinessLogic
 
     public DataTable GetAttendanceYearList(string userId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66173,7 +66346,7 @@ public class BusinessLogic
 
     private DataTable GetAttendanceSummary(string userId, string year, string month)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66202,7 +66375,7 @@ public class BusinessLogic
 
     private DataTable GetAttendanceSummaryById(string attendanceId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66259,8 +66432,12 @@ public class BusinessLogic
         try
         {
             dbQry = string.Format(@"Insert into tblAttendanceSummary (AttendanceYear,AttendanceMonthId,CreatedBy,Approver,Status)
-                                        Values(""{0}"",{1},""{2}"",""{3}"",""{4}"")", year, month, supervisorName, managerUserID, status);
+                                        Values('{0}',{1},'{2}','{3}','{4}')", year, month, supervisorName, managerUserID, status);
             attendanceId = manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            dbQry = "SELECT AttendanceId FROM tblAttendanceSummary Order by AttendanceId desc";
+            var result = manager.ExecuteScalar(CommandType.Text, dbQry);
+            int.TryParse(result.ToString(), out attendanceId);
         }
         catch (Exception ex)
         {
@@ -66280,7 +66457,7 @@ public class BusinessLogic
 
             foreach (DataRow dr in dtAttendanceDetail.Rows)
             {
-                dbQry = string.Format(@"Insert into tblAttendanceDetail (EmployeeNo,AttendanceDate,Remarks)Values({0},Format('{1}', 'dd/mm/yyyy'),""{2}"")", dr[0], dr[1], dr[2]);
+                dbQry = string.Format(@"Insert into tblAttendanceDetail (EmployeeNo,AttendanceDate,Remarks)Values({0},'{1}','{2}')", dr[0], DateTime.Parse(dr[1].ToString()).ToString("MM/dd/yyyy"), dr[2]);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
@@ -66297,7 +66474,7 @@ public class BusinessLogic
     private Dictionary<string, string> GetReporteesBySupervisorId(string supervisorId)
     {
         Dictionary<string, string> reportees = new Dictionary<string, string>();
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(_connectionstring);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66382,7 +66559,7 @@ public class BusinessLogic
                     column.Caption = "NA";
                     dtAttendanceDetail.Columns.Add(column);
 
-                } while (dtAttendanceDetail.Columns.Count < 32);
+                } while (dtAttendanceDetail.Columns.Count < 33);
             }
         }
         if (columnCreated)
@@ -66430,7 +66607,7 @@ public class BusinessLogic
     #region Leave Methods
     public DataSet GetLeaveSummary(string userName, string searchCriteria)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66468,7 +66645,7 @@ public class BusinessLogic
     }
     public DataTable GetLeaveDetailsById(int leaveId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66501,7 +66678,7 @@ public class BusinessLogic
     }
     public DataTable GetLeaveInfoById(string connection, Int32 leaveId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(connection);
 
         string dbQry = string.Empty;
@@ -66509,8 +66686,6 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
-
             dbQry = string.Format(@"SELECT LeaveId,EmployeeNo,StartDate,StartDateSession,EndDate,EndDateSession,TotalDays,DateApplied, 
                                         LeaveTypeID,Reason,Status,Approver,ApproverComments,EmailContact,PhoneContanct
                                     FROM tblEmployeeLeave WHERE LeaveID={0}", leaveId);
@@ -66536,7 +66711,7 @@ public class BusinessLogic
     }
     public DataSet GetLeaveRequestsSummaryForTheSupervisor(string userName)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -66570,25 +66745,32 @@ public class BusinessLogic
     }
 
     public int ApplyLeave(string EmpNo, DateTime StartDate, string StartDateSession, DateTime EndDate,
-        string EndDateSession, DateTime DateApplied, string LeaveTypeId, string Reason, string Approver, string EmailContact, string PhoneContact)
+        string EndDateSession, DateTime DateApplied, string LeaveTypeId, string Reason, string Approver, string EmailContact, string PhoneContact, string status = "Submitted")
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
 
         try
         {
+            int empNumber = 0;
+            int.TryParse(EmpNo, out empNumber);
             double totalLeaveDays = CalculateTotalLeaveDays(StartDate, StartDateSession, EndDate, EndDateSession);
-            EmpNo = GetUserInfoByName(EmpNo).EmpNo.ToString();
-            manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+            UserInfo usrInfo = GetUserInfoByEmpNo(empNumber);
 
+            if (string.IsNullOrEmpty(Approver))
+            {
+                Approver = usrInfo.ManagerEmpNo.ToString();
+            }
+
+            manager.Open();
             dbQry = string.Format(@"INSERT INTO tblEmployeeLeave (EmployeeNo,StartDate,StartDateSession,EndDate,EndDateSession,TotalDays,DateApplied, 
                                         LeaveTypeID,Reason,Status,Approver,ApproverComments,EmailContact,PhoneContact)
-                                        VALUES ({0},Format('{1}', 'dd/mm/yyyy'),'{2}',Format('{3}', 'dd/mm/yyyy'),'{4}',{5},'{6}',{7},'{8}','{9}',{10},'{11}','{12}','{13}')"
-                                        , EmpNo, StartDate, StartDateSession, EndDate, EndDateSession, totalLeaveDays, DateApplied, LeaveTypeId, Reason
-                                        , "Submitted", Approver, "", EmailContact, PhoneContact);
+                                        VALUES ({0},'{1}','{2}','{3}','{4}',{5},'{6}',{7},'{8}','{9}',{10},'{11}','{12}','{13}')"
+                                        , empNumber.ToString(), StartDate.ToString("MM/dd/yyyy"), StartDateSession, EndDate.ToString("MM/dd/yyyy"), EndDateSession, totalLeaveDays, DateApplied.ToString("MM/dd/yyyy"), LeaveTypeId, Reason
+                                        , status, Approver, "", EmailContact, PhoneContact);
+
             int resultId = manager.ExecuteNonQuery(CommandType.Text, dbQry);
             return resultId;
         }
@@ -66600,13 +66782,12 @@ public class BusinessLogic
         {
             if (manager != null)
                 manager.Dispose();
-
         }
     }
 
     public int UpdateLeave(string leaveId, string EmployeeNo, DateTime StartDate, string StartDateSession, DateTime EndDate, string EndDateSession, DateTime DateApplied, string LeaveTypeId, string Reason, string Approver, string EmailContact, string PhoneContact)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -66616,11 +66797,11 @@ public class BusinessLogic
             double totalLeaveDays = CalculateTotalLeaveDays(StartDate, StartDateSession, EndDate, EndDateSession);
             EmployeeNo = GetUserInfoByName(EmployeeNo).EmpNo.ToString();
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+
 
             dbQry = string.Format(@"UPDATE tblEmployeeLeave SET EmployeeNo={0},StartDate='{1}',StartDateSession='{2}',EndDate='{3}',EndDateSession='{4}',TotalDays={5},DateApplied='{6}',LeaveTypeID={7},
                                                 Reason='{8}',Approver={9},EmailContact='{10}',PhoneContact='{11}' WHERE LeaveId={12}"
-                                        , EmployeeNo, StartDate, StartDateSession, EndDate, EndDateSession, totalLeaveDays, DateApplied, LeaveTypeId, Reason
+                                        , EmployeeNo, StartDate.ToString("MM/dd/yyyy"), StartDateSession, EndDate.ToString("MM/dd/yyyy"), EndDateSession, totalLeaveDays, DateApplied.ToString("MM/dd/yyyy"), LeaveTypeId, Reason
                                         , Approver, EmailContact, PhoneContact, leaveId);
 
             int resultId = manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -66640,7 +66821,7 @@ public class BusinessLogic
 
     public int UpdateLeaveStatus(string leaveId, string status, string approverComments)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -66648,7 +66829,7 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+
 
             dbQry = string.Format(@"UPDATE tblEmployeeLeave SET Status='{0}', ApproverComments='{1}' WHERE LeaveId={2}"
                                          , status, approverComments, leaveId);
@@ -66669,7 +66850,7 @@ public class BusinessLogic
 
     public int DeleteLeave(string leaveId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -66677,8 +66858,6 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
-
             dbQry = string.Format(@"DELETE FROM tblEmployeeLeave WHERE LeaveId={0}"
                                          , leaveId);
 
@@ -66739,7 +66918,7 @@ public class BusinessLogic
 
     public DataTable ListLeaveTypes(string connection)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(connection);
 
         string dbQry = string.Empty;
@@ -66747,9 +66926,8 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format(@"SELECT ID as LeaveTypeId, LeaveTypeName FROM tblLeaveTypes WHERE IsActive=true");
+            dbQry = string.Format(@"SELECT ID as LeaveTypeId, LeaveTypeName FROM tblLeaveTypes WHERE IsActive='true'");
 
             DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -66770,33 +66948,50 @@ public class BusinessLogic
         }
     }
 
-    public int GetLeaveLimit(int leaveTypeId, int employeeNo)
+    public double GetLeaveLimit(int leaveTypeId, int employeeNo, DateTime leaveStartDate)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
-        int allowedCount = 0;
+        double allowedCount = 0;
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+
             if (leaveTypeId.Equals(3))
             {
                 return GetActiveCompOffDays(employeeNo);
             }
             else
             {
-                dbQry = string.Format(@"SELECT TOP 1 AllowedCount FROM tblEmployeeRoleLeaveLimit ll
+                dbQry = string.Format(@"SELECT ll.AllowedCount,e.empDOJ FROM tblEmployeeRoleLeaveLimit ll
                                     INNER JOIN tblEmployee e ON e.EmployeeRoleId = ll.Role_Id
-                                    WHERE e.EmpNo={0} AND ll.leaveType_Id={1} AND EffectiveDate <= #{2}#
-                                    ORDER BY EffectiveDate DESC", employeeNo, leaveTypeId, DateTime.Today.Date.ToString("dd/MM/yyyy"));
+                                    WHERE e.EmpNo={0} AND ll.leaveType_Id={1} AND EffectiveDate <= '{2}'
+                                    ORDER BY EffectiveDate DESC", employeeNo, leaveTypeId, leaveStartDate);
             }
-            var result = manager.ExecuteScalar(CommandType.Text, dbQry);
-            if (result != null)
+            var result = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            if (result != null && result.Tables.Count > 0 && result.Tables[0].Rows.Count > 0)
             {
-                if (int.TryParse(result.ToString(), out allowedCount))
+                if (double.TryParse(result.Tables[0].Rows[0][0].ToString(), out allowedCount))
                 {
+                    DateTime doj = DateTime.Parse(result.Tables[0].Rows[0][1].ToString());
+                    double totalDaysCompleted = leaveStartDate.Subtract(doj).TotalDays;
+
+                    double tempCount = (totalDaysCompleted * allowedCount) / 365;
+
+                    double fractionPart = tempCount % 1;
+                    double wholePart = Math.Ceiling(tempCount);
+
+                    if (fractionPart >= 0.5)
+                    {
+                        allowedCount = wholePart + 0.5;
+                    }
+                    else
+                    {
+                        allowedCount = wholePart;
+                    }
+
                     return allowedCount;
                 }
             }
@@ -66815,7 +67010,7 @@ public class BusinessLogic
 
     private int GetActiveCompOffDays(int employeeNo)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -66823,7 +67018,7 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+
             dbQry = string.Format(@"SELECT Count(1) FROM tblEmployeeCompOff c                                    
                                     WHERE e.EmpNo={0} AND IsActive=True", employeeNo);
 
@@ -66850,7 +67045,7 @@ public class BusinessLogic
 
     public double GetTotalLeavesTaken(int year, int leaveTypeId, int employeeNo)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -66858,7 +67053,7 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+
 
             dbQry = string.Format(@"SELECT SUM(TotalDays) FROM tblEmployeeLeave l                                    
                                     WHERE l.EmployeeNo={0} AND l.leaveTypeId={1} AND YEAR(l.StartDate)={2} AND (l.Status <> 'Rejected' OR l.Status <> 'Cancelled') ", employeeNo, leaveTypeId, year);
@@ -66905,7 +67100,7 @@ public class BusinessLogic
 
     private int InsertPayrollDetails(int year, int month, bool isValidated, string status, DateTime dateTime)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         int payrollId = 0;
@@ -66937,7 +67132,7 @@ public class BusinessLogic
 
     public DataTable GetPayrollQueueForTheMonth(int year, int month)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         try
@@ -66971,7 +67166,7 @@ public class BusinessLogic
 
     public DataTable GetPayrollProcessLog(int payrollId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         try
@@ -67006,17 +67201,19 @@ public class BusinessLogic
 
     public DataTable GetAllPaySlipForThePayroll(int payrolId)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         try
         {
             manager.Open();
 
-            dbQry = string.Format(@"SELECT *,e.empFirstName,e.empDesig,e.empDOJ,Payments,Deductions,(Payments-Deductions) as TotalPayable,LossOfPayDays 
-                                    FROM (tblEmployeePayslip ep INNER JOIN
+            dbQry = string.Format(@"SELECT ep.PayslipId,ep.PayrollDate,e.empFirstName as EmployeeName,e.empDesig as Designation,er.Role_Name as Role,e.empDOJ as DateOfJoining,Payments,Deductions,(Payments-Deductions) as TotalPayable, LossOfPayDays, OtherAllowance, OtherDeductions
+                                    FROM ((tblEmployeePayslip ep INNER JOIN
                                                 tblEmployee e ON ep.EmployeeId = e.empno)
+                                            INNER JOIN tblEmployeeRoles er ON er.Id = e.EmployeeRoleId)
                                     WHERE PayrollId = {0}", payrolId);
+
             DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
             manager.Close();
 
@@ -67054,7 +67251,13 @@ public class BusinessLogic
             double totalDaysInMonth = 30;
 
             double newTotalPayable = (initialTotalPayable * (totalDaysInMonth - lopDays)) / totalDaysInMonth;
-            drPaySlip["TotalPayable"] = newTotalPayable;
+
+            double otherAllowance = 0;
+            double otherDeduction = 0;
+            double.TryParse(drPaySlip["OtherAllowance"].ToString(), out otherAllowance);
+            double.TryParse(drPaySlip["OtherDeductions"].ToString(), out otherDeduction);
+
+            drPaySlip["TotalPayable"] = newTotalPayable + otherAllowance - otherDeduction;
         }
     }
     #endregion
@@ -67063,18 +67266,18 @@ public class BusinessLogic
 
     public DataSet GetTimesheetSummary(string TimesheetYear, string username)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
-
+        UserInfo userInfo = GetUserInfoByName(username);
         if (TimesheetYear.ToUpper().Equals("ALL"))
         {
-            dbQry = string.Format("SELECT a.Id, a.StartDate, a.EndDate, (a.StartDate + ' - ' +a.EndDate) as TimesheetPeroid, a.UserId,a.TotalHours, a.SubmittedDate, a.ApproverUserId, a.Status FROM tblTimesheetSummary a WHERE a.UserId ='{0}'", username);
+            dbQry = string.Format("SELECT a.Id, a.StartDate, a.EndDate, (a.StartDate + ' - ' +a.EndDate) as TimesheetPeroid, a.EmpNo,a.TotalHours, a.SubmittedDate, a.ApproverUserId, a.Status FROM tblTimesheetSummary a WHERE a.EmpNo ='{0}'", userInfo.EmpNo);
         }
         else
         {
-            dbQry = string.Format("SELECT a.Id, a.StartDate, a.EndDate, (a.StartDate + ' - ' +a.EndDate) as TimesheetPeroid, a.UserId,a.TotalHours, a.SubmittedDate, a.ApproverUserId, a.Status FROM tblTimesheetSummary a WHERE a.UserId ='{0}' AND (Year(a.StartDate)={1} OR YEAR(a.EndDate)={1}) ", username, TimesheetYear);
+            dbQry = string.Format("SELECT a.Id, a.StartDate, a.EndDate, (a.StartDate + ' - ' +a.EndDate) as TimesheetPeroid, a.EmpNo,a.TotalHours, a.SubmittedDate, a.ApproverUserId, a.Status FROM tblTimesheetSummary a WHERE a.EmpNo ='{0}' AND (Year(a.StartDate)={1} OR YEAR(a.EndDate)={1}) ", userInfo.EmpNo, TimesheetYear);
         }
 
         try
@@ -67100,12 +67303,12 @@ public class BusinessLogic
 
     public bool IsTimesheetSummaryExists(string username, DateTime currentDate)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
-
-        dbQry = string.Format("SELECT a.Id, a.StartDate, a.EndDate, (a.StartDate + ' - ' +a.EndDate) as TimesheetPeroid, a.UserId,a.TotalHours, a.SubmittedDate, a.ApproverUserId, a.Status FROM tblTimesheetSummary a WHERE a.UserId ='{0}' AND (a.StartDate >= #{1}# AND a.EndDate <= #{1}# ) ", username, currentDate);
+        UserInfo userInfo = GetUserInfoByName(username);
+        dbQry = string.Format("SELECT a.Id, a.StartDate, a.EndDate, (a.StartDate + ' - ' +a.EndDate) as TimesheetPeroid, a.EmpNo,a.TotalHours, a.SubmittedDate, a.ApproverUserId, a.Status FROM tblTimesheetSummary a WHERE a.EmpNo ='{0}' AND (a.StartDate >= '{1}' AND a.EndDate <= '{1}' ) ", userInfo.EmpNo, currentDate);
 
 
         try
@@ -67134,7 +67337,7 @@ public class BusinessLogic
         List<DateTime> lstWeekDates = GetWeekBoundaryDates(dateTime);
 
         DataTable dtTimesheetForTheDate = new DataTable();
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
@@ -67168,6 +67371,11 @@ public class BusinessLogic
         }
 
         return result;
+    }
+
+    public void SaveTimeSheetDetails(DataSet dsTsDetailsAllDays)
+    {
+        throw new NotImplementedException();
     }
 
     public DataTable GetYearsConstant()
@@ -67206,7 +67414,7 @@ public class BusinessLogic
     #region Commmon Methods
     private string GetManagerUserID(string userID)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -67214,13 +67422,13 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+
 
             dbQry = string.Format(@"SELECT mu.UserID AS ManagerUserID
                                     FROM   ((tblUserInfo u INNER JOIN
                                                 tblEmployee e ON u.Empno = e.empno) LEFT OUTER JOIN
                                                 tblUserInfo mu ON e.ManagerID = mu.Empno) 
-                                    WHERE u.UserID = ""{0}""", userID);
+                                    WHERE u.UserID = '{0}'", userID);
 
             DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -67243,7 +67451,7 @@ public class BusinessLogic
 
     public UserInfo GetUserInfoByName(string userName)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -67251,14 +67459,14 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format(@"SELECT u.UserID,u.UserName, u.Empno,e.EmpFirstName, e.ManagerID AS ManagerEmpNo, mu.UserID AS ManagerUserID, mu.UserName as ManagerUserName,me.EmpFirstName as ManagerEmpName
+
+            dbQry = string.Format(@"SELECT u.UserID,u.UserName, u.Empno,e.EmpFirstName, e.ManagerID AS ManagerEmpNo, mu.UserID AS ManagerUserID, mu.UserName as ManagerUserName,me.EmpFirstName as ManagerEmpName,e.EmployeeRoleId
                                     FROM   (((tblUserInfo u INNER JOIN
                                                 tblEmployee e ON u.Empno = e.empno) LEFT OUTER JOIN
                                                 tblUserInfo mu ON e.ManagerID = mu.Empno) LEFT OUTER JOIN 
                                                 tblEmployee me ON mu.Empno = me.empno)
-                                    WHERE u.UserName = ""{0}""", userName);
+                                    WHERE u.UserName = '{0}'", userName);
 
             DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
             UserInfo userInfo = new UserInfo();
@@ -67276,6 +67484,11 @@ public class BusinessLogic
                 int.TryParse(ds.Tables[0].Rows[0]["ManagerEmpNo"].ToString(), out empNo);
                 userInfo.ManagerEmpNo = empNo;
                 userInfo.ManagerEmpName = ds.Tables[0].Rows[0]["ManagerEmpName"].ToString();
+
+                int roleId = 0;
+                int.TryParse(ds.Tables[0].Rows[0]["EmployeeRoleId"].ToString(), out roleId);
+                userInfo.RoleId = roleId;
+
                 return userInfo;
             }
             else
@@ -67293,10 +67506,9 @@ public class BusinessLogic
         }
     }
 
-
-    public DataTable GetAllMonths()
+    public UserInfo GetUserInfoByEmpNo(int empNo)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -67304,7 +67516,65 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
+
+
+            dbQry = string.Format(@"SELECT u.UserID,u.UserName, u.Empno,e.EmpFirstName, e.ManagerID AS ManagerEmpNo, mu.UserID AS ManagerUserID, mu.UserName as ManagerUserName,me.EmpFirstName as ManagerEmpName,e.EmployeeRoleId
+                                    FROM   (((tblUserInfo u INNER JOIN
+                                                tblEmployee e ON u.Empno = e.empno) LEFT OUTER JOIN
+                                                tblUserInfo mu ON e.ManagerID = mu.Empno) LEFT OUTER JOIN 
+                                                tblEmployee me ON mu.Empno = me.empno)
+                                    WHERE u.EmpNo = {0}", empNo);
+
+            DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            UserInfo userInfo = new UserInfo();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                userInfo.UserName = ds.Tables[0].Rows[0]["UserName"].ToString();
+                userInfo.UserId = ds.Tables[0].Rows[0]["UserID"].ToString();
+                int.TryParse(ds.Tables[0].Rows[0]["EmpNo"].ToString(), out empNo);
+                userInfo.EmpName = ds.Tables[0].Rows[0]["EmpFirstName"].ToString();
+                userInfo.EmpNo = empNo;
+
+                // Manager Info
+                int managerEmpNo = 0;
+                userInfo.ManagerUserName = ds.Tables[0].Rows[0]["ManagerUserName"].ToString();
+                userInfo.ManagerUserId = ds.Tables[0].Rows[0]["ManagerUserID"].ToString();
+                int.TryParse(ds.Tables[0].Rows[0]["ManagerEmpNo"].ToString(), out managerEmpNo);
+                userInfo.ManagerEmpNo = managerEmpNo;
+                userInfo.ManagerEmpName = ds.Tables[0].Rows[0]["ManagerEmpName"].ToString();
+
+                int roleId = 0;
+                int.TryParse(ds.Tables[0].Rows[0]["EmployeeRoleId"].ToString(), out roleId);
+                userInfo.RoleId = roleId;
+
+                return userInfo;
+            }
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataTable GetAllMonths()
+    {
+        DBManager manager = new DBManager();
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+
+        string dbQry = string.Empty;
+
+        try
+        {
+            manager.Open();
+
 
             dbQry = string.Format(@"SELECT MonthId,MonthName,MonthCode FROM tblMonth");
 
@@ -67329,7 +67599,7 @@ public class BusinessLogic
 
     public bool AddCompOffForTheEmployee(string empNo, string supervisorEmpNo, DateTime compOffOrginDate, string compOffReason)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
 
@@ -67337,7 +67607,7 @@ public class BusinessLogic
         {
             manager.Open();
             dbQry = string.Format(@"Insert into tblEmployeeCompOff (EmployeeNo,CompOffDate,CompOffReason,ApprovedBy,IsActive)
-                                        Values({0},Format('{1}', 'dd/mm/yyyy'),""{2}"",{3},{4})", empNo, compOffOrginDate.ToShortDateString(), compOffReason, supervisorEmpNo, true.ToString());
+                                        Values({0},'{1}','{2}',{3},{4})", empNo, compOffOrginDate.ToString("MM/dd/yyyy"), compOffReason, supervisorEmpNo, true.ToString());
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
             return true;
         }
@@ -67355,7 +67625,7 @@ public class BusinessLogic
 
     public bool AddWeekOffRotaForTheEmployee(string empNo, string supervisorEmpNo, DateTime rotaSourceOrginDate, DateTime rotaShiftedDate)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
 
@@ -67363,7 +67633,7 @@ public class BusinessLogic
         {
             manager.Open();
             dbQry = string.Format(@"Insert into tblEmployeeWeekOffRota (EmployeeNo,SourceDate,ShiftedDate,ApprovedBy,IsActive)
-                                        Values({0},Format('{1}', 'dd/mm/yyyy'),Format('{2}', 'dd/mm/yyyy'),{3},{4})", empNo, rotaSourceOrginDate.ToShortDateString(), rotaShiftedDate.ToShortDateString(), supervisorEmpNo, true.ToString());
+                                        Values({0},'{1}','{2}',{3},{4})", empNo, rotaSourceOrginDate.ToString("MM/dd/yyyy"), rotaShiftedDate.ToString("MM/dd/yyyy"), supervisorEmpNo, true.ToString());
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
             return true;
         }
@@ -67380,7 +67650,7 @@ public class BusinessLogic
 
     public DataTable GetHolidayListForTheYear(int year)
     {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
+        DBManager manager = new DBManager();
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
 
         string dbQry = string.Empty;
@@ -67388,8 +67658,6 @@ public class BusinessLogic
         try
         {
             manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
-
             dbQry = string.Format(@"SELECT Holiday_Id, Date, Holiday_Name FROM tblHolidayList WHERE YEAR(Date)={0}", year);
 
             DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -67411,6 +67679,7 @@ public class BusinessLogic
         }
     }
     #endregion
+ 
 
     public DataSet getRateInformation(string itemcode)
     {

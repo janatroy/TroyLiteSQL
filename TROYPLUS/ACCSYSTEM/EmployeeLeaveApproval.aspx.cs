@@ -28,16 +28,16 @@ public partial class EmployeeLeaveApproval : System.Web.UI.Page
                 Response.Redirect("~/Login.aspx");
 
 
-            string dbfileName = connStr.Remove(0, connStr.LastIndexOf(@"App_Data\") + 9);
-            dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
-            BusinessLogic objChk = new BusinessLogic();
+            //string dbfileName = connStr.Remove(0, connStr.LastIndexOf(@"App_Data\") + 9);
+            //dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
+            //BusinessLogic objChk = new BusinessLogic();
 
-            if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
-            {
+            //if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
+            //{
 
-                //grdViewAttendanceSummary.Columns[7].Visible = false;
-                //grdViewAttendanceSummary.Columns[8].Visible = false;
-            }
+            //    //grdViewAttendanceSummary.Columns[7].Visible = false;
+            //    //grdViewAttendanceSummary.Columns[8].Visible = false;
+            //}
             grdViewLeaveSummary.PageSize = 8;
 
             string connection = Request.Cookies["Company"].Value;
