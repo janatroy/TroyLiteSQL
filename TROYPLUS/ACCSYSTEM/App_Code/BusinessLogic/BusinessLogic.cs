@@ -1958,7 +1958,7 @@ public class BusinessLogic
         {
             dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
                                   " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
-                                  " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblCheque.BankID=" + bnkid + " and tblChequeitems.Status='N'");
+                                  " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblCheque.BankID=" + bnkid + " and tblChequeitems.Status='N' and tblChequeitems.DamageCheque='N'");
             //dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
             //                     " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
             //                     " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblChequeitems.Status='N'"); 
@@ -3244,7 +3244,7 @@ public class BusinessLogic
         string oldBillNo = "";
         int oldBilitID = 0;
         double oldAmt = 0;
-
+        int CheNo=0;
         string oldtrandate = string.Empty;
         string description = string.Empty;
         string logdescription = string.Empty;
@@ -3258,10 +3258,14 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            ds = manager.ExecuteDataSet(CommandType.Text, "Select Amount,DebtorID,CreditorID,TransDate from tblDayBook Where TransNo=" + TransNo);
+            ds = manager.ExecuteDataSet(CommandType.Text, "Select Amount,DebtorID,CreditorID,TransDate,ChequeNo from tblDayBook Where TransNo=" + TransNo);
 
             int DebitorID = Convert.ToInt32(ds.Tables[0].Rows[0]["DebtorID"].ToString());
             int CreditorID = Convert.ToInt32(ds.Tables[0].Rows[0]["CreditorID"].ToString());
+            if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                 CheNo = Convert.ToInt32(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+            }
             double Amount = Convert.ToDouble(ds.Tables[0].Rows[0]["Amount"].ToString());
             DateTime TransDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["TransDate"].ToString());
 
@@ -3347,6 +3351,11 @@ public class BusinessLogic
                     }
                 }
 
+                if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+                {
+                    dbQry = string.Format("Update tblChequeitems Set DamageCheque='Y' Where ChequeNo='" + CheNo + "' and BankID=" + CreditorID + "");
+                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                }
 
                 sAuditStr = "Payment Transaction: " + TransNo + " got deleted old Record Details : User=" + Username + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + Amount;
 
@@ -6364,6 +6373,10 @@ public class BusinessLogic
 
             dbQry = string.Format("Insert Into tblPayment(JournalID,Paymode,BillNo, BranchCode) Values({0},'{1}','{2}','{3}')", TransNo, PaymentMode, BillNo, BranchCode);
 
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
+            dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");          
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             //dbQry = string.Format("Select Debit from tblLedger Where LedgerID={0}", DebitorID);
@@ -11990,6 +12003,7 @@ public class BusinessLogic
         DataSet dsOld = new DataSet();
         int oldDebitID = 0;
         int oldCreditID = 0;
+        int CreditID = 0;
         string oldBillNo = "";
         double oldAmt = 0;
         string sNarration = string.Empty;
@@ -12000,6 +12014,7 @@ public class BusinessLogic
         string description = string.Empty;
         string logdescription = string.Empty;
         string Logsave = string.Empty;
+        int CheNo = 0; 
         try
         {
             manager.Open();
@@ -12008,6 +12023,13 @@ public class BusinessLogic
             manager.BeginTransaction();
             //Start Retriving the old Debtor and CreditorID
             dsOld = GetPurchaseForId(purchaseID);
+
+            if (dsOld.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                CheNo = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"].ToString());
+                CreditID = Convert.ToInt32(dsOld.Tables[0].Rows[0]["CreditorID"]);
+            } 
+
 
             if (dsOld.Tables[0].Rows[0]["JournalID"] != null)
             {
@@ -12020,7 +12042,7 @@ public class BusinessLogic
                     oldBillNo = dsOld.Tables[0].Rows[0]["BillNo"].ToString();
             }
 
-            dbQry = string.Format("Select DebtorID,CreditorID,Amount,transdate from tblDaybook Where TransNo={0}", TransNo);
+            dbQry = string.Format("Select DebtorID,CreditorID,Amount,transdate,ChequeNo from tblDaybook Where TransNo={0}", TransNo);
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
             if (dsOld != null)
             {
@@ -12030,6 +12052,9 @@ public class BusinessLogic
                     oldCreditID = Convert.ToInt32(dsOld.Tables[0].Rows[0]["CreditorID"]);
                     oldAmt = Convert.ToDouble(dsOld.Tables[0].Rows[0]["Amount"]);
                     transdate = Convert.ToString(dsOld.Tables[0].Rows[0]["transdate"]);
+
+                    CheNo = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"].ToString());
+                    CreditID = Convert.ToInt32(dsOld.Tables[0].Rows[0]["CreditorID"]);
                 }
             }
 
@@ -12193,6 +12218,13 @@ public class BusinessLogic
                 dbQry = string.Format("Update tblBilti SET Status = 'Open' Where ID={0}", BilitID);
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
+
+
+            if (dsOld.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                dbQry = string.Format("Update tblChequeitems Set DamageCheque='Y' Where ChequeNo='" + CheNo + "' and BankID=" + CreditID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            } 
 
             sAuditStr = "Purchase Transaction: " + TransNo + " got deleted old Record Details : User =" + usernam + " BillNo=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt;
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
@@ -39563,6 +39595,32 @@ public class BusinessLogic
         }
     }
 
+    public int RevertChequeused_conn(string Chequeno, int BankName, string conn)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(conn);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        int chqID = 0;
+
+        try
+        {
+            dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + Chequeno + "' and BankID=" + BankName + "");
+            manager.Open();
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            return chqID = 1;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
     public int UpdateChequeused_conn(string Chequeno, int BankName, string conn)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -39615,6 +39673,31 @@ public class BusinessLogic
 
     }
 
+    public int RevertChequeused(string Chequeno, int BankName)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        int chqID = 0;
+
+        try
+        {
+            dbQry = string.Format("Update tblChequeitems Set Status='N' Where ChequeNo='" + Chequeno + "' and BankID=" + BankName + "");
+            manager.Open();
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            return chqID = 1;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
 
     public int UpdateChequeused(string Chequeno, int BankName)
     {
@@ -43726,7 +43809,7 @@ public class BusinessLogic
         DataSet dsOld = new DataSet();
         DataSet dsOldRec = new DataSet();
         string sAuditStr = string.Empty;
-
+        int CheNo = 0; 
         int TTransNo = 0;
         int oldDebitID = 0;
         int oldCreditID = 0;
@@ -43754,6 +43837,10 @@ public class BusinessLogic
             double Amount = Convert.ToDouble(ds.Tables[0].Rows[0]["Amount"].ToString());
             DateTime TransDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["TransDate"].ToString());
             string cheque = Convert.ToString(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+            if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                CheNo = Convert.ToInt32(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+            } 
 
             dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,RefNo from tblDaybook Where TransNo={0}", TransNo);
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -43839,6 +43926,13 @@ public class BusinessLogic
             //dbQry = string.Format("Update tblchequeitems SET status = '{1}' Where chequeno='{0}'", cheque, State);
 
             //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
+            {
+                dbQry = string.Format("Update tblChequeitems Set DamageCheque='Y' Where ChequeNo='" + CheNo + "' and BankID=" + CreditorID + "");
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            }
+
 
             if (requireValidation)
             {
@@ -44074,16 +44168,16 @@ public class BusinessLogic
             {
                 if (g == 0)
                 {
-                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status) VALUES({0},'{1}',{2},{3},'{4}')",
-                    ChequeBookId, AccountNo, BankID, FromChequeNo, Status);
+                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status,DamageCheque) VALUES({0},'{1}',{2},{3},'{4}','{5}')",
+                    ChequeBookId, AccountNo, BankID, FromChequeNo, Status,"N");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry2);
 
                     ChequeNo = Convert.ToDouble(FromChequeNo) + 1;
                 }
                 else
                 {
-                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status) VALUES({0},'{1}',{2},{3},'{4}')",
-                    ChequeBookId, AccountNo, BankID, ChequeNo, Status);
+                    dbQry2 = string.Format("INSERT INTO tblChequeItems(ChequeBookId, AccountNo, BankID, ChequeNo, Status,DamageCheque) VALUES({0},'{1}',{2},{3},'{4}','{5}')",
+                    ChequeBookId, AccountNo, BankID, ChequeNo, Status,"N");
                     manager.ExecuteNonQuery(CommandType.Text, dbQry2);
 
                     ChequeNo = ChequeNo + 1;
@@ -44275,7 +44369,7 @@ public class BusinessLogic
             //dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' ");
             dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
                                  " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
-                                 " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblChequeitems.Status='N'");
+                                 " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblChequeitems.Status='N' and tblChequeitems.DamageCheque='N'");
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -51044,6 +51138,10 @@ public class BusinessLogic
 
             dbQry = string.Format("INSERT INTO tblDamageCheque(BankName, BankID, ChequeNo,AccountNo) VALUES('{0}',{1},'{2}','{3}')",
                     BankName, BankID, ChequeNo, AccountNo);
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            dbQry = string.Format("Update tblChequeitems set DamageCheque='Y' where ChequeNo='" + ChequeNo + "' and BankID='" + BankID + "' and AccountNo='" + AccountNo + "'");               
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 

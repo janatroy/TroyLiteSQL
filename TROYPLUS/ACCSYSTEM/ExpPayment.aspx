@@ -420,8 +420,9 @@
                                                                                 <tr>
                                                                                     <td colspan="4" align="left">
                                                                                         <cc1:TabContainer ID="tabMain" runat="server" Width="100%" ActiveTabIndex="0" CssClass="fancy fancy-green">
-                                                                                            <cc1:TabPanel ID="tabEditMain" runat="server" HeaderText="Payment Details">
+                                                                                            <cc1:TabPanel ID="tabEditMain" runat="server" HeaderText="Payment Details">                                                                                              
                                                                                                 <ContentTemplate>
+                                                                                                      <asp:HiddenField ID="hid1" runat="server" />
                                                                                                     <table style="width: 800px; border: 0px solid #86b2d1; vertical-align: text-top" align="center" cellpadding="3"
                                                                                                         cellspacing="2">
                                                                                                         <tr style="height: 5%">

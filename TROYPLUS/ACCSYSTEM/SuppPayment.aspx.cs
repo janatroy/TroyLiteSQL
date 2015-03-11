@@ -487,7 +487,7 @@ public partial class SuppPayment : System.Web.UI.Page
     //{
     //    //loadDropDowns();
     //}
-
+    int oldchqno;
     protected void GrdViewPayment_SelectedIndexChanged(object sender, EventArgs e)
     {
         try
@@ -504,7 +504,7 @@ public partial class SuppPayment : System.Web.UI.Page
             Session["BillData"] = null;
 
             int Trans = Convert.ToInt32(GrdViewPayment.SelectedDataKey.Value);
-            bl.InsertChequeStatus(connection, Trans);
+            //bl.InsertChequeStatus(connection, Trans);
 
             hdPayment.Value = Convert.ToString(GrdViewPayment.SelectedDataKey.Value);
             
@@ -569,7 +569,22 @@ public partial class SuppPayment : System.Web.UI.Page
                         ListItem li = ddBanks.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(creditorID));
                         if (li != null) li.Selected = true;
                     }
+
                     loadChequeNo(Convert.ToInt32(ddBanks.SelectedItem.Value));
+                    hid1.Value= ds.Tables[0].Rows[0]["Chequeno"].ToString();
+                    if (ds.Tables[0].Rows[0]["Chequeno"] != null)
+                    {
+                        // txtChequeNo.Text = ds.Tables[0].Rows[0]["Chequeno"].ToString();
+                        cmbChequeNo.ClearSelection();
+                        ListItem clie = new ListItem(ds.Tables[0].Rows[0]["Chequeno"].ToString(), "0");
+                        cmbChequeNo.Items.Insert(cmbChequeNo.Items.Count - 1, clie);
+                        clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["Chequeno"].ToString());
+
+                        if (clie != null) clie.Selected = true;
+                    }
+
+                    //ListItem clie = new ListItem(ds.Tables[0].Rows[0]["Chequeno"].ToString(), "0");
+
                     //loacheque(Convert.ToString(ds.Tables[0].Rows[0]["CreditorID"]));
 
                     //string cheque = bl.GetCheque(connection, ds.Tables[0].Rows[0]["ChequeNo"].ToString());
@@ -2271,7 +2286,7 @@ public partial class SuppPayment : System.Web.UI.Page
         try
         {
             DataSet dsData = (DataSet)Session["BillData"];
-
+            int ichequestatus = 0;
             string ChequeNo = string.Empty;
             string ChequeNot = string.Empty;
             ChequeNot = cmbChequeNo.SelectedItem.Text; 
@@ -2433,6 +2448,13 @@ public partial class SuppPayment : System.Web.UI.Page
                 DataSet ds = (DataSet)Session["BillData"];
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 bl.UpdateSuppPayment(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, ds, usernam, Branchcode);
+                if (hid1.Value != ChequeNo)
+                {
+                    ichequestatus = bl.UpdateChequeused_conn(ChequeNo, CreditorID, conn);
+                    ichequestatus = bl.RevertChequeused_conn(hid1.Value, CreditorID, conn);
+                }
+                
+
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payment Updated Successfully. Transaction No : " + OutPut.ToString() + "');", true);
 

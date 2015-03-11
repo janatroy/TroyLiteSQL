@@ -1959,7 +1959,7 @@ public partial class Purchase : System.Web.UI.Page
                     return;
                 }
 
-
+                int ichequestatus = 0;
                 int iPurchaseId = 0;
                 string connection = Request.Cookies["Company"].Value;
                 BusinessLogic bll = new BusinessLogic();
@@ -2518,6 +2518,8 @@ public partial class Purchase : System.Web.UI.Page
                             //*******************************
 
                             iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, connection, branchcode);
+
+                                                     
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
                             /*Start March 15 Modification */
                             if (iPurchaseId == -2)
@@ -2531,6 +2533,13 @@ public partial class Purchase : System.Web.UI.Page
 
                             }
                             /*End March 15 Modification */
+
+
+                            if (hid1.Value != sChequeno)
+                            {
+                                ichequestatus = bl.UpdateChequeused(sChequeno, Convert.ToInt32(iBank));
+                                ichequestatus = bl.RevertChequeused(hid1.Value, Convert.ToInt32(iBank));
+                            }
 
                             string salestype = string.Empty;
                             int ScreenNo = 0;
@@ -4401,12 +4410,16 @@ public partial class Purchase : System.Web.UI.Page
                 }
 
                 loadChequeNo(Convert.ToInt32(cmbBankName.SelectedItem.Value));
+                hid1.Value = ds.Tables[0].Rows[0]["ChequeNo"].ToString(); 
 
                 if (ds.Tables[0].Rows[0]["Chequeno"] != null)
                 {
                     // txtChequeNo.Text = ds.Tables[0].Rows[0]["Chequeno"].ToString();
                     cmbChequeNo.ClearSelection();
-                    ListItem clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["Chequeno"].ToString());
+                    ListItem clie = new ListItem(ds.Tables[0].Rows[0]["Chequeno"].ToString(), "0");
+                    cmbChequeNo.Items.Insert(cmbChequeNo.Items.Count - 1, clie);            
+                     clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["Chequeno"].ToString());
+                    
                     if (clie != null) clie.Selected = true;
                 }
 

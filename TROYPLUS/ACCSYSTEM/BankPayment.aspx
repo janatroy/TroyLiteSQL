@@ -410,7 +410,7 @@
                                                                                                         <td class="ControlDrpBorder" style="width: 25%;">
                                                                                                             <asp:TextBox ID="txtChequeNo" runat="server" Text='<%# Bind("ChequeNo") %>' CssClass="cssTextBox" Visible="false"
                                                                                                                 Width="100%" MaxLength="10"></asp:TextBox>
-                                                                                                            <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%">
+                                                                                                            <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%" OnDataBound="cmbChequeNo_DataBound">
                                                                                                                 <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                             </asp:DropDownList>
                                                                                                         </td>
@@ -645,15 +645,15 @@
                                                                                                                 ErrorMessage="Cheque No. is mandatory" Display="Dynamic" EnableClientScript="false">*</asp:RequiredFieldValidator>--%>
                                                                                                         </td>
                                                                                                         <td class="ControlTextBox3" style="width: 25%">
-                                                                                                            <%-- <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-                                                                                                                <ContentTemplate>--%>
+                                                                                                             <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                                                                                                                <ContentTemplate>
                                                                                                             <asp:TextBox ID="txtChequeNoAdd" runat="server" Text='<%# Bind("ChequeNo") %>' CssClass="cssTextBox"
                                                                                                                 Width="100%" MaxLength="10"></asp:TextBox>
                                                                                                             <asp:DropDownList ID="cmbChequeNo1" runat="server" AppendDataBoundItems="True" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%">
                                                                                                                 <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                             </asp:DropDownList>
-                                                                                                            <%--</ContentTemplate>
-                                                                                                            </asp:UpdatePanel>--%>
+                                                                                                            </ContentTemplate>
+                                                                                                            </asp:UpdatePanel>
                                                                                                         </td>
                                                                                                     </tr>
                                                                                                 </table>
