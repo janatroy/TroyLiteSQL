@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -102,10 +103,37 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
     {
 
     }
+
+    protected void GridViewTimesheetDetailMonday_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        int id = int.Parse(e.CommandArgument.ToString());
+        GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
+        if (e.CommandName.Equals("EditRecord"))
+        {
+            EditTSEntryDetail(id, sender as GridView);
+            updtPnlTSEntry.Update();
+        }
+        else if (e.CommandName.Equals("DeleteRecord"))
+        {
+
+        }
+    }
+
     protected void btnSaveTimesheet_Click(object sender, EventArgs e)
     {
-
+        DataSet dsTsDetailsAllDays = new DataSet();
+        foreach (ListItem dateValue in ddlTSDate.Items)
+        {
+            DateTime dtTsDateValue = DateTime.Parse(dateValue.Value);
+            DataTable dtTsDetailsForTheDate = ViewState["TimeSheetDetails" + dtTsDateValue.DayOfWeek.ToString()] as DataTable;
+            dsTsDetailsAllDays.Tables.Add(dtTsDetailsForTheDate);
+        }
+        string connection = Request.Cookies["Company"].Value;
+        string username = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic(connection);
+        bl.SaveTimeSheetDetails(dsTsDetailsAllDays);
     }
+
     protected void lnkBtnAddTimesheet_Click(object sender, EventArgs e)
     {
         try
@@ -118,6 +146,7 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
                 List<DataTable> dtTimesheetDetails = bl.GetNewTimesheetDetailsForMonth(DateTime.Today, username);
                 BindGridViews(dtTimesheetDetails);
                 BindTimeControls();
+                BindWeeklyDates(dtTimesheetDetails);
                 ModalPopupExtender1.Show();
             }
             else
@@ -133,108 +162,60 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
         }
     }
 
-    private void BindGridViews(List<DataTable> dtTimesheetDetails)
-    {
-        foreach (DataTable dtTsForTheDay in dtTimesheetDetails)
-        {
-            switch (dtTsForTheDay.DisplayExpression)
-            {
-
-                case "1":
-                    GridViewTimesheetDetailDay1.Visible = true;
-                    GridViewTimesheetDetailDay1.DataSource = dtTsForTheDay;
-                    GridViewTimesheetDetailDay1.DataBind();
-                    ViewState["TimeSheetDetailsDay1"] = dtTsForTheDay;
-                    lblDay1Header.Text = dtTsForTheDay.TableName;
-                    lblTSDateTime.Text = dtTsForTheDay.TableName;
-                    break;
-                case "2":
-                    GridViewTimesheetDetailDay2.Visible = true;
-                    GridViewTimesheetDetailDay2.DataSource = dtTsForTheDay;
-                    GridViewTimesheetDetailDay2.DataBind();
-                    ViewState["TimeSheetDetailsDay2"] = dtTsForTheDay;
-                    lblDay2Header.Text = dtTsForTheDay.TableName;
-                    break;
-                case "3":
-                    GridViewTimesheetDetailDay3.Visible = true;
-                    GridViewTimesheetDetailDay3.DataSource = dtTsForTheDay;
-                    GridViewTimesheetDetailDay3.DataBind();
-                    ViewState["TimeSheetDetailsDay3"] = dtTsForTheDay;
-                    lblDay3Header.Text = dtTsForTheDay.TableName;
-                    break;
-                case "4":
-                    GridViewTimesheetDetailDay4.Visible = true;
-                    GridViewTimesheetDetailDay4.DataSource = dtTsForTheDay;
-                    GridViewTimesheetDetailDay4.DataBind();
-                    ViewState["TimeSheetDetailsDay4"] = dtTsForTheDay;
-                    lblDay4Header.Text = dtTsForTheDay.TableName;
-                    break;
-                case "5":
-                    GridViewTimesheetDetailDay5.Visible = true;
-                    GridViewTimesheetDetailDay5.DataSource = dtTsForTheDay;
-                    GridViewTimesheetDetailDay5.DataBind();
-                    ViewState["TimeSheetDetailsDay5"] = dtTsForTheDay;
-                    lblDay5Header.Text = dtTsForTheDay.TableName;
-                    break;
-                case "6":
-                    GridViewTimesheetDetailDay6.Visible = true;
-                    GridViewTimesheetDetailDay6.DataSource = dtTsForTheDay;
-                    GridViewTimesheetDetailDay6.DataBind();
-                    ViewState["TimeSheetDetailsDay6"] = dtTsForTheDay;
-                    lblDay6Header.Text = dtTsForTheDay.TableName;
-                    break;
-                case "7":
-                    GridViewTimesheetDetailDay7.Visible = true;
-                    GridViewTimesheetDetailDay7.DataSource = dtTsForTheDay;
-                    GridViewTimesheetDetailDay7.DataBind();
-                    ViewState["TimeSheetDetailsDay7"] = dtTsForTheDay;
-                    lblDay7Header.Text = dtTsForTheDay.TableName;
-                    break;
-                default:
-
-                    break;
-            }
-        }
-    }
-
-    private void BindTimeControls()
-    {
-        List<string> hoursList = GetHoursList();
-        List<string> minutesList = GetMinuteList();
-
-        ddlStartTimeHour.DataSource = hoursList;
-        ddlStartTimeHour.DataBind();
-        ddlStartTimeHour.SelectedValue = "00";
-        ddlStartTimeMinute.DataSource = minutesList;
-        ddlStartTimeMinute.DataBind();
-        ddlStartTimeMinute.SelectedValue = "00";
-
-        ddlEndTimeHour.DataSource = hoursList;
-        ddlEndTimeHour.DataBind();
-        ddlEndTimeHour.SelectedValue = "00";
-        ddlEndTimeMinute.DataSource = minutesList;
-        ddlEndTimeMinute.DataBind();
-        ddlEndTimeMinute.SelectedValue = "00";
-
-        ddlTotalTimeHour.DataSource = hoursList;
-        ddlTotalTimeHour.DataBind();
-        ddlTotalTimeHour.SelectedValue = "00";
-        ddlTotalTimeMinute.DataSource = minutesList;
-        ddlTotalTimeMinute.DataBind();
-        ddlTotalTimeMinute.SelectedValue = "00";
-    }
-
     protected void ddlSearchCriteria_SelectedIndexChanged(object sender, EventArgs e)
     {
 
     }
+
     protected void grdViewTimesheetSummary_RowCommand1(object sender, GridViewCommandEventArgs e)
     {
 
     }
-    protected void GridViewTimesheetDetailDay1_RowDataBound(object sender, GridViewRowEventArgs e)
+
+    protected void GridViewTimesheetDetailMonday_RowDataBound(object sender, GridViewRowEventArgs e)
     {
 
+    }
+
+    protected void btnAddEntry_Click(object sender, EventArgs e)
+    {
+        string errMsg = string.Empty;
+        lblStatus.Text = string.Empty;
+
+        if (HasValidInput(ref errMsg))
+        {
+            DateTime dateValue = DateTime.Parse(ddlTSDate.SelectedValue);
+            GridView targetGridView = GetGridViewForTheDateVale(dateValue.DayOfWeek.ToString());
+            AddTsEntryToGrid(dateValue.DayOfWeek.ToString(), targetGridView);
+            ClearTsEntryFields();
+            updtPnlTSEntry.Update();
+        }
+        else
+        {
+            lblStatus.Text = errMsg;
+        }
+    }
+
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+        ClearTsEntryFields();
+    }
+
+    protected void rbtnTimeEntry_CheckedChanged(object sender, EventArgs e)
+    {
+        if (rbtnTimeEntry1.Checked)
+        {
+            pnlStartTImeControls.Enabled = true;
+            pnlEndTimeControls.Enabled = true;
+            pnlTotalTimeControls.Enabled = false;
+        }
+        else if (rbtnTimeEntry2.Checked)
+        {
+            pnlEndTimeControls.Enabled = false;
+            pnlStartTImeControls.Enabled = false;
+            pnlTotalTimeControls.Enabled = true;
+        }
+        updtPnlTSEntry.Update();
     }
 
     private void BindTimesheetSummaryGrid(string TimesheetYear)
@@ -277,43 +258,148 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
         }
     }
 
-    protected void btnAddEntry_Click(object sender, EventArgs e)
+    private void BindGridViews(List<DataTable> dtTimesheetDetails)
     {
-        string errMsg = string.Empty;
-        lblStatus.Text = string.Empty;
-        if (HasValidInput(ref errMsg))
+        foreach (DataTable dtTsForTheDay in dtTimesheetDetails)
         {
-            AddTsEntryToGrid();
-            ClearTsEntryFields();
-            updtPnlTSEntry.Update();
-        }
-        else
-        {
-            lblStatus.Text = errMsg;
+            switch (dtTsForTheDay.DisplayExpression)
+            {
+
+                case "1":
+                    GridViewTimesheetDetailMonday.Visible = true;
+                    GridViewTimesheetDetailMonday.DataSource = dtTsForTheDay;
+                    GridViewTimesheetDetailMonday.DataBind();
+                    ViewState["TimeSheetDetailsMonday"] = dtTsForTheDay;
+                    lblMondayHeader.Text = dtTsForTheDay.TableName;
+                    break;
+                case "2":
+                    GridViewTimesheetDetailTuesday.Visible = true;
+                    GridViewTimesheetDetailTuesday.DataSource = dtTsForTheDay;
+                    GridViewTimesheetDetailTuesday.DataBind();
+                    ViewState["TimeSheetDetailsTuesday"] = dtTsForTheDay;
+                    lblTuesdayHeader.Text = dtTsForTheDay.TableName;
+                    break;
+                case "3":
+                    GridViewTimesheetDetailWednesday.Visible = true;
+                    GridViewTimesheetDetailWednesday.DataSource = dtTsForTheDay;
+                    GridViewTimesheetDetailWednesday.DataBind();
+                    ViewState["TimeSheetDetailsWednesday"] = dtTsForTheDay;
+                    lblWednesdayHeader.Text = dtTsForTheDay.TableName;
+                    break;
+                case "4":
+                    GridViewTimesheetDetailThursday.Visible = true;
+                    GridViewTimesheetDetailThursday.DataSource = dtTsForTheDay;
+                    GridViewTimesheetDetailThursday.DataBind();
+                    ViewState["TimeSheetDetailsThursday"] = dtTsForTheDay;
+                    lblThursdayHeader.Text = dtTsForTheDay.TableName;
+                    break;
+                case "5":
+                    GridViewTimesheetDetailFriday.Visible = true;
+                    GridViewTimesheetDetailFriday.DataSource = dtTsForTheDay;
+                    GridViewTimesheetDetailFriday.DataBind();
+                    ViewState["TimeSheetDetailsFriday"] = dtTsForTheDay;
+                    lblFridayHeader.Text = dtTsForTheDay.TableName;
+                    break;
+                case "6":
+                    GridViewTimesheetDetailSaturday.Visible = true;
+                    GridViewTimesheetDetailSaturday.DataSource = dtTsForTheDay;
+                    GridViewTimesheetDetailSaturday.DataBind();
+                    ViewState["TimeSheetDetailsSaturday"] = dtTsForTheDay;
+                    lblSaturdayHeader.Text = dtTsForTheDay.TableName;
+                    break;
+                case "0":
+                    GridViewTimesheetDetailSunday.Visible = true;
+                    GridViewTimesheetDetailSunday.DataSource = dtTsForTheDay;
+                    GridViewTimesheetDetailSunday.DataBind();
+                    ViewState["TimeSheetDetailsSunday"] = dtTsForTheDay;
+                    lblSundayHeader.Text = dtTsForTheDay.TableName;
+                    break;
+                default:
+
+                    break;
+            }
         }
     }
 
-    private void AddTsEntryToGrid()
+    private void BindTimeControls()
     {
-        if (ViewState["TimeSheetDetailsDay1"] != null)
+        List<string> hoursList = GetHoursList();
+        List<string> minutesList = GetMinuteList();
+
+        ddlStartTimeHour.DataSource = hoursList;
+        ddlStartTimeHour.DataBind();
+        ddlStartTimeHour.SelectedValue = "00";
+        ddlStartTimeMinute.DataSource = minutesList;
+        ddlStartTimeMinute.DataBind();
+        ddlStartTimeMinute.SelectedValue = "00";
+
+        ddlEndTimeHour.DataSource = hoursList;
+        ddlEndTimeHour.DataBind();
+        ddlEndTimeHour.SelectedValue = "00";
+        ddlEndTimeMinute.DataSource = minutesList;
+        ddlEndTimeMinute.DataBind();
+        ddlEndTimeMinute.SelectedValue = "00";
+
+        ddlTotalTimeHour.DataSource = hoursList;
+        ddlTotalTimeHour.DataBind();
+        ddlTotalTimeHour.SelectedValue = "00";
+        ddlTotalTimeMinute.DataSource = minutesList;
+        ddlTotalTimeMinute.DataBind();
+        ddlTotalTimeMinute.SelectedValue = "00";
+    }
+
+    private void BindWeeklyDates(List<DataTable> dtTimesheetDetails)
+    {
+        ddlTSDate.DataSource = dtTimesheetDetails;
+        ddlTSDate.DataTextField = "TableName";
+        ddlTSDate.DataValueField = "TableName";
+        ddlTSDate.DataBind();
+    }
+
+    private GridView GetGridViewForTheDateVale(string dayOfWeek)
+    {
+        Control grdCtrl = TimesheetDetailPopUp.FindControl("GridViewTimesheetDetail" + dayOfWeek.ToString());
+        if (grdCtrl != null)
         {
-            DataTable dtTimesheetDetail = ViewState["TimeSheetDetailsDay1"] as DataTable;
-            DataRow drNewTSEntry = dtTimesheetDetail.NewRow();
+            return grdCtrl as GridView;
+        }
+        return null;
+    }
+
+    private void AddTsEntryToGrid(string dayOfWeek, GridView grdViewSrc)
+    {
+        string viewStateName = "TimeSheetDetails" + dayOfWeek;
+
+        if (ViewState[viewStateName] != null)
+        {
+            DataRow drNewTSEntry;
+            DataTable dtTimesheetDetail = ViewState[viewStateName] as DataTable;
+            if (string.IsNullOrEmpty(hdnfTSDetailId.Value))
+            {
+                drNewTSEntry = dtTimesheetDetail.NewRow();
+                drNewTSEntry["Id"] = DateTime.Now.ToString("hhmmss");
+            }
+            else
+            {
+                drNewTSEntry = (from dr in dtTimesheetDetail.AsEnumerable()
+                                where dr.Field<int>("Id").ToString() == hdnfTSDetailId.Value
+                                select dr).FirstOrDefault();
+                drNewTSEntry["Id"] = hdnfTSDetailId.Value;
+            }
 
             //  Update values from the controls
-            //  Id, TimeSheetSummaryId, TsDate, StartTime, EndTime, TotalMinutes, Description, Status, ApproverComments, IsActive
-            drNewTSEntry["Id"] = string.IsNullOrEmpty(hdnfTSDetailId.Value) ? "0" : hdnfTSDetailId.Value;
+            //  TimeSheetSummaryId, TsDate, StartTime, EndTime, TotalMinutes, Description, Status, ApproverComments, IsActive            
             drNewTSEntry["TimeSheetSummaryId"] = string.IsNullOrEmpty(hdnfTSSummaryId.Value) ? "0" : hdnfTSSummaryId.Value;
-            drNewTSEntry["TsDate"] = lblTSDateTime.Text;
+            drNewTSEntry["TsDate"] = ddlTSDate.SelectedValue;
             if (rbtnTimeEntry1.Checked)
             {
                 DateTime startTime = GetStartTime();
-                drNewTSEntry["StartTime"] = startTime.ToString("hh:ss tt");
+                drNewTSEntry["StartTime"] = startTime.ToString("hh:mm tt");
 
                 DateTime endTime = GetEndTime();
-                drNewTSEntry["EndTime"] = endTime.ToString("hh:ss tt");
+                drNewTSEntry["EndTime"] = endTime.ToString("hh:mm tt");
 
-                double totalHours= GetTotalDurationInHours(startTime, endTime);
+                double totalHours = GetTotalDurationInHours(startTime, endTime);
                 drNewTSEntry["TotalHours"] = totalHours;
             }
             else
@@ -328,11 +414,19 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
             drNewTSEntry["ApproverComments"] = string.IsNullOrEmpty(hdnfApproverCmts.Value) ? "NA" : hdnfApproverCmts.Value;
             drNewTSEntry["IsActive"] = true;
 
-            dtTimesheetDetail.Rows.Add(drNewTSEntry);
-            ViewState["TimeSheetDetailsDay1"] = dtTimesheetDetail;
+            if (drNewTSEntry.RowState.Equals(DataRowState.Detached))
+            {
+                dtTimesheetDetail.Rows.Add(drNewTSEntry);
+            }
+            else
+            {
+                drNewTSEntry.AcceptChanges();
+                dtTimesheetDetail.AcceptChanges();
+            }
 
-            GridViewTimesheetDetailDay1.DataSource = dtTimesheetDetail;
-            GridViewTimesheetDetailDay1.DataBind();
+            ViewState[viewStateName] = dtTimesheetDetail;
+            grdViewSrc.DataSource = dtTimesheetDetail;
+            grdViewSrc.DataBind();
         }
     }
 
@@ -352,7 +446,7 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
         hdnfIsNewEntry.Value = string.Empty;
         hdnfTSDetailId.Value = string.Empty;
         lblStatus.Text = string.Empty;
-
+        ddlTSDate.ClearSelection();
         btnAddEntry.Text = "Add";
     }
 
@@ -415,7 +509,7 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
         int minute = int.Parse(ddlStartTimeMinute.SelectedValue);
         string meridian = ddlStartTimeMeridian.SelectedValue;
 
-        if (DateTime.TryParse(lblTSDateTime.Text, out startDateTime))
+        if (DateTime.TryParse(ddlTSDate.SelectedValue, out startDateTime))
         {
             string dateTimeString = string.Format("{0}-{1}-{2} {3}:{4}:{5} {6}", startDateTime.Day, startDateTime.Month, startDateTime.Year, hour, minute, 0, meridian);
             DateTime.TryParse(dateTimeString, out startDateTime);
@@ -430,34 +524,12 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
         int minute = int.Parse(ddlEndTimeMinute.SelectedValue);
         string meridian = ddlEndTimeMeridian.SelectedValue;
 
-        if (DateTime.TryParse(lblTSDateTime.Text, out endDateTime))
+        if (DateTime.TryParse(ddlTSDate.SelectedValue, out endDateTime))
         {
             string dateTimeString = string.Format("{0}-{1}-{2} {3}:{4}:{5} {6}", endDateTime.Day, endDateTime.Month, endDateTime.Year, hour, minute, 0, meridian);
             DateTime.TryParse(dateTimeString, out endDateTime);
         }
         return endDateTime;
-    }
-
-    protected void btnClear_Click(object sender, EventArgs e)
-    {
-        ClearTsEntryFields();
-    }
-
-    protected void rbtnTimeEntry_CheckedChanged(object sender, EventArgs e)
-    {
-        if (rbtnTimeEntry1.Checked)
-        {
-            pnlStartTImeControls.Enabled = true;
-            pnlEndTimeControls.Enabled = true;
-            pnlTotalTimeControls.Enabled = false;
-        }
-        else if (rbtnTimeEntry2.Checked)
-        {
-            pnlEndTimeControls.Enabled = false;
-            pnlStartTImeControls.Enabled = false;
-            pnlTotalTimeControls.Enabled = true;
-        }
-        updtPnlTSEntry.Update();
     }
 
     private List<string> GetHoursList()
@@ -484,38 +556,36 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
         return minuteList;
     }
 
-    protected void GridViewTimesheetDetailDay1_RowCommand(object sender, GridViewCommandEventArgs e)
+    private void EditTSEntryDetail(int id, GridView grdView)
     {
-        int id = int.Parse(e.CommandArgument.ToString());
-        GridViewRow row = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
-        if (e.CommandName.Equals("EditRecord"))
+        string viewStateName = "TimeSheetDetails" + grdView.ID.Replace("GridViewTimesheetDetail", string.Empty);
+        if (ViewState[viewStateName] != null)
         {
-            EditTSEntryDetail(id,row);
-            updtPnlTSEntry.Update();
+            // find the requested datarow to edit             
+            DataTable dtGridSrc = ViewState[viewStateName] as DataTable;
+            DataRow row = (from dr in dtGridSrc.AsEnumerable()
+                           where dr.Field<int>("Id") == id
+                           select dr).FirstOrDefault();
+
+            hdnfTSSummaryId.Value = row["TimeSheetSummaryId"].ToString();
+            hdnfTSDetailId.Value = row["Id"].ToString();
+            DateTime tsDate = DateTime.Parse(row["TsDate"].ToString());
+            ddlTSDate.SelectedValue = tsDate.ToString("dd/MM/yyyy");
+            SetStartTime(row["StartTime"].ToString());
+            SetEndTime(row["EndTime"].ToString());
+
+            txtDescription.Text = row["Description"].ToString();
+            SetTotalHours(row["TotalHours"].ToString());
+            hdnfStatus.Value = row["Status"].ToString();
+            hdnfApproverCmts.Value = row["ApproverComments"].ToString();
+
+            if (string.IsNullOrEmpty(row["StartTime"].ToString()) || string.IsNullOrEmpty(row["EndTime"].ToString()))
+            {
+                rbtnTimeEntry1.Checked = false;
+            }
+
+            btnAddEntry.Text = "Update";
         }
-        else if (e.CommandName.Equals("DeleteRecord"))
-        {
-
-        }
-    }
-
-    private void EditTSEntryDetail(int id, GridViewRow row)
-    {
-        hdnfTSDetailId.Value = row.Cells[0].Text;
-        lblTSDateTime.Text = row.Cells[1].Text;
-        SetStartTime(row.Cells[2].Text);
-        SetEndTime(row.Cells[3].Text);
-        txtDescription.Text = row.Cells[4].Text;
-        SetTotalHours(row.Cells[5].Text);
-        hdnfStatus.Value = row.Cells[6].Text;
-        hdnfApproverCmts.Value = row.Cells[7].Text;
-
-        if (string.IsNullOrEmpty(row.Cells[2].Text) || string.IsNullOrEmpty(row.Cells[3].Text))
-        {
-            rbtnTimeEntry1.Checked = false;                
-        }
-
-        btnAddEntry.Text = "Update";
     }
 
     private void SetTotalHours(string inputValue)
@@ -550,6 +620,6 @@ public partial class EmployeeTimesheetEntry : System.Web.UI.Page
             ddlStartTimeMinute.SelectedValue = inputValue.Split(new string[] { ":" }, StringSplitOptions.None)[1].Substring(0, 2);
             ddlStartTimeMeridian.SelectedValue = inputValue.Split(new string[] { " " }, StringSplitOptions.None)[1];
         }
-        }
+    }
 
 }

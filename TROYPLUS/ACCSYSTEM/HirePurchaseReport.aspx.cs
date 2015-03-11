@@ -91,6 +91,7 @@ public partial class HirePurchaseReport : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("Total Payment"));
             dt.Columns.Add(new DataColumn("Cq Ret Payment"));
             dt.Columns.Add(new DataColumn("Total Outstanding"));
+            dt.Columns.Add(new DataColumn("BranchCode"));
 
             double instdue = 0;
             double pay = 0;
@@ -112,6 +113,7 @@ public partial class HirePurchaseReport : System.Web.UI.Page
                     dr_final12["Total Due"] = "";
                     dr_final12["Total Payment"] = "";
                     dr_final12["Total Outstanding"] = "";
+                    dr_final12["BranchCode"] = dr["BranchCode"];
                     dt.Rows.Add(dr_final12);
 
                     DataRow dr_final113 = dt.NewRow();
@@ -126,6 +128,7 @@ public partial class HirePurchaseReport : System.Web.UI.Page
                     dr_final131["Total Due"] = "";
                     dr_final131["Total Payment"] = "";
                     dr_final131["Total Outstanding"] = "";
+                    dr_final131["BranchCode"] = "";
                     dt.Rows.Add(dr_final131);
 
                     int ii = 1;

@@ -51,6 +51,7 @@ public partial class ReportExcelFormulaExecution : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Date"));
                     dt.Columns.Add(new DataColumn("IN/OUT"));
                     dt.Columns.Add(new DataColumn("Is Released"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                     //dt.Columns.Add(new DataColumn("Project Status"));
                     //dt.Columns.Add(new DataColumn("Expected Start Date"));
                     //dt.Columns.Add(new DataColumn("Expected End Date"));
@@ -71,6 +72,7 @@ public partial class ReportExcelFormulaExecution : System.Web.UI.Page
                         dr_final1["IN/OUT"] = dr["InOut"];
                         dr_final1["Quantity"] = dr["Qty"];
                         dr_final1["Is Released"] = dr["IsReleased"];
+                        dr_final1["BranchCode"] = dr["BranchCode"];
 
                         string aat = dr["CDate"].ToString().ToUpper().Trim();
                         string dtaat = Convert.ToDateTime(aat).ToString("dd/MM/yyyy");

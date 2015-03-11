@@ -49,6 +49,7 @@ public partial class ReportExcelTaskUpdates : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Task Update"));
                     dt.Columns.Add(new DataColumn("Blocked Flag"));
                     dt.Columns.Add(new DataColumn("Blocking Reason"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
 
                     DataRow dr_final123 = dt.NewRow();
                     dt.Rows.Add(dr_final123);
@@ -76,6 +77,7 @@ public partial class ReportExcelTaskUpdates : System.Web.UI.Page
                         dr_final1["Task Status"] = dr["Task_Status_Name"];
                         dr_final1["Blocked Flag"] = dr["Blocked_Flag"];
                         dr_final1["Blocking Reason"] = dr["Blocking_Reason"];
+                        dr_final1["BranchCode"] = dr["BranchCode"];
                         dt.Rows.Add(dr_final1);
                     }
                     DataRow dr_final2 = dt.NewRow();

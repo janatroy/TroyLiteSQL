@@ -50,6 +50,7 @@ public partial class ReportExcelProjects : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Expected Start Date"));
                     dt.Columns.Add(new DataColumn("Expected End Date"));
                     dt.Columns.Add(new DataColumn("Expected Effort Days"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                   
                     
 
@@ -78,6 +79,7 @@ public partial class ReportExcelProjects : System.Web.UI.Page
                         dr_final1["Project ID"] = dr["Project_Code"];
                         dr_final1["Project Description"] = dr["Project_Description"];
                         dr_final1["Expected Effort Days"] = dr["Expected_Effort_Days"];
+                        dr_final1["BranchCode"] = dr["BranchCode"];
                         dt.Rows.Add(dr_final1);
                     }
                     DataRow dr_final2 = dt.NewRow();

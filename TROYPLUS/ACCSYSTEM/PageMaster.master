@@ -842,6 +842,8 @@
                                             <img src="App_Themes/NewTheme/Images/TroyAdministration.png" /></a>
 
                                             <ul>
+                                                <li class="color submenumenu"><a href="./BranchMaster.aspx" runat="server" id="A1">Branch Master</a>
+                                                </li>
                                                 <li class="color submenumenu"><a href="./companyinfo.aspx" runat="server" id="lnkCompanyinfo">General Settings</a>
                                                 </li>
                                                 <li class="color submenumenu"><a href="./Config.aspx" runat="server" id="A19">Define Recipients of Email And SMS</a></li>
