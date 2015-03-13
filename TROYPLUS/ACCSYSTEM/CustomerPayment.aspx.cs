@@ -138,7 +138,7 @@ public partial class CustomerPayment : System.Web.UI.Page
     }
 
     private void loadChequeNo(int bnkId)
-    {       
+    {
 
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).Items.Clear();
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -155,7 +155,7 @@ public partial class CustomerPayment : System.Web.UI.Page
 
     private void loadChequeNoEdit(int bnkId)
     {
- 
+
         ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Clear();
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -755,7 +755,7 @@ public partial class CustomerPayment : System.Web.UI.Page
             lnkBtnAdd.Visible = true;
             frmViewAdd.Visible = false;
 
-            frmViewAdd.ChangeMode(FormViewMode.Insert);
+           // frmViewAdd.ChangeMode(FormViewMode.Insert);
         }
         catch (Exception ex)
         {
@@ -2284,7 +2284,7 @@ public partial class CustomerPayment : System.Web.UI.Page
                 ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).Enabled = false;
             }
 
-           
+
           
             DataSet dstt = new DataSet();
             dstt = bl.ListSundryDebtorsExceptIsActive(connection, ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).SelectedValue);

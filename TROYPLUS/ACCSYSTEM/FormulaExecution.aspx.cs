@@ -139,18 +139,18 @@ public partial class FormulaExecution : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "SMSREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "SMSREQ")
                 {
                     smsRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["SMSREQUIRED"] = smsRequired.Trim().ToUpper();
                 }
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "EMAILREQ")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "EMAILREQ")
                 {
                     emailRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     Session["EMAILREQUIRED"] = emailRequired.Trim().ToUpper();
                 }
 
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "OWNERMOB")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "OWNERMOB")
                 {
                     Session["OWNERMOB"] = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -384,7 +384,8 @@ public partial class FormulaExecution : System.Web.UI.Page
                         string dbQry = string.Empty;
                         string comments = txtComments.Text;
                         int CompID = int.Parse(GridViewProducts.DataKeys[e.RowIndex].Value.ToString());
-                        GridViewRow row= GridViewProducts.SelectedRow;
+                        //GridViewRow row = GridViewProducts.SelectedRow;
+                        GridViewRow row = (GridViewRow)GridViewProducts.Rows[e.RowIndex];
                         string branch = row.Cells[3].Text;
                         string StockLimit = string.Empty;
                         string stockHold = string.Empty;
@@ -416,6 +417,14 @@ public partial class FormulaExecution : System.Web.UI.Page
                                 command.ExecuteNonQuery();
                             }
                         }
+
+                        string Username = Request.Cookies["LoggedUserName"].Value;
+
+                        string sAuditStr = "User Name: " + Username + " ItemCode: " + itemCode + " Branch: " + branch ;
+                        command.CommandText = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Product Release", DateTime.Now.ToString("yyyy-MM-dd"));
+                        command.ExecuteNonQuery();
+
+                   
 
                         transaction.Commit();
                         BindProductsGrid(txtStartDate.Text, txtEndDate.Text, rdoIsPros.Checked);
@@ -840,6 +849,9 @@ public partial class FormulaExecution : System.Web.UI.Page
                             }
                         }
 
+                      
+                        
+
                         transaction.Commit();
                         //BindProductsGrid(string.Empty);
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Released Successfully');", true);
@@ -991,6 +1003,11 @@ public partial class FormulaExecution : System.Web.UI.Page
                                     command.ExecuteNonQuery();
                                 }
                             }
+                            string Username = Request.Cookies["LoggedUserName"].Value;
+
+                            string sAuditStr = "User Name " + Username + " Formula " + formula + " Branch " + branch;
+                            command.CommandText = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Manufacturing Process", DateTime.Now.ToString("yyyy-MM-dd"));
+                            command.ExecuteNonQuery();
                         }
 
                         transaction.Commit();
@@ -1671,6 +1688,18 @@ public partial class FormulaExecution : System.Web.UI.Page
                 {
                     ((ImageButton)e.Row.FindControl("btnRelease")).Visible = false;
                 }
+
+
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+
+                if (bl.CheckUserHaveEdit(usernam, "STKADJ"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnRelease")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
+
             }
         }
         catch (Exception ex)

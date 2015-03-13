@@ -418,7 +418,16 @@ public partial class LeadReference : System.Web.UI.Page
 
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
+            //BusinessLogic bl = new BusinessLogic(GetConnectionString());
 
+            //string connection = Request.Cookies["Company"].Value;
+            //string usernam = Request.Cookies["LoggedUserName"].Value;
+
+            //if (bl.CheckIfleadreerenceUsed(int.Parse(((HiddenField)e.Row.FindControl("ldgID")).Value)))
+            //{
+            //    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+            //    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+            //}
         }
     }
 
