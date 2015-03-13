@@ -547,48 +547,48 @@ public partial class ExpenseInfo : System.Web.UI.Page
         try
         {
             BusinessLogic bl = new BusinessLogic(sDataSource);
-            string connection = Request.Cookies["Company"].Value;
+            //string connection = Request.Cookies["Company"].Value;
 
-            string refDate = string.Empty;
-            refDate = ((TextBox)this.frmViewAdd.FindControl("txtdueDate")).Text;
-            if (refDate == null || refDate == "")
-            {
-                string obdate = ((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text;
-                if (obdate != null && obdate != "0")
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select OB due date. It cannot be left blank.')", true);
-                    check = true;
-                    ModalPopupExtender1.Show();
-                    frmViewAdd.Visible = true;
-                    frmViewAdd.ChangeMode(FormViewMode.Edit);
-                    e.Cancel = true;
-                    return;
+           // string refDate = string.Empty;
+          //  refDate = ((TextBox)this.frmViewAdd.FindControl("txtdueDate")).Text;
+          //  if (refDate == null || refDate == "")
+           // {
+                //string obdate = ((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text;
+                //if (obdate != null && obdate != "0")
+              //  {
+                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select OB due date. It cannot be left blank.')", true);
+                //    check = true;
+                //    ModalPopupExtender1.Show();
+                //    frmViewAdd.Visible = true;
+                //    frmViewAdd.ChangeMode(FormViewMode.Edit);
+                //    e.Cancel = true;
+                //    return;
 
-                }
+              //  }
 
-            }
-            else
-            {
-                string dt = Convert.ToDateTime(refDate).ToString("MM/dd/yyyy");
-                EnableOpbalance = bl.getEnableOpBalanceConfig(connection);
+          //  }
+          //  else
+         //   {
+          //      string dt = Convert.ToDateTime(refDate).ToString("MM/dd/yyyy");
+          //      EnableOpbalance = bl.getEnableOpBalanceConfig(connection);
 
-                if (EnableOpbalance == "YES")
-                {
-                    if (!bl.IsValidDate(connection, Convert.ToDateTime(refDate)))
-                    {
+           //     if (EnableOpbalance == "YES")
+            //    {
+            //        if (!bl.IsValidDate(connection, Convert.ToDateTime(refDate)))
+             //       {
 
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This Date has been Locked')", true);
-                        check = true;
-                        ModalPopupExtender1.Show();
-                        frmViewAdd.Visible = true;
-                        frmViewAdd.ChangeMode(FormViewMode.Edit);
-                        e.Cancel = true;
-                        return;
+                        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This Date has been Locked')", true);
+                        //check = true;
+                        //ModalPopupExtender1.Show();
+                        //frmViewAdd.Visible = true;
+                        //frmViewAdd.ChangeMode(FormViewMode.Edit);
+                        //e.Cancel = true;
+                        //return;
                         // break;
-                    }
+              //      }
 
-                }
-            }
+             //   }
+          //  }
             //BusinessLogic bl = new BusinessLogic(sDataSource);
             //string connection = Request.Cookies["Company"].Value;
 
@@ -894,93 +894,95 @@ public partial class ExpenseInfo : System.Web.UI.Page
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)
     {
-        if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")) != null)
-            e.InputParameters["GroupID"] = ((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")).SelectedValue;
+        //if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")) != null)
+        //    e.InputParameters["GroupID"] = ((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")).SelectedValue;
+
+        e.InputParameters["GroupID"] = "8";
 
         if (((TextBox)this.frmViewAdd.FindControl("txtLdgrName")).Text != "")
-            e.InputParameters["LedgerName"] = ((TextBox)this.frmViewAdd.FindControl("txtLdgrName")).Text;
+            e.InputParameters["Expensehead"] = ((TextBox)this.frmViewAdd.FindControl("txtLdgrName")).Text;
 
         if (((TextBox)this.frmViewAdd.FindControl("txtAliasName")).Text != "")
             e.InputParameters["AliasName"] = ((TextBox)this.frmViewAdd.FindControl("txtAliasName")).Text;
         else
             e.InputParameters["AliasName"] = ((TextBox)this.frmViewAdd.FindControl("txtLdgrName")).Text;
 
-        if (((DropDownList)this.frmViewAdd.FindControl("ddCRDR")).SelectedValue == "CR")
-        {
-            if (((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text != "")
-            {
-                e.InputParameters["OpenBalanceCR"] = ((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text;
-                e.InputParameters["OpenBalanceDR"] = "0";
-            }
-        }
-        else
-        {
-            if (((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text != "")
-            {
-                e.InputParameters["OpenBalanceDR"] = ((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text;
-                e.InputParameters["OpenBalanceCR"] = "0";
-            }
-        }
+        //if (((DropDownList)this.frmViewAdd.FindControl("ddCRDR")).SelectedValue == "CR")
+        //{
+        //    if (((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text != "")
+        //    {
+        //        e.InputParameters["OpenBalanceCR"] = ((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text;
+        //        e.InputParameters["OpenBalanceDR"] = "0";
+        //    }
+        //}
+        //else
+        //{
+        //    if (((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text != "")
+        //    {
+        //        e.InputParameters["OpenBalanceDR"] = ((TextBox)this.frmViewAdd.FindControl("txtOpenBal")).Text;
+        //        e.InputParameters["OpenBalanceCR"] = "0";
+        //    }
+        //}
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtContName")).Text != "")
-            e.InputParameters["ContactName"] = ((TextBox)this.frmViewAdd.FindControl("txtContName")).Text;
+        //if (((TextBox)this.frmViewAdd.FindControl("txtContName")).Text != "")
+        //    e.InputParameters["ContactName"] = ((TextBox)this.frmViewAdd.FindControl("txtContName")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtPhone")).Text != "")
-            e.InputParameters["Phone"] = ((TextBox)this.frmViewAdd.FindControl("txtPhone")).Text;
+        //if (((TextBox)this.frmViewAdd.FindControl("txtPhone")).Text != "")
+        //    e.InputParameters["Phone"] = ((TextBox)this.frmViewAdd.FindControl("txtPhone")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtAdd1")).Text != "")
-            e.InputParameters["Add1"] = ((TextBox)this.frmViewAdd.FindControl("txtAdd1")).Text;
+        //if (((TextBox)this.frmViewAdd.FindControl("txtAdd1")).Text != "")
+        //    e.InputParameters["Add1"] = ((TextBox)this.frmViewAdd.FindControl("txtAdd1")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtAdd2")).Text != "")
-            e.InputParameters["Add2"] = ((TextBox)this.frmViewAdd.FindControl("txtAdd2")).Text;
+        //if (((TextBox)this.frmViewAdd.FindControl("txtAdd2")).Text != "")
+        //    e.InputParameters["Add2"] = ((TextBox)this.frmViewAdd.FindControl("txtAdd2")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtAdd3")).Text != "")
-            e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("txtAdd3")).Text;
+        //if (((TextBox)this.frmViewAdd.FindControl("txtAdd3")).Text != "")
+        //    e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("txtAdd3")).Text;
 
-        e.InputParameters["LedgerID"] = Convert.ToInt32(GrdViewLedger.SelectedDataKey.Value);
+        e.InputParameters["ID"] = Convert.ToInt32(GrdViewLedger.SelectedDataKey.Value);
 
-        e.InputParameters["DRORCR"] = "NA";
-        e.InputParameters["OpenBalance"] = "0";
+        //e.InputParameters["DRORCR"] = "NA";
+        //e.InputParameters["OpenBalance"] = "0";
 
-        if (((DropDownList)this.frmViewAdd.FindControl("drpLedgerCat")) != null)
-            e.InputParameters["LedgerCategory"] = ((DropDownList)this.frmViewAdd.FindControl("drpLedgerCat")).SelectedValue;
-        if (((DropDownList)this.frmViewAdd.FindControl("drpIncharge")) != null)
-            e.InputParameters["ExecutiveIncharge"] = ((DropDownList)this.frmViewAdd.FindControl("drpIncharge")).SelectedValue;
-        if (((TextBox)this.frmViewAdd.FindControl("txtTin")).Text != "")
-            e.InputParameters["TinNumber"] = ((TextBox)this.frmViewAdd.FindControl("txtTin")).Text;
+        //if (((DropDownList)this.frmViewAdd.FindControl("drpLedgerCat")) != null)
+        //    e.InputParameters["LedgerCategory"] = ((DropDownList)this.frmViewAdd.FindControl("drpLedgerCat")).SelectedValue;
+        //if (((DropDownList)this.frmViewAdd.FindControl("drpIncharge")) != null)
+        //    e.InputParameters["ExecutiveIncharge"] = ((DropDownList)this.frmViewAdd.FindControl("drpIncharge")).SelectedValue;
+        //if (((TextBox)this.frmViewAdd.FindControl("txtTin")).Text != "")
+        //    e.InputParameters["TinNumber"] = ((TextBox)this.frmViewAdd.FindControl("txtTin")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtMobile")).Text != "")
-            e.InputParameters["Mobile"] = ((TextBox)this.frmViewAdd.FindControl("txtMobile")).Text;
-        else
-            e.InputParameters["Mobile"] = "";
+        //if (((TextBox)this.frmViewAdd.FindControl("txtMobile")).Text != "")
+        //    e.InputParameters["Mobile"] = ((TextBox)this.frmViewAdd.FindControl("txtMobile")).Text;
+        //else
+        //    e.InputParameters["Mobile"] = "";
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtdueDate")).Text != "")
-            e.InputParameters["OpDueDate"] = ((TextBox)this.frmViewAdd.FindControl("txtdueDate")).Text;
-        else
-            e.InputParameters["OpDueDate"] = "";
+        //if (((TextBox)this.frmViewAdd.FindControl("txtdueDate")).Text != "")
+        //    e.InputParameters["OpDueDate"] = ((TextBox)this.frmViewAdd.FindControl("txtdueDate")).Text;
+        //else
+        //    e.InputParameters["OpDueDate"] = "";
 
-        if (((DropDownList)this.frmViewAdd.FindControl("drpIntTrans")) != null)
-            e.InputParameters["Inttrans"] = ((DropDownList)this.frmViewAdd.FindControl("drpIntTrans")).SelectedValue;
+        //if (((DropDownList)this.frmViewAdd.FindControl("drpIntTrans")) != null)
+        //    e.InputParameters["Inttrans"] = ((DropDownList)this.frmViewAdd.FindControl("drpIntTrans")).SelectedValue;
 
-        if (((DropDownList)this.frmViewAdd.FindControl("drpPaymentmade")) != null)
-            e.InputParameters["Paymentmade"] = ((DropDownList)this.frmViewAdd.FindControl("drpPaymentmade")).SelectedValue;
+        //if (((DropDownList)this.frmViewAdd.FindControl("drpPaymentmade")) != null)
+        //    e.InputParameters["Paymentmade"] = ((DropDownList)this.frmViewAdd.FindControl("drpPaymentmade")).SelectedValue;
 
-        if (((DropDownList)this.frmViewAdd.FindControl("drpdc")) != null)
-            e.InputParameters["dc"] = ((DropDownList)this.frmViewAdd.FindControl("drpdc")).SelectedValue;
+        //if (((DropDownList)this.frmViewAdd.FindControl("drpdc")) != null)
+        //    e.InputParameters["dc"] = ((DropDownList)this.frmViewAdd.FindControl("drpdc")).SelectedValue;
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtChequeName")).Text != "")
-            e.InputParameters["ChequeName"] = ((TextBox)this.frmViewAdd.FindControl("txtChequeName")).Text;
+        //if (((TextBox)this.frmViewAdd.FindControl("txtChequeName")).Text != "")
+        //    e.InputParameters["ChequeName"] = ((TextBox)this.frmViewAdd.FindControl("txtChequeName")).Text;
 
         if (((DropDownList)this.frmViewAdd.FindControl("drpunuse")) != null)
-            e.InputParameters["unuse"] = ((DropDownList)this.frmViewAdd.FindControl("drpunuse")).SelectedValue;
+            e.InputParameters["IsActive"] = ((DropDownList)this.frmViewAdd.FindControl("drpunuse")).SelectedValue;
 
-        if (((TextBox)this.frmViewAdd.FindControl("txtEmailId")).Text != "")
-            e.InputParameters["EmailId"] = ((TextBox)this.frmViewAdd.FindControl("txtEmailId")).Text;
-        else
-            e.InputParameters["EmailId"] = "";
+        //if (((TextBox)this.frmViewAdd.FindControl("txtEmailId")).Text != "")
+        //    e.InputParameters["EmailId"] = ((TextBox)this.frmViewAdd.FindControl("txtEmailId")).Text;
+        //else
+        //    e.InputParameters["EmailId"] = "";
 
-        if (((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")) != null)
-            e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")).SelectedValue;
+        //if (((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")) != null)
+        //    e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")).SelectedValue;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }

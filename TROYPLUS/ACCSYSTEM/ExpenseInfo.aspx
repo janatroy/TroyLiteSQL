@@ -190,7 +190,7 @@
                                     <tr style="width: 100%">
                                         <td style="width: 100%">
                                             <asp:FormView ID="frmViewAdd" runat="server" Width="100%" DataSourceID="frmSource" OnModeChanged="frmViewAdd_ModeChanged" OnDataBound="frmViewAdd_DataBound"
-                                                DataKeyNames="LedgerID" OnItemCommand="frmViewAdd_ItemCommand" DefaultMode="Edit"
+                                                DataKeyNames="ID" OnItemCommand="frmViewAdd_ItemCommand" DefaultMode="Edit"
                                                 OnItemCreated="frmViewAdd_ItemCreated" Visible="False" OnItemInserting="frmViewAdd_ItemInserting"
                                                 OnItemUpdating="frmViewAdd_ItemUpdating" EmptyDataText="No Records" OnItemInserted="frmViewAdd_ItemInserted"
                                                 OnItemUpdated="frmViewAdd_ItemUpdated">
@@ -215,7 +215,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Expense Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtLdgrName" Enabled="false" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"
+                                                                    <asp:TextBox ID="txtLdgrName"  runat="server" Text='<%# Bind("Expensehead") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="1"></asp:TextBox>
                                                                 </td>
 
@@ -224,7 +224,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Alias is mandatory">*</asp:RequiredFieldValidator>--%>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtAliasName" runat="server" Enabled="false" Text='<%# Bind("AliasName") %>' SkinID="skinTxtBoxGrid"
+                                                                    <asp:TextBox ID="txtAliasName" runat="server"  Text='<%# Bind("AliasName") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="4"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 10%"></td>
@@ -236,14 +236,14 @@
                                                                     <asp:CompareValidator ID="cvOpenBal" runat="server" ControlToValidate="txtOpenBal"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
                                                                         Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
-                                                                    <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="txtOpenBal"
+                                                                   <%-- <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="txtOpenBal"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtOpenBal" />
+                                                                    <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtOpenBal" />--%>
                                                                 </td>
                                                                 <td class="ControlNumberBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtOpenBal" runat="server" Text='<%# Bind("OpenBalance") %>' Style="border: 1px solid #e7e7e7" Width="60%" BackColor="#e7e7e7"
+                                                                    <asp:TextBox ID="txtOpenBal" runat="server"  Style="border: 1px solid #e7e7e7" Width="60%" BackColor="#e7e7e7"
                                                                         TabIndex="2"></asp:TextBox>
-                                                                    <asp:DropDownList ID="ddCRDR" runat="server" Width="55px" BackColor="#e7e7e7" Style="border: 1px solid Gray" Height="26px" CssClass="drpDownListMedium" SelectedValue='<%# Bind("DRORCR") %>'
+                                                                    <asp:DropDownList ID="ddCRDR" runat="server" Width="55px" BackColor="#e7e7e7" Style="border: 1px solid Gray" Height="26px" CssClass="drpDownListMedium"
                                                                         TabIndex="3">
                                                                         <asp:ListItem Text="CR" Value="CR"></asp:ListItem>
                                                                         <asp:ListItem Text="DR" Value="DR"></asp:ListItem>
@@ -256,7 +256,7 @@
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
                                                                     <asp:DropDownList ID="drpModeofContact" TabIndex="10" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
-                                                                        runat="server" OnDataBound="drpModeofContact_DataBound" AutoPostBack="false" SelectedValue='<%# Bind("ModeofContact") %>'>
+                                                                        runat="server"  AutoPostBack="false" >
                                                                         <%--<asp:ListItem Text="Select Mode of Contact" Value="0"></asp:ListItem>--%>
                                                                         <asp:ListItem Text="SMS" Value="1"></asp:ListItem>
                                                                         <asp:ListItem Text="Email" Value="2"></asp:ListItem>
@@ -271,13 +271,13 @@
                                                                 <td class="ControlLabel" style="width: 20%">Email Id
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtEmailId" TabIndex="8" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                    <asp:TextBox ID="txtEmailId" TabIndex="8" runat="server" 
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                 </td>
                                                                 <td class="ControlLabel" style="width: 20%">Mobile
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtMobile" MaxLength="10" TabIndex="13" runat="server" Text='<%# Bind("Mobile") %>'
+                                                                    <asp:TextBox ID="txtMobile" MaxLength="10" TabIndex="13" runat="server" 
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                 </td>
                                                             </tr>
@@ -290,14 +290,14 @@
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
                                                                     <asp:DropDownList ID="drpunuse" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpunuse_DataBound" CssClass="drpDownListMedium"
-                                                                        Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("UnUse") %>'>
+                                                                        Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("IsActive") %>'>
                                                                         <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                         <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
                                                                 <td  style="width: 14%; visibility:hidden ">OB DueDate</td>
                                                                 <td  style="width: 28%; visibility:hidden ">
-                                                                    <asp:TextBox ID="txtdueDate" Enabled="false" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("OpDueDate") %>'
+                                                                    <asp:TextBox ID="txtdueDate" Enabled="false" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" 
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                     <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDate">
                                                                     </cc1:CalendarExtender>
@@ -327,14 +327,14 @@
                                                                 <td></td>
                                                                 <td>
                                                                     <asp:DropDownList ID="ddAccGroup" DataSourceID="srcGroupInfo" CssClass="drpDownListMedium" BackColor="#90c9fc"
-                                                                        runat="server" SelectedValue='<%# Bind("GroupID") %>' DataTextField="GroupName"
+                                                                        runat="server"  DataTextField="GroupName"
                                                                         DataValueField="GroupID" Width="98%" AppendDataBoundItems="True" Visible="False">
                                                                     </asp:DropDownList>
                                                             </tr>
                                                             <tr>
                                                                 <td></td>
-                                                                <td>
-                                                                    <asp:TextBox ID="txtContName" runat="server" Text='<%# Bind("ContactName") %>'
+                                                                <td style="visibility:hidden">
+                                                                    <asp:TextBox ID="txtContName" runat="server" 
                                                                         SkinID="skinTxtBoxGrid" TabIndex="3" Visible="False"></asp:TextBox>
                                                                 </td>
                                                                 <td>
@@ -345,7 +345,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <asp:DropDownList ID="drpLedgerCat" Width="99%" EnableTheming="false" TabIndex="10" Height="24px" BackColor="#90c9fc" CssClass="drpDownListMedium"
-                                                                        runat="server" OnDataBound="drpLedgerCatAdd_DataBound" Visible="False">
+                                                                        runat="server" Visible="False">
                                                                         <asp:ListItem Text="Select Category" Value="0"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
@@ -357,13 +357,13 @@
                                                                 <td>
                                                                     <asp:DropDownList ID="drpIncharge" Width="99%" EnableTheming="false" TabIndex="11" BackColor="#90c9fc"
                                                                         AppendDataBoundItems="true" runat="server" CssClass="drpDownListMedium" DataSourceID="empSrc" Height="24px"
-                                                                        DataTextField="empFirstName" DataValueField="empno" SelectedValue='<%# Bind("ExecutiveIncharge") %>' Visible="False">
+                                                                        DataTextField="empFirstName" DataValueField="empno" Visible="False">
                                                                         <asp:ListItem Text="Select Executive" Value="0" Selected="True"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
                                                                 <td></td>
                                                                 <td>
-                                                                    <asp:TextBox ID="txtTin" TabIndex="12" runat="server" Width="150%" BackColor="#90c9fc" Text='<%# Bind("TINnumber") %>'
+                                                                    <asp:TextBox ID="txtTin" TabIndex="12" runat="server" Width="150%" BackColor="#90c9fc" 
                                                                         SkinID="skinTxtBoxGrid" Visible="False"></asp:TextBox>
                                                                 </td>
                                                             </tr>
@@ -372,17 +372,16 @@
                                                             <tr>
                                                                 <td></td>
                                                                 <td>
-                                                                    <asp:TextBox ID="txtAdd1" TabIndex="6" runat="server" Text='<%# Bind("Add1") %>'
+                                                                    <asp:TextBox ID="txtAdd1" TabIndex="6" runat="server" 
                                                                         SkinID="skinTxtBoxGrid" Visible="False"></asp:TextBox>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:TextBox ID="txtChequeName" TabIndex="15" runat="server" Width="150%" BackColor="#90c9fc" Text='<%# Bind("ChequeName") %>'
+                                                                    <asp:TextBox ID="txtChequeName" TabIndex="15" runat="server" Width="150%" BackColor="#90c9fc" 
                                                                         SkinID="skinTxtBoxGrid" Visible="False"></asp:TextBox>
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" FilterType="Custom, Numbers"
-                                                                        TargetControlID="txtPhone" ValidChars="+" />
+                                                                    
                                                                 </td>
                                                                 <td>
-                                                                    <asp:TextBox ID="txtPhone" TabIndex="9" runat="server" Text='<%# Bind("Phone") %>'
+                                                                    <asp:TextBox ID="txtPhone" TabIndex="9" runat="server" 
                                                                         SkinID="skinTxtBoxGrid" Visible="False"></asp:TextBox>
                                                                 </td>
                                                             </tr>
@@ -391,32 +390,32 @@
                                                             <tr>
                                                                 <td>
                                                                     <asp:DropDownList ID="drpdc" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#90c9fc" CssClass="drpDownListMedium"
-                                                                        Width="100%" Style="border: 1px solid #90c9fc" Height="26px" SelectedValue='<%# Bind("dc") %>' Visible="False">
+                                                                        Width="100%" Style="border: 1px solid #90c9fc" Height="26px"  Visible="False">
                                                                         <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                         <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:TextBox ID="txtAdd2" TabIndex="7" runat="server" Text='<%# Bind("Add2") %>'
+                                                                    <asp:TextBox ID="txtAdd2" TabIndex="7" runat="server" 
                                                                         SkinID="skinTxtBoxGrid" Visible="False"></asp:TextBox>
                                                                 </td>
                                                                 <td></td>
                                                                 <td>
-                                                                    <asp:TextBox ID="txtAdd3" TabIndex="8" runat="server" Text='<%# Bind("Add3") %>'
+                                                                    <asp:TextBox ID="txtAdd3" TabIndex="8" runat="server" 
                                                                         SkinID="skinTxtBoxGrid" Visible="False"></asp:TextBox>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <asp:DropDownList ID="drpPaymentmade" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#90c9fc" OnDataBound="drpPaymentmade_DataBound" CssClass="drpDownListMedium"
-                                                                        Width="100%" Style="border: 1px solid #90c9fc" Height="26px" Visible="false" SelectedValue='<%# Bind("Paymentmade") %>'>
+                                                                    <asp:DropDownList ID="drpPaymentmade" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#90c9fc"  CssClass="drpDownListMedium"
+                                                                        Width="100%" Style="border: 1px solid #90c9fc" Height="26px" Visible="false" >
                                                                         <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                         <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
                                                                 <td>
                                                                     <asp:DropDownList ID="drpIntTrans" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#90c9fc" CssClass="drpDownListMedium"
-                                                                        Width="100%" Style="border: 1px solid #90c9fc" Height="26px" Visible="false" SelectedValue='<%# Bind("Inttrans") %>'>
+                                                                        Width="100%" Style="border: 1px solid #90c9fc" Height="26px" Visible="false" >
                                                                         <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                         <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                     </asp:DropDownList>
@@ -429,7 +428,7 @@
                                                                             <td align="right" style="width: 15%"></td>
                                                                             <td align="right" style="width: 30%">
                                                                                 <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
-                                                                                    CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClientClick="Mobile_Validator();Check();"
+                                                                                    CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave" 
                                                                                     OnClick="UpdateButton_Click"></asp:Button>
                                                                             </td>
                                                                             <td align="center" style="width: 30%">
@@ -731,16 +730,16 @@
                                     <div class="mainGridHold" id="searchGrid">
                                         <asp:GridView ID="GrdViewLedger" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                                             OnRowCreated="GrdViewLedger_RowCreated" Width="100.4%" DataSourceID="GridSource"
-                                            AllowPaging="True" DataKeyNames="LedgerID" EmptyDataText="No Expense Data Found."
+                                            AllowPaging="True" DataKeyNames="ID" EmptyDataText="No Expense Data Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted" CssClass="someClass">
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                             <Columns>
-                                                <asp:BoundField DataField="LedgerName" HeaderText="Expensehead" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Expensehead" HeaderText="Expense Name" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="GroupName" HeaderText="Group Name" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="unuse" HeaderText="IsActive" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="IsActive" HeaderText="IsActive" HeaderStyle-BorderColor="Gray" />
                                              <%--   <asp:TemplateField HeaderText="Opening Balance" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblBalance" runat="server"></asp:Label>
@@ -767,7 +766,7 @@
                                                         </cc1:ConfirmButtonExtender>
                                                         <asp:ImageButton ID="lnkB" SkinID="delete" runat="Server" CommandName="Delete"></asp:ImageButton>
                                                         <asp:ImageButton ID="lnkBDisabled" Enabled="false" SkinID="deleteDisable" runat="Server"></asp:ImageButton>
-                                                        <asp:HiddenField ID="ldgID" runat="server" Value='<%# Bind("LedgerID") %>' />
+                                                        <asp:HiddenField ID="ldgID" runat="server" Value='<%# Bind("ID") %>' />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -811,10 +810,10 @@
                 <tr style="width: 100%;">
                     <td style="width: 918px" align="left">
                         <asp:ObjectDataSource ID="GridSource" runat="server" SelectMethod="ListExpenseInfo"
-                            TypeName="BusinessLogic" DeleteMethod="DeleteLedger" OnDeleting="GridSource_Deleting">
+                            TypeName="BusinessLogic" DeleteMethod="DeleteExpense" OnDeleting="GridSource_Deleting">
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
-                                <asp:Parameter Name="LedgerID" Type="Int32" />
+                                <asp:Parameter Name="ID" Type="Int32" />
                                 <asp:Parameter Name="Username" Type="String" />
                             </DeleteParameters>
                         </asp:ObjectDataSource>
@@ -829,40 +828,20 @@
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                             </SelectParameters>
                         </asp:ObjectDataSource>
-                        <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetLedgerInfoForId"
+                        <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetExpenseInfoForId"
                             TypeName="BusinessLogic" OnUpdating="frmSource_Updating" OnInserting="frmSource_Inserting"
-                            InsertMethod="InsertExpenseInfo" UpdateMethod="UpdateExpenseInfo">
+                            InsertMethod="InsertExpenseInfo" UpdateMethod="UpdateExpenseInformation">
                             <UpdateParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
-                                <asp:Parameter Name="LedgerID" Type="Int32" />
-                                <asp:Parameter Name="LedgerName" Type="String" />
+                                <asp:Parameter Name="ID" Type="Int32" />
+                                <asp:Parameter Name="Expensehead" Type="String" />
                                 <asp:Parameter Name="AliasName" Type="String" />
                                 <asp:Parameter Name="GroupID" Type="Int32" />
-                                <asp:Parameter Name="OpenBalanceDR" Type="Double" />
-                                <asp:Parameter Name="OpenBalanceCR" Type="Double" />
-                                <asp:Parameter Name="OpenBalance" Type="Double" />
-                                <asp:Parameter Name="ContactName" Type="String" />
-                                <asp:Parameter Name="DRORCR" Type="String" />
-                                <asp:Parameter Name="Add1" Type="String" />
-                                <asp:Parameter Name="Add2" Type="String" />
-                                <asp:Parameter Name="Add3" Type="String" />
-                                <asp:Parameter Name="Phone" Type="String" />
-                                <asp:Parameter Name="LedgerCategory" Type="String" />
-                                <asp:Parameter Name="ExecutiveIncharge" Type="Int32" />
-                                <asp:Parameter Name="TinNumber" Type="String" />
-                                <asp:Parameter Name="Mobile" Type="String" />
-                                <asp:Parameter Name="Inttrans" Type="String" />
-                                <asp:Parameter Name="Paymentmade" Type="String" />
-                                <asp:Parameter Name="dc" Type="String" />
-                                <asp:Parameter Name="ChequeName" Type="String" />
                                 <asp:Parameter Name="Username" Type="String" />
-                                <asp:Parameter Name="unuse" Type="String" />
-                                <asp:Parameter Name="EmailId" Type="String" />
-                                <asp:Parameter Name="ModeofContact" Type="Int32" />
-                                <asp:Parameter Name="OpDueDate" Type="String" />
+                                 <asp:Parameter Name="IsActive" Type="String" />               
                             </UpdateParameters>
                             <SelectParameters>
-                                <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
+                                <asp:ControlParameter ControlID="GrdViewLedger" Name="ID" PropertyName="SelectedValue"
                                     Type="String" />
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                             </SelectParameters>
