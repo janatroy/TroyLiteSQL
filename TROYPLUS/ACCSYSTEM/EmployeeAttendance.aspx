@@ -455,8 +455,48 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <asp:ObjectDataSource ID="AttendanceDetailDataSource" runat="server" SelectMethod="GetNewAttendanceDetailsForMonth"
-                                                TypeName="BusinessLogic"></asp:ObjectDataSource>
+                                            <input id="btnAutoApplyLeavePopupTarget" type="button" style="display: none" runat="server" />
+                                            <cc1:ModalPopupExtender ID="ModalPopupAutoApplyLeave" runat="server" PopupControlID="AutoApplyLeavePopUp"
+                                                BackgroundCssClass="modalBackground" TargetControlID="btnAutoApplyLeavePopupTarget" CancelControlID="btnCancelAutoApplyLeave">
+                                            </cc1:ModalPopupExtender>
+                                            <asp:Panel runat="server" ID="AutoApplyLeavePopUp">
+                                                <div id="AutoApplyLeavePopUpContent" class="divBody" style="border-color: green; border-width: 2px; background-color: silver">
+
+                                                    <table style="width: 770px; vertical-align: text-top; border: 1px solid #FFFFFF;"
+                                                        align="center" cellspacing="2" cellpadding="3">
+                                                        <tr>
+                                                            <td class="headerPopUp">Auto Apply Leave</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div id="divMsgContainer" style="overflow: scroll; width: 100%; height:400px;">
+                                                                    <asp:Label ID="lblAutoApplyLeaveMsg" runat="server" Text="" Width="100%" Height="100%"></asp:Label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table width="100%" align="left">
+                                                                    <tr>
+                                                                        <td align="right" style="width: 20%;"></td>
+                                                                        <td style="width: 20%;">
+                                                                            
+                                                                        </td>
+                                                                        <td style="width: 20%;">
+                                                                            <asp:Button ID="btnCancelAutoApplyLeave" runat="server" CausesValidation="False"
+                                                                                EnableTheming="false" Text="Ok"></asp:Button>
+                                                                        </td>
+                                                                        <td style="width: 20%;">
+                                                                            
+                                                                        </td>
+                                                                        <td style="width: 20%;"></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </asp:Panel>
                                         </td>
                                     </tr>
                                 </table>
@@ -550,7 +590,6 @@
                                         </td>
                                     </tr>
                                 </table>
-
 
                             </div>
                         </asp:Panel>

@@ -160,7 +160,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
         try
         {
             if (GrdViewLedger.SelectedDataKey != null)
-                e.InputParameters["LedgerID"] = Convert.ToInt32(GrdViewLedger.SelectedDataKey.Value);
+                e.InputParameters["ID"] = Convert.ToInt32(GrdViewLedger.SelectedDataKey.Value);
 
             e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
         }

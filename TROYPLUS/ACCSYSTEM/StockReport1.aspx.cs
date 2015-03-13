@@ -17,12 +17,13 @@ public partial class StockReport1 : System.Web.UI.Page
     Double sumDbl = 0;
     Double grandDbl = 0;
     private string sDataSource = string.Empty;
+    private string Connection = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-
+            Connection = Request.Cookies["Company"].Value;
             if (!IsPostBack)
             {
 
@@ -216,7 +217,11 @@ public partial class StockReport1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
-
+    string cond;
+    string cond1;
+    string cond2;
+    string cond3;
+    string cond4;
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
@@ -239,18 +244,30 @@ public partial class StockReport1 : System.Web.UI.Page
 
                 DateTime refDate = DateTime.Parse(txtStartDate.Text);
                 DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
+
                 if (Request.QueryString["refDate"] != null)
                 {
                     stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
+                    cond = Request.QueryString["cond"].ToString();
+                    cond = Server.UrlDecode(cond);
+                    cond1 = Request.QueryString["cond1"].ToString();
+                    cond1 = Server.UrlDecode(cond1);
+                    cond2 = Request.QueryString["cond2"].ToString();
+                    cond2 = Server.UrlDecode(cond2);
+                    cond3 = Request.QueryString["cond3"].ToString();
+                    cond3 = Server.UrlDecode(cond3);
+                    cond4 = Request.QueryString["cond4"].ToString();
+                    cond4 = Server.UrlDecode(cond4);
                 }
                 refDate = Convert.ToDateTime(stdt);
 
 
-                DataSet ds = bl.getProducts(sDataSource, catID, refDate);
-
+                DataSet ds = bl.getProducts(sDataSource, catID, refDate, cond, cond1, cond2, cond3, cond4);
+                DataTable customerTable = ds.Tables[0];
+                //ConvertToCrossTab(customerTable);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    gv.DataSource = ds;
+                    gv.DataSource = ds;                  
                     gv.DataBind();
                 }
                 else
@@ -265,6 +282,8 @@ public partial class StockReport1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+
     protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try

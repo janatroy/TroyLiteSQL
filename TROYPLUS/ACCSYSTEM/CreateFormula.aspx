@@ -5,6 +5,62 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cplhTab" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
+     <script language="javascript" type="text/javascript">
+
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+
+
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            // alert('test');
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function clearfilterclick() {
+            var button = document.getElementById('<%=BtnClearFilter.ClientID %>');
+            alert('clicent');
+            button.style.visibility = "hidden";
+            //button.click();
+
+        }
+
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+            //alert('test');
+            <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
+
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                // alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = false;
+                <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+                // window.onload = function ();
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+                //alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = true;
+                <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+            //else {
+
+            //    document.getElementById(target).disabled = false;
+            //}
+        }
+    </script>
     <style id="Style1" runat="server">
         .fancy-green .ajax__tab_header {
             background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
@@ -94,9 +150,9 @@
                                         <asp:Button ValidationGroup="search" ID="btnSearch" OnClick="btnSearch_Click" runat="server"
                                             Text="" EnableTheming="false" CssClass="ButtonSearch6" />
                                     </td>
-                                    <%--    <td style="width: 16%" class="tblLeftNoPad">
+                                        <td style="width: 16%" class="tblLeftNoPad">
                                         <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
-                                    </td>--%>
+                                    </td>
                                     <%--<td style="width: 25%" class="tblLeftNoPad">--%>
                                     <%--<asp:RequiredFieldValidator ValidationGroup="search" ID="rqSearchBill" runat="server"
                                                 Text="Search Box is Empty" ControlToValidate="txtSearch"></asp:RequiredFieldValidator>--%>
@@ -549,8 +605,28 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <center>
+                   
+                         <td>
+                                    <table align="center" style="width: 100%">
+                                        <tr>
+                                            <td style="width: 35%"></td>
+                                            <td style="width: 15%">
+                                                  <div style="text-align: left;">
+                                                <asp:Panel ID="pnlSearch" runat="server" Width="100px">
+                                                   <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click"
+                                                     EnableTheming="false" Width="130px" Font-Bold="true" Font-Size="Larger" Text="Add New Product"></asp:Button>
+                                                </asp:Panel>
+                                            </div>
+                                            </td>
+                                            <td style="width: 15%">
+                                                <asp:Button ID="Button3" runat="server" CssClass="exportexl6forproject" OnClientClick="window.open('ReportXlProductspecification.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');"
+                                                        EnableTheming="false"></asp:Button>
+                                            </td>
+                                            <td style="width: 30%"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                      
                             <%--  <table align="center" style="width: 100%">
                                         <tr>
                                              <td style="width: 25%"></td>
@@ -563,10 +639,11 @@
                                             <td style="width: 40%"></td>
                       
                                              <td style="width: 20% " align="center">--%>
-                            <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click"
-                                    EnableTheming="false" Width="130px" Font-Bold="true" Font-Size="Larger" Text="Add New Product"></asp:Button>
-                            </asp:Panel>
+                           
+                              
+                          
+
+                             
                             <%-- </td>--%>
                             <%-- <td style="width: 5%" align="left">
                                                
@@ -576,8 +653,9 @@
                                         </tr>
                                       
                                     </table>--%>
-                        </center>
-                    </td>
+                       
+                  
+                    
                 </tr>
             </table>
         </ContentTemplate>

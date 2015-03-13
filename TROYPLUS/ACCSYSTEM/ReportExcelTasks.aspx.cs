@@ -50,6 +50,7 @@ public partial class ReportExcelTasks : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Project Name"));
                     dt.Columns.Add(new DataColumn("Is Active"));
                     dt.Columns.Add(new DataColumn("Task Description"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                 
                     DataRow dr_final123 = dt.NewRow();
                     dt.Rows.Add(dr_final123);
@@ -77,6 +78,7 @@ public partial class ReportExcelTasks : System.Web.UI.Page
                         dr_final1["Project Name"] = dr["ProjectName"];
                         dr_final1["Is Active"] = dr["IsActive"];
                         dr_final1["Task Description"] = dr["Task_Description"];
+                        dr_final1["BranchCode"] = dr["BranchCode"];
                         dt.Rows.Add(dr_final1);
                     }
                     DataRow dr_final2 = dt.NewRow();                

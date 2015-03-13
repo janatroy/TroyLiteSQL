@@ -342,6 +342,10 @@ public partial class UserOptions : System.Web.UI.Page
             GridSECURITY.DataSource = dstdfdd;
             GridSECURITY.DataBind();
 
+            DataSet dstdfddmanu = bl.GetUserOptionsForId(username, connection, "PROJECT");
+            GridMANUFACTURE.DataSource = dstdfddmanu;
+            GridMANUFACTURE.DataBind();
+
             DataSet dstdfddpro = bl.GetUserOptionsForId(username, connection, "PROJECT");
             GridPROJECT.DataSource = dstdfddpro;
             GridPROJECT.DataBind();
@@ -526,6 +530,7 @@ public partial class UserOptions : System.Web.UI.Page
             DataSet dstttttdf = new DataSet();
             DataSet dstttttdff = new DataSet();
             DataSet dstttttdffpro = new DataSet();
+            DataSet dstttttdffmanu = new DataSet(); 
 
             dst = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SUPPLIERS");
             GridSupplier.DataSource = dst;
@@ -566,6 +571,10 @@ public partial class UserOptions : System.Web.UI.Page
             dstttttdff = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SECURITY");
             GridSECURITY.DataSource = dstttttdff;
             GridSECURITY.DataBind();
+
+            dstttttdffmanu = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "MANUFACTURE");
+            GridMANUFACTURE.DataSource = dstttttdffmanu;
+            GridMANUFACTURE.DataBind();
 
             dstttttdffpro = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "PROJECT");
             GridPROJECT.DataSource = dstttttdffpro;
@@ -1571,6 +1580,75 @@ public partial class UserOptions : System.Web.UI.Page
                 drNew["Area"] = GridPROJECT.Rows[vLoop].Cells[0].Text;
 
                 lblDebtorID = (Label)GridPROJECT.Rows[vLoop].FindControl("lblDebtorID");
+                drNew["Orderno"] = lblDebtorID.Text;
+
+                drNew["Add"] = Add;
+                drNew["Edit"] = Edit;
+                drNew["Delete"] = Delete;
+                drNew["View"] = Views;
+                ds.Tables[0].Rows.Add(drNew);
+            }
+
+
+
+            for (int vLoop = 0; vLoop < GridMANUFACTURE.Rows.Count; vLoop++)
+            {
+                CheckBox txt = (CheckBox)GridMANUFACTURE.Rows[vLoop].FindControl("chkboxAdd");
+                if (txt.Checked)
+                {
+                    Add = txt.Checked;
+                }
+                else
+                {
+                    Add = false;
+                }
+
+                CheckBox txttt = (CheckBox)GridMANUFACTURE.Rows[vLoop].FindControl("chkboxEdit");
+                if (txttt.Checked)
+                {
+                    Edit = txttt.Checked;
+                }
+                else
+                {
+                    Edit = false;
+                }
+
+                CheckBox txth = (CheckBox)GridMANUFACTURE.Rows[vLoop].FindControl("chkboxDel");
+                if (txth.Checked)
+                {
+                    Delete = txth.Checked;
+                }
+                else
+                {
+                    Delete = false;
+                }
+
+                CheckBox txthh = (CheckBox)GridMANUFACTURE.Rows[vLoop].FindControl("chkboxView");
+                if (txthh.Checked)
+                {
+                    Views = txthh.Checked;
+                }
+                else
+                {
+                    Views = false;
+                }
+
+                if ((txt.Checked == true) || (txttt.Checked == true) || (txth.Checked == true) || (txthh.Checked == true))
+                {
+                    drNewt = dtt.NewRow();
+                    drNewt["UserName"] = txtUser.Text;
+                    drNewt["Role"] = GridMANUFACTURE.Rows[vLoop].Cells[3].Text;
+                    dsroles.Tables[0].Rows.Add(drNewt);
+                }
+
+                drNew = dt.NewRow();
+                drNew["UserName"] = txtUser.Text;
+                drNew["Role"] = GridMANUFACTURE.Rows[vLoop].Cells[3].Text;
+                drNew["RoleDesc"] = GridMANUFACTURE.Rows[vLoop].Cells[2].Text;
+                drNew["Section"] = GridMANUFACTURE.Rows[vLoop].Cells[1].Text;
+                drNew["Area"] = GridMANUFACTURE.Rows[vLoop].Cells[0].Text;
+
+                lblDebtorID = (Label)GridMANUFACTURE.Rows[vLoop].FindControl("lblDebtorID");
                 drNew["Orderno"] = lblDebtorID.Text;
 
                 drNew["Add"] = Add;

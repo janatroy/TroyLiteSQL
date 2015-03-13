@@ -28,13 +28,14 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
             DataSet ds = new DataSet();
 
             string connection = string.Empty;
+           string Branch = Request.Cookies["Branch"].Value;
 
             if (Request.Cookies["Company"] != null)
                 connection = Request.Cookies["Company"].Value;
             else
                 Response.Redirect("Login.aspx");
 
-            ds = objBL.GetHireList(connection, "", "","");
+            ds = objBL.GetHireList(connection, "", "", Branch);
 
             if (ds != null)
             {
@@ -57,6 +58,7 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Upfront Interest"));
                     dt.Columns.Add(new DataColumn("Advance Emi"));
                     dt.Columns.Add(new DataColumn("Others"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
 
                     DataRow dr_final123 = dt.NewRow();
                     dt.Rows.Add(dr_final123);
@@ -95,6 +97,7 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
                         dr_final1["Final Payment"] = dr["finpay"];
                         dr_final1["Upfront Interest"] = dr["Upfront"];
                         dr_final1["Advance Emi"] = dr["emi"];
+                        dr_final1["BranchCode"] = dr["BranchCode"];
                         dt.Rows.Add(dr_final1);
                     }
 
@@ -228,6 +231,7 @@ public partial class ReportExcelHirePurchase : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Each Month Payment"));
                     dt.Columns.Add(new DataColumn("Date of Payment"));
                     dt.Columns.Add(new DataColumn("Others"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
 
                     DataRow dr_final123 = dt.NewRow();
                     dt.Rows.Add(dr_final123);

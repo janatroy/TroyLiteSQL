@@ -604,7 +604,7 @@ public partial class ExpPayment : System.Web.UI.Page
             Session["BillData"] = null;
 
             int Trans = Convert.ToInt32(GrdViewPayment.SelectedDataKey.Value);
-            bl.InsertChequeStatus(connection, Trans);
+           // bl.InsertChequeStatus(connection, Trans);
             loadBanksEdit();
 
             loadBranch();
@@ -684,6 +684,20 @@ public partial class ExpPayment : System.Web.UI.Page
                     }
 
                     loadChequeNo(Convert.ToInt32(ddBanks.SelectedItem.Value));
+                    hid1.Value = ds.Tables[0].Rows[0]["ChequeNo"].ToString();                  
+                   
+                    if (ds.Tables[0].Rows[0]["ChequeNo"] != null)
+                    {
+                        // txtChequeNo.Text = ds.Tables[0].Rows[0]["Chequeno"].ToString();
+                        cmbChequeNo.ClearSelection();
+                        ListItem clie = new ListItem(ds.Tables[0].Rows[0]["ChequeNo"].ToString(), "0");
+                        cmbChequeNo.Items.Insert(cmbChequeNo.Items.Count - 1, clie);
+                        clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+
+                        if (clie != null) clie.Selected = true;
+                    }
+
+
 
                     //loacheque(Convert.ToString(ds.Tables[0].Rows[0]["CreditorID"]));
 
@@ -1965,7 +1979,7 @@ public partial class ExpPayment : System.Web.UI.Page
         try
         {
             DataSet dsData = (DataSet)Session["BillData"];
-
+            int ichequestatus = 0;
             if (calcDatasetSum(dsData) > double.Parse(txtAmount.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Total Bills amount is exceeding the Payment Amount. Please check the Bill Amount')", true);
@@ -2103,9 +2117,12 @@ public partial class ExpPayment : System.Web.UI.Page
                 DataSet ds = (DataSet)Session["BillData"];
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 bl.UpdatePaymentExp(out OutPut, conn, TransNo, RefNo, TransDate, DebitorID, CreditorID, Amount, Narration, VoucherType, ChequeNo, Paymode, Billno, usernam, Branch);
-
-                
-
+                //ichequestatus = bl.UpdateChequeused_conn(ChequeNo, CreditorID, conn);
+                if (hid1.Value != ChequeNo)
+                {
+                    ichequestatus = bl.UpdateChequeused_conn(ChequeNo, CreditorID, conn);
+                    ichequestatus = bl.RevertChequeused_conn(hid1.Value, CreditorID, conn);
+                }
 
                 string salestype = string.Empty;
                 int ScreenNo = 0;

@@ -139,17 +139,6 @@ public partial class CustomerPayment : System.Web.UI.Page
 
     private void loadChequeNo(int bnkId)
     {
-        //cmbChequeNo.Items.Clear();
-        ////string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
-        //BusinessLogic bl = new BusinessLogic(sDataSource);
-        //DataSet ds = new DataSet();
-        ////ds = bl.ListChequeNo(bnkId);
-        //ds = bl.ListChequeNo(bnkId);
-        //cmbChequeNo.DataSource = ds;
-        //cmbChequeNo.DataBind();
-        //cmbChequeNo.DataTextField = "ChequeNo";
-        //cmbChequeNo.DataValueField = "ChequeNo";
-
 
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).Items.Clear();
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -161,7 +150,38 @@ public partial class CustomerPayment : System.Web.UI.Page
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).DataBind();
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).DataTextField = "ChequeNo";
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).DataValueField = "ChequeNo";
-        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel2")).Update();
+        ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel6")).Update();
+    }
+
+    private void loadChequeNoEdit(int bnkId)
+    {
+
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Clear();
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        //ds = bl.ListChequeNo(bnkId);
+        ds = bl.ListChequeNosBank(sDataSource, Convert.ToString(bnkId));
+       
+
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).DataSource = ds;
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).DataBind();
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).DataTextField = "ChequeNo";
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).DataValueField = "ChequeNo";
+
+        //ListItem clie = new ListItem(ds.Tables[0].Rows[0]["ChequeNo"].ToString(), "0");
+        //((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Insert(((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Count - 1, clie);
+
+
+        //((UpdatePanel)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("UpdatePanel2")).Update();
+
+
+
+        //ListItem clie = new ListItem(ds.Tables[0].Rows[0]["ChequeNo"].ToString(), "0");
+        //cmbChequeNo.Items.Insert(cmbChequeNo.Items.Count - 1, clie);
+        //clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+
+
     }
 
 
@@ -735,7 +755,7 @@ public partial class CustomerPayment : System.Web.UI.Page
             lnkBtnAdd.Visible = true;
             frmViewAdd.Visible = false;
 
-            frmViewAdd.ChangeMode(FormViewMode.Insert);
+           // frmViewAdd.ChangeMode(FormViewMode.Insert);
         }
         catch (Exception ex)
         {
@@ -1527,8 +1547,11 @@ public partial class CustomerPayment : System.Web.UI.Page
                 e.InputParameters["Paymode"] = "Cheque";
             }
 
-            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text != "")
-                e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text;
+            //if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text != "")
+            //    e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text;
+
+            if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")) != null)
+                e.InputParameters["ChequeNo"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).SelectedValue;
 
         }
 
@@ -1584,8 +1607,12 @@ public partial class CustomerPayment : System.Web.UI.Page
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtNarrationAdd")).Text != "")
             e.InputParameters["Narration"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtNarrationAdd")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtChequeNoAdd")).Text != "")
-            e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtChequeNoAdd")).Text;
+        //if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtChequeNoAdd")).Text != "")
+        //    e.InputParameters["ChequeNo"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtChequeNoAdd")).Text;
+
+        if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")) != null)
+            e.InputParameters["ChequeNo"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).SelectedValue;
+
 
         if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("txtBillAdd")).Text != "")
             e.InputParameters["Billno"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("txtBillAdd")).Text;
@@ -1643,7 +1670,12 @@ public partial class CustomerPayment : System.Web.UI.Page
                 ListItem li = ddl.Items.FindByValue(creditorID);
                 if (li != null) li.Selected = true;
 
+                string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue;
+                loadChequeNoEdit(Convert.ToInt32(dfg)); 
+
             }
+
+           
         }
         catch (Exception ex)
         {
@@ -1659,12 +1691,20 @@ public partial class CustomerPayment : System.Web.UI.Page
 
             if (chk.SelectedItem.Text == "Cheque")
             {
-                Panel test = (Panel)frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("PanelBankAdd");
+                HtmlTable test = (HtmlTable)frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("tblBankAdd");
                 test.Visible = true;
+                PanelBankAdd.Visible = true;
+                tblBankAdd.Visible = true;
+                UpdatePanel test1 = (UpdatePanel)frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel2");
+                UpdatePanel test2 = (UpdatePanel)frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel4");
+                UpdatePanel test3 = (UpdatePanel)frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel5");
+                test1.Update();
+                test2.Update();
+                test3.Update();               
             }
             else
             {
-                Panel test = (Panel)frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("PanelBankAdd");
+                HtmlTable test = (HtmlTable)frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("tblBankAdd");
                 test.Visible = false;
             }
         }
@@ -1860,6 +1900,7 @@ public partial class CustomerPayment : System.Web.UI.Page
     {
         try
         {
+            frmViewAdd.ChangeMode(FormViewMode.Insert);
             if (((RadioButtonList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("chkPayToAdd")).SelectedValue == "Cheque")
             {
                 //((CompareValidator)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cvBankAdd")).Enabled = true;
@@ -2260,24 +2301,27 @@ public partial class CustomerPayment : System.Web.UI.Page
 
             ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
 
-
+            string dfg = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ddBanksAdd")).SelectedValue;
+            loadChequeNoEdit(Convert.ToInt32(dfg));
 
         }
-        //if (frmViewAdd.CurrentMode == FormViewMode.Edit)
-        //{
+        if (frmViewAdd.CurrentMode == FormViewMode.Edit)
+        {
+            //string dfg = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ddBanksAdd")).SelectedValue;
+            //loadChequeNoEdit(Convert.ToInt32(dfg));
 
-        //    BusinessLogic bl = new BusinessLogic(sDataSource);
-        //    string connection = Request.Cookies["Company"].Value;
-        //    DataSet dstt = new DataSet();
-        //    dstt = bl.ListSundryDebitorsbranch(connection, ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue);
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Clear();
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Add(new ListItem("Select Customer", "0"));
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataSource = dstt;
+            //BusinessLogic bl = new BusinessLogic(sDataSource);
+            //string connection = Request.Cookies["Company"].Value;
+            //DataSet dstt = new DataSet();
+            //dstt = bl.ListSundryDebitors(connection, ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue);
+            //((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Clear();
+            //((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Add(new ListItem("Select Customer", "0"));
+            //((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataSource = dstt;
 
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataTextField = "LedgerName";
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataValueField = "LedgerID";
-        //    ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataBind();
-        //}
+            //((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataTextField = "LedgerName";
+            //((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataValueField = "LedgerID";
+            //((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataBind();
+        }
         
     }
 
@@ -2548,5 +2592,41 @@ public partial class CustomerPayment : System.Web.UI.Page
     protected void ddBanksAdd_DataBound(object sender, EventArgs e)
     {
         //loadChequeNo(Convert.ToInt32(ddBanksAdd.SelectedItem.Value));       
+    }
+    protected void cmbChequeNo_DataBound(object sender, EventArgs e)
+    {
+        try
+        {  
+            DropDownList ddl = (DropDownList)sender;
+           
+            FormView frmV = (FormView)((AjaxControlToolkit.TabContainer)((AjaxControlToolkit.TabPanel)ddl.NamingContainer).NamingContainer).NamingContainer;
+            //loadChequeNo(Convert.ToInt32(((DataRowView)frmV.DataItem)["CreditorID"].ToString()));
+
+            //string dfg = ((DataRowView)frmV.DataItem)["CreditorID"].ToString();
+            //loadChequeNoEdit(Convert.ToInt32(dfg));
+          
+            if (frmV.DataItem != null)
+            {
+               
+                string creditorID = ((DataRowView)frmV.DataItem)["ChequeNo"].ToString();
+                ddl.ClearSelection();
+                ListItem li = new ListItem(((DataRowView)frmV.DataItem)["ChequeNo"].ToString(), "0");
+                ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Insert(((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Count - 1, li);
+                li = ddl.Items.FindByText(((DataRowView)frmV.DataItem)["ChequeNo"].ToString());
+                if (li != null) li.Selected = true;
+
+              
+                //ListItem clie = new ListItem(ds.Tables[0].Rows[0]["Chequeno"].ToString(), "0");
+                //cmbChequeNo.Items.Insert(cmbChequeNo.Items.Count - 1, clie);
+                //clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["Chequeno"].ToString());
+
+                //if (clie != null) clie.Selected = true;
+
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
     }
 }

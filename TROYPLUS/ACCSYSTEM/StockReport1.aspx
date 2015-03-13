@@ -278,7 +278,17 @@
       </asp:TemplateField> --%>
                                             <asp:TemplateField HeaderText="Rate" ItemStyle-Width="30px">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblRate" runat="server" Text='<%# Eval("Rate") %>' />
+                                                    <asp:Label ID="lblRate" runat="server" Text='<%# Eval("Price") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Branch" ItemStyle-Width="30px">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblBranch" runat="server" Text='<%# Eval("BranchCode") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="PriceList" ItemStyle-Width="30px">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblPrice" runat="server" Text='<%# Eval("PriceName") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Amount" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Right">

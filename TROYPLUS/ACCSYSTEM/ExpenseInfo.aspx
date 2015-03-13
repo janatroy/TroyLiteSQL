@@ -231,7 +231,7 @@
                                                             </tr>
                                                             <tr style="height: 3px">
                                                             </tr>
-                                                            <tr>
+                                                            <tr id="trid" runat="server" visible="false">
                                                                 <td class="ControlLabel" style="width: 20%">Opening Balance *
                                                                     <asp:CompareValidator ID="cvOpenBal" runat="server" ControlToValidate="txtOpenBal"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
@@ -267,7 +267,7 @@
                                                             </tr>
                                                             <tr style="height: 3px">
                                                             </tr>
-                                                            <tr>
+                                                            <tr runat="server" visible="false">
                                                                 <td class="ControlLabel" style="width: 20%">Email Id
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
@@ -295,14 +295,14 @@
                                                                         <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
-                                                                <td class="ControlLabel" style="width: 14%">OB DueDate</td>
-                                                                <td class="ControlTextBox3" style="width: 28%">
+                                                                <td  style="width: 14%; visibility:hidden ">OB DueDate</td>
+                                                                <td  style="width: 28%; visibility:hidden ">
                                                                     <asp:TextBox ID="txtdueDate" Enabled="false" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("OpDueDate") %>'
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                     <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDate">
                                                                     </cc1:CalendarExtender>
                                                                 </td>
-                                                                <td style="width: 14%;" align="left">
+                                                                <td style="width: 14%; visibility:hidden" align="left">
                                                                     <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                 </td>
                                                             </tr>
@@ -495,7 +495,7 @@
                                                             </tr>
                                                             <tr style="height: 3px">
                                                             </tr>
-                                                            <tr>
+                                                            <tr runat="server" visible="false">
                                                                 <td class="ControlLabel" style="width: 20%">Opening Balance *
                                                                     <asp:CompareValidator ID="cvOpenBalAdd" runat="server" ControlToValidate="txtOpenBalAdd"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
@@ -532,7 +532,7 @@
                                                             </tr>
                                                             <tr style="height: 3px">
                                                             </tr>
-                                                            <tr>
+                                                            <tr runat="server" visible="false">
                                                                 <td class="ControlLabel" style="width: 20%">Email Id
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
@@ -560,14 +560,14 @@
                                                                         <asp:ListItem Text="YES" Value="YES" Selected="True"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
-                                                                <td class="ControlLabel" style="width: 14%">OB DueDate</td>
-                                                                <td class="ControlTextBox3" style="width: 28%">
+                                                                <td class="ControlLabel"  style="width: 14%; visibility:hidden">OB DueDate</td>
+                                                                <td  style="width: 28%; visibility:hidden">
                                                                     <asp:TextBox ID="txtdueDateadd" Enabled="false" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("OpDueDate") %>'
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                     <cc1:CalendarExtender ID="calBillDate1" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate1" TargetControlID="txtdueDateadd">
                                                                     </cc1:CalendarExtender>
                                                                 </td>
-                                                                <td style="width: 14%;" align="left">
+                                                                <td style="width: 14%; visibility:hidden" align="left">
                                                                     <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                 </td>
                                                             </tr>
@@ -737,20 +737,21 @@
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                             <Columns>
-                                                <asp:BoundField DataField="LedgerName" HeaderText="Expense" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="LedgerName" HeaderText="Expensehead" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="GroupName" HeaderText="Group Name" HeaderStyle-BorderColor="Gray" />
-                                                <asp:TemplateField HeaderText="Opening Balance" HeaderStyle-BorderColor="Gray">
+                                                <asp:BoundField DataField="unuse" HeaderText="IsActive" HeaderStyle-BorderColor="Gray" />
+                                             <%--   <asp:TemplateField HeaderText="Opening Balance" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblBalance" runat="server"></asp:Label>
                                                         <asp:HiddenField ID="DRORCR" runat="server" Value='<%# Bind("DRORCR") %>' />
                                                         <asp:HiddenField ID="OpenBalance" runat="server" Value='<%# Bind("OpenBalance") %>' />
                                                     </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:BoundField DataField="Phone" HeaderText="Phone No." Visible="false" HeaderStyle-BorderColor="Gray" />
+                                                </asp:TemplateField>--%>
+                                               <%-- <asp:BoundField DataField="Phone" HeaderText="Phone No." Visible="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="LedgerCategory" HeaderText="Category" Visible="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="TinNumber" HeaderText="TIN#" Visible="false" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Branchcode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Branchcode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />--%>
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" HeaderStyle-BorderColor="Gray"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>

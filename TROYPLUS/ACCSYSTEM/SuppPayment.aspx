@@ -432,6 +432,7 @@
                                                                                     </div>
                                                                                 </HeaderTemplate>
                                                                                 <ContentTemplate>
+                                                                                    <asp:HiddenField ID="hid1" runat="server" />
                                                                                     <div style="text-align: left">
                                                                                         <table style="width: 800px; border: 0px solid #86b2d1" align="center" cellpadding="3" cellspacing="2">
                                                                                             <tr style="height: 10%">

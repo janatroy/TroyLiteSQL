@@ -287,7 +287,7 @@
                                                                                                                 Purchase Details
                                                                                                             </HeaderTemplate>
                                                                                                             <ContentTemplate>
-
+                                                                                                                <asp:HiddenField ID="hid1" runat="server" />
                                                                                                                 <table width="1210px" cellpadding="0" cellspacing="1">
                                                                                                                     <tr>
                                                                                                                         <td colspan="5"></td>
