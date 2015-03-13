@@ -58388,7 +58388,7 @@ public class BusinessLogic
              " tblPriceList ON tblProductPrices.PriceId = tblPriceList.Id ON tblProductStock.ItemCode = tblProductPrices.ItemCode ON  " +
              " tblCategories.CategoryID = tblProductStock.CategoryID"+
              " WHERE tblCategories.CategoryID=" + iCategoryID + " and(" + cond + ")and(" + cond1 + ")" +
-             " ORDER BY tblProductMaster.ItemCode";
+             " ORDER BY BranchCode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);

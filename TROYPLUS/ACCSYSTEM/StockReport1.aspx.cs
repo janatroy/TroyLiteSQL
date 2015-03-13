@@ -244,7 +244,7 @@ public partial class StockReport1 : System.Web.UI.Page
 
                 DateTime refDate = DateTime.Parse(txtStartDate.Text);
                 DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
-               
+
                 if (Request.QueryString["refDate"] != null)
                 {
                     stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
@@ -263,10 +263,11 @@ public partial class StockReport1 : System.Web.UI.Page
 
 
                 DataSet ds = bl.getProducts(sDataSource, catID, refDate, cond, cond1, cond2, cond3, cond4);
-
+                DataTable customerTable = ds.Tables[0];
+                //ConvertToCrossTab(customerTable);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    gv.DataSource = ds;
+                    gv.DataSource = ds;                  
                     gv.DataBind();
                 }
                 else
@@ -281,6 +282,8 @@ public partial class StockReport1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+
     protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
