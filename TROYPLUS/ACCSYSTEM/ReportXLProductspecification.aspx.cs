@@ -1,20 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Web;
-//using System.Web.UI;
-//using System.Web.UI.WebControls;
-
-//public partial class ReportXLProductspecification : System.Web.UI.Page
-//{
-//    protected void Page_Load(object sender, EventArgs e)
-//    {
-
-//    }
-//}
-
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -265,252 +249,13 @@ public partial class ReportXLProductspecification : System.Web.UI.Page
     public void bindData(string sDataSource)
     {
 
-        //string trange = string.Empty;
-        //string toption = string.Empty;
-
-        //DataSet ds = new DataSet();
-
-        //DateTime refDate = DateTime.Parse(txtStartDate.Text);
-
-        //int ttrange = Convert.ToInt32(cmbtrange.SelectedItem.Value);
-        //int ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
-
-        //int tstock = 0;
-        //int trol = 0;
-
-        //ds = objBL.getstocklevel(sDataSource, refDate, trange, toption);
-
-        //DataTable dt = new DataTable();
-
-        //if (ds != null)
-        //{
-        //    if (ds.Tables[0].Rows.Count > 0)
-        //    {
-        //        dt.Columns.Add(new DataColumn("Category"));
-        //        dt.Columns.Add(new DataColumn("Brand"));
-        //        dt.Columns.Add(new DataColumn("ProductName"));
-        //        dt.Columns.Add(new DataColumn("Model"));
-        //        dt.Columns.Add(new DataColumn("ItemCode"));
-        //        dt.Columns.Add(new DataColumn("Stock Level (ROL)"));
-        //        dt.Columns.Add(new DataColumn("Stock"));
-        //        dt.Columns.Add(new DataColumn("Stock Value"));
-
-        //        DataRow dr_final111 = dt.NewRow();
-        //        dt.Rows.Add(dr_final111);
-
-        //        //if (ds.Tables[0].Rows.Count > 0)
-        //        //{
-        //        //    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-        //        //    {
-        //        //        tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-        //        //        if (tstock == 0)
-        //        //        {
-        //        //            ds.Tables[0].Rows[i].Delete();
-        //        //        }
-        //        //    }
-        //        //    ds.Tables[0].AcceptChanges();
-        //        //}
-
-        //        if (ds.Tables[0].Rows.Count > 0)
-        //        {
-        //            if (ttrange == 1)
-        //            {
-        //                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-        //                {
-        //                    tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-        //                    trol = Convert.ToInt32(ds.Tables[0].Rows[i]["rol"]);
-        //                    if ((tstock > trol) || (tstock == trol))
-        //                    {
-        //                        ds.Tables[0].Rows[i].Delete();
-        //                    }
-        //                }
-        //                ds.Tables[0].AcceptChanges();
-        //            }
-        //            else if (ttrange == 2)
-        //            {
-        //                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-        //                {
-        //                    tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-        //                    trol = Convert.ToInt32(ds.Tables[0].Rows[i]["rol"]);
-        //                    if ((tstock < trol) || (tstock == trol))
-        //                    {
-        //                        ds.Tables[0].Rows[i].Delete();
-        //                    }
-        //                }
-        //                ds.Tables[0].AcceptChanges();
-        //            }
-        //            else if (ttrange == 3)
-        //            {
-        //                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-        //                {
-        //                    tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-        //                    trol = Convert.ToInt32(ds.Tables[0].Rows[i]["rol"]);
-        //                    if ((tstock > trol) || (tstock < trol))
-        //                    {
-        //                        ds.Tables[0].Rows[i].Delete();
-        //                    }
-        //                }
-        //                ds.Tables[0].AcceptChanges();
-        //            }
-        //        }
-
-        //        if (ds.Tables[0].Rows.Count > 0)
-        //        {
-        //            foreach (DataRow dr in ds.Tables[0].Rows)
-        //            {
-        //                DataRow dr_final6 = dt.NewRow();
-        //                dr_final6["Category"] = dr["Categoryname"];
-        //                dr_final6["Brand"] = dr["productdesc"];
-        //                dr_final6["ProductName"] = dr["ProductName"];
-        //                dr_final6["Model"] = dr["Model"];
-        //                dr_final6["ItemCode"] = dr["Itemcode"];
-        //                dr_final6["Stock Level (ROL)"] = dr["rol"];
-        //                dr_final6["Stock"] = dr["Stock"];
-        //                dr_final6["Stock Value"] = Convert.ToInt32(dr["Stock"]) * Convert.ToDouble(dr["Rate"]);
-        //                dt.Rows.Add(dr_final6);
-        //            }
-        //            ExportToExcel(dt);
-        //        }
-        //        else
-        //        {
-        //            ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-        //    }
-        //}
-        //else
-        //{
-        //    ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-        //}
+       
     }
 
     public void bindDataCategory(string sDataSource)
     {
 
-    //    string trange = string.Empty;
-    //    string toption = string.Empty;
-
-    //    DataSet ds = new DataSet();
-
-    //    DateTime refDate = DateTime.Parse(txtStartDate.Text);
-
-    //    int ttrange = Convert.ToInt32(cmbtrange.SelectedItem.Value);
-    //    int ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
-
-    //    int tstock = 0;
-    //    int trol = 0;
-
-    //    ds = objBL.getstocklevelcategory(sDataSource, refDate, trange, toption);
-
-    //    DataTable dt = new DataTable();
-
-    //    if (ds != null)
-    //    {
-    //        if (ds.Tables[0].Rows.Count > 0)
-    //        {
-    //            dt.Columns.Add(new DataColumn("Category"));
-    //            //dt.Columns.Add(new DataColumn("Brand"));
-    //            //dt.Columns.Add(new DataColumn("ProductName"));
-    //            //dt.Columns.Add(new DataColumn("Model"));
-    //            //dt.Columns.Add(new DataColumn("ItemCode"));
-    //            dt.Columns.Add(new DataColumn("Category Level"));
-    //            dt.Columns.Add(new DataColumn("Stock"));
-
-    //            DataRow dr_final111 = dt.NewRow();
-    //            dt.Rows.Add(dr_final111);
-
-    //            //if (ds.Tables[0].Rows.Count > 0)
-    //            //{
-    //            //    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-    //            //    {
-    //            //        tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-    //            //        if (tstock == 0)
-    //            //        {
-    //            //            ds.Tables[0].Rows[i].Delete();
-    //            //        }
-    //            //    }
-    //            //    ds.Tables[0].AcceptChanges();
-    //            //}
-
-    //            if (ds.Tables[0].Rows.Count > 0)
-    //            {
-    //                if (ttrange == 1)
-    //                {
-    //                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-    //                    {
-    //                        tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-    //                        trol = Convert.ToInt32(ds.Tables[0].Rows[i]["categorylevel"]);
-    //                        if (tstock > trol)
-    //                        {
-    //                            ds.Tables[0].Rows[i].Delete();
-    //                        }
-    //                    }
-    //                    ds.Tables[0].AcceptChanges();
-    //                }
-    //                else if (ttrange == 2)
-    //                {
-    //                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-    //                    {
-    //                        tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-    //                        trol = Convert.ToInt32(ds.Tables[0].Rows[i]["categorylevel"]);
-    //                        if (tstock < trol)
-    //                        {
-    //                            ds.Tables[0].Rows[i].Delete();
-    //                        }
-    //                    }
-    //                    ds.Tables[0].AcceptChanges();
-    //                }
-    //                else if (ttrange == 3)
-    //                {
-    //                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-    //                    {
-    //                        tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-    //                        trol = Convert.ToInt32(ds.Tables[0].Rows[i]["categorylevel"]);
-    //                        if ((trol < 0) || (trol > 0))
-    //                        {
-    //                            ds.Tables[0].Rows[i].Delete();
-    //                        }
-    //                    }
-    //                    ds.Tables[0].AcceptChanges();
-    //                }
-    //            }
-
-    //            if (ds.Tables[0].Rows.Count > 0)
-    //            {
-    //                foreach (DataRow dr in ds.Tables[0].Rows)
-    //                {
-    //                    DataRow dr_final6 = dt.NewRow();
-    //                    dr_final6["Category"] = dr["Categoryname"];
-    //                    //dr_final6["Brand"] = dr["productdesc"];
-    //                    //dr_final6["ProductName"] = dr["ProductName"];
-    //                    //dr_final6["Model"] = dr["Model"];
-    //                    //dr_final6["ItemCode"] = dr["Itemcode"];
-    //                    dr_final6["Category Level"] = dr["categorylevel"];
-    //                    dr_final6["Stock"] = dr["Stock"];
-
-    //                    dt.Rows.Add(dr_final6);
-    //                }
-    //                ExportToExcel(dt);
-    //            }
-    //            else
-    //            {
-    //                ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-    //            }
-
-    //        }
-    //        else
-    //        {
-    //            ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-    //    }
+    
     }
 
     public void bindDatabrand(string sDataSource)
@@ -714,5 +459,19 @@ public partial class ReportXLProductspecification : System.Web.UI.Page
         drpproduct.DataBind();
         drpproduct.DataTextField = "FormulaName";
         drpproduct.DataValueField = "FormulaName";
+    }
+
+    protected void btnReport_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            string productid = Convert.ToString(drpproduct.SelectedItem.Text);
+
+            Response.Write("<script language='javascript'> window.open('ReportXLproductspecification1.aspx?FormulaName=" + productid + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
     }
 }
