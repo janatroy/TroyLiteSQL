@@ -95,7 +95,7 @@
                                     </td>
                                 </tr>
                                 <tr style="height: 2px;"/>
-                                <tr>
+                                <tr style="visibility:hidden">
                                     <td class="ControlLabel2" style="width:35%;">
                                        Product
                                     </td>
