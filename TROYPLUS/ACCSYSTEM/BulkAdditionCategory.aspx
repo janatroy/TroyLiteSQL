@@ -104,18 +104,25 @@
                                     <tr style="height:10px">
 
                                     </tr>
+                                    
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <table style="width:100%">
                                     <tr>
-                                        <td style="width:30%">
+                                        <td style="width:15%">
                                         
                                         </td>
-                                        <td style="width:35%" align="center" >
-                                            <asp:Button ID="Button2" runat="server" SkinID="skinButtonCol2" Text="Excel Format" Height="21px"  Width="100px" onclick="btnFormat_Click"/>
+                                        <td style="width:70%" align="center" >
+                                            <asp:Button ID="Button2" runat="server" SkinID="skinButtonCol2" Text="Download the Sample Excel Format" Height="21px"  onclick="btnFormat_Click"/>
                                         </td>
-                                        <td style="width:35%">
+                                        <td style="width:15%">
                                         
                                         </td>
                                     </tr>
-                                </table>
+                                    </table>
                             </td>
                         </tr>
                     </table>

@@ -8843,10 +8843,10 @@ public class BusinessLogic
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                        dbQry2 = string.Format("INSERT INTO tblProductPricehistory VALUES('{0}','{1}', '{2}',{3},'{4}',{5},'{6}','{7}','{8}','{9}',{10},{11},{12},'{13}')",
-                                    ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToString(dr["PriceName"]), Convert.ToDouble(dr["Price"]), Convert.ToDouble(dr["Discount"]), Convert.ToInt32(dr["Id"]), Username);
+                        //dbQry2 = string.Format("INSERT INTO tblProductPricehistory VALUES('{0}','{1}', '{2}',{3},'{4}',{5},'{6}','{7}','{8}','{9}',{10},{11},{12},'{13}')",
+                        //            ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToString(dr["PriceName"]), Convert.ToDouble(dr["Price"]), Convert.ToDouble(dr["Discount"]), Convert.ToInt32(dr["Id"]), Username);
 
-                        manager.ExecuteDataSet(CommandType.Text, dbQry2);
+                        //manager.ExecuteDataSet(CommandType.Text, dbQry2);
 
                     }
                 }
@@ -50519,7 +50519,7 @@ public class BusinessLogic
         }
     }
 
-    public bool IsRateModified(string connection, double rate, DateTime datetime, string itemcode)
+    public bool IsRateModified(string connection, double price, DateTime datetime, string itemcode, string PriceName)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -50530,12 +50530,12 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry = "Select rate,MRPEffDate from tblproductmaster where rate <> " + rate + " and itemcode= '" + itemcode + "' ";
+            dbQry = "Select price,EffDate from tblproductprices where price <> " + price + " and itemcode= '" + itemcode + "' and PriceName='" + PriceName + "' ";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DateTime lasttime = DateTime.Parse(ds.Tables[0].Rows[0]["MRPEffDate"].ToString());
+                DateTime lasttime = DateTime.Parse(ds.Tables[0].Rows[0]["EffDate"].ToString());
                 if (lasttime == datetime)
                     return false;
                 else
@@ -50556,7 +50556,7 @@ public class BusinessLogic
         }
     }
 
-    public bool IsRateDateModified(string connection, double rate, string datetime, string itemcode)
+    public bool IsRateDateModified(string connection, double rate, DateTime datetime, string itemcode, string PriceName)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -50567,12 +50567,12 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry = "Select rate,MRPEffDate from tblproductmaster where MRPEffDate <> #" + datetime + "# and itemcode= '" + itemcode + "' ";
+            dbQry = "Select Price,EffDate from tblproductprices where EffDate <> '" + datetime.ToString("yyyy-MM-dd") + "' and itemcode= '" + itemcode + "' and PriceName='" + PriceName + "' ";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
-                double oldrate = Convert.ToDouble(ds.Tables[0].Rows[0]["rate"]);
+                double oldrate = Convert.ToDouble(ds.Tables[0].Rows[0]["Price"]);
                 if (oldrate == rate)
                     return false;
                 else
@@ -50593,7 +50593,7 @@ public class BusinessLogic
         }
     }
 
-    public bool IsRateOldDateModified(string connection, double rate, DateTime datetime, string itemcode)
+    public bool IsRateOldDateModified(string connection, double price, DateTime datetime, string itemcode, string PriceName)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -50604,12 +50604,12 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry = "Select MRPEffDate from tblproductmaster where rate <> " + rate + " and itemcode= '" + itemcode + "' ";
+            dbQry = "Select EffDate from tblproductprices where price <> " + price + " and itemcode= '" + itemcode + "' and PriceName='" + PriceName + "'";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DateTime lasttime = DateTime.Parse(ds.Tables[0].Rows[0]["MRPEffDate"].ToString());
+                DateTime lasttime = DateTime.Parse(ds.Tables[0].Rows[0]["EffDate"].ToString());
                 if (lasttime > datetime)
                     return false;
                 else
@@ -58996,6 +58996,10 @@ public class BusinessLogic
 
     public DataSet YearEndOutStandingReport(int iGroupID, string sXmlNodeName, string connection, string sXmlPath)
     {
+        //DBManager manager = new DBManager(DataProvider.SqlServer);
+        //manager.ConnectionString = CreateConnectionString(connection);
+        DataSet dsNew = new DataSet();
+
         Decimal temp_balance;
         string sLedgerName = string.Empty, sConStr = string.Empty, sAliasName = string.Empty, sQry = string.Empty;
         string sLedgerId = string.Empty;
@@ -59010,13 +59014,18 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
         //sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID in (2,3,14,16) and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
 
-        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID in (1,2,3,14,16) and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' ORDER BY tblLedger.LedgerName";
+        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName, (IIF((tblLedger.OpenBalanceDR is null),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount is null),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR is null),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount is null),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID in (1,2,3,14,16,4,19) ORDER BY tblLedger.LedgerName";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
+
+        //oleConn.BeginTransaction();
         dsParentQry = new DataSet();
         oleAdp.Fill(dsParentQry);
+
+        //dsNew = manager.ExecuteDataSet(CommandType.Text, sQry);
+
         temp_balance = 0;
         DataSet ds;
         DataTable dt;
@@ -59090,7 +59099,7 @@ public class BusinessLogic
                     }
                 }
             }
-            oleConn.Close();
+            //oleConn.Close();
             return ds;
         }
         catch (Exception ex)
@@ -59323,7 +59332,7 @@ public class BusinessLogic
                         else
                         {
                             dbQry = string.Format("INSERT INTO tblBrand(BrandName,Brandlevel, Deviation,IsActive) VALUES('{0}',{1},{2},'{3}')",
-                                Convert.ToString(dr["Brand"]), Convert.ToDouble(dr["Brandlevel"]), Convert.ToDouble(dr["Deviation"]), "YES");
+                                Convert.ToString(dr["Brand"]), Convert.ToDouble(dr["Brand%"]), Convert.ToDouble(dr["Deviation"]), "YES");
                             manager.ExecuteDataSet(CommandType.Text, dbQry);
                         }
                     }
@@ -59430,7 +59439,7 @@ public class BusinessLogic
                         else
                         {
                             dbQry = string.Format("INSERT INTO tblcategories(CategoryName,Categorylevel,IsActive) VALUES('{0}',{1},'{2}')",
-                                Convert.ToString(dr["Category"]), Convert.ToDouble(dr["Categorylevel"]), "YES");
+                                Convert.ToString(dr["Category"]), Convert.ToDouble(dr["Category%"]), "YES");
                             manager.ExecuteDataSet(CommandType.Text, dbQry);
                         }
                     }
@@ -61452,7 +61461,7 @@ public class BusinessLogic
             }
             else if (master == "Product")
             {
-                dbQry2 = "select * from tblproductmaster order by itemcode";
+                dbQry2 = "select * from tblproductstock where stock > 0 order by itemcode";
             }
             else if (master == "Users")
             {
@@ -72263,6 +72272,150 @@ public class BusinessLogic
             manager.Dispose();
         }
 
+    }
+
+
+    public DataSet ListYear(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        //manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+        DataSet ds = new DataSet();
+        dbQry = "Select * From tblYearmaster Order By YearName";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataSet GetYearEndOutStandingReport(string connection, string master, string sLedger)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        //DataSet ds = new DataSet();
+
+        DataSet dsParentQry = new DataSet();
+        string sLedgerName = string.Empty, sConStr = string.Empty, sAliasName = string.Empty, sQry = string.Empty;
+        string sLedgerId = string.Empty;
+
+        string sLedgerPhone = string.Empty;
+
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+
+        try
+        {
+            manager.Open();
+                      
+            //dbQry2 = "select * from tblproductstock where stock > 0 order by itemcode";
+        
+            dbQry2 = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName, (IIF((tblLedger.OpenBalanceDR is null),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount is null),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR is null),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount is null),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID in (1,2,3,14,16,4,19) ORDER BY tblLedger.LedgerName";
+
+            dsParentQry = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+
+
+            Decimal temp_balance = 0;
+        DataSet ds;
+        DataTable dt;
+        DataRow drNew;
+        DataColumn dc;
+        ds = new DataSet();
+        dt = new DataTable();
+        dc = new DataColumn("LedgerName");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("LedgerID");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("Phone");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("AliasName");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("Debit");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("Credit");
+        dt.Columns.Add(dc);
+        ds.Tables.Add(dt);
+      
+            if (dsParentQry.Tables[0].Rows.Count == 0)
+            {
+                drNew = dt.NewRow();
+                drNew["LedgerName"] = string.Empty;
+                drNew["AliasName"] = string.Empty;
+                drNew["LedgerID"] = string.Empty;
+                drNew["Phone"] = string.Empty;
+                drNew["Debit"] = "0.00";
+                drNew["Credit"] = "0.00";
+                ds.Tables[0].Rows.Add(drNew);
+            }
+            else
+            {
+                foreach (DataRow drParentQry in dsParentQry.Tables[0].Rows)
+                {
+                    if (drParentQry["LedgerName"] != null)
+                        sLedgerName = drParentQry["LedgerName"].ToString();
+                    if (drParentQry["AliasName"] != null)
+                        sAliasName = drParentQry["AliasName"].ToString();
+                    if (drParentQry["LedgerID"] != null)
+                        sLedgerId = drParentQry["LedgerID"].ToString();
+                    if (drParentQry["Phone"] != null)
+                        sLedgerPhone = drParentQry["Phone"].ToString();
+                    if ((drParentQry["balance"] != null) && (drParentQry["balance"].ToString() != ""))
+                        temp_balance = decimal.Parse(drParentQry["balance"].ToString(), System.Globalization.NumberStyles.Float);
+                    else
+                        temp_balance = 0;
+                    if (temp_balance > 0)
+                    {
+                        drNew = dt.NewRow();
+                        drNew["LedgerName"] = sLedgerName;
+                        drNew["AliasName"] = sAliasName;
+                        drNew["LedgerID"] = sLedgerId;
+                        drNew["Phone"] = sLedgerPhone;
+                        drNew["Debit"] = temp_balance;
+                        drNew["Credit"] = "0.00";
+                        ds.Tables[0].Rows.Add(drNew);
+                    }
+                    else
+                    {
+                        drNew = dt.NewRow();
+                        drNew["LedgerName"] = sLedgerName;
+                        drNew["AliasName"] = sAliasName;
+                        drNew["LedgerID"] = sLedgerId;
+                        drNew["Phone"] = sLedgerPhone;
+                        drNew["Debit"] = "0.00";
+                        drNew["Credit"] = Math.Abs(temp_balance).ToString(); /* convert the negative to positive */
+                        ds.Tables[0].Rows.Add(drNew);
+                    }
+                }
+            }
+
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
 }

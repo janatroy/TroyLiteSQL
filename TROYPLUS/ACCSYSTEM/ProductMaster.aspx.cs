@@ -993,7 +993,7 @@ public partial class ProductMaster : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             string connection = Request.Cookies["Company"].Value;
 
-            if (!bl.IsRateModified(connection, Convert.ToDouble(rate), DateTime.Parse(refDate), itemcode))
+            if (!bl.IsRateModified(connection, Convert.ToDouble(rate), DateTime.Parse(refDate), itemcode, ""))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Rate is Modified. Please modify the MRP Effective Date also.')", true);
                 ModalPopupExtender1.Show();
@@ -1002,7 +1002,7 @@ public partial class ProductMaster : System.Web.UI.Page
                 return;
             }
 
-            if (!bl.IsRateDateModified(connection, Convert.ToDouble(rate), dt, itemcode))
+            if (!bl.IsRateDateModified(connection, Convert.ToDouble(rate), DateTime.Parse(refDate), itemcode, ""))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('MRP Effective Date is Modified. Please modify the Rate also.')", true);
                 ModalPopupExtender1.Show();
@@ -1011,7 +1011,7 @@ public partial class ProductMaster : System.Web.UI.Page
                 return;
             }
 
-            if (!bl.IsRateOldDateModified(connection, Convert.ToDouble(rate), DateTime.Parse(refDate), itemcode))
+            if (!bl.IsRateOldDateModified(connection, Convert.ToDouble(rate), DateTime.Parse(refDate), itemcode, ""))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('New MRP Effective Date Should be greater than Old MRP Effective Date.')", true);
                 ModalPopupExtender1.Show();

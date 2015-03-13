@@ -258,6 +258,45 @@ public partial class PriceList : System.Web.UI.Page
                     }
                 }
 
+                int col = 1;
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string item = Convert.ToString(dr["ItemCode"]);
+
+                    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
+                    {
+
+                    }
+                    else
+                    {
+                        
+
+                        if (!bl.IsRateModified(connection, Convert.ToDouble(dr["PRICE"]), DateTime.Parse(Convert.ToString(dr["EFFECTIVEDATE"])), item, PriceName))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Price is Modified. Please modify the Effective Date also in row " + col + " ')", true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
+
+                        if (!bl.IsRateDateModified(connection, Convert.ToDouble(dr["PRICE"]), DateTime.Parse(Convert.ToString(dr["EFFECTIVEDATE"])), item, PriceName))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Effective Date is Modified. Please modify the Price also in row " + col + " ')", true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
+
+                        if (!bl.IsRateOldDateModified(connection, Convert.ToDouble(dr["PRICE"]), DateTime.Parse(Convert.ToString(dr["EFFECTIVEDATE"])), item, PriceName))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('New Effective Date Should be greater than Old Effective Date in row " + col + " ')", true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
+
+                        col = col+1;
+                    }
+                }
+
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     string item = Convert.ToString(dr["ItemCode"]);
@@ -861,12 +900,12 @@ public partial class PriceList : System.Web.UI.Page
 
                 if (Session["conDs"] == "Add")
                 {
-                    //if (FileUpload1.HasFile == false)
-                    //{
-                    //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Browse Excel before uploading.');", true);
-                    //    ModalPopupExtender1.Show();
-                    //    return;
-                    //}
+                    if (FileUpload1.HasFile == false)
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Browse Excel before uploading.');", true);
+                        ModalPopupExtender1.Show();
+                        return;
+                    }
 
                     //string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
                     int CustomerID = 0;
@@ -1066,6 +1105,40 @@ public partial class PriceList : System.Web.UI.Page
                         }
 
 
+                        string itemct = string.Empty;
+                        DataSet dstt = bl.ListProducts(connection, "", "");
+                        int check = 0;
+
+                        if (dstt != null)
+                        {
+                            if (dstt.Tables[0].Rows.Count > 0)
+                            {
+                                for (int ik = 0; ik < dstt.Tables[0].Rows.Count; ik++)
+                                {
+                                    itemct = Convert.ToString(dstt.Tables[0].Rows[ik]["ItemCode"]);
+                                    check = 0;
+
+                                    foreach (DataRow dr in ds.Tables[0].Rows)
+                                    {
+
+                                        if (itemct == Convert.ToString(dr["ItemCode"]))
+                                        {
+                                            check = 1;
+                                            
+                                        }
+                                    }
+                                    if (check == 0)
+                                    {
+                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product code - " + itemct + " - missing in the excel sheet.');", true);
+                                        ModalPopupExtender1.Show();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+
+
                         int i = 1;
                         int ii = 1;
                         string itemc = string.Empty;
@@ -1251,23 +1324,46 @@ public partial class PriceList : System.Web.UI.Page
             //Response.Write(tw.ToString());
             //Response.End();
 
-            using (XLWorkbook wb = new XLWorkbook())
+            //using (XLWorkbook wb = new XLWorkbook())
+            //{
+            //    string filename = "NewPrices.xlsx";
+            //    wb.Worksheets.Add(dt);
+            //    Response.Clear();
+            //    Response.Buffer = true;
+            //    Response.Charset = "";
+            //    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            //    Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+            //    using (MemoryStream MyMemoryStream = new MemoryStream())
+            //    {
+            //        wb.SaveAs(MyMemoryStream);
+            //        MyMemoryStream.WriteTo(Response.OutputStream);
+            //        Response.Flush();
+            //        Response.End();
+            //    }
+            //}
+
+            string attachment = "attachment; filename=NewPrices.xls";
+            HttpContext context = HttpContext.Current;
+
+            context.Response.Clear();
+
+            foreach (DataColumn column in dt.Columns)
+                context.Response.Write(column.ColumnName + "\t");
+
+            context.Response.Write(Environment.NewLine);
+
+            foreach (DataRow row in dt.Rows)
             {
-                string filename = "NewPrices.xlsx";
-                wb.Worksheets.Add(dt);
-                Response.Clear();
-                Response.Buffer = true;
-                Response.Charset = "";
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
-                using (MemoryStream MyMemoryStream = new MemoryStream())
-                {
-                    wb.SaveAs(MyMemoryStream);
-                    MyMemoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
+                for (int i = 0; i < dt.Columns.Count; i++)
+                    context.Response.Write(row[i].ToString() + "\t");
+                context.Response.Write(Environment.NewLine);
             }
+
+            context.Response.ContentType = "text/vnd.ms-excel";
+            context.Response.AppendHeader("Content-Disposition", attachment);
+            context.Response.End();
+
+
         }
     }
 

@@ -120,7 +120,7 @@
                                                 <div>
                                                     <table cellpadding="2" cellspacing="1" style="border: 0px solid blue;"
                                                         width="100%">
-                                                        <tr>
+                                                        
                                                             <tr>
                                                                 <td colspan="4">
                                                                     <table class="headerPopUp" width="100%">
@@ -190,8 +190,10 @@
                                                                     
                                                                 </td>
                                                             </tr>
+
                                                             <tr style="height:10px">
                                                             </tr>
+                                                        
                                                             <tr>
                                                                 <td align="center" style="width: 100%" colspan="4">
                                                                     <table width="100%">
@@ -224,6 +226,21 @@
                                                                             </td>
                                                                         </tr>
                                                                     </table>
+                                                                </td>
+                                                            </tr>
+                                                        <tr>
+                                                            <td align="center" style="width: 100%" colspan="4">
+                                                                    <table width="100%">
+                                                                        <tr>
+                                                            <td style="width: 20%">
+                                                                    <asp:Button ID="Button5" CausesValidation="false" runat="server" OnClick="Button5_Click"
+                                    EnableTheming="false" Text="Download sample Excel sheet for importing Prices"></asp:Button>
+                                                                </td>
+                                                            <td style="width: 45%">
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                                        </table>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -269,7 +286,7 @@
                                     <asp:BoundField DataField="Row" HeaderText="#" HeaderStyle-Width="60px"/>
                                     <asp:BoundField DataField="PriceName" HeaderText="Name of Price Component" ItemStyle-HorizontalAlign="Left"  HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false"/>
                                     <asp:BoundField DataField="Description" HeaderText="Description of Price Component" ItemStyle-HorizontalAlign="Left"  HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false"/>
-                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="120px" HeaderText="Add Price List" HeaderStyle-BorderColor="Gray">
+                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="120px" Visible="false" HeaderText="Add Price List" HeaderStyle-BorderColor="Gray">
                                         <ItemTemplate>
                                             <asp:ImageButton ID="btnEdit1" runat="server" CausesValidation="false" SkinID="Plus"
                                                 CommandName="Select" OnClick="UpdButton_Click" />
@@ -383,15 +400,14 @@
                         <asp:Button ID="BlkAdd" runat="server"  OnClientClick="window.open('BulkPriceUpdation.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');"
                                     EnableTheming="false" Text="Import Existing Prices using Excel" Visible="false"></asp:Button>
                     </td>
-                    <td  style="width:15%">
+                    <td  style="width:1%">
                         <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" OnClientClick="javascript:CheckDate();"
-                                    EnableTheming="false" Text="Update Price for Single Product"></asp:Button>
+                                    EnableTheming="false" Visible="false" Text="Update Price for Single Product"></asp:Button>
                     </td>
                     <td  style="width:15%">
-                        <asp:Button ID="Button5" runat="server" OnClick="Button5_Click"
-                                    EnableTheming="false" Text="Download sample Excel sheet for importing Prices"></asp:Button>
+                        
                     </td> 
-                 <td  style="width:20%">
+                 <td  style="width:30%">
                     </td>                   
                 </tr>
         </table>

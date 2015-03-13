@@ -125,13 +125,13 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
         DataTable dt = new DataTable();
 
         dt.Columns.Add(new DataColumn("BRAND"));
-        dt.Columns.Add(new DataColumn("BRANDLEVEL"));
+        dt.Columns.Add(new DataColumn("BRAND%"));
         dt.Columns.Add(new DataColumn("Deviation"));
         double vat = 0;
 
         DataRow dr_final12 = dt.NewRow();
         dr_final12["BRAND"] = "";
-        dr_final12["BRANDLEVEL"] = "1";
+        dr_final12["BRAND%"] = "1";
         dr_final12["Deviation"] = "1";
         dt.Rows.Add(dr_final12);
 
