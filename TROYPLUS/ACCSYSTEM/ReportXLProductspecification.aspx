@@ -128,16 +128,17 @@
                                     <tr>
                                         <td style="width:25%">
                                         </td>
-                                        <td style="width:10%">
-                                            
-                                        </td>
+                                        <td style="width: 19%">
+                                        <asp:Button ID="btnReport" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnReport_Click" />
+                                    </td>
                                         <td style="width:20%">
                                              <asp:Button ID="btnxls" runat="server" CssClass="exportexl6" 
                                                   EnableTheming="false"  Width="152px" OnClick="btnxls_Click"/>
                                         </td>
                                         <td style="width:30%">
-                                            <asp:Button ID="btngriddata" runat="server" Visible="false" CssClass="generatebutton" 
-                                                  EnableTheming="false" Width="152px" />
+                                           <%-- <asp:Button ID="btngriddata" runat="server" Visible="false" CssClass="generatebutton" 
+                                                  EnableTheming="false" Width="152px" />--%>
                                         </td>
                                     </tr>
                             </table>
