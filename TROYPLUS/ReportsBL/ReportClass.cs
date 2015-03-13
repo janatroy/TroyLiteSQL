@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
 using System.Data.OleDb;
 using System.Data;
 using System.IO;
 using System.Xml;
+using System.Configuration;
+using System.Collections;
+using System.Globalization;
 
 namespace ReportsBL
 {
@@ -17,7 +21,7 @@ namespace ReportsBL
             string connectionString = string.Empty;
             string newConnection = string.Empty;
 
-            if (connStr.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
+            if (connStr.IndexOf("Data Source") > -1)
                 connectionString = connStr;
             else
                 connectionString = connStr; //System.Configuration.ConfigurationManager.ConnectionStrings[connStr].ConnectionString;
@@ -3358,22 +3362,22 @@ namespace ReportsBL
         #region STOCK Report
         public DataSet getCategory(string sDataSource)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet ds;
             string sQry = string.Empty;
             string sConStr = string.Empty;
 
-            sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+            oleConn = new SqlConnection(CreateConnectionString(sDataSource));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
                 
             sQry = "SELECT CategoryID,CategoryName FROM tblCategories";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             ds = new DataSet();
             oleAdp.Fill(ds);
 

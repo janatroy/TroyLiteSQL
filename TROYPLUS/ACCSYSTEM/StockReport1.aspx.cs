@@ -17,12 +17,13 @@ public partial class StockReport1 : System.Web.UI.Page
     Double sumDbl = 0;
     Double grandDbl = 0;
     private string sDataSource = string.Empty;
+    private string Connection = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-
+            Connection = Request.Cookies["Company"].Value;
             if (!IsPostBack)
             {
 
@@ -216,7 +217,8 @@ public partial class StockReport1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
-
+    string cond;
+    string cond1;
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
@@ -239,14 +241,19 @@ public partial class StockReport1 : System.Web.UI.Page
 
                 DateTime refDate = DateTime.Parse(txtStartDate.Text);
                 DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
+               
                 if (Request.QueryString["refDate"] != null)
                 {
                     stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
+                    cond = Request.QueryString["cond"].ToString();
+                    cond = cond.Replace("#", "'");
+                    cond1 = Request.QueryString["cond1"].ToString();
+                    cond1 = cond1.Replace("#", "'");
                 }
                 refDate = Convert.ToDateTime(stdt);
+                              
 
-
-                DataSet ds = bl.getProducts(sDataSource, catID, refDate);
+                DataSet ds = bl.getProducts(sDataSource, catID, refDate,cond,cond1);
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {

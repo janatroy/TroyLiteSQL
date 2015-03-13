@@ -384,7 +384,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         string dbQry = string.Empty;
                         string comments = txtComments.Text;
                         int CompID = int.Parse(GridViewProducts.DataKeys[e.RowIndex].Value.ToString());
-                        GridViewRow row = GridViewProducts.SelectedRow;
+                        GridViewRow row= GridViewProducts.SelectedRow;
                         string branch = row.Cells[3].Text;
                         string StockLimit = string.Empty;
                         string stockHold = string.Empty;
