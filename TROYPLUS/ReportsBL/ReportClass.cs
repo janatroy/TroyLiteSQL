@@ -3385,6 +3385,31 @@ namespace ReportsBL
             return ds;
         }
 
+        public DataSet getBranch(string sDataSource)
+        {
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
+            DataSet ds;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+            oleConn = new SqlConnection(CreateConnectionString(sDataSource));
+            oleCmd = new SqlCommand();
+            oleCmd.Connection = oleConn;
+
+            sQry = "SELECT Branchcode,BranchName FROM tblBranch";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new SqlDataAdapter(oleCmd);
+            ds = new DataSet();
+            oleAdp.Fill(ds);
+
+            oleConn.Close();
+            return ds;
+        }
+
         public DataSet getBundleProducts(int purchaseID, string sDataSource)
         {
             OleDbConnection oleConn;

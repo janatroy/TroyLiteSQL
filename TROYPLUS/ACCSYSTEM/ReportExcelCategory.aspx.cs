@@ -42,19 +42,19 @@ public partial class ReportExcelCategory : System.Web.UI.Page
             {
                 DataTable dt = new DataTable("Category");
                 dt.Columns.Add(new DataColumn("CategoryName"));
-                dt.Columns.Add(new DataColumn("CategoryLevel"));
+                dt.Columns.Add(new DataColumn("Category%"));
                 dt.Columns.Add(new DataColumn("IsActive"));
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     DataRow dr_final1 = dt.NewRow();
                     dr_final1["CategoryName"] = dr["CategoryName"];
-                    dr_final1["CategoryLevel"] = dr["CategoryLevel"];
+                    dr_final1["Category%"] = dr["CategoryLevel"];
                     dr_final1["IsActive"] = dr["IsActive"];
                     dt.Rows.Add(dr_final1);
                 }
                 DataRow dr_final2 = dt.NewRow();
                 dr_final2["CategoryName"] = "";
-                dr_final2["CategoryLevel"] = "";
+                dr_final2["Category%"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }
