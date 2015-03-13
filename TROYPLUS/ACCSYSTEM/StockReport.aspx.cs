@@ -60,9 +60,9 @@ public partial class StockReport : System.Web.UI.Page
             lblBillDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             //txtStartDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
-            DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
-            string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
-            txtStartDate.Text = dtaa;
+            //DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
+            //string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
+            //txtStartDate.Text = dtaa;
 
             lblHeadDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             //string sDataSource = Server.MapPath("App_Data\\Store0910.mdb");
@@ -115,7 +115,7 @@ public partial class StockReport : System.Web.UI.Page
         {
             if (listItem.Selected)
             {
-               cond += " BranchCode=" + listItem.Value + " ,";               
+               cond += " BranchCode='" + listItem.Value + "' ,";               
             }
         }
         cond = cond.TrimEnd(',');
@@ -130,12 +130,60 @@ public partial class StockReport : System.Web.UI.Page
         {
             if (listItem1.Selected)
             {
-                cond1 += "  tblPriceList.PriceName=" + listItem1.Value + " ,";
+                cond1 += "  tblPriceList.PriceName='" + listItem1.Value + "' ,";
             }
         }
         cond1 = cond1.TrimEnd(',');
         cond1 = cond1.Replace(",", "or");
         return cond1;
+    }
+
+    protected string getCond2()
+    {
+        string cond2 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Selected)
+            {
+                cond2 += " S.BranchCode='" + listItem.Value + "' ,";
+            }
+        }
+        cond2 = cond2.TrimEnd(',');
+        cond2 = cond2.Replace(",", "or");
+        return cond2;
+    }
+
+    protected string getCond3()
+    {
+        string cond3 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Selected)
+            {
+                cond3 += " P.BranchCode='" + listItem.Value + "' ,";
+            }
+        }
+        cond3 = cond3.TrimEnd(',');
+        cond3 = cond3.Replace(",", "or");
+        return cond3;
+    }
+
+    protected string getCond4()
+    {
+        string cond4 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Selected)
+            {
+                cond4 += " SI.BranchCode='" + listItem.Value + "' ,";
+            }
+        }
+        cond4 = cond4.TrimEnd(',');
+        cond4 = cond4.Replace(",", "or");
+        return cond4;
     }
 
     protected void btndet_Click(object sender, EventArgs e)
@@ -261,10 +309,14 @@ public partial class StockReport : System.Web.UI.Page
             cond = getCond();
             string cond1 = "";
             cond1 = getCond1();
-            //Response.Redirect("PrintProductSalesBill.aspx?SID=" + billNo.ToString() + "&RT=" + purchaseReturn);
-            //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-            //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate +  "&cond=" + cond +"&cond1=" + cond1 +"' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-            Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + cond + "&cond1=" + cond1 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            string cond2 = "";
+            cond2 = getCond2();
+            string cond3 = "";
+            cond3 = getCond3();
+            string cond4 = "";
+            cond4 = getCond4();                      
+            //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {
@@ -297,7 +349,13 @@ public partial class StockReport : System.Web.UI.Page
                 cond = getCond();
                 string cond1 = "";
                 cond1 = getCond1();
-                DataSet ds = bl.getProducts(sDataSource, catID, refDate, cond, cond1);
+                string cond2 = "";
+                cond2 = getCond2();
+                string cond3 = "";
+                cond3 = getCond3();
+                string cond4 = "";
+                cond4 = getCond4();
+                DataSet ds = bl.getProducts(sDataSource, catID, refDate, cond, cond1, cond2, cond3, cond4);
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
