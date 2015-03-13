@@ -72796,8 +72796,15 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         StringBuilder dbQry = new StringBuilder();
         //dbQry = "Select empno,empFirstName From tblEmployee Order By empFirstName";
-        dbQry.Append(" SELECT tblFormula.FormulaID, tblFormula.FormulaName,tblFormula.ItemCode, tblFormula.Unit_Of_Measure, tblFormula.InOut, tblFormula.Qty, tblProductStock.ProductName, tblProductStock.ProductDesc, tblProductStock.Model,tblProductStock.Stock,tblProductStock.BranchCode FROM tblFormula INNER JOIN tblProductStock ON tblFormula.ItemCode = tblProductStock.ItemCode  ");
-        dbQry.Append("  where tblFormula.FormulaName= '" + ProductId + "' ");
+        if (ProductId == "---All---")
+        {
+            dbQry.Append(" SELECT tblFormula.FormulaID, tblFormula.FormulaName,tblFormula.ItemCode, tblFormula.Unit_Of_Measure, tblFormula.InOut, tblFormula.Qty, tblProductStock.ProductName, tblProductStock.ProductDesc, tblProductStock.Model,tblProductStock.Stock,tblProductStock.BranchCode FROM tblFormula INNER JOIN tblProductStock ON tblFormula.ItemCode = tblProductStock.ItemCode  ");
+        }
+        else
+        {
+            dbQry.Append(" SELECT tblFormula.FormulaID, tblFormula.FormulaName,tblFormula.ItemCode, tblFormula.Unit_Of_Measure, tblFormula.InOut, tblFormula.Qty, tblProductStock.ProductName, tblProductStock.ProductDesc, tblProductStock.Model,tblProductStock.Stock,tblProductStock.BranchCode FROM tblFormula INNER JOIN tblProductStock ON tblFormula.ItemCode = tblProductStock.ItemCode  ");
+            dbQry.Append("  where tblFormula.FormulaName= '" + ProductId + "' ");
+        }
 
         try
         {

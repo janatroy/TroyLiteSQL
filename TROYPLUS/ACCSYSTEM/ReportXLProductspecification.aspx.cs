@@ -173,6 +173,26 @@ public partial class ReportXLProductspecification : System.Web.UI.Page
             DataSet ds = new DataSet();
 
 
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            string Product_Id = string.Empty;
+
+            //string connection1 = Request.Cookies["Company"].Value;
+
+
+            //Product_Id = Convert.ToString(drpproduct.SelectedItem.Text);
+            //if (GrdWME.SelectedDataKey.Value != null && GrdWME.SelectedDataKey.Value.ToString() != "")
+            //    Project_Id = Convert.ToInt32(GrdWME.SelectedDataKey.Value.ToString());
+
+            //drpproduct.Items.Clear();
+            //drpproduct.Items.Add(new ListItem("---All---", "0"));
+            //DataSet ds1 = bl.Getproductspecifacation(connection1, Product_Id);
+            //drpproduct.DataSource = ds1;
+            //drpproduct.DataBind();
+            //drpproduct.DataTextField = "FormulaName";
+            //drpproduct.DataValueField = "FormulaName";
+           // UpdatePanel123.Update();
+
+
 
             string connection = string.Empty;
 
@@ -663,9 +683,8 @@ public partial class ReportXLProductspecification : System.Web.UI.Page
             //    Project_Id = Convert.ToInt32(GrdWME.SelectedDataKey.Value.ToString());
 
             drpoption.Items.Clear();
-            drpoption.Items.Add(new ListItem("Select Product", "0"));
+            drpoption.Items.Add(new ListItem("---All---", "0"));
             DataSet ds = bl.Getproductspecifacation(connection, Product_Id);
-
             drpoption.DataSource = ds;
             drpoption.DataBind();
             drpoption.DataTextField = "FormulaName";
@@ -686,7 +705,7 @@ public partial class ReportXLProductspecification : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         drpproduct.Items.Clear();
-        drpproduct.Items.Add(new ListItem("Select Product", "0"));
+        drpproduct.Items.Add(new ListItem("---All---", "0"));
 
       // string connection = Request.Cookies["Company"].Value;
 
