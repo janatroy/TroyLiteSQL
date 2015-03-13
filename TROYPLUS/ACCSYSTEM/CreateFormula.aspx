@@ -605,8 +605,28 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <center>
+                   
+                         <td>
+                                    <table align="center" style="width: 100%">
+                                        <tr>
+                                            <td style="width: 35%"></td>
+                                            <td style="width: 15%">
+                                                  <div style="text-align: left;">
+                                                <asp:Panel ID="pnlSearch" runat="server" Width="100px">
+                                                   <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click"
+                                                     EnableTheming="false" Width="130px" Font-Bold="true" Font-Size="Larger" Text="Add New Product"></asp:Button>
+                                                </asp:Panel>
+                                            </div>
+                                            </td>
+                                            <td style="width: 15%">
+                                                <asp:Button ID="Button3" runat="server" CssClass="exportexl6forproject" OnClientClick="window.open('ReportXlProductspecification.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');"
+                                                        EnableTheming="false"></asp:Button>
+                                            </td>
+                                            <td style="width: 30%"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                      
                             <%--  <table align="center" style="width: 100%">
                                         <tr>
                                              <td style="width: 25%"></td>
@@ -619,10 +639,11 @@
                                             <td style="width: 40%"></td>
                       
                                              <td style="width: 20% " align="center">--%>
-                            <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click"
-                                    EnableTheming="false" Width="130px" Font-Bold="true" Font-Size="Larger" Text="Add New Product"></asp:Button>
-                            </asp:Panel>
+                           
+                              
+                          
+
+                             
                             <%-- </td>--%>
                             <%-- <td style="width: 5%" align="left">
                                                
@@ -632,8 +653,9 @@
                                         </tr>
                                       
                                     </table>--%>
-                        </center>
-                    </td>
+                       
+                  
+                    
                 </tr>
             </table>
         </ContentTemplate>

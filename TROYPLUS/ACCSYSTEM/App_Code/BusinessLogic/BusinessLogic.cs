@@ -72667,4 +72667,95 @@ public class BusinessLogic
 
     }
 
+    public DataSet Getproductspecifacation(string connection, string ProductId)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+        //dbQry = "Select empno,empFirstName From tblEmployee Order By empFirstName";
+        dbQry.Append(" select tblFormula.FormulaID,tblFormula.FormulaName from tblFormula ");
+        dbQry.Append("  where FormulaName= '" + ProductId + "' ");
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataSet Loadproduct(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+        DataSet ds = new DataSet();
+        dbQry = " SELECT FormulaName FROM tblFormula Group By FormulaName ";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataSet Getproductlistspecification(string connection, string ProductId)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+        //dbQry = "Select empno,empFirstName From tblEmployee Order By empFirstName";
+        dbQry.Append(" SELECT tblFormula.FormulaID, tblFormula.FormulaName,tblFormula.ItemCode, tblFormula.Unit_Of_Measure, tblFormula.InOut, tblFormula.Qty, tblProductStock.ProductName, tblProductStock.ProductDesc, tblProductStock.Model,tblProductStock.Stock,tblProductStock.BranchCode FROM tblFormula INNER JOIN tblProductStock ON tblFormula.ItemCode = tblProductStock.ItemCode  ");
+        dbQry.Append("  where tblFormula.FormulaName= '" + ProductId + "' ");
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
 }

@@ -187,7 +187,7 @@
                             CancelControlID="BtnPopUpCancel1" DynamicServicePath="" Enabled="True" PopupControlID="purchasePanel"
                             RepositionMode="RepositionOnWindowResizeAndScroll" TargetControlID="dummyPurchase">
                         </cc1:ModalPopupExtender>
-                        <asp:Panel ID="purchasePanel" runat="server" Style="width: 82%; display: none">
+                        <asp:Panel ID="purchasePanel" runat="server" Style="width: 90%; display: none">
                             <asp:UpdatePanel ID="updatePnlPurchase" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
                                     <div id="Div1" style="background-color: White;">
