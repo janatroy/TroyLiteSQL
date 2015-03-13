@@ -17617,6 +17617,35 @@ public class BusinessLogic
         }
     }
 
+    public DataSet ListBranchexecution(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+        DataSet ds = new DataSet();
+        dbQry = "Select BranchName,Branchcode From tblBranch where IsActive='YES' Order By BranchName";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
     public DataSet ListReferenceType(string connection)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -19938,10 +19967,10 @@ public class BusinessLogic
 
 
 
-    public DataSet listCompProductsreport()
+    public DataSet listCompProductsreport(string connection,string productid,DateTime date,DateTime date1,string inout,string branch,bool ispros)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        manager.ConnectionString = CreateConnectionString(connection); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
         DataSet ds = new DataSet();
         StringBuilder dbQry = new StringBuilder();
 
@@ -19949,20 +19978,40 @@ public class BusinessLogic
         try
         {
             manager.Open();
+            dbQry.Append(" SELECT tblExecution.FormulaName, tblExecution.ItemCode, tblExecution.Qty, tblExecution.InOut, tblExecution.BranchCode,tblProductStock.ProductName, tblProductStock.Model, tblProductStock.Stock, tblProductStock.ProductDesc, tblCompProduct.CDate,tblCompProduct.IsReleased,tblCompProduct.Comments FROM tblExecution INNER JOIN tblCompProduct ON tblExecution.CompID = tblCompProduct.CompID INNER JOIN tblProductStock ON tblExecution.ItemCode = tblProductStock.ItemCode ");
+           // dbQry.Append("SELECT tblExecution.CompID, tblExecution.FormulaName,tblExecution.CompID,tblExecution.BranchCode,tblExecution.ItemCode,tblExecution.Qty,tblExecution.InOut,tblCompProduct.CDate,tblCompProduct.Comments,tblCompProduct.IsReleased FROM tblCompProduct inner join tblExecution on tblExecution.CompId=tblCompProduct.CompId ");
 
-            dbQry.Append("SELECT tblExecution.CompID, tblExecution.FormulaName,tblExecution.CompID,tblExecution.BranchCode,tblExecution.ItemCode,tblExecution.Qty,tblExecution.InOut,tblCompProduct.CDate,tblCompProduct.Comments,tblCompProduct.IsReleased FROM tblCompProduct inner join tblExecution on tblExecution.CompId=tblCompProduct.CompId ");
+            if (ispros)
+                dbQry.Append(" Where IsReleased ='Y' ");
+            else
+                dbQry.Append(" Where IsReleased ='N' ");
 
-            //if (isProcessed)
-            //    dbQry.Append(" Where IsReleased ='Y' ");
-            //else
-            //    dbQry.Append(" Where IsReleased ='N' ");
+            if (productid == "---All---")
+            {
+            }
+            else
+            {
 
+                dbQry.Append(" AND tblExecution.FormulaName ='" + productid + "' ");
+            }
 
-            //dbQry.Append(" AND CDate >= #" + startDate.ToString("MM/dd/yyyy").Trim() + "# ");
+            dbQry.Append(" AND CDate >= '" + date.ToString("MM/dd/yyyy").Trim() + "' ");
 
-            //dbQry.Append(" AND CDate <= #" + endDate.ToString("MM/dd/yyyy").Trim() + "# ");
+            dbQry.Append(" AND CDate <= '" + date1.ToString("MM/dd/yyyy").Trim() + "' ");
 
-            //dbQry.Append(" Order By CDate Desc");
+            if (inout == "All")
+            {
+
+              
+            }
+            else
+            {
+                dbQry.Append(" AND tblExecution.InOut ='" + inout + "' ");
+            }
+
+            dbQry.Append(" AND tblExecution.BranchCode ='" + branch + "' ");
+
+            dbQry.Append(" Order By CDate Desc");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
 
