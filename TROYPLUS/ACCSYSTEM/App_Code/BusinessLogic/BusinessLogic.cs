@@ -58304,7 +58304,7 @@ public class BusinessLogic
     }
 
 
-    public DataSet getProducts(string sDataSource, int iCategoryID, DateTime refDate,string cond,string cond1)
+    public DataSet getProducts(string sDataSource, int iCategoryID, DateTime refDate, string cond, string cond1, string cond2, string cond3, string cond4)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -58346,7 +58346,7 @@ public class BusinessLogic
         ds = new DataSet();
         oleAdp.Fill(ds);
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where SI.BranchCode='KKN' and  P.CategoryID=" + iCategoryID + " AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where (" + cond4 + ") and  P.CategoryID=" + iCategoryID + " AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -58376,7 +58376,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where P.BranchCode='KKN' and PM.CategoryID=" + iCategoryID + " AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where (" + cond3 + ") and PM.CategoryID=" + iCategoryID + " AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -58406,7 +58406,7 @@ public class BusinessLogic
         }
 
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where S.BranchCode='KKN' and P.CategoryID=" + iCategoryID + " AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where (" + cond2 + ") and P.CategoryID=" + iCategoryID + " AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
