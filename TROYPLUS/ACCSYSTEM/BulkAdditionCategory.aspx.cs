@@ -127,13 +127,13 @@ public partial class BulkAdditionCategory : System.Web.UI.Page
         
         dt.Columns.Add(new DataColumn("CATEGORY"));
 
-        dt.Columns.Add(new DataColumn("CATEGORYLevel"));
+        dt.Columns.Add(new DataColumn("CATEGORY%"));
 
         double vat = 0;
 
         DataRow dr_final12 = dt.NewRow();
         dr_final12["CATEGORY"] = "";
-        dr_final12["CATEGORYLevel"] = "1";
+        dr_final12["CATEGORY%"] = "1";
         
         dt.Rows.Add(dr_final12);
 

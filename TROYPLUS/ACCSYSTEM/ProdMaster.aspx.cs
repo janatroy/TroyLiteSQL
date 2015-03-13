@@ -1709,6 +1709,38 @@ public partial class ProdMaster : System.Web.UI.Page
                     }
                 }
 
+                string ItemCode1 = txtItemCodeAdd.Text.Trim();
+
+                for (int vLoop = 0; vLoop < GrdViewItems.Rows.Count; vLoop++)
+                {
+                    int col = vLoop + 1;
+                    Label PriceName1 = (Label)GrdViewItems.Rows[vLoop].FindControl("txtPriceName");
+                    PriceName = PriceName1.Text;
+                    TextBox Price1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtPrice");
+                    Price = Price1.Text;
+                    TextBox EffDate1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtEffDate");
+                    EffDate = EffDate1.Text;
+                    TextBox Discount1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDiscount1");
+                    tDiscount = Discount1.Text;
+
+                    if (!bl.IsRateModified(connection, Convert.ToDouble(Price), DateTime.Parse(EffDate), ItemCode1, PriceName))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Price is Modified. Please modify the Effective Date also in row " + col + " ')", true);
+                        return;
+                    }
+
+                    if (!bl.IsRateDateModified(connection, Convert.ToDouble(Price), DateTime.Parse(EffDate), ItemCode1, PriceName))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Effective Date is Modified. Please modify the Price also in row " + col + " ')", true);
+                        return;
+                    }
+
+                    if (!bl.IsRateOldDateModified(connection, Convert.ToDouble(Price), DateTime.Parse(EffDate), ItemCode1, PriceName))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('New Effective Date Should be greater than Old Effective Date in row " + col + " ')", true);
+                        return;
+                    }
+                }
 
 
                 DataSet dstest = new DataSet();

@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/PageMaster.master" AutoEventWireup="true"
-    CodeFile="DBYearEnd.aspx.cs" Inherits="DBYearEnd" Title="Administration > Year End Updation" %>
+    CodeFile="DBYearEnd.aspx.cs" Inherits="DBYearEnd" Title="Administration > Financial Year Closing" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="cplhTab" runat="Server">
 </asp:Content>
@@ -10,8 +10,8 @@
                 <div class="mainConBody">
                     <table style="width: 100.3%; margin: -3px 0px 0px 2px;" cellpadding="3" cellspacing="2" class="searchbg">
                         <tr style=" vertical-align: middle">
-                            <td style="width: 23%; font-size: 20px; color: #000000;" >
-                                Year End Updation
+                            <td style="width: 23%; font-size: 20px; color: White;" >
+                                Financial Year Closing
                             </td>
                             <td style="width: 10%">
                    
@@ -59,16 +59,26 @@
         
         </tr>
         <tr>
-            <td width="8%">
+            <td colspan="3">
+                <table style="width:100%"
+                        cellpadding="1" cellspacing="1">
+                    <tr>
+                        <td style="width:35%">
                 
             </td>
-            <td width="34%">
-                <asp:Button ID="btnAccount" SkinID="skinButtonCol2" runat="server" OnClick="btnAccount_Click"
-                    Text="Refresh the New Account" ValidationGroup="cmpval" Width="100%" /> 
+                        <td style="width:30%" class="ControlDrpBorder">
+                <asp:DropDownList ID="drpYear" TabIndex="1" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                      runat="server">
+                </asp:DropDownList>
+               
             </td>
-            <td width="8%">
+            <td style="width:35%">
                 
             </td>
+                    </tr>
+                </table>
+            </td>
+            
         </tr>
         <tr runat="server" visible="false">
             <td width="8%">
@@ -77,6 +87,8 @@
             <td width="34%">
                 <asp:Button ID="Button1" SkinID="skinButtonCol2" runat="server" OnClick="userupd_Click"
                     Text="User Updation" ValidationGroup="cmpval" Width="100%" />
+                 <asp:Button ID="btnAccount" SkinID="skinButtonCol2" runat="server" Visible="false" OnClick="btnAccount_Click"
+                    Text="Refresh the New Account" ValidationGroup="cmpval" /> 
             </td>
             <td width="8%">    
                 
@@ -94,7 +106,7 @@
                 
             </td>
         </tr>
-        <tr>
+        <tr runat="server" visible="false">
             <td width="8%">
                 
             </td>
@@ -106,7 +118,7 @@
                 
             </td>
         </tr>
-        <tr>
+        <tr runat="server" visible="false">
             <td width="8%">
                 
             </td>
@@ -145,6 +157,21 @@
                 
             </td>
         </tr>--%>
+        <tr>
+            <td width="5%">
+                
+            </td>
+            <td width="34%">
+                <asp:Button ID="Button123" runat="server" OnClick="Button123_Click"
+                    Text="Close the year" Width="100%" />
+            </td>
+            <td width="8%">    
+                
+            </td>
+        </tr>
+        <tr style="height: 17px;">
+        
+        </tr>
     </table>
     </td>
     </tr>
