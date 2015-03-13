@@ -381,7 +381,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         string itemCode = string.Empty;
                         string date = txtDate.Text;
                         string formula = lblFormula.Text;
-                        string dbQry = string.Empty;                 
+                        string dbQry = string.Empty;
                         string comments = txtComments.Text;
                         int CompID = int.Parse(GridViewProducts.DataKeys[e.RowIndex].Value.ToString());
                         //GridViewRow row = GridViewProducts.SelectedRow;

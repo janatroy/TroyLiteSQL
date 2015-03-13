@@ -281,6 +281,16 @@
                                                     <asp:Label ID="lblRate" runat="server" Text='<%# Eval("Rate") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Branch" ItemStyle-Width="30px">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblBranch" runat="server" Text='<%# Eval("BranchCode") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="PriceList" ItemStyle-Width="30px">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblPrice" runat="server" Text='<%# Eval("PriceName") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Amount" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblAmount" runat="server" ItemStyle-Width="40px" />

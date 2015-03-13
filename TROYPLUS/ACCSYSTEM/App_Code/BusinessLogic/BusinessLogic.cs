@@ -53237,11 +53237,12 @@ public class BusinessLogic
                 //                " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                " Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
-                dbQry=string.Format(" SELECT tblCategories.CategoryName, tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, " +
-                                    " tblStock.Model, tblStock.ProductDesc,tblStock.BranchCode FROM tblStock INNER JOIN " +
-                                    " tblProductStock ON tblStock.ID = tblProductStock.Id INNER JOIN " +
-                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID " +
-                                    " Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
+                
+                dbQry=string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                    " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                    " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                    " Where tblStock.itemCode like '" + txtSearch + "' Order By tblStock.itemCode");
             }
             else
             {
@@ -53250,12 +53251,12 @@ public class BusinessLogic
                 //               " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //               " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //               " Where tblStock.BranchCode='" + branch + "' and tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
-
-                  dbQry=string.Format(" SELECT tblCategories.CategoryName, tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, " +
-                                    " tblStock.Model, tblStock.ProductDesc,tblStock.BranchCode FROM tblStock INNER JOIN " +
-                                    " tblProductStock ON tblStock.ID = tblProductStock.Id INNER JOIN " +
-                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID " +
-                                    " Where tblStock.BranchCode='" + branch + "' and tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
+                 
+                 dbQry=string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                    " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                    " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                    " Where tblStock.BranchCode='" + branch + "' and tblStock.itemCode like '" + txtSearch + "' Order By tblStock.itemCode");
             }
         }
         else if (dropDown == "ProductName")
@@ -53263,19 +53264,29 @@ public class BusinessLogic
             if (branch == "All")
             {
                 //dbQry = "select tblStock.ItemCode,tblStock.ProductName, tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Where tblStock.ProductName like '" + txtSearch + "' Order By tblStock.ItemCode";
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                 " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                 " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                 " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                                 " Where tblStock.ProductName like '" + txtSearch + "' Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                 " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                 " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                 " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //                 " Where tblStock.ProductName like '" + txtSearch + "' Order By tblStock.ItemCode");
+                 dbQry=string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                    " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                    " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                    " Where tblStock.ProductName like '" + txtSearch + "' Order By tblStock.itemCode");
             }
             else
             {
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                              " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                              " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                              " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                              " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductName like '" + txtSearch + "' Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //              " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //              " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //              " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //              " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductName like '" + txtSearch + "' Order By tblStock.ItemCode");
+                  dbQry=string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                    " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                    " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                     " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductName like '" + txtSearch + "' Order By tblStock.itemCode");
             }
         }
         else if (dropDown == "Model")
@@ -53283,19 +53294,29 @@ public class BusinessLogic
             if (branch == "All")
             {
                 //dbQry = "select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Where tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode";
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                  " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                                  " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode");
+                //    dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                      " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                      " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                      " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode");
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                      " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                      " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                      " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.itemCode");
             }
             else
             {
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                  " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                                  " Where tblStock.BranchCode='" + branch + "' and tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                  " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //                  " Where tblStock.BranchCode='" + branch + "' and tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode");
+                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                      " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                      " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                      " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.itemCode");
             }
         }
         else if (dropDown == "Brand")
@@ -53303,19 +53324,29 @@ public class BusinessLogic
             if (branch == "All")
             {
                 //dbQry = "select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode";
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                   " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                   " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                   " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                                   " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                   " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                   " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                   " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //                   " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
+                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                      " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                      " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                      " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
             }
             else
             {
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                  " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
-                                  " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                  " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
+                //                  " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
+                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                      " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                      " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                      " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
             }
         }
         else
@@ -53323,17 +53354,27 @@ public class BusinessLogic
             if (branch == "All")
             {
                 //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Order By tblStock.ItemCode");
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                    " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                    " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                    " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                    " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                    " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                    " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Order By tblStock.ItemCode");
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                    " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                    " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID");
             }
             else
             {
-                dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
-                                    " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
-                                    " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                    " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Where tblStock.BranchCode='" + branch + "' Order By tblStock.ItemCode");
+                //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
+                //                    " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
+                //                    " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
+                //                    " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Where tblStock.BranchCode='" + branch + "' Order By tblStock.ItemCode");
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                   " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                   " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                   " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID"+
+                                   " Where tblStock.BranchCode='" + branch + "' Order By tblStock.itemCode");
+
             }
         }
 
@@ -58263,7 +58304,7 @@ public class BusinessLogic
     }
 
 
-    public DataSet getProducts(string sDataSource, int iCategoryID, DateTime refDate)
+    public DataSet getProducts(string sDataSource, int iCategoryID, DateTime refDate,string cond,string cond1)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -58272,19 +58313,40 @@ public class BusinessLogic
         string sQry = string.Empty;
         string sConStr = string.Empty;
 
-        sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
-        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sDataSource));
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
 
-        sQry = "SELECT ItemCode,Productname,Model,ProductDesc,Stock,Rate,Unit,VAT,Discount,BuyUnit FROM tblProductMaster WHERE CategoryID=" + iCategoryID + " ORDER BY Itemcode";
+          //SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblProductMaster.Rate, tblProductMaster.Unit, 
+          //tblProductMaster.VAT, tblProductMaster.Discount, tblProductMaster.BuyUnit, tblProductStock.Stock, tblProductStock.BranchCode, tblProductStock.BranchName, 
+          //tblProductPrices.Price, tblPriceList.PriceName, tblCategories.CategoryName,tblCategories.CategoryID
+          //FROM tblCategories INNER JOIN
+          //tblProductStock INNER JOIN
+          //tblProductMaster ON tblProductStock.ItemCode = tblProductMaster.ItemCode INNER JOIN
+          //tblProductPrices INNER JOIN
+          //tblPriceList ON tblProductPrices.PriceId = tblPriceList.Id ON tblProductStock.ItemCode = tblProductPrices.ItemCode ON 
+          //tblCategories.CategoryID = tblProductStock.CategoryID
+
+        //sQry = "SELECT ItemCode,Productname,Model,ProductDesc,Stock,Rate,Unit,VAT,Discount,BuyUnit FROM tblProductMaster WHERE CategoryID=" + iCategoryID + " ORDER BY Itemcode";
+        sQry=" SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblProductMaster.Rate, tblProductMaster.Unit, " +
+             " tblProductMaster.VAT, tblProductMaster.Discount, tblProductMaster.BuyUnit, tblProductStock.Stock, tblProductStock.BranchCode, tblProductStock.BranchName, " +
+             " tblProductPrices.Price, tblPriceList.PriceName, tblCategories.CategoryName,tblCategories.CategoryID " +
+             " FROM tblCategories INNER JOIN " +
+             " tblProductStock INNER JOIN " +
+             " tblProductMaster ON tblProductStock.ItemCode = tblProductMaster.ItemCode INNER JOIN " +
+             " tblProductPrices INNER JOIN " +
+             " tblPriceList ON tblProductPrices.PriceId = tblPriceList.Id ON tblProductStock.ItemCode = tblProductPrices.ItemCode ON  " +
+             " tblCategories.CategoryID = tblProductStock.CategoryID"+
+             " WHERE tblCategories.CategoryID=" + iCategoryID + " and(" + cond + ")and(" + cond1 + ")" +
+             " ORDER BY tblProductMaster.ItemCode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
         ds = new DataSet();
         oleAdp.Fill(ds);
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where P.CategoryID=" + iCategoryID + " AND S.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where SI.BranchCode='KKN' and  P.CategoryID=" + iCategoryID + " AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -58314,7 +58376,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where PM.CategoryID=" + iCategoryID + " AND P.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where P.BranchCode='KKN' and PM.CategoryID=" + iCategoryID + " AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -58344,7 +58406,7 @@ public class BusinessLogic
         }
 
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where P.CategoryID=" + iCategoryID + " AND S.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where S.BranchCode='KKN' and P.CategoryID=" + iCategoryID + " AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -58374,7 +58436,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where PM.CategoryID=" + iCategoryID + " AND P.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where P.BranchCode='KKN' and PM.CategoryID=" + iCategoryID + " AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
