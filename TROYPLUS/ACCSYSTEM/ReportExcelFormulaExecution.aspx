@@ -77,6 +77,8 @@
                                 <tr style="height: 2px;"/>
                                 <tr>
                                     <td class="ControlLabel2" style="width:15%;">
+                                    <%--     <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator2" runat="server"
+                                                                                                Text="*" ErrorMessage="Please select Product. It cannot be left blank. " ControlToValidate="txtProjectCode"></asp:RequiredFieldValidator>--%>
                                         Select Product
                                     </td>
                                     <td style="width:15%;" class="ControlDrpBorder">
@@ -104,7 +106,9 @@
                                 </tr>
                                 <tr style="height: 2px;"/>
                                 <tr>
-                                    <td class="ControlLabel2" style="width:35%;">
+                                    <td class="ControlLabel2" style="width:30%;">
+                                        <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator1" runat="server"
+                                                                                                Text="*" ErrorMessage="Please select Start date. It cannot be left blank. " ControlToValidate="txtStartDate"></asp:RequiredFieldValidator>
                                        Start date
                                     </td>
                                       <td style="width: 21%;" class="ControlTextBox3">
@@ -119,6 +123,8 @@
                                                                                             Width="20px" runat="server" />
                                                                                     </td>
                                     <td class="ControlLabel2" style="width:35%;">
+                                        <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator3" runat="server"
+                                                                                                Text="*" ErrorMessage="Please select End Date. It cannot be left blank. " ControlToValidate="txtEndDate"></asp:RequiredFieldValidator>
                                        End date
                                     </td>
                                       <td style="width: 21%;" class="ControlTextBox3">
@@ -134,7 +140,7 @@
                                                                                     </td>
                                 </tr>
                                 <tr>
-                                     <td class="ControlLabel2" style="width:35%;">
+                                     <td class="ControlLabel2" style="width:30%;">
                                          Select In/Out categories
                                     </td>
                                       <td style="width:15%;" class="ControlDrpBorder">
@@ -153,8 +159,10 @@
                                     <td  style="width:5%;">
                                             
                                     </td>
-                                    <td class="ControlLabel2" style="width:35%;">
+                                    <td class="ControlLabel2" style="width:30%;">
                                         Select Branch
+                                        <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator4" runat="server"
+                                                                                                Text="*" ErrorMessage="Please select any one Branch in the Dropdown List. " ControlToValidate="drpBranch"></asp:RequiredFieldValidator>
                                     </td>
                                       <td style="width:15%;" class="ControlDrpBorder">
                                        
@@ -182,11 +190,11 @@
                                         </td>
                                         <td style="width: 19%">
                                         <asp:Button ID="btnReport" EnableTheming="false" runat="server" CssClass="NewReport6"
-                                            Width="120px" OnClick="btnReport_Click" />
+                                            Width="120px" OnClick="btnReport_Click" ValidationGroup="reportandexcel" />
                                     </td>
                                         <td style="width:20%">
                                              <asp:Button ID="btnxls" runat="server" CssClass="exportexl6" 
-                                                  EnableTheming="false"  Width="152px" OnClick="btnxls_Click"/>
+                                                  EnableTheming="false"  Width="152px" OnClick="btnxls_Click" ValidationGroup="reportandexcel"/>
                                         </td>
                                         <td style="width:30%">
                                            <%-- <asp:Button ID="btngriddata" runat="server" Visible="false" CssClass="generatebutton" 

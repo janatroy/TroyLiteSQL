@@ -73162,6 +73162,28 @@ public class BusinessLogic
             dbQry.Append("  where tblFormula.FormulaName= '" + ProductId + "' ");
         }
 
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+    
+
     public DataSet GetYearEndOutStandingReport(string connection, string master, string sLedger)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -73272,6 +73294,35 @@ public class BusinessLogic
         catch (Exception ex)
         {
             throw ex;
+        }
+    }
+    public DataSet ListYear(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        //manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+        DataSet ds = new DataSet();
+        dbQry = "Select * From tblYearmaster Order By YearName";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
         }
     }
 
