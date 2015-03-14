@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using Microsoft.Reporting.WebForms;
 
 public partial class StockReport1 : System.Web.UI.Page
 {
@@ -269,6 +270,14 @@ public partial class StockReport1 : System.Web.UI.Page
                 {
                     gv.DataSource = ds;                  
                     gv.DataBind();
+
+                    //ReportViewer1.ProcessingMode = ProcessingMode.Local;
+                    //ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report.rdlc");
+                    //Customers dsCustomers = GetData("select top 20 * from customers");
+                    //ReportDataSource datasource = new ReportDataSource("Stock", ds.Tables[0]);
+                    //ReportViewer1.LocalReport.DataSources.Clear();
+                    //ReportViewer1.LocalReport.DataSources.Add(datasource);
+
                 }
                 else
                 {
@@ -282,6 +291,7 @@ public partial class StockReport1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
 
 
     protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e)
