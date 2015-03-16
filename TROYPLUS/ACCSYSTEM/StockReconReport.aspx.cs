@@ -10,10 +10,16 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class StockReconReport : System.Web.UI.Page
 {
     private string sDataSource = string.Empty;
+    string brncode;
+    string connection;
+       string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -23,6 +29,15 @@ public partial class StockReconReport : System.Web.UI.Page
             {
                 txtStartDate.Text = DateTime.Now.ToShortDateString();
                 loadBranch();
+
+                brncode = Request.Cookies["Branch"].Value;
+
+                for (int i = 0; i <= lstBranch.Items.Count; i++)
+                {
+                    lstBranch.SelectedValue = Convert.ToString(brncode);
+                }
+
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
@@ -38,13 +53,38 @@ public partial class StockReconReport : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         lstBranch.Items.Clear();
-       // lstBranch.Items.Add(new ListItem("All", "0"));
-        ds = bl.ListBranch();
+        // lstBranch.Items.Add(new ListItem("All", "0"));
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
         lstBranch.DataSource = ds;
         lstBranch.DataTextField = "BranchName";
         lstBranch.DataValueField = "Branchcode";
         lstBranch.DataBind();
     }
+
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+       
+    }
+
 
     protected void btndet_Click(object sender, EventArgs e)
     {
@@ -113,15 +153,22 @@ public partial class StockReconReport : System.Web.UI.Page
             //    gvStock.DataSource = null;
             //    gvStock.DataBind();
             //}
-            string cond = "";
-            cond = getCond();
+            if (lstBranch.SelectedIndex == -1)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+                Panel.Visible = true;
+                div1.Visible = true;
+            }
+            else
+            {
+                string cond = "";
+                cond = getCond();
 
-
-            divPrint.Visible = false;
-            div1.Visible = true;
-            Response.Write("<script language='javascript'> window.open('StockReconReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&cond=" + Server.UrlEncode(cond) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-            Panel.Visible = false;
-
+                divPrint.Visible = false;
+                div1.Visible = true;
+                Response.Write("<script language='javascript'> window.open('StockReconReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&cond=" + Server.UrlEncode(cond) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                Panel.Visible = false;
+            }
             //#region Export To Excel
             //if (ds.Tables[0].Rows.Count > 0)
             //{
@@ -192,47 +239,69 @@ public partial class StockReconReport : System.Web.UI.Page
             rpt = new ReportsBL.ReportClass();
             int zeroCnt = 0;
             int dataCnt = 0;
-            ds = rpt.verifyStock(sDataSource, startDate);
-
-            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            if (lstBranch.SelectedIndex == -1)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if (dr["PhysicalStock"] != null)
-                    {
-                        if (Convert.ToDouble(dr["PhysicalStock"]) == 0)
-                            zeroCnt = zeroCnt + 1;
-                    }
-                }
-                if (zeroCnt == ds.Tables[0].Rows.Count)
-                {
-                    err.Text = "No physical stock found for the  date " + startDate.ToShortDateString() + " be Generated";
-                    //gvStock.DataSource = null;
-                    //gvStock.DataBind();
-                }
-                else
-                {
-                    err.Text = "";
-                    //gvStock.DataSource = ds;
-                    //gvStock.DataBind();
-                }
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+                Panel.Visible = true;
+                div1.Visible = true;
             }
             else
             {
-                //gvStock.DataSource = null;
-                //gvStock.DataBind();
+                string cond = "";
+                cond = getCond();
+
+                ds = rpt.verifyStock(sDataSource, startDate, cond);
+
+                if (ds != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        if (dr["PhysicalStock"] != null)
+                        {
+                            if (Convert.ToDouble(dr["PhysicalStock"]) == 0)
+                                zeroCnt = zeroCnt + 1;
+                        }
+                    }
+                    if (zeroCnt == ds.Tables[0].Rows.Count)
+                    {
+                        err.Text = "No physical stock found for the  date " + startDate.ToShortDateString() + " be Generated";
+                        //gvStock.DataSource = null;
+                        //gvStock.DataBind();
+                    }
+                    else
+                    {
+                        err.Text = "";
+                        //gvStock.DataSource = ds;
+                        //gvStock.DataBind();
+                    }
+                }
+
+                else
+                {
+                    //gvStock.DataSource = null;
+                    //gvStock.DataBind();
+                }
             }
 
             #region Export To Excel
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Stock recon");
+                dt.Columns.Add(new DataColumn("Heading"));
+
+                //DataRow dr_lastexport1 = dt.NewRow();
+                //dr_lastexport1["Heading"] = " Report Date on " + startDate + " for BranchCode:" + lstBranch.SelectedValue;
+                //dt.Rows.Add(dr_lastexport1);
+
+
                 dt.Columns.Add(new DataColumn("ItemCode"));
                 //dt.Columns.Add(new DataColumn("Productname"));
                 //dt.Columns.Add(new DataColumn("Model"));
                 //dt.Columns.Add(new DataColumn("ProductDesc"));
                 dt.Columns.Add(new DataColumn("ActualStock"));
                 dt.Columns.Add(new DataColumn("physicalStock"));
+
+
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
@@ -253,7 +322,7 @@ public partial class StockReconReport : System.Web.UI.Page
                 //dr_lastexport["ProductDesc"] = "";
                 dr_lastexport["ActualStock"] = "";
                 dr_lastexport["physicalStock"] = "";
-                ExportToExcel("StockReconReport.xls", dt);
+                ExportToExcel(dt);
             }
             #endregion
         }
@@ -263,25 +332,45 @@ public partial class StockReconReport : System.Web.UI.Page
         }
     }
 
-    public void ExportToExcel(string filename, DataTable dt)
+    public void ExportToExcel(DataTable dt)
     {
 
         if (dt.Rows.Count > 0)
         {
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
 
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+         
+         
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "StockReconReport.xlsx";             
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+
         }
 
     }

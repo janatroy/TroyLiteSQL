@@ -17728,6 +17728,35 @@ public class BusinessLogic
         }
     }
 
+    public DataSet ListDefaultBranch(string brncode)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        string dbQry = string.Empty;
+        DataSet ds = new DataSet();
+        dbQry = "Select BranchName,Branchcode From tblBranch where IsActive='YES' and Branchcode='" + brncode + "' Order By BranchName";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
     public DataSet ListBranch()
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
