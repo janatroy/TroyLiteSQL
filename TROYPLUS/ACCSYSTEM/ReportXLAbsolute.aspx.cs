@@ -42,12 +42,29 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
                 DateTime dtCurrent = DateTime.Now;
                 DateTime dtNew = new DateTime(dtCurrent.Year, dtCurrent.Month, 1);
 
+                loadBranch();
+                loadPriceList();
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadPriceList()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstPricelist.Items.Clear();
+        lstPricelist.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListPriceList(connection);
+        lstPricelist.DataSource = ds;
+        lstPricelist.DataTextField = "PriceName";
+        lstPricelist.DataValueField = "PriceName";
+        lstPricelist.DataBind();
     }
 
    protected void btnxls_Click(object sender, EventArgs e)
@@ -61,6 +78,21 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
             return;
         }
+   }
+
+   private void loadBranch()
+   {
+       BusinessLogic bl = new BusinessLogic(sDataSource);
+       DataSet ds = new DataSet();
+       string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+       drpBranchAdd.Items.Clear();
+       drpBranchAdd.Items.Add(new ListItem("Select Branch", "0"));
+       ds = bl.ListBranch();
+       drpBranchAdd.DataSource = ds;
+       drpBranchAdd.DataTextField = "BranchName";
+       drpBranchAdd.DataValueField = "Branchcode";
+       drpBranchAdd.DataBind();
    }
 
      public void bindData(string sDataSource)
@@ -82,20 +114,22 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
              Method = "NotAbsolute";
          }
 
-         if (chkboxMRP.Checked == true)
-         {
-             field += ",rate";
-         }
-         if (chkboxDP.Checked == true)
-         {
-             field += ",DealerRate";
-         }
-         if (chkboxNLC.Checked == true)
-         {
-             field += ",NLC";
-         }
+         //if (chkboxMRP.Checked == true)
+         //{
+         //    field += ",rate";
+         //}
+         //if (chkboxDP.Checked == true)
+         //{
+         //    field += ",DealerRate";
+         //}
+         //if (chkboxNLC.Checked == true)
+         //{
+         //    field += ",NLC";
+         //}
 
-         ds = objBL.GetAbsoluteProductlist(sDataSource, field, Method);
+         string Branch = drpBranchAdd.SelectedValue;
+
+         ds = objBL.GetAbsoluteProductlist(sDataSource, field, Method, Branch);
 
          DataTable dt = new DataTable();
 
@@ -107,53 +141,154 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
                   dt.Columns.Add(new DataColumn("ProductName"));
                   dt.Columns.Add(new DataColumn("ItemCode"));
                   dt.Columns.Add(new DataColumn("Model"));
-                  dt.Columns.Add(new DataColumn("Rol (Stock Level)"));
-                  if (chkboxMRP.Checked == true)
+                  dt.Columns.Add(new DataColumn("Rol"));
+
+                  foreach (ListItem listItem1 in lstPricelist.Items)
                   {
-                      dt.Columns.Add(new DataColumn("MRP"));
-                      dt.Columns.Add(new DataColumn("MRPEffDate"));
+                      if (listItem1.Selected)
+                      {
+                          string item1 = listItem1.Value;
+
+                          dt.Columns.Add(new DataColumn(item1));
+                      }
                   }
-                  if (chkboxDP.Checked == true)
-                  {
-                      dt.Columns.Add(new DataColumn("DP"));
-                      dt.Columns.Add(new DataColumn("DPEffDate"));
-                  }
-                  if (chkboxNLC.Checked == true)
-                  {
-                      dt.Columns.Add(new DataColumn("NLC"));
-                      dt.Columns.Add(new DataColumn("NLCEffDate"));
-                  }
+
+                  //if (chkboxMRP.Checked == true)
+                  //{
+                  //    dt.Columns.Add(new DataColumn("MRP"));
+                  //    dt.Columns.Add(new DataColumn("MRPEffDate"));
+                  //}
+                  //if (chkboxDP.Checked == true)
+                  //{
+                  //    dt.Columns.Add(new DataColumn("DP"));
+                  //    dt.Columns.Add(new DataColumn("DPEffDate"));
+                  //}
+                  //if (chkboxNLC.Checked == true)
+                  //{
+                  //    dt.Columns.Add(new DataColumn("NLC"));
+                  //    dt.Columns.Add(new DataColumn("NLCEffDate"));
+                  //}
 
                   DataRow dr_final123 = dt.NewRow();
                   dt.Rows.Add(dr_final123);
 
+                  DataSet dst=new DataSet();
+
+                  string itemcode = "";
+
                   foreach (DataRow dr in ds.Tables[0].Rows)
                   {
-                      DataRow dr_final6 = dt.NewRow();
-                      dr_final6["Brand"] = dr["brand"];
-                      dr_final6["ProductName"] = dr["ProductName"];
-                      dr_final6["Model"] = dr["Model"];
-                      dr_final6["ItemCode"] = dr["Itemcode"];
+                      itemcode = Convert.ToString(dr["itemcode"]);
 
-                      dr_final6["Rol (Stock Level)"] = dr["Rol"];
-                  
-                      if (chkboxMRP.Checked == true)
-                      {
-                          dr_final6["MRP"] = dr["Rate"];
-                          dr_final6["MRPEffDate"] = dr["MRPEffDate"];
-                      }
-                      if (chkboxDP.Checked == true)
-                      {
-                          dr_final6["DP"] = dr["DealerRate"];
-                          dr_final6["DPEffDate"] = dr["DPEffDate"];
-                      }
-                      if (chkboxNLC.Checked == true)
-                      {
-                          dr_final6["NLC"] = dr["NLC"];
-                          dr_final6["NLCEffDate"] = dr["NLCEffDate"];
-                      }
-                      dt.Rows.Add(dr_final6);
+                        dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode);
+
+
+                          DataRow dr_final6 = dt.NewRow();
+                          dr_final6["Brand"] = dr["brand"];
+                          dr_final6["ProductName"] = dr["ProductName"];
+                          dr_final6["Model"] = dr["Model"];
+                          dr_final6["ItemCode"] = dr["Itemcode"];
+
+                          dr_final6["Rol"] = dr["Rol"];
+
+                          if (dst != null)
+                          {
+                              if (dst.Tables[0].Rows.Count > 0)
+                              {
+                                  foreach (DataRow drt in dst.Tables[0].Rows)
+                                  {
+                                      foreach (ListItem listItem1 in lstPricelist.Items)
+                                      {
+                                          if (listItem1.Selected)
+                                          {
+                                              string item1 = listItem1.Value;
+                                              string item123 = Convert.ToString(drt["pricename"]);
+
+                                              if (item123 == item1)
+                                              {
+                                                  dr_final6[item1] = drt["price"];
+                                              }
+                                              
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+
+                          //if (chkboxMRP.Checked == true)
+                          //{
+                          //    dr_final6["MRP"] = dr["Rate"];
+                          //    dr_final6["MRPEffDate"] = dr["MRPEffDate"];
+                          //}
+                          //if (chkboxDP.Checked == true)
+                          //{
+                          //    dr_final6["DP"] = dr["DealerRate"];
+                          //    dr_final6["DPEffDate"] = dr["DPEffDate"];
+                          //}
+                          //if (chkboxNLC.Checked == true)
+                          //{
+                          //    dr_final6["NLC"] = dr["NLC"];
+                          //    dr_final6["NLCEffDate"] = dr["NLCEffDate"];
+                          //}
+                          dt.Rows.Add(dr_final6);
+                    
                   }
+
+                  //DataSet dst = new DataSet();
+                  //dst.Tables.Add(dt);
+
+                  //DataTable dtt = new DataTable();
+                  //dtt.Columns.Add(new DataColumn("Brand"));
+                  //dtt.Columns.Add(new DataColumn("ProductName"));
+                  //dtt.Columns.Add(new DataColumn("ItemCode"));
+                  //dtt.Columns.Add(new DataColumn("Model"));
+                  //dtt.Columns.Add(new DataColumn("Rol"));
+
+                  //foreach (ListItem listItem1 in lstPricelist.Items)
+                  //{
+                  //    if (listItem1.Selected)
+                  //    {
+                  //        string item1 = listItem1.Value;
+
+                  //        dtt.Columns.Add(new DataColumn(item1));
+                  //    }
+                  //}
+
+
+                  //for (int i = 0; i < dst.Tables[0].Rows.Count; i++)
+                  //{
+                  //    DataRow dr_final6 = dt.NewRow();
+                  //    dr_final6["Brand"] = dst.Tables[0].Rows[i]["brand"].ToString();
+                  //    dr_final6["ProductName"] = dst.Tables[0].Rows[i]["ProductName"].ToString();
+                  //    dr_final6["Model"] = dst.Tables[0].Rows[i]["Model"].ToString();
+                  //    dr_final6["ItemCode"] = dst.Tables[0].Rows[i]["Itemcode"].ToString();
+                  //    dr_final6["Rol"] = dst.Tables[0].Rows[i]["Rol"].ToString();
+
+                  //    if (itemcode == dst.Tables[0].Rows[i]["Itemcode"].ToString())
+                  //    {
+                  //        dst.Tables[0].Rows[i].BeginEdit();
+                  //        double val = (double.Parse(ds.Tables[0].Rows[i]["PendingAmount"].ToString()) - double.Parse(billAmount));
+                  //        dst.Tables[0].Rows[i]["PendingAmount"] = val;
+                  //        dst.Tables[0].Rows[i].EndEdit();
+
+                  //        if (val == 0.0)
+                  //            dst.Tables[0].Rows[i].Delete();
+                  //    }
+                  //    else
+                  //    {
+
+                  //    }
+
+                  //    itemcode = dst.Tables[0].Rows[i]["Itemcode"].ToString();
+                  //}
+                  //dst.Tables[0].AcceptChanges();
+
+                  //gvLedger.Visible = true;
+                  //DataSet dstt = new DataSet();
+                  //dstt.Tables.Add(dt);
+                  //gvLedger.DataSource = dstt;
+                  //gvLedger.DataBind();
+
                   ExportToExcel(dt);
              }
              else

@@ -24,7 +24,9 @@ public partial class StockAgeingReport : System.Web.UI.Page
     string fourthLevel = "";
 
     public string sDataSource = string.Empty;
-
+    string brncode;
+    string connection;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -82,12 +84,80 @@ public partial class StockAgeingReport : System.Web.UI.Page
                 fillDdl(ddlSecondLvl);
                 fillDdl(ddlThirdLvl);
                 fillDdl(ddlFourthLvl);
+
+                loadBranch();
+                loadPriceList();
+                brncode = Request.Cookies["Branch"].Value;
+
+                for (int i = 0; i <= lstBranch.Items.Count; i++)
+                {
+                    lstBranch.SelectedValue = Convert.ToString(brncode);
+                }
+
+                BranchEnable_Disable();
+
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstBranch.Items.Clear();
+        // lstBranch.Items.Add(new ListItem("All", "0"));
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+    }
+
+
+    private void loadPriceList()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstPricelist.Items.Clear();
+        lstPricelist.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListPriceList(connection);
+        lstPricelist.DataSource = ds;
+        lstPricelist.DataTextField = "PriceName";
+        lstPricelist.DataValueField = "PriceName";
+        lstPricelist.DataBind();
     }
 
     protected void loadProducts()
@@ -214,7 +284,15 @@ public partial class StockAgeingReport : System.Web.UI.Page
             string Product = cmbProduct.SelectedValue;
             string Productname = cmbProduct.SelectedItem.Text;
             int productindex = cmbProduct.SelectedIndex;
-            Response.Write("<script language='javascript'> window.open('StockAgeingReport1.aspx?Modelval=" + Modelval + "&Brandval=" + Brandval + "&Productname=" + Productname + "&Categoryval=" + Categoryval + "&productindex=" + productindex + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+            if (lstBranch.SelectedIndex == -1)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);              
+            }
+            else
+            {
+                Response.Write("<script language='javascript'> window.open('StockAgeingReport1.aspx?Modelval=" + Modelval + "&Brandval=" + Brandval + "&Productname=" + Productname + "&Categoryval=" + Categoryval + "&productindex=" + productindex + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            }
         }
         catch (Exception ex)
         {

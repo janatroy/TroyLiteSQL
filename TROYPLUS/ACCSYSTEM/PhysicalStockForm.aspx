@@ -18,38 +18,63 @@
                                 </td>
                             </tr>
                         </table>
-                        <br />
+                        <%--<br />--%>
 
 
                         <table style="width: 100%; border: 1px solid #86b2d1; margin: -3px 0px 0px 2px;" align="center" cellpadding="3" cellspacing="5">
                             <tr>
-                                <td colspan="2" class="subHeadFont2">Stock Reconciliation Form
+                                <td colspan="4" class="subHeadFont2">Stock Reconciliation Form
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="left">
+                                <td style="width: 30%;">
 
-                                    <asp:TextBox ID="txtDate" runat="server" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10" BackColor="#90c9fc" Style="border: 1px solid blue" />
+                                    </td>
+                                <td style="width: 25%;">
+                                    <asp:DropDownList ID="drpBranchAdd" Width="100%" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" AutoPostBack="true" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                </td>
+                                <td style="width: 25%;">
+
+                                    <asp:TextBox ID="txtDate" runat="server" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" />
                                     <%--<script type="text/javascript" language="JavaScript">                    new tcal({ 'formname': 'aspnetForm', 'controlname': GettxtBoxName('txtDate') });</script>
                                     &nbsp;--%>
                                     <ajX:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True"
                                         Format="dd/MM/yyyy"
                                         PopupButtonID="ImageButton2" TargetControlID="txtDate">
                                     </ajX:CalendarExtender>
+                                    
+
+                                    
+                                </td>
+                                <td align="left" style="width: 35%;">
                                     <asp:ImageButton ID="ImageButton2" runat="server" CausesValidation="False"
                                         ImageUrl="App_Themes/NewTheme/images/cal.gif"
                                         Width="20px" />
+                                    </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
 
+                                    </td>
+                                <td >
                                     <asp:Button ID="cmdShow" runat="server" ValidationGroup="salesval" CssClass="Button"
                                         Width="150px" Text="Show Entered Stock" OnClick="cmdShow_Click" />
-                                    &nbsp;<asp:Button ID="cmdSave" runat="server" ValidationGroup="salesval" CssClass="Button"
+                                   
+                                </td>
+                                <td align="left">
+                                     &nbsp;<asp:Button ID="cmdSave" runat="server" ValidationGroup="salesval" CssClass="Button"
                                         Width="150px" Text="Save Closing Stock" OnClick="cmdSave_Click" />
                                     &nbsp;<asp:Button ID="cmdOpen" runat="server" ValidationGroup="salesval" CssClass="Button"
                                         Width="150px" Text="Show Op.Stock" Visible="false" OnClick="cmdOpen_Click" />
-                                </td>
+                                    </td>
+                                <td align="left">
+
+                                    </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="center" class="lblFont">
+                                <td colspan="4" align="center" class="lblFont">
                                     <asp:RequiredFieldValidator ID="rq" runat="server" ErrorMessage="Date is Required"
                                         Display="Dynamic" ValidationGroup="salesval" ControlToValidate="txtDate"></asp:RequiredFieldValidator>
                                     <asp:HiddenField ID="hiddenCurrentDate" Value="<%= DateTime.Now %>" runat="server" />
@@ -60,8 +85,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">
-
+                                <td colspan="4">
+                                    <div id="div" runat="server" style="height: 300px; overflow: scroll">
 
                                     <asp:Button runat="server" ID="SaveButton" Text="Save Data" SkinID="skinButtonBig"
                                         Visible="false" />
@@ -99,7 +124,7 @@
                                         </Columns>
                                     </rwg:BulkEditGridView>
                                     <asp:SqlDataSource ID="datasrc" runat="server" ProviderName="System.Data.SqlClient" UpdateCommand="INSERT INTO [ClosingStock] ([ItemCode], [ClosingDate], [Stock]) VALUES (@Itemcode, @ClosingDate, @Stock)" />
-
+                                        </div>
                                 </td>
                             </tr>
                         </table>

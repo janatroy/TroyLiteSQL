@@ -3385,7 +3385,7 @@ namespace ReportsBL
             return ds;
         }
 
-        public DataSet getBranch(string sDataSource)
+        public DataSet getBranch(string sDataSource, string cond)
         {
             SqlConnection oleConn;
             SqlCommand oleCmd;
@@ -3399,7 +3399,7 @@ namespace ReportsBL
             oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT Branchcode,BranchName FROM tblBranch";
+            sQry = "SELECT Branchcode,BranchName FROM tblBranch where " + cond;
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new SqlDataAdapter(oleCmd);
@@ -4237,7 +4237,7 @@ namespace ReportsBL
                //ds.Tables[0].Rows.Add(dr);
                return dt;
            }
-           public DataSet verifyStock(string sDataSource,DateTime sDate)
+           public DataSet verifyStock(string sDataSource,DateTime sDate,string branchcode)
            {
                DataTable dtNew = new DataTable();
                DataSet ds = new DataSet();
@@ -4265,10 +4265,10 @@ namespace ReportsBL
                            {
                                itemCode = dr["itemCode"].ToString().Replace("&quot;", "\"");
                                itemName = dr["Product"].ToString();
-                               purchaseQty = getStockPurchase(sDataSource, itemCode, sDate);
-                               salesQty = getStockSales(sDataSource, itemCode, sDate);
-                               openingStock = getOpeningStock(sDataSource, itemCode);
-                               physicalStock = getPhysicalStock(sDataSource, itemCode, sDate);
+                               purchaseQty = getStockPurchase(sDataSource, itemCode, sDate, branchcode);
+                               salesQty = getStockSales(sDataSource, itemCode, sDate, branchcode);
+                               openingStock = getOpeningStock(sDataSource, itemCode, branchcode);
+                               physicalStock = getPhysicalStock(sDataSource, itemCode, sDate, branchcode);
                                ActualStock = openingStock + (purchaseQty - salesQty);
                                //if (ActualStock != physicalStock)
                                //{
@@ -4299,11 +4299,11 @@ namespace ReportsBL
                    return null;
                }
            }
-           public double getPhysicalStock(string sDataSource, string itemCode, DateTime sDate)
+           public double getPhysicalStock(string sDataSource, string itemCode, DateTime sDate,string BranchCode)
            {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
+               SqlConnection oleConn;
+               SqlCommand oleCmd;
+               SqlDataAdapter oleAdp;
 
                string sQry = string.Empty;
                string sConStr = string.Empty;
@@ -4312,12 +4312,12 @@ namespace ReportsBL
                /* Start Ms Access Database Connection Information */
                sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
                //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+               oleConn = new SqlConnection(CreateConnectionString(sConStr));
                oleConn.Open();
-               oleCmd = new OleDbCommand();
+               oleCmd = new SqlCommand();
                oleCmd.Connection = oleConn;
                /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT Stock FROM ClosingStock Where ClosingStock.Itemcode='" + itemCode + "' AND ClosingStock.ClosingDate =#" + sDate.ToString("MM/dd/yyyy") + "#";
+               sQry = "SELECT Stock FROM ClosingStock Where ClosingStock.Itemcode='" + itemCode + "'AND " + BranchCode + " AND ClosingStock.ClosingDate ='" + sDate.ToString("yyyy-MM-dd") + "'";
 
 
                oleCmd.CommandText = sQry;
@@ -4365,9 +4365,9 @@ namespace ReportsBL
           
            public DataSet getProductStock(string sDataSource)
            {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
+               SqlConnection oleConn;
+               SqlCommand oleCmd;
+               SqlDataAdapter oleAdp;
                DataSet dsParentQry;
                string sQry = string.Empty;
                string sConStr = string.Empty;
@@ -4376,9 +4376,9 @@ namespace ReportsBL
                /* Start Ms Access Database Connection Information */
                sConStr = sDataSource; // "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
                //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+               oleConn = new SqlConnection(CreateConnectionString(sConStr));
                oleConn.Open();
-               oleCmd = new OleDbCommand();
+               oleCmd = new SqlCommand();
                oleCmd.Connection = oleConn;
                /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
                //sQry = "SELECT ItemCode + ' - ' + ProductDesc As ProductCode,itemcode,ProductName + '-' + Stock As ProductName FROM tblProductMaster";
@@ -4386,7 +4386,7 @@ namespace ReportsBL
                sQry = "SELECT itemCode,ProductName+ ' - ' + Model + ' - ' + ProductDesc As Product  FROM tblProductMaster";
                oleCmd.CommandText = sQry;
                oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
+               oleAdp = new SqlDataAdapter(oleCmd);
                dsParentQry = new DataSet();
                oleAdp.Fill(dsParentQry);
                oleConn.Close();
@@ -4473,11 +4473,11 @@ namespace ReportsBL
                return qty;
            }
 
-           public double getStockPurchase(string sDataSource, string itemCode, DateTime sDate)
+           public double getStockPurchase(string sDataSource, string itemCode, DateTime sDate,string BranchCode)
            {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
+               SqlConnection oleConn;
+               SqlCommand oleCmd;
+               SqlDataAdapter oleAdp;
             
                string sQry = string.Empty;
                string sConStr = string.Empty;
@@ -4486,14 +4486,16 @@ namespace ReportsBL
                /* Start Ms Access Database Connection Information */
                sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
                //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+               oleConn = new SqlConnection(CreateConnectionString(sConStr));
 
 
-               oleCmd = new OleDbCommand();
+               oleCmd = new SqlCommand();
                oleConn.Open();
                oleCmd.Connection = oleConn;
                /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT Sum(Qty) As PurchaseQty FROM tblPurchase,tblPurchaseItems Where tblPurchase.PurchaseID=tblPurchaseitems.PurchaseID AND tblPurchaseItems.Itemcode='" + itemCode + "' AND tblPurchase.BillDate <=#"+ sDate.ToString("MM/dd/yyyy") + "#  Group By tblPurchaseItems.itemcode";
+               //sQry = "SELECT Sum(Qty) As PurchaseQty FROM tblPurchase,tblPurchaseItems Where tblPurchase.PurchaseID=tblPurchaseitems.PurchaseID AND tblPurchaseItems.Itemcode='" + itemCode + "' AND tblPurchase.BillDate <='"+ sDate.ToString("yyyy-MM-dd") + "'  Group By tblPurchaseItems.itemcode";
+               sQry = " SELECT Sum(Qty) As PurchaseQty FROM tblPurchase,tblPurchaseItems Where tblPurchase.PurchaseID=tblPurchaseitems.PurchaseID AND " + BranchCode + " AND " +
+                      " tblPurchaseItems.Itemcode='" + itemCode + "' AND tblPurchase.BillDate <='" + sDate.ToString("yyyy-MM-dd") + "'  Group By tblPurchaseItems.itemcode";
 
 
                oleCmd.CommandText = sQry;
@@ -4510,11 +4512,11 @@ namespace ReportsBL
                 oleConn.Close();
                return qty;
            }
-           public double getStockSales(string sDataSource, string itemCode, DateTime sDate)
+           public double getStockSales(string sDataSource, string itemCode, DateTime sDate,string BranchCode)
            {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
+               SqlConnection oleConn;
+               SqlCommand oleCmd;
+               SqlDataAdapter oleAdp;
              
                string sQry = string.Empty;
                string sConStr = string.Empty;
@@ -4523,12 +4525,14 @@ namespace ReportsBL
                /* Start Ms Access Database Connection Information */
                sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
                //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
+               oleConn = new SqlConnection(CreateConnectionString(sConStr));
+               oleCmd = new SqlCommand();
                oleConn.Open();
                oleCmd.Connection = oleConn;
                /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT Sum(Qty) As SalesQty FROM tblSales,tblSalesItems Where tblSales.Cancelled=false AND tblSales.Billno=tblSalesitems.Billno AND tblSalesItems.Itemcode='" + itemCode +"' AND tblSales.BillDate <=#" + sDate.ToString("MM/dd/yyyy")   + "#  Group By tblSalesitems.itemcode";
+               //sQry = "SELECT Sum(Qty) As SalesQty FROM tblSales,tblSalesItems Where tblSales.Cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND tblSalesItems.Itemcode='" + itemCode +"' AND tblSales.BillDate <='" + sDate.ToString("yyyy-MM-dd")   + "'  Group By tblSalesitems.itemcode";
+               sQry = " SELECT Sum(Qty) As SalesQty FROM tblSales,tblSalesItems Where tblSales.Cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND tblSales." + BranchCode + "AND " +
+                      " tblSalesItems.Itemcode='" + itemCode + "' AND tblSales.BillDate <='" + sDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesitems.itemcode";
 
 
                oleCmd.CommandText = sQry;
@@ -4616,11 +4620,11 @@ namespace ReportsBL
                oleConn.Close();
                return cnt;
            }  
-           public double getOpeningStock(string sDataSource,string itemCode)
+           public double getOpeningStock(string sDataSource,string itemCode,string BranchCode)
            {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
+               SqlConnection oleConn;
+               SqlCommand oleCmd;
+               SqlDataAdapter oleAdp;
                DataSet dsParentQry;
                string sQry = string.Empty;
                string sConStr = string.Empty;
@@ -4629,13 +4633,13 @@ namespace ReportsBL
                /* Start Ms Access Database Connection Information */
                sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
                //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+               oleConn = new SqlConnection(CreateConnectionString(sConStr));
                oleConn.Open();
-               oleCmd = new OleDbCommand();
+               oleCmd = new SqlCommand();
                oleCmd.Connection = oleConn;
                /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "'";
-
+               //sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "'";
+               sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "' AND " + BranchCode;
 
                oleCmd.CommandText = sQry;
                oleCmd.CommandType = CommandType.Text;
@@ -6723,9 +6727,9 @@ namespace ReportsBL
 
         public DataSet GetSalesData(string sDataSource, string itemCode)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry; string sQry = string.Empty;
             string sConStr = string.Empty;
 
@@ -6734,18 +6738,32 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
 
-            if(itemCode != "0")
-                sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblSales P Inner Join tblSalesItems PI On P.BillNo = PI.BillNo) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Where PI.ItemCode='" + itemCode + "'  Group By PI.ItemCode,P.BillDate,M.ProductName";
+            if (itemCode != "0")
+                //sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblSales P Inner Join tblSalesItems PI On P.BillNo = PI.BillNo) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Where PI.ItemCode='" + itemCode + "'  Group By PI.ItemCode,P.BillDate,M.ProductName";
+                sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
+                   " FROM  tblSales INNER JOIN " +
+                   " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
+                   " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
+                   " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
+                   " where tblSalesItems.ItemCode='" + itemCode + "'" +
+                   " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
             else
-                sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblSales P Inner Join tblSalesItems PI On P.BillNo = PI.BillNo) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Group By PI.ItemCode,P.BillDate,M.ProductName";
+                // sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblSales P Inner Join tblSalesItems PI On P.BillNo = PI.BillNo) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Group By PI.ItemCode,P.BillDate,M.ProductName";
+                sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
+                     " FROM  tblSales INNER JOIN " +
+                     " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
+                     " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
+                     " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
+                     " where tblSalesItems.BranchCode='KKN' " +
+                     " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             return dsParentQry;
