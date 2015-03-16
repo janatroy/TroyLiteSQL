@@ -685,35 +685,14 @@ public partial class DBYearEnd : System.Web.UI.Page
                         command.CommandText = string.Format("INSERT INTO tblYearEndLedger select * from tblLedger where openbalancedr > 0 or openbalancecr > 0");
                         command.ExecuteNonQuery();
 
-                        int iGroupID = 0;
-                        string sXmlNodeName = "Outstanding";
-                        string sLedger = string.Empty;
-                        double obD = 0;
-                        double obC = 0;
-
-                        //string connection = Request.Cookies["Company"].Value;
-
-                        DataSet dsdata = bl.GetYearEndOutStandingReport(sDataSource, "", "");
-                        if (dsdata != null)
-                        {
-                            if (dsdata.Tables[0].Rows.Count > 0)
-                            {
-                                foreach (DataRow dr in dsdata.Tables[0].Rows)
-                                {
-                                    obD = Convert.ToDouble(dr["Debit"]);
-                                    obC = Convert.ToDouble(dr["Credit"]);
-                                    sLedger = dr["LedgerName"].ToString();
-                                    command.CommandText = string.Format("Update tblLedger SET Debit={0},Credit={1},OpenBalanceDr={2},OpenBalanceCr={3},opDueDate='{4}' Where LedgerName = '{5}'", 0, 0, obD, obC, indianStd.ToString("yyyy-MM-dd"), sLedger);
-                                    command.ExecuteNonQuery();
-
-                                }
-                            }
-                        }
+                        
 
                         transaction.Commit();
                         con.Close();
 
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + drpYear.SelectedValue + " year is closed Successfully.');", true);
+                        opbalupd_Click(sender, e);
+
+                        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + drpYear.SelectedValue + " year is closed Successfully.');", true);
 
                     }
                     catch (Exception ex)
@@ -1414,25 +1393,28 @@ public partial class DBYearEnd : System.Web.UI.Page
             string a = string.Empty;
             string b = string.Empty;
             string path = string.Empty;
-            DBname = GetCurrentDBName(sDataSource);//ConfigurationSettings.AppSettings["DBName"].ToString();
+            //DBname = GetCurrentDBName(sDataSource);//ConfigurationSettings.AppSettings["DBName"].ToString();
 
-            int val = 0;
-            for (int i = 0; i < DBname.Length; i++)
-            {
-                if (Char.IsDigit(DBname[i]))
-                    b += DBname[i];
-                else
-                    a += DBname[i];
-            }
-            if (b.Length > 0)
-            {
-                val = int.Parse(b);
-            }
+            //int val = 0;
+            //for (int i = 0; i < DBname.Length; i++)
+            //{
+            //    if (Char.IsDigit(DBname[i]))
+            //        b += DBname[i];
+            //    else
+            //        a += DBname[i];
+            //}
+            //if (b.Length > 0)
+            //{
+            //    val = int.Parse(b);
+            //}
 
-            //path = Server.MapPath("App_Data\\" + DBname + ".mdb");
-            string nowdate = "31/03/" + val;
+            ////path = Server.MapPath("App_Data\\" + DBname + ".mdb");
+            //string nowdate = "31/03/" + val;
 
-            using (SqlConnection con = new SqlConnection())
+            BusinessLogic objChk = new BusinessLogic();
+            DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
+
+            using (SqlConnection con = new SqlConnection(objChk.CreateConnectionString(sDataSource)))
             {
                 SqlCommand command = new SqlCommand();
                 SqlTransaction transaction = null;
@@ -1447,13 +1429,17 @@ public partial class DBYearEnd : System.Web.UI.Page
 
                 command.Connection = con;
                 command.Transaction = transaction;
+
+
                 int iGroupID = 0;
                 string sXmlNodeName = "Outstanding";
                 string sLedger = string.Empty;
                 double obD = 0;
                 double obC = 0;
 
-                DataSet dsdata = bl.YearEndOutStandingReport(iGroupID, sXmlNodeName, sDataSource, sXmlPath);
+                //string connection = Request.Cookies["Company"].Value;
+
+                DataSet dsdata = bl.GetYearEndOutStandingReport(sDataSource, "", "");
                 if (dsdata != null)
                 {
                     if (dsdata.Tables[0].Rows.Count > 0)
@@ -1463,19 +1449,44 @@ public partial class DBYearEnd : System.Web.UI.Page
                             obD = Convert.ToDouble(dr["Debit"]);
                             obC = Convert.ToDouble(dr["Credit"]);
                             sLedger = dr["LedgerName"].ToString();
-                            command.CommandText = string.Format("Update tblLedger SET Debit={0},Credit={1},OpenBalanceDr={2},OpenBalanceCr={3},OpDueDate='{4}' Where LedgerName = '{5}'", 0, 0, obD, obC, DateTime.Now.ToString("yyyy-MM-dd"), sLedger);
+                            command.CommandText = string.Format("Update tblLedger SET Debit={0},Credit={1},OpenBalanceDr={2},OpenBalanceCr={3},opDueDate='{4}' Where LedgerName = '{5}'", 0, 0, obD, obC, indianStd.ToString("yyyy-MM-dd"), sLedger);
                             command.ExecuteNonQuery();
 
-                            command.CommandText = string.Format("INSERT INTO tblYearEndLedger select * from tblLedger");
-                            command.ExecuteNonQuery();
                         }
                     }
                 }
 
+
+
+                //int iGroupID = 0;
+                //string sXmlNodeName = "Outstanding";
+                //string sLedger = string.Empty;
+                //double obD = 0;
+                //double obC = 0;
+
+                //DataSet dsdata = bl.YearEndOutStandingReport(iGroupID, sXmlNodeName, sDataSource, sXmlPath);
+                //if (dsdata != null)
+                //{
+                //    if (dsdata.Tables[0].Rows.Count > 0)
+                //    {
+                //        foreach (DataRow dr in dsdata.Tables[0].Rows)
+                //        {
+                //            obD = Convert.ToDouble(dr["Debit"]);
+                //            obC = Convert.ToDouble(dr["Credit"]);
+                //            sLedger = dr["LedgerName"].ToString();
+                //            command.CommandText = string.Format("Update tblLedger SET Debit={0},Credit={1},OpenBalanceDr={2},OpenBalanceCr={3},OpDueDate='{4}' Where LedgerName = '{5}'", 0, 0, obD, obC, DateTime.Now.ToString("yyyy-MM-dd"), sLedger);
+                //            command.ExecuteNonQuery();
+
+                //            command.CommandText = string.Format("INSERT INTO tblYearEndLedger select * from tblLedger");
+                //            command.ExecuteNonQuery();
+                //        }
+                //    }
+                //}
+
                 transaction.Commit();
                 con.Close();
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Opening Balance are updated.');", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + drpYear.SelectedItem.Text + " year is closed Successfully.');", true);
             }
         }
         catch (Exception ex)

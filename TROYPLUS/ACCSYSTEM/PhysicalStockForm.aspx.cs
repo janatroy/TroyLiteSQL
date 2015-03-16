@@ -32,6 +32,9 @@ public partial class PhysicalStockForm : System.Web.UI.Page
                 string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
                 txtDate.Text = dtaa;
 
+                loadBranch();
+                BranchEnable_Disable();
+
                 BindGrid();
                 hiddenDate.Value = Convert.ToDateTime(txtDate.Text).ToString("MM/dd/yyyy");
 
@@ -47,7 +50,9 @@ public partial class PhysicalStockForm : System.Web.UI.Page
                     cmdSave.Enabled = false;
                 }
 
-                var checkIfExists = objChk.GetClosingStock(txtDate.Text);
+                string Branch = drpBranchAdd.SelectedValue;
+
+                var checkIfExists = objChk.GetClosingStock(txtDate.Text, Branch);
 
                 if (checkIfExists == null || (checkIfExists != null && checkIfExists.Tables[0].Rows.Count == 0))
                 {
@@ -67,6 +72,48 @@ public partial class PhysicalStockForm : System.Web.UI.Page
         }
     }
 
+    protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindGrid();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranchAdd.Enabled = true;
+        }
+        else
+        {
+            drpBranchAdd.Enabled = false;
+        }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
+    }
 
     private void BindGrid()
     {
@@ -77,7 +124,8 @@ public partial class PhysicalStockForm : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         string sDate = string.Empty;
         sDate = txtDate.Text.Trim();
-        ds = bl.GetStockItems(sDate);
+        string Branch = drpBranchAdd.SelectedValue;
+        ds = bl.GetStockItem(sDate, Branch);
 
         if (ds == null || ds.Tables[0].Rows.Count == 0)
         {
@@ -88,7 +136,7 @@ public partial class PhysicalStockForm : System.Web.UI.Page
         {
             err.Visible = false;
 
-            var checkIfExists = bl.GetClosingStock(txtDate.Text);
+            var checkIfExists = bl.GetClosingStock(txtDate.Text, Branch);
 
             if (checkIfExists == null || (checkIfExists != null && checkIfExists.Tables[0].Rows.Count == 0))
             {
@@ -167,9 +215,10 @@ public partial class PhysicalStockForm : System.Web.UI.Page
                 string itemCode = string.Empty;
                 string closingDate = string.Empty;
 
+                string Branch = drpBranchAdd.SelectedValue;
 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-                bl.DeleteClosingStock(txtDate.Text);
+                bl.DeleteClosingStock(txtDate.Text, Branch);
                 if (EditableGrid.Rows.Count > 0)
                 {
 
@@ -186,7 +235,7 @@ public partial class PhysicalStockForm : System.Web.UI.Page
                         closingDate = txtDate.Text;
                         if (txtStock.Text.Trim() != "")
                         {
-                            bl.InsertClosingStock(@itemCode, closingDate, Convert.ToDouble(txtStock.Text));
+                            bl.InsertClosingStock(@itemCode, closingDate, Convert.ToDouble(txtStock.Text),Branch);
                         }
                         else
                         {

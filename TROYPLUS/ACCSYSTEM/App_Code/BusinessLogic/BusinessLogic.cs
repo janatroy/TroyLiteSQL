@@ -18613,29 +18613,32 @@ public class BusinessLogic
     //SELECT itemCode,ProductName,Model,ProductDesc,Stock FROM tblProductmaster;
     //SELECT itemCode,ClosingDate,Stock FROM ClosingStock;
 
-    public DataSet GetStockItems(string sDate)
+    public DataSet GetStockItem(string sDate, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         DataSet ds = new DataSet();
         if (sDate != "")
-            dbQry = "SELECT tblProductMaster.itemCode,ClosingStock.ClosingDate,ClosingStock.Stock,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblProductMaster.Model FROM ClosingStock,tblProductMaster WHERE tblProductMaster.itemcode=ClosingStock.itemcode AND ClosingDate='" + Convert.ToDateTime(sDate).ToString("MM/dd/yyyy").Trim() + "'  ORDER BY tblProductMaster.itemcode";
+            //dbQry = "SELECT tblProductMaster.itemCode,ClosingStock.ClosingDate,ClosingStock.Stock,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblProductMaster.Model FROM ClosingStock,tblProductMaster WHERE tblProductMaster.itemcode=ClosingStock.itemcode AND ClosingDate='" + Convert.ToDateTime(sDate).ToString("MM/dd/yyyy").Trim() + "'  ORDER BY tblProductMaster.itemcode";
+            //dbQry = "SELECT tblProductStock.itemCode,ClosingStock.ClosingDate,ClosingStock.Stock,tblProductStock.ProductName,tblProductStock.ProductDesc,tblProductStock.Model FROM ClosingStock,tblProductStock WHERE tblProductStock.itemcode=ClosingStock.itemcode AND ClosingStock.Branchcode='" + Branch + "' and ClosingDate='" + Convert.ToDateTime(sDate).ToString("yyyy-MM-dd").Trim() + "'  ORDER BY tblProductStock.itemcode";
+            dbQry = "SELECT ClosingStock.itemCode, ClosingStock.BranchCode, ClosingStock.ClosingDate, ClosingStock.Stock, tblProductStock.CategoryID,tblProductStock.Model,tblProductStock.ProductName,tblProductStock.ProductDesc FROM ClosingStock INNER JOIN tblProductStock ON ClosingStock.itemCode = tblProductStock.ItemCode AND ClosingStock.BranchCode = tblProductStock.BranchCode WHERE ClosingStock.Branchcode='" + Branch + "' and ClosingDate='" + Convert.ToDateTime(sDate).ToString("yyyy-MM-dd").Trim() + "' ";
         else
             //dbQry = "SELECT tblProductMaster.itemCode,ClosingStock.ClosingDate,ClosingStock.Stock,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblProductMaster.Model FROM ClosingStock,tblProductMaster WHERE tblProductMaster.itemcode=ClosingStock.itemcode   ORDER BY tblProductMaster.CATEGORYID,tblProductMaster.itemcode";
-            dbQry = "SELECT itemCode,ProductName,Model,ProductDesc,Stock FROM tblProductmaster ORDER BY CategoryID,itemcode ";
+            //dbQry = "SELECT itemCode,ProductName,Model,ProductDesc,Stock FROM tblProductmaster ORDER BY CategoryID,itemcode ";
+            dbQry = "SELECT itemCode,ProductName,Model,ProductDesc,Stock FROM tblProductStock where Branchcode='" + Branch + "' ORDER BY CategoryID,itemcode ";
         try
         {
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
-            if (ds.Tables[0].Rows.Count > 0 || DateTime.Now.ToString("MM/dd/yyyy") != Convert.ToDateTime(sDate).ToString("MM/dd/yyyy"))
+            if (ds.Tables[0].Rows.Count > 0 || DateTime.Now.ToString("yyyy-MM-dd") != Convert.ToDateTime(sDate).ToString("yyyy-MM-dd"))
             {
                 return ds;
             }
             else
             {
-                dbQry = "SELECT itemCode,ProductName,Model,ProductDesc,Stock FROM tblProductmaster ORDER BY CategoryID,itemcode ";
+                dbQry = "SELECT itemCode,ProductName,Model,ProductDesc,Stock FROM tblProductStock where Branchcode='" + Branch + "' ORDER BY CategoryID,itemcode ";
                 ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
@@ -18730,14 +18733,14 @@ public class BusinessLogic
         }
     }
 
-    public DataSet GetClosingStock(string sDate)
+    public DataSet GetClosingStock(string sDate, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "SELECT tblProductMaster.itemCode,ClosingStock.ClosingDate,ClosingStock.Stock,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblProductMaster.Model FROM ClosingStock,tblProductMaster WHERE tblProductMaster.itemcode=ClosingStock.itemcode AND ClosingDate='" + Convert.ToDateTime(sDate).ToString("MM/dd/yyyy").Trim() + "'  ORDER BY tblProductMaster.CATEGORYID,tblProductMaster.itemcode";
+        dbQry = "SELECT tblProductStock.itemCode,ClosingStock.ClosingDate,ClosingStock.Stock,tblProductStock.ProductName,tblProductStock.ProductDesc,tblProductStock.Model FROM ClosingStock,tblProductStock WHERE tblProductStock.itemcode=ClosingStock.itemcode AND ClosingDate='" + Convert.ToDateTime(sDate).ToString("MM/dd/yyyy").Trim() + "' and tblProductStock.Branchcode ='" + Branch + "'  ORDER BY tblProductStock.CATEGORYID,tblProductStock.itemcode";
 
         try
         {
@@ -18756,7 +18759,7 @@ public class BusinessLogic
 
     }
 
-    public void InsertClosingStock(string itemCode, string cDate, double stock)
+    public void InsertClosingStock(string itemCode, string cDate, double stock, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -18769,8 +18772,8 @@ public class BusinessLogic
             manager.ProviderType = DataProvider.SqlServer;
             manager.BeginTransaction();
 
-            dbQry = string.Format("INSERT INTO ClosingStock(itemcode,ClosingDate,Stock) VALUES('{0}','{1}',{2})",
-            itemCode, DateTime.Parse(cDate).ToString("yyyy-MM-dd"), stock);
+            dbQry = string.Format("INSERT INTO ClosingStock(itemcode,ClosingDate,Stock,Branchcode) VALUES('{0}','{1}',{2},'{3}')",
+            itemCode, DateTime.Parse(cDate).ToString("yyyy-MM-dd"), stock, Branch);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
             manager.CommitTransaction();
         }
@@ -18785,7 +18788,7 @@ public class BusinessLogic
         }
     }
 
-    public void DeleteClosingStock(string cDate)
+    public void DeleteClosingStock(string cDate, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
@@ -18796,7 +18799,7 @@ public class BusinessLogic
         manager.ProviderType = DataProvider.SqlServer;
         manager.BeginTransaction();
 
-        dbQry = string.Format("DELETE FROM ClosingStock WHERE ClosingDate='{0}'", DateTime.Parse(cDate).ToString("MM/dd/yyyy"));
+        dbQry = string.Format("DELETE FROM ClosingStock WHERE ClosingDate='{0}' and Branchcode ='{1}'", DateTime.Parse(cDate).ToString("yyyy-MM-dd"), Branch);
         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
         manager.CommitTransaction();
