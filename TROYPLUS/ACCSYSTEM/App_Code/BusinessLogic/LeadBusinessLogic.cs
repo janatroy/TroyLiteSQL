@@ -614,7 +614,7 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.BeginTransaction();
 
-            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TextValue='" + TextValue + "' And ID <> " + ID.ToString() + "");
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TypeName='" + TypeName + "' and TextValue='" + TextValue + "' And ID <> " + ID.ToString() + "");
 
             if (exists.ToString() != string.Empty)
             {
@@ -663,7 +663,7 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.BeginTransaction();
 
-            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TextValue='" + TextValue + "'");
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TypeName='"+ TypeName +"' and TextValue='" + TextValue + "'");
 
             if (exists.ToString() != string.Empty)
             {
@@ -719,7 +719,7 @@ public class LeadBusinessLogic : BaseLogic
 
 
 
-            sAuditStr = "Lead Management Lead No: " + ID + " Deleted. Record Details : User: " + username;
+            sAuditStr = "Lead Reference Lead No: " + ID + " Deleted. Record Details : User: " + username;
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -1476,6 +1476,106 @@ public class LeadBusinessLogic : BaseLogic
         {
             manager.Dispose();
         }
+    }
+
+
+
+    public bool CheckIfleadreferenceused(string Connection,string referencename,int id)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(Connection); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        int qty = 0;
+        string dbQry = string.Empty;
+        try
+        {
+            manager.Open();
+
+            if(referencename=="Business Type")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Businesstype=" + id;
+            }
+
+            else if (referencename == "Category")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Category=" + id;
+            }
+            else if (referencename == "Area")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Area=" + id;
+            }
+            else if (referencename == "Interest level")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where InterestLevel=" + id;
+            }
+            else if (referencename == "Additional Information 3")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Information3=" + id;
+            }
+            else if (referencename == "Additional Information 4")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Information4=" + id;
+            }
+            //if (referencename == "Business Type")
+            //{
+            //    dbQry = "SELECT Count(*) FROM tblLeadHeader where Businesstype=" + id;
+            //}
+
+
+
+                //Activity level
+
+
+            else if(referencename=="Additional Information 5")
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where Information5=" + id;
+            }
+            else if (referencename == "Additional Information 2")
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where Information2=" + id;
+            }
+            else if (referencename == "Mode of Contact")
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where ModeofContact=" + id;
+            }
+            //else if (referencename == "Activity Name")
+            //{
+            //    dbQry = "SELECT Count(*) FROM tblActivities where Activity_Name_Id=" + id;
+            //}
+            //else if (referencename == "Activity Name")
+            //{
+            //    dbQry = "SELECT Count(*) FROM tblActivities where Next_Activity_Id=" + id;
+            //}
+
+            else
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where Activity_Name_Id=" + id;
+            }
+
+            object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if (qtyObj != null && qtyObj != DBNull.Value)
+            {
+                qty = (int)qtyObj;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
     }
 
 

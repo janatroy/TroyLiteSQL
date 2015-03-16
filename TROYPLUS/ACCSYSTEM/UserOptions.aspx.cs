@@ -342,7 +342,11 @@ public partial class UserOptions : System.Web.UI.Page
             GridSECURITY.DataSource = dstdfdd;
             GridSECURITY.DataBind();
 
-            DataSet dstdfddmanu = bl.GetUserOptionsForId(username, connection, "PROJECT");
+            DataSet dstdfddlead = bl.GetUserOptionsForId(username, connection, "LEADMANAGEMENT");
+            GridLead.DataSource = dstdfddlead;
+            GridLead.DataBind();
+
+            DataSet dstdfddmanu = bl.GetUserOptionsForId(username, connection, "MANUFACTURE");
             GridMANUFACTURE.DataSource = dstdfddmanu;
             GridMANUFACTURE.DataBind();
 
@@ -530,7 +534,8 @@ public partial class UserOptions : System.Web.UI.Page
             DataSet dstttttdf = new DataSet();
             DataSet dstttttdff = new DataSet();
             DataSet dstttttdffpro = new DataSet();
-            DataSet dstttttdffmanu = new DataSet(); 
+            DataSet dstttttdffmanu = new DataSet();
+            DataSet dstttttdfflead = new DataSet();
 
             dst = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SUPPLIERS");
             GridSupplier.DataSource = dst;
@@ -571,6 +576,10 @@ public partial class UserOptions : System.Web.UI.Page
             dstttttdff = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SECURITY");
             GridSECURITY.DataSource = dstttttdff;
             GridSECURITY.DataBind();
+
+            dstttttdfflead = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "LEADMANAGEMENT");
+            GridLead.DataSource = dstttttdfflead;
+            GridLead.DataBind();
 
             dstttttdffmanu = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "MANUFACTURE");
             GridMANUFACTURE.DataSource = dstttttdffmanu;
@@ -1591,6 +1600,9 @@ public partial class UserOptions : System.Web.UI.Page
 
 
 
+
+
+
             for (int vLoop = 0; vLoop < GridMANUFACTURE.Rows.Count; vLoop++)
             {
                 CheckBox txt = (CheckBox)GridMANUFACTURE.Rows[vLoop].FindControl("chkboxAdd");
@@ -1649,6 +1661,75 @@ public partial class UserOptions : System.Web.UI.Page
                 drNew["Area"] = GridMANUFACTURE.Rows[vLoop].Cells[0].Text;
 
                 lblDebtorID = (Label)GridMANUFACTURE.Rows[vLoop].FindControl("lblDebtorID");
+                drNew["Orderno"] = lblDebtorID.Text;
+
+                drNew["Add"] = Add;
+                drNew["Edit"] = Edit;
+                drNew["Delete"] = Delete;
+                drNew["View"] = Views;
+                ds.Tables[0].Rows.Add(drNew);
+            }
+
+
+
+            for (int vLoop = 0; vLoop < GridLead.Rows.Count; vLoop++)
+            {
+                CheckBox txt = (CheckBox)GridLead.Rows[vLoop].FindControl("chkboxAdd");
+                if (txt.Checked)
+                {
+                    Add = txt.Checked;
+                }
+                else
+                {
+                    Add = false;
+                }
+
+                CheckBox txttt = (CheckBox)GridLead.Rows[vLoop].FindControl("chkboxEdit");
+                if (txttt.Checked)
+                {
+                    Edit = txttt.Checked;
+                }
+                else
+                {
+                    Edit = false;
+                }
+
+                CheckBox txth = (CheckBox)GridLead.Rows[vLoop].FindControl("chkboxDel");
+                if (txth.Checked)
+                {
+                    Delete = txth.Checked;
+                }
+                else
+                {
+                    Delete = false;
+                }
+
+                CheckBox txthh = (CheckBox)GridLead.Rows[vLoop].FindControl("chkboxView");
+                if (txthh.Checked)
+                {
+                    Views = txthh.Checked;
+                }
+                else
+                {
+                    Views = false;
+                }
+
+                if ((txt.Checked == true) || (txttt.Checked == true) || (txth.Checked == true) || (txthh.Checked == true))
+                {
+                    drNewt = dtt.NewRow();
+                    drNewt["UserName"] = txtUser.Text;
+                    drNewt["Role"] = GridLead.Rows[vLoop].Cells[3].Text;
+                    dsroles.Tables[0].Rows.Add(drNewt);
+                }
+
+                drNew = dt.NewRow();
+                drNew["UserName"] = txtUser.Text;
+                drNew["Role"] = GridLead.Rows[vLoop].Cells[3].Text;
+                drNew["RoleDesc"] = GridLead.Rows[vLoop].Cells[2].Text;
+                drNew["Section"] = GridLead.Rows[vLoop].Cells[1].Text;
+                drNew["Area"] = GridLead.Rows[vLoop].Cells[0].Text;
+
+                lblDebtorID = (Label)GridLead.Rows[vLoop].FindControl("lblDebtorID");
                 drNew["Orderno"] = lblDebtorID.Text;
 
                 drNew["Add"] = Add;

@@ -169,13 +169,20 @@
                                                                                             </asp:UpdatePanel>
                             </td>
                           
-                       <td style="width:25%"> </td>
-                           <td style="width:20%">
-                               </td>
-                         
-                          
-                             <td style="width:10%">
-                            </td>
+                       
+                            <td style="width: 15%" class="ControlLabelmanufacture1"> Select Branch
+                                                                                    </td>
+                                                                                     <td style="width: 21%;" class="ControlDrpBorder">
+                                                                                          <asp:UpdatePanel ID="UpdatePanel444" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                         <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                                                                         </asp:DropDownList>
+                                                                                                     </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                         </td>
+
+                            <td style="width:10%"> </td>
+                           
                             </tr>
                       
                         <tr>

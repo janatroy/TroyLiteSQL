@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/PageMaster.master" AutoEventWireup="true"
-    CodeFile="FormulaExecution.aspx.cs" Inherits="FormulaExecution" Title="Manufacture > Process Manufacturing" %>
+   CodeFile="FormulaExecution.aspx.cs" Inherits="FormulaExecution" Title="Manufacture > Process Manufacturing" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajX" %>
@@ -258,7 +258,7 @@
                                                     <Columns>
                                                          <asp:BoundField DataField="Row" HeaderText="#"  HeaderStyle-Font-Bold="true" HeaderStyle-Width="61px" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px" />
                                                         <asp:BoundField DataField="FormulaName" HeaderText="Name of the Product to be processed" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-HorizontalAlign="Left" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px"  />
-                                                        <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-HorizontalAlign="Left" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px"  />
+                                                       <%-- <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Font-Bold="true" HeaderStyle-Font-Size="15px" HeaderStyle-BackColor="#cccccc" ItemStyle-HorizontalAlign="Left" ItemStyle-ForeColor="#0567AE" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="13px" ItemStyle-Height="20px"  />--%>
                                                         <asp:CommandField ShowSelectButton="True" HeaderStyle-Width="8%" ItemStyle-BorderColor="White" ControlStyle-BorderColor="White"  FooterStyle-BorderWidth="0px" HeaderStyle-BorderWidth="0px" ItemStyle-BorderWidth="0px" ItemStyle-HorizontalAlign="Left" ButtonType="Image" ControlStyle-ForeColor="Black" SelectText=" Process " ControlStyle-Font-Size="14px" >
                                                             <ItemStyle  HorizontalAlign="Left" />
                                                             <ControlStyle></ControlStyle>
@@ -368,11 +368,15 @@
                                                                                  <tr style="height:3px">
                                                                                                     </tr>
                                                                                 <tr class="tblLeft">
-                                                                                    <td style="width: 15%" class="ControlLabelmanufacture1">Branch
+                                                                                    <td style="width: 15%" class="ControlLabelmanufacture1"> Branch
                                                                                     </td>
                                                                                      <td style="width: 21%;" class="ControlDrpBorder">
-                                                                                         <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" Enabled="false">
+                                                                                          <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                         <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True" OnSelectedIndexChanged="drpBranch_SelectedIndexChanged" AutoPostBack="true" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
                                                                                          </asp:DropDownList>
+                                                                                                     </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
                                                                                          </td>
                                                                                     <td style="width: 27%">
                                                                                     </td>
@@ -606,7 +610,7 @@
                                                             <asp:ImageButton ID="btnEditDisabled" ToolTip="you are not allow to Process this item" Enabled="false" runat="Server"></asp:ImageButton>
                                                             <asp:ImageButton ID="btnRelease" runat="server" SkinID="GridRelease" ToolTip="Click here to complete the processing."
                                                                 CommandName="Delete" />
-                                                            <asp:HiddenField ID="hdcompID" runat="server" Value='<%# Bind("CompID") %>' />
+                                                             <asp:HiddenField ID="hdcompID" runat="server" Value='<% #Bind("CompID") %>' />
                                                         </ItemTemplate>
                                                         <ItemStyle HorizontalAlign="Center" />
                                                     </asp:TemplateField>

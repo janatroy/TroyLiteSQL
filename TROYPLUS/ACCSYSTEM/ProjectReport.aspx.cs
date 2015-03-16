@@ -76,28 +76,84 @@ public partial class ProjectReport : System.Web.UI.Page
         DataSet ds = new DataSet();
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
-        string Username = Request.Cookies["LoggedUserName"].Value;
 
-        ds = bl.ListManager(Username);
+        //if (Convert.ToInt32(drpIncharge.SelectedValue) == 0)
+        //{
+        //    string Username = Request.Cookies["LoggedUserName"].Value;
 
-        //ds = bl.ListExecutive();
-        drpIncharge.DataSource = ds;
-        drpIncharge.DataBind();
-        drpIncharge.DataTextField = "empFirstName";
-        drpIncharge.DataValueField = "empno";
+        //    ds = bl.ListManager(Username);
+        //    drpIncharge.DataSource = ds;
+        //    drpIncharge.DataBind();
+        //    drpIncharge.DataTextField = "empFirstName";
+        //    drpIncharge.DataValueField = "empno";
+         
+        //}
+        //else
+        //{
+
+            string Username = Request.Cookies["LoggedUserName"].Value;
+
+            ds = bl.ListManager(Username);
+
+            //ds = bl.ListExecutive();
+            drpIncharge.DataSource = ds;
+            drpIncharge.DataBind();
+            drpIncharge.DataTextField = "empFirstName";
+            drpIncharge.DataValueField = "empno";
 
 
 
-        drpEmployee.Items.Clear();
-        drpEmployee.Items.Add(new ListItem("---ALL---", "0"));
-        // ds = bl.ListExecutive();
-        string Usernam = Request.Cookies["LoggedUserName"].Value;
-        ds = bl.ListOwner(connection, Usernam);
-        drpEmployee.DataSource = ds;
-        drpEmployee.DataBind();
-        drpEmployee.DataTextField = "empFirstName";
-        drpEmployee.DataValueField = "empno";
+            drpBranch.Items.Clear();
+            drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+            ds = bl.ListBranch();
+            drpBranch.DataSource = ds;
+            drpBranch.DataBind();
+            drpBranch.DataTextField = "BranchName";
+            drpBranch.DataValueField = "Branchcode";
+            UpdatePanel444.Update();
 
+
+            if (Username == null)
+            {
+
+            }
+            else
+            {
+                drpEmployee.Items.Clear();
+                drpEmployee.Items.Add(new ListItem("---ALL---", "0"));
+                // ds = bl.ListExecutive();
+                string Usernam = Request.Cookies["LoggedUserName"].Value;
+                ds = bl.ListOwner(connection, Usernam);
+                drpEmployee.DataSource = ds;
+                drpEmployee.DataBind();
+                drpEmployee.DataTextField = "empFirstName";
+                drpEmployee.DataValueField = "empno";
+            }
+       // }
+
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
     }
 
     protected void drpmanager_SelectedIndexChanged(object sender, EventArgs e)
@@ -108,11 +164,13 @@ public partial class ProjectReport : System.Web.UI.Page
             int Emp_Id = 0;
             string connection = Request.Cookies["Company"].Value;
 
+            string branch = Request.Cookies["Branch"].Value;
+
             Emp_Id = Convert.ToInt32(drpIncharge.SelectedValue);
 
             drpproject.Items.Clear();
 
-            DataSet ds = bl.getfilterprojectfromemployee(connection, Emp_Id);
+            DataSet ds = bl.getfilterprojectfromemployee(connection, Emp_Id,branch);
             drpproject.Items.Add(new ListItem("---ALL---", "0"));
             drpproject.DataSource = ds;
             drpproject.DataBind();
@@ -121,6 +179,35 @@ public partial class ProjectReport : System.Web.UI.Page
             //  drpproject.Items.Add(new ListItem("---ALL---", "0"));
 
             UpdatePanel5.Update();
+
+          //  connection = Request.Cookies["Company"].Value;
+          // string usernam = Request.Cookies["LoggedUserName"].Value;
+          // // BusinessLogic bl = new BusinessLogic();
+          //  DataSet ds1 = bl.GetBranch(connection, usernam);
+
+          //string sCustomer = Convert.ToString(ds1.Tables[0].Rows[0]["DefaultBranchCode"]);
+          //  drpBranch.ClearSelection();
+          //  ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+          //  if (li != null) li.Selected = true;
+
+          //  if (ds1.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+          //  {
+          //      drpBranch.Enabled = true;
+          //  }
+          //  else
+          //  {
+               
+          //  }
+
+          //  UpdatePanel444.Update();
+
+
+            //drpBranch.Items.Clear();
+            //drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+            ////ds = bl.ListBranch();
+            ////drpBranch.DataSource = ds;
+            //drpBranch.DataBind();
+          
 
             drpproject_SelectedIndexChanged(sender, e);
 
