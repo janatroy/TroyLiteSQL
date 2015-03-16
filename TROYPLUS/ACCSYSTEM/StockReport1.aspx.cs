@@ -71,6 +71,8 @@ public partial class StockReport1 : System.Web.UI.Page
 
             divPrint.Visible = true;
             divPr.Visible = true;
+
+           
             ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
             DataSet ds = rptStock.getCategory(sDataSource);
             gvCategory.DataSource = ds;
@@ -262,13 +264,14 @@ public partial class StockReport1 : System.Web.UI.Page
                 }
                 refDate = Convert.ToDateTime(stdt);
 
+               
 
-                DataSet ds = bl.getProducts(sDataSource, catID, refDate, cond, cond1, cond2, cond3, cond4);
-                DataTable customerTable = ds.Tables[0];
+                DataSet dss = bl.getProducts(sDataSource, catID, refDate, cond, cond1, cond2, cond3, cond4);
+                DataTable customerTable = dss.Tables[0];
                 //ConvertToCrossTab(customerTable);
-                if (ds.Tables[0].Rows.Count > 0)
+                if (dss.Tables[0].Rows.Count > 0)
                 {
-                    gv.DataSource = ds;                  
+                    gv.DataSource = dss;                  
                     gv.DataBind();
 
                     //ReportViewer1.ProcessingMode = ProcessingMode.Local;

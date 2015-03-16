@@ -13,19 +13,37 @@ using System.Xml.Linq;
 
 public partial class StockReconReport : System.Web.UI.Page
 {
+    private string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         try
         {
             if (!IsPostBack)
             {
                 txtStartDate.Text = DateTime.Now.ToShortDateString();
+                loadBranch();
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstBranch.Items.Clear();
+       // lstBranch.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListBranch();
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
     }
 
     protected void btndet_Click(object sender, EventArgs e)
@@ -95,10 +113,13 @@ public partial class StockReconReport : System.Web.UI.Page
             //    gvStock.DataSource = null;
             //    gvStock.DataBind();
             //}
+            string cond = "";
+            cond = getCond();
+
 
             divPrint.Visible = false;
             div1.Visible = true;
-            Response.Write("<script language='javascript'> window.open('StockReconReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('StockReconReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&cond=" + Server.UrlEncode(cond) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
             Panel.Visible = false;
 
             //#region Export To Excel
@@ -139,6 +160,22 @@ public partial class StockReconReport : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    protected string getCond()
+    {
+        string cond = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Selected)
+            {
+                cond += " BranchCode='" + listItem.Value + "' ,";
+            }
+        }
+        cond = cond.TrimEnd(',');
+        cond = cond.Replace(",", "or");
+        return cond;
     }
 
     protected void btnRep_Click(object sender, EventArgs e)
