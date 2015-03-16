@@ -55,6 +55,31 @@
                         <td>
                             <table width="100%">
                                 <tr>
+                                    <td style="width:25%">
+                                    
+                                    </td>
+                                    <td style="width:25%">
+                                        Branch
+                                    </td>
+                                    <td style="width:25%" class="ControlDrpBorder">
+                                        
+                                        <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                            
+                                    </td>
+                                    <td style="width:25%">
+                                            
+                                    </td>
+                                   
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td>
+                            <table width="100%">
+                                <tr>
                                     <td style="width:15%">
                                     
                                     </td>
@@ -77,6 +102,7 @@
                     <tr style="height:1px">
                     
                     </tr>
+                    
                     <tr>
                         <td>
                             <table width="100%">
@@ -84,11 +110,12 @@
                                     <td style="width:15%">
                                     
                                     </td>
-                                    <td style="width:60%" class="ControlTextBox3" align="left">
-                                        <asp:CheckBox ID="chkboxMRP" runat="server" Text="With MRP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
-                                        <asp:CheckBox ID="chkboxDP" runat="server" Text="With DP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
-                                        <asp:CheckBox ID="chkboxNLC" runat="server" Text="With NLC" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
-                                        
+                                    <td style="width:60%" class="ControlTextBox3">
+                                        <div style="overflow-y: scroll; height: 150px;">
+                                        <asp:CheckBoxList ID="lstPricelist" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
+                                                <asp:ListItem Text="All" Value="0" />
+                                            </asp:CheckBoxList>
+                                            </div>
                                         <%--<asp:CheckBoxList runat="server" ID="chkopt" Width="80%">
                                            <asp:ListItem Text="With MRP" Selected="False"></asp:ListItem>
                                            <asp:ListItem Text="With DP" Selected="False"></asp:ListItem>
@@ -115,6 +142,9 @@
                                     <td style="width:25%">
                                             <asp:Button ID="btnxls" runat="server" CssClass="exportexl6" 
                                                 EnableTheming="false" OnClick="btnxls_Click" Width="152px" />
+                                        <asp:CheckBox ID="chkboxMRP" Visible="false" runat="server" Text="With MRP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
+                                        <asp:CheckBox ID="chkboxDP" Visible="false" runat="server" Text="With DP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
+                                        <asp:CheckBox ID="chkboxNLC" Visible="false" runat="server" Text="With NLC" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
                                              
                                     </td>
                                     <td style="width:20%">
@@ -131,24 +161,13 @@
                                     <td>
                                        <wc:ReportGridView runat="server" BorderWidth="1" ID="gvLedger" CssClass="gridview"
                                             GridLines="Both" AlternatingRowStyle-CssClass="even" HeaderStyle-HorizontalAlign="Left"
-                                            AutoGenerateColumns="false" AllowPrintPaging="true" Width="850px"
+                                            AutoGenerateColumns="true" AllowPrintPaging="true" Width="850px"
                                             OnRowDataBound="gvLedger_RowDataBound">
                                             <HeaderStyle CssClass="ReportHeadataRow" />
                                             <RowStyle CssClass="ReportdataRow" />
                                             <AlternatingRowStyle CssClass="ReportAltdataRow" />
                                             <FooterStyle CssClass="ReportFooterRow" />
-                                            <PageHeaderTemplate>
-                                                <br />
-                                                <br />
-                                            </PageHeaderTemplate>
-                                            <Columns>
-                                                <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="ProductName" HeaderText="ProductName" />
-                                                <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Brand" HeaderText="Brand" />
-                                                <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Model" HeaderText="Model" />
-                                                <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Opening" HeaderText="Opening" />
-                                                <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Purchase" HeaderText="Purchase" />
-                                                <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Sales" HeaderText="Sales" />
-                                            </Columns>
+                                                                                        
                                             <PagerTemplate>
                                             </PagerTemplate>
                                             <PageFooterTemplate>
