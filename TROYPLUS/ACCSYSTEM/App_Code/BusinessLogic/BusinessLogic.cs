@@ -52024,7 +52024,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet GetAbsoluteProductlist(string sDataSource, string cond, string Method)
+    public DataSet GetAbsoluteProductlist(string sDataSource, string cond, string Method, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -52042,102 +52042,102 @@ public class BusinessLogic
 
             if (Method == "All")
             {
-                dbQry2 = "select itemcode,productname,model,productdesc as brand,CategoryID,block,rate,dealerrate,nlc,mrpeffdate,dpeffdate,nlceffdate,ROL from tblproductmaster order by productdesc";
+                dbQry2 = "select tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblproductmaster.CategoryID,tblproductmaster.ROL from tblproductmaster order by tblproductmaster.productdesc";
             }
             else if (Method == "Absolute")
             {
-                dbQry2 = "select itemcode,productname,model,productdesc as brand,block,CategoryID,rate,dealerrate,nlc,mrpeffdate,dpeffdate,nlceffdate,ROL from tblproductmaster where tblproductmaster.Outdated = 'Y' order by productdesc";
+                dbQry2 = "select tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblproductmaster.CategoryID,tblproductmaster.ROL from tblproductmaster where tblproductmaster.Outdated = 'Y' order by tblproductmaster.productdesc";
             }
             else if (Method == "NotAbsolute")
             {
-                dbQry2 = "select itemcode,productname,model,productdesc as brand,block,rate,dealerrate,CategoryID,nlc,ROL,mrpeffdate,dpeffdate,nlceffdate from tblproductmaster  where tblproductmaster.Outdated = 'N' order by productdesc";
+                dbQry2 = "select tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblproductmaster.CategoryID,tblproductmaster.ROL from tblproductmaster where tblproductmaster.Outdated = 'N' order by tblproductmaster.productdesc";
             }
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
 
-            DataSet dst;
-            DataTable dt;
-            DataRow drNew;
-            DataColumn dc;
+            //DataSet dst;
+            //DataTable dt;
+            //DataRow drNew;
+            //DataColumn dc;
 
-            string date1 = string.Empty;
-            string sNarration = string.Empty;
+            //string date1 = string.Empty;
+            //string sNarration = string.Empty;
 
-            dst = new DataSet();
-            dt = new DataTable();
-            dc = new DataColumn("Itemcode");
-            dt.Columns.Add(dc);
+            //dst = new DataSet();
+            //dt = new DataTable();
+            //dc = new DataColumn("Itemcode");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("productname");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("productname");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("model");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("model");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("brand");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("brand");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("rate");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("rate");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("dealerrate");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("dealerrate");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("nlc");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("nlc");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("mrpeffdate");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("mrpeffdate");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("dpeffdate");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("dpeffdate");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("nlceffdate");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("nlceffdate");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("Rol");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("Rol");
+            //dt.Columns.Add(dc);
 
-            dc = new DataColumn("CategoryID");
-            dt.Columns.Add(dc);
+            //dc = new DataColumn("CategoryID");
+            //dt.Columns.Add(dc);
 
-            dst.Tables.Add(dt);
+            //dst.Tables.Add(dt);
+
+            //if (ds.Tables[0].Rows.Count > 0)
+            //{
+            //    foreach (DataRow drd in ds.Tables[0].Rows)
+            //    {
+            //        if (drd["mrpeffdate"] != null)
+            //        {
+            //            smrpeffDate = Convert.ToDateTime(drd["mrpeffdate"].ToString()).ToShortDateString();
+            //        }
+            //        if (drd["dpeffdate"] != null)
+            //        {
+            //            sdpeffdate = Convert.ToDateTime(drd["dpeffdate"].ToString()).ToShortDateString();
+            //        }
+            //        if (drd["nlceffdate"] != null)
+            //        {
+            //            snlceffdate = Convert.ToDateTime(drd["nlceffdate"].ToString()).ToShortDateString();
+            //        }
+            //        drNew = dt.NewRow();
+            //        drNew["productname"] = drd["productname"].ToString();
+            //        drNew["itemcode"] = drd["itemcode"].ToString();
+            //        drNew["model"] = drd["model"].ToString();
+            //        drNew["brand"] = drd["brand"].ToString();
+            //        drNew["Rol"] = Convert.ToInt32(drd["Rol"]);
+            //        drNew["dealerrate"] = Convert.ToDouble(drd["dealerrate"]);
+            //        drNew["rate"] = Convert.ToDouble(drd["rate"]);
+            //        drNew["dpeffdate"] = sdpeffdate;
+            //        drNew["nlc"] = Convert.ToDouble(drd["nlc"]);
+            //        drNew["mrpeffdate"] = smrpeffDate;
+            //        drNew["nlceffdate"] = snlceffdate;
+            //        drNew["CategoryID"] = Convert.ToInt32(drd["CategoryID"]);
+            //        dst.Tables[0].Rows.Add(drNew);
+            //    }
+            //}
 
             if (ds.Tables[0].Rows.Count > 0)
-            {
-                foreach (DataRow drd in ds.Tables[0].Rows)
-                {
-                    if (drd["mrpeffdate"] != null)
-                    {
-                        smrpeffDate = Convert.ToDateTime(drd["mrpeffdate"].ToString()).ToShortDateString();
-                    }
-                    if (drd["dpeffdate"] != null)
-                    {
-                        sdpeffdate = Convert.ToDateTime(drd["dpeffdate"].ToString()).ToShortDateString();
-                    }
-                    if (drd["nlceffdate"] != null)
-                    {
-                        snlceffdate = Convert.ToDateTime(drd["nlceffdate"].ToString()).ToShortDateString();
-                    }
-                    drNew = dt.NewRow();
-                    drNew["productname"] = drd["productname"].ToString();
-                    drNew["itemcode"] = drd["itemcode"].ToString();
-                    drNew["model"] = drd["model"].ToString();
-                    drNew["brand"] = drd["brand"].ToString();
-                    drNew["Rol"] = Convert.ToInt32(drd["Rol"]);
-                    drNew["dealerrate"] = Convert.ToDouble(drd["dealerrate"]);
-                    drNew["rate"] = Convert.ToDouble(drd["rate"]);
-                    drNew["dpeffdate"] = sdpeffdate;
-                    drNew["nlc"] = Convert.ToDouble(drd["nlc"]);
-                    drNew["mrpeffdate"] = smrpeffDate;
-                    drNew["nlceffdate"] = snlceffdate;
-                    drNew["CategoryID"] = Convert.ToInt32(drd["CategoryID"]);
-                    dst.Tables[0].Rows.Add(drNew);
-                }
-            }
-
-            if (dst.Tables[0].Rows.Count > 0)
-                return dst;
+                return ds;
             else
                 return null;
 
@@ -73326,6 +73326,38 @@ public class BusinessLogic
         {
             if (manager != null)
                 manager.Dispose();
+        }
+    }
+
+    public DataSet GetAbsoluteProductpricelist(string sDataSource, string itemcode)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+        string smrpeffDate = string.Empty;
+        string sdpeffdate = string.Empty;
+        string snlceffdate = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            dbQry2 = "select itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate from tblproductprices where itemcode='" + itemcode + "'";
+            
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
         }
     }
 
