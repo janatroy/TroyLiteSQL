@@ -14,6 +14,7 @@ using System.Xml.Linq;
 public partial class StockReconReport1 : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
+    string cond;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -64,6 +65,9 @@ public partial class StockReconReport1 : System.Web.UI.Page
                 if (Request.QueryString["startDate"] != null)
                 {
                     stdt = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
+
+                    cond = Request.QueryString["cond"].ToString();
+                    cond = Server.UrlDecode(cond);
                 }
 
                 startDate = Convert.ToDateTime(stdt);

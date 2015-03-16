@@ -49,8 +49,7 @@
 
     </script>
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
-        <ContentTemplate>
-        
+       <ContentTemplate>        
             <table style="width: 100%">
                 <tr style="width: 100%">
                     <td style="width: 100%">
@@ -204,7 +203,7 @@
                                                                                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
                                                                                     <ContentTemplate>                                                                            
                                                                                         <asp:Button ID="SaveButton" runat="server" CommandName="Update" SkinID="skinBtnSave"
-                                                                                            CssClass="savebutton1231" EnableTheming="false" OnClick="SaveButton_Click"></asp:Button>
+                                                                                           CssClass="savebutton1231" EnableTheming="false" OnClick="SaveButton_Click"></asp:Button>
                                                                                         <asp:Button ID="Button4" runat="server" CommandName="Update" SkinID="skinBtnSave"
                                                                                             CssClass="savebutton1231" EnableTheming="false" OnClick="Button4_Click"></asp:Button>
                                                                                         <asp:Button ID="UpdateButton" runat="server" CommandName="Update" SkinID="skinBtnSave"
@@ -233,8 +232,13 @@
                                                                     <table width="100%">
                                                                         <tr>
                                                             <td style="width: 20%">
-                                                                    <asp:Button ID="Button5" CausesValidation="false" runat="server" OnClick="Button5_Click"
+                                                               <%-- <asp:UpdatePanel ID="upexp" runat="server" UpdateMode="Conditional">
+                                                                    <ContentTemplate>--%>
+                                                                         <asp:Button ID="Button6" CausesValidation="false" runat="server" OnClick="Button5_Click"
                                     EnableTheming="false" Text="Download sample Excel sheet for importing Prices"></asp:Button>
+                                                                    <%--</ContentTemplate>
+                                                                </asp:UpdatePanel>--%>
+                                                                   
                                                                 </td>
                                                             <td style="width: 45%">
                                                                 
@@ -379,8 +383,10 @@
                     </td>
                 </tr>
             </table>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+
+            
+        </ContentTemplate>      
+    </asp:UpdatePanel>   
     <div>
         <table style="width: 100%">
             <tr>
@@ -395,6 +401,8 @@
                                                 <asp:Panel ID="pnlSearch" runat="server" Width="100px">
                                                     <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" Text="Add New Price Component"
                                                         EnableTheming="false" ></asp:Button>
+                                                     <%-- <asp:Button ID="Button5" CausesValidation="false" runat="server" OnClick="Button5_Click"
+                                    EnableTheming="false" Text="Download sample Excel sheet for importing Prices"></asp:Button>--%>
                                                 </asp:Panel>
                                             </div>
                         <asp:Button ID="BlkAdd" runat="server"  OnClientClick="window.open('BulkPriceUpdation.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');"
@@ -412,5 +420,4 @@
                 </tr>
         </table>
     </div>
-
 </asp:Content>
