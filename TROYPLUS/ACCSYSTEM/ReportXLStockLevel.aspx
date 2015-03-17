@@ -95,12 +95,47 @@
                                 <tr style="height: 2px;"/>
                                 <tr>
                                     <td class="ControlLabel2" style="width:35%;">
+                                        Branch
+                                    </td>
+                                    <td style="width:35%;" class="ControlDrpBorder">
+                                        <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                    </td>
+                                    <td align="left" style="width:35%;">
+                                            
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr style="height: 2px;"/>
+                                <tr>
+                                    <td class="ControlLabel2" style="width:35%;">
+                                        Price List
+                                    </td>
+                                    <td style="width:35%;" align="left" class="ControlDrpBorder">
+                                         <div style="overflow: scroll; height: 150px;" align="left">
+                                        <asp:CheckBoxList ID="lstPricelist" runat="server" RepeatDirection="Vertical" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
+                                                <%--<asp:ListItem Text="All" Value="0" />--%>
+                                            </asp:CheckBoxList>
+                                            </div>
+                                    </td>
+                                    <td align="left" style="width:35%;">
+                                            
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr style="height: 2px;"/>
+                                <tr>
+                                    <td class="ControlLabel2" style="width:35%;">
                                         Range
                                     </td>
                                     <td style="width:35%;" class="ControlDrpBorder">
                                         <asp:DropDownList ID="cmbtrange" runat="server" AppendDataBoundItems="true" AutoCompleteMode="Suggest"
                                             Width="100%" CssClass="drpDownListMedium" BackColor = "#e7e7e7"
                                             style="border: 1px solid #e7e7e7" height="26px">
+                                            <asp:ListItem Text="All" Value="4"></asp:ListItem>
                                             <asp:ListItem Text="Below" Value="1"></asp:ListItem>
                                             <asp:ListItem Text="Above" Value="2"></asp:ListItem>
                                             <asp:ListItem Text="Equal" Value="3"></asp:ListItem>

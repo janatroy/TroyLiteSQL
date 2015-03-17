@@ -52455,7 +52455,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet getstocklevel(string sDataSource, DateTime refDate, string trange, string toption)
+    public DataSet getstocklevel(string sDataSource, DateTime refDate, string trange, string toption, string Branch)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -52464,19 +52464,19 @@ public class BusinessLogic
         string sQry = string.Empty;
         string sConStr = string.Empty;
 
-        sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
-        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sDataSource));
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
 
-        sQry = ("select ProductDesc,ProductName,Model,ItemCode,Stock,rol,Cat.categoryname,rate from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID "); //" order by ProductDesc,CategoryID,Model,ProductName"
+        sQry = ("select PM.ProductDesc,PM.ProductName,PM.Model,PM.ItemCode,PS.Stock,PM.rol,Cat.categoryname,rate from tblproductmaster PM, tblCategories Cat,tblproductstock PS  where PM.CategoryID = Cat.CategoryID and PS.ItemCode = PM.ItemCode and PS.Branchcode ='" + Branch + "'  "); //" order by ProductDesc,CategoryID,Model,ProductName"
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
         ds = new DataSet();
         oleAdp.Fill(ds);
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where  S.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where  S.BillDate >= '" + refDate.ToString("yyyy-MM-dd") + "' and S.Branchcode='" + Branch + "' " + " Group By SI.ItemCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -52506,7 +52506,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where P.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where P.BillDate >= '" + refDate.ToString("yyyy-MM-dd") + "' and P.Branchcode='" + Branch + "' " + " Group By PI.ItemCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -52539,7 +52539,7 @@ public class BusinessLogic
         return ds;
     }
 
-    public DataSet getstocklevelcategory(string sDataSource, DateTime refDate, string trange, string toption)
+    public DataSet getstocklevelcategory(string sDataSource, DateTime refDate, string trange, string toption, string Branch)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -52548,19 +52548,19 @@ public class BusinessLogic
         string sQry = string.Empty;
         string sConStr = string.Empty;
 
-        sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
-        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sDataSource));
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
 
-        sQry = ("select sum(Stock) as Stock,Cat.categorylevel,Cat.categoryname from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID group by Cat.categoryname,Cat.categorylevel"); //" order by ProductDesc,CategoryID,Model,ProductName"
+        sQry = ("select sum(PS.Stock) as Stock,Cat.categorylevel,Cat.categoryname from tblproductmaster PM, tblCategories Cat,tblproductstock PS where PM.CategoryID = Cat.CategoryID and PS.ItemCode = PM.ItemCode and PS.Branchcode ='" + Branch + "' group by Cat.categoryname,Cat.categorylevel"); //" order by ProductDesc,CategoryID,Model,ProductName"
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
         ds = new DataSet();
         oleAdp.Fill(ds);
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  cc.categoryname From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Inner join tblcategories cc ON P.categoryid = cc.categoryid Where  S.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By cc.categoryname ORDER BY cc.categoryname";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  cc.categoryname From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Inner join tblcategories cc ON P.categoryid = cc.categoryid Where  S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'  and S.Branchcode ='" + Branch + "' " + " Group By cc.categoryname ORDER BY cc.categoryname";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -52588,7 +52588,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  cc.categoryname From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Inner join tblcategories cc ON PM.categoryid = cc.categoryid Where P.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By cc.categoryname ORDER BY cc.categoryname";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  cc.categoryname From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Inner join tblcategories cc ON PM.categoryid = cc.categoryid Where P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'  and P.Branchcode ='" + Branch + "' " + " Group By cc.categoryname ORDER BY cc.categoryname";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -52620,7 +52620,7 @@ public class BusinessLogic
         return ds;
     }
 
-    public DataSet getstocklevelbrand(string sDataSource, DateTime refDate, string trange, string toption)
+    public DataSet getstocklevelbrand(string sDataSource, DateTime refDate, string trange, string toption, string Branch)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -73618,7 +73618,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet GetAbsoluteProductpricelist(string sDataSource, string itemcode)
+    public DataSet GetAbsoluteProductpricelist(string sDataSource, string itemcode,string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -73634,7 +73634,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry2 = "select itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate from tblproductprices where itemcode='" + itemcode + "'";
+            dbQry2 = "select tblproductprices.itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate,tblproductstock.stock,tblproductstock.Branchcode from tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode where tblproductprices.itemcode='" + itemcode + "' and tblproductstock.Branchcode ='" + Branch + "' ";
             
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
 
@@ -73647,6 +73647,11 @@ public class BusinessLogic
         catch (Exception ex)
         {
             throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
         }
     }
 
