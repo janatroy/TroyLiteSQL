@@ -1560,6 +1560,7 @@
             <asp:HiddenField ID="hdSMSRequired" runat="server" Value="NO" />
             <asp:HiddenField ID="hdEmailRequired" runat="server" Value="NO" />
             <asp:HiddenField ID="hdPendingCount" runat="server" Value="0" />
+            <%-- <asp:HiddenField ID="businessID" runat="server" Value='<%# Bind("BusinessType") %>' />--%>
         </ContentTemplate>
     </asp:UpdatePanel>
     <div align="center">

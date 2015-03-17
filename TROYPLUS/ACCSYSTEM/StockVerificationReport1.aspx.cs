@@ -86,9 +86,9 @@ public partial class StockVerificationReport1 : System.Web.UI.Page
                     {
                         strItemCode = dr["itemCode"].ToString();
                         accQty = Convert.ToDouble(dr["Stock"]);
-                        opStock = report.getOpeningStock(sDataSource, strItemCode);
-                        salesQty = report.getStockSales(sDataSource, strItemCode, DateTime.Now);
-                        purchaseQty = report.getStockPurchase(sDataSource, strItemCode, DateTime.Now);
+                        opStock = report.getOpeningStock(sDataSource, strItemCode,"");
+                        salesQty = report.getStockSales(sDataSource, strItemCode, DateTime.Now,"");
+                        purchaseQty = report.getStockPurchase(sDataSource, strItemCode, DateTime.Now,"");
                         InQty = report.getStockIN(sDataSource, strItemCode, DateTime.Now);
                         OutQty = report.getStockOUT(sDataSource, strItemCode, DateTime.Now);
                         arrQty = opStock + (purchaseQty - salesQty) + (OutQty - InQty);

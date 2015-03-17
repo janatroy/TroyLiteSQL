@@ -94,7 +94,7 @@ public partial class StockListReportOld : System.Web.UI.Page
 
             string itemCode = Convert.ToString(itemAr[0]).Trim();
             lblModel.Text = Convert.ToString(itemAr[2]).Trim();
-            openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode)) +
+            openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode,"")) +
                 (Convert.ToDouble(report.getOpeningStockPurchase(sDataSource, itemCode, startDate)) - Convert.ToDouble(report.getOpeningStockSales(sDataSource, itemCode, startDate)));
 
             lblOpenStock.Text = Convert.ToString(openingStock);

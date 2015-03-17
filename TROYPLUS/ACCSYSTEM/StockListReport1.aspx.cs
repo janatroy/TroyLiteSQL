@@ -120,7 +120,7 @@ public partial class StockListReport1 : System.Web.UI.Page
                 }
 
                 //lblModel.Text = cmbModel.Text;
-                openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode)) +
+                openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode,"")) +
                     (Convert.ToDouble(bl.getOpeningStockPurchase(sDataSource, itemCode, startDate)) - Convert.ToDouble(report.getOpeningStockSales(sDataSource, itemCode, startDate)));
 
                 lblOpenStock.Text = Convert.ToString(openingStock);
@@ -935,7 +935,7 @@ public partial class StockListReport1 : System.Web.UI.Page
             //string itemCode = Convert.ToString(itemAr[0]).Trim();
             string itemCode = cmbProdAdd.Text;
             lblModel.Text = cmbModel.Text;
-            openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode)) +
+            openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode,"")) +
                 (Convert.ToDouble(report.getOpeningStockPurchase(sDataSource, itemCode, startDate)) - Convert.ToDouble(report.getOpeningStockSales(sDataSource, itemCode, startDate)));
 
             lblOpenStock.Text = Convert.ToString(openingStock);
@@ -1146,7 +1146,7 @@ public partial class StockListReport1 : System.Web.UI.Page
             //string itemCode = Convert.ToString(itemAr[0]).Trim();
             string itemCode = cmbProdAdd.Text;
             lblModel.Text = cmbModel.Text;
-            openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode)) +
+            openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode,"")) +
                 (Convert.ToDouble(report.getOpeningStockPurchase(sDataSource, itemCode, startDate)) - Convert.ToDouble(report.getOpeningStockSales(sDataSource, itemCode, startDate)));
 
             lblOpenStock.Text = Convert.ToString(openingStock);

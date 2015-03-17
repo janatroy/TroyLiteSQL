@@ -71,8 +71,7 @@ public partial class StockReconReport1 : System.Web.UI.Page
                 }
 
                 startDate = Convert.ToDateTime(stdt);
-
-                Label1.Text = " Report Date on " + startDate;
+              
 
                 ReportsBL.ReportClass rpt;
                 rpt = new ReportsBL.ReportClass();
@@ -80,7 +79,7 @@ public partial class StockReconReport1 : System.Web.UI.Page
                 div1.Visible = false;
                 int zeroCnt = 0;
                 int dataCnt = 0;
-                ds = rpt.verifyStock(sDataSource, startDate);
+                ds = rpt.verifyStock(sDataSource, startDate, cond);
 
                 if (ds != null && ds.Tables[0].Rows.Count > 0)
                 {
@@ -118,7 +117,8 @@ public partial class StockReconReport1 : System.Web.UI.Page
                     gvStock.DataSource = null;
                     gvStock.DataBind();
                 }
-
+                cond = cond.Replace("'", "");
+                Label1.Text = " Report Date on " + startDate + " for " + cond;
             }
         }
         catch (Exception ex)
@@ -156,7 +156,7 @@ public partial class StockReconReport1 : System.Web.UI.Page
             div1.Visible = false;
             int zeroCnt = 0;
             int dataCnt = 0;
-            ds = rpt.verifyStock(sDataSource, startDate);
+            ds = rpt.verifyStock(sDataSource, startDate,"");
 
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {
@@ -249,7 +249,7 @@ public partial class StockReconReport1 : System.Web.UI.Page
             rpt = new ReportsBL.ReportClass();
             int zeroCnt = 0;
             int dataCnt = 0;
-            ds = rpt.verifyStock(sDataSource, startDate);
+            ds = rpt.verifyStock(sDataSource, startDate,"");
 
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {

@@ -53,7 +53,21 @@ public partial class LeadReference : System.Web.UI.Page
                 //{
                 //    lnkBtnAdd.Visible = false;
 
-                //}              
+                //}      
+                connection = Request.Cookies["Company"].Value;
+                usernam = Request.Cookies["LoggedUserName"].Value;
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+
+                if (bl.CheckUserHaveAdd(usernam, "LEDREF"))
+                {
+                    lnkBtnAdd.Enabled = false;
+                    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+                }
+                else
+                {
+                    lnkBtnAdd.Enabled = true;
+                    lnkBtnAdd.ToolTip = "Click to Add New ";
+                }
 
              
                 GrdViewLedger.PageSize = 8;
@@ -153,7 +167,11 @@ public partial class LeadReference : System.Web.UI.Page
                     {
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Reference Exists") > -1))
+                            e.KeepInInsertMode = true;
+                        e.ExceptionHandled = true;
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        ModalPopupExtender1.Show();
+                        return;
                     }
                     else
                     {
@@ -248,6 +266,7 @@ public partial class LeadReference : System.Web.UI.Page
                         e.ExceptionHandled = true;
                         e.KeepInEditMode = true;
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        ModalPopupExtender1.Show();
                         return;
                     }
 
@@ -418,16 +437,34 @@ public partial class LeadReference : System.Web.UI.Page
 
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            //BusinessLogic bl = new BusinessLogic(GetConnectionString());
+            LeadBusinessLogic bl1 = new LeadBusinessLogic(GetConnectionString());
 
+
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            string connection = Request.Cookies["Company"].Value;
+            string usernam = Request.Cookies["LoggedUserName"].Value;
+
+            if (bl.CheckUserHaveEdit(usernam, "LEDREF"))
+            {
+                ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+            }
+            if (bl.CheckUserHaveDelete(usernam, "LEDREF"))
+            {
+                ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+            }
             //string connection = Request.Cookies["Company"].Value;
             //string usernam = Request.Cookies["LoggedUserName"].Value;
 
-            //if (bl.CheckIfleadreerenceUsed(int.Parse(((HiddenField)e.Row.FindControl("ldgID")).Value)))
-            //{
-            //    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
-            //    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
-            //}
+            Label referencename = e.Row.FindControl("typename") as Label;
+            string refname = referencename.Text;
+
+            if (bl1.CheckIfleadreferenceused(connection,refname, int.Parse(((HiddenField)e.Row.FindControl("ldgID")).Value)))
+            {
+                ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+            }
         }
     }
 

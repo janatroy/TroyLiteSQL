@@ -13,3 +13,8 @@ C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\bin\Release\ReportsBL
 C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\obj\Release\ReportsBL.csprojResolveAssemblyReference.cache
 C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\obj\Release\ReportsBL.dll
 C:\Users\Acer\Documents\GitHub\TroyLite\TROYPLUS\ReportsBL\obj\Release\ReportsBL.pdb
+C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\bin\Release\ReportsBL.dll
+C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\bin\Release\ReportsBL.pdb
+C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Release\ReportsBL.csprojResolveAssemblyReference.cache
+C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Release\ReportsBL.dll
+C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\ReportsBL\obj\Release\ReportsBL.pdb

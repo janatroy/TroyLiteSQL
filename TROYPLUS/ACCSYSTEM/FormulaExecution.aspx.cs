@@ -312,11 +312,12 @@ public partial class FormulaExecution : System.Web.UI.Page
         try
         {
             loadBranch();
+            BranchEnable_Disable();
             ModalPopupExtender1.Show();
             string Formula = GridViewTemplates.SelectedDataKey.Value.ToString();
 
             GridViewRow row = GridViewTemplates.SelectedRow;
-            drpBranch.SelectedValue = row.Cells[2].Text;
+         //   drpBranch.SelectedValue = row.Cells[2].Text;
             PanelCmd.Visible = true;
             //txtDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
@@ -666,7 +667,7 @@ public partial class FormulaExecution : System.Web.UI.Page
             loadBranch();
             int CompID = int.Parse(GridViewProducts.SelectedDataKey.Value.ToString());
             GridViewRow row = GridViewProducts.SelectedRow;
-            drpBranch.SelectedValue = row.Cells[3].Text;
+           // drpBranch.SelectedValue = row.Cells[3].Text;
             GetExecutionDetails(CompID);
             PanelProductsList.Visible = false;
             PanelTemplateGrids.Visible = true;
@@ -730,7 +731,7 @@ public partial class FormulaExecution : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         drpBranch.Items.Clear();
-        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        //drpBranch.Items.Add(new ListItem("Select Branch", "0"));
         ds = bl.ListBranch();
         drpBranch.DataSource = ds;
         drpBranch.DataBind();
@@ -1454,7 +1455,9 @@ public partial class FormulaExecution : System.Web.UI.Page
         DataSet ds = new DataSet();
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        ds = bl.GetINsForFromula(strFormula,drpBranch.SelectedValue);
+        string branch1 = drpBranch.SelectedValue;
+
+        ds = bl.GetINsForFromula(strFormula,branch1);
 
 
         if (ds != null)
@@ -1496,8 +1499,8 @@ public partial class FormulaExecution : System.Web.UI.Page
             dct = new DataColumn("FormulaName");
             dttt.Columns.Add(dct);
 
-            dct = new DataColumn("BranchCode");
-            dttt.Columns.Add(dct);
+            //dct = new DataColumn("BranchCode");
+            //dttt.Columns.Add(dct);
 
             dstd.Tables.Add(dttt);
 
@@ -1512,7 +1515,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         drNew = dttt.NewRow();
                         drNew["Row"] = sno;
                         drNew["FormulaName"] = Convert.ToString(dstt.Tables[0].Rows[i]["FormulaName"]);
-                        drNew["BranchCode"] = Convert.ToString(dstt.Tables[0].Rows[i]["BranchCode"]);
+                       // drNew["BranchCode"] = Convert.ToString(dstt.Tables[0].Rows[i]["BranchCode"]);
                         dstd.Tables[0].Rows.Add(drNew);
                         //if (ds.Tables[0].Rows.Count > 0)
                         //{
@@ -1541,7 +1544,7 @@ public partial class FormulaExecution : System.Web.UI.Page
         DataSet ds = new DataSet();
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        ds = bl.GetOUTsForFromula(strFormula,drpBranch.SelectedValue);
+        ds = bl.GetOUTsForFromula(strFormula);
 
 
         if (ds != null)
@@ -1754,5 +1757,91 @@ public partial class FormulaExecution : System.Web.UI.Page
     protected void grdIn_DataBound(object sender, EventArgs e)
     {
 
+    }
+    protected void drpBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+         DataSet ds = new DataSet();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        string branch1= drpBranch.SelectedValue;
+
+         string Formula = GridViewTemplates.SelectedDataKey.Value.ToString();
+
+         ds = bl.GetINsForFromulaitem(Formula, branch1);
+
+
+         grdIn.DataSource = ds;
+         grdIn.DataBind();
+         ModalPopupExtender1.Show();
+
+         //DataColumn dct;
+         //DataSet dstd = new DataSet();
+         //ds = new DataTable();
+
+
+
+         //dct = new DataColumn("Row");
+         //dttt.Columns.Add(dct);
+
+         //dct = new DataColumn("FormulaName");
+         //dttt.Columns.Add(dct);
+
+         //dct = new DataColumn("BranchCode");
+         //dttt.Columns.Add(dct);
+
+         //dstd.Tables.Add(dttt);
+
+         //int sno = 1;
+
+         //if (ds != null)
+         //{
+         //    if (dstt.Tables[0].Rows.Count > 0)
+         //    {
+         //        for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+         //        {
+         //            drNew = dttt.NewRow();
+         //            drNew["Row"] = sno;
+         //            drNew["FormulaName"] = Convert.ToString(dstt.Tables[0].Rows[i]["FormulaName"]);
+         //            drNew["BranchCode"] = Convert.ToString(dstt.Tables[0].Rows[i]["BranchCode"]);
+         //            dstd.Tables[0].Rows.Add(drNew);
+         //            //if (ds.Tables[0].Rows.Count > 0)
+         //            //{
+         //            //    drNew = dttt.NewRow();
+         //            //    drNew["Row"] = sno;
+         //            sno = sno + 1;
+         //            //}
+         //        }
+         //    }
+
+         //    GridViewTemplates.DataSource = dstd.Tables[0].DefaultView;
+         //    GridViewTemplates.DataBind();
+         //}
+
+         //GridViewRow row = grdIn.SelectedRow.RowIndex;
+         //grdIn.Rows[1].Cells[3].Text = ds.Tables[0].Rows[0]["Stock"].ToString();
+        
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
     }
 }
