@@ -111,9 +111,9 @@
                                     
                                     </td>
                                     <td style="width:60%" class="ControlTextBox3">
-                                        <div style="overflow-y: scroll; height: 150px;">
-                                        <asp:CheckBoxList ID="lstPricelist" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
-                                                <asp:ListItem Text="All" Value="0" />
+                                        <div style="overflow-y: scroll; height: 150px;" align="left">
+                                        <asp:CheckBoxList ID="lstPricelist" runat="server" RepeatDirection="Vertical" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
+                                                <%--<asp:ListItem Text="All" Value="0" />--%>
                                             </asp:CheckBoxList>
                                             </div>
                                         <%--<asp:CheckBoxList runat="server" ID="chkopt" Width="80%">
@@ -140,7 +140,7 @@
                                     <td style="width:25%">
                                     </td>
                                     <td style="width:25%">
-                                            <asp:Button ID="btnxls" runat="server" CssClass="exportexl6" 
+                                            <asp:Button ID="btnxls" runat="server" CssClass="exportexl6" CausesValidation="true" 
                                                 EnableTheming="false" OnClick="btnxls_Click" Width="152px" />
                                         <asp:CheckBox ID="chkboxMRP" Visible="false" runat="server" Text="With MRP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
                                         <asp:CheckBox ID="chkboxDP" Visible="false" runat="server" Text="With DP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
