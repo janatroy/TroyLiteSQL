@@ -342,7 +342,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
                 {
                     hdOpr.Value = "New";
                     hdCurrRole.Value = "";
-                    ds = bl.ListProductDetails(itemCode,"");
+                    ds = bl.ListProductDetailsManuf(itemCode);
 
                     string category = lblledgerCategory.Text;
 
@@ -479,7 +479,7 @@ public partial class BundleSalesNew : System.Web.UI.Page
                 {
                     hdOpr.Value = "New";
                     hdCurrRole.Value = "";
-                    ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value,"");
+                    ds = bl.ListProductDetailsManuf(cmbProdAdd.SelectedItem.Value);
 
                     string category = lblledgerCategory.Text;
 

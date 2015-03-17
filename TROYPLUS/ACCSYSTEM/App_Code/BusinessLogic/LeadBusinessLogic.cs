@@ -856,6 +856,8 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.BeginTransaction();
 
+          
+
             //dbQry = string.Format("INSERT INTO tblLeadHeader(Start_Date,Lead_Name,Address,Mobile,Telephone,BP_Name,Bp_Id,Contact_Name,Emp_Id,Emp_Name,Doc_Status,Branch,Lead_Status,InvoicedAmt,Closing_Per,Closing_Date,chec) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}','{5}',{6},'{7}',{8},'{9}','{10}','{11}','{12}',{13},{14},Format('{15}', 'dd/mm/yyyy'),'{16}')",
             //        startDate.ToShortDateString(), LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, branch, LeadStatus, TotalAmount, ClosingPer, ClosingDate, check);
 
@@ -1576,6 +1578,42 @@ public class LeadBusinessLogic : BaseLogic
             manager.Dispose();
         }
 
+    }
+
+    public bool IsLeadAlreadyFound(string connection, string leadName)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+
+        try
+        {
+
+            dbQry = ("SELECT Count(*) FROM tblLeadHeader Where Lead_Name='" + leadName + "'");
+
+        
+
+            manager.Open();
+            object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
     }
 
 

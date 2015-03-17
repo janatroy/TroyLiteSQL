@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using Microsoft.Reporting.WebForms;
+using System.Collections.Generic;
 
 public partial class StockReport1 : System.Web.UI.Page
 {
@@ -72,7 +73,7 @@ public partial class StockReport1 : System.Web.UI.Page
             divPrint.Visible = true;
             divPr.Visible = true;
 
-           
+
             ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
             DataSet ds = rptStock.getCategory(sDataSource);
             gvCategory.DataSource = ds;
@@ -208,12 +209,14 @@ public partial class StockReport1 : System.Web.UI.Page
         {
             divPrint.Visible = true;
             divPr.Visible = true;
-            ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
-            DataSet ds = rptStock.getCategory(sDataSource);
-            gvCategory.DataSource = ds;
-            gvCategory.DataBind();
+            //ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
+            //DataSet ds = rptStock.getCategory(sDataSource);
+            //gvCategory.DataSource = ds;
+            //gvCategory.DataBind();
 
             div1.Visible = false;
+
+            BindData();
         }
         catch (Exception ex)
         {
@@ -225,6 +228,8 @@ public partial class StockReport1 : System.Web.UI.Page
     string cond2;
     string cond3;
     string cond4;
+    string cond5;
+    string cond6;
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
@@ -261,17 +266,126 @@ public partial class StockReport1 : System.Web.UI.Page
                     cond3 = Server.UrlDecode(cond3);
                     cond4 = Request.QueryString["cond4"].ToString();
                     cond4 = Server.UrlDecode(cond4);
+                    cond5 = Request.QueryString["cond5"].ToString();
+                    cond5 = cond5.ToString();
+                    cond6 = Request.QueryString["cond6"].ToString();
+                    cond6 = cond6.ToString();
                 }
                 refDate = Convert.ToDateTime(stdt);
 
-               
 
-                DataSet dss = bl.getProducts(sDataSource, catID, refDate, cond, cond1, cond2, cond3, cond4);
+                DataSet ds = bl.GetProductlist(sDataSource, cond);
+
+                DataTable dt = new DataTable();
+
+
+                if (ds != null)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        dt.Columns.Add(new DataColumn("Brand"));
+                        dt.Columns.Add(new DataColumn("ProductName"));
+                        dt.Columns.Add(new DataColumn("ItemCode"));
+                        dt.Columns.Add(new DataColumn("Model"));
+                        dt.Columns.Add(new DataColumn("Rol"));
+
+                        char[] commaSeparator = new char[] { ',' };
+                        string[] result;
+                        result = cond6.Split(commaSeparator, StringSplitOptions.None);
+
+                        foreach (string str in result)
+                        {
+                            dt.Columns.Add(new DataColumn(str));
+                        }
+                        dt.Columns.Remove("Column1");
+
+                        char[] commaSeparator1 = new char[] { ',' };
+                        string[] result1;
+                        result1 = cond5.Split(commaSeparator, StringSplitOptions.None);
+
+                        foreach (string str1 in result1)
+                        {
+                            dt.Columns.Add(new DataColumn(str1));                           
+                        }
+                        dt.Columns.Remove("Column1");                     
+                        DataRow dr_final123 = dt.NewRow();
+                        dt.Rows.Add(dr_final123);
+
+                        DataSet dst = new DataSet();
+
+                        string itemcode = "";
+
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            itemcode = Convert.ToString(dr["itemcode"]);
+
+                            dst = bl.getProducts(sDataSource,refDate, cond, cond1, cond2, cond3, cond4, itemcode);
+
+                            DataRow dr_final6 = dt.NewRow();
+                            dr_final6["Brand"] = dr["brand"];
+                            dr_final6["ProductName"] = dr["ProductName"];
+                            dr_final6["Model"] = dr["Model"];
+                            dr_final6["ItemCode"] = dr["Itemcode"];                           
+
+                            if (dst != null)
+                            {
+                                if (dst.Tables[0].Rows.Count > 0)
+                                {
+                                    foreach (DataRow drt in dst.Tables[0].Rows)
+                                    {
+                                        char[] commaSeparator2 = new char[] { ',' };
+                                        string[] result2;
+                                        result2 = cond6.Split(commaSeparator, StringSplitOptions.None);
+
+                                        foreach (string str2 in result2)
+                                        {
+                                            string item1 = str2;
+                                            string item123 = Convert.ToString(drt["pricename"]);
+
+                                             if (item123 == item1)
+                                             {
+                                                 dr_final6[item1] = drt["price"];
+                                             }
+                                        }
+
+
+                                        char[] commaSeparator3 = new char[] { ',' };
+                                        string[] result3;
+                                        result3 = cond5.Split(commaSeparator, StringSplitOptions.None);
+
+                                        foreach (string str3 in result3)
+                                        {
+                                            string item11 = str3;
+                                            string item1231 = Convert.ToString(drt["BranchCode"]);
+
+                                            if (item1231 == item11)
+                                            {
+                                                dr_final6[item11] = drt["Stock"];
+                                            }
+                                        }
+
+                                        
+                                    }
+                                }
+                            }
+                            dt.Rows.Add(dr_final6);
+                        }
+                        DataSet dst2 = new DataSet();
+                        dst2.Tables.Add(dt);
+                        ReportGridView1.DataSource = dst2;
+                        ReportGridView1.DataBind();
+
+                    }
+                }
+
+                DataSet dss = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, "");
                 DataTable customerTable = dss.Tables[0];
+
+
                 //ConvertToCrossTab(customerTable);
                 if (dss.Tables[0].Rows.Count > 0)
                 {
-                    gv.DataSource = dss;                  
+                    gv.DataSource = dss;
                     gv.DataBind();
 
                     //ReportViewer1.ProcessingMode = ProcessingMode.Local;
@@ -296,6 +410,138 @@ public partial class StockReport1 : System.Web.UI.Page
     }
 
 
+    private void BindData()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        DateTime refDate = DateTime.Parse(txtStartDate.Text);
+        DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
+
+        if (Request.QueryString["refDate"] != null)
+        {
+            stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
+            cond = Request.QueryString["cond"].ToString();
+            cond = Server.UrlDecode(cond);
+            cond1 = Request.QueryString["cond1"].ToString();
+            cond1 = Server.UrlDecode(cond1);
+            cond2 = Request.QueryString["cond2"].ToString();
+            cond2 = Server.UrlDecode(cond2);
+            cond3 = Request.QueryString["cond3"].ToString();
+            cond3 = Server.UrlDecode(cond3);
+            cond4 = Request.QueryString["cond4"].ToString();
+            cond4 = Server.UrlDecode(cond4);
+            cond5 = Request.QueryString["cond5"].ToString();
+            cond5 = cond5.ToString();
+            cond6 = Request.QueryString["cond6"].ToString();
+            cond6 = cond6.ToString();
+        }
+        refDate = Convert.ToDateTime(stdt);
+
+
+        DataSet ds = bl.GetProductlist(sDataSource, cond);
+
+        DataTable dt = new DataTable();
+
+
+        if (ds != null)
+        {
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                dt.Columns.Add(new DataColumn("ItemCode"));
+                dt.Columns.Add(new DataColumn("ProductName"));
+                dt.Columns.Add(new DataColumn("Brand"));  
+                dt.Columns.Add(new DataColumn("Model"));
+                //dt.Columns.Add(new DataColumn("Rol"));
+
+                char[] commaSeparator = new char[] { ',' };
+                string[] result;
+                result = cond6.Split(commaSeparator, StringSplitOptions.None);
+
+                foreach (string str in result)
+                {
+                    dt.Columns.Add(new DataColumn(str));
+                }
+                dt.Columns.Remove("Column1");
+
+                char[] commaSeparator1 = new char[] { ',' };
+                string[] result1;
+                result1 = cond5.Split(commaSeparator, StringSplitOptions.None);
+
+                foreach (string str1 in result1)
+                {
+                    dt.Columns.Add(new DataColumn(str1));
+                }
+                dt.Columns.Remove("Column1");
+                DataRow dr_final123 = dt.NewRow();
+                dt.Rows.Add(dr_final123);
+
+                DataSet dst = new DataSet();
+
+                string itemcode = "";
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    itemcode = Convert.ToString(dr["itemcode"]);
+
+                    dst = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, itemcode);
+
+                    DataRow dr_final6 = dt.NewRow();
+                    dr_final6["Brand"] = dr["brand"];
+                    dr_final6["ProductName"] = dr["ProductName"];
+                    dr_final6["Model"] = dr["Model"];
+                    dr_final6["ItemCode"] = dr["Itemcode"];
+
+                    if (dst != null)
+                    {
+                        if (dst.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow drt in dst.Tables[0].Rows)
+                            {
+                                char[] commaSeparator2 = new char[] { ',' };
+                                string[] result2;
+                                result2 = cond6.Split(commaSeparator, StringSplitOptions.None);
+
+                                foreach (string str2 in result2)
+                                {
+                                    string item1 = str2;
+                                    string item123 = Convert.ToString(drt["pricename"]);
+
+                                    if (item123 == item1)
+                                    {
+                                        dr_final6[item1] = drt["price"];
+                                    }
+                                }
+
+
+                                char[] commaSeparator3 = new char[] { ',' };
+                                string[] result3;
+                                result3 = cond5.Split(commaSeparator, StringSplitOptions.None);
+
+                                foreach (string str3 in result3)
+                                {
+                                    string item11 = str3;
+                                    string item1231 = Convert.ToString(drt["BranchCode"]);
+
+                                    if (item1231 == item11)
+                                    {
+                                        dr_final6[item11] = drt["Stock"];
+                                    }
+                                }
+
+
+                            }
+                        }
+                    }
+                    dt.Rows.Add(dr_final6);
+                }
+                DataSet dst2 = new DataSet();
+                dst2.Tables.Add(dt);
+                ReportGridView1.DataSource = dst2;
+                ReportGridView1.DataBind();
+
+            }
+        }
+    }
 
     protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e)
     {

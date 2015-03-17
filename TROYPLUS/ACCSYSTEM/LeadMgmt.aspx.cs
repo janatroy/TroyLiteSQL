@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Configuration;
 using System.Data;
-using System.Text;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using System.Xml.Linq;
 using System.IO;
 using System.Xml;
 using SMSLibrary;
@@ -4168,6 +4169,16 @@ public partial class LeadMgmt : System.Web.UI.Page
                 Telephone = txtTelephone.Text;//
 
                 string check = string.Empty;
+                LeadBusinessLogic bl2 = new LeadBusinessLogic();
+                string connection1 = Request.Cookies["Company"].Value;
+                if (bl2.IsLeadAlreadyFound(connection1,LeadName))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Lead NAme \\'" + txtLeadName.Text + "\\' already exists');", true);
+
+                    ModalPopupExtender2.Show();
+                    tabs2.Visible = true;
+                    return;
+                }
 
                 if (chk.Checked == false)//
                 {

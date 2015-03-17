@@ -19,6 +19,7 @@ public partial class CreateFormula : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
            
@@ -524,7 +525,7 @@ public partial class CreateFormula : System.Web.UI.Page
 
             if (cmbProdAdd.SelectedIndex != 0)
             {
-                ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value);
+                ds = bl.ListProductDetailsManuf(cmbProdAdd.SelectedItem.Value);
                 //string category = lblledgerCategory.Text;
                 if (ds != null)
                 {
@@ -616,7 +617,9 @@ public partial class CreateFormula : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Minimum one Raw Material and one Product should be added.');", true);
                         return;
                     }
-                    bl.UpdateFormulaItem(FormulaName, ds);
+                    string usernam12 = Request.Cookies["LoggedUserName"].Value;
+
+                    bl.UpdateFormulaItem(usernam12,FormulaName, ds);
 
                     //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -925,7 +928,9 @@ public partial class CreateFormula : System.Web.UI.Page
                 {
 
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
-                    bl.InsertFormulaItem(FormulaName, ds);
+
+                    string usernam1 = Request.Cookies["LoggedUserName"].Value;
+                    bl.InsertFormulaItem(usernam1,FormulaName, ds);
 
                     //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
