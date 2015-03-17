@@ -1670,7 +1670,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 {
                     hdOpr.Value = "New";
                     hdCurrRole.Value = "";
-                    ds = bl.ListProductDetails(itemCode,"");
+                    ds = bl.ListProductDetailsManuf(itemCode);
 
                     //string category = lblledgerCategory.Text;
                     string category = drpCustomerCategoryAdd.SelectedValue;

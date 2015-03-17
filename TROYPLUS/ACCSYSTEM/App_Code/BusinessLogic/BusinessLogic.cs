@@ -11027,7 +11027,37 @@ public class BusinessLogic
 
     }
 
+    public DataSet ListProductDetailsManuf(string itemCode)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);// System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
 
+         dbQry = "select itemcode,ProductName,ProductDesc,Model,Discount,Vat,Rate,CST,Stock,dealerdiscount,dealervat,dealerrate,Accept_Role,Rate as NLP from tblProductMaster Where itemCode='" + itemCode + "'";
+       
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+
+    }
     public DataSet ListProductDetails(string itemCode,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -20182,11 +20212,44 @@ public class BusinessLogic
 
 
 
-    public void InsertExecutionItem(string FormulaName, DataSet ds)
+    //public void InsertExecutionItem(string FormulaName, DataSet ds)
+    //{
+    //    DBManager manager = new DBManager(DataProvider.SqlServer);
+    //    manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+    //    string dbQry = string.Empty;
+
+    //    try
+    //    {
+    //        manager.Open();
+    //        manager.BeginTransaction();
+
+    //        if (ds != null)
+    //        {
+    //            if (ds.Tables.Count > 0)
+    //            {
+    //                foreach (DataRow dr in ds.Tables[0].Rows)
+    //                {
+    //                    dbQry = string.Format("Insert Into tblExecution(FormulaName,ItemCode,Qty,InOut,CDate,IsAssembly) Values('{0}','{1}',{2},'{3}',Format('{4}', 'dd/mm/yyyy'),'{5}')", FormulaName, dr["ItemCode"].ToString(), dr["Qty"].ToString(), dr["InOut"].ToString(), dr["CDate"].ToString(), dr["isAssembly"].ToString());
+    //                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+    //                }
+    //            }
+    //        }
+    //        manager.CommitTransaction();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+
+    //}
+
+    public void InsertFormulaItem(string username, string FormulaName, DataSet ds)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
+        string sAuditStr = string.Empty;
+        // DataRow dr = new DataRow();
 
         try
         {
@@ -20199,10 +20262,13 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        dbQry = string.Format("Insert Into tblExecution(FormulaName,ItemCode,Qty,InOut,CDate,IsAssembly) Values('{0}','{1}',{2},'{3}',Format('{4}', 'dd/mm/yyyy'),'{5}')", FormulaName, dr["ItemCode"].ToString(), dr["Qty"].ToString(), dr["InOut"].ToString(), dr["CDate"].ToString(), dr["isAssembly"].ToString());
+                        dbQry = string.Format("Insert Into tblFormula(FormulaName,ItemCode,Qty,InOut,Unit_Of_Measure) Values('{0}','{1}',{2},'{3}','{4}')", FormulaName, dr["ItemCode"].ToString(), Convert.ToDouble(dr["Qty"].ToString()), dr["InOut"].ToString(), dr["Unit_Of_Measure"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
+                sAuditStr = "FormulaName : " + FormulaName + " added. Record Details : User : " + username;
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             manager.CommitTransaction();
         }
@@ -20212,7 +20278,6 @@ public class BusinessLogic
         }
 
     }
-
 
     //public void UpdateFormulaItem(string FormulaName, DataSet ds,string branchcode,string username)
     //{
@@ -20258,7 +20323,7 @@ public class BusinessLogic
 
     //}
 
-    public void UpdateFormulaItem(string FormulaName, DataSet ds,string branchcode,string username)
+    public void UpdateFormulaItem(string username, string FormulaName, DataSet ds)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -20287,10 +20352,10 @@ public class BusinessLogic
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
 
-                    sAuditStr = "FormulaName : " + FormulaName + " Edit and update. Record Details : User : " + username ;
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
-                manager.ExecuteNonQuery(CommandType.Text, dbQry);
-            }
+                    sAuditStr = "FormulaName : " + FormulaName + " Edit and update. Record Details : User : " + username;
+                    dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                }
             }
 
             manager.CommitTransaction();
