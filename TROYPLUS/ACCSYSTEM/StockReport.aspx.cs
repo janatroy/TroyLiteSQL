@@ -18,10 +18,12 @@ public partial class StockReport : System.Web.UI.Page
     Double sumDbl = 0;
     Double grandDbl = 0;
     private string sDataSource = string.Empty;
+    private string connection = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
 
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        connection = Request.Cookies["Company"].Value;
         try
         {
             if (!IsPostBack)
@@ -186,6 +188,37 @@ public partial class StockReport : System.Web.UI.Page
         return cond4;
     }
 
+
+    protected string getCond5()
+    {
+        string cond5 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Selected)
+            {
+                cond5 += listItem.Value + ",";
+            }
+        }
+       
+        return cond5;
+    }
+
+
+    protected string getCond6()
+    {
+        string cond6 = "";
+        foreach (ListItem listItem1 in lstPricelist.Items)
+        {
+            if (listItem1.Selected)
+            {
+                cond6 += listItem1.Value + ",";
+            }
+        }
+        
+        return cond6;
+    }
+
     protected void btndet_Click(object sender, EventArgs e)
     {
         try
@@ -199,6 +232,9 @@ public partial class StockReport : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+    
+
+   
 
     protected void btnxls_Click(object sender, EventArgs e)
     {
@@ -209,7 +245,7 @@ public partial class StockReport : System.Web.UI.Page
             DateTime refDate = DateTime.Parse(txtStartDate.Text);
 
             BusinessLogic bl = new BusinessLogic(sDataSource);
-            ds = bl.getProductsstock(sDataSource, refDate);
+            ds = bl.getProductsstock(connection, refDate);
             double Amount = 0;
 
             DataTable dt = new DataTable();
@@ -314,9 +350,13 @@ public partial class StockReport : System.Web.UI.Page
             string cond3 = "";
             cond3 = getCond3();
             string cond4 = "";
-            cond4 = getCond4();                      
+            cond4 = getCond4();
+            string cond5 = "";
+            cond5 = getCond5();
+            string cond6 = "";
+            cond6 = getCond6();   
             //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-            Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {
@@ -355,7 +395,7 @@ public partial class StockReport : System.Web.UI.Page
                 cond3 = getCond3();
                 string cond4 = "";
                 cond4 = getCond4();
-                DataSet ds = bl.getProducts(sDataSource, catID, refDate, cond, cond1, cond2, cond3, cond4);
+                DataSet ds = bl.getProducts(sDataSource,refDate, cond, cond1, cond2, cond3, cond4,"");
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
