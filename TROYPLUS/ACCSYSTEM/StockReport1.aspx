@@ -186,7 +186,19 @@
                             <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
                             </td>
                         </tr>
+                        <tr>
+                              <asp:Image ID="Image1" runat="server" />
+                        </tr>
                     </table>
+                    <div>
+                         <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
+                            AlternatingRowStyle-CssClass="even" 
+                            AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;">
+                            <HeaderStyle CssClass="ReportHeadataRow" />
+                            <RowStyle CssClass="ReportdataRow" />
+                            <AlternatingRowStyle CssClass="ReportAltdataRow" />
+                            </wc:ReportGridView>
+                    </div>
                     <div style="width: 700px" align="center">
                         <wc:ReportGridView runat="server" BorderWidth="1" ID="gvCategory" GridLines="Both"
                             AlternatingRowStyle-CssClass="even" AutoGenerateColumns="false"
@@ -208,7 +220,7 @@
                                         <div id="div<%# Eval("CategoryName") %>" style="display: none; position: relative; left: 25px;">
                                             <wc:ReportGridView runat="server" BorderWidth="1" ID="gvProducts" ShowFooter="true"
                                                 AutoGenerateColumns="false" AllowPrintPaging="true" Width="90%"
-                                                OnRowDataBound="GridView2_RowDataBound" Style="font-family: 'Trebuchet MS'; font-size: 11px;">
+                                                Style="font-family: 'Trebuchet MS'; font-size: 11px;">
                                                 <HeaderStyle CssClass="ReportHeadataRow" />
                                                 <RowStyle CssClass="ReportdataRow" />
                                                 <AlternatingRowStyle CssClass="ReportAltdataRow" />
@@ -280,14 +292,7 @@
                             </Columns>
                         </wc:ReportGridView>
                         <br />
-                        <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
-                            AlternatingRowStyle-CssClass="even" 
-                            AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;">
-                            <HeaderStyle CssClass="ReportHeadataRow" />
-                            <RowStyle CssClass="ReportdataRow" />
-                            <AlternatingRowStyle CssClass="ReportAltdataRow" />
-                            </wc:ReportGridView>
-
+                       
                         <div style="text-align: right">
                             <b><span style="font-family: 'Trebuchet MS'; font-size: 11px;">Grand Total : </span>
                             </b>
@@ -297,6 +302,8 @@
 
 
                     </div>
+                    
+
                 </div>                
             </div>
             <br />

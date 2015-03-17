@@ -19,6 +19,8 @@ public partial class StockReport : System.Web.UI.Page
     Double grandDbl = 0;
     private string sDataSource = string.Empty;
     private string connection = string.Empty;
+    string brncode;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -56,6 +58,7 @@ public partial class StockReport : System.Web.UI.Page
                     }
                 }
                 loadBranch();
+                BranchEnable_Disable();
                 loadPriceList();
             }
 
@@ -85,12 +88,36 @@ public partial class StockReport : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         lstBranch.Items.Clear();
-        lstBranch.Items.Add(new ListItem("All", "0"));
-        ds = bl.ListBranch();
+        
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+            lstBranch.Items.Add(new ListItem("All", "0"));
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
         lstBranch.DataSource = ds;
         lstBranch.DataTextField = "BranchName";
         lstBranch.DataValueField = "Branchcode";
         lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
     }
 
     private void loadPriceList()
@@ -115,9 +142,12 @@ public partial class StockReport : System.Web.UI.Page
 
         foreach (ListItem listItem in lstBranch.Items)
         {
-            if (listItem.Selected)
+            if (listItem.Text != "All")
             {
-               cond += " BranchCode='" + listItem.Value + "' ,";               
+                if (listItem.Selected)
+                {
+                    cond += " BranchCode='" + listItem.Value + "' ,";
+                }
             }
         }
         cond = cond.TrimEnd(',');
@@ -130,9 +160,12 @@ public partial class StockReport : System.Web.UI.Page
         string cond1 = "";
         foreach (ListItem listItem1 in lstPricelist.Items)
         {
-            if (listItem1.Selected)
+            if (listItem1.Text != "All")
             {
-                cond1 += "  tblPriceList.PriceName='" + listItem1.Value + "' ,";
+                if (listItem1.Selected)
+                {
+                    cond1 += "  tblPriceList.PriceName='" + listItem1.Value + "' ,";
+                }
             }
         }
         cond1 = cond1.TrimEnd(',');
@@ -146,9 +179,12 @@ public partial class StockReport : System.Web.UI.Page
 
         foreach (ListItem listItem in lstBranch.Items)
         {
-            if (listItem.Selected)
+            if (listItem.Text != "All")
             {
-                cond2 += " S.BranchCode='" + listItem.Value + "' ,";
+                if (listItem.Selected)
+                {
+                    cond2 += " S.BranchCode='" + listItem.Value + "' ,";
+                }
             }
         }
         cond2 = cond2.TrimEnd(',');
@@ -162,9 +198,12 @@ public partial class StockReport : System.Web.UI.Page
 
         foreach (ListItem listItem in lstBranch.Items)
         {
-            if (listItem.Selected)
+            if (listItem.Text != "All")
             {
-                cond3 += " P.BranchCode='" + listItem.Value + "' ,";
+                if (listItem.Selected)
+                {
+                    cond3 += " P.BranchCode='" + listItem.Value + "' ,";
+                }
             }
         }
         cond3 = cond3.TrimEnd(',');
@@ -178,9 +217,12 @@ public partial class StockReport : System.Web.UI.Page
 
         foreach (ListItem listItem in lstBranch.Items)
         {
-            if (listItem.Selected)
+            if (listItem.Text != "All")
             {
-                cond4 += " SI.BranchCode='" + listItem.Value + "' ,";
+                if (listItem.Selected)
+                {
+                    cond4 += " SI.BranchCode='" + listItem.Value + "' ,";
+                }
             }
         }
         cond4 = cond4.TrimEnd(',');
@@ -195,12 +237,15 @@ public partial class StockReport : System.Web.UI.Page
 
         foreach (ListItem listItem in lstBranch.Items)
         {
-            if (listItem.Selected)
+            if (listItem.Text != "All")
             {
-                cond5 += listItem.Value + ",";
+                if (listItem.Selected)
+                {
+                    cond5 += listItem.Value + ",";
+                }
             }
         }
-       
+
         return cond5;
     }
 
@@ -210,12 +255,15 @@ public partial class StockReport : System.Web.UI.Page
         string cond6 = "";
         foreach (ListItem listItem1 in lstPricelist.Items)
         {
-            if (listItem1.Selected)
+            if (listItem1.Text != "All")
             {
-                cond6 += listItem1.Value + ",";
+                if (listItem1.Selected)
+                {
+                    cond6 += listItem1.Value + ",";
+                }
             }
         }
-        
+
         return cond6;
     }
 
@@ -232,9 +280,9 @@ public partial class StockReport : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
-    
 
-   
+
+
 
     protected void btnxls_Click(object sender, EventArgs e)
     {
@@ -339,24 +387,35 @@ public partial class StockReport : System.Web.UI.Page
     {
         try
         {
-            DateTime refDate = DateTime.Parse(txtStartDate.Text);
+            if (lstBranch.SelectedIndex == -1)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+            }
+            else if(lstPricelist.SelectedIndex == -1)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any PriceList')", true);
+            }
+            else
+            {
+                DateTime refDate = DateTime.Parse(txtStartDate.Text);
 
-            string cond = "";
-            cond = getCond();
-            string cond1 = "";
-            cond1 = getCond1();
-            string cond2 = "";
-            cond2 = getCond2();
-            string cond3 = "";
-            cond3 = getCond3();
-            string cond4 = "";
-            cond4 = getCond4();
-            string cond5 = "";
-            cond5 = getCond5();
-            string cond6 = "";
-            cond6 = getCond6();   
-            //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-            Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                string cond = "";
+                cond = getCond();
+                string cond1 = "";
+                cond1 = getCond1();
+                string cond2 = "";
+                cond2 = getCond2();
+                string cond3 = "";
+                cond3 = getCond3();
+                string cond4 = "";
+                cond4 = getCond4();
+                string cond5 = "";
+                cond5 = getCond5();
+                string cond6 = "";
+                cond6 = getCond6();
+                //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            }
         }
         catch (Exception ex)
         {
@@ -395,7 +454,7 @@ public partial class StockReport : System.Web.UI.Page
                 cond3 = getCond3();
                 string cond4 = "";
                 cond4 = getCond4();
-                DataSet ds = bl.getProducts(sDataSource,refDate, cond, cond1, cond2, cond3, cond4,"");
+                DataSet ds = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, "");
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
@@ -449,5 +508,31 @@ public partial class StockReport : System.Web.UI.Page
     protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
     {
 
+    }
+    protected void lstBranch_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        foreach (ListItem li in lstBranch.Items)
+        {
+            if (lstBranch.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }           
+        }
+    }
+    protected void lstPricelist_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        foreach (ListItem li in lstPricelist.Items)
+        {
+            if (lstPricelist.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }
+        }
     }
 }

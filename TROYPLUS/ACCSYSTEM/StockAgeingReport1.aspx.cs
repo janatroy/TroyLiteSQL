@@ -22,7 +22,9 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
     string secondLevel = "";
     string thirdLevel = "";
     string fourthLevel = "";
-
+    string cond;
+    string cond1;
+    string cond2;
     public string sDataSource = string.Empty;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -101,6 +103,18 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
                 {
                     fourthLevel = Request.QueryString["fourthLevel"].ToString();
                 }
+                if (Request.QueryString["cond"] != null)
+                {
+                    cond = Request.QueryString["cond"].ToString();
+                    cond = Server.UrlDecode(cond);
+                }
+                if (Request.QueryString["cond1"] != null)
+                {
+                    cond1 = Request.QueryString["cond1"].ToString();
+                    cond1 = Server.UrlDecode(cond1);
+                }
+
+
                 DataSet ds = GenerateGridColumns();
                 ds = UpdatePurchaseData(ds);
                 ds = UpdateSalesData(ds);
@@ -1676,10 +1690,23 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
             productindex = Convert.ToInt32(Request.QueryString["productindex"].ToString());
         }
 
+
+        if (Request.QueryString["cond"] != null)
+        {
+            cond = Request.QueryString["cond"].ToString();
+            cond = Server.UrlDecode(cond);
+        }
+        if (Request.QueryString["cond1"] != null)
+        {
+            cond1 = Request.QueryString["cond1"].ToString();
+            cond1 = Server.UrlDecode(cond1);
+        }
+
+
         if (productindex > 0)
             selecteditemCode = Product;
 
-        DataSet salesData = rpt.GetSalesData(sDataSource, selecteditemCode);
+        DataSet salesData = rpt.GetSalesData(sDataSource, selecteditemCode,cond,cond1);
         //DataSet salesData = objBL.GetSalesData(sDataSource, selecteditemCode);
 
         int duration = int.Parse(txtDuration.Text);

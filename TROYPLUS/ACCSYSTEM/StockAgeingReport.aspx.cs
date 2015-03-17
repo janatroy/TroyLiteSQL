@@ -243,6 +243,13 @@ public partial class StockAgeingReport : System.Web.UI.Page
             thirdLevel = ddlThirdLvl.SelectedValue;
             fourthLevel = ddlFourthLvl.SelectedValue;
 
+
+            string cond = "";
+            cond = getCond();
+            string cond1 = "";
+            cond1 = getCond1();
+
+
             DataSet ds = GenerateGridColumns();
             ds = UpdatePurchaseData(ds);
             ds = UpdateSalesData(ds);
@@ -285,13 +292,16 @@ public partial class StockAgeingReport : System.Web.UI.Page
             string Productname = cmbProduct.SelectedItem.Text;
             int productindex = cmbProduct.SelectedIndex;
 
+            
+
+
             if (lstBranch.SelectedIndex == -1)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);              
             }
             else
             {
-                Response.Write("<script language='javascript'> window.open('StockAgeingReport1.aspx?Modelval=" + Modelval + "&Brandval=" + Brandval + "&Productname=" + Productname + "&Categoryval=" + Categoryval + "&productindex=" + productindex + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                Response.Write("<script language='javascript'> window.open('StockAgeingReport1.aspx?Modelval=" + Modelval + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&Brandval=" + Brandval + "&Productname=" + Productname + "&Categoryval=" + Categoryval + "&productindex=" + productindex + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
             }
         }
         catch (Exception ex)
@@ -299,6 +309,45 @@ public partial class StockAgeingReport : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    protected string getCond()
+    {
+        string cond = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond += " tblSales.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond = cond.TrimEnd(',');
+        cond = cond.Replace(",", "or");
+        return cond;
+    }
+
+    protected string getCond1()
+    {
+        string cond1 = "";
+
+        foreach (ListItem listItem in lstPricelist.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond1 += " PriceName='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond1 = cond1.TrimEnd(',');
+        cond1 = cond1.Replace(",", "or");
+        return cond1;
+    }
+
 
     protected void btndet_Click(object sender, EventArgs e)
     {
@@ -1446,12 +1495,17 @@ public partial class StockAgeingReport : System.Web.UI.Page
         DateTime endDate = DateTime.Parse(DateTime.Now.ToShortDateString());
 
         //DateTime refDate = DateTime.Parse("01/05/2011");
+        string cond = "";
+        cond = getCond();
+        string cond1 = "";
+        cond1 = getCond1();
+
 
         string selecteditemCode = "0";
         if (cmbProduct.SelectedIndex > 0)
             selecteditemCode = cmbProduct.SelectedValue.Trim();
 
-        DataSet salesData = rpt.GetSalesData(sDataSource, selecteditemCode);
+        DataSet salesData = rpt.GetSalesData(sDataSource, selecteditemCode,cond,cond1);
         //DataSet salesData = objBL.GetSalesData(sDataSource, selecteditemCode);
 
         int duration = int.Parse(txtDuration.Text);
