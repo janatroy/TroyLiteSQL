@@ -1405,7 +1405,7 @@ public partial class BundlePurchase : System.Web.UI.Page
 
             if (!dupFlag)
             {
-                ds = bl.ListProductDetails(itemCode,"");
+                ds = bl.ListProductDetailsManuf(itemCode);
                 if (ds != null)
                 {
                     lblProdNameAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["productname"]);
@@ -1515,7 +1515,7 @@ public partial class BundlePurchase : System.Web.UI.Page
                 }
                 if (!dupFlag)
                 {
-                    ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value,"");
+                    ds = bl.ListProductDetailsManuf(cmbProdAdd.SelectedItem.Value);
                     if (ds != null)
                     {
                         lblProdNameAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["productname"]);

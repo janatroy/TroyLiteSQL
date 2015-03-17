@@ -525,7 +525,7 @@ public partial class CreateFormula : System.Web.UI.Page
 
             if (cmbProdAdd.SelectedIndex != 0)
             {
-                ds = bl.ListProductDetails(cmbProdAdd.SelectedItem.Value);
+                ds = bl.ListProductDetailsManuf(cmbProdAdd.SelectedItem.Value);
                 //string category = lblledgerCategory.Text;
                 if (ds != null)
                 {

@@ -280,7 +280,13 @@
                             </Columns>
                         </wc:ReportGridView>
                         <br />
-                       
+                        <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
+                            AlternatingRowStyle-CssClass="even" 
+                            AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;">
+                            <HeaderStyle CssClass="ReportHeadataRow" />
+                            <RowStyle CssClass="ReportdataRow" />
+                            <AlternatingRowStyle CssClass="ReportAltdataRow" />
+                            </wc:ReportGridView>
 
                         <div style="text-align: right">
                             <b><span style="font-family: 'Trebuchet MS'; font-size: 11px;">Grand Total : </span>
