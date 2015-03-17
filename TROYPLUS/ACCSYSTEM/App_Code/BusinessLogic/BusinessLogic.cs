@@ -20168,11 +20168,12 @@ public class BusinessLogic
 
     //}
 
-    public void InsertFormulaItem(string FormulaName, DataSet ds)
+    public void InsertFormulaItem(string username, string FormulaName, DataSet ds)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
+        string sAuditStr = string.Empty;
         // DataRow dr = new DataRow();
 
         try
@@ -20190,6 +20191,9 @@ public class BusinessLogic
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
                 }
+                sAuditStr = "FormulaName : " + FormulaName + " added. Record Details : User : " + username ;
+                            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+                           manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
             manager.CommitTransaction();
         }
@@ -20278,12 +20282,13 @@ public class BusinessLogic
 
     //}
 
-    public void UpdateFormulaItem(string FormulaName, DataSet ds)
+    public void UpdateFormulaItem(string username,string FormulaName, DataSet ds)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         string dbQry = string.Empty;
         DataSet oldData = new DataSet();
+        string sAuditStr = string.Empty;
 
         try
         {
@@ -20305,6 +20310,10 @@ public class BusinessLogic
                         // dbQry = string.Format("Update tblFormula Set FormulaName='{0}', ItemCode='{1}', Qty={2}, InOut='{3}',Unit_Of_Measure='{4}' Where FormulaID={5}", FormulaName, dr["ItemCode"].ToString(), Convert.ToInt32(dr["Qty"].ToString()), dr["InOut"].ToString(),dr["Unit_Of_Measure"].ToString(), dr["FormulaID"].ToString());
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
                     }
+
+                    sAuditStr = "FormulaName : " + FormulaName + " Edit and update. Record Details : User : " + username ;
+                            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+                             manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 }
             }
 
