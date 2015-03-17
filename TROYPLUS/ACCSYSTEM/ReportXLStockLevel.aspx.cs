@@ -377,6 +377,9 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
          int trol = 0;
 
          ds = objBL.getstocklevelcategory(sDataSource, refDate, trange, toption, Branch);
+         DataSet dst = new DataSet();
+
+         string itemcode = string.Empty;
 
          DataTable dt = new DataTable();
 
@@ -468,6 +471,10 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                  {
                      foreach (DataRow dr in ds.Tables[0].Rows)
                      {
+                         itemcode = Convert.ToString(dr["itemcode"]);
+
+                         dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode, Branch);
+
                          DataRow dr_final6 = dt.NewRow();
                          dr_final6["Category"] = dr["Categoryname"];
                          //dr_final6["Brand"] = dr["productdesc"];
@@ -476,6 +483,33 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                          //dr_final6["ItemCode"] = dr["Itemcode"];
                          dr_final6["Category Level"] = dr["categorylevel"];
                          dr_final6["Stock"] = dr["Stock"];
+
+                         if (dst != null)
+                         {
+                             if (dst.Tables[0].Rows.Count > 0)
+                             {
+                                 foreach (DataRow drt in dst.Tables[0].Rows)
+                                 {
+                                     dr_final6["Branchcode"] = drt["Branchcode"];
+
+                                     foreach (ListItem listItem1 in lstPricelist.Items)
+                                     {
+                                         if (listItem1.Selected)
+                                         {
+                                             string item1 = listItem1.Value;
+                                             string item123 = Convert.ToString(drt["pricename"]);
+
+                                             if (item123 == item1)
+                                             {
+                                                 dr_final6[item1] = drt["price"];
+                                             }
+
+                                         }
+                                     }
+                                 }
+                             }
+                         }
+
 
                          dt.Rows.Add(dr_final6);
                      }
@@ -517,6 +551,10 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
          string Branch = drpBranchAdd.SelectedValue;
 
          ds = objBL.getstocklevelbrand(sDataSource, refDate, trange, toption, Branch);
+
+         DataSet dst = new DataSet();
+
+         string itemcode = string.Empty;
 
          DataTable dt = new DataTable();
 
@@ -608,6 +646,10 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                  {
                      foreach (DataRow dr in ds.Tables[0].Rows)
                      {
+                         itemcode = Convert.ToString(dr["itemcode"]);
+
+                         dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode, Branch);
+
                          DataRow dr_final6 = dt.NewRow();
                          //dr_final6["Category"] = dr["Categoryname"];
                          dr_final6["Brand"] = dr["brandname"];
@@ -616,6 +658,32 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                          //dr_final6["ItemCode"] = dr["Itemcode"];
                          dr_final6["Brand Level"] = dr["brandlevel"];
                          dr_final6["Stock"] = dr["Stock"];
+
+                         if (dst != null)
+                         {
+                             if (dst.Tables[0].Rows.Count > 0)
+                             {
+                                 foreach (DataRow drt in dst.Tables[0].Rows)
+                                 {
+                                     dr_final6["Branchcode"] = drt["Branchcode"];
+
+                                     foreach (ListItem listItem1 in lstPricelist.Items)
+                                     {
+                                         if (listItem1.Selected)
+                                         {
+                                             string item1 = listItem1.Value;
+                                             string item123 = Convert.ToString(drt["pricename"]);
+
+                                             if (item123 == item1)
+                                             {
+                                                 dr_final6[item1] = drt["price"];
+                                             }
+
+                                         }
+                                     }
+                                 }
+                             }
+                         }
 
                          dt.Rows.Add(dr_final6);
                      }
