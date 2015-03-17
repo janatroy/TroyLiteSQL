@@ -6725,7 +6725,7 @@ namespace ReportsBL
 
         }
 
-        public DataSet GetSalesData(string sDataSource, string itemCode)
+        public DataSet GetSalesData(string sDataSource, string itemCode,string branchcode,string pricelist)
         {
             SqlConnection oleConn;
             SqlCommand oleCmd;
@@ -6749,7 +6749,7 @@ namespace ReportsBL
                    " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
                    " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
                    " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
-                   " where tblSalesItems.ItemCode='" + itemCode + "'" +
+                   " where " + branchcode + " and " + pricelist + " and tblSalesItems.ItemCode='" + itemCode + "'" +
                    " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
             else
                 // sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblSales P Inner Join tblSalesItems PI On P.BillNo = PI.BillNo) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Group By PI.ItemCode,P.BillDate,M.ProductName";
@@ -6758,8 +6758,7 @@ namespace ReportsBL
                      " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
                      " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
                      " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
-                     " where tblSalesItems.BranchCode='KKN' " +
-                     " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
+                     " where " + branchcode + " and " + pricelist + " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
