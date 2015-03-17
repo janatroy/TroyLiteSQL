@@ -520,6 +520,8 @@ public partial class ProjectReport1 : System.Web.UI.Page
                         htmlcode.Append("</td>");
                         htmlcode.Append("<td style=width:15%> Project Status");
                         htmlcode.Append("</td>");
+                        htmlcode.Append("<td style=width:15%> Branch Code");
+                        htmlcode.Append("</td>");
 
                         htmlcode.Append("<tr class=ReportdataRow>");
                         htmlcode.Append("<td>" + dspro.Tables[0].Rows[i].ItemArray[0].ToString());
@@ -533,6 +535,8 @@ public partial class ProjectReport1 : System.Web.UI.Page
                         htmlcode.Append("<td>" + dspro.Tables[0].Rows[i].ItemArray[5].ToString());
                         htmlcode.Append("</td>");
                         htmlcode.Append("<td>" + dspro.Tables[0].Rows[i].ItemArray[4].ToString());
+                        htmlcode.Append("</td>");
+                        htmlcode.Append("<td>" + dspro.Tables[0].Rows[i].ItemArray[7].ToString());
                         htmlcode.Append("</td>");
 
 

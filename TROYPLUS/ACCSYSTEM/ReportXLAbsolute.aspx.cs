@@ -59,7 +59,7 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         lstPricelist.Items.Clear();
-        lstPricelist.Items.Add(new ListItem("All", "0"));
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
         ds = bl.ListPriceList(connection);
         lstPricelist.DataSource = ds;
         lstPricelist.DataTextField = "PriceName";
@@ -142,6 +142,8 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
                   dt.Columns.Add(new DataColumn("ItemCode"));
                   dt.Columns.Add(new DataColumn("Model"));
                   dt.Columns.Add(new DataColumn("Rol"));
+                  dt.Columns.Add(new DataColumn("Stock"));
+                  dt.Columns.Add(new DataColumn("Branchcode"));
 
                   foreach (ListItem listItem1 in lstPricelist.Items)
                   {
@@ -180,7 +182,7 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
                   {
                       itemcode = Convert.ToString(dr["itemcode"]);
 
-                        dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode);
+                      dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode, Branch);
 
 
                           DataRow dr_final6 = dt.NewRow();
@@ -190,6 +192,7 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
                           dr_final6["ItemCode"] = dr["Itemcode"];
 
                           dr_final6["Rol"] = dr["Rol"];
+                          
 
                           if (dst != null)
                           {
@@ -197,6 +200,9 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
                               {
                                   foreach (DataRow drt in dst.Tables[0].Rows)
                                   {
+                                      dr_final6["Stock"] = drt["Stock"];
+                                      dr_final6["Branchcode"] = drt["Branchcode"];
+
                                       foreach (ListItem listItem1 in lstPricelist.Items)
                                       {
                                           if (listItem1.Selected)
@@ -290,6 +296,9 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
                   //gvLedger.DataBind();
 
                   ExportToExcel(dt);
+
+                  //DataSet dstt = new DataSet();
+                  //dstt.Tables.Add(dt);
              }
              else
              {

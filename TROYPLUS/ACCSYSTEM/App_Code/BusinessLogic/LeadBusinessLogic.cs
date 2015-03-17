@@ -614,7 +614,7 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.BeginTransaction();
 
-            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TextValue='" + TextValue + "' And ID <> " + ID.ToString() + "");
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TypeName='" + TypeName + "' and TextValue='" + TextValue + "' And ID <> " + ID.ToString() + "");
 
             if (exists.ToString() != string.Empty)
             {
@@ -663,7 +663,7 @@ public class LeadBusinessLogic : BaseLogic
 
             manager.BeginTransaction();
 
-            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TextValue='" + TextValue + "'");
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeadReferences Where TypeName='"+ TypeName +"' and TextValue='" + TextValue + "'");
 
             if (exists.ToString() != string.Empty)
             {
@@ -719,7 +719,7 @@ public class LeadBusinessLogic : BaseLogic
 
 
 
-            sAuditStr = "Lead Management Lead No: " + ID + " Deleted. Record Details : User: " + username;
+            sAuditStr = "Lead Reference Lead No: " + ID + " Deleted. Record Details : User: " + username;
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -855,6 +855,8 @@ public class LeadBusinessLogic : BaseLogic
             manager.ProviderType = DataProvider.SqlServer;
 
             manager.BeginTransaction();
+
+          
 
             //dbQry = string.Format("INSERT INTO tblLeadHeader(Start_Date,Lead_Name,Address,Mobile,Telephone,BP_Name,Bp_Id,Contact_Name,Emp_Id,Emp_Name,Doc_Status,Branch,Lead_Status,InvoicedAmt,Closing_Per,Closing_Date,chec) VALUES(Format('{0}', 'dd/mm/yyyy'),'{1}','{2}','{3}','{4}','{5}',{6},'{7}',{8},'{9}','{10}','{11}','{12}',{13},{14},Format('{15}', 'dd/mm/yyyy'),'{16}')",
             //        startDate.ToShortDateString(), LeadName, address, mobile, Telephone, BpName, BpId, ContactName, EmpId, EmpName, Status, branch, LeadStatus, TotalAmount, ClosingPer, ClosingDate, check);
@@ -1471,6 +1473,142 @@ public class LeadBusinessLogic : BaseLogic
         catch (Exception ex)
         {
             throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+
+
+    public bool CheckIfleadreferenceused(string Connection,string referencename,int id)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(Connection); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        int qty = 0;
+        string dbQry = string.Empty;
+        try
+        {
+            manager.Open();
+
+            if(referencename=="Business Type")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Businesstype=" + id;
+            }
+
+            else if (referencename == "Category")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Category=" + id;
+            }
+            else if (referencename == "Area")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Area=" + id;
+            }
+            else if (referencename == "Interest level")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where InterestLevel=" + id;
+            }
+            else if (referencename == "Additional Information 3")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Information3=" + id;
+            }
+            else if (referencename == "Additional Information 4")
+            {
+                dbQry = "SELECT Count(*) FROM tblLeadHeader where Information4=" + id;
+            }
+            //if (referencename == "Business Type")
+            //{
+            //    dbQry = "SELECT Count(*) FROM tblLeadHeader where Businesstype=" + id;
+            //}
+
+
+
+                //Activity level
+
+
+            else if(referencename=="Additional Information 5")
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where Information5=" + id;
+            }
+            else if (referencename == "Additional Information 2")
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where Information2=" + id;
+            }
+            else if (referencename == "Mode of Contact")
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where ModeofContact=" + id;
+            }
+            //else if (referencename == "Activity Name")
+            //{
+            //    dbQry = "SELECT Count(*) FROM tblActivities where Activity_Name_Id=" + id;
+            //}
+            //else if (referencename == "Activity Name")
+            //{
+            //    dbQry = "SELECT Count(*) FROM tblActivities where Next_Activity_Id=" + id;
+            //}
+
+            else
+            {
+                dbQry = "SELECT Count(*) FROM tblActivities where Activity_Name_Id=" + id;
+            }
+
+            object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if (qtyObj != null && qtyObj != DBNull.Value)
+            {
+                qty = (int)qtyObj;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
+    public bool IsLeadAlreadyFound(string connection, string leadName)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+
+        try
+        {
+
+            dbQry = ("SELECT Count(*) FROM tblLeadHeader Where Lead_Name='" + leadName + "'");
+
+        
+
+            manager.Open();
+            object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            return false;
         }
         finally
         {
