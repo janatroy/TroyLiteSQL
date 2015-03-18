@@ -42347,7 +42347,7 @@ public class BusinessLogic
 
 
 
-    public DataSet getProductStockList(string sDataSource, string itemCode, DateTime sDate, DateTime eDate)
+    public DataSet getProductStockList(string sDataSource, string itemCode, DateTime sDate, DateTime eDate, string Branch, int types)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -42367,7 +42367,28 @@ public class BusinessLogic
         //sQry = "SELECT * FROM (SELECT  b.billdate ,'PURCHASE' As Purchase/Sale ,qty,c.ledgername As LedgerName  from tblpurchaseitems a,tblpurchase b,tblledger c WHERE a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid AND itemcode='" + itemCode + "' UNION SELECT  d.billdate,'SALES' As Purchase/Sale,c.qty,e.ledgername As LedgerName  from tblsalesitems c,tblsales d,tblledger e WHERE c.billno=d.billno  AND d.cancelled=false AND d.customerid = e.ledgerid AND itemcode='" + itemCode + "') order by 1 ";
 
         //sQry = "select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',qty,c.ledgername As LedgerName   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and itemcode='" + itemCode + "'union all select  d.billdate,'SALES' As 'Purchase/Sale',c.qty,d.customername As LedgerName   from tblsalesitems c,tblsales d  where c.billno=d.billno  AND d.cancelled=false and itemcode='" + itemCode + "') order by 1";
-        sQry = "select d.billdate,'SALES' As 'Purchase/Sale',d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND d.billdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.cancelled=false and itemcode='" + itemCode + "' order by d.billdate union all    select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND b.InvoiceDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND  itemcode='" + itemCode + "' ) order by 1,2";
+
+        if (types == 0)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' union all    select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt   as rate  from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "' order by 1,2";
+        }
+        else if (types == 1)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "'  and d.DeliveryNote in ('yes','YES') union all    select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt as rate    from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "' and b.DeliveryNote in ('yes','YES')  order by 1,2";
+        }
+        else if (types == 2)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' and d.InternalTransfer in ('yes','YES') union all   select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt as rate  from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "' and b.InternalTransfer in ('yes','YES') order by 1,2";
+        }
+        else if (types == 3)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' and d.PurchaseReturn in ('yes','YES') order by d.billdate";
+        }
+        else if (types == 4)
+        {
+            sQry = "select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt  as rate   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "'  and b.SALESReturn in ('yes','YES') order by b.billdate";
+        }
+
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -42376,7 +42397,7 @@ public class BusinessLogic
 
         DataSet dsINOUT = new DataSet();
 
-        sQry = "select  (c.Cdate) as billdate,'Raw Material' As 'Purchase/Sale',c.compid,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='Raw Material' and d.itemcode='" + itemCode + "' order by c.cdate union all  select * from ( select  (c.Cdate) as billdate,'Raw Material' As 'Purchase/Sale',c.compid, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='Product' and d.itemcode='" + itemCode + "' ) order by 1,2";
+        sQry = "select  (c.Cdate) as billdate,'Raw Material' As PurchaseSale,c.compid,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND c.Cdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.InOut='Raw Material' and d.itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' union all  select  (c.Cdate) as billdate,'Raw Material' As PurchaseSale,c.compid, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND c.Cdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.InOut='Product' and d.itemcode='" + itemCode + "'  and d.Branchcode ='" + Branch + "'  order by 1,2";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -63128,7 +63149,7 @@ public class BusinessLogic
         }
     }
 
-    public double getOpeningStockPurchase(string sDataSource, string itemCode, DateTime sDate)
+    public double getOpeningStockPurchase(string sDataSource, string itemCode, DateTime sDate, string Branch)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -63146,7 +63167,7 @@ public class BusinessLogic
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
         /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-        sQry = "SELECT SUM(qty) FROM tblPurchaseItems,tblPurchase WHERE tblPurchase.PurchaseID = tblPurchaseItems.purchaseID AND ItemCode ='" + itemCode + "' AND Invoicedate <#" + sDate.ToString("MM/dd/yyyy") + "#";
+        sQry = "SELECT SUM(qty) FROM tblPurchaseItems,tblPurchase WHERE tblPurchase.PurchaseID = tblPurchaseItems.purchaseID AND ItemCode ='" + itemCode + "' AND Invoicedate <'" + sDate.ToString("yyyy-MM-dd") + "' and Branchcode='" + Branch + "' ";
 
 
         oleCmd.CommandText = sQry;
@@ -74044,6 +74065,115 @@ public class BusinessLogic
             if (manager != null)
                 manager.Dispose();
         }
+    }
+
+    public DataSet GetAbsoluteCategorypricelist(string sDataSource, string Category, string Branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+        string smrpeffDate = string.Empty;
+        string sdpeffdate = string.Empty;
+        string snlceffdate = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            dbQry2 = "select tblproductprices.itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate,tblproductstock.stock,tblproductstock.Branchcode from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblCategory.CategoryId = tblproductmaster.CategoryId where tblCategory.Categoryname='" + Category + "' and tblproductstock.Branchcode ='" + Branch + "' ";
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public double getOpeningStock(string sDataSource, string itemCode, string BranchCode)
+    {
+        SqlConnection oleConn;
+        SqlCommand oleCmd;
+        SqlDataAdapter oleAdp;
+        DataSet dsParentQry;
+        string sQry = string.Empty;
+        string sConStr = string.Empty;
+
+
+        /* Start Ms Access Database Connection Information */
+        sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleConn.Open();
+        oleCmd = new SqlCommand();
+        oleCmd.Connection = oleConn;
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        //sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "'";
+        sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "' AND BranchCode = '" + BranchCode + "' ";
+
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+
+        double cnt = 0;
+        object retVal = oleCmd.ExecuteScalar();
+        if ((retVal != null) && (retVal != DBNull.Value))
+        {
+            cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+        }
+        oleConn.Close();
+        return cnt;
+    }
+
+    public double getOpeningStockSales(string sDataSource, string itemCode, DateTime sDate, string Branch)
+    {
+        SqlConnection oleConn;
+        SqlCommand oleCmd;
+        SqlDataAdapter oleAdp;
+        DataSet dsParentQry;
+        string sQry = string.Empty;
+        string sConStr = string.Empty;
+
+
+        /* Start Ms Access Database Connection Information */
+        sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleConn.Open();
+        oleCmd = new SqlCommand();
+        oleCmd.Connection = oleConn;
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        sQry = "SELECT SUM(qty) FROM tblSalesItems,tblSales WHERE tblSales.Billno = tblSalesItems.Billno AND ItemCode ='" + itemCode + "' AND cancelled = 'false' AND billdate <'" + sDate.ToString("yyyy-MM-dd") + "' and tblSales.Branchcode ='" + Branch + "' ";
+
+
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+
+        double cnt = 0;
+        object retVal = oleCmd.ExecuteScalar();
+        if ((retVal != null) && (retVal != DBNull.Value))
+        {
+            cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+        }
+        oleConn.Close();
+        return cnt;
     }
 
 

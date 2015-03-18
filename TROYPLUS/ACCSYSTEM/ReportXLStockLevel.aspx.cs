@@ -471,7 +471,7 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                  {
                      foreach (DataRow dr in ds.Tables[0].Rows)
                      {
-                         itemcode = Convert.ToString(dr["itemcode"]);
+                         itemcode = Convert.ToString(dr["Categoryname"]);
 
                          dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode, Branch);
 
