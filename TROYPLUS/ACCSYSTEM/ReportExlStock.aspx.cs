@@ -11,12 +11,15 @@ public partial class ReportExlStock : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
     BusinessLogic objBL;
-
+    string connection;
+    string brncode;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+            connection = Request.Cookies["Company"].Value;
             if (!IsPostBack)
             {
 
@@ -28,6 +31,10 @@ public partial class ReportExlStock : System.Web.UI.Page
                 objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
                 txtStartDate.Text = DateTime.Now.ToShortDateString();
+
+                loadBranch();
+                BranchEnable_Disable();
+                loadPriceList();
             }
         }
         catch (Exception ex)
@@ -36,13 +43,131 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstBranch.Items.Clear();
+
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+            lstBranch.Items.Add(new ListItem("All", "0"));
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+    }
+
+    private void loadPriceList()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstPricelist.Items.Clear();
+        lstPricelist.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListPriceList(connection);
+        lstPricelist.DataSource = ds;
+        lstPricelist.DataTextField = "PriceName";
+        lstPricelist.DataValueField = "PriceName";
+        lstPricelist.DataBind();
+    }
+
+    protected string getCond1()
+    {
+        string cond = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond += "BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond = cond.TrimEnd(',');
+        cond = cond.Replace(",", " or ");
+        return cond;
+    }
+
+    protected string getCond3()
+    {
+        string cond3 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond3 += "S.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond3 = cond3.TrimEnd(',');
+        cond3 = cond3.Replace(",", " or ");
+        return cond3;
+    }
+
+
+    protected string getCond4()
+    {
+        string cond4 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond4 += "" + listItem.Value + " ,";
+                }
+            }
+        }
+        cond4 = cond4.TrimEnd(',');
+        //cond = cond.Replace(",", " or ");
+        return cond4;
+    }
+
     protected void btnReport_Click(object sender, EventArgs e)
     {
         try
         {
             //DateTime Date;
-            //string cond = "";
-            //cond = getCond();
+            string cond = "";
+            cond = getCond1();
+
+            string cond3 = "";
+            cond3 = getCond3();
+
+            string cond4 = "";
+            cond4 = getCond4();
             //objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
             //DataSet ds = new DataSet();
             //DataTable dtt = new DataTable();
@@ -61,90 +186,91 @@ public partial class ReportExlStock : System.Web.UI.Page
             //    ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
             //}
 
+
             if (opnradio.SelectedItem.Text == "Normal")
             {
                 if ((chkoption.SelectedItem.Text == "Category Wise"))
                 {
-                    bindDataCatwise();
+                    bindDataCatwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Brand Wise"))
                 {
-                    bindDataBrandwise();
+                    bindDataBrandwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Product Wise"))
                 {
-                    bindDataproductwise();
+                    bindDataproductwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Brand / Product Wise"))
                 {
-                    bindDatabrandprodwise();
+                    bindDatabrandprodwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Brand / Product / Model Wise"))
                 {
-                    bindDatabrandprodmodelwise();
+                    bindDatabrandprodmodelwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Category / Brand / Product Wise"))
                 {
-                    bindDataCategorybrandprodwise();
+                    bindDataCategorybrandprodwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Category / Brand Wise"))
                 {
-                    bindDatacatbrandwise();
+                    bindDatacatbrandwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Category / Product Wise"))
                 {
-                    bindDatacatprodwise();
+                    bindDatacatprodwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Product / Model Wise"))
                 {
-                    bindDataprodmodelwise();
+                    bindDataprodmodelwise(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Brand / Model Wise"))
                 {
-                    bindDatabrandmodelwise();
+                    bindDatabrandmodelwise(cond, cond3);
                 }
             }
             else if (opnradio.SelectedItem.Text == "GroupBy")
             {
                 if ((chkoption.SelectedItem.Text == "Category Wise"))
                 {
-                    bindDataCatwiseGroupBy();
+                    bindDataCatwiseGroupBy(cond,cond3,cond4);
                 }
                 else if ((chkoption.SelectedItem.Text == "Brand Wise"))
                 {
-                    bindDataBrandwiseGroupBy();
+                    bindDataBrandwiseGroupBy(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Product Wise"))
                 {
-                    bindDataproductwiseGroupBy();
+                    bindDataproductwiseGroupBy(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Brand / Product Wise"))
                 {
-                    bindDatabrandprodwiseGroupBy();
-                }
-                else if ((chkoption.SelectedItem.Text == "Brand / Product / Model Wise"))
-                {
-                    bindDatabrandprodmodelwiseGroupBy();
-                }
-                else if ((chkoption.SelectedItem.Text == "Category / Brand / Product Wise"))
-                {
-                    bindDataCategorybrandprodwiseGroupBy();
-                }
-                else if ((chkoption.SelectedItem.Text == "Category / Brand Wise"))
-                {
-                    bindDatacatbrandwiseGroupBy();
-                }
-                else if ((chkoption.SelectedItem.Text == "Category / Product Wise"))
-                {
-                    bindDatacatprodwiseGroupBy();
-                }
-                else if ((chkoption.SelectedItem.Text == "Product / Model Wise"))
-                {
-                    bindDataprodmodelwiseGroupBy();
+                    bindDatabrandprodwiseGroupBy(cond, cond3);
                 }
                 else if ((chkoption.SelectedItem.Text == "Brand / Model Wise"))
                 {
-                    bindDatabrandmodelwiseGroupBy();
+                    bindDatabrandprodmodelwiseGroupBy(cond, cond3);
+                }
+                else if ((chkoption.SelectedItem.Text == "Category / Brand / Product Wise"))
+                {
+                    bindDataCategorybrandprodwiseGroupBy(cond, cond3);
+                }
+                else if ((chkoption.SelectedItem.Text == "Category / Brand Wise"))
+                {
+                    bindDatacatbrandwiseGroupBy(cond, cond3);
+                }
+                else if ((chkoption.SelectedItem.Text == "Category / Product Wise"))
+                {
+                    bindDatacatprodwiseGroupBy(cond, cond3);
+                }
+                else if ((chkoption.SelectedItem.Text == "Model Wise"))
+                {
+                    bindDataprodmodelwiseGroupBy(cond, cond3);
+                }
+                else if ((chkoption.SelectedItem.Text == "Brand / Model Wise"))
+                {
+                    bindDatabrandmodelwiseGroupBy(cond, cond3);
                 }
             }
         }
@@ -154,7 +280,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataBrandwise()
+    public void bindDataBrandwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -176,7 +302,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "Brandwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -184,6 +310,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Product"));
         dtt.Columns.Add(new DataColumn("ItemCode"));
         dtt.Columns.Add(new DataColumn("Model"));
+        dtt.Columns.Add(new DataColumn("BranchCode"));
 
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
@@ -225,6 +352,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
+                    dr_final8["BranchCode"] = "";
 
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
@@ -260,6 +388,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Product"] = dr["Productname"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
+                dr_final88["BranchCode"] = dr["BranchCode"];
 
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
@@ -304,7 +433,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["Product"] = "";
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
-
+        dr_final87["BranchCode"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal);
 
@@ -334,7 +463,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["Product"] = "";
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
-
+        dr_final123["BranchCode"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal1);
 
@@ -365,7 +494,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataBrandwiseGroupBy()
+    public void bindDataBrandwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -388,7 +517,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "Brandwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -405,7 +534,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -510,7 +639,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataproductwise()
+    public void bindDataproductwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -532,7 +661,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "productwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Product"));
@@ -721,7 +850,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataproductwiseGroupBy()
+    public void bindDataproductwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -744,7 +873,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "productwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Product"));
@@ -908,7 +1037,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDatacatbrandwise()
+    public void bindDatacatbrandwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -934,7 +1063,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "catbrandwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Category"));
@@ -1195,7 +1324,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDatacatbrandwiseGroupBy()
+    public void bindDatacatbrandwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -1221,7 +1350,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "catbrandwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Category"));
@@ -1248,7 +1377,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -1463,7 +1592,7 @@ public partial class ReportExlStock : System.Web.UI.Page
     }
 
 
-    public void bindDatacatprodwise()
+    public void bindDatacatprodwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -1489,7 +1618,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "catproductwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Category"));
@@ -1750,7 +1879,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDatacatprodwiseGroupBy()
+    public void bindDatacatprodwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -1776,7 +1905,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "catproductwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Category"));
@@ -2013,7 +2142,7 @@ public partial class ReportExlStock : System.Web.UI.Page
     }
 
 
-    public void bindDatabrandprodwise()
+    public void bindDatabrandprodwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -2039,7 +2168,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "brandprodwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -2302,7 +2431,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDatabrandprodwiseGroupBy()
+    public void bindDatabrandprodwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -2328,7 +2457,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "brandprodwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -2571,7 +2700,7 @@ public partial class ReportExlStock : System.Web.UI.Page
     }
 
 
-    public void bindDatabrandmodelwise()
+    public void bindDatabrandmodelwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -2597,7 +2726,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "brandmodelwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -2860,7 +2989,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDatabrandmodelwiseGroupBy()
+    public void bindDatabrandmodelwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -2886,7 +3015,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "brandmodelwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -3133,7 +3262,7 @@ public partial class ReportExlStock : System.Web.UI.Page
     }
 
 
-    public void bindDataprodmodelwise()
+    public void bindDataprodmodelwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -3159,7 +3288,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "prodmodelwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Product"));
@@ -3425,7 +3554,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataprodmodelwiseGroupBy()
+    public void bindDataprodmodelwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -3451,7 +3580,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "prodmodelwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Product"));
@@ -3478,7 +3607,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -3698,7 +3827,7 @@ public partial class ReportExlStock : System.Web.UI.Page
     }
 
 
-    public void bindDatabrandprodmodelwise()
+    public void bindDatabrandprodmodelwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -3730,7 +3859,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "brandprodmodelwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -4061,7 +4190,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDatabrandprodmodelwiseGroupBy()
+    public void bindDatabrandprodmodelwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -4093,7 +4222,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "brandprodmodelwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Brand"));
@@ -4121,7 +4250,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -4417,7 +4546,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataCategorybrandprodwise()
+    public void bindDataCategorybrandprodwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -4449,7 +4578,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "Categorybrandprodwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Category"));
@@ -4782,7 +4911,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataCategorybrandprodwiseGroupBy()
+    public void bindDataCategorybrandprodwiseGroupBy(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -4814,7 +4943,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "Categorybrandprodwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Category"));
@@ -5202,18 +5331,20 @@ public partial class ReportExlStock : System.Web.UI.Page
 
         field2 += "pm.stock,";
 
-        field2 += "pm.nlc,";
+        field2 += "pm.branchcode,";
 
-        field2 += "pm.dealerrate as dp,";
+       // field2 += "pm.nlc,";
 
-        field2 += "pm.rate as mrp,";
+      //  field2 += "pm.dealerrate as dp,";
 
-        field2 += "(pm.stock * pm.rate) as MRPvalue ";
+       // field2 += "pm.rate as mrp,";
+
+        field2 += "(PM.Stock * tblProductPrices.Price) as MRPvalue ";
 
         return field2;
     }
 
-    public void bindDataCatwiseGroupBy()
+    public void bindDataCatwiseGroupBy(string branchcode, string saBranchcode, string cond4)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -5237,7 +5368,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "Catwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         string itemcode = string.Empty;
 
@@ -5253,10 +5384,22 @@ public partial class ReportExlStock : System.Web.UI.Page
         if (chkboxVal.Checked == true)
             dtt.Columns.Add(new DataColumn("MRP Value"));
 
+
+        //char[] commaSeparator = new char[] { ',' };
+        //string[] result;
+        //result = cond4.Split(commaSeparator, StringSplitOptions.None);
+
+        //foreach (string str in result)
+        //{
+        //    dtt.Columns.Add(new DataColumn(str));
+        //}
+      
+
+
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+       // ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -5356,7 +5499,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
-    public void bindDataCatwise()
+    public void bindDataCatwise(string branchcode, string saBranchcode)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -5379,7 +5522,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         string Types = "Catwise";
-        ds = objBL.getstockreport(sDataSource, Date, field1, field2, Types);
+        ds = objBL.getstockreport(connection, Date, field1, field2, Types, branchcode, saBranchcode);
 
         string itemcode = string.Empty;
 
@@ -5389,6 +5532,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Product"));
         dtt.Columns.Add(new DataColumn("ItemCode"));
         dtt.Columns.Add(new DataColumn("Model"));
+        dtt.Columns.Add(new DataColumn("BranchCode"));
 
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
@@ -5411,7 +5555,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -5430,6 +5574,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
+                    dr_final8["BranchCode"] = "";
 
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
@@ -5464,6 +5609,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Product"] = dr["Productname"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
+                dr_final88["BranchCode"] = dr["BranchCode"];
 
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
@@ -5510,7 +5656,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["Product"] = "";
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
-
+        dr_final87["BranchCode"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal);
 
@@ -5540,7 +5686,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["Product"] = "";
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
-
+        dr_final123["BranchCode"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal1);
 
@@ -6212,4 +6358,31 @@ public partial class ReportExlStock : System.Web.UI.Page
         }
     }
 
+    protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        foreach (ListItem li in lstBranch.Items)
+        {
+            if (lstBranch.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }
+        }
+
+    }
+    protected void lstPricelist_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        foreach (ListItem li in lstPricelist.Items)
+        {
+            if (lstPricelist.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }
+        }
+    }
 }
