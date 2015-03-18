@@ -667,8 +667,9 @@ public partial class FormulaExecution : System.Web.UI.Page
             loadBranch();
             int CompID = int.Parse(GridViewProducts.SelectedDataKey.Value.ToString());
             GridViewRow row = GridViewProducts.SelectedRow;
-           // drpBranch.SelectedValue = row.Cells[3].Text;
+            drpBranch.SelectedValue = row.Cells[3].Text;
             GetExecutionDetails(CompID);
+            drpBranch.Enabled = false;
             PanelProductsList.Visible = false;
             PanelTemplateGrids.Visible = true;
             PanelTemplatesList.Visible = false;

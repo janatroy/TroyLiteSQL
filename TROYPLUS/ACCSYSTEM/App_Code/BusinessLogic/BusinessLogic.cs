@@ -3268,7 +3268,7 @@ public class BusinessLogic
             int CreditorID = Convert.ToInt32(ds.Tables[0].Rows[0]["CreditorID"].ToString());
             if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
             {
-                CheNo = Convert.ToInt32(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+                 CheNo = Convert.ToInt32(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
             }
             double Amount = Convert.ToDouble(ds.Tables[0].Rows[0]["Amount"].ToString());
             DateTime TransDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["TransDate"].ToString());
@@ -6001,19 +6001,19 @@ public class BusinessLogic
         {
 
             dbQry = " select  *  from tblExpenseMaster inner join tblGroups on tblExpenseMaster.GroupID = tblGroups.GroupID Where ExpenseHead like '" + txtSearch + "'" + " AND GroupName = 'General Expenses' Order By ExpenseHead";
-
+            
         }
         else if (dropDown == "AliasName")
         {
 
 
             dbQry = "select  *  from tblExpenseMaster inner join tblGroups on tblExpenseMaster.GroupID = tblGroups.GroupID Where AliasName like '" + txtSearch + "'" + " AND GroupName = 'General Expenses' Order By ExpenseHead";
-
+            
         }
         else
         {
             dbQry = string.Format("select *  from tblExpenseMaster inner join tblGroups on tblExpenseMaster.GroupID = tblGroups.GroupID Where (ExpenseHead like '{0}' or AliasName like '{0}') AND GroupName = 'General Expenses' Order By Expensehead", txtSearch);
-
+            
         }
 
         //if (dropDown == "LedgerName")
@@ -6593,7 +6593,7 @@ public class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
-            dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");
+            dbQry = string.Format("Update tblChequeitems Set Status='Y' Where ChequeNo='" + ChequeNo + "' and BankID=" + CreditorID + "");          
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             //dbQry = string.Format("Select Debit from tblLedger Where LedgerID={0}", DebitorID);
@@ -11034,8 +11034,8 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "select itemcode,ProductName,ProductDesc,Model,Discount,Vat,Rate,CST,Stock,dealerdiscount,dealervat,dealerrate,Accept_Role,Rate as NLP from tblProductMaster Where itemCode='" + itemCode + "'";
-
+         dbQry = "select itemcode,ProductName,ProductDesc,Model,Discount,Vat,Rate,CST,Stock,dealerdiscount,dealervat,dealerrate,Accept_Role,Rate as NLP from tblProductMaster Where itemCode='" + itemCode + "'";
+       
 
         try
         {
@@ -11065,7 +11065,7 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        // dbQry = "select itemcode,ProductName,ProductDesc,Model,Discount,Vat,Rate,CST,Stock,dealerdiscount,dealervat,dealerrate,Accept_Role,Rate as NLP from tblProductMaster Where itemCode='" + itemCode + "'";
+       // dbQry = "select itemcode,ProductName,ProductDesc,Model,Discount,Vat,Rate,CST,Stock,dealerdiscount,dealervat,dealerrate,Accept_Role,Rate as NLP from tblProductMaster Where itemCode='" + itemCode + "'";
         dbQry = " SELECT tblProductMaster.ItemCode,tblProductMaster.ProductName,tblProductMaster.ProductDesc, tblProductMaster.Model, tblProductMaster.Discount," +
                " tblProductMaster.VAT,tblProductMaster.Rate, tblProductMaster.CST,tblProductMaster.dealerdiscount,tblProductMaster.dealervat,tblProductMaster.dealerrate, " +
                " tblProductMaster.Accept_Role,tblProductMaster.Rate as NLP ,tblProductStock.Stock, tblProductStock.BranchCode, " +
@@ -12293,7 +12293,7 @@ public class BusinessLogic
         string description = string.Empty;
         string logdescription = string.Empty;
         string Logsave = string.Empty;
-        int CheNo = 0;
+        int CheNo = 0; 
         try
         {
             manager.Open();
@@ -12307,7 +12307,7 @@ public class BusinessLogic
             {
                 CheNo = Convert.ToInt32(dsOld.Tables[0].Rows[0]["ChequeNo"].ToString());
                 CreditID = Convert.ToInt32(dsOld.Tables[0].Rows[0]["CreditorID"]);
-            }
+            } 
 
 
             if (dsOld.Tables[0].Rows[0]["JournalID"] != null)
@@ -12503,7 +12503,7 @@ public class BusinessLogic
             {
                 dbQry = string.Format("Update tblChequeitems Set DamageCheque='Y' Where ChequeNo='" + CheNo + "' and BankID=" + CreditID + "");
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
-            }
+            } 
 
             sAuditStr = "Purchase Transaction: " + TransNo + " got deleted old Record Details : User =" + usernam + " BillNo=" + oldBillNo + " DebtorID=" + oldDebitID + ",CreditorID=" + oldCreditID + ",Amount=" + oldAmt;
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
@@ -17212,8 +17212,8 @@ public class BusinessLogic
         bool branchcheck = false;
         manager.Open();
         dbQry4 = "SELECT  * From tblUserInfo WHERE tblUserinfo.Username='" + Username + "'";
-        // manager.Open();
-        //  dsd = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+       // manager.Open();
+      //  dsd = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
         dsdd = manager.ExecuteDataSet(CommandType.Text, dbQry4);
 
         if (dsdd.Tables[0].Rows.Count > 0)
@@ -17229,7 +17229,7 @@ public class BusinessLogic
         else
         {
             dbQry3 = "SELECT  *,tblUserInfo.DefaultBranch From tblEmployee inner join tblUserInfo on tblUserInfo.Empno = tblEmployee.empno WHERE tblUserinfo.Username='" + Username + "'";
-            dsd = manager.ExecuteDataSet(CommandType.Text, dbQry3);
+        dsd = manager.ExecuteDataSet(CommandType.Text, dbQry3);
         }
 
         if (dsd.Tables[0].Rows.Count > 0)
@@ -19779,10 +19779,10 @@ public class BusinessLogic
                 //  dbQry.Append("  from tblFormula as A ");
                 if (branchcode != "All")
                 {
-                    dbQry.Append("SELECT FormulaName,BranchCode");
-                    dbQry.Append(" FROM tblFormula");
-                    dbQry.Append(" Where A.BranchCode='" + branchcode + "' and A.FormulaName like %" + name + "%");
-                    dbQry.Append(" Group By A.FormulaName,A.BranchCode ");
+                    dbQry.Append("SELECT FormulaName");
+                dbQry.Append(" FROM tblFormula");
+                   // dbQry.Append(" Where A.BranchCode='" + branchcode + "' and A.FormulaName like %" + name + "%");
+                    dbQry.Append(" Group By A.FormulaName ");
                 }
             }
             else
@@ -19792,15 +19792,15 @@ public class BusinessLogic
                 // dbQry.Append(" Group By A.FormulaName ");
                 if (branchcode != "All")
                 {
-                    dbQry.Append("SELECT FormulaName,BranchCode");
+                    dbQry.Append("SELECT FormulaName");
                     dbQry.Append(" FROM tblFormula");
-                    dbQry.Append(" Where BranchCode='" + branchcode + "'");
-                    dbQry.Append(" Group By FormulaName,BranchCode ");
+                    //dbQry.Append(" Where BranchCode='" + branchcode + "'");
+                    dbQry.Append(" Group By FormulaName ");
                 }
                 else
                 {
                     dbQry.Append("SELECT FormulaName");
-                    dbQry.Append(" FROM tblFormula");
+                dbQry.Append(" FROM tblFormula");
                     dbQry.Append(" Group By FormulaName ");
                 }
             }
@@ -20400,7 +20400,7 @@ public class BusinessLogic
             }
             else
             {
-                dbQry.Append(" Order By CDate Desc");
+            dbQry.Append(" Order By CDate Desc");
             }
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -20436,7 +20436,7 @@ public class BusinessLogic
         {
             manager.Open();
             dbQry.Append(" SELECT tblExecution.FormulaName, tblExecution.ItemCode, tblExecution.Qty, tblExecution.InOut, tblExecution.BranchCode,tblProductStock.ProductName, tblProductStock.Model, tblProductStock.Stock, tblProductStock.ProductDesc, tblCompProduct.CDate,tblCompProduct.IsReleased,tblCompProduct.Comments FROM tblExecution INNER JOIN tblCompProduct ON tblExecution.CompID = tblCompProduct.CompID INNER JOIN tblProductStock ON tblExecution.ItemCode = tblProductStock.ItemCode ");
-            // dbQry.Append("SELECT tblExecution.CompID, tblExecution.FormulaName,tblExecution.CompID,tblExecution.BranchCode,tblExecution.ItemCode,tblExecution.Qty,tblExecution.InOut,tblCompProduct.CDate,tblCompProduct.Comments,tblCompProduct.IsReleased FROM tblCompProduct inner join tblExecution on tblExecution.CompId=tblCompProduct.CompId ");
+           // dbQry.Append("SELECT tblExecution.CompID, tblExecution.FormulaName,tblExecution.CompID,tblExecution.BranchCode,tblExecution.ItemCode,tblExecution.Qty,tblExecution.InOut,tblCompProduct.CDate,tblCompProduct.Comments,tblCompProduct.IsReleased FROM tblCompProduct inner join tblExecution on tblExecution.CompId=tblCompProduct.CompId ");
 
             if (ispros)
                 dbQry.Append(" Where IsReleased ='Y' ");
@@ -34419,16 +34419,16 @@ public class BusinessLogic
             managerid = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranch"].ToString());
         defaultid = Convert.ToBoolean(dsd.Tables[0].Rows[0]["Branchcheck"]);
 
-        if (defaultid == true)
-        {
+           if (defaultid == true)
+           {
 
-            //dbQry = ("SELECT tblDayBook.RefNo, Mid(tblDayBook.TransDate,1,9) As TransDate, tblDayBook.DebtorID As PaidTo, IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) AS PaymentMode, '' as BankName, tblDayBook.Amount, tblDayBook.Narration FROM tblDayBook,tblLedger WHERE ((tblDayBook.[TransDate]) Between CDate('" + StartDate + "') And CDate('" + EndDate + "')) and (((tblDayBook.VoucherType)='Payment')) And ((tblLedger.GroupID)=" + Convert.ToInt32(Categorys) + ") And ((tblLedger.LedgerName)='" + Brands + "')");
-            dbQry = ("SELECT " + selColumn + ", (tblDayBook.Amount) As Amount,tblDaybook.BranchCode  FROM tblDayBook,tblLedger where tblDayBook.DebtorID = tblLedger.LedgerID and (tblDayBook.VoucherType='Payment') " + condtion + groupBy);
-        }
-        else
-        {
+               //dbQry = ("SELECT tblDayBook.RefNo, Mid(tblDayBook.TransDate,1,9) As TransDate, tblDayBook.DebtorID As PaidTo, IIf(IsNull(tblDayBook.ChequeNo),tblDayBook.CreditCardNo,tblDayBook.ChequeNo) AS PaymentMode, '' as BankName, tblDayBook.Amount, tblDayBook.Narration FROM tblDayBook,tblLedger WHERE ((tblDayBook.[TransDate]) Between CDate('" + StartDate + "') And CDate('" + EndDate + "')) and (((tblDayBook.VoucherType)='Payment')) And ((tblLedger.GroupID)=" + Convert.ToInt32(Categorys) + ") And ((tblLedger.LedgerName)='" + Brands + "')");
+               dbQry = ("SELECT " + selColumn + ", (tblDayBook.Amount) As Amount,tblDaybook.BranchCode  FROM tblDayBook,tblLedger where tblDayBook.DebtorID = tblLedger.LedgerID and (tblDayBook.VoucherType='Payment') " + condtion + groupBy);
+           }
+           else
+           {
             dbQry = ("SELECT " + selColumn + ", (tblDayBook.Amount) As Amount,tblDaybook.BranchCode  FROM tblDayBook,tblLedger where  tblDayBook.DebtorID = tblLedger.LedgerID and (tblDayBook.VoucherType='Payment') and tbldayBook.BranchCode='" + managerid + "' " + condtion + groupBy);
-        }
+           }
         try
         {
             manager.Open();
@@ -34786,20 +34786,20 @@ public class BusinessLogic
             managerid = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranch"].ToString());
         defaultid = Convert.ToBoolean(dsd.Tables[0].Rows[0]["Branchcheck"]);
 
-        if (defaultid == true)
-        {
+           if (defaultid == true)
+           {
 
-            //dbQry = ("SELECT tc.RefNo As RefNo,Mid(tc.NoteDate,1,10) As NoteDate,td.CreditorID As Creditor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td where tc.TransNo=td.TransNo and tc.CDType='Credit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
+        //dbQry = ("SELECT tc.RefNo As RefNo,Mid(tc.NoteDate,1,10) As NoteDate,td.CreditorID As Creditor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td where tc.TransNo=td.TransNo and tc.CDType='Credit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
 
-            //dbQry = ("SELECT tc.RefNo As RefNo,format(tc.NoteDate,'dd/mm/yyyy') As NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
+        //dbQry = ("SELECT tc.RefNo As RefNo,format(tc.NoteDate,'dd/mm/yyyy') As NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
 
-            dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
+               dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
 
-        }
-        else
-        {
-            dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tbldayBook.BranchCode='" + managerid + "' and tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
-        }
+           }
+           else
+           {
+               dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Creditor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tbldayBook.BranchCode='" + managerid + "' and tc.TransNo=td.TransNo and td.CreditorID = tl.ledgerid and tc.CDType='Credit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
+           }
 
         try
         {
@@ -34853,7 +34853,7 @@ public class BusinessLogic
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
-        string dbQry3 = string.Empty;
+           string dbQry3 = string.Empty;
         DataSet dsd = new DataSet();
 
         string managerid = string.Empty;
@@ -34868,18 +34868,18 @@ public class BusinessLogic
             managerid = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranch"].ToString());
         defaultid = Convert.ToBoolean(dsd.Tables[0].Rows[0]["Branchcheck"]);
 
-        if (defaultid == true)
-        {
+           if (defaultid == true)
+           {
 
-            //dbQry = ("SELECT tc.RefNo As RefNo,Mid(tc.NoteDate,1,9) As NoteDate,td.DebtorID As Debitor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td where tc.TransNo=td.TransNo and tc.CDType='Debit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
+        //dbQry = ("SELECT tc.RefNo As RefNo,Mid(tc.NoteDate,1,9) As NoteDate,td.DebtorID As Debitor,tc.Amount As Amount,td.Narration FROM tblCreditDebitNote tc, tblDayBook td where tc.TransNo=td.TransNo and tc.CDType='Debit' and tc.NoteDate between CDate('" + StartDate + "') and CDate('" + EndDate + "') order by tc.NoteDate");
 
-            dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Debitor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
-        }
+               dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Debitor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
+           }
 
-        else
-        {
-            dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Debitor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tblDayBook.BranchCode='" + managerid + "' tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
-        }
+           else
+           {
+               dbQry = ("SELECT tc.RefNo As RefNo,tc.NoteDate,tl.ledgername As Debitor,tc.Amount As Amount,td.Narration,td.BranchCode FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tblDayBook.BranchCode='" + managerid + "' tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit' and tc.NoteDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tc.NoteDate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tc.NoteDate");
+           }
         try
         {
             manager.Open();
@@ -36144,7 +36144,7 @@ public class BusinessLogic
 
         if (defaultid == true)
         {
-            // dbQry = ("SELECT " + selColumn + field2 + " FROM tblLedger,tblPurchase INNER JOIN (tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode) ON tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID where tblLedger.LedgerID = tblPurchase.SupplierID " + condtion + groupBy + ordrby);
+        // dbQry = ("SELECT " + selColumn + field2 + " FROM tblLedger,tblPurchase INNER JOIN (tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode) ON tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID where tblLedger.LedgerID = tblPurchase.SupplierID " + condtion + groupBy + ordrby);
             dbQry = ("SELECT " + selColumn + field2 + " ,tblPurchase.BranchCode FROM (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID) INNER JOIN tblProductMaster ON tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger on tblPurchase.SupplierID=tblLedger.LedgerID WHERE " + condtion + groupBy + ordrby);
         }
         else
@@ -42347,7 +42347,7 @@ public class BusinessLogic
 
 
 
-    public DataSet getProductStockList(string sDataSource, string itemCode, DateTime sDate, DateTime eDate)
+    public DataSet getProductStockList(string sDataSource, string itemCode, DateTime sDate, DateTime eDate, string Branch, int types)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -42367,7 +42367,28 @@ public class BusinessLogic
         //sQry = "SELECT * FROM (SELECT  b.billdate ,'PURCHASE' As Purchase/Sale ,qty,c.ledgername As LedgerName  from tblpurchaseitems a,tblpurchase b,tblledger c WHERE a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid AND itemcode='" + itemCode + "' UNION SELECT  d.billdate,'SALES' As Purchase/Sale,c.qty,e.ledgername As LedgerName  from tblsalesitems c,tblsales d,tblledger e WHERE c.billno=d.billno  AND d.cancelled=false AND d.customerid = e.ledgerid AND itemcode='" + itemCode + "') order by 1 ";
 
         //sQry = "select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',qty,c.ledgername As LedgerName   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and itemcode='" + itemCode + "'union all select  d.billdate,'SALES' As 'Purchase/Sale',c.qty,d.customername As LedgerName   from tblsalesitems c,tblsales d  where c.billno=d.billno  AND d.cancelled=false and itemcode='" + itemCode + "') order by 1";
-        sQry = "select d.billdate,'SALES' As 'Purchase/Sale',d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND d.billdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.cancelled=false and itemcode='" + itemCode + "' order by d.billdate union all    select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND b.InvoiceDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND  itemcode='" + itemCode + "' ) order by 1,2";
+
+        if (types == 0)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' union all    select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt   as rate  from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "' order by 1,2";
+        }
+        else if (types == 1)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "'  and d.DeliveryNote in ('yes','YES') union all    select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt as rate    from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "' and b.DeliveryNote in ('yes','YES')  order by 1,2";
+        }
+        else if (types == 2)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' and d.InternalTransfer in ('yes','YES') union all   select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt as rate  from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "' and b.InternalTransfer in ('yes','YES') order by 1,2";
+        }
+        else if (types == 3)
+        {
+            sQry = "select d.billdate,'SALES' As PurchaseSale,d.billno,c.qty,d.customername As LedgerName,c.rate  from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND d.billdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.cancelled='false' and itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' and d.PurchaseReturn in ('yes','YES') order by d.billdate";
+        }
+        else if (types == 4)
+        {
+            sQry = "select  b.billdate ,'PURCHASE' As PurchaseSale,b.BillNo ,qty,c.ledgername As LedgerName,b.TotalAmt  as rate   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.InvoiceDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND b.InvoiceDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND  itemcode='" + itemCode + "' and b.Branchcode ='" + Branch + "'  and b.SALESReturn in ('yes','YES') order by b.billdate";
+        }
+
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -42376,7 +42397,7 @@ public class BusinessLogic
 
         DataSet dsINOUT = new DataSet();
 
-        sQry = "select  (c.Cdate) as billdate,'Raw Material' As 'Purchase/Sale',c.compid,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='Raw Material' and d.itemcode='" + itemCode + "' order by c.cdate union all  select * from ( select  (c.Cdate) as billdate,'Raw Material' As 'Purchase/Sale',c.compid, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='Product' and d.itemcode='" + itemCode + "' ) order by 1,2";
+        sQry = "select  (c.Cdate) as billdate,'Raw Material' As PurchaseSale,c.compid,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND c.Cdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.InOut='Raw Material' and d.itemcode='" + itemCode + "' and d.Branchcode ='" + Branch + "' union all  select  (c.Cdate) as billdate,'Raw Material' As PurchaseSale,c.compid, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND c.Cdate<='" + eDate.ToString("yyyy-MM-dd") + "')  AND d.InOut='Product' and d.itemcode='" + itemCode + "'  and d.Branchcode ='" + Branch + "'  order by 1,2";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -44446,7 +44467,7 @@ public class BusinessLogic
         DataSet dsOld = new DataSet();
         DataSet dsOldRec = new DataSet();
         string sAuditStr = string.Empty;
-        int CheNo = 0;
+        int CheNo = 0; 
         int TTransNo = 0;
         int oldDebitID = 0;
         int oldCreditID = 0;
@@ -44477,7 +44498,7 @@ public class BusinessLogic
             if (ds.Tables[0].Rows[0]["ChequeNo"].ToString() != "")
             {
                 CheNo = Convert.ToInt32(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
-            }
+            } 
 
             dbQry = string.Format("Select DebtorID,CreditorID,Amount,Transdate,RefNo from tblDaybook Where TransNo={0}", TransNo);
             dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -45137,7 +45158,7 @@ public class BusinessLogic
 
         try
         {
-            // dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' and tblchequeitems.Bankid  = " + BankID + " ");
+           // dbQry = string.Format("select ChequeId, ChequeNo from tblchequeitems inner join tblcheque on tblchequeitems.ChequeBookID = tblcheque.ChequeBookID Where tblchequeitems.Status = 'N' and tblchequeitems.Bankid  = " + BankID + " ");
             dbQry = string.Format(" SELECT tblCheque.ChequeBookID, tblCheque.AccountNo, tblCheque.BankID, tblCheque.BankName, " +
                                  " tblCheque.FromChequeNo, tblCheque.ToChequeNo, tblChequeitems.ChequeBookID, tblChequeitems.ChequeNo, tblChequeitems.Status " +
                                  " FROM tblCheque INNER JOIN tblChequeitems ON tblCheque.ChequeBookID = tblChequeitems.ChequeBookID where tblCheque.BankID=" + BankID + " and tblChequeitems.Status='N'");
@@ -51815,7 +51836,7 @@ public class BusinessLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("Update tblChequeitems set DamageCheque='Y' where ChequeNo='" + ChequeNo + "' and BankID='" + BankID + "' and AccountNo='" + AccountNo + "'");
+            dbQry = string.Format("Update tblChequeitems set DamageCheque='Y' where ChequeNo='" + ChequeNo + "' and BankID='" + BankID + "' and AccountNo='" + AccountNo + "'");               
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -53933,20 +53954,20 @@ public class BusinessLogic
         manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
-        txtSearch = "%" + txtSearch + "%";
+        txtSearch = "%" + txtSearch + "%";      
 
         if (dropDown == "ItemCode")
         {
             if (branch == "All")
             {
                 //dbQry = "select tblStock.ItemCode,tblStock.ProductName, tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode";
-
+              
                 //dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
                 //                " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
                 //                " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                " Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
-
+                
                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
@@ -53960,7 +53981,7 @@ public class BusinessLogic
                 //               " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //               " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //               " Where tblStock.BranchCode='" + branch + "' and tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
-
+                 
                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
@@ -54021,11 +54042,11 @@ public class BusinessLogic
                 //                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                  " Where tblStock.BranchCode='" + branch + "' and tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
-                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
-                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
-                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                     " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.itemCode");
+                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                      " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                      " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                      " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.itemCode");
             }
         }
         else if (dropDown == "Brand")
@@ -54038,11 +54059,11 @@ public class BusinessLogic
                 //                   " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                   " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                   " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
-                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
-                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
-                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                     " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
+                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                      " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                      " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                      " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
             }
             else
             {
@@ -54051,11 +54072,11 @@ public class BusinessLogic
                 //                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                  " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
-                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
-                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
-                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                     " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
+                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                                      " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
+                                      " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
+                                      " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
+                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
             }
         }
         else
@@ -59027,15 +59048,15 @@ public class BusinessLogic
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
 
-        //SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblProductMaster.Rate, tblProductMaster.Unit, 
-        //tblProductMaster.VAT, tblProductMaster.Discount, tblProductMaster.BuyUnit, tblProductStock.Stock, tblProductStock.BranchCode, tblProductStock.BranchName, 
-        //tblProductPrices.Price, tblPriceList.PriceName, tblCategories.CategoryName,tblCategories.CategoryID
-        //FROM tblCategories INNER JOIN
-        //tblProductStock INNER JOIN
-        //tblProductMaster ON tblProductStock.ItemCode = tblProductMaster.ItemCode INNER JOIN
-        //tblProductPrices INNER JOIN
-        //tblPriceList ON tblProductPrices.PriceId = tblPriceList.Id ON tblProductStock.ItemCode = tblProductPrices.ItemCode ON 
-        //tblCategories.CategoryID = tblProductStock.CategoryID
+          //SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblProductMaster.Rate, tblProductMaster.Unit, 
+          //tblProductMaster.VAT, tblProductMaster.Discount, tblProductMaster.BuyUnit, tblProductStock.Stock, tblProductStock.BranchCode, tblProductStock.BranchName, 
+          //tblProductPrices.Price, tblPriceList.PriceName, tblCategories.CategoryName,tblCategories.CategoryID
+          //FROM tblCategories INNER JOIN
+          //tblProductStock INNER JOIN
+          //tblProductMaster ON tblProductStock.ItemCode = tblProductMaster.ItemCode INNER JOIN
+          //tblProductPrices INNER JOIN
+          //tblPriceList ON tblProductPrices.PriceId = tblPriceList.Id ON tblProductStock.ItemCode = tblProductPrices.ItemCode ON 
+          //tblCategories.CategoryID = tblProductStock.CategoryID
 
         //sQry = "SELECT ItemCode,Productname,Model,ProductDesc,Stock,Rate,Unit,VAT,Discount,BuyUnit FROM tblProductMaster WHERE CategoryID=" + iCategoryID + " ORDER BY Itemcode";
         sQry = " SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblProductMaster.Rate, tblProductMaster.Unit, " +
@@ -60911,76 +60932,76 @@ public class BusinessLogic
                             //    op1 = Convert.ToDouble(dr["OpenBalanceDR"]);
                             //} 
                             dbQ = "SELECT * From tblBranch";
-                            dsdt = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
-                            if (dsdt != null)
-                            {
-                                if (dsdt.Tables[0].Rows.Count > 0)
-                                {
-                                    foreach (DataRow dr in dsdt.Tables[0].Rows)
-                                    {
-                                        int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
+            dsdt = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
+            if (dsdt != null)
+            {
+                if (dsdt.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dsdt.Tables[0].Rows)
+                    {
+                        int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
 
-                                        if (Logsave == "YES")
-                                        {
-                                            string value1 = string.Empty;
-                                            string value2 = string.Empty;
-                                            string value3 = string.Empty;
+                        if (Logsave == "YES")
+                        {
+                            string value1 = string.Empty;
+                            string value2 = string.Empty;
+                            string value3 = string.Empty;
 
-                                            int middlePos = 0;
-                                            logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode,ModeofContact) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22})",
+                            int middlePos = 0;
+                            logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode,ModeofContact) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22})",
                                            LedgerID + 1, Convert.ToString(dr["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["AliasName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["GroupID"]), 0, 0, 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, Convert.ToString(dr["LedgerCategory"]), Convert.ToString(dr["xecutiveIncharge"]), Convert.ToString(dr["BTinNumber"]), Convert.ToString(dr["Mobile"]), Convert.ToString(dr["Inttrans"]), Convert.ToString(dr["Paymentmade"]), Convert.ToString(dr["dc"]), Convert.ToString(dr["Branchcode"]), 3);
 
-                                            //logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})",
-                                            //LedgerID + 1, leadgername + " - " + Convert.ToString(dr["Branchcode"]), AliasName + " - " + Convert.ToString(dr["Branchcode"]), GroupID, 0, 0, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, Convert.ToString(dr["Branchcode"]));
-                                            logdescription = logdescription.Trim();
-                                            if (logdescription.Length > 255)
-                                            {
-                                                value1 = logdescription.Substring(0, 255);
+                            //logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})",
+                            //LedgerID + 1, leadgername + " - " + Convert.ToString(dr["Branchcode"]), AliasName + " - " + Convert.ToString(dr["Branchcode"]), GroupID, 0, 0, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, Convert.ToString(dr["Branchcode"]));
+                            logdescription = logdescription.Trim();
+                            if (logdescription.Length > 255)
+                            {
+                                value1 = logdescription.Substring(0, 255);
 
-                                                middlePos = logdescription.Length - (value1.Length);
-                                                if (middlePos > 0)
-                                                    value2 = logdescription.Substring(255, middlePos);
-                                                else
-                                                    value2 = "";
+                                middlePos = logdescription.Length - (value1.Length);
+                                if (middlePos > 0)
+                                    value2 = logdescription.Substring(255, middlePos);
+                                else
+                                    value2 = "";
 
-                                                middlePos = logdescription.Length - (value1.Length + value2.Length);
-                                                if (middlePos > 0)
-                                                    value3 = logdescription.Substring(510, middlePos);
-                                                else
-                                                    value3 = "";
-                                            }
-                                            else
-                                            {
-                                                value1 = logdescription;
-                                                value2 = "";
-                                                value3 = "";
-                                            }
-
-                                            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
-                                                 DateTime.Now.ToString("yyyy-MM-dd"), value1, "", "", value2, value3, "InsertLedgerInfo");
-                                            manager.ExecuteNonQuery(CommandType.Text, description);
-                                        }
-
-                                        dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
-                                            LedgerID + 1, Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), 8, Convert.ToDouble(dr1["OpenBalanceDR"]), Convert.ToDouble(dr1["OpenBalanceCR"]), 0, 0, Convert.ToString(dr1["ContactName"]), Convert.ToString(dr1["Add1"]), Convert.ToString(dr1["Add2"]), Convert.ToString(dr1["Add3"]), 0, 0, "0", "0", "0", "0", "NO", "NO", "NO", Convert.ToString(dr1["LedgerName"]), "YES", "", 3, "", Convert.ToString(dr["Branchcode"]));
-
-                                        //dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
-                                        //    LedgerID + 1, LedgerName + " - " + Convert.ToString(dr["Branchcode"]), AliasName + " - " + Convert.ToString(dr["Branchcode"]), GroupID, 0, 0, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, Convert.ToString(dr["Branchcode"]));
-
-                                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
-
-                                        sAuditStr = "Ledger : " + Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " added. Record Details :  User :" + Username + " AliasName = " + Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " GroupID= " + 8 + " ,LedgerCategory = " + 0 + " ,Mobile=" + 0 + " Phone :" + 0;
-                                        dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
-                                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
-                                        dbQry = string.Format("INSERT INTO tblExpenseMaster(ExpenseHead, GroupID) VALUES('{0}','{1}')",
-                                                   Convert.ToString(dr1["LedgerName"]), 8);
-
-                                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
-                                    }
-
-                                }
+                                middlePos = logdescription.Length - (value1.Length + value2.Length);
+                                if (middlePos > 0)
+                                    value3 = logdescription.Substring(510, middlePos);
+                                else
+                                    value3 = "";
+                            }
+                            else
+                            {
+                                value1 = logdescription;
+                                value2 = "";
+                                value3 = "";
                             }
 
+                            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                                 DateTime.Now.ToString("yyyy-MM-dd"), value1, "", "", value2, value3, "InsertLedgerInfo");
+                            manager.ExecuteNonQuery(CommandType.Text, description);
+                        }
+
+                        dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
+                            LedgerID + 1, Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), 8, Convert.ToDouble(dr1["OpenBalanceDR"]), Convert.ToDouble(dr1["OpenBalanceCR"]), 0, 0, Convert.ToString(dr1["ContactName"]), Convert.ToString(dr1["Add1"]), Convert.ToString(dr1["Add2"]), Convert.ToString(dr1["Add3"]), 0, 0, "0", "0", "0", "0", "NO", "NO", "NO", Convert.ToString(dr1["LedgerName"]), "YES", "", 3, "", Convert.ToString(dr["Branchcode"]));
+
+                        //dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
+                        //    LedgerID + 1, LedgerName + " - " + Convert.ToString(dr["Branchcode"]), AliasName + " - " + Convert.ToString(dr["Branchcode"]), GroupID, 0, 0, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, Convert.ToString(dr["Branchcode"]));
+
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+                        sAuditStr = "Ledger : " + Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " added. Record Details :  User :" + Username + " AliasName = " + Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " GroupID= " + 8 + " ,LedgerCategory = " + 0 + " ,Mobile=" + 0 + " Phone :" + 0;
+                        dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                        dbQry = string.Format("INSERT INTO tblExpenseMaster(ExpenseHead, GroupID) VALUES('{0}','{1}')",
+                                   Convert.ToString(dr1["LedgerName"]), 8);
+
+                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                    }
+                    
+                }
+            }
+          
 
                             //dbQry = string.Format("SET IDENTITY_INSERT [tblLedger] OFF");
                             //manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -61305,7 +61326,7 @@ public class BusinessLogic
             manager.Open();
             dsParentQry = manager.ExecuteDataSet(CommandType.Text, sQry);
             return dsParentQry;
-        }
+    }
         catch (Exception ex)
         {
             throw ex;
@@ -63165,7 +63186,7 @@ public class BusinessLogic
         }
     }
 
-    public double getOpeningStockPurchase(string sDataSource, string itemCode, DateTime sDate)
+    public double getOpeningStockPurchase(string sDataSource, string itemCode, DateTime sDate, string Branch)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -63183,7 +63204,7 @@ public class BusinessLogic
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
         /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-        sQry = "SELECT SUM(qty) FROM tblPurchaseItems,tblPurchase WHERE tblPurchase.PurchaseID = tblPurchaseItems.purchaseID AND ItemCode ='" + itemCode + "' AND Invoicedate <#" + sDate.ToString("MM/dd/yyyy") + "#";
+        sQry = "SELECT SUM(qty) FROM tblPurchaseItems,tblPurchase WHERE tblPurchase.PurchaseID = tblPurchaseItems.purchaseID AND ItemCode ='" + itemCode + "' AND Invoicedate <'" + sDate.ToString("yyyy-MM-dd") + "' and Branchcode='" + Branch + "' ";
 
 
         oleCmd.CommandText = sQry;
@@ -67267,10 +67288,10 @@ public class BusinessLogic
 
             if (string.IsNullOrEmpty(validationMsg))
             {
-                dbQry = string.Format(@"UPDATE tblAttendanceSummary SET DateSubmitted='{0}',Status='{1}' WHERE AttendanceId ={2}", DateTime.Now.ToString(), "Submitted", attendanceID.ToString());
-                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            dbQry = string.Format(@"UPDATE tblAttendanceSummary SET DateSubmitted='{0}',Status='{1}' WHERE AttendanceId ={2}", DateTime.Now.ToString(), "Submitted", attendanceID.ToString());
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 return true;
-            }
+        }
             else
             {
                 return false;
@@ -67968,7 +67989,7 @@ public class BusinessLogic
                         allowedCount = wholePart + 0.5;
                     }
                     else
-                    {
+                {
                         allowedCount = wholePart;
                     }
 
@@ -68528,7 +68549,7 @@ public class BusinessLogic
                 userInfo.RoleId = roleId;
 
                 return userInfo;
-            }
+    }
             else
                 return null;
 
@@ -73231,7 +73252,7 @@ public class BusinessLogic
 
 
 
-
+          
 
 
             manager.CommitTransaction();
@@ -73280,7 +73301,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
 
-            //  object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where LedgerName='" + LedgerName + "' And LedgerID <> " + LedgerID.ToString() + "");
+          //  object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where LedgerName='" + LedgerName + "' And LedgerID <> " + LedgerID.ToString() + "");
             object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblExpenseMaster Where ExpenseHead='" + LedgerName + "'");
             if (exists.ToString() != string.Empty)
             {
@@ -73459,7 +73480,7 @@ public class BusinessLogic
                 {
                     foreach (DataRow dr in dsdt.Tables[0].Rows)
                     {
-                        //string  ExpID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ID) FROM tblExpenseMaster"));
+                       //string  ExpID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ID) FROM tblExpenseMaster"));
                         string branchcode = Convert.ToString(dr["Branchcode"]);
 
                         if (Logsave == "YES")
@@ -73861,7 +73882,7 @@ public class BusinessLogic
         finally
         {
             if (manager != null)
-                manager.Dispose();
+            manager.Dispose();
         }
     }
 
@@ -73902,7 +73923,7 @@ public class BusinessLogic
                 manager.Dispose();
         }
     }
-
+    
 
     public DataSet GetYearEndOutStandingReport(string connection, string master, string sLedger)
     {
@@ -73922,9 +73943,9 @@ public class BusinessLogic
         try
         {
             manager.Open();
-
+                      
             //dbQry2 = "select * from tblproductstock where stock > 0 order by itemcode";
-
+        
             dbQry2 = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName, (IIF((tblLedger.OpenBalanceDR is null),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount is null),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR is null),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount is null),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID in (1,2,3,14,16,4,19) ORDER BY tblLedger.LedgerName";
 
             dsParentQry = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
@@ -73932,26 +73953,26 @@ public class BusinessLogic
 
 
             Decimal temp_balance = 0;
-            DataSet ds;
-            DataTable dt;
-            DataRow drNew;
-            DataColumn dc;
-            ds = new DataSet();
-            dt = new DataTable();
-            dc = new DataColumn("LedgerName");
-            dt.Columns.Add(dc);
-            dc = new DataColumn("LedgerID");
-            dt.Columns.Add(dc);
-            dc = new DataColumn("Phone");
-            dt.Columns.Add(dc);
-            dc = new DataColumn("AliasName");
-            dt.Columns.Add(dc);
-            dc = new DataColumn("Debit");
-            dt.Columns.Add(dc);
-            dc = new DataColumn("Credit");
-            dt.Columns.Add(dc);
-            ds.Tables.Add(dt);
-
+        DataSet ds;
+        DataTable dt;
+        DataRow drNew;
+        DataColumn dc;
+        ds = new DataSet();
+        dt = new DataTable();
+        dc = new DataColumn("LedgerName");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("LedgerID");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("Phone");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("AliasName");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("Debit");
+        dt.Columns.Add(dc);
+        dc = new DataColumn("Credit");
+        dt.Columns.Add(dc);
+        ds.Tables.Add(dt);
+      
             if (dsParentQry.Tables[0].Rows.Count == 0)
             {
                 drNew = dt.NewRow();
@@ -74063,6 +74084,43 @@ public class BusinessLogic
             manager.Open();
 
             dbQry2 = "select tblproductprices.itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate,tblproductstock.stock,tblproductstock.Branchcode from tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode where tblproductprices.itemcode='" + itemcode + "' and tblproductstock.Branchcode ='" + Branch + "' ";
+            
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+    public DataSet GetAbsoluteCategorypricelist(string sDataSource, string Category, string Branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+        string smrpeffDate = string.Empty;
+        string sdpeffdate = string.Empty;
+        string snlceffdate = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            dbQry2 = "select tblproductprices.itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate,tblproductstock.stock,tblproductstock.Branchcode from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblCategory.CategoryId = tblproductmaster.CategoryId where tblCategory.Categoryname='" + Category + "' and tblproductstock.Branchcode ='" + Branch + "' ";
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
 
@@ -74081,6 +74139,78 @@ public class BusinessLogic
             if (manager != null)
                 manager.Dispose();
         }
+    }
+
+    public double getOpeningStock(string sDataSource, string itemCode, string BranchCode)
+    {
+        SqlConnection oleConn;
+        SqlCommand oleCmd;
+        SqlDataAdapter oleAdp;
+        DataSet dsParentQry;
+        string sQry = string.Empty;
+        string sConStr = string.Empty;
+
+
+        /* Start Ms Access Database Connection Information */
+        sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleConn.Open();
+        oleCmd = new SqlCommand();
+        oleCmd.Connection = oleConn;
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        //sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "'";
+        sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "' AND BranchCode = '" + BranchCode + "' ";
+
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+
+        double cnt = 0;
+        object retVal = oleCmd.ExecuteScalar();
+        if ((retVal != null) && (retVal != DBNull.Value))
+        {
+            cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+        }
+        oleConn.Close();
+        return cnt;
+    }
+
+    public double getOpeningStockSales(string sDataSource, string itemCode, DateTime sDate, string Branch)
+    {
+        SqlConnection oleConn;
+        SqlCommand oleCmd;
+        SqlDataAdapter oleAdp;
+        DataSet dsParentQry;
+        string sQry = string.Empty;
+        string sConStr = string.Empty;
+
+
+        /* Start Ms Access Database Connection Information */
+        sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleConn.Open();
+        oleCmd = new SqlCommand();
+        oleCmd.Connection = oleConn;
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        sQry = "SELECT SUM(qty) FROM tblSalesItems,tblSales WHERE tblSales.Billno = tblSalesItems.Billno AND ItemCode ='" + itemCode + "' AND cancelled = 'false' AND billdate <'" + sDate.ToString("yyyy-MM-dd") + "' and tblSales.Branchcode ='" + Branch + "' ";
+
+
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+
+        double cnt = 0;
+        object retVal = oleCmd.ExecuteScalar();
+        if ((retVal != null) && (retVal != DBNull.Value))
+        {
+            cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+        }
+        oleConn.Close();
+        return cnt;
     }
 
 

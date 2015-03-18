@@ -55,20 +55,20 @@
                 <td colspan="6">
                     <table style="width: 100%">
                         <tr>
-                            <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                            <td style="width:20%;" class="ControlLabel">
                                 Start Date
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
                                     Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                             </td>
-                            <td class="ControlTextBox3" width="20%">
-                                <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                            <td class="ControlTextBox3" style="width:25%;">
+                                <asp:TextBox ID="txtStartDate" CssClass="cssTextBox" MaxLength="10"
                                     runat="server" />
                             </td>
-                            <td align="left" width="5%">
+                            <td align="left" style="width:5%;" class="ControlLabel">
                                 <script type="text/javascript" language="JavaScript">
                                     new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                             </td>
-                            <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                            <td style="width:15%;" class="ControlLabel">
                                 End Date
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
                                     Display="None" ErrorMessage="Please Enter The End Date" CssClass="lblFont"></asp:RequiredFieldValidator>
@@ -77,36 +77,63 @@
                                     CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                             </td>
                             <td class="ControlTextBox3" width="25%">
-                                <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" />
+                                <asp:TextBox ID="txtEndDate" CssClass="cssTextBox" MaxLength="10" runat="server" />
                                 
                             </td>
-                            <td align="left" width="5%">
+                            <td align="left" style="width:10%;">
                                 <script type="text/javascript" language="JavaScript">
                                     new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
                             </td>
                         </tr>
                         <tr style="height: 2px;"/> 
                         <tr>
-                            <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
-                                Category *
+                            <td style="width:20%;" class="ControlLabel">
+                                Branch *
                                 
                             </td>
                             <td class="ControlDrpBorder" style="width:20%;"> 
+                                                          <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>                                                
+                            </td>
+                            <td  style="width: 5%"></td>
+                            <td style="width:15%;" class="ControlLabel">
+                                Type
+                            </td>
+                            <td class="ControlDrpBorder" style="width: 20%">
+                                   <asp:DropDownList ID="drpsaletype" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                       <asp:ListItem Selected="True" Value="0">All</asp:ListItem>
+                                       <asp:ListItem Value="1">Delivery Note</asp:ListItem>
+                                       <asp:ListItem Value="2">Internal Transfer</asp:ListItem>
+                                       <asp:ListItem Value="3">Purchase Return</asp:ListItem>
+                                       <asp:ListItem Value="4">Sales Return</asp:ListItem>
+                                                                                                    </asp:DropDownList>    
+                            </td>
+                            <td  style="width: 10%"></td>
+                        </tr>
+                        <tr style="height: 2px;"/> 
+                        <tr>
+                            <td style="width:20%;" class="ControlLabel">
+                                Category *
+                                
+                            </td>
+                            <td class="ControlDrpBorder" style="width:25%;"> 
                                                                                                                                     
-                                    <asp:DropDownList ID="cmbCategory" runat="server" AutoPostBack="true" BackColor = "#e7e7e7"
-                                        Width="100%" OnSelectedIndexChanged="LoadProducts" AppendDataBoundItems="True" style="border: 1px solid #e7e7e7" height="26px" CssClass="drpDownListMedium">
-                                        <asp:ListItem Selected="True" Value="0" style="background-color: #90c9fc">Select Category</asp:ListItem>
+                                    <asp:DropDownList ID="cmbCategory"  CssClass="chzn-select" runat="server" AutoPostBack="true" 
+                                        Width="100%" OnSelectedIndexChanged="LoadProducts" AppendDataBoundItems="True" height="26px">
+                                        <asp:ListItem Selected="True" Value="0">Select Category</asp:ListItem>
                                     </asp:DropDownList>
                                                                                                                                     
                             </td>
                             <td  style="width: 5%"></td>
-                            <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                            <td style="width:15%;" class="ControlLabel">
                                 Brand
                             </td>
                             <td class="ControlDrpBorder" style="width: 20%">
-                                    <asp:DropDownList ID="cmbBrand" runat="server" Width="100%" AutoPostBack="true" BackColor = "#e7e7e7"  style="border: 1px solid #e7e7e7" height="26px" CssClass="drpDownListMedium"
+                                    <asp:DropDownList ID="cmbBrand" runat="server" Width="100%" AutoPostBack="true" height="26px"  CssClass="chzn-select"
                                         OnSelectedIndexChanged="LoadForBrand" AppendDataBoundItems="True">
-                                        <asp:ListItem Selected="True" Value="0" style="background-color: #90c9fc">Select Brand</asp:ListItem>
+                                        <asp:ListItem Selected="True" Value="0" >Select Brand</asp:ListItem>
                                     </asp:DropDownList>
                             </td>
                             <td  style="width: 5%"></td>
@@ -114,23 +141,23 @@
                         <tr style="height: 2px;"/> 
                         <tr>
                             
-                            <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                            <td style="width:20%;" class="ControlLabel">
                                 Product Name
                             </td>
-                            <td class="ControlDrpBorder" style="width:20%;">
-                                <asp:DropDownList ID="cmbProdName" runat="server" Width="100%" BackColor = "#e7e7e7" style="border: 1px solid #e7e7e7" height="26px" CssClass="drpDownListMedium"
+                            <td class="ControlDrpBorder" style="width:25%;">
+                                <asp:DropDownList ID="cmbProdName" runat="server" Width="100%"  CssClass="chzn-select" height="26px"
                                     AutoPostBack="true" OnSelectedIndexChanged="LoadForProductName" AppendDataBoundItems="True">
-                                    <asp:ListItem Selected="True" Value="0" style="background-color: #90c9fc">Select Product</asp:ListItem>
+                                    <asp:ListItem Selected="True" Value="0" >Select Product</asp:ListItem>
                                 </asp:DropDownList>
                             </td>
                             <td  style="width: 5%"></td>
-                            <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                            <td style="width:15%;" class="ControlLabel">
                                 Model
                             </td>
                             <td class="ControlDrpBorder" style="width:25%;">
-                                <asp:DropDownList ID="cmbModel" runat="server" OnSelectedIndexChanged="LoadForModel" BackColor = "#e7e7e7" style="border: 1px solid #e7e7e7" height="26px" CssClass="drpDownListMedium"
+                                <asp:DropDownList ID="cmbModel" runat="server" OnSelectedIndexChanged="LoadForModel"  CssClass="chzn-select" height="26px" 
                                     AutoPostBack="true" Width="100%" AppendDataBoundItems="True">
-                                    <asp:ListItem Selected="True" Value="0" style="background-color: #90c9fc">Select Model</asp:ListItem>
+                                    <asp:ListItem Selected="True" Value="0" >Select Model</asp:ListItem>
                                 </asp:DropDownList>
                             </td>
                             <td  style="width: 5%"></td>
@@ -138,15 +165,15 @@
             <tr style="height: 2px;"/> 
                         <tr>
                             
-                            <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                            <td style="width:20%;"  class="ControlLabel">
                                 Product Code
                             </td>
-                            <td class="ControlDrpBorder" style="width: 20%">
+                            <td class="ControlDrpBorder" style="width: 25%">
                                                                                                                                     
-                                    <asp:DropDownList ID="cmbProdAdd" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor = "#e7e7e7"
-                                        DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="LoadForProduct" style="border: 1px solid #e7e7e7" height="26px" CssClass="drpDownListMedium"
+                                    <asp:DropDownList ID="cmbProdAdd" runat="server" AppendDataBoundItems="true" AutoPostBack="true"  CssClass="chzn-select"
+                                        DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="LoadForProduct" height="26px"
                                         ValidationGroup="product" Width="100%">
-                                        <asp:ListItem style="background-color: #90c9fc;" Text="Select Product Code" Value="0"></asp:ListItem>
+                                        <asp:ListItem Text="Select Product Code" Value="0"></asp:ListItem>
                                     </asp:DropDownList>
                                                                                                                                     
                             </td>
@@ -154,10 +181,11 @@
                                 
                             </td>
                             <td>
-                            <asp:CheckBox ID="chkvalue" runat="server" style="color:Black" Text="With Value" Font-Names="arial" Font-Size="12px" AutoPostBack="true" Font-Bold="True" />
+                            
                             </td>
                             <td style="width: 25%">
-                                <asp:CheckBox ID="chktrans" runat="server" style="color:Black" Text="With Item transfered" Font-Names="arial" Font-Size="12px" AutoPostBack="true" Font-Bold="True" />
+                                <asp:CheckBox ID="chkvalue" runat="server" style="color:Black" Text="With Value" Font-Names="arial" Font-Size="12px" AutoPostBack="true" Font-Bold="True" />
+                                <asp:CheckBox ID="chktrans" Visible="false" runat="server" style="color:Black" Text="With Item transfered" Font-Names="arial" Font-Size="12px" AutoPostBack="true" Font-Bold="True" />
                                 
                                 
                             </td>
@@ -293,7 +321,7 @@
                                                 runat="server" Text='<%# Eval("BillDate","{0:dd/MM/yyyy}")%>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="'Purchase/Sale'" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
+                                    <asp:BoundField DataField="PurchaseSale" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="billno" HeaderText="BillNo"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="LedgerName" HeaderText="Customer/Supplier Name"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:TemplateField HeaderText="Qty."  HeaderStyle-BorderColor="Gray">
@@ -337,7 +365,7 @@
                                                 runat="server" Text='<%# Eval("BillDate","{0:dd/MM/yyyy}")%>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="'Purchase/Sale'" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
+                                    <asp:BoundField DataField="PurchaseSale" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="billno" HeaderText="BillNo"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="LedgerName" HeaderText="Customer/Supplier Name"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:TemplateField HeaderText="Qty."  HeaderStyle-BorderColor="Gray">
