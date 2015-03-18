@@ -44,24 +44,24 @@ namespace ReportsBL
 
             return connection;
 
-        } 
+        }
 
         public void generateOutStandingReport(int iGroupID, string sXmlNodeName, string sDataSource, string sXmlPath)
         {
             /* Start Variable Declaration */
 
-            Decimal dDebitAmt, dCreditAmt, dSumDr, dSumCr, dDiffDrCr,dOutAmt,dSumDebit,dSumCredit;
+            Decimal dDebitAmt, dCreditAmt, dSumDr, dSumCr, dDiffDrCr, dOutAmt, dSumDebit, dSumCredit;
             string sLedgerName = string.Empty;
             string sAliasName = string.Empty;
             string sQry = string.Empty;
             string mQry = string.Empty;
             string sConStr = string.Empty;
             int iLedgerID = 0;
-            OleDbConnection oleConn ;
-            OleDbCommand oleCmd,oleCmd2;
-            OleDbDataAdapter oleAdp,oleAdp2;
-            DataSet dsParentQry,dsChild;
-           
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd, oleCmd2;
+            OleDbDataAdapter oleAdp, oleAdp2;
+            DataSet dsParentQry, dsChild;
+
             StringWriter sWriter;
             XmlTextWriter reportXMLWriter;
             XmlDocument xmlDoc;
@@ -73,11 +73,11 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            if(iGroupID > 0)
+            if (iGroupID > 0)
                 sQry = "SELECT LedgerID,LedgerName,AliasName,Debit,Credit,OpenBalanceDR,OpenBalanceCR FROM tblLedger WHERE GroupID=" + iGroupID + " AND (Debit <> 0 OR Credit <> 0 OR OpenBalanceDR <>0 OR OpenBalanceCR <> 0) ORDER BY LedgerName  ";
             else
                 sQry = "SELECT LedgerID,LedgerName,AliasName,Debit,Credit,OpenBalanceDR,OpenBalanceCR FROM tblLedger WHERE (Debit <> 0 OR Credit <> 0 OR OpenBalanceDR <>0 OR OpenBalanceCR <> 0) ORDER BY LedgerName  ";
-            
+
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -132,16 +132,16 @@ namespace ReportsBL
                         {
                             sLedgerName = drParentQry["LedgerName"].ToString();
                         }
-                       
+
                         if (drParentQry["AliasName"] != null)
                         {
                             sAliasName = drParentQry["AliasName"].ToString();
                         }
                         if (drParentQry["LedgerID"] != null)
                         {
-                            iLedgerID  = Convert.ToInt32(drParentQry["LedgerID"]);
+                            iLedgerID = Convert.ToInt32(drParentQry["LedgerID"]);
                         }
-                      
+
                         //if (drParentQry["Debit"] != null)
                         //{
                         //    dDebitAmt = decimal.Parse(drParentQry["Debit"].ToString(), System.Globalization.NumberStyles.Any);
@@ -179,7 +179,7 @@ namespace ReportsBL
                                 }
                             }
                         }
-                       
+
 
 
                         if (iGroupID == 1)
@@ -198,7 +198,7 @@ namespace ReportsBL
                         }
 
                         dOutAmt = dOutAmt + (dSumDebit - dSumCredit);
-                       
+
                         if (dOutAmt >= 0)
                         {
                             if (dOutAmt == 0)
@@ -224,15 +224,15 @@ namespace ReportsBL
                             reportXMLWriter.WriteElementString("LedgerName", sLedgerName);
                             reportXMLWriter.WriteElementString("AliasName", sAliasName);
                             reportXMLWriter.WriteElementString("Credit", Math.Abs(dOutAmt).ToString("f2"));
-                            reportXMLWriter.WriteElementString("Debit", "0.00"); 
+                            reportXMLWriter.WriteElementString("Debit", "0.00");
                             reportXMLWriter.WriteEndElement(); //Transaction 
                             dSumCr = dSumCr + Math.Abs(dOutAmt);
 
                         }
 
 
-                        
-                           
+
+
                     }
 
                     reportXMLWriter.WriteStartElement("Sumation");
@@ -284,7 +284,7 @@ namespace ReportsBL
         public void generateSalesReport(DateTime dtSdate, DateTime dtEdate, string sXmlNodeName, string sDataSource, string sXmlPath)
         {
             /* Start Variable Declaration */
-            Decimal dTotalSales, dBillTotal,dRate,dDiscount,dVAT,dSoldAmt;
+            Decimal dTotalSales, dBillTotal, dRate, dDiscount, dVAT, dSoldAmt;
             string sBillDate = string.Empty;
             string sBillNo = string.Empty;
             string sCustomerName = string.Empty;
@@ -305,7 +305,7 @@ namespace ReportsBL
 
             /* End Variable Declaration */
 
-            OleDbConnection oleConn, oleSubConn ;
+            OleDbConnection oleConn, oleSubConn;
             OleDbCommand oleCmd;
             OleDbDataAdapter oleAdp;
             DataSet dsParentQry;
@@ -322,8 +322,8 @@ namespace ReportsBL
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            
-                sQry = "SELECT Billno,BillDate,Customername,paymode,purchaseReturn,purchaseReturnReason FROM tblSales WHERE   BillDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "# Order by BillDate Desc";
+
+            sQry = "SELECT Billno,BillDate,Customername,paymode,purchaseReturn,purchaseReturnReason FROM tblSales WHERE   BillDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "# Order by BillDate Desc";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -367,7 +367,7 @@ namespace ReportsBL
                     dBillTotal = 0;
                     reportXMLWriter.WriteStartElement("Bill");
 
-                    if(drParentQry["Billno"] !=null)
+                    if (drParentQry["Billno"] != null)
                     {
                         sBillNo = drParentQry["Billno"].ToString();
                         reportXMLWriter.WriteElementString("Billno", sBillNo);
@@ -385,20 +385,20 @@ namespace ReportsBL
                     if (drParentQry["Paymode"] != null)
                     {
                         sPayMode = drParentQry["Paymode"].ToString();
-                        sQry = "SELECT AliasName FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(sPayMode); 
+                        sQry = "SELECT AliasName FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(sPayMode);
                         oleCmd = new OleDbCommand();
                         oleCmd.CommandText = sQry;
                         oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
                         oleCmd.Connection = oleSubConn;
-                        oleAdp = new OleDbDataAdapter(oleCmd); 
+                        oleAdp = new OleDbDataAdapter(oleCmd);
                         dsChildQry = new DataSet();
                         oleAdp.Fill(dsChildQry);
-                        sPayMode  = dsChildQry.Tables[0].Rows[0]["AliasName"].ToString();
+                        sPayMode = dsChildQry.Tables[0].Rows[0]["AliasName"].ToString();
                         reportXMLWriter.WriteElementString("Paymode", sPayMode);
                         oleSubConn.Close();
                     }
                     /* Start Getting Product Details*/
-                    sQry = "SELECT itemcode,qty,rate,discount,vat FROM tblSalesItems WHERE Billno="+ Convert.ToInt32(sBillNo);
+                    sQry = "SELECT itemcode,qty,rate,discount,vat FROM tblSalesItems WHERE Billno=" + Convert.ToInt32(sBillNo);
                     oleCmd = new OleDbCommand();
                     oleCmd.CommandText = sQry;
                     oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
@@ -412,7 +412,7 @@ namespace ReportsBL
                     {
                         reportXMLWriter.WriteStartElement("Product");
                         oleCmd = new OleDbCommand();
-                        sQry = "SELECT ProductName,Model,ProductDesc FROM tblProductMaster WHERE Itemcode='" +drProduct["ItemCode"].ToString()+"'";
+                        sQry = "SELECT ProductName,Model,ProductDesc FROM tblProductMaster WHERE Itemcode='" + drProduct["ItemCode"].ToString() + "'";
                         oleCmd.CommandText = sQry;
                         oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
                         oleCmd.Connection = oleSubConn;
@@ -428,27 +428,27 @@ namespace ReportsBL
                             reportXMLWriter.WriteElementString("ProductName", sProductName);
                             reportXMLWriter.WriteElementString("Model", sProductModel);
                             reportXMLWriter.WriteElementString("Description", sProductDesc);
- 
+
                         }
                         if (drProduct["qty"] != null)
                         {
                             iQty = Convert.ToInt32(drProduct["qty"].ToString());
                             reportXMLWriter.WriteElementString("Qty", iQty.ToString());
                         }
-                        if(drProduct["rate"]!=null)
+                        if (drProduct["rate"] != null)
                         {
                             dRate = Convert.ToDecimal(drProduct["rate"].ToString());
                             reportXMLWriter.WriteElementString("Rate", dRate.ToString());
                         }
-                        if(drProduct["discount"]!=null )
+                        if (drProduct["discount"] != null)
                         {
                             dDiscount = Convert.ToDecimal(drProduct["discount"].ToString());
                             reportXMLWriter.WriteElementString("Discount", dDiscount.ToString());
                         }
-                        if(drProduct["VAT"]!=null)
+                        if (drProduct["VAT"] != null)
                         {
-                        dVAT = Convert.ToDecimal(drProduct["VAT"].ToString());
-                        reportXMLWriter.WriteElementString("VAT", dVAT.ToString());  
+                            dVAT = Convert.ToDecimal(drProduct["VAT"].ToString());
+                            reportXMLWriter.WriteElementString("VAT", dVAT.ToString());
                         }
 
                         dSoldAmt = iQty * (dRate - dDiscount + dVAT);
@@ -458,7 +458,7 @@ namespace ReportsBL
                     } //foreach end
                     /* End Getting Product Details*/
 
-                    reportXMLWriter.WriteElementString("BillTotal",dBillTotal.ToString());
+                    reportXMLWriter.WriteElementString("BillTotal", dBillTotal.ToString());
                     reportXMLWriter.WriteEndElement(); //End Bill Element
                     dTotalSales = dTotalSales + dBillTotal;
                 }
@@ -479,38 +479,38 @@ namespace ReportsBL
             xmlDoc.Save(sXmlPath);
             /* End Saving the Report XML to a New File */
 
-       
+
         }
         public double GetDayBookOB(DateTime dtSdate, string sDataSource)
-         {
+        {
             //SELECT Sum(Amount) FROM tblDayBook Where TransDate < #09/20/2009#
-             string sConStr = string.Empty;
-             string sQry = string.Empty;
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             sConStr = sDataSource;
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleCmd = new OleDbCommand();
-             oleConn.Open();
-             oleCmd.Connection = oleConn;
-             /* End Ms Access Database Connection Information */
+            string sConStr = string.Empty;
+            string sQry = string.Empty;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            sConStr = sDataSource;
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleConn.Open();
+            oleCmd.Connection = oleConn;
+            /* End Ms Access Database Connection Information */
 
-             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-             
-                 sQry = "SELECT Sum(Amount) FROM tblDayBook Where  TransDate <#" + dtSdate.ToString("MM/dd/yyyy") + "#";
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             //oleAdp = new OleDbDataAdapter(oleCmd);
-             //dsParentQry = new DataSet();
-             //oleAdp.Fill(dsParentQry);
-             object amtObj;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
 
-             amtObj = oleCmd.ExecuteScalar();
-             double amt = 0.0;
-             if (amtObj != null && amtObj != DBNull.Value)
-                 amt = (double)amtObj;
-             oleConn.Close();
-             return amt;
+            sQry = "SELECT Sum(Amount) FROM tblDayBook Where  TransDate <#" + dtSdate.ToString("MM/dd/yyyy") + "#";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            object amtObj;
+
+            amtObj = oleCmd.ExecuteScalar();
+            double amt = 0.0;
+            if (amtObj != null && amtObj != DBNull.Value)
+                amt = (double)amtObj;
+            oleConn.Close();
+            return amt;
         }
         public void generateDayBookReport(DateTime dtSdate, DateTime dtEdate, string sXmlNodeName, string sDataSource, string sXmlPath)
         {
@@ -592,62 +592,62 @@ namespace ReportsBL
                     }
 
                     reportXMLWriter.WriteElementString("TransDate", sTranDate);
-                    if(drParentQry["Narration"]!=null)
+                    if (drParentQry["Narration"] != null)
                     {
                         sNarration = "(" + drParentQry["Narration"].ToString() + ")";
                     }
                     reportXMLWriter.WriteElementString("Narration", sNarration);
                     /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
-                    if(drParentQry["CreditorID"] != null)
+                    if (drParentQry["CreditorID"] != null)
                     {
-                            dDebitAmt = Convert.ToDecimal(drParentQry["Amount"].ToString());
-                            iQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
-                            dSumCr = dSumCr + dCreditAmt;
-                            oleCmd = new OleDbCommand();
-                            oleCmd.CommandText = iQry;
-                            oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
-                            oleCmd.Connection = oleSubConn;
-                            oleAdp = new OleDbDataAdapter(oleCmd);
-                            dsChildQry = new DataSet();
-                            oleAdp.Fill(dsChildQry);
-                            if (dsChildQry != null)
-                            {
-                                if (dsChildQry.Tables[0].Rows.Count > 0)
-                                    sCreditor = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString();
-                                else
-                                    sCreditor = "";
-                            }
+                        dDebitAmt = Convert.ToDecimal(drParentQry["Amount"].ToString());
+                        iQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
+                        dSumCr = dSumCr + dCreditAmt;
+                        oleCmd = new OleDbCommand();
+                        oleCmd.CommandText = iQry;
+                        oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
+                        oleCmd.Connection = oleSubConn;
+                        oleAdp = new OleDbDataAdapter(oleCmd);
+                        dsChildQry = new DataSet();
+                        oleAdp.Fill(dsChildQry);
+                        if (dsChildQry != null)
+                        {
+                            if (dsChildQry.Tables[0].Rows.Count > 0)
+                                sCreditor = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString();
                             else
-                            {
                                 sCreditor = "";
-                            }
-                            oleSubConn.Close();
+                        }
+                        else
+                        {
+                            sCreditor = "";
+                        }
+                        oleSubConn.Close();
                     }
                     if (drParentQry["DebtorID"] != null)
                     {
-                        
-                            dCreditAmt = Convert.ToDecimal(drParentQry["Amount"].ToString());
-                            iQry = "SELECT Ledgername  FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString());
-                            dSumDr = dSumDr + dDebitAmt;
-                            oleCmd = new OleDbCommand();
-                            oleCmd.CommandText = iQry;
-                            oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
-                            oleCmd.Connection = oleSubConn;
-                            oleAdp = new OleDbDataAdapter(oleCmd);
-                            dsChildQry = new DataSet();
-                            oleAdp.Fill(dsChildQry);
-                            if (dsChildQry != null)
-                            {
-                                if (dsChildQry.Tables[0].Rows.Count > 0)
-                                    sDebtor = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString();
-                                else
-                                    sDebtor = "";
-                            }
+
+                        dCreditAmt = Convert.ToDecimal(drParentQry["Amount"].ToString());
+                        iQry = "SELECT Ledgername  FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString());
+                        dSumDr = dSumDr + dDebitAmt;
+                        oleCmd = new OleDbCommand();
+                        oleCmd.CommandText = iQry;
+                        oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
+                        oleCmd.Connection = oleSubConn;
+                        oleAdp = new OleDbDataAdapter(oleCmd);
+                        dsChildQry = new DataSet();
+                        oleAdp.Fill(dsChildQry);
+                        if (dsChildQry != null)
+                        {
+                            if (dsChildQry.Tables[0].Rows.Count > 0)
+                                sDebtor = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString();
                             else
-                            {
                                 sDebtor = "";
-                            }
-                            oleSubConn.Close();
+                        }
+                        else
+                        {
+                            sDebtor = "";
+                        }
+                        oleSubConn.Close();
                     }
                     /* End Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
                     reportXMLWriter.WriteElementString("Debitor", sDebtor);
@@ -656,7 +656,7 @@ namespace ReportsBL
                     reportXMLWriter.WriteElementString("Credit", dCreditAmt.ToString());
 
                     reportXMLWriter.WriteEndElement();
-                   
+
                 }//End foreach
 
 
@@ -678,7 +678,7 @@ namespace ReportsBL
                 /* Start - Decide whether Difference need to be displayed in the credit side or debit side */
                 if (dDiffDrCr > 0)
                 {
-                    reportXMLWriter.WriteElementString("DebitDiff",  dDiffDrCr.ToString());
+                    reportXMLWriter.WriteElementString("DebitDiff", dDiffDrCr.ToString());
                     reportXMLWriter.WriteElementString("CreditDiff", String.Empty);
                 }
                 else
@@ -688,7 +688,7 @@ namespace ReportsBL
                 }
                 reportXMLWriter.WriteEndElement();
             }
-           
+
             reportXMLWriter.WriteEndElement();
             reportXMLWriter.WriteEndDocument();
 
@@ -980,7 +980,7 @@ namespace ReportsBL
             /* End Saving the Report XML to a New File */
         }
 
-        public void generateReportXML(int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sXmlNodeName,string sDataSource,string sXmlPath)
+        public void generateReportXML(int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sXmlNodeName, string sDataSource, string sXmlPath)
         {
             /* Start Variable Declaration */
 
@@ -991,7 +991,7 @@ namespace ReportsBL
             string sQry = string.Empty;
             string pQry = string.Empty;
             string sConStr = string.Empty;
-            OleDbConnection oleConn, oleSubConn; 
+            OleDbConnection oleConn, oleSubConn;
 
             OleDbCommand oleCmd;
             OleDbDataAdapter oleAdp;
@@ -1057,7 +1057,7 @@ namespace ReportsBL
                 reportXMLWriter.WriteElementString("CreditSum", "0.00");
                 reportXMLWriter.WriteElementString("DebitDiff", String.Empty);
                 reportXMLWriter.WriteElementString("CreditDiff", String.Empty);
-               
+
                 reportXMLWriter.WriteEndElement();
             }
             else
@@ -1087,21 +1087,21 @@ namespace ReportsBL
                             //    iQry = "SELECT Ledgername,OpenBalanceDR,OpenBalanceCR FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
                             dSumDr = dSumDr + dDebitAmt;
 
-                            pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString()); 
+                            pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
                         }
                     }
                     if (drParentQry["CreditorID"] != null)
                     {
                         if (Convert.ToInt32(drParentQry["CreditorID"].ToString()) == iLedgerID)
                         {
-                           
+
                             dCreditAmt = Convert.ToDecimal(drParentQry["Amount"].ToString());
                             //if (sXmlNodeName == "LedgerAccount")
                             //    iQry = "SELECT Ledgername,OpenBalanceDR,OpenBalanceCR  FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
                             //else
                             //    iQry = "SELECT Ledgername,OpenBalanceDR,OpenBalanceCR  FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString());
                             dSumCr = dSumCr + dCreditAmt;
-                            pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString()); 
+                            pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString());
                         }
                     }
                     /* End Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
@@ -1126,9 +1126,9 @@ namespace ReportsBL
                     //        dOpenBalaceDR = Convert.ToDecimal(dsChildQry.Tables[0].Rows[0]["OpenBalanceDR"]);
                     //        dOpenBalanceCR = Convert.ToDecimal(dsChildQry.Tables[0].Rows[0]["OpenBalanceCR"]);
                     //    }
-                        
+
                     //     oleSubConn.Close();
-                       
+
                     //}
                     if (pQry != "")
                     {
@@ -1143,8 +1143,8 @@ namespace ReportsBL
                         oleSubConn.Close();
                     }
                     /* Particularly for ledger Account opening balance*/
-                   
-                       
+
+
                     /* Writing Particular information into XML file*/
                     reportXMLWriter.WriteElementString("Particular", sParticulars);
                     /* End Getting the Particulars Information for the Ledger ID */
@@ -1201,7 +1201,7 @@ namespace ReportsBL
                 /* Start - Decide whether Difference need to be displayed in the credit side or debit side */
                 if (dDiffDrCr > 0)
                 {
-                    reportXMLWriter.WriteElementString("DebitDiff",  dDiffDrCr.ToString());
+                    reportXMLWriter.WriteElementString("DebitDiff", dDiffDrCr.ToString());
                     reportXMLWriter.WriteElementString("CreditDiff", String.Empty);
                 }
                 else
@@ -1371,7 +1371,7 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
@@ -1620,7 +1620,7 @@ namespace ReportsBL
         public DataSet generateSalesReportDS(DateTime dtSdate, DateTime dtEdate, string sDataSource)
         {
             /* Start Variable Declaration */
-            
+
             string sBillDate = string.Empty;
             string sBillNo = string.Empty;
             string sCustomerName = string.Empty;
@@ -1630,10 +1630,10 @@ namespace ReportsBL
             string sProductModel = string.Empty;
             string sProductDesc = string.Empty;
             string sConStr = string.Empty;
-            
+
             //sales
 
-           
+
 
             /* End Variable Declaration */
 
@@ -1641,8 +1641,8 @@ namespace ReportsBL
             OleDbCommand oleCmd;
             OleDbDataAdapter oleAdp;
             DataSet dsParentQry;
-            
-            
+
+
             /* End Variable Declaration */
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
@@ -1682,7 +1682,7 @@ namespace ReportsBL
 
 
             ds.Tables.Add(dt);
-           
+
             if (dsParentQry.Tables[0].Rows.Count == 0)
             {
                 /* Empty XML Formation if there is no record */
@@ -1692,29 +1692,29 @@ namespace ReportsBL
                 drNew["BillDate"] = string.Empty;
                 drNew["CustomerName"] = string.Empty;
                 drNew["Paymode"] = string.Empty;
-                
+
                 ds.Tables[0].Rows.Add(drNew);
             }
             else
             {
                 foreach (DataRow drParentQry in dsParentQry.Tables[0].Rows)
                 {
-                    
+
 
                     if (drParentQry["Billno"] != null)
                     {
                         sBillNo = drParentQry["Billno"].ToString();
-                        
+
                     }
                     if (drParentQry["BillDate"] != null)
                     {
                         sBillDate = Convert.ToDateTime(drParentQry["BillDate"]).ToShortDateString();
-                        
+
                     }
                     if (drParentQry["CustomerName"] != null)
                     {
                         sCustomerName = drParentQry["CustomerName"].ToString();
-                        
+
                     }
                     if (drParentQry["Paymode"] != null)
                     {
@@ -1740,9 +1740,9 @@ namespace ReportsBL
                     ds.Tables[0].Rows.Add(drNew);
                 }
                 /* Summation */
-                
+
             }
-            
+
             /* Clossing the DB Connection */
             oleConn.Close();
 
@@ -1786,7 +1786,7 @@ namespace ReportsBL
             sQry.Append("FROM tblSales, tblSalesItems, tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND   tblSalesItems.ItemCode = tblProductmaster.ItemCode AND   tblsales.cancelled<>true ");
             sQry.AppendFormat("AND   UCASE(tblSales.purchaseReturn)='NO' AND   UCASE(tblSales.InternalTransfer)='NO' AND   tblSales.BillDate>=#{0}# AND   tblSales.BillDate<=#{1}# ", dtSdate.ToString("MM/dd/yyyy"), dtEdate.ToString("MM/dd/yyyy"));
             sQry.Append("GROUP BY tblProductMaster.ProductName ORDER BY 1");
-                        
+
             oleCmd.CommandText = sQry.ToString();
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -2108,7 +2108,7 @@ namespace ReportsBL
             sQry.Append("(tblPurchaseItems.Qty*(tblPurchaseItems.PurchaseRate-((tblPurchaseItems.discount/100)*tblPurchaseItems.PurchaseRate))) as TotalAmount FROM tblPurchase, tblPurchaseItems, ");
             sQry.Append("tblProductMaster WHERE tblPurchase.purchaseID=tblPurchaseItems.purchaseID AND   tblPurchaseItems.ItemCode = tblProductmaster.ItemCode ");
             sQry.AppendFormat("AND UCASE(tblPurchase.SalesReturn)='NO' AND   UCASE(tblPurchase.InternalTransfer)='NO' AND   tblPurchase.BillDate>=#{0}# AND tblPurchase.BillDate<=#{1}# ORDER BY 1,2,3,5 ", dtSdate.ToString("MM/dd/yyyy"), dtEdate.ToString("MM/dd/yyyy"));
-            
+
             oleCmd.CommandText = sQry.ToString();
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -2139,7 +2139,7 @@ namespace ReportsBL
             OleDbDataAdapter oleAdp;
             DataSet dsParentQry;
             DataSet dsChildQry;
-           
+
             /* End Variable Declaration */
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
@@ -2159,7 +2159,7 @@ namespace ReportsBL
 
             /* XML Forming using the records gathered in the DayBook */
 
-            
+
 
             /* Intialization of Sum of Debit and Credit and their Difference */
             dSumDr = 0;
@@ -2196,7 +2196,7 @@ namespace ReportsBL
             if (dsParentQry.Tables[0].Rows.Count == 0)
             {
                 /* Empty XML Formation if there is no record */
-                
+
                 drNew = dt.NewRow();
                 drNew["Date"] = string.Empty;
                 drNew["Narration"] = string.Empty;
@@ -2205,7 +2205,7 @@ namespace ReportsBL
                 drNew["Debitor"] = string.Empty;
                 drNew["Creditor"] = string.Empty;
                 ds.Tables[0].Rows.Add(drNew);
-               
+
             }
             else
             {
@@ -2213,18 +2213,18 @@ namespace ReportsBL
                 {
                     dDebitAmt = 0;
                     dCreditAmt = 0;
-                    
+
                     if (drParentQry["TransDate"] != null)
                     {
                         sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
                     }
 
-                    
+
                     if (drParentQry["Narration"] != null)
                     {
                         sNarration = "(" + drParentQry["Narration"].ToString() + ")";
                     }
-                    
+
                     /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
                     if (drParentQry["CreditorID"] != null)
                     {
@@ -2278,11 +2278,11 @@ namespace ReportsBL
                         oleSubConn.Close();
                     }
                     /* End Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
-                    
+
 
                     drNew = dt.NewRow();
                     drNew["Date"] = sTranDate;
-                    drNew["Narration"] = sNarration; 
+                    drNew["Narration"] = sNarration;
                     drNew["Debit"] = dDebitAmt.ToString();
                     drNew["Credit"] = dCreditAmt.ToString();
                     drNew["Debitor"] = sDebtor;
@@ -2292,15 +2292,15 @@ namespace ReportsBL
                 }//End foreach
 
 
-                
+
             }
 
-           
+
 
             /* Clossing the DB Connection */
             oleConn.Close();
             return ds;
-           
+
         }
 
         public DataSet generateReportDS(int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sDataSource, int iOrder)
@@ -2467,12 +2467,12 @@ namespace ReportsBL
 
 
 
-        public DataSet generateReportDSLedger(int iAccHeading, int iGroupID, int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sDataSource,int iOrder)
+        public DataSet generateReportDSLedger(int iAccHeading, int iGroupID, int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sDataSource, int iOrder)
         {
             /* Start Variable Declaration */
 
-            double dDebitAmt=0;
-            double dCreditAmt = 0 ;
+            double dDebitAmt = 0;
+            double dCreditAmt = 0;
             string sTranDate = string.Empty;
             string iQry = "";
             string sParticulars = "";
@@ -2497,7 +2497,7 @@ namespace ReportsBL
 
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
-			sConStr = sDataSource;
+            sConStr = sDataSource;
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
@@ -2525,7 +2525,7 @@ namespace ReportsBL
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
             sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-            
+
             if (iLedgerID != 0)
                 sQry = sQry + " AND ( DebtorID=" + iLedgerID + ") ";
 
@@ -2535,7 +2535,7 @@ namespace ReportsBL
             if (iAccHeading != 0)
                 sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-            sQry = sQry + "Order by TransDate " +sOrder;
+            sQry = sQry + "Order by TransDate " + sOrder;
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -2543,7 +2543,7 @@ namespace ReportsBL
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
-        
+
 
             DataSet ds;
             DataTable dt;
@@ -2597,7 +2597,7 @@ namespace ReportsBL
                     dDebitAmt = 0;
                     dCreditAmt = 0;
 
-                   
+
                     if (drParentQry["TransDate"] != null)
                     {
                         sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
@@ -2606,7 +2606,7 @@ namespace ReportsBL
                     {
                         sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
                     }
-                   
+
                     /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
                     if (drParentQry["DebtorID"] != null)
                     {
@@ -2633,7 +2633,7 @@ namespace ReportsBL
                     }
                     /* End Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
 
-                   
+
                     if (pQry != "")
                     {
                         oleCmd = new OleDbCommand();
@@ -2654,7 +2654,7 @@ namespace ReportsBL
                         }
                         oleSubConn.Close();
                     }
-                    
+
                     drNew = dt.NewRow();
                     drNew["Date"] = sTranDate;
                     drNew["Ledger"] = sLedger;
@@ -2663,14 +2663,14 @@ namespace ReportsBL
                     drNew["Debit"] = dDebitAmt.ToString();
                     drNew["Credit"] = dCreditAmt.ToString();
                     drNew["VoucherType"] = sVoucherType;
-                    
+
                     ds.Tables[0].Rows.Add(drNew);
                 }
 
-                
+
 
             }
-            
+
 
             /* Clossing the DB Connection */
             oleConn.Close();
@@ -2681,7 +2681,7 @@ namespace ReportsBL
         }
 
         /*Start Ledger Report March 16*/
-        public DataSet generateReportDS(int iAccHeading, int iGroupID,int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sDataSource,string sType,string retFlag,int iOrder)
+        public DataSet generateReportDS(int iAccHeading, int iGroupID, int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sDataSource, string sType, string retFlag, int iOrder)
         {
             /* Start Variable Declaration */
 
@@ -2698,7 +2698,7 @@ namespace ReportsBL
             string rQry = string.Empty;
             string sConStr = string.Empty;
             int retValue = 0;
-            OleDbConnection oleConn, oleSubConn,oleSubConn2;
+            OleDbConnection oleConn, oleSubConn, oleSubConn2;
             int transno = 0;
             OleDbCommand oleCmd;
             OleDbDataAdapter oleAdp;
@@ -2713,87 +2713,87 @@ namespace ReportsBL
 
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
-			sConStr = sDataSource;
+            sConStr = sDataSource;
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
 
-           
+
 
 
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             if (sType == "Sales" && retFlag == "Yes") /* Only Sales Return */
-			{
+            {
                 sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-				sQry = sQry + "AND VoucherType='Purchase Return' ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "AND VoucherType='Purchase Return' ";
 
-                if(iLedgerID != 0)
-                sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
+                if (iLedgerID != 0)
+                    sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
-                sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
+                if (iGroupID != 0)
+                    sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
                 if (iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-				sQry = sQry + " Union All ";
+                sQry = sQry + " Union All ";
 
-				sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-				sQry = sQry + "AND VoucherType='Purchase Return' ";
-				
-                if(iLedgerID != 0)
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "AND VoucherType='Purchase Return' ";
+
+                if (iLedgerID != 0)
                     sQry = sQry + " AND ( DebtorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
-                sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
+                if (iGroupID != 0)
+                    sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
                 if (iAccHeading != 0)
-                sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-			}
+            }
             else if (sType == "Purchase" && retFlag == "Yes")/* Only Purchase Return */
-			{
+            {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
                 sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-				sQry = sQry + "AND VoucherType='Sales Return' ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "AND VoucherType='Sales Return' ";
 
-                if(iLedgerID != 0)
-                  sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
+                if (iLedgerID != 0)
+                    sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-				sQry = sQry + " Union All ";
+                sQry = sQry + " Union All ";
 
-				sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-				sQry = sQry + "AND VoucherType='Sales Return' ";
-				
-                if(iLedgerID != 0)
-                 sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "AND VoucherType='Sales Return' ";
 
-                if(iGroupID != 0)
+                if (iLedgerID != 0)
+                    sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
+
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-			}
+            }
             else if (sType == "Purchase" && retFlag == "Both")/* Only Purchase Return */
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
@@ -2803,14 +2803,14 @@ namespace ReportsBL
                 sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
                 sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
-                if(iLedgerID != 0)
+                if (iLedgerID != 0)
                     sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
                 sQry = sQry + " Union All ";
 
@@ -2820,51 +2820,51 @@ namespace ReportsBL
                 sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
                 sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
-                if(iLedgerID != 0)
-                 sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
+                if (iLedgerID != 0)
+                    sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
             }
             else if (sType == "Sales" && retFlag == "Both") /* Both Sales and Sales Return */
-			{
+            {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
                 sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
                 sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
 
-                if(iLedgerID != 0)
+                if (iLedgerID != 0)
                     sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-				sQry = sQry + " Union All ";
+                sQry = sQry + " Union All ";
 
-				sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
                 sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
-				
-                if(iLedgerID != 0)
+
+                if (iLedgerID != 0)
                     sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
-			}
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
+            }
             else if (sType == "Sales" && retFlag == "No") /* Both Sales and Sales Return */
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
@@ -2874,14 +2874,14 @@ namespace ReportsBL
                 sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
                 sQry = sQry + " AND VoucherType='Sales' ";
 
-                if(iLedgerID != 0)
+                if (iLedgerID != 0)
                     sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
                 sQry = sQry + " Union All ";
 
@@ -2891,84 +2891,84 @@ namespace ReportsBL
                 sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
                 sQry = sQry + " AND (VoucherType='Sales') ";
 
-                if(iLedgerID != 0)
+                if (iLedgerID != 0)
                     sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
             }
             else if (sType == "Purchase" && retFlag == "No")/* Both Purchase and Purchase Return */
-			{
+            {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Purchase Return' OR VoucherType='Purchase')  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
                 sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-				sQry = sQry + " AND (VoucherType='Purchase') ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + " AND (VoucherType='Purchase') ";
 
-                if(iLedgerID != 0)
+                if (iLedgerID != 0)
                     sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-				sQry = sQry + " Union All ";
+                sQry = sQry + " Union All ";
 
-				sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
                 sQry = sQry + " AND ( VoucherType='Purchase') ";
-				
-                if(iLedgerID != 0)
+
+                if (iLedgerID != 0)
                     sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
 
-                if(iGroupID != 0)
+                if (iGroupID != 0)
                     sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-                if(iAccHeading != 0)
-                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
-			}	
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
+            }
             else
-			{
+            {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " + sOrder;
                 sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-				
-				if(iLedgerID != 0)
-				sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
 
-				if(iGroupID != 0)
-				sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
+                if (iLedgerID != 0)
+                    sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
 
-				if (iAccHeading != 0)
-				sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
+                if (iGroupID != 0)
+                    sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
 
-				sQry = sQry + " Union All ";
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
 
-				sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
-				sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
-				sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-				sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
-				
-				if(iLedgerID != 0)
-				sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
+                sQry = sQry + " Union All ";
 
-				if(iGroupID != 0)
-				sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
+                sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
+                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
 
-				if (iAccHeading != 0)
-				sQry = sQry + " AND (H.HeadingID =" + iAccHeading +") ";
-				
-			}
+                if (iLedgerID != 0)
+                    sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
+
+                if (iGroupID != 0)
+                    sQry = sQry + " AND (G.GroupID=" + iGroupID + ") ";
+
+                if (iAccHeading != 0)
+                    sQry = sQry + " AND (H.HeadingID =" + iAccHeading + ") ";
+
+            }
 
             sQry = sQry + " Order by TransDate " + sOrder;
 
@@ -2979,7 +2979,7 @@ namespace ReportsBL
             oleAdp.Fill(dsParentQry);
             /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
 
-            
+
             DataSet ds;
             DataTable dt;
             DataRow drNew;
@@ -3091,9 +3091,9 @@ namespace ReportsBL
                         dDebitAmt = 0;
 
                     }
-                    else if(sVoucherType == "Purchase" || sVoucherType == "Sales Return")
+                    else if (sVoucherType == "Purchase" || sVoucherType == "Sales Return")
                     {
-                        dCreditAmt =0;
+                        dCreditAmt = 0;
                     }
 
                     if (pQry != "")
@@ -3120,15 +3120,15 @@ namespace ReportsBL
                     //{
                     //    if (retValue == 0)
                     //    {
-                            drNew = dt.NewRow();
-                            drNew["Date"] = sTranDate;
-                            drNew["Ledger"] = sLedger;
-                            drNew["LedgerID"] = sLedgerID;
-                            drNew["Particulars"] = sParticulars;
-                            drNew["Debit"] = dDebitAmt.ToString();
-                            drNew["Credit"] = dCreditAmt.ToString();
-                            drNew["VoucherType"] = sVoucherType;
-                            ds.Tables[0].Rows.Add(drNew);
+                    drNew = dt.NewRow();
+                    drNew["Date"] = sTranDate;
+                    drNew["Ledger"] = sLedger;
+                    drNew["LedgerID"] = sLedgerID;
+                    drNew["Particulars"] = sParticulars;
+                    drNew["Debit"] = dDebitAmt.ToString();
+                    drNew["Credit"] = dCreditAmt.ToString();
+                    drNew["VoucherType"] = sVoucherType;
+                    ds.Tables[0].Rows.Add(drNew);
                     //    }
                     //}
                     //else if (retFlag == "Yes")
@@ -3143,7 +3143,7 @@ namespace ReportsBL
                     //        ds.Tables[0].Rows.Add(drNew);
                     //    }
                     //}
-                    
+
                 }
 
 
@@ -3153,7 +3153,7 @@ namespace ReportsBL
 
             /* Clossing the DB Connection */
 
-            
+
             oleConn.Close();
 
             return ds;
@@ -3178,7 +3178,7 @@ namespace ReportsBL
 
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             if (type == "debit")
-                sQry = "SELECT OpenBalanceDr  FROM tblLedger Where  ledgerID=" + ledgerID ;
+                sQry = "SELECT OpenBalanceDr  FROM tblLedger Where  ledgerID=" + ledgerID;
             else
                 sQry = "SELECT OpenBalanceCr  FROM tblLedger Where  ledgerID=" + ledgerID;
             oleCmd.CommandText = sQry;
@@ -3196,14 +3196,14 @@ namespace ReportsBL
             return amt;
         }
 
-        public double getOpeningBalance(int AccHeadingID,int GroupID,int ledgerID, string type, DateTime oDate, string sDataSource)
+        public double getOpeningBalance(int AccHeadingID, int GroupID, int ledgerID, string type, DateTime oDate, string sDataSource)
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
@@ -3215,8 +3215,8 @@ namespace ReportsBL
             {
                 sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
 
-                if(ledgerID > 0)
-                    sQry = sQry + " AND B.DebtorID = " + ledgerID.ToString() ;
+                if (ledgerID > 0)
+                    sQry = sQry + " AND B.DebtorID = " + ledgerID.ToString();
                 if (AccHeadingID > 0)
                     sQry = sQry + " AND G.HeadingID = " + AccHeadingID.ToString();
                 if (GroupID > 0)
@@ -3259,7 +3259,7 @@ namespace ReportsBL
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
@@ -3295,7 +3295,7 @@ namespace ReportsBL
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
@@ -3330,7 +3330,7 @@ namespace ReportsBL
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
@@ -3373,7 +3373,7 @@ namespace ReportsBL
             oleConn = new SqlConnection(CreateConnectionString(sDataSource));
             oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
-                
+
             sQry = "SELECT CategoryID,CategoryName FROM tblCategories";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -3466,7 +3466,7 @@ namespace ReportsBL
 
         }
 
-        public DataSet getProducts(string sDataSource,int iCategoryID, DateTime refDate)
+        public DataSet getProducts(string sDataSource, int iCategoryID, DateTime refDate)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -3498,7 +3498,7 @@ namespace ReportsBL
             foreach (DataRow dr in dsSales.Tables[0].Rows)
             {
                 var itemCode = dr["ItemCode"].ToString();
-                decimal Qty = decimal.Parse( dr["Qty"].ToString());
+                decimal Qty = decimal.Parse(dr["Qty"].ToString());
 
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
@@ -3506,7 +3506,7 @@ namespace ReportsBL
 
                     if (row["ItemCode"].ToString() == itemCode)
                     {
-                        var currentStock = decimal.Parse(ds.Tables[0].Rows[rowindex]["Stock"].ToString()) +  Qty;
+                        var currentStock = decimal.Parse(ds.Tables[0].Rows[rowindex]["Stock"].ToString()) + Qty;
                         ds.Tables[0].Rows[rowindex]["Stock"] = currentStock;
                         ds.Tables[0].Rows[rowindex].EndEdit();
                         ds.Tables[0].Rows[rowindex].AcceptChanges();
@@ -3537,7 +3537,7 @@ namespace ReportsBL
                     if (row["ItemCode"].ToString() == itemCode)
                     {
                         var currentStock = decimal.Parse(ds.Tables[0].Rows[rowindex]["Stock"].ToString()) - Qty;
-                        ds.Tables[0].Rows[rowindex]["Stock"] = currentStock > 0 ? currentStock: 0;
+                        ds.Tables[0].Rows[rowindex]["Stock"] = currentStock > 0 ? currentStock : 0;
                         ds.Tables[0].Rows[rowindex].EndEdit();
                         ds.Tables[0].Rows[rowindex].AcceptChanges();
                     }
@@ -3563,7 +3563,7 @@ namespace ReportsBL
             string sQry = string.Empty;
             string sConStr = string.Empty;
 
-            sConStr =sDataSource;
+            sConStr = sDataSource;
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
@@ -3604,7 +3604,7 @@ namespace ReportsBL
             oleAdp.Fill(dsParentQry);
             return dsParentQry;
         }
-        
+
         public DataSet generatePurchaseReport(int paymode, string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
             OleDbConnection oleConn;
@@ -3616,7 +3616,7 @@ namespace ReportsBL
 
 
             /* Start Ms Access Database Connection Information */
-           // sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon";
+            // sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon";
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
             sConStr = sDataSource;
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
@@ -3638,7 +3638,7 @@ namespace ReportsBL
 
         }
 
-        public DataSet getProducts(int purchaseID,string sDataSource)
+        public DataSet getProducts(int purchaseID, string sDataSource)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -3656,7 +3656,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            sQry = "SELECT tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblPurchaseItems.Qty, tblPurchaseItems.PurchaseRate, tblPurchaseItems.discount, tblPurchaseItems.VAT FROM tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE (((tblPurchaseItems.PurchaseID)="+ purchaseID +"));";
+            sQry = "SELECT tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblPurchaseItems.Qty, tblPurchaseItems.PurchaseRate, tblPurchaseItems.discount, tblPurchaseItems.VAT FROM tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE (((tblPurchaseItems.PurchaseID)=" + purchaseID + "));";
 
 
             oleCmd.CommandText = sQry;
@@ -3666,12 +3666,12 @@ namespace ReportsBL
             oleAdp.Fill(dsParentQry);
             return dsParentQry;
         }
-        public DataSet generateSalesReport(int paymode, string sDataSource, DateTime sDate, DateTime eDate,string sType)
+        public DataSet generateSalesReport(int paymode, string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
             OleDbDataAdapter oleAdp;
-            DataSet dsParentQry;            string sQry = string.Empty;
+            DataSet dsParentQry; string sQry = string.Empty;
             string sConStr = string.Empty;
 
 
@@ -3683,7 +3683,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            if(sType == "Yes")
+            if (sType == "Yes")
                 sQry = "SELECT tblSales.BillNo, tblSales.BillDate, tblLedger.LedgerName, tblDayBook.Amount,tblSales.purchasereturn,tblSales.purchasereturnreason FROM (tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN tblLedger ON tblDayBook.DebtorID = tblLedger.LedgerID WHERE (tblSales.PayMode=" + paymode + " and tblSales.Cancelled=False  and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
             else
                 sQry = "SELECT tblSales.BillNo, tblSales.BillDate, tblLedger.LedgerName, tblDayBook.Amount,tblSales.purchasereturn,tblSales.purchasereturnreason FROM (tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN tblLedger ON tblDayBook.DebtorID = tblLedger.LedgerID WHERE (tblSales.PayMode=" + paymode + " and tblSales.Cancelled=False and purchasereturn='No'  and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
@@ -3747,7 +3747,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            sQry = "SELECT tblSalesItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst, tblSalesItems.BillNo FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo WHERE (((tblSalesItems.BillNo)=" + Billno  + "));";
+            sQry = "SELECT tblSalesItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst, tblSalesItems.BillNo FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo WHERE (((tblSalesItems.BillNo)=" + Billno + "));";
 
 
             oleCmd.CommandText = sQry;
@@ -3757,7 +3757,7 @@ namespace ReportsBL
             oleAdp.Fill(dsParentQry);
             return dsParentQry;
         }
-        public DataSet generateCashReceived(string sDataSource, DateTime sDate, DateTime eDate,string pType)
+        public DataSet generateCashReceived(string sDataSource, DateTime sDate, DateTime eDate, string pType)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -3777,7 +3777,7 @@ namespace ReportsBL
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             if (pType == "Yes")
                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=4 OR tblLedger.GroupID=4)  AND (tblDayBook.VoucherType = 'Purchase Return' OR tblDayBook.VoucherType='Receipt' OR  (tblDayBook.VoucherType='Journal' AND tblLedger.GroupID=4))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-              else
+            else
                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=4 OR tblLedger.GroupID=4)  AND (tblDayBook.VoucherType='Receipt' OR  (tblDayBook.VoucherType='Journal' AND tblLedger.GroupID=4))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
             //sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName, tblDayBook.Amount FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.CreditorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.DebtorID = tblLedger_1.LedgerID WHERE tblLedger_1.GroupID=4 AND  tblDayBook.VoucherType='Journal' OR  tblDayBook.VoucherType='Receipt'OR  tblDayBook.VoucherType='Payment' and (TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) );";
             // sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName, tblDayBook.Amount, tblDayBook.DebtorID FROM tblDayBook INNER JOIN tblLedger ON tblDayBook.CreditorID = tblLedger.LedgerID WHERE (tblDayBook.DebtorID=1 and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
@@ -3790,7 +3790,7 @@ namespace ReportsBL
 
         }
 
-        public DataSet generateChequeReceived(string sDataSource, DateTime sDate, DateTime eDate,string pType)
+        public DataSet generateChequeReceived(string sDataSource, DateTime sDate, DateTime eDate, string pType)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -3808,7 +3808,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            if(pType=="Yes")
+            if (pType == "Yes")
                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=3 OR tblLedger.GroupID=3)  AND (tblDayBook.VoucherType = 'Purchase Return' OR tblDayBook.VoucherType='Receipt' OR  (tblDayBook.VoucherType='Journal' AND tblLedger.GroupID=3))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
             else
                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE (tblLedger_1.GroupID=3 OR tblLedger.GroupID=3)  AND (tblDayBook.VoucherType='Receipt' OR  (tblDayBook.VoucherType='Journal' AND tblLedger.GroupID=3))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
@@ -3845,11 +3845,11 @@ namespace ReportsBL
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
 
             if (sType == "Yes")
-                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=4 OR tblLedger.GroupID=4)  AND (tblDayBook.VoucherType='Sales Return' OR  tblDayBook.VoucherType='Payment' OR  (tblDayBook.VoucherType='Journal' AND tblLedger_1.GroupID=4))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
+                sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=4 OR tblLedger.GroupID=4)  AND (tblDayBook.VoucherType='Sales Return' OR  tblDayBook.VoucherType='Payment' OR  (tblDayBook.VoucherType='Journal' AND tblLedger_1.GroupID=4))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
             else
                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=4 OR tblLedger.GroupID=4)  AND (tblDayBook.VoucherType='Payment' OR  (tblDayBook.VoucherType='Journal' AND tblLedger_1.GroupID=4))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-        
-        
+
+
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -3858,7 +3858,7 @@ namespace ReportsBL
             return dsParentQry;
 
         }
-        public DataSet generateChequePaid(string sDataSource, DateTime sDate, DateTime eDate,string sType)
+        public DataSet generateChequePaid(string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -3876,7 +3876,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            if(sType=="Yes")
+            if (sType == "Yes")
                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=3 OR tblLedger.GroupID=3)  AND (tblDayBook.VoucherType='Sales Return' OR tblDayBook.VoucherType='Payment' OR  (tblDayBook.VoucherType='Journal' AND tblLedger_1.GroupID=3))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
             else
                 sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName As Debtor,tblLedger_1.LedgerName As Creditor, tblDayBook.Amount, tblDayBook.VoucherType FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE   (tblLedger_1.GroupID=3 OR tblLedger.GroupID=3)  AND (tblDayBook.VoucherType='Payment' OR  (tblDayBook.VoucherType='Journal' AND tblLedger_1.GroupID=3))  AND  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
@@ -3889,942 +3889,942 @@ namespace ReportsBL
 
         }
 
-           public DataSet itemwisePurchase(string sDataSource, DateTime sDate, DateTime eDate,string sType)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+        public DataSet itemwisePurchase(string sDataSource, DateTime sDate, DateTime eDate, string sType)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               if(sType=="Yes")
-                   sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, Sum(tblPurchaseItems.Qty) AS SumQty,tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE   tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName,tblPurchase.SalesReturn";
-               else
-                   sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, Sum(tblPurchaseItems.Qty) AS SumQty,tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblPurchase.SalesReturn='No' OR tblPurchase.SalesReturn<>'Yes'  AND  tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName,tblPurchase.SalesReturn";
-               
-               //sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName, tblDayBook.Amount FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE (tblLedger_1.GroupID=3   and ( tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-               // sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName, tblDayBook.Amount, tblDayBook.DebtorID FROM tblDayBook INNER JOIN tblLedger ON tblDayBook.CreditorID = tblLedger.LedgerID WHERE (tblDayBook.DebtorID=1 and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            if (sType == "Yes")
+                sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, Sum(tblPurchaseItems.Qty) AS SumQty,tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE   tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName,tblPurchase.SalesReturn";
+            else
+                sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, Sum(tblPurchaseItems.Qty) AS SumQty,tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblPurchase.SalesReturn='No' OR tblPurchase.SalesReturn<>'Yes'  AND  tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName,tblPurchase.SalesReturn";
 
-           }
-           public DataSet itemwiseSales(string sDataSource, DateTime sDate, DateTime eDate, string pType)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+            //sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName, tblDayBook.Amount FROM (tblDayBook INNER JOIN (tblGroups INNER JOIN tblLedger ON tblGroups.GroupID = tblLedger.GroupID) ON tblDayBook.DebtorID = tblLedger.LedgerID) INNER JOIN tblLedger AS tblLedger_1 ON tblDayBook.CreditorID = tblLedger_1.LedgerID WHERE (tblLedger_1.GroupID=3   and ( tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            // sQry = "SELECT tblDayBook.TransDate, tblDayBook.Narration, tblLedger.LedgerName, tblDayBook.Amount, tblDayBook.DebtorID FROM tblDayBook INNER JOIN tblLedger ON tblDayBook.CreditorID = tblLedger.LedgerID WHERE (tblDayBook.DebtorID=1 and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               if (pType == "Yes")
-               {
-                   sQry = "SELECT  tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,  SUM(tblSalesItems.qty) AS Qty, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As Amount,tblSales.PurchaseReturn FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN (tblSales INNER JOIN tblDayBook ON tblsales.JournalID=tblDaybook.Transno) ON tblSales.Billno=tblSalesItems.Billno) ON tblProductMaster.itemcode=tblSalesItems.Itemcode Where (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblSales.Cancelled=False   GROUP BY tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,tblSales.purchasereturn";
-                   //sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate, Sum(tblSalesItems.Qty) AS SumQty FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate,tblSales.Cancelled Having tblSales.Cancelled=False and tblSales.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-               }
-
-               else
-               {
-                   sQry = "SELECT  tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,  SUM(tblSalesItems.qty) AS Qty, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As Amount,tblSales.PurchaseReturn FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN (tblSales INNER JOIN tblDayBook ON tblsales.JournalID=tblDaybook.Transno) ON tblSales.Billno=tblSalesItems.Billno) ON tblProductMaster.itemcode=tblSalesItems.Itemcode Where (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblSales.Cancelled=False AND (tblSales.PurchaseReturn='No' OR tblSales.PurchaseReturn<>'Yes')   GROUP BY tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,tblSales.purchasereturn";
-                   //sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate, Sum(tblSalesItems.Qty) AS SumQty,tblSales.PurchaseReturn FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate,tblSales.Cancelled,tblSales.PurchaseReturn Having tblSales.PurchaseReturn='No' AND tblSales.Cancelled=False and tblSales.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-
-               }
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
-
-           }
-
-           public DataSet GrossProfit(string sDataSource, DateTime sDate, DateTime eDate,string sType,string pType)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+        }
+        public DataSet itemwiseSales(string sDataSource, DateTime sDate, DateTime eDate, string pType)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               if (sType == "Yes" && pType == "Yes")
-                   sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDaybook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled  Having  tblSales.Cancelled=False AND (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-               else if (sType == "Yes" && pType == "No")
-                   sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo   GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled   Having  tblDayBook.VoucherType <> 'Purchase Return' AND  tblSales.Cancelled=False AND  (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;)";
-               else if (sType == "No" && pType == "Yes")
-                   sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo   GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled   Having tblDayBook.VoucherType <> 'Sales Return' AND  tblSales.Cancelled=False AND tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-               else
-                   sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo   GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled   Having (tblDayBook.VoucherType <> 'Sales Return' AND tblDayBook.VoucherType <> 'Purchase Return' AND tblSales.Cancelled=False) AND tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-              
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            if (pType == "Yes")
+            {
+                sQry = "SELECT  tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,  SUM(tblSalesItems.qty) AS Qty, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As Amount,tblSales.PurchaseReturn FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN (tblSales INNER JOIN tblDayBook ON tblsales.JournalID=tblDaybook.Transno) ON tblSales.Billno=tblSalesItems.Billno) ON tblProductMaster.itemcode=tblSalesItems.Itemcode Where (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblSales.Cancelled=False   GROUP BY tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,tblSales.purchasereturn";
+                //sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate, Sum(tblSalesItems.Qty) AS SumQty FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate,tblSales.Cancelled Having tblSales.Cancelled=False and tblSales.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            }
 
-           }
-           public DataSet GrossProfitAndLoss(string sDataSource, DateTime sDate, DateTime eDate)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+            else
+            {
+                sQry = "SELECT  tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,  SUM(tblSalesItems.qty) AS Qty, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As Amount,tblSales.PurchaseReturn FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN (tblSales INNER JOIN tblDayBook ON tblsales.JournalID=tblDaybook.Transno) ON tblSales.Billno=tblSalesItems.Billno) ON tblProductMaster.itemcode=tblSalesItems.Itemcode Where (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblSales.Cancelled=False AND (tblSales.PurchaseReturn='No' OR tblSales.PurchaseReturn<>'Yes')   GROUP BY tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,tblSales.purchasereturn";
+                //sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate, Sum(tblSalesItems.Qty) AS SumQty,tblSales.PurchaseReturn FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName, tblSales.BillDate,tblSales.Cancelled,tblSales.PurchaseReturn Having tblSales.PurchaseReturn='No' AND tblSales.Cancelled=False and tblSales.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
 
+            }
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
+        }
 
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT tblProductMaster.ItemCode,tblDayBook.Transdate,  tblProductMaster.ProductName+ ' '+ tblProductMaster.ProductDesc  + ' '+ tblProductMaster.Model As ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, Sum(tblProductMaster.Rate*tblSalesItems.qty-(tblProductMaster.Rate*tblSalesItems.qty* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblSalesItems.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate,tblProductMaster.Stock As ClosingStock, tblDaybook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo    GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName,tblProductMaster.ProductDesc  ,tblProductMaster.Model,tblDayBook.VoucherType,tblSales.Cancelled,tblProductMaster.stock,tblDayBook.Transdate  Having  tblSales.Cancelled=False AND (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) UNION ALL SELECT tblProductMaster.ItemCode,tblDayBook.Transdate,  tblProductMaster.ProductName+ ' '+ tblProductMaster.ProductDesc  + ' '+ tblProductMaster.Model As ProductName, Sum(tblPurchaseItems.Qty) AS SumOfQty, Sum(tblProductMaster.Rate*tblPurchaseItems.qty-(tblProductMaster.Rate*tblPurchaseItems.qty* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblPurchaseItems.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.VAT/100))) As SoldRate,tblProductMaster.Stock As ClosingStock, tblDaybook.VoucherType FROM (tblPurchase INNER JOIN (tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode) ON tblPurchase.purchaseID = tblPurchaseItems.purchaseID) INNER JOIN tblDayBook ON tblPurchase.JournalID = tblDayBook.TransNo    GROUP BY tblProductMaster.ItemCode, tblDayBook.VoucherType,tblProductMaster.ProductName,tblProductMaster.ProductDesc  ,tblProductMaster.Model,tblProductMaster.stock,tblDayBook.Transdate HAVING tblDayBook.VoucherType='Sales Return' AND (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
-
-           }
-           public double GetPurchaseTotal(string sDataSource, DateTime sDate, DateTime eDate)
-           {
-               //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry; string sQry = string.Empty;
-               string sConStr = string.Empty;
+        public DataSet GrossProfit(string sDataSource, DateTime sDate, DateTime eDate, string sType, string pType)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
 
-               sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND  tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            if (sType == "Yes" && pType == "Yes")
+                sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDaybook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled  Having  tblSales.Cancelled=False AND (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
+            else if (sType == "Yes" && pType == "No")
+                sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo   GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled   Having  tblDayBook.VoucherType <> 'Purchase Return' AND  tblSales.Cancelled=False AND  (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;)";
+            else if (sType == "No" && pType == "Yes")
+                sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo   GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled   Having tblDayBook.VoucherType <> 'Sales Return' AND  tblSales.Cancelled=False AND tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            else
+                sQry = "SELECT tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, tblProductMaster.Discount As Dis, tblProductMaster.VAT As Va, Sum(tblProductMaster.BuyRate*tblProductMaster.qty-(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.Discount/100))+(tblProductMaster.BuyRate*tblProductMaster.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo   GROUP BY tblProductMaster.ItemCode, tblDayBook.TransDate, tblProductMaster.ProductName, tblProductMaster.Discount, tblProductMaster.VAT, tblProductMaster.Rate, tblSalesItems.Rate, tblSalesItems.Vat, tblSalesItems.Discount,tblDayBook.VoucherType,tblSales.Cancelled   Having (tblDayBook.VoucherType <> 'Sales Return' AND tblDayBook.VoucherType <> 'Purchase Return' AND tblSales.Cancelled=False) AND tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
 
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               //oleAdp = new OleDbDataAdapter(oleCmd);
-               //dsParentQry = new DataSet();
-               //oleAdp.Fill(dsParentQry);
-               //return dsParentQry;
-               object retVal = oleCmd.ExecuteScalar();
-               double amt = 0;
-               if (retVal != null && retVal != DBNull.Value)
-               {
-                   amt = (double)oleCmd.ExecuteScalar();
-               }
-               oleConn.Close();
-               return amt;
-
-           }
-           public double GetSalesTotal(string sDataSource, DateTime sDate, DateTime eDate)
-           {
-               //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry; string sQry = string.Empty;
-               string sConStr = string.Empty;
+        }
+        public DataSet GrossProfitAndLoss(string sDataSource, DateTime sDate, DateTime eDate)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE (tblSales.PurchaseReturn <> 'Yes' OR tblSales.PurchaseReturn is null) AND tblSales.billno = tblSalesItems.Billno AND tblSales.cancelled=false AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
-               //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT tblProductMaster.ItemCode,tblDayBook.Transdate,  tblProductMaster.ProductName+ ' '+ tblProductMaster.ProductDesc  + ' '+ tblProductMaster.Model As ProductName, Sum(tblSalesItems.Qty) AS SumOfQty, Sum(tblProductMaster.Rate*tblSalesItems.qty-(tblProductMaster.Rate*tblSalesItems.qty* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblSalesItems.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As SoldRate,tblProductMaster.Stock As ClosingStock, tblDaybook.VoucherType FROM (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo    GROUP BY tblProductMaster.ItemCode, tblProductMaster.ProductName,tblProductMaster.ProductDesc  ,tblProductMaster.Model,tblDayBook.VoucherType,tblSales.Cancelled,tblProductMaster.stock,tblDayBook.Transdate  Having  tblSales.Cancelled=False AND (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) UNION ALL SELECT tblProductMaster.ItemCode,tblDayBook.Transdate,  tblProductMaster.ProductName+ ' '+ tblProductMaster.ProductDesc  + ' '+ tblProductMaster.Model As ProductName, Sum(tblPurchaseItems.Qty) AS SumOfQty, Sum(tblProductMaster.Rate*tblPurchaseItems.qty-(tblProductMaster.Rate*tblPurchaseItems.qty* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblPurchaseItems.qty* (tblProductMaster.VAT/100))) As BuyRate, Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.VAT/100))) As SoldRate,tblProductMaster.Stock As ClosingStock, tblDaybook.VoucherType FROM (tblPurchase INNER JOIN (tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode) ON tblPurchase.purchaseID = tblPurchaseItems.purchaseID) INNER JOIN tblDayBook ON tblPurchase.JournalID = tblDayBook.TransNo    GROUP BY tblProductMaster.ItemCode, tblDayBook.VoucherType,tblProductMaster.ProductName,tblProductMaster.ProductDesc  ,tblProductMaster.Model,tblProductMaster.stock,tblDayBook.Transdate HAVING tblDayBook.VoucherType='Sales Return' AND (tblDayBook.TransDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
+
+        }
+        public double GetPurchaseTotal(string sDataSource, DateTime sDate, DateTime eDate)
+        {
+            //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               //oleAdp = new OleDbDataAdapter(oleCmd);
-               //dsParentQry = new DataSet();
-               //oleAdp.Fill(dsParentQry);
-               //return dsParentQry;
-               object retVal = oleCmd.ExecuteScalar();
-               double amt = 0;
-               if (retVal != null && retVal != DBNull.Value)
-               {
-                   amt = (double)oleCmd.ExecuteScalar();
-               }
-               oleConn.Close();
-               return amt;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
 
-           }
-
-           public double GetExpenseTotal(string sDataSource, DateTime sDate, DateTime eDate)
-           {
-               //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry; string sQry = string.Empty;
-               string sConStr = string.Empty;
+            sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND  tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 AND tblDayBook.TransDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "# ) )";
-               //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
-               //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
+
+        }
+        public double GetSalesTotal(string sDataSource, DateTime sDate, DateTime eDate)
+        {
+            //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               //oleAdp = new OleDbDataAdapter(oleCmd);
-               //dsParentQry = new DataSet();
-               //oleAdp.Fill(dsParentQry);
-               //return dsParentQry;
-               object retVal = oleCmd.ExecuteScalar();
-               double amt = 0;
-               if (retVal != null && retVal != DBNull.Value)
-               {
-                   amt = (double)oleCmd.ExecuteScalar();
-               }
-               oleConn.Close();
-               return amt;
-
-           }
-
-           //SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster
-           public double GetClosingStockTotal(string sDataSource)
-           {
-               //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry; string sQry = string.Empty;
-               string sConStr = string.Empty;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE (tblSales.PurchaseReturn <> 'Yes' OR tblSales.PurchaseReturn is null) AND tblSales.billno = tblSalesItems.Billno AND tblSales.cancelled=false AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               sQry = "SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster";
-               //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
-               //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
+
+        }
+
+        public double GetExpenseTotal(string sDataSource, DateTime sDate, DateTime eDate)
+        {
+            //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               //oleAdp = new OleDbDataAdapter(oleCmd);
-               //dsParentQry = new DataSet();
-               //oleAdp.Fill(dsParentQry);
-               //return dsParentQry;
-               object retVal = oleCmd.ExecuteScalar();
-               double amt = 0;
-               if (retVal != null && retVal != DBNull.Value)
-               {
-                   amt = (double)oleCmd.ExecuteScalar();
-               }
-               oleConn.Close();
-               return amt;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 AND tblDayBook.TransDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "# ) )";
+            //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
 
-           }
-        
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
+
+        }
+
+        //SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster
+        public double GetClosingStockTotal(string sDataSource)
+        {
+            //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            sQry = "SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster";
+            //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
+
+        }
+
         #endregion
 
         #region "Stock List Report"
-           public DataTable GenerateDs()
-           {
-               DataSet ds = new DataSet();
-               DataTable dt = new DataTable();
+        public DataTable GenerateDs()
+        {
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
 
-               DataColumn dc;
-               DataRow dr;
-               int days = 0;
+            DataColumn dc;
+            DataRow dr;
+            int days = 0;
 
-               dc = new DataColumn("itemCode");
-               dt.Columns.Add(dc);
+            dc = new DataColumn("itemCode");
+            dt.Columns.Add(dc);
 
-               //dc = new DataColumn("TransDate");
-               //dt.Columns.Add(dc);
-               dc = new DataColumn("ActualStock");
-               dt.Columns.Add(dc);
-               dc = new DataColumn("PhysicalStock");
-               dt.Columns.Add(dc);
-               
-               return dt;
-           }
-           public DataTable GenerateDs(string itemCode,double ActualStock,double PhysicalStock)
-           {
-               DataSet ds = new DataSet();
-               DataTable dt = new DataTable();
+            //dc = new DataColumn("TransDate");
+            //dt.Columns.Add(dc);
+            dc = new DataColumn("ActualStock");
+            dt.Columns.Add(dc);
+            dc = new DataColumn("PhysicalStock");
+            dt.Columns.Add(dc);
 
-               DataColumn dc;
-               DataRow dr;
-               int days = 0;
+            return dt;
+        }
+        public DataTable GenerateDs(string itemCode, double ActualStock, double PhysicalStock)
+        {
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
 
-               dc = new DataColumn("itemCode");
-               dt.Columns.Add(dc);
+            DataColumn dc;
+            DataRow dr;
+            int days = 0;
 
-               //dc = new DataColumn("TransDate");
-               //dt.Columns.Add(dc);
-               dc = new DataColumn("ActualStock");
-               dt.Columns.Add(dc);
-               dc = new DataColumn("PhysicalStock");
-               dt.Columns.Add(dc);
-               
+            dc = new DataColumn("itemCode");
+            dt.Columns.Add(dc);
 
-               //ds.Tables.Add(dt);
-               dr = dt.NewRow();
-               dr["itemCode"] = itemCode;
-
-               dr["ActualStock"] = ActualStock.ToString();
-               //dr["TransDate"] = "";
-               dr["PhysicalStock"] = PhysicalStock.ToString();
-               
-               dt.Rows.Add(dr);
-               //ds.Tables[0].Rows.Add(dr);
-               return dt;
-           }
-           public DataSet verifyStock(string sDataSource,DateTime sDate,string branchcode)
-           {
-               DataTable dtNew = new DataTable();
-               DataSet ds = new DataSet();
-               DataSet returnDs = new DataSet();
-               DataTable grdDt = new DataTable();
-               double purchaseQty = 0;
-               double salesQty = 0;
-               double openingStock = 0;
-               double physicalStock = 0;
-               double ActualStock = 0;
-              
-               ds = getProductStock(sDataSource);
-               
-               string itemCode = string.Empty;
-               string itemName = string.Empty;
-               if (ds != null)
-               {
-                   dtNew = GenerateDs();
-                   returnDs.Tables.Add(dtNew);
-                   if (ds.Tables[0].Rows.Count > 0)
-                   {
-                       foreach (DataRow dr in ds.Tables[0].Rows)
-                       {
-                           if (dr["itemCode"] != null)
-                           {
-                               itemCode = dr["itemCode"].ToString().Replace("&quot;", "\"");
-                               itemName = dr["Product"].ToString();
-                               purchaseQty = getStockPurchase(sDataSource, itemCode, sDate, branchcode);
-                               salesQty = getStockSales(sDataSource, itemCode, sDate, branchcode);
-                               openingStock = getOpeningStock(sDataSource, itemCode, branchcode);
-                               physicalStock = getPhysicalStock(sDataSource, itemCode, sDate, branchcode);
-                               ActualStock = openingStock + (purchaseQty - salesQty);
-                               //if (ActualStock != physicalStock)
-                               //{
-                                   grdDt = GenerateDs(itemName, ActualStock, physicalStock);
-                                   if (grdDt != null)
-                                   {
-                                       for (int k = 0; k <= grdDt.Rows.Count - 1; k++)
-                                       {
-
-                                           if (grdDt != null && grdDt.Rows.Count > 0)
-                                           {
-                                            
-                                               returnDs.Tables[0].ImportRow(grdDt.Rows[k]);
-                                           }
-                                             
-                                       }
-                                   }
-                              // }
-                           }
-                       }
-                   }
+            //dc = new DataColumn("TransDate");
+            //dt.Columns.Add(dc);
+            dc = new DataColumn("ActualStock");
+            dt.Columns.Add(dc);
+            dc = new DataColumn("PhysicalStock");
+            dt.Columns.Add(dc);
 
 
-                    return returnDs;
-               }
-               else
-               {
-                   return null;
-               }
-           }
-           public double getPhysicalStock(string sDataSource, string itemCode, DateTime sDate,string BranchCode)
-           {
-               SqlConnection oleConn;
-               SqlCommand oleCmd;
-               SqlDataAdapter oleAdp;
+            //ds.Tables.Add(dt);
+            dr = dt.NewRow();
+            dr["itemCode"] = itemCode;
 
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+            dr["ActualStock"] = ActualStock.ToString();
+            //dr["TransDate"] = "";
+            dr["PhysicalStock"] = PhysicalStock.ToString();
 
+            dt.Rows.Add(dr);
+            //ds.Tables[0].Rows.Add(dr);
+            return dt;
+        }
+        public DataSet verifyStock(string sDataSource, DateTime sDate, string branchcode)
+        {
+            DataTable dtNew = new DataTable();
+            DataSet ds = new DataSet();
+            DataSet returnDs = new DataSet();
+            DataTable grdDt = new DataTable();
+            double purchaseQty = 0;
+            double salesQty = 0;
+            double openingStock = 0;
+            double physicalStock = 0;
+            double ActualStock = 0;
 
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new SqlConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new SqlCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT Stock FROM ClosingStock Where ClosingStock.Itemcode='" + itemCode + "'AND " + BranchCode + " AND ClosingStock.ClosingDate ='" + sDate.ToString("yyyy-MM-dd") + "'";
+            ds = getProductStock(sDataSource);
 
+            string itemCode = string.Empty;
+            string itemName = string.Empty;
+            if (ds != null)
+            {
+                dtNew = GenerateDs();
+                returnDs.Tables.Add(dtNew);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        if (dr["itemCode"] != null)
+                        {
+                            itemCode = dr["itemCode"].ToString().Replace("&quot;", "\"");
+                            itemName = dr["Product"].ToString();
+                            purchaseQty = getStockPurchase(sDataSource, itemCode, sDate, branchcode);
+                            salesQty = getStockSales(sDataSource, itemCode, sDate, branchcode);
+                            openingStock = getOpeningStock(sDataSource, itemCode, branchcode);
+                            physicalStock = getPhysicalStock(sDataSource, itemCode, sDate, branchcode);
+                            ActualStock = openingStock + (purchaseQty - salesQty);
+                            //if (ActualStock != physicalStock)
+                            //{
+                            grdDt = GenerateDs(itemName, ActualStock, physicalStock);
+                            if (grdDt != null)
+                            {
+                                for (int k = 0; k <= grdDt.Rows.Count - 1; k++)
+                                {
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               double qty = 0;
+                                    if (grdDt != null && grdDt.Rows.Count > 0)
+                                    {
 
-               object retVal = oleCmd.ExecuteScalar();
-               if ((retVal != null) && (retVal != DBNull.Value))
-               {
-                   qty = Convert.ToDouble(oleCmd.ExecuteScalar());
-                  
+                                        returnDs.Tables[0].ImportRow(grdDt.Rows[k]);
+                                    }
 
-               }
-               oleConn.Close();
-               return qty;
-           }
-           public DataSet getProductList(string sDataSource)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
-
-
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource; // "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //sQry = "SELECT ItemCode + ' - ' + ProductDesc As ProductCode,itemcode,ProductName + '-' + Stock As ProductName FROM tblProductMaster";
-
-               sQry = "SELECT ItemCode + ' | ' + ProductDesc + ' | ' + Model As ProductCode,ProductName + '@' + CStr(stock) + '@' + ItemCode As Product FROM tblProductMaster";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
-           }
-          
-           public DataSet getProductStock(string sDataSource)
-           {
-               SqlConnection oleConn;
-               SqlCommand oleCmd;
-               SqlDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
-
-
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource; // "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new SqlConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new SqlCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //sQry = "SELECT ItemCode + ' - ' + ProductDesc As ProductCode,itemcode,ProductName + '-' + Stock As ProductName FROM tblProductMaster";
-
-               sQry = "SELECT itemCode,ProductName+ ' - ' + Model + ' - ' + ProductDesc As Product  FROM tblProductMaster";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new SqlDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               oleConn.Close();
-               return dsParentQry;
-           }
-
-           #region Stock Verification Report
-          
-           #endregion
-
-           public double getStockIN(string sDataSource, string itemCode, DateTime sDate)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
-
-
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-
-
-               oleCmd = new OleDbCommand();
-               oleConn.Open();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT Sum(Qty) As INQty FROM tblExecution,tblCompProduct Where tblExecution.CompID = tblCompProduct.CompID AND tblExecution.Itemcode='" + itemCode + "' AND tblCompProduct.CDate <=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblExecution.InOut = 'IN'  Group By tblExecution.Itemcode ";
-
-
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               double qty = 0;
-
-               object retVal = oleCmd.ExecuteScalar();
-               if ((retVal != null) && (retVal != DBNull.Value))
-               {
-                   qty = Convert.ToDouble(oleCmd.ExecuteScalar());
-
-
-               }
-               oleConn.Close();
-               return qty;
-           }
-
-           public double getStockOUT(string sDataSource, string itemCode, DateTime sDate)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
-
-
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-
-
-               oleCmd = new OleDbCommand();
-               oleConn.Open();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT Sum(Qty) As INQty FROM tblExecution,tblCompProduct Where tblExecution.CompID = tblCompProduct.CompID AND tblExecution.Itemcode='" + itemCode + "' AND tblCompProduct.CDate <=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblExecution.InOut = 'OUT' Group By tblExecution.Itemcode ";
-
-
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               double qty = 0;
-
-               object retVal = oleCmd.ExecuteScalar();
-               if ((retVal != null) && (retVal != DBNull.Value))
-               {
-                   qty = Convert.ToDouble(oleCmd.ExecuteScalar());
-
-
-               }
-               oleConn.Close();
-               return qty;
-           }
-
-           public double getStockPurchase(string sDataSource, string itemCode, DateTime sDate,string BranchCode)
-           {
-               SqlConnection oleConn;
-               SqlCommand oleCmd;
-               SqlDataAdapter oleAdp;
-            
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
-
-              
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new SqlConnection(CreateConnectionString(sConStr));
-
-
-               oleCmd = new SqlCommand();
-               oleConn.Open();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //sQry = "SELECT Sum(Qty) As PurchaseQty FROM tblPurchase,tblPurchaseItems Where tblPurchase.PurchaseID=tblPurchaseitems.PurchaseID AND tblPurchaseItems.Itemcode='" + itemCode + "' AND tblPurchase.BillDate <='"+ sDate.ToString("yyyy-MM-dd") + "'  Group By tblPurchaseItems.itemcode";
-               sQry = " SELECT Sum(Qty) As PurchaseQty FROM tblPurchase,tblPurchaseItems Where tblPurchase.PurchaseID=tblPurchaseitems.PurchaseID AND " + BranchCode + " AND " +
-                      " tblPurchaseItems.Itemcode='" + itemCode + "' AND tblPurchase.BillDate <='" + sDate.ToString("yyyy-MM-dd") + "'  Group By tblPurchaseItems.itemcode";
-
-
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               double qty = 0;
-
-               object retVal = oleCmd.ExecuteScalar();
-                if ((retVal != null) && (retVal != DBNull.Value))
-                { 
-                    qty = Convert.ToDouble(oleCmd.ExecuteScalar());
-                    
-                   
+                                }
+                            }
+                            // }
+                        }
+                    }
                 }
-                oleConn.Close();
-               return qty;
-           }
-           public double getStockSales(string sDataSource, string itemCode, DateTime sDate,string BranchCode)
-           {
-               SqlConnection oleConn;
-               SqlCommand oleCmd;
-               SqlDataAdapter oleAdp;
-             
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
-
-               
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new SqlConnection(CreateConnectionString(sConStr));
-               oleCmd = new SqlCommand();
-               oleConn.Open();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //sQry = "SELECT Sum(Qty) As SalesQty FROM tblSales,tblSalesItems Where tblSales.Cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND tblSalesItems.Itemcode='" + itemCode +"' AND tblSales.BillDate <='" + sDate.ToString("yyyy-MM-dd")   + "'  Group By tblSalesitems.itemcode";
-               sQry = " SELECT Sum(Qty) As SalesQty FROM tblSales,tblSalesItems Where tblSales.Cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND tblSales." + BranchCode + "AND " +
-                      " tblSalesItems.Itemcode='" + itemCode + "' AND tblSales.BillDate <='" + sDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesitems.itemcode";
 
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               double qty = 0;
+                return returnDs;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public double getPhysicalStock(string sDataSource, string itemCode, DateTime sDate, string BranchCode)
+        {
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
 
-               object retVal = oleCmd.ExecuteScalar();
-               if ((retVal != null) && (retVal != DBNull.Value))
-               {
-                   qty = Convert.ToDouble(oleCmd.ExecuteScalar());
-                
-
-               }
-               oleConn.Close();
-               return qty;
-           }
-           //SELECT SUM(qty) FROM tblSalesItems,tblSales WHERE tblSales.Billno = tblSalesItems.Billno AND ItemCode ='D01' AND cancelled = false
-           public double getOpeningStockSales(string sDataSource, string itemCode, DateTime sDate)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT SUM(qty) FROM tblSalesItems,tblSales WHERE tblSales.Billno = tblSalesItems.Billno AND ItemCode ='" + itemCode + "' AND cancelled = false AND billdate <#" + sDate.ToString("MM/dd/yyyy")  +"#";
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new SqlCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT Stock FROM ClosingStock Where ClosingStock.Itemcode='" + itemCode + "'AND " + BranchCode + " AND ClosingStock.ClosingDate ='" + sDate.ToString("yyyy-MM-dd") + "'";
 
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            double qty = 0;
 
-               double cnt = 0;
-               object retVal = oleCmd.ExecuteScalar();
-               if ((retVal != null) && (retVal != DBNull.Value))
-               {
-                   cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
-
-
-               }
-               oleConn.Close();
-               return cnt;
-           }
-           public double getOpeningStockPurchase(string sDataSource, string itemCode, DateTime sDate)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                qty = Convert.ToDouble(oleCmd.ExecuteScalar());
 
 
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT SUM(qty) FROM tblPurchaseItems,tblPurchase WHERE tblPurchase.PurchaseID = tblPurchaseItems.purchaseID AND ItemCode ='" + itemCode + "' AND billdate <#" + sDate.ToString("MM/dd/yyyy") + "#";
+            }
+            oleConn.Close();
+            return qty;
+        }
+        public DataSet getProductList(string sDataSource)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource; // "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
 
-               double cnt = 0;
-               object retVal = oleCmd.ExecuteScalar();
-               if ((retVal != null) && (retVal != DBNull.Value))
-               {
-                   cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //sQry = "SELECT ItemCode + ' - ' + ProductDesc As ProductCode,itemcode,ProductName + '-' + Stock As ProductName FROM tblProductMaster";
 
+            sQry = "SELECT ItemCode + ' | ' + ProductDesc + ' | ' + Model As ProductCode,ProductName + '@' + CStr(stock) + '@' + ItemCode As Product FROM tblProductMaster";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
+        }
 
-               }
-               oleConn.Close();
-               return cnt;
-           }  
-           public double getOpeningStock(string sDataSource,string itemCode,string BranchCode)
-           {
-               SqlConnection oleConn;
-               SqlCommand oleCmd;
-               SqlDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
-
-
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new SqlConnection(CreateConnectionString(sConStr));
-               oleConn.Open();
-               oleCmd = new SqlCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "'";
-               sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "' AND " + BranchCode;
-
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-
-               double cnt = 0;
-               object retVal = oleCmd.ExecuteScalar();
-               if ((retVal != null) && (retVal != DBNull.Value))
-               {
-                   cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
-                   
-
-               }
-               oleConn.Close();
-               return cnt;
-           }  
-           public DataSet getProductStockList(string sDataSource,string itemCode,DateTime sDate,DateTime eDate)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+        public DataSet getProductStock(string sDataSource)
+        {
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //sQry = "SELECT * FROM (SELECT  b.billdate ,'PURCHASE' As Purchase/Sale ,qty,c.ledgername As LedgerName  from tblpurchaseitems a,tblpurchase b,tblledger c WHERE a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid AND itemcode='" + itemCode + "' UNION SELECT  d.billdate,'SALES' As Purchase/Sale,c.qty,e.ledgername As LedgerName  from tblsalesitems c,tblsales d,tblledger e WHERE c.billno=d.billno  AND d.cancelled=false AND d.customerid = e.ledgerid AND itemcode='" + itemCode + "') order by 1 ";
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource; // "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new SqlCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //sQry = "SELECT ItemCode + ' - ' + ProductDesc As ProductCode,itemcode,ProductName + '-' + Stock As ProductName FROM tblProductMaster";
 
-               //sQry = "select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',qty,c.ledgername As LedgerName   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and itemcode='" + itemCode + "'union all select  d.billdate,'SALES' As 'Purchase/Sale',c.qty,d.customername As LedgerName   from tblsalesitems c,tblsales d  where c.billno=d.billno  AND d.cancelled=false and itemcode='" + itemCode + "') order by 1";
-               sQry = "select d.billdate,'SALES' As 'Purchase/Sale',d.billno,c.qty,d.customername As LedgerName   from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND d.billdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.cancelled=false and itemcode='" + itemCode + "' order by d.billdate union all    select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',b.BillNo ,qty,c.ledgername As LedgerName   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.billdate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND b.billdate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND  itemcode='" + itemCode + "' ) order by 1,2";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
+            sQry = "SELECT itemCode,ProductName+ ' - ' + Model + ' - ' + ProductDesc As Product  FROM tblProductMaster";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new SqlDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            oleConn.Close();
+            return dsParentQry;
+        }
 
-               DataSet dsINOUT = new DataSet();
+        #region Stock Verification Report
 
-               sQry = "select  c.Cdate,'IN' As 'Purchase/Sale','' as billno,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='IN' and d.itemcode='D01' order by c.cdate union all  select * from ( select  c.Cdate,'IN' As 'Purchase/Sale','' as billno, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='OUT' and d.itemcode='D01' ) order by 1,2";
+        #endregion
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               oleAdp.Fill(dsINOUT);
+        public double getStockIN(string sDataSource, string itemCode, DateTime sDate)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
 
-               if(dsINOUT.Tables[0].Rows.Count > 0)
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+
+
+            oleCmd = new OleDbCommand();
+            oleConn.Open();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT Sum(Qty) As INQty FROM tblExecution,tblCompProduct Where tblExecution.CompID = tblCompProduct.CompID AND tblExecution.Itemcode='" + itemCode + "' AND tblCompProduct.CDate <=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblExecution.InOut = 'IN'  Group By tblExecution.Itemcode ";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            double qty = 0;
+
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                qty = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+            }
+            oleConn.Close();
+            return qty;
+        }
+
+        public double getStockOUT(string sDataSource, string itemCode, DateTime sDate)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+
+
+            oleCmd = new OleDbCommand();
+            oleConn.Open();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT Sum(Qty) As INQty FROM tblExecution,tblCompProduct Where tblExecution.CompID = tblCompProduct.CompID AND tblExecution.Itemcode='" + itemCode + "' AND tblCompProduct.CDate <=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblExecution.InOut = 'OUT' Group By tblExecution.Itemcode ";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            double qty = 0;
+
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                qty = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+            }
+            oleConn.Close();
+            return qty;
+        }
+
+        public double getStockPurchase(string sDataSource, string itemCode, DateTime sDate, string BranchCode)
+        {
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
+
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+
+
+            oleCmd = new SqlCommand();
+            oleConn.Open();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //sQry = "SELECT Sum(Qty) As PurchaseQty FROM tblPurchase,tblPurchaseItems Where tblPurchase.PurchaseID=tblPurchaseitems.PurchaseID AND tblPurchaseItems.Itemcode='" + itemCode + "' AND tblPurchase.BillDate <='"+ sDate.ToString("yyyy-MM-dd") + "'  Group By tblPurchaseItems.itemcode";
+            sQry = " SELECT Sum(Qty) As PurchaseQty FROM tblPurchase,tblPurchaseItems Where tblPurchase.PurchaseID=tblPurchaseitems.PurchaseID AND " + BranchCode + " AND " +
+                   " tblPurchaseItems.Itemcode='" + itemCode + "' AND tblPurchase.BillDate <='" + sDate.ToString("yyyy-MM-dd") + "'  Group By tblPurchaseItems.itemcode";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            double qty = 0;
+
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                qty = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+            }
+            oleConn.Close();
+            return qty;
+        }
+        public double getStockSales(string sDataSource, string itemCode, DateTime sDate, string BranchCode)
+        {
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
+
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
+            oleConn.Open();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //sQry = "SELECT Sum(Qty) As SalesQty FROM tblSales,tblSalesItems Where tblSales.Cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND tblSalesItems.Itemcode='" + itemCode +"' AND tblSales.BillDate <='" + sDate.ToString("yyyy-MM-dd")   + "'  Group By tblSalesitems.itemcode";
+            sQry = " SELECT Sum(Qty) As SalesQty FROM tblSales,tblSalesItems Where tblSales.Cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND tblSales." + BranchCode + "AND " +
+                   " tblSalesItems.Itemcode='" + itemCode + "' AND tblSales.BillDate <='" + sDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesitems.itemcode";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            double qty = 0;
+
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                qty = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+            }
+            oleConn.Close();
+            return qty;
+        }
+        //SELECT SUM(qty) FROM tblSalesItems,tblSales WHERE tblSales.Billno = tblSalesItems.Billno AND ItemCode ='D01' AND cancelled = false
+        public double getOpeningStockSales(string sDataSource, string itemCode, DateTime sDate)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT SUM(qty) FROM tblSalesItems,tblSales WHERE tblSales.Billno = tblSalesItems.Billno AND ItemCode ='" + itemCode + "' AND cancelled = false AND billdate <#" + sDate.ToString("MM/dd/yyyy") + "#";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+
+            double cnt = 0;
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+            }
+            oleConn.Close();
+            return cnt;
+        }
+        public double getOpeningStockPurchase(string sDataSource, string itemCode, DateTime sDate)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT SUM(qty) FROM tblPurchaseItems,tblPurchase WHERE tblPurchase.PurchaseID = tblPurchaseItems.purchaseID AND ItemCode ='" + itemCode + "' AND billdate <#" + sDate.ToString("MM/dd/yyyy") + "#";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+
+            double cnt = 0;
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+            }
+            oleConn.Close();
+            return cnt;
+        }
+        public double getOpeningStock(string sDataSource, string itemCode, string BranchCode)
+        {
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new SqlCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "'";
+            sQry = "SELECT  OpeningStock  FROM tblStock WHERE itemCode='" + itemCode + "' AND " + BranchCode;
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+
+            double cnt = 0;
+            object retVal = oleCmd.ExecuteScalar();
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                cnt = Convert.ToDouble(oleCmd.ExecuteScalar());
+
+
+            }
+            oleConn.Close();
+            return cnt;
+        }
+        public DataSet getProductStockList(string sDataSource, string itemCode, DateTime sDate, DateTime eDate)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            sConStr = sDataSource;  //"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //sQry = "SELECT * FROM (SELECT  b.billdate ,'PURCHASE' As Purchase/Sale ,qty,c.ledgername As LedgerName  from tblpurchaseitems a,tblpurchase b,tblledger c WHERE a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid AND itemcode='" + itemCode + "' UNION SELECT  d.billdate,'SALES' As Purchase/Sale,c.qty,e.ledgername As LedgerName  from tblsalesitems c,tblsales d,tblledger e WHERE c.billno=d.billno  AND d.cancelled=false AND d.customerid = e.ledgerid AND itemcode='" + itemCode + "') order by 1 ";
+
+            //sQry = "select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',qty,c.ledgername As LedgerName   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and itemcode='" + itemCode + "'union all select  d.billdate,'SALES' As 'Purchase/Sale',c.qty,d.customername As LedgerName   from tblsalesitems c,tblsales d  where c.billno=d.billno  AND d.cancelled=false and itemcode='" + itemCode + "') order by 1";
+            sQry = "select d.billdate,'SALES' As 'Purchase/Sale',d.billno,c.qty,d.customername As LedgerName   from tblsalesitems c,tblsales d  where c.billno=d.billno AND (d.billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND d.billdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.cancelled=false and itemcode='" + itemCode + "' order by d.billdate union all    select * from (select  b.billdate ,'PURCHASE' As 'Purchase/Sale',b.BillNo ,qty,c.ledgername As LedgerName   from tblpurchaseitems a,tblpurchase b,tblledger c where a.purchaseid=b.purchaseid AND b.supplierid = c.ledgerid and (b.billdate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND b.billdate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND  itemcode='" + itemCode + "' ) order by 1,2";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+
+            DataSet dsINOUT = new DataSet();
+
+            sQry = "select  c.Cdate,'IN' As 'Purchase/Sale','' as billno,d.qty,d.FormulaName As LedgerName from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='IN' and d.itemcode='D01' order by c.cdate union all  select * from ( select  c.Cdate,'IN' As 'Purchase/Sale','' as billno, d.qty,d.FormulaName As LedgerName   from tblCompProduct c,tblexecution d  where c.CompID=d.CompID AND (c.CDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND c.Cdate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND d.InOut='OUT' and d.itemcode='D01' ) order by 1,2";
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp.Fill(dsINOUT);
+
+            if (dsINOUT.Tables[0].Rows.Count > 0)
                 dsParentQry.Tables[0].Merge(dsINOUT.Tables[0]);
 
-               return dsParentQry;
+            return dsParentQry;
 
-           }
+        }
 
-#endregion
+        #endregion
 
         #region "Sales Performance Report"
-        public DataSet GenerateSalesBillwise(string sDataSource, DateTime sDate, DateTime eDate,int iLedgerID)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry; string sQry = string.Empty;
-               string sConStr = string.Empty;
+        public DataSet GenerateSalesBillwise(string sDataSource, DateTime sDate, DateTime eDate, int iLedgerID)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //if(sType=="No")
-               sQry = "SELECT tblSales.BillNo, tblSales.BillDate,tblSales.CustomerName,tblSales.Paymode, tblDayBook.Amount FROM (tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) WHERE tblSales.Cancelled=False AND   tblSales.CustomerID=" + iLedgerID + " AND tblSales.PurchaseReturn='No' AND  (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-               //else
-               //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-               //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //if(sType=="No")
+            sQry = "SELECT tblSales.BillNo, tblSales.BillDate,tblSales.CustomerName,tblSales.Paymode, tblDayBook.Amount FROM (tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) WHERE tblSales.Cancelled=False AND   tblSales.CustomerID=" + iLedgerID + " AND tblSales.PurchaseReturn='No' AND  (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
+            //else
+            //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-           }
-         
+        }
+
         public DataSet GenerateSalesReturnBillwise(string sDataSource, DateTime sDate, DateTime eDate, int iLedgerID)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry; string sQry = string.Empty;
-               string sConStr = string.Empty;
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //if (sType == "No")
-               //    sQry = "SELECT tblSales.BillNo, tblSales.BillDate,tblSales.CustomerName,tblSales.Paymode, tblLedger.LedgerName, tblDayBook.Amount FROM (tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN tblLedger ON tblDayBook.DebtorID = tblLedger.LedgerID WHERE  tblLedger.LedgerID=" + iLedgerID + " AND  (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-               //else
-                 //  sQry = "SELECT tblPurchase.PurchaseID, tblPurchase.BillDate,tblPurchase.Paymode, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID WHERE tblPurchase.SupplierID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-               sQry = "SELECT tblPurchase.PurchaseID, tblPurchase.BillDate,tblPurchase.Paymode FROM tblPurchase  WHERE tblPurchase.SupplierID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-               //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //if (sType == "No")
+            //    sQry = "SELECT tblSales.BillNo, tblSales.BillDate,tblSales.CustomerName,tblSales.Paymode, tblLedger.LedgerName, tblDayBook.Amount FROM (tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN tblLedger ON tblDayBook.DebtorID = tblLedger.LedgerID WHERE  tblLedger.LedgerID=" + iLedgerID + " AND  (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
+            //else
+            //  sQry = "SELECT tblPurchase.PurchaseID, tblPurchase.BillDate,tblPurchase.Paymode, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID WHERE tblPurchase.SupplierID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            sQry = "SELECT tblPurchase.PurchaseID, tblPurchase.BillDate,tblPurchase.Paymode FROM tblPurchase  WHERE tblPurchase.SupplierID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-           }
-          
+        }
+
         public DataSet getProductsPurchase(int purchaseID, string sDataSource)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               sQry = "SELECT tblPurchaseItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblPurchaseItems.Qty, tblPurchaseItems.PurchaseRate, tblPurchaseItems.Discount,tblPurchaseItems.VAT  FROM tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblPurchaseItems.PurchaseID=" + purchaseID ;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT tblPurchaseItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblPurchaseItems.Qty, tblPurchaseItems.PurchaseRate, tblPurchaseItems.Discount,tblPurchaseItems.VAT  FROM tblProductMaster INNER JOIN tblPurchaseItems ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblPurchaseItems.PurchaseID=" + purchaseID;
 
 
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
-           }
-             
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
+        }
+
         public DataSet GenerateSalesItemwise(string sDataSource, DateTime sDate, DateTime eDate, int iLedgerID)
         {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry;
-               string sQry = string.Empty;
-               string sConStr = string.Empty;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //if(sType=="No")
-               //sQry = "SELECT tblSales.BillDate, tblSalesItems.ItemCode,tblProductMaster.ProductName,tblProductMaster.Model,tblProductMaster.ProductDesc,tblSales.CustomerID,SUM(tblSalesItems.qty) As Qty,Sum(tblDayBook.Amount) As Amount FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN  (tblSales INNER JOIN tblDayBook ON tblsales.JournalID = tblDaybook.Transno) ON tblSales.Billno = tblSalesItems.Billno) ON tblProductmaster.itemcode=tblSalesItems.Itemcode  Group By tblSalesItems.ItemCode ,tblProductMaster.ProductName,tblProductMaster.Model,tblProductMaster.ProductDesc,tblSales.CustomerID,tblSales.BillDate  HAVING    tblSales.CustomerID=" + iLedgerID + " AND (tblSales.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
-               sQry = "SELECT  tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,  SUM(tblSalesItems.qty) AS Qty, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As Amount FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN (tblSales INNER JOIN tblDayBook ON tblsales.JournalID=tblDaybook.Transno) ON tblSales.Billno=tblSalesItems.Billno) ON tblProductMaster.itemcode=tblSalesItems.Itemcode Where tblSales.Cancelled=False AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND (tblSales.PurchaseReturn='No' OR tblSales.PurchaseReturn<>'Yes') AND  tblSales.CustomerID=" + iLedgerID + "   GROUP BY tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc";   
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //if(sType=="No")
+            //sQry = "SELECT tblSales.BillDate, tblSalesItems.ItemCode,tblProductMaster.ProductName,tblProductMaster.Model,tblProductMaster.ProductDesc,tblSales.CustomerID,SUM(tblSalesItems.qty) As Qty,Sum(tblDayBook.Amount) As Amount FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN  (tblSales INNER JOIN tblDayBook ON tblsales.JournalID = tblDaybook.Transno) ON tblSales.Billno = tblSalesItems.Billno) ON tblProductmaster.itemcode=tblSalesItems.Itemcode  Group By tblSalesItems.ItemCode ,tblProductMaster.ProductName,tblProductMaster.Model,tblProductMaster.ProductDesc,tblSales.CustomerID,tblSales.BillDate  HAVING    tblSales.CustomerID=" + iLedgerID + " AND (tblSales.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
+            sQry = "SELECT  tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc,  SUM(tblSalesItems.qty) AS Qty, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty* (tblSalesItems.VAT/100))) As Amount FROM tblProductMaster INNER JOIN (tblSalesItems INNER JOIN (tblSales INNER JOIN tblDayBook ON tblsales.JournalID=tblDaybook.Transno) ON tblSales.Billno=tblSalesItems.Billno) ON tblProductMaster.itemcode=tblSalesItems.Itemcode Where tblSales.Cancelled=False AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND (tblSales.PurchaseReturn='No' OR tblSales.PurchaseReturn<>'Yes') AND  tblSales.CustomerID=" + iLedgerID + "   GROUP BY tblSalesItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc";
             //else
-               //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-               //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
+            //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-           }
+        }
         public DataSet GenerateSalesExecutiveItemwise(string sDataSource, DateTime sDate, DateTime eDate, string iLedgerID)
         {
             OleDbConnection oleConn;
@@ -4891,132 +4891,132 @@ namespace ReportsBL
 
         }
         public DataSet GenerateSalesReturnItemwise(string sDataSource, DateTime sDate, DateTime eDate, int iLedgerID)
-           {
-               OleDbConnection oleConn;
-               OleDbCommand oleCmd;
-               OleDbDataAdapter oleAdp;
-               DataSet dsParentQry; string sQry = string.Empty;
-               string sConStr = string.Empty;
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-               /* Start Ms Access Database Connection Information */
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-               sConStr = sDataSource;
-               //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-               oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-               oleCmd = new OleDbCommand();
-               oleCmd.Connection = oleConn;
-               /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-               //if(sType=="No")
-               //sQry = "SELECT tblPurchase.BillDate, tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, SUM(tblPurchaseItems.qty) AS Qty, Sum(tblDayBook.Amount) AS Amount,tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchaseItems INNER JOIN (tblPurchase INNER JOIN tblDayBook ON tblPurchase.JournalID=tblDaybook.Transno) ON tblPurchase.PurchaseID=tblPurchaseItems.PurchaseID) ON tblProductmaster.itemcode=tblPurchaseItems.Itemcode GROUP BY tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, tblPurchase.BillDate,tblPurchase.SalesReturn HAVING tblPurchase.SupplierID=" + iLedgerID  + " And (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND tblPurchase.SalesReturn='Yes'";
-               sQry = "SELECT  tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, SUM(tblPurchaseItems.qty) AS Qty, Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.VAT/100))) AS Amount, tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchaseItems INNER JOIN (tblPurchase INNER JOIN tblDayBook ON tblPurchase.JournalID=tblDaybook.Transno) ON tblPurchase.PurchaseID=tblPurchaseItems.PurchaseID) ON tblProductmaster.itemcode=tblPurchaseItems.Itemcode Where (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND  tblPurchase.SUpplierID=" + iLedgerID + " And  tblPurchase.SalesReturn='Yes' GROUP BY tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, tblPurchase.SalesReturn;";   
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //if(sType=="No")
+            //sQry = "SELECT tblPurchase.BillDate, tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, SUM(tblPurchaseItems.qty) AS Qty, Sum(tblDayBook.Amount) AS Amount,tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchaseItems INNER JOIN (tblPurchase INNER JOIN tblDayBook ON tblPurchase.JournalID=tblDaybook.Transno) ON tblPurchase.PurchaseID=tblPurchaseItems.PurchaseID) ON tblProductmaster.itemcode=tblPurchaseItems.Itemcode GROUP BY tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, tblPurchase.BillDate,tblPurchase.SalesReturn HAVING tblPurchase.SupplierID=" + iLedgerID  + " And (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND tblPurchase.SalesReturn='Yes'";
+            sQry = "SELECT  tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, SUM(tblPurchaseItems.qty) AS Qty, Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty* (tblPurchaseItems.VAT/100))) AS Amount, tblPurchase.SalesReturn FROM tblProductMaster INNER JOIN (tblPurchaseItems INNER JOIN (tblPurchase INNER JOIN tblDayBook ON tblPurchase.JournalID=tblDaybook.Transno) ON tblPurchase.PurchaseID=tblPurchaseItems.PurchaseID) ON tblProductmaster.itemcode=tblPurchaseItems.Itemcode Where (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND  tblPurchase.SUpplierID=" + iLedgerID + " And  tblPurchase.SalesReturn='Yes' GROUP BY tblPurchaseItems.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model, tblProductMaster.ProductDesc, tblPurchase.SupplierID, tblPurchase.SalesReturn;";
             //else
-               //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-               //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-               oleCmd.CommandText = sQry;
-               oleCmd.CommandType = CommandType.Text;
-               oleAdp = new OleDbDataAdapter(oleCmd);
-               dsParentQry = new DataSet();
-               oleAdp.Fill(dsParentQry);
-               return dsParentQry;
+            //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-           }
+        }
 
         public DataSet GenerateSalesDetails(string sDataSource, DateTime sDate, DateTime eDate, int iLedgerID)
-         {
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-             //if(sType=="No")
-             sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblSales.Paymode,tblDayBook.Amount FROM tblSales,tblDaybook WHERE tblSales.JournalID = tblDayBook.Transno AND tblSales.Cancelled=False AND tblSales.CustomerID=" + iLedgerID + " AND tblSales.PurchaseReturn='No' AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-             //else
-             //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-             //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             oleAdp = new OleDbDataAdapter(oleCmd);
-             dsParentQry = new DataSet();
-             oleAdp.Fill(dsParentQry);
-             return dsParentQry;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //if(sType=="No")
+            sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblSales.Paymode,tblDayBook.Amount FROM tblSales,tblDaybook WHERE tblSales.JournalID = tblDayBook.Transno AND tblSales.Cancelled=False AND tblSales.CustomerID=" + iLedgerID + " AND tblSales.PurchaseReturn='No' AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
+            //else
+            //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-         }
+        }
 
         public DataSet GenerateSalesReturnDetails(string sDataSource, DateTime sDate, DateTime eDate, int iLedgerID)
-         {
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-             //if(sType=="No")
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //if(sType=="No")
             //sQry = "SELECT tblPurchase.purchaseID,tblPurchase.BillDate,tblPurchase.Paymode,tblDayBook.Amount,tblPurchase.SalesReturnReason FROM tblPurchase,tblDaybook WHERE SalesReturn='Yes' AND tblPurchase.JournalID = tblDayBook.Transno AND   tblPurchase.SupplierID="+ iLedgerID +" AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-             sQry = "SELECT tblPurchase.purchaseID,tblPurchase.BillDate,tblPurchase.Paymode,tblDayBook.Amount,tblPurchase.SalesReturnReason FROM tblPurchase,tblDaybook WHERE SalesReturn='Yes' AND tblPurchase.JournalID = tblDayBook.Transno AND   tblPurchase.SupplierID=" + iLedgerID + " AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-             //else
-             //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-             //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             oleAdp = new OleDbDataAdapter(oleCmd);
-             dsParentQry = new DataSet();
-             oleAdp.Fill(dsParentQry);
-             return dsParentQry;
+            sQry = "SELECT tblPurchase.purchaseID,tblPurchase.BillDate,tblPurchase.Paymode,tblDayBook.Amount,tblPurchase.SalesReturnReason FROM tblPurchase,tblDaybook WHERE SalesReturn='Yes' AND tblPurchase.JournalID = tblDayBook.Transno AND   tblPurchase.SupplierID=" + iLedgerID + " AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
+            //else
+            //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-         }
+        }
 
         public DataSet GenerateCreditDebitTran(string sDataSource, DateTime sDate, DateTime eDate, int iLedgerID)
-         {
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-             //if(sType=="No")
-             //sQry = "SELECT tblPurchase.purchaseID,tblPurchase.BillDate,tblPurchase.Paymode,tblDayBook.Amount,tblPurchase.SalesReturnReason FROM tblPurchase,tblDaybook WHERE SalesReturn='Yes' AND tblPurchase.JournalID = tblDayBook.Transno AND   tblPurchase.SupplierID=" + iLedgerID + " AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
-             //sQry = "SELECT tblDaybook.Transno, tblDayBook.TransDate, Debtor.LedgerName As Debitor, tblDayBook.Amount, Creditor.LedgerName As Creditor FROM tblDayBook, tblLedger AS Debtor, tblLedger AS Creditor WHERE tblDayBook.CreditorID=Creditor.LedgerID And tblDayBook.DebtorID=Debtor.LedgerID And (tblDayBook.DebtorID=" + iLedgerID + " Or tblDayBook.CreditorID=" + iLedgerID + ") AND (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
-             sQry = "SELECT tblDaybook.Transno, tblDayBook.TransDate, Debtor.LedgerName As Debitor, tblDayBook.Amount,Creditor.LedgerName As Creditor,tblDayBook.VoucherType FROM tblDayBook, tblLedger AS Debtor,tblLedger As Creditor WHERE  tblDayBook.DebtorID=Debtor.LedgerID And tblDayBook.CreditorID=Creditor.LedgerID And (tblDayBook.DebtorID=" + iLedgerID + " Or tblDayBook.CreditorID=" + iLedgerID + ") AND (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#); UNION  SELECT tblDaybook.Transno, tblDayBook.TransDate, tblSales.CustomerName As Debitor, tblDayBook.Amount,Creditor.LedgerName As Creditor,tblDayBook.VoucherType FROM tblDayBook,tblSales,tblLedger As Creditor WHERE tblSales.JournalID = tblDayBook.Transno And   tblDayBook.CreditorID=Creditor.LedgerID AND (tblDayBook.DebtorID=" + iLedgerID + " Or tblDayBook.CreditorID=" + iLedgerID + " OR tblSales.CustomerID=" + iLedgerID + ") AND (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
-             //else
-             //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
-             //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             oleAdp = new OleDbDataAdapter(oleCmd);
-             dsParentQry = new DataSet();
-             oleAdp.Fill(dsParentQry);
-             return dsParentQry;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            //if(sType=="No")
+            //sQry = "SELECT tblPurchase.purchaseID,tblPurchase.BillDate,tblPurchase.Paymode,tblDayBook.Amount,tblPurchase.SalesReturnReason FROM tblPurchase,tblDaybook WHERE SalesReturn='Yes' AND tblPurchase.JournalID = tblDayBook.Transno AND   tblPurchase.SupplierID=" + iLedgerID + " AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#);";
+            //sQry = "SELECT tblDaybook.Transno, tblDayBook.TransDate, Debtor.LedgerName As Debitor, tblDayBook.Amount, Creditor.LedgerName As Creditor FROM tblDayBook, tblLedger AS Debtor, tblLedger AS Creditor WHERE tblDayBook.CreditorID=Creditor.LedgerID And tblDayBook.DebtorID=Debtor.LedgerID And (tblDayBook.DebtorID=" + iLedgerID + " Or tblDayBook.CreditorID=" + iLedgerID + ") AND (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
+            sQry = "SELECT tblDaybook.Transno, tblDayBook.TransDate, Debtor.LedgerName As Debitor, tblDayBook.Amount,Creditor.LedgerName As Creditor,tblDayBook.VoucherType FROM tblDayBook, tblLedger AS Debtor,tblLedger As Creditor WHERE  tblDayBook.DebtorID=Debtor.LedgerID And tblDayBook.CreditorID=Creditor.LedgerID And (tblDayBook.DebtorID=" + iLedgerID + " Or tblDayBook.CreditorID=" + iLedgerID + ") AND (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#); UNION  SELECT tblDaybook.Transno, tblDayBook.TransDate, tblSales.CustomerName As Debitor, tblDayBook.Amount,Creditor.LedgerName As Creditor,tblDayBook.VoucherType FROM tblDayBook,tblSales,tblLedger As Creditor WHERE tblSales.JournalID = tblDayBook.Transno And   tblDayBook.CreditorID=Creditor.LedgerID AND (tblDayBook.DebtorID=" + iLedgerID + " Or tblDayBook.CreditorID=" + iLedgerID + " OR tblSales.CustomerID=" + iLedgerID + ") AND (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# And tblDayBook.TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#)";
+            //else
+            //    sQry = "SELECT tblProductMaster.ItemCode, tblProductMaster.ProductName, tblPurchase.BillDate, tblPurchaseItems.Qty,tblPurchase.SalesReturnReason FROM tblProductMaster INNER JOIN (tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.PurchaseID = tblPurchaseItems.purchaseID) ON tblProductMaster.ItemCode = tblPurchaseItems.ItemCode WHERE tblLedger.LedgerID=" + iLedgerID + " AND tblPurchase.SalesReturn='Yes' AND tblPurchase.BillDate >= #" + sDate.ToString("MM/dd/yyyy") + "# And  tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#;";
+            //sQry = "SELECT tblSales.BillDate, tblSales.BillNo, tblLedger.LedgerName, tblDayBook.Amount FROM ((tblSales INNER JOIN tblDayBook ON tblSales.JournalID = tblDayBook.TransNo) INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) INNER JOIN tblLedger ON tblSales.CustomerID = tblLedger.LedgerID WHERE (tblSales.paymode=" + paymode + " and (Billdate >= #" + sDate.ToString("MM/dd/yyyy") + "# And BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#));";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-         }
+        }
 
         public DataSet GenerateExecutiveSales(string sDataSource, int executiveID, DateTime sDate, DateTime eDate)
         {
@@ -5072,7 +5072,7 @@ namespace ReportsBL
 
         #region "outstanding Dealer/Executive Report"
         //SELECT (tblLedger.OpenBalanceDR) AS OB, tblDayBook.Transno,tblDayBook.TransDate, Debtor.LedgerName As Debtor, Creditor.ledgerName As Creditor ,tblDayBook.Amount,tblDayBook.VoucherType FROM tblDaybook, tblLedger,tblLedger As Creditor,tblLedger As Debtor WHERE tblDayBook.DebtorID = Debtor.LedgerID AND tblDayBook.CreditorID = Creditor.LedgerID AND (Debtor.LedgerID=734 ) AND tblLedger.LedgerID = 734
-        public DataSet GetDebitCreditLedger(string sDataSource, int iLedgerID,string sType)
+        public DataSet GetDebitCreditLedger(string sDataSource, int iLedgerID, string sType)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -5088,11 +5088,11 @@ namespace ReportsBL
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
-            if(sType == "Debit")
-                sQry = "SELECT (tblLedger.OpenBalanceDR-tblLedger.OpenbalanceCR) AS OB, tblDayBook.Transno,tblDayBook.TransDate, Debtor.LedgerName As Debtor, Creditor.ledgerName As Creditor ,tblDayBook.Amount,tblDayBook.VoucherType FROM tblDaybook, tblLedger,tblLedger As Creditor,tblLedger As Debtor WHERE tblDayBook.DebtorID = Debtor.LedgerID AND tblDayBook.CreditorID = Creditor.LedgerID AND (Debtor.LedgerID="+ iLedgerID +" ) AND tblLedger.LedgerID = " + iLedgerID;
+            if (sType == "Debit")
+                sQry = "SELECT (tblLedger.OpenBalanceDR-tblLedger.OpenbalanceCR) AS OB, tblDayBook.Transno,tblDayBook.TransDate, Debtor.LedgerName As Debtor, Creditor.ledgerName As Creditor ,tblDayBook.Amount,tblDayBook.VoucherType FROM tblDaybook, tblLedger,tblLedger As Creditor,tblLedger As Debtor WHERE tblDayBook.DebtorID = Debtor.LedgerID AND tblDayBook.CreditorID = Creditor.LedgerID AND (Debtor.LedgerID=" + iLedgerID + " ) AND tblLedger.LedgerID = " + iLedgerID;
             else
                 sQry = "SELECT (tblLedger.OpenBalanceCR-tblLedger.OpenBalanceDR) AS OB, tblDayBook.Transno,tblDayBook.TransDate, Debtor.LedgerName As Debtor, Creditor.ledgerName As Creditor ,tblDayBook.Amount,tblDayBook.VoucherType FROM tblDaybook, tblLedger,tblLedger As Creditor,tblLedger As Debtor WHERE tblDayBook.DebtorID = Debtor.LedgerID AND tblDayBook.CreditorID = Creditor.LedgerID AND (Creditor.LedgerID=" + iLedgerID + " ) AND tblLedger.LedgerID = " + iLedgerID;
-           
+
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -5108,7 +5108,7 @@ namespace ReportsBL
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
             OleDbDataAdapter oleAdp;
-            DataSet dsParentQry; 
+            DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
 
@@ -5118,23 +5118,23 @@ namespace ReportsBL
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleConn.Open(); 
+            oleConn.Open();
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID="+ iLedgerID  ;
+            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=" + iLedgerID;
 
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            
-            object retVal = oleCmd.ExecuteScalar();
-            
 
-            double amt =0.0d;
+            object retVal = oleCmd.ExecuteScalar();
+
+
+            double amt = 0.0d;
             if (retVal != null)
             {
-                if(retVal.ToString() !="") 
+                if (retVal.ToString() != "")
                     amt = (double)retVal;
             }
             sQry = "SELECT OpenBalanceCR AS OB FROM tblLedger WHERE LedgerID=" + iLedgerID;
@@ -5146,14 +5146,14 @@ namespace ReportsBL
             {
                 oB = (double)retVal;
             }
-            
-                amt = amt + oB;
 
-            oleConn.Close(); 
+            amt = amt + oB;
+
+            oleConn.Close();
             return amt;
- 
+
         }
-        public int GetDays(string sDataSource, string sDate,int transno)
+        public int GetDays(string sDataSource, string sDate, int transno)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
             OleDbConnection oleConn;
@@ -5172,7 +5172,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT DateDiff('d',#" + DateTime.Parse(sDate).ToString("MM/dd/yyyy") + "#,Date()) As Days FROM tblDayBook WHERE Transno = " +transno;
+            sQry = "SELECT DateDiff('d',#" + DateTime.Parse(sDate).ToString("MM/dd/yyyy") + "#,Date()) As Days FROM tblDayBook WHERE Transno = " + transno;
 
 
             oleCmd.CommandText = sQry;
@@ -5212,7 +5212,7 @@ namespace ReportsBL
             oleConn.Open();
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
-            if(Executive !=0)
+            if (Executive != 0)
                 sQry = "SELECT LedgerID,LedgerName FROM tblLedger WHERE ExecutiveIncharge=" + Executive + " ORDER BY LedgerName ";
             else
                 sQry = "SELECT LedgerID,LedgerName FROM tblLedger";
@@ -5224,7 +5224,7 @@ namespace ReportsBL
             //dsParentQry = new DataSet();
             //oleAdp.Fill(dsParentQry);
             //return dsParentQry;
-            
+
             oleAdp = new OleDbDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
@@ -5241,7 +5241,7 @@ namespace ReportsBL
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
@@ -5356,7 +5356,7 @@ namespace ReportsBL
                 {
                     if (dR["CommodityCode"].ToString() == "")
                     {
-                        if(!lsItems.Contains(dR["ProductName"].ToString()))
+                        if (!lsItems.Contains(dR["ProductName"].ToString()))
                         {
                             lsItems.Add(dR["ProductName"].ToString());
                         }
@@ -5461,7 +5461,7 @@ namespace ReportsBL
 
         }
 
-        public DataSet avlVAT(string sType,string sDataSource)
+        public DataSet avlVAT(string sType, string sDataSource)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -5495,7 +5495,7 @@ namespace ReportsBL
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
@@ -5525,7 +5525,7 @@ namespace ReportsBL
             return dsParentQry;
         }
 
-        public DataSet generateSalesVATReconReport(string sDataSource,DateTime sDate , string sType)
+        public DataSet generateSalesVATReconReport(string sDataSource, DateTime sDate, string sType)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -5623,7 +5623,7 @@ namespace ReportsBL
                 dr["Category"] = "";
                 dt.Rows.Add(dr);
             }
-            
+
             return dt;
         }
 
@@ -5641,7 +5641,7 @@ namespace ReportsBL
 
 
             /* Start Ms Access Database Connection Information */
-            sConStr = sDataSource; 
+            sConStr = sDataSource;
 
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
@@ -5655,7 +5655,7 @@ namespace ReportsBL
             oleAdp.Fill(dsParentQry);
             return dsParentQry;
         }
-        
+
         #endregion
 
         #region Year End Report
@@ -5667,14 +5667,14 @@ namespace ReportsBL
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
-            
+
             /* Start Ms Access Database Connection Information */
             sConStr = sDataSource;
-           
+
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
-            
+
             sQry = "SELECT  LedgerName FROM tblLedger,tblAccHeading,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.HeadingID = tblAccHeading.HeadingID Order By tblGroups.GroupName,LedgerName";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -5709,7 +5709,7 @@ namespace ReportsBL
             return dsParentQry;
         }
 
-        public DataSet getGroups(int HeadID,string sDataSource)
+        public DataSet getGroups(int HeadID, string sDataSource)
         {
             OleDbConnection oleConn;
             OleDbCommand oleCmd;
@@ -5726,7 +5726,7 @@ namespace ReportsBL
             oleCmd.Connection = oleConn;
 
             //sQry = "SELECT  Distinct(GroupName) FROM tblLedger,tblAccHeading,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.HeadingID = tblAccHeading.HeadingID AND tblAccHeading.HeadingID="+ HeadID +"  ORDER by GroupName";
-            sQry = "SELECT tblGroups.GroupID, GroupName FROM tblGroups Where tblGroups.GroupID IN (Select GroupID from tblLedger) And headingID="+ HeadID  + " Order By GroupName";
+            sQry = "SELECT tblGroups.GroupID, GroupName FROM tblGroups Where tblGroups.GroupID IN (Select GroupID from tblLedger) And headingID=" + HeadID + " Order By GroupName";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -5750,7 +5750,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT  LedgerID, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID  + "  ORDER by LedgerName,LedgerID";
+            sQry = "SELECT  LedgerID, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -5761,7 +5761,7 @@ namespace ReportsBL
 
 
 
-        public double getLedgerOB(int ledgerID,string sDataSource)
+        public double getLedgerOB(int ledgerID, string sDataSource)
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
@@ -5775,9 +5775,9 @@ namespace ReportsBL
             /* End Ms Access Database Connection Information */
 
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            
-                sQry = "SELECT (OpenBalanceDr-OpenBalanceCr) As OpeningBalance  FROM tblLedger Where  ledgerID=" + ledgerID;
-            
+
+            sQry = "SELECT (OpenBalanceDr-OpenBalanceCr) As OpeningBalance  FROM tblLedger Where  ledgerID=" + ledgerID;
+
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             //oleAdp = new OleDbDataAdapter(oleCmd);
@@ -5809,7 +5809,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT LedgerName FROM tblLedger WHERE LedgerID=" + iLedgerID ;
+            sQry = "SELECT LedgerName FROM tblLedger WHERE LedgerID=" + iLedgerID;
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -5817,7 +5817,7 @@ namespace ReportsBL
             oleAdp.Fill(dsParentQry);
             if (dsParentQry != null)
             {
-                if(dsParentQry.Tables[0].Rows[0]["LedgerName"]!=null)
+                if (dsParentQry.Tables[0].Rows[0]["LedgerName"] != null)
                     sLedger = dsParentQry.Tables[0].Rows[0]["LedgerName"].ToString();
 
             }
@@ -5844,7 +5844,7 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.DebtorID=" + iLedgerID ;
+            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.DebtorID=" + iLedgerID;
 
 
             oleCmd.CommandText = sQry;
@@ -5856,8 +5856,8 @@ namespace ReportsBL
             double amt = 0.0d;
             if (retVal != null)
             {
-                if (retVal.ToString() != "") 
-                amt = (double)retVal;
+                if (retVal.ToString() != "")
+                    amt = (double)retVal;
             }
             sQry = "SELECT OpenBalanceDR AS OB FROM tblLedger WHERE LedgerID=" + iLedgerID;
             oleCmd.CommandText = sQry;
@@ -5886,7 +5886,7 @@ namespace ReportsBL
             string sConStr = string.Empty;
             double db = 0;
             double cr = 0;
-            double tot=0;
+            double tot = 0;
 
             /* Start Ms Access Database Connection Information */
             sConStr = sDataSource;
@@ -5894,7 +5894,7 @@ namespace ReportsBL
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
-            if(groupID !=0)
+            if (groupID != 0)
                 sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
             else
                 sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID   ORDER by LedgerName,LedgerID";
@@ -5907,7 +5907,7 @@ namespace ReportsBL
 
             DataSet dsNew = new DataSet();
             DataTable dtNew = new DataTable();
-            
+
             DataColumn dcNew = new DataColumn();
             DataRow drNew;
             dcNew = new DataColumn("LedgerName");
@@ -5916,7 +5916,7 @@ namespace ReportsBL
             dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Folionumber");
             dtNew.Columns.Add(dcNew);
-           
+
             dcNew = new DataColumn("Debit");
             dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Credit");
@@ -5924,7 +5924,7 @@ namespace ReportsBL
 
 
             dsNew.Tables.Add(dtNew);
-           
+
             if (dsParentQry != null)
             {
                 if (dsParentQry.Tables[0] != null)
@@ -5937,9 +5937,9 @@ namespace ReportsBL
                         drNew["Debit"] = "";
                         drNew["Credit"] = "";
                         drNew["Folionumber"] = "";
-                        
+
                         dsNew.Tables[0].Rows.Add(drNew);
-                        
+
                     }
                     else
                     {
@@ -5949,8 +5949,8 @@ namespace ReportsBL
                             drNew["LedgerID"] = Convert.ToString(dr["LedgerID"]);
                             drNew["LedgerName"] = Convert.ToString(dr["LedgerName"]);
                             drNew["Folionumber"] = Convert.ToString(dr["Folionumber"]);
-                            db  = GetTotalDebit(sDataSource,Convert.ToInt32(dr["LedgerID"]));
-                            cr= GetTotalCredit(sDataSource,Convert.ToInt32(dr["LedgerID"]));
+                            db = GetTotalDebit(sDataSource, Convert.ToInt32(dr["LedgerID"]));
+                            cr = GetTotalCredit(sDataSource, Convert.ToInt32(dr["LedgerID"]));
 
                             tot = db - cr;
                             if (tot > 0)
@@ -5963,11 +5963,11 @@ namespace ReportsBL
                                 drNew["Debit"] = "0";
                                 drNew["Credit"] = Math.Abs(tot).ToString("f2");
                             }
-                            
+
                             dsNew.Tables[0].Rows.Add(drNew);
 
                         }
-                       
+
                     }
                 }
             }
@@ -5990,7 +5990,7 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             sConStr = sDataSource;
 
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             if (groupID != 0)
@@ -6089,7 +6089,7 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleConn.Open();
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
@@ -6116,7 +6116,7 @@ namespace ReportsBL
             //getOpeningBalance(
 
             double oB = 0;
-            oB = getOpeningBalance(0,0,iLedgerID, "credit", sDate, sConStr);
+            oB = getOpeningBalance(0, 0, iLedgerID, "credit", sDate, sConStr);
 
             amt = amt + oB;
 
@@ -6140,7 +6140,7 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleConn.Open();
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
@@ -6169,7 +6169,7 @@ namespace ReportsBL
             //{
             //    oB = (double)retVal;
             //}
-            oB = getOpeningBalance(0,0,iLedgerID, "debit", sDate, sConStr);
+            oB = getOpeningBalance(0, 0, iLedgerID, "debit", sDate, sConStr);
             amt = amt + oB;
 
 
@@ -6181,8 +6181,8 @@ namespace ReportsBL
         #endregion
 
         #region "Profit and Loss"
-        
-         public double plOpeningStock(string sDataSource)
+
+        public double plOpeningStock(string sDataSource)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
             OleDbConnection oleConn;
@@ -6214,424 +6214,424 @@ namespace ReportsBL
             {
                 amt = (double)retVal;
             }
-           
+
 
             oleConn.Close();
             return amt;
 
         }
-         public double plGetClosingStockTotal(string sDataSource)
-         {
-             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+        public double plGetClosingStockTotal(string sDataSource)
+        {
+            //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleConn.Open();
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             sQry = "SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster";
-             //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
-             //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            sQry = "SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster";
+            //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
 
 
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             //oleAdp = new OleDbDataAdapter(oleCmd);
-             //dsParentQry = new DataSet();
-             //oleAdp.Fill(dsParentQry);
-             //return dsParentQry;
-             object retVal = oleCmd.ExecuteScalar();
-             double amt = 0;
-             if (retVal != null && retVal != DBNull.Value)
-             {
-                 amt = (double)oleCmd.ExecuteScalar();
-             }
-             oleConn.Close();
-             return amt;
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
 
-         }
-         public double plPurchaseTotal(string sDataSource)
-         {
-             
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+        }
+        public double plPurchaseTotal(string sDataSource)
+        {
 
-
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleConn.Open();
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-
-             sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND  tblPurchase.purchaseID = tblPurchaseitems.purchaseID";
-
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             
-             object retVal = oleCmd.ExecuteScalar();
-             double amt = 0;
-             if (retVal != null && retVal != DBNull.Value)
-             {
-                 amt = (double)oleCmd.ExecuteScalar();
-             }
-             oleConn.Close();
-             return amt;
-
-         }
-         public double plGetPurchaseReturnTotal(string sDataSource)
-         {
-
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
 
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleConn.Open();
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE (tblSales.PurchaseReturn = 'Yes') AND tblSales.billno = tblSalesItems.Billno AND tblSales.cancelled=false";
-             //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND  tblPurchase.purchaseID = tblPurchaseitems.purchaseID";
 
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
 
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             //oleAdp = new OleDbDataAdapter(oleCmd);
-             //dsParentQry = new DataSet();
-             //oleAdp.Fill(dsParentQry);
-             //return dsParentQry;
-             object retVal = oleCmd.ExecuteScalar();
-             double amt = 0;
-             if (retVal != null && retVal != DBNull.Value)
-             {
-                 amt = (double)oleCmd.ExecuteScalar();
-             }
-             oleConn.Close();
-             return amt;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
 
-         }
+        }
+        public double plGetPurchaseReturnTotal(string sDataSource)
+        {
 
-         public double plSalesReturnTotal(string sDataSource)
-         {
-
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleConn.Open();
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
 
-             sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE (tblPurchase.SalesReturn = 'Yes') AND  tblPurchase.purchaseID = tblPurchaseitems.purchaseID";
-
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-
-             object retVal = oleCmd.ExecuteScalar();
-             double amt = 0;
-             if (retVal != null && retVal != DBNull.Value)
-             {
-                 amt = (double)oleCmd.ExecuteScalar();
-             }
-             oleConn.Close();
-             return amt;
-
-         }
-         public double plGetSalesTotal(string sDataSource)
-         {
-             
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE (tblSales.PurchaseReturn = 'Yes') AND tblSales.billno = tblSalesItems.Billno AND tblSales.cancelled=false";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
 
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleConn.Open();
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE (tblSales.PurchaseReturn <> 'Yes' OR tblSales.PurchaseReturn is null) AND tblSales.billno = tblSalesItems.Billno AND tblSales.cancelled=false";
-             //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
+
+        }
+
+        public double plSalesReturnTotal(string sDataSource)
+        {
+
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             //oleAdp = new OleDbDataAdapter(oleCmd);
-             //dsParentQry = new DataSet();
-             //oleAdp.Fill(dsParentQry);
-             //return dsParentQry;
-             object retVal = oleCmd.ExecuteScalar();
-             double amt = 0;
-             if (retVal != null && retVal != DBNull.Value)
-             {
-                 amt = (double)oleCmd.ExecuteScalar();
-             }
-             oleConn.Close();
-             return amt;
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
 
-         }
-         //SELECT LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName
-         public DataSet plGetExpenseIncomeSplit(string sDataSource, string expType)
-         {
-             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             DataSet dsChildQry;
-             string sConStr = string.Empty;
-             string oQry = string.Empty;
+            sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE (tblPurchase.SalesReturn = 'Yes') AND  tblPurchase.purchaseID = tblPurchaseitems.purchaseID";
 
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleConn.Open();
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             if (expType == "IDX")
-             {
-                 sQry = "SELECT folionumber,LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) ) Group By LedgerName,folionumber";
-                 //sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
-                 oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
-             }
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
 
-             else if (expType == "DX")
-             {
-                 sQry = "SELECT folionumber, LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName,folionumber";
-                 oQry = "SELECT LedgerName,folionumber,  (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
-             }
-             else if (expType == "IDI")
-             {
-                 sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) ) Group By LedgerName,folionumber";
-                 oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
-             }
-             else
-             {
-                 sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) ) Group By LedgerName,folionumber";
-                 oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
-             }
-             //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
-             //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
+
+        }
+        public double plGetSalesTotal(string sDataSource)
+        {
+
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
 
 
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             oleAdp = new OleDbDataAdapter(oleCmd);
-             dsParentQry = new DataSet();
-             oleAdp.Fill(dsParentQry);
-             //return dsParentQry;
-             
-             
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE (tblSales.PurchaseReturn <> 'Yes' OR tblSales.PurchaseReturn is null) AND tblSales.billno = tblSalesItems.Billno AND tblSales.cancelled=false";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
 
 
-             oleCmd.CommandText = oQry;
-             oleCmd.CommandType = CommandType.Text;
-             dsChildQry  = new DataSet();
-             oleAdp.Fill(dsChildQry);
-             int i =0;
-             double ob = 0;
-             double amt=0;
-             DataRow dR;
-             if (dsParentQry.Tables[0].Rows.Count > 0)
-             {
-                 foreach (DataRow dr in dsParentQry.Tables[0].Rows)
-                 {
-                     if (dsChildQry.Tables[0].Rows[i]["OB"] != null)
-                     {
-                         ob = Convert.ToDouble(dsChildQry.Tables[0].Rows[i]["OB"]);
-                         amt = Convert.ToDouble(dr["Expenses"]);
-                         if (ob > 0)
-                         {
-                             amt = amt - ob;
-                         }
-                         else
-                         {
-                             amt = amt + ob;
-                         }
-                         dr["Expenses"] = Math.Abs(amt).ToString();
-                     }
-                     i++;
-                 }
-             }
-             else
-             {
-                 if (dsChildQry != null)
-                 {
-                     if (dsChildQry.Tables[0].Rows.Count > 0)
-                     {
-                         if (dsChildQry.Tables[0].Rows[0]["OB"] != null)
-                         {
-                             ob = Convert.ToDouble(dsChildQry.Tables[0].Rows[i]["OB"]);
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+            oleConn.Close();
+            return amt;
 
-                             if (ob < 0)
-                                 ob = Math.Abs(ob);
-                             //dr["Expenses"] = Math.Abs(amt).ToString();
-                             dR = dsParentQry.Tables[0].NewRow();
+        }
+        //SELECT LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName
+        public DataSet plGetExpenseIncomeSplit(string sDataSource, string expType)
+        {
+            //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            DataSet dsChildQry;
+            string sConStr = string.Empty;
+            string oQry = string.Empty;
 
-                             dR["LedgerName"] = Convert.ToString(dsChildQry.Tables[0].Rows[i]["LedgerName"]);
-                             dR["Expenses"] = ob;
-                             if (dsChildQry.Tables[0].Rows[i]["folionumber"].ToString() != "")
-                                 dR["folionumber"] = Convert.ToString(dsChildQry.Tables[0].Rows[i]["folionumber"]);
-                             else
-                                 dR["folionumber"] = "0";
-                            
-                             dsParentQry.Tables[0].Rows.Add(dR);
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            if (expType == "IDX")
+            {
+                sQry = "SELECT folionumber,LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) ) Group By LedgerName,folionumber";
+                //sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
+            }
 
-                         }
-                     }
-                 }
-             }
-             oleConn.Close();
-             return dsParentQry;
-
-         }
-
-         public double plGetExpenseIncomeTotal(string sDataSource,string expType)
-         {
-             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry; string sQry = string.Empty;
-             string sConStr = string.Empty;
-             string oQry = string.Empty;
-
-             /* Start Ms Access Database Connection Information */
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
-             sConStr = sDataSource;
-             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-             oleConn.Open();
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             if (expType == "IDX")
-             {
-                 sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
-                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
-             }
-
-             else if (expType == "DX")
-             {
-                 sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) )";
-                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
-             }
-             else if (expType == "IDI")
-             {
-                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
-                 sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) )";
-             }
-             else
-             {
-                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
-                 sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) )";
-             }
-             //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
-             //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            else if (expType == "DX")
+            {
+                sQry = "SELECT folionumber, LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName,folionumber";
+                oQry = "SELECT LedgerName,folionumber,  (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
+            }
+            else if (expType == "IDI")
+            {
+                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) ) Group By LedgerName,folionumber";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
+            }
+            else
+            {
+                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) ) Group By LedgerName,folionumber";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
+            }
+            //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
 
 
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             //oleAdp = new OleDbDataAdapter(oleCmd);
-             //dsParentQry = new DataSet();
-             //oleAdp.Fill(dsParentQry);
-             //return dsParentQry;
-             object retVal = oleCmd.ExecuteScalar();
-             double amt = 0;
-             if (retVal != null && retVal != DBNull.Value)
-             {
-                 amt = (double)oleCmd.ExecuteScalar();
-             }
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
 
-             
-             oleCmd.CommandText = oQry;
-             oleCmd.CommandType = CommandType.Text;
-             retVal = oleCmd.ExecuteScalar();
-             double oB = 0;
-             if (retVal != null)
-             {
-                 oB = (double)retVal;
-             }
-             if (oB > 0)
-             {
-                 amt = amt - oB;
-                 amt = Math.Abs(amt);
-             }
-             else
-                 amt = amt + Math.Abs(oB);
-             
-             oleConn.Close();
-             return amt;
 
-         }
 
-         //SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster
-         
+
+            oleCmd.CommandText = oQry;
+            oleCmd.CommandType = CommandType.Text;
+            dsChildQry = new DataSet();
+            oleAdp.Fill(dsChildQry);
+            int i = 0;
+            double ob = 0;
+            double amt = 0;
+            DataRow dR;
+            if (dsParentQry.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in dsParentQry.Tables[0].Rows)
+                {
+                    if (dsChildQry.Tables[0].Rows[i]["OB"] != null)
+                    {
+                        ob = Convert.ToDouble(dsChildQry.Tables[0].Rows[i]["OB"]);
+                        amt = Convert.ToDouble(dr["Expenses"]);
+                        if (ob > 0)
+                        {
+                            amt = amt - ob;
+                        }
+                        else
+                        {
+                            amt = amt + ob;
+                        }
+                        dr["Expenses"] = Math.Abs(amt).ToString();
+                    }
+                    i++;
+                }
+            }
+            else
+            {
+                if (dsChildQry != null)
+                {
+                    if (dsChildQry.Tables[0].Rows.Count > 0)
+                    {
+                        if (dsChildQry.Tables[0].Rows[0]["OB"] != null)
+                        {
+                            ob = Convert.ToDouble(dsChildQry.Tables[0].Rows[i]["OB"]);
+
+                            if (ob < 0)
+                                ob = Math.Abs(ob);
+                            //dr["Expenses"] = Math.Abs(amt).ToString();
+                            dR = dsParentQry.Tables[0].NewRow();
+
+                            dR["LedgerName"] = Convert.ToString(dsChildQry.Tables[0].Rows[i]["LedgerName"]);
+                            dR["Expenses"] = ob;
+                            if (dsChildQry.Tables[0].Rows[i]["folionumber"].ToString() != "")
+                                dR["folionumber"] = Convert.ToString(dsChildQry.Tables[0].Rows[i]["folionumber"]);
+                            else
+                                dR["folionumber"] = "0";
+
+                            dsParentQry.Tables[0].Rows.Add(dR);
+
+                        }
+                    }
+                }
+            }
+            oleConn.Close();
+            return dsParentQry;
+
+        }
+
+        public double plGetExpenseIncomeTotal(string sDataSource, string expType)
+        {
+            //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry; string sQry = string.Empty;
+            string sConStr = string.Empty;
+            string oQry = string.Empty;
+
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn.Open();
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            if (expType == "IDX")
+            {
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
+                oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
+            }
+
+            else if (expType == "DX")
+            {
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) )";
+                oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
+            }
+            else if (expType == "IDI")
+            {
+                oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) )";
+            }
+            else
+            {
+                oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) )";
+            }
+            //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+            //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            //oleAdp = new OleDbDataAdapter(oleCmd);
+            //dsParentQry = new DataSet();
+            //oleAdp.Fill(dsParentQry);
+            //return dsParentQry;
+            object retVal = oleCmd.ExecuteScalar();
+            double amt = 0;
+            if (retVal != null && retVal != DBNull.Value)
+            {
+                amt = (double)oleCmd.ExecuteScalar();
+            }
+
+
+            oleCmd.CommandText = oQry;
+            oleCmd.CommandType = CommandType.Text;
+            retVal = oleCmd.ExecuteScalar();
+            double oB = 0;
+            if (retVal != null)
+            {
+                oB = (double)retVal;
+            }
+            if (oB > 0)
+            {
+                amt = amt - oB;
+                amt = Math.Abs(amt);
+            }
+            else
+                amt = amt + Math.Abs(oB);
+
+            oleConn.Close();
+            return amt;
+
+        }
+
+        //SELECT  Sum(tblProductMaster.Rate*tblProductMaster.stock-(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.Discount/100))+(tblProductMaster.Rate*tblProductMaster.stock* (tblProductMaster.VAT/100))) As ClosingStock FROM tblProductMaster
+
         #endregion
 
-		#region CST Detailed Summary
+        #region CST Detailed Summary
 
-         public DataSet generatePurchaseCSTReport(string sDataSource, DateTime sDate, DateTime eDate, string sType)
-         {
-             OleDbConnection oleConn;
-             OleDbCommand oleCmd;
-             OleDbDataAdapter oleAdp;
-             DataSet dsParentQry;
-             string sQry = string.Empty;
-             string sConStr = string.Empty;
-             sConStr = sDataSource;
-             oleConn = new OleDbConnection( CreateConnectionString( sConStr));
-             oleCmd = new OleDbCommand();
-             oleCmd.Connection = oleConn;
-             if (sType == "Yes")
-                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100)) ) *(tblPurchaseItems.CST/100))) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                 sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-             else
-                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.CST/100))) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                 sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-             oleCmd.CommandText = sQry;
-             oleCmd.CommandType = CommandType.Text;
-             oleAdp = new OleDbDataAdapter(oleCmd);
-             dsParentQry = new DataSet();
-             oleAdp.Fill(dsParentQry);
-             return dsParentQry;
+        public DataSet generatePurchaseCSTReport(string sDataSource, DateTime sDate, DateTime eDate, string sType)
+        {
+            OleDbConnection oleConn;
+            OleDbCommand oleCmd;
+            OleDbDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+            sConStr = sDataSource;
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleCmd = new OleDbCommand();
+            oleCmd.Connection = oleConn;
+            if (sType == "Yes")
+                //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100)) ) *(tblPurchaseItems.CST/100))) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+                sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+            else
+                //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.CST/100))) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+                sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new OleDbDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
 
-         }
+        }
 
         public DataSet avlCST(string sType, string sDataSource)
         {
@@ -6667,7 +6667,7 @@ namespace ReportsBL
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection( CreateConnectionString( sConStr));
+            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
@@ -6711,10 +6711,10 @@ namespace ReportsBL
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
 
-            if(itemCode != "0")
-                sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblPurchase P Inner Join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Where PI.ItemCode='"+ itemCode+"' Group By PI.ItemCode,P.BillDate,M.ProductName";    
+            if (itemCode != "0")
+                sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblPurchase P Inner Join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Where PI.ItemCode='" + itemCode + "' Group By PI.ItemCode,P.BillDate,M.ProductName";
             else
-                sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblPurchase P Inner Join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Group By PI.ItemCode,P.BillDate,M.ProductName";    
+                sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblPurchase P Inner Join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Group By PI.ItemCode,P.BillDate,M.ProductName";
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -6725,7 +6725,7 @@ namespace ReportsBL
 
         }
 
-        public DataSet GetSalesData(string sDataSource, string itemCode,string branchcode,string pricelist)
+        public DataSet GetSalesData(string sDataSource, string itemCode, string branchcode, string pricelist)
         {
             SqlConnection oleConn;
             SqlCommand oleCmd;
@@ -6744,21 +6744,46 @@ namespace ReportsBL
 
             if (itemCode != "0")
                 //sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblSales P Inner Join tblSalesItems PI On P.BillNo = PI.BillNo) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Where PI.ItemCode='" + itemCode + "'  Group By PI.ItemCode,P.BillDate,M.ProductName";
-                sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
-                   " FROM  tblSales INNER JOIN " +
-                   " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
-                   " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
-                   " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
-                   " where " + branchcode + " and " + pricelist + " and tblSalesItems.ItemCode='" + itemCode + "'" +
-                   " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
+                if (pricelist != "" && pricelist != null)
+                {
+                    sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
+                       " FROM  tblSales INNER JOIN " +
+                       " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
+                       " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
+                       " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
+                       " where " + branchcode + " and " + pricelist + " and tblSalesItems.ItemCode='" + itemCode + "'" +
+                       " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
+                }
+                else
+                {
+                    sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
+                       " FROM  tblSales INNER JOIN " +
+                       " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
+                       " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
+                       " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
+                       " where " + branchcode + " and tblSalesItems.ItemCode='" + itemCode + "'" +
+                       " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
+                }
             else
                 // sQry = "SELECT PI.ItemCode,P.BillDate,SUM(PI.Qty) as Qty,M.ProductName FROM ((tblSales P Inner Join tblSalesItems PI On P.BillNo = PI.BillNo) Inner Join tblProductMaster M On PI.ItemCode = M.ItemCode) Group By PI.ItemCode,P.BillDate,M.ProductName";
-                sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
-                     " FROM  tblSales INNER JOIN " +
-                     " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
-                     " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
-                     " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
-                     " where " + branchcode + " and " + pricelist + " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
+                if (pricelist != "" && pricelist != null)
+                {
+                    sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
+                         " FROM  tblSales INNER JOIN " +
+                         " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
+                         " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
+                         " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
+                         " where " + branchcode + " and " + pricelist + " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
+                }
+                else
+                {
+                    sQry = " SELECT tblSalesItems.ItemCode,tblSales.BillDate,tblProductPrices.PriceName, tblProductPrices.Price,SUM(tblSalesItems.Qty) as Qty,tblProductStock.ProductName " +
+                       " FROM  tblSales INNER JOIN " +
+                       " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo INNER JOIN " +
+                       " tblProductStock ON tblSalesItems.ItemCode = tblProductStock.ItemCode INNER JOIN " +
+                       " tblProductPrices ON tblProductStock.ItemCode = tblProductPrices.ItemCode " +
+                       " where " + branchcode + " Group By tblSalesItems.ItemCode,tblSales.BillDate,tblProductStock.ProductName,tblProductPrices.PriceName,tblProductPrices.Price";
+                }
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -6797,9 +6822,9 @@ namespace ReportsBL
 
         }
 
-        public DataSet ListServiceEntries(string customer,string frequency, string sDataSource)
+        public DataSet ListServiceEntries(string customer, string frequency, string sDataSource)
         {
-            
+
             string sConStr = string.Empty;
             string sQry = string.Empty;
             OleDbConnection oleConn;
@@ -6816,10 +6841,10 @@ namespace ReportsBL
 
             if (customer != "0")
                 sQry += " AND CustomerID=" + customer;
-                
-            
-            if(frequency != "0")
-                sQry+= " AND Frequency=" + frequency;
+
+
+            if (frequency != "0")
+                sQry += " AND Frequency=" + frequency;
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -6828,7 +6853,7 @@ namespace ReportsBL
             oleAdp.Fill(ds);
 
             return ds;
-            
+
         }
 
         public DataSet GetServiceEntryDetails(string serviceID, string sDataSource)
