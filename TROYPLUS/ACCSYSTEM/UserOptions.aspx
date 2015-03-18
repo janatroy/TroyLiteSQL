@@ -843,14 +843,14 @@
                                                                                                             <asp:CheckBox ID="chkboxEdit" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Edit") %>'></asp:CheckBox>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
-                                                                                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Delete" HeaderStyle-BorderColor="Gray">
+                                                                                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px"  HeaderText="Delete" HeaderStyle-BorderColor="Gray">
                                                                                                         <ItemTemplate>
-                                                                                                            <asp:CheckBox ID="chkboxDel" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Delete") %>'></asp:CheckBox>
+                                                                                                            <asp:CheckBox ID="chkboxDel" runat="server" Style="color: Black" Enabled="false" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Delete") %>'></asp:CheckBox>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
                                                                                                     <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="View" HeaderStyle-BorderColor="Gray">
                                                                                                         <ItemTemplate>
-                                                                                                            <asp:CheckBox ID="chkboxView" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Views") %>' Enabled="false"></asp:CheckBox>
+                                                                                                            <asp:CheckBox ID="chkboxView" runat="server" Style="color: Black" Text=""  Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Views") %>'></asp:CheckBox>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
                                                                                                 </Columns>

@@ -88,7 +88,7 @@
                                         <div style="overflow-y: scroll; height: 150px; width: 300px" runat="server">
                                             <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
 
-                                            <asp:CheckBoxList ID="lstBranch" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "BranchName" DataValueField = "Branchcode">
+                                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "BranchName" DataValueField = "Branchcode" OnSelectedIndexChanged="lstBranch_SelectedIndexChanged1">
                                                 <asp:ListItem Text="All" Value="0" />
                                             </asp:CheckBoxList>
                                         </div>
@@ -97,7 +97,7 @@
                                         <div style="overflow-y: scroll; height: 150px; width: 300px">
                                              <asp:Label ID="Label1" CssClass="ControlLabelproject" runat="server" Text="Select Pricelist:"></asp:Label>
 
-                                            <asp:CheckBoxList ID="lstPricelist" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
+                                            <asp:CheckBoxList ID="lstPricelist" AutoPostBack="true" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName" OnSelectedIndexChanged="lstPricelist_SelectedIndexChanged">
                                                 <asp:ListItem Text="All" Value="0" />
                                             </asp:CheckBoxList>
                                         </div>

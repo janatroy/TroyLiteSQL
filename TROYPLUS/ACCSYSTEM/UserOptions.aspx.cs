@@ -1831,7 +1831,7 @@ public partial class UserOptions : System.Web.UI.Page
                     {
                         if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch))
                         {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Created sucessfully.');", true);
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Created sucessfully. Thank you');", true);
                             //BindGrid();
 
                             string salestype = string.Empty;
@@ -2012,7 +2012,7 @@ public partial class UserOptions : System.Web.UI.Page
                     else if (Session["Show"] == "Edit")
                     {
                         objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch);
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Updated Successfully');", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Updated Successfully. Please Logout and login again to reflect the changes. Thank you');", true);
                         //BindGrid();
 
                         string salestype = string.Empty;

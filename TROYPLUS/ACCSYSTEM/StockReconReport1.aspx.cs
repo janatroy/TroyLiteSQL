@@ -47,6 +47,26 @@ public partial class StockReconReport1 : System.Web.UI.Page
 
                             }
                         }
+
+
+                        DataSet ds1 = bl.getImageInfo();
+                        if (ds1 != null)
+                        {
+                            if (ds1.Tables[0].Rows.Count > 0)
+                            {
+                                for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                                {
+                                    Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                                    Image1.Height = 35;
+                                }
+                            }
+                            else
+                            {
+                                Image1.Height = 35;
+                                Image1.Width = 220;
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                            }
+                        }
                         //}
                     }
 

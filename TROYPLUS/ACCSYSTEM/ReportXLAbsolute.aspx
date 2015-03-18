@@ -148,7 +148,11 @@
                                              
                                     </td>
                                     <td style="width:20%">
-                                            
+                                             <asp:Button ID="btnReport" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnReport_Click" />
+                                         <asp:CheckBox ID="CheckBox12" Visible="false" runat="server" Text="With MRP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
+                                        <asp:CheckBox ID="CheckBox22" Visible="false" runat="server" Text="With DP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
+                                        <asp:CheckBox ID="CheckBox32" Visible="false" runat="server" Text="With NLC" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
                                     </td>
                                     
                                 </tr>

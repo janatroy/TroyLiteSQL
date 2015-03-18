@@ -136,7 +136,7 @@
                             <tr style="height: 2px;" />
                             <tr>
                                 <td style="width: 20%;">
-                                    <div style="overflow-y: scroll; height: 150px; width: 150px" runat="server">
+                                    <div style="overflow-y: scroll; height: 150px; width: 150px;" align="left" runat="server">
                                         <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
 
                                         <asp:RadioButtonList ID="lstBranch" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
@@ -146,7 +146,7 @@
                                 </td>
 
                                 <td style="width: 20%;">
-                                    <div style="overflow-y: scroll; height: 150px; width: 300px">
+                                    <div style="overflow-y: scroll; height: 150px; width: 300px" align="left">
                                         <asp:Label ID="Label1" CssClass="ControlLabelproject" runat="server" Text="Select Pricelist:"></asp:Label>
 
                                         <asp:CheckBoxList ID="lstPricelist" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="PriceName" DataValueField="PriceName">

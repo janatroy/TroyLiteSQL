@@ -54,6 +54,25 @@ public partial class StockReport1 : System.Web.UI.Page
                             }
                         }
                     }
+
+                    DataSet ds = bl.getImageInfo();
+                    if (ds != null)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                            {
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds.Tables[0].Rows[i]["img_filename"];
+                                Image1.Height = 35;                               
+                            }
+                        }
+                        else
+                        {
+                            Image1.Height = 35;
+                            Image1.Width = 220;
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                        }
+                    }
                 }
             }
 
@@ -74,11 +93,11 @@ public partial class StockReport1 : System.Web.UI.Page
             divPr.Visible = true;
 
 
-            ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
-            DataSet ds = rptStock.getCategory(sDataSource);
-            gvCategory.DataSource = ds;
-            gvCategory.DataBind();
-
+            //ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
+            //DataSet ds = rptStock.getCategory(sDataSource);
+            //gvCategory.DataSource = ds;
+            //gvCategory.DataBind();
+            BindData();
             div1.Visible = false;
         }
         catch (Exception ex)
@@ -253,154 +272,44 @@ public partial class StockReport1 : System.Web.UI.Page
                 DateTime refDate = DateTime.Parse(txtStartDate.Text);
                 DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
 
-                if (Request.QueryString["refDate"] != null)
-                {
-                    stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
-                    cond = Request.QueryString["cond"].ToString();
-                    cond = Server.UrlDecode(cond);
-                    cond1 = Request.QueryString["cond1"].ToString();
-                    cond1 = Server.UrlDecode(cond1);
-                    cond2 = Request.QueryString["cond2"].ToString();
-                    cond2 = Server.UrlDecode(cond2);
-                    cond3 = Request.QueryString["cond3"].ToString();
-                    cond3 = Server.UrlDecode(cond3);
-                    cond4 = Request.QueryString["cond4"].ToString();
-                    cond4 = Server.UrlDecode(cond4);
-                    cond5 = Request.QueryString["cond5"].ToString();
-                    cond5 = cond5.ToString();
-                    cond6 = Request.QueryString["cond6"].ToString();
-                    cond6 = cond6.ToString();
-                }
+                //if (Request.QueryString["refDate"] != null)
+                //{
+                //    stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
+                //    cond = Request.QueryString["cond"].ToString();
+                //    cond = Server.UrlDecode(cond);
+                //    cond1 = Request.QueryString["cond1"].ToString();
+                //    cond1 = Server.UrlDecode(cond1);
+                //    cond2 = Request.QueryString["cond2"].ToString();
+                //    cond2 = Server.UrlDecode(cond2);
+                //    cond3 = Request.QueryString["cond3"].ToString();
+                //    cond3 = Server.UrlDecode(cond3);
+                //    cond4 = Request.QueryString["cond4"].ToString();
+                //    cond4 = Server.UrlDecode(cond4);
+                //    cond5 = Request.QueryString["cond5"].ToString();
+                //    cond5 = cond5.ToString();
+                //    cond6 = Request.QueryString["cond6"].ToString();
+                //    cond6 = cond6.ToString();
+                //}
                 refDate = Convert.ToDateTime(stdt);
 
 
-                DataSet ds = bl.GetProductlist(sDataSource, cond);
-
-                DataTable dt = new DataTable();
-
-
-                if (ds != null)
-                {
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-                        dt.Columns.Add(new DataColumn("Brand"));
-                        dt.Columns.Add(new DataColumn("ProductName"));
-                        dt.Columns.Add(new DataColumn("ItemCode"));
-                        dt.Columns.Add(new DataColumn("Model"));
-                        dt.Columns.Add(new DataColumn("Rol"));
-
-                        char[] commaSeparator = new char[] { ',' };
-                        string[] result;
-                        result = cond6.Split(commaSeparator, StringSplitOptions.None);
-
-                        foreach (string str in result)
-                        {
-                            dt.Columns.Add(new DataColumn(str));
-                        }
-                        dt.Columns.Remove("Column1");
-
-                        char[] commaSeparator1 = new char[] { ',' };
-                        string[] result1;
-                        result1 = cond5.Split(commaSeparator, StringSplitOptions.None);
-
-                        foreach (string str1 in result1)
-                        {
-                            dt.Columns.Add(new DataColumn(str1));                           
-                        }
-                        dt.Columns.Remove("Column1");                     
-                        DataRow dr_final123 = dt.NewRow();
-                        dt.Rows.Add(dr_final123);
-
-                        DataSet dst = new DataSet();
-
-                        string itemcode = "";
-
-                        foreach (DataRow dr in ds.Tables[0].Rows)
-                        {
-                            itemcode = Convert.ToString(dr["itemcode"]);
-
-                            dst = bl.getProducts(sDataSource,refDate, cond, cond1, cond2, cond3, cond4, itemcode);
-
-                            DataRow dr_final6 = dt.NewRow();
-                            dr_final6["Brand"] = dr["brand"];
-                            dr_final6["ProductName"] = dr["ProductName"];
-                            dr_final6["Model"] = dr["Model"];
-                            dr_final6["ItemCode"] = dr["Itemcode"];                           
-
-                            if (dst != null)
-                            {
-                                if (dst.Tables[0].Rows.Count > 0)
-                                {
-                                    foreach (DataRow drt in dst.Tables[0].Rows)
-                                    {
-                                        char[] commaSeparator2 = new char[] { ',' };
-                                        string[] result2;
-                                        result2 = cond6.Split(commaSeparator, StringSplitOptions.None);
-
-                                        foreach (string str2 in result2)
-                                        {
-                                            string item1 = str2;
-                                            string item123 = Convert.ToString(drt["pricename"]);
-
-                                             if (item123 == item1)
-                                             {
-                                                 dr_final6[item1] = drt["price"];
-                                             }
-                                        }
-
-
-                                        char[] commaSeparator3 = new char[] { ',' };
-                                        string[] result3;
-                                        result3 = cond5.Split(commaSeparator, StringSplitOptions.None);
-
-                                        foreach (string str3 in result3)
-                                        {
-                                            string item11 = str3;
-                                            string item1231 = Convert.ToString(drt["BranchCode"]);
-
-                                            if (item1231 == item11)
-                                            {
-                                                dr_final6[item11] = drt["Stock"];
-                                            }
-                                        }
-
-                                        
-                                    }
-                                }
-                            }
-                            dt.Rows.Add(dr_final6);
-                        }
-                        DataSet dst2 = new DataSet();
-                        dst2.Tables.Add(dt);
-                        ReportGridView1.DataSource = dst2;
-                        ReportGridView1.DataBind();
-
-                    }
-                }
-
-                DataSet dss = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, "");
-                DataTable customerTable = dss.Tables[0];
+                //DataSet dss = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, "");
+                //DataTable customerTable = dss.Tables[0];
 
 
                 //ConvertToCrossTab(customerTable);
-                if (dss.Tables[0].Rows.Count > 0)
-                {
-                    gv.DataSource = dss;
-                    gv.DataBind();
+                //if (dss.Tables[0].Rows.Count > 0)
+                //{
+                //    gv.DataSource = dss;
+                //    gv.DataBind();
 
-                    //ReportViewer1.ProcessingMode = ProcessingMode.Local;
-                    //ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report.rdlc");
-                    //Customers dsCustomers = GetData("select top 20 * from customers");
-                    //ReportDataSource datasource = new ReportDataSource("Stock", ds.Tables[0]);
-                    //ReportViewer1.LocalReport.DataSources.Clear();
-                    //ReportViewer1.LocalReport.DataSources.Add(datasource);
-
-                }
-                else
-                {
-                    //lblCategory.Text = "";
-                }
+                //}
+                //else
+                //{
+                //    lblCategory.Text = "";
+                //}
                 lblTotal.Text = sumDbl.ToString("f2");
+               
             }
         }
         catch (Exception ex)

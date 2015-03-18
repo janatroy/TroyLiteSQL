@@ -265,6 +265,9 @@
                                 &nbsp;
                             </td>
                         </tr>
+                          <tr>
+                              <asp:Image ID="Image1" runat="server" />
+                        </tr>
                     </table>
                     <br />
                     <br />
