@@ -120,8 +120,8 @@ public partial class StockListReport1 : System.Web.UI.Page
                 }
 
                 //lblModel.Text = cmbModel.Text;
-                openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode,"")) +
-                    (Convert.ToDouble(bl.getOpeningStockPurchase(sDataSource, itemCode, startDate)) - Convert.ToDouble(report.getOpeningStockSales(sDataSource, itemCode, startDate)));
+                openingStock = Convert.ToDouble(bl.getOpeningStock(sDataSource, itemCode, "")) +
+                    (Convert.ToDouble(bl.getOpeningStockPurchase(sDataSource, itemCode, startDate, "")) - Convert.ToDouble(bl.getOpeningStockSales(sDataSource, itemCode, startDate, "")));
 
                 lblOpenStock.Text = Convert.ToString(openingStock);
 
@@ -137,7 +137,7 @@ public partial class StockListReport1 : System.Web.UI.Page
 
                 if ((chkvalue.Checked == false) && (chktrans.Checked == false))
                 {
-                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "",0);
                     gvLedger.DataSource = dsLedger;
                     gvLedger.DataBind();
                     divReport.Visible = true;
@@ -185,7 +185,7 @@ public partial class StockListReport1 : System.Web.UI.Page
                 else if ((chktrans.Checked == true) && (chkvalue.Checked == true))
                 {
 
-                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
 
                     #region Export To Excel
                     if (dsLedger.Tables[0].Rows.Count > 0)
@@ -235,7 +235,7 @@ public partial class StockListReport1 : System.Web.UI.Page
                 }
                 else
                 {
-                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
 
                     #region Export To Excel
                     if (dsLedger.Tables[0].Rows.Count > 0)
@@ -932,16 +932,18 @@ public partial class StockListReport1 : System.Web.UI.Page
             double openingStock = 0;
             string[] itemAr = drpLedgerName.SelectedItem.Text.Split('|');
 
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+
             //string itemCode = Convert.ToString(itemAr[0]).Trim();
             string itemCode = cmbProdAdd.Text;
             lblModel.Text = cmbModel.Text;
-            openingStock = Convert.ToDouble(report.getOpeningStock(sDataSource, itemCode,"")) +
-                (Convert.ToDouble(report.getOpeningStockPurchase(sDataSource, itemCode, startDate)) - Convert.ToDouble(report.getOpeningStockSales(sDataSource, itemCode, startDate)));
+            openingStock = Convert.ToDouble(bl.getOpeningStock(sDataSource, itemCode, "")) +
+                (Convert.ToDouble(bl.getOpeningStockPurchase(sDataSource, itemCode, startDate, "")) - Convert.ToDouble(bl.getOpeningStockSales(sDataSource, itemCode, startDate, "")));
 
             lblOpenStock.Text = Convert.ToString(openingStock);
 
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-            BusinessLogic bl = new BusinessLogic(sDataSource);
+           
 
             currStock = bl.getStockInfo(itemCode,"");
 
@@ -953,7 +955,7 @@ public partial class StockListReport1 : System.Web.UI.Page
 
             if ((chkvalue.Checked == false) && (chktrans.Checked == false))
             {
-                DataSet dsLedger = report.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
                 gvLedger.DataSource = dsLedger;
                 gvLedger.DataBind();
 
@@ -994,7 +996,7 @@ public partial class StockListReport1 : System.Web.UI.Page
             else if ((chktrans.Checked == true) && (chkvalue.Checked == true))
             {
 
-                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
                 gvledgerwithvalue.DataSource = dsLedger;
                 gvledgerwithvalue.DataBind();
 
@@ -1049,7 +1051,7 @@ public partial class StockListReport1 : System.Web.UI.Page
             }
             else
             {
-                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
                 gvledgerwithvalue.DataSource = dsLedger;
                 gvledgerwithvalue.DataBind();
 
@@ -1212,7 +1214,7 @@ public partial class StockListReport1 : System.Web.UI.Page
             else if ((chktrans.Checked == true) && (chkvalue.Checked == true))
             {
 
-                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate,"",0);
 
                 #region Export To Excel
                 if (dsLedger.Tables[0].Rows.Count > 0)
@@ -1262,7 +1264,7 @@ public partial class StockListReport1 : System.Web.UI.Page
             }
             else
             {
-                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
 
                 #region Export To Excel
                 if (dsLedger.Tables[0].Rows.Count > 0)

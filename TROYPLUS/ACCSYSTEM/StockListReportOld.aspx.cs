@@ -145,7 +145,7 @@ public partial class StockListReportOld : System.Web.UI.Page
             else
             {
                 BusinessLogic bl = new BusinessLogic();
-                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate);
+                DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
 
                 #region Export To Excel
                 if (dsLedger.Tables[0].Rows.Count > 0)
