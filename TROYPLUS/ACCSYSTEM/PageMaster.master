@@ -532,7 +532,7 @@
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('StockAgeingReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=500,width=750,left=359,top=150, scrollbars=no');">Ageing</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlStockLevel.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=400,width=500,left=415,top=260 ,resizable=yes, scrollbars=yes');">Stock Level</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlAbsolute.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=400,width=500,left=415,top=235, scrollbars=yes');">Obsolete item list</a></li>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlStock.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=450,width=600,left=380,top=140, scrollbars=no');">Stock Comprehency</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlStock.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=580,width=900,left=200,top=110, scrollbars=no');">Stock Comprehency</a></li>
                                                         <%--</ul>
                                     </li>
                                     <%--<li class="color submenumenu"><a href="#">Sales</a><ul>

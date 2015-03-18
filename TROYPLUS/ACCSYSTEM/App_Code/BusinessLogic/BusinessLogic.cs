@@ -46180,7 +46180,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet getstockreport(string sDataSource, DateTime refDate, string field1, string field2, string Types)
+    public DataSet getstockreport(string sDataSource, DateTime refDate, string field1, string field2, string Types, string branchcode,string saBranchcode)
     {
         SqlConnection oleConn;
         SqlCommand oleCmd;
@@ -46189,51 +46189,88 @@ public class BusinessLogic
         string sQry = string.Empty;
         string sConStr = string.Empty;
         string pQry = string.Empty;
-        sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
-        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sDataSource));
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
         DataSet datas;
 
         if (Types == "Catwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.CategoryName"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            //sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.CategoryName"); //" order by ProductDesc,CategoryID,Model,ProductName"
+
+            sQry = (" SELECT distinct " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+                 " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+                 " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by cat.CategoryName");
+
+            //sQry = (" SELECT PM.ItemCode, PM.ProductName, PM.Model, (PM.ProductDesc) as Brand, PM.Stock, PM.BranchCode,(PM.Stock * tblProductPrices.Price) as MRPValue, " +
+            //      " tblProductPrices.PriceName, tblProductPrices.Price, Cat.CategoryName " +
+            //      " FROM tblProductStock PM INNER JOIN " +
+            //      " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+            //      " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode ");
         }
         else if (Types == "Brandwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc"); //" order by ProductDesc,CategoryID,Model,ProductName"
+           // sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT distinct " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+               " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+               " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by PM.productdesc");
         }
         else if (Types == "productwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            //sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+              " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+              " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCodewhere " + branchcode + " order by PM.productname");
         }
         else if (Types == "brandprodwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc,PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+           // sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc,PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+             " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+             " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + "order by PM.productdesc,PM.productname");
         }
         else if (Types == "brandprodmodelwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc,PM.productname,PM.model"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            //sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc,PM.productname,PM.model"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+            " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+            " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by  PM.productdesc,PM.model");
         }
         else if (Types == "Categorybrandprodwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.categoryname, PM.productdesc,PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+           // sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.categoryname, PM.productdesc,PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+           " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+           " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by cat.categoryname, PM.productdesc,PM.productname");
         }
         else if (Types == "catbrandwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.categoryname, PM.productdesc"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            //sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.categoryname, PM.productdesc"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+          " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+          " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by cat.categoryname, PM.productdesc");
         }
         else if (Types == "catproductwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.categoryname, PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+           // sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.categoryname, PM.productname"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+          " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+          " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by cat.categoryname, PM.productname");
         }
         else if (Types == "prodmodelwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productname,PM.model"); //" order by ProductDesc,CategoryID,Model,ProductName"
+           // sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productname,PM.model"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+         " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+         " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by PM.model");
         }
         else if (Types == "brandmodelwise")
         {
-            sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc,PM.Model"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            //sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc,PM.Model"); //" order by ProductDesc,CategoryID,Model,ProductName"
+            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+         " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
+         " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by PM.productdesc,PM.Model");
         }
 
         oleCmd.CommandText = sQry;
@@ -46242,7 +46279,7 @@ public class BusinessLogic
         ds = new DataSet();
         oleAdp.Fill(ds);
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where  S.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where " + saBranchcode + " and S.BillDate >= '" + refDate.ToString("yyyy-MM-dd") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -46275,7 +46312,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where P.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where " + branchcode + " and P.BillDate >= '" + refDate.ToString("yyyy-MM-dd") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -46308,7 +46345,7 @@ public class BusinessLogic
 
 
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where S.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where " + saBranchcode + " and S.BillDate >= '" + refDate.ToString("yyyy-MM-dd") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -46338,7 +46375,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where P.BillDate >= #" + refDate.ToString("MM/dd/yyyy") + "#" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where " + branchcode + " and P.BillDate >= '" + refDate.ToString("yyyy-MM-dd") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -55080,7 +55117,7 @@ public class BusinessLogic
 
             foreach (DataRow dr in dsrate.Tables[0].Rows)
             {
-                pQry = "select itemcode,mrpstartdate,mrpenddate,mrp from tblproducthistory where itemcode= '" + dr["ItemCode"].ToString() + "' order by mrpdate desc";
+                pQry = "select itemcode,startdate,enddate,pricename from tblproductpricehistory where itemcode= '" + dr["ItemCode"].ToString() + "' order by startdate desc";
                 ds = manager.ExecuteDataSet(CommandType.Text, pQry.ToString());
 
                 rowindex = rowindex + 1;
@@ -55093,7 +55130,7 @@ public class BusinessLogic
                         double MRP = Convert.ToDouble(drd["MRP"]);
                         if (drd["ItemCode"].ToString() == itemCode)
                         {
-                            if (DateTime.Parse(refDate.ToString()) >= DateTime.Parse(drd["mrpstartdate"].ToString()) && DateTime.Parse(refDate.ToString()) <= DateTime.Parse(drd["mrpenddate"].ToString()))
+                            if (DateTime.Parse(refDate.ToString()) >= DateTime.Parse(drd["startdate"].ToString()) && DateTime.Parse(refDate.ToString()) <= DateTime.Parse(drd["enddate"].ToString()))
                             {
                                 dsrate.Tables[0].Rows[rowindex]["MRP"] = MRP;
                                 dsrate.Tables[0].Rows[rowindex].EndEdit();
@@ -55145,7 +55182,7 @@ public class BusinessLogic
             {
                 rowindex = rowindex + 1;
 
-                pdQry = "select itemcode,dpstartdate,dpenddate,dp from tblproducthistory where itemcode= '" + dr["ItemCode"].ToString() + "' order by dpdate desc";
+                pdQry = "select itemcode,startdate,enddate,mrp from tblproductpricehistory where itemcode= '" + dr["ItemCode"].ToString() + "' order by startdate desc";
                 ds = manager.ExecuteDataSet(CommandType.Text, pdQry.ToString());
                 var itemCode1 = dr["ItemCode"].ToString();
 
@@ -55156,7 +55193,7 @@ public class BusinessLogic
                         double DP = Convert.ToDouble(drd["DP"]);
                         if (drd["ItemCode"].ToString() == itemCode1)
                         {
-                            if (DateTime.Parse(refDate.ToString()) >= DateTime.Parse(drd["dpstartdate"].ToString()) && DateTime.Parse(refDate.ToString()) <= DateTime.Parse(drd["dpenddate"].ToString()))
+                            if (DateTime.Parse(refDate.ToString()) >= DateTime.Parse(drd["startdate"].ToString()) && DateTime.Parse(refDate.ToString()) <= DateTime.Parse(drd["enddate"].ToString()))
                             {
                                 dsrate.Tables[0].Rows[rowindex]["DP"] = DP;
                                 dsrate.Tables[0].Rows[rowindex].EndEdit();
@@ -55180,7 +55217,7 @@ public class BusinessLogic
                 rowindex = rowindex + 1;
                 var itemCode2 = dr["ItemCode"].ToString();
 
-                pQry = "select itemcode,mrpstartdate,mrpenddate,dpstartdate,dpenddate,nlcstartdate,nlcenddate,mrp,dp,nlc from tblproducthistory where itemcode= '" + dr["ItemCode"].ToString() + "' order by nlcdate desc";
+                pQry = "select itemcode,startdate,pricename from tblproductpricehistory where itemcode= '" + dr["ItemCode"].ToString() + "' order by startdate desc";
                 ds = manager.ExecuteDataSet(CommandType.Text, pQry.ToString());
                 if (ds.Tables[0].Rows.Count > 0)
                 {
@@ -55189,7 +55226,7 @@ public class BusinessLogic
                         double NLC = Convert.ToDouble(drd["NLC"]);
                         if (drd["ItemCode"].ToString() == itemCode2)
                         {
-                            if (DateTime.Parse(refDate.ToString()) >= DateTime.Parse(drd["nlcstartdate"].ToString()) && DateTime.Parse(refDate.ToString()) <= DateTime.Parse(drd["nlcenddate"].ToString()))
+                            if (DateTime.Parse(refDate.ToString()) >= DateTime.Parse(drd["startdate"].ToString()) && DateTime.Parse(refDate.ToString()) <= DateTime.Parse(drd["enddate"].ToString()))
                             {
                                 dsrate.Tables[0].Rows[rowindex]["NLC"] = NLC;
                                 dsrate.Tables[0].Rows[rowindex].EndEdit();
