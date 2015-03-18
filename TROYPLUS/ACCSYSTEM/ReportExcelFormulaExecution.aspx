@@ -43,7 +43,7 @@
         <div align="center">
             <asp:HiddenField ID="hdStock" runat="server" />
             <br />
-                <table style="border: 1px solid blue; background-color:White;" width="400px">
+                <table style="border: 1px solid blue; background-color:White;" width="450px">
                     <%--<tr style="height:1px">
                     
                     </tr>--%>
@@ -73,10 +73,10 @@
                     
                     <tr>
                         <td>
-                            <table style="width:460px; height: 100%">
+                            <table style="width:570px;">
                                 <tr style="height: 2px;"/>
                                 <tr>
-                                    <td class="ControlLabel2" style="width:15%;">
+                                    <td class="ControlLabel2" style="width:20%;">
                                     <%--     <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator2" runat="server"
                                                                                                 Text="*" ErrorMessage="Please select Product. It cannot be left blank. " ControlToValidate="txtProjectCode"></asp:RequiredFieldValidator>--%>
                                         Select Product
@@ -94,7 +94,7 @@
                                     <td  style="width:5%;">
                                             
                                     </td>
-                                     <td class="ControlLabel2" style="width:35%;">
+                                     <td class="ControlLabel2" style="width:20%;">
                                         Product Process?
                                     </td>
                                     <td style="width:15%;" class="ControlDrpBorder">
@@ -106,41 +106,42 @@
                                 </tr>
                                 <tr style="height: 2px;"/>
                                 <tr>
-                                    <td class="ControlLabel2" style="width:30%;">
+                                    <td class="ControlLabel2" style="width:20%;">
                                         <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator1" runat="server"
                                                                                                 Text="*" ErrorMessage="Please select Start date. It cannot be left blank. " ControlToValidate="txtStartDate"></asp:RequiredFieldValidator>
                                        Start date
                                     </td>
-                                      <td style="width: 21%;" class="ControlTextBox3">
+                                      <td style="width: 15%;" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtStartDate"  runat="server" CssClass="cssTextBox" Width="80px"></asp:TextBox>
 
                                                                                         <cc1:CalendarExtender ID="calExtender3" runat="server" Animated="true" Format="dd/MM/yyyy"
                                                                                             PopupButtonID="btnDate3" PopupPosition="BottomLeft" TargetControlID="txtStartDate">
                                                                                         </cc1:CalendarExtender>
                                                                                     </td>
-                                                                                    <td>
+                                                                                    <td style="width: 5%;">
                                                                                         <asp:ImageButton ID="btnDate3" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
                                                                                             Width="20px" runat="server" />
                                                                                     </td>
-                                    <td class="ControlLabel2" style="width:35%;">
+                                    <td class="ControlLabel2" style="width:20%;">
                                         <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator3" runat="server"
                                                                                                 Text="*" ErrorMessage="Please select End Date. It cannot be left blank. " ControlToValidate="txtEndDate"></asp:RequiredFieldValidator>
                                        End date
                                     </td>
-                                      <td style="width: 21%;" class="ControlTextBox3">
+                                      <td style="width: 15%;" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtEndDate"  runat="server" CssClass="cssTextBox" Width="80px"></asp:TextBox>
 
                                                                                         <cc1:CalendarExtender ID="CalExtender1" runat="server" Animated="true" Format="dd/MM/yyyy"
                                                                                             PopupButtonID="btnDate4" PopupPosition="BottomLeft" TargetControlID="txtEndDate">
                                                                                         </cc1:CalendarExtender>
                                                                                     </td>
-                                                                                    <td>
+                                                                                    <td style="width: 5%;">
                                                                                         <asp:ImageButton ID="btnDate4" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
                                                                                             Width="20px" runat="server" />
                                                                                     </td>
                                 </tr>
+                                <tr style="height: 2px;"/>
                                 <tr>
-                                     <td class="ControlLabel2" style="width:30%;">
+                                     <td class="ControlLabel2" style="width:20%;">
                                          Select In/Out categories
                                     </td>
                                       <td style="width:15%;" class="ControlDrpBorder">
@@ -159,7 +160,7 @@
                                     <td  style="width:5%;">
                                             
                                     </td>
-                                    <td class="ControlLabel2" style="width:30%;">
+                                    <td class="ControlLabel2" style="width:20%;">
                                         Select Branch
                                         <asp:RequiredFieldValidator ValidationGroup="reportandexcel" ID="RequiredFieldValidator4" runat="server"
                                                                                                 Text="*" ErrorMessage="Please select any one Branch in the Dropdown List. " ControlToValidate="drpBranch"></asp:RequiredFieldValidator>

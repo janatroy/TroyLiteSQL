@@ -93,7 +93,22 @@ public partial class ReportExcelFormulaExecution1 : System.Web.UI.Page
                     Grdformula.DataSource = ds;
                     Grdformula.DataBind();
                 }
+                else
+                {
+
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' No data found');", true);
+                    return;
+
+                }
             }
+            else
+            {
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' No data found');", true);
+                return;
+
+            }
+         
 
             //div1.Visible = false;
         }

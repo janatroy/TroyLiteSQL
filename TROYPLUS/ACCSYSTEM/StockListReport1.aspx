@@ -294,7 +294,7 @@
                 <table cellspacing="5" cellpadding="3" style="font-family: Trebuchet MS; font-size: 12px;
                     width: 100%; text-align: left">
                     <tr>
-                        <td colspan="4">
+                      <td colspan="4">
                             <wc:ReportGridView runat="server" BorderWidth="1" ID="gvLedger" SkinID="gridview"
                                 AutoGenerateColumns="false" AllowPrintPaging="true" Width="100%"  CssClass="someClass" BorderColor="Gray" BorderStyle="Solid"
                                 OnRowDataBound="gvLedger_RowDataBound">
@@ -316,7 +316,7 @@
                                                 runat="server" Text='<%# Eval("BillDate","{0:dd/MM/yyyy}")%>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="'Purchase/Sale'" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
+                                    <asp:BoundField DataField="PurchaseSale" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="billno" HeaderText="BillNo"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="LedgerName" HeaderText="Customer/Supplier Name"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:TemplateField HeaderText="Qty."  HeaderStyle-BorderColor="Gray">
@@ -339,7 +339,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <wc:ReportGridView runat="server" BorderWidth="1" ID="gvledgerwithvalue" SkinID="gridview"
+                              <wc:ReportGridView runat="server" BorderWidth="1" ID="gvledgerwithvalue" SkinID="gridview"
                                 AutoGenerateColumns="false" AllowPrintPaging="true" Width="100%"  CssClass="someClass" BorderColor="Gray" BorderStyle="Solid"
                                 OnRowDataBound="gvledgerwithvalue_RowDataBound">
                                 <RowStyle CssClass="dataRow" />
@@ -360,7 +360,7 @@
                                                 runat="server" Text='<%# Eval("BillDate","{0:dd/MM/yyyy}")%>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField DataField="'Purchase/Sale'" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
+                                    <asp:BoundField DataField="PurchaseSale" HeaderText="Purchase/Sales"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="billno" HeaderText="BillNo"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:BoundField DataField="LedgerName" HeaderText="Customer/Supplier Name"   HeaderStyle-BorderColor="Gray"/>
                                     <asp:TemplateField HeaderText="Qty."  HeaderStyle-BorderColor="Gray">
