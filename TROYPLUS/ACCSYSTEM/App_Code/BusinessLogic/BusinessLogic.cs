@@ -19779,10 +19779,10 @@ public class BusinessLogic
                 //  dbQry.Append("  from tblFormula as A ");
                 if (branchcode != "All")
                 {
-                    dbQry.Append("SELECT FormulaName,BranchCode");
+                    dbQry.Append("SELECT FormulaName");
                 dbQry.Append(" FROM tblFormula");
-                    dbQry.Append(" Where A.BranchCode='" + branchcode + "' and A.FormulaName like %" + name + "%");
-                    dbQry.Append(" Group By A.FormulaName,A.BranchCode ");
+                   // dbQry.Append(" Where A.BranchCode='" + branchcode + "' and A.FormulaName like %" + name + "%");
+                    dbQry.Append(" Group By A.FormulaName ");
                 }
             }
             else
@@ -19792,10 +19792,10 @@ public class BusinessLogic
                 // dbQry.Append(" Group By A.FormulaName ");
                 if (branchcode != "All")
                 {
-                    dbQry.Append("SELECT FormulaName,BranchCode");
+                    dbQry.Append("SELECT FormulaName");
                     dbQry.Append(" FROM tblFormula");
-                    dbQry.Append(" Where BranchCode='" + branchcode + "'");
-                    dbQry.Append(" Group By FormulaName,BranchCode ");
+                    //dbQry.Append(" Where BranchCode='" + branchcode + "'");
+                    dbQry.Append(" Group By FormulaName ");
                 }
                 else
                 {
