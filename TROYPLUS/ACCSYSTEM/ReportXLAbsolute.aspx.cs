@@ -67,6 +67,20 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
         lstPricelist.DataBind();
     }
 
+    protected string getCond1()
+    {
+        string cond1 = "";
+        foreach (ListItem listItem1 in lstPricelist.Items)
+        {
+            if (listItem1.Selected)
+            {
+                cond1 += listItem1.Value + ",";
+            }
+        }
+
+        return cond1;
+    }
+
    protected void btnxls_Click(object sender, EventArgs e)
    {
         try
@@ -595,7 +609,29 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
              bindDatareport(sDataSource);
              DataSet dstt = new DataSet();
 
-             Response.Write("<script language='javascript'> window.open('ReportXLAbsolute1.aspx?dataset=" + dstt + " , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+             string Method = string.Empty;
+             DataSet ds = new DataSet();
+             string field = string.Empty;
+
+             if (chkoption.SelectedValue == "All ItemList")
+             {
+                 Method = "All";
+             }
+             else if (chkoption.SelectedValue == "Obsolete ItemList")
+             {
+                 Method = "Absolute";
+             }
+             else if (chkoption.SelectedValue == "Other Than Obsolete")
+             {
+                 Method = "NotAbsolute";
+             }
+
+             string Branch = drpBranchAdd.SelectedValue;
+
+             string cond1 = "";
+             cond1 = getCond1();
+
+             Response.Write("<script language='javascript'> window.open('ReportXLAbsolute1.aspx?Branch=" + Branch + "&cond1=" + Server.UrlEncode(cond1) + "&Method=" + Method + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
 
          }
      }
