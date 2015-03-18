@@ -248,7 +248,10 @@ public partial class StockAgeingReport : System.Web.UI.Page
             cond = getCond();
             string cond1 = "";
             cond1 = getCond1();
-
+            string cond2 = "";
+            cond2 = getCond2();
+            string cond3 = "";
+            cond3 = getCond3();
 
             DataSet ds = GenerateGridColumns();
             ds = UpdatePurchaseData(ds);
@@ -292,16 +295,21 @@ public partial class StockAgeingReport : System.Web.UI.Page
             string Productname = cmbProduct.SelectedItem.Text;
             int productindex = cmbProduct.SelectedIndex;
 
-            
+
 
 
             if (lstBranch.SelectedIndex == -1)
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);              
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+            }
+            else if (lstPricelist.SelectedIndex == -1)
+            {
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+                Response.Write("<script language='javascript'> window.open('StockAgeingReport1.aspx?Modelval=" + Modelval + "&cond=" + Server.UrlEncode(cond) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&Brandval=" + Brandval + "&Productname=" + Productname + "&Categoryval=" + Categoryval + "&productindex=" + productindex + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
             }
             else
             {
-                Response.Write("<script language='javascript'> window.open('StockAgeingReport1.aspx?Modelval=" + Modelval + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&Brandval=" + Brandval + "&Productname=" + Productname + "&Categoryval=" + Categoryval + "&productindex=" + productindex + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                Response.Write("<script language='javascript'> window.open('StockAgeingReport1.aspx?Modelval=" + Modelval + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&Brandval=" + Brandval + "&Productname=" + Productname + "&Categoryval=" + Categoryval + "&productindex=" + productindex + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
             }
         }
         catch (Exception ex)
@@ -346,6 +354,45 @@ public partial class StockAgeingReport : System.Web.UI.Page
         cond1 = cond1.TrimEnd(',');
         cond1 = cond1.Replace(",", "or");
         return cond1;
+    }
+
+
+    protected string getCond2()
+    {
+        string cond2 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond2 += " P.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond2 = cond2.TrimEnd(',');
+        cond2 = cond2.Replace(",", "or");
+        return cond2;
+    }
+
+    protected string getCond3()
+    {
+        string cond3 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond3 += " BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond3 = cond3.TrimEnd(',');
+        cond3 = cond3.Replace(",", "or");
+        return cond3;
     }
 
 
@@ -1489,7 +1536,7 @@ public partial class StockAgeingReport : System.Web.UI.Page
         //DataSet productData = rpt.GetProductData(sDataSource);
         DataSet productData = objBL.ListProdMdlItcd("ProductName");
 
-        
+
 
         DateTime startDate = DateTime.Parse(txtStartDate.Text);
         DateTime endDate = DateTime.Parse(DateTime.Now.ToShortDateString());
@@ -1505,7 +1552,7 @@ public partial class StockAgeingReport : System.Web.UI.Page
         if (cmbProduct.SelectedIndex > 0)
             selecteditemCode = cmbProduct.SelectedValue.Trim();
 
-        DataSet salesData = rpt.GetSalesData(sDataSource, selecteditemCode,cond,cond1);
+        DataSet salesData = rpt.GetSalesData(sDataSource, selecteditemCode, cond, cond1);
         //DataSet salesData = objBL.GetSalesData(sDataSource, selecteditemCode);
 
         int duration = int.Parse(txtDuration.Text);

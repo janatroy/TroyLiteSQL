@@ -25,6 +25,7 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
     string cond;
     string cond1;
     string cond2;
+    string cond3;
     public string sDataSource = string.Empty;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -118,6 +119,9 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
                 DataSet ds = GenerateGridColumns();
                 ds = UpdatePurchaseData(ds);
                 ds = UpdateSalesData(ds);
+                ds = UpdateOpeningStockData(ds);
+                ds = UpdateManufactureDataProduct(ds);
+                ds = UpdateManufactureDataRaw(ds);
                 ds = ConsolidateData(ds);
 
                 if (ds != null && ds.Tables[0].Rows.Count > 0)
@@ -438,6 +442,735 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    public DataSet UpdateManufactureDataProduct(DataSet dsGrid)
+    {
+        BusinessLogic objBL = new BusinessLogic(sDataSource);
+
+        ReportsBL.ReportClass rpt = new ReportsBL.ReportClass();
+        //DataSet productData = rpt.GetProductData(sDataSource);
+        DataSet productData = objBL.ListProdMdlItcd("ProductName");
+
+        DateTime startDate;
+        DateTime endDate;
+
+        DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
+        DateTime etdt = Convert.ToDateTime(txtEndDate.Text);
+
+        if (Request.QueryString["startDate"] != null)
+        {
+            stdt = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
+        }
+        if (Request.QueryString["endDate"] != null)
+        {
+            etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
+        }
+
+        startDate = Convert.ToDateTime(stdt);
+        endDate = Convert.ToDateTime(etdt);
+
+        //DateTime refDate = DateTime.Parse("01/05/2011");
+        string selecteditemCode = "0";
+        string Product = "";
+        string Category = "";
+        string Model = "";
+        string Brand = "";
+        int duration = int.Parse(txtDuration.Text);
+        int noOfColumns = int.Parse(txtColumns.Text);
+        string itemCode = "0";
+        string Productname = "";
+        string Categoryval = "";
+
+        if (Request.QueryString["Product"] != null)
+        {
+            Product = Request.QueryString["Product"].ToString();
+        }
+        if (Request.QueryString["Category"] != null)
+        {
+            Category = Request.QueryString["Category"].ToString();
+        }
+        if (Request.QueryString["Model"] != null)
+        {
+            Model = Request.QueryString["Model"].ToString();
+        }
+        if (Request.QueryString["Brand"] != null)
+        {
+            Brand = Request.QueryString["Brand"].ToString();
+        }
+        if (Request.QueryString["Productname"] != null)
+        {
+            Productname = Request.QueryString["Productname"].ToString();
+        }
+        if (Request.QueryString["Categoryval"] != null)
+        {
+            Categoryval = Request.QueryString["Categoryval"].ToString();
+        }
+        if (Request.QueryString["itemCode"] != null)
+        {
+            itemCode = Request.QueryString["itemCode"].ToString();
+        }
+        int productindex = 0;
+        if (Request.QueryString["duration"] != null)
+        {
+            duration = Convert.ToInt32(Request.QueryString["duration"].ToString());
+        }
+        if (Request.QueryString["noOfColumns"] != null)
+        {
+            noOfColumns = Convert.ToInt32(Request.QueryString["noOfColumns"].ToString());
+        }
+        if (Request.QueryString["productindex"] != null)
+        {
+            productindex = Convert.ToInt32(Request.QueryString["productindex"].ToString());
+        }
+
+        if (productindex > 0)
+            selecteditemCode = itemCode;
+
+        string Brandval = "";
+        string Modelval = "";
+
+        if (Request.QueryString["Brandval"] != null)
+        {
+            Brandval = Request.QueryString["Brandval"].ToString();
+        }
+
+        if (Request.QueryString["Modelval"] != null)
+        {
+            Modelval = Request.QueryString["Modelval"].ToString();
+        }
+
+        string condition = "";
+        if (Categoryval != "0")
+            condition = " tblCategories.CategoryName='" + Category + "' ";
+
+        if (Modelval != "0")
+        {
+            if (Categoryval != "0")
+                condition = condition + " And ";
+
+            condition = condition + " tblProductMaster.Model='" + Model + "' ";
+        }
+
+        if (Brandval != "0")
+        {
+            if ((Categoryval != "0") || (Modelval != "0"))
+                condition = condition + " And ";
+
+            condition = condition + " tblProductMaster.ProductDesc='" + Brand + "' ";
+        }
+
+        if (Product != "" && Productname != "All")
+        {
+            if ((Categoryval != "0") || (Modelval != "0") || (Brandval != "0"))
+                condition = condition + " And ";
+
+            condition = condition + " tblExecution.itemcode='" + Product + "' ";
+        }
+
+        if (Request.QueryString["cond3"] != null)
+        {
+            cond3 = Request.QueryString["cond3"].ToString();
+            cond3 = Server.UrlDecode(cond3);
+        }   
+
+        //DataSet purchaseData = rpt.GetPurchaseData(sDataSource, selecteditemCode);
+        DataSet purchaseData = objBL.GetManufactureDataNewProduct(sDataSource, selecteditemCode, condition,cond3);
+
+        DataView dv = purchaseData.Tables[0].AsDataView();
+
+        //////if (Categoryval != "0")
+        //////    dv.RowFilter = "CategoryName=" + Category + "";
+
+        //////if (Modelval != "0")
+        //////    dv.RowFilter = "Model=" + Model + "";
+
+        //////if (Brandval != "0")
+        //////    dv.RowFilter = "ProductDesc=" + Brand + "";
+
+        //////if (Product != "" && Productname != "All")
+        //////    dv.RowFilter = "itemcode=" + Product + "";
+
+
+
+
+        if (Request.QueryString["firstLevel"] != null)
+        {
+            firstLevel = Request.QueryString["firstLevel"].ToString();
+        }
+        if (Request.QueryString["secondLevel"] != null)
+        {
+            secondLevel = Request.QueryString["secondLevel"].ToString();
+        }
+        if (Request.QueryString["thirdLevel"] != null)
+        {
+            thirdLevel = Request.QueryString["thirdLevel"].ToString();
+        }
+        if (Request.QueryString["fourthLevel"] != null)
+        {
+            fourthLevel = Request.QueryString["fourthLevel"].ToString();
+        }
+        if (Request.QueryString["duration"] != null)
+        {
+            duration = Convert.ToInt32(Request.QueryString["duration"].ToString());
+        }
+        if (Request.QueryString["noOfColumns"] != null)
+        {
+            noOfColumns = Convert.ToInt32(Request.QueryString["noOfColumns"].ToString());
+        }
+
+        int maxColIndex = dsGrid.Tables[0].Columns.Count - 1;
+
+        foreach (DataRow dr in dv.ToTable().Rows)
+        {
+            bool dupFlag = false;
+            string fiLevel = "";
+            string seLevel = "";
+            string thLevel = "";
+            string foLevel = "";
+            if (firstLevel != "None")
+            {
+                fiLevel = dr[firstLevel].ToString();
+            }
+            if (secondLevel != "None")
+            {
+                seLevel = dr[secondLevel].ToString();
+            }
+            if (thirdLevel != "None")
+            {
+                thLevel = dr[thirdLevel].ToString();
+            }
+            if (fourthLevel != "None")
+            {
+                foLevel = dr[fourthLevel].ToString();
+            }
+
+            string itemCode1 = dr["ItemCode"].ToString();
+            string Description = dr["ProductName"].ToString();
+            //DateTime purchaseDate = DateTime.Parse(dr["BillDate"].ToString());
+            DateTime purchaseDate = DateTime.Parse(dr["CDate"].ToString());
+            //DateTimeHelper.DateDifference dateHelper = new DateTimeHelper.DateDifference(refDate, purchaseDate);
+
+            int diffDays = int.Parse((endDate - purchaseDate).TotalDays.ToString());
+            int rowIndex = 0;
+
+            foreach (DataRow dR in dsGrid.Tables[0].Rows)
+            {
+                if (dR["itemCode"] != null)
+                {
+                    if (dR["itemCode"].ToString().Trim() == itemCode1.Trim())
+                    {
+                        dupFlag = true;
+                        break;
+                    }
+                    rowIndex++;
+                }
+            }
+            int colDur = 1;
+            int nextDur = duration;
+
+            if (dupFlag)
+            {
+                int colIndex = diffDays / duration;
+                colIndex = colIndex + 2;
+
+
+                //if (colIndex >= maxColIndex)
+                //{
+                //    colIndex = maxColIndex;
+                //}
+
+                for (int i = 0; i < noOfColumns; i++)
+                {
+                    //nextDur = nextDur + duration;
+                    //dc = new DataColumn("Days(" + colDur.ToString() + "-" + nextDur.ToString() + ")");
+                    //dt.Columns.Add(dc);
+
+                    if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 4;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 5;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 6;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 7;
+                        break;
+                    }
+                    else if (diffDays >= colDur)
+                    {
+                        colIndex = 8;
+                        break;
+                    }
+
+                    colDur = nextDur + 1;
+                    nextDur = nextDur + duration;
+                }
+
+
+
+                double currQty = 0;
+
+                if (dsGrid.Tables[0].Rows[rowIndex] != null)
+                {
+                    if (dsGrid.Tables[0].Rows[rowIndex][colIndex] != null)
+                    {
+                        string tt = dsGrid.Tables[0].Rows[rowIndex][colIndex].ToString();
+                        if (dsGrid.Tables[0].Rows[rowIndex][colIndex].ToString() != "")
+                        {
+                            if (colIndex > 4)
+                                currQty = Convert.ToDouble(dsGrid.Tables[0].Rows[rowIndex][colIndex].ToString());
+                        }
+                    }
+                }
+
+                double totQty = currQty + double.Parse(dr["Qty"].ToString());
+
+                dsGrid.Tables[0].Rows[rowIndex][colIndex] = totQty;
+                dsGrid.Tables[0].Rows[rowIndex].EndEdit();
+                dsGrid.Tables[0].AcceptChanges();
+            }
+            else
+            {
+                DataRow gridRow = dsGrid.Tables[0].NewRow();
+                if (firstLevel != "None")
+                    gridRow[firstLevel] = fiLevel;
+                if (secondLevel != "None")
+                    gridRow[secondLevel] = seLevel;
+                if (thirdLevel != "None")
+                    gridRow[thirdLevel] = thLevel;
+                if (fourthLevel != "None")
+                    gridRow[fourthLevel] = foLevel;
+
+                if (selLevels.IndexOf("ProductDesc") < 0)
+                    gridRow["ProductDesc"] = dr["ProductDesc"].ToString();
+                if (selLevels.IndexOf("CategoryName") < 0)
+                    gridRow["CategoryName"] = dr["CategoryName"].ToString();
+                if (selLevels.IndexOf("Model") < 0)
+                    gridRow["Model"] = dr["Model"].ToString();
+                if (selLevels.IndexOf("ItemCode") < 0)
+                    gridRow["ItemCode"] = dr["ItemCode"].ToString();
+
+                int colIndex = diffDays / duration;
+                colIndex = colIndex + 2;
+                //if (colIndex >= maxColIndex)
+                //{
+                //    colIndex = maxColIndex;
+                //}
+                for (int i = 0; i < noOfColumns; i++)
+                {
+                    if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 4;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 5;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 6;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 7;
+                        break;
+                    }
+                    else if (diffDays >= colDur)
+                    {
+                        colIndex = 8;
+                        break;
+                    }
+
+                    colDur = nextDur + 1;
+                    nextDur = nextDur + duration;
+                }
+
+                gridRow[colIndex] = dr["Qty"].ToString();
+
+                dsGrid.Tables[0].Rows.Add(gridRow);
+            }
+
+        }
+
+        return dsGrid;
+    }
+
+    public DataSet UpdateOpeningStockData(DataSet dsGrid)
+    {
+        BusinessLogic objBL = new BusinessLogic(sDataSource);
+
+        ReportsBL.ReportClass rpt = new ReportsBL.ReportClass();
+        //DataSet productData = rpt.GetProductData(sDataSource);
+        DataSet productData = objBL.ListProdMdlItcd("ProductName");
+
+        DateTime startDate;
+        DateTime endDate;
+
+        DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
+        DateTime etdt = Convert.ToDateTime(txtEndDate.Text);
+
+        if (Request.QueryString["startDate"] != null)
+        {
+            stdt = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
+        }
+        if (Request.QueryString["endDate"] != null)
+        {
+            etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
+        }
+
+        startDate = Convert.ToDateTime(stdt);
+        endDate = Convert.ToDateTime(etdt);
+
+        //DateTime refDate = DateTime.Parse("01/05/2011");
+        string selecteditemCode = "0";
+        string Product = "";
+        string Category = "";
+        string Model = "";
+        string Brand = "";
+        int duration = int.Parse(txtDuration.Text);
+        int noOfColumns = int.Parse(txtColumns.Text);
+        string itemCode = "0";
+        string Productname = "";
+        string Categoryval = "";
+
+        if (Request.QueryString["Product"] != null)
+        {
+            Product = Request.QueryString["Product"].ToString();
+        }
+        if (Request.QueryString["Category"] != null)
+        {
+            Category = Request.QueryString["Category"].ToString();
+        }
+        if (Request.QueryString["Model"] != null)
+        {
+            Model = Request.QueryString["Model"].ToString();
+        }
+        if (Request.QueryString["Brand"] != null)
+        {
+            Brand = Request.QueryString["Brand"].ToString();
+        }
+        if (Request.QueryString["Productname"] != null)
+        {
+            Productname = Request.QueryString["Productname"].ToString();
+        }
+        if (Request.QueryString["Categoryval"] != null)
+        {
+            Categoryval = Request.QueryString["Categoryval"].ToString();
+        }
+        if (Request.QueryString["itemCode"] != null)
+        {
+            itemCode = Request.QueryString["itemCode"].ToString();
+        }
+        int productindex = 0;
+        if (Request.QueryString["duration"] != null)
+        {
+            duration = Convert.ToInt32(Request.QueryString["duration"].ToString());
+        }
+        if (Request.QueryString["noOfColumns"] != null)
+        {
+            noOfColumns = Convert.ToInt32(Request.QueryString["noOfColumns"].ToString());
+        }
+        if (Request.QueryString["productindex"] != null)
+        {
+            productindex = Convert.ToInt32(Request.QueryString["productindex"].ToString());
+        }
+
+        if (productindex > 0)
+            selecteditemCode = itemCode;
+
+        string Brandval = "";
+        string Modelval = "";
+
+        if (Request.QueryString["Brandval"] != null)
+        {
+            Brandval = Request.QueryString["Brandval"].ToString();
+        }
+
+        if (Request.QueryString["Modelval"] != null)
+        {
+            Modelval = Request.QueryString["Modelval"].ToString();
+        }
+
+        string condition = "";
+        if (Categoryval != "0")
+            condition = " tblCategories.CategoryName='" + Category + "' ";
+
+        if (Modelval != "0")
+        {
+            if (Categoryval != "0")
+                condition = condition + " And ";
+
+            condition = condition + " tblStock.Model='" + Model + "' ";
+        }
+
+        if (Brandval != "0")
+        {
+            if ((Categoryval != "0") || (Modelval != "0"))
+                condition = condition + " And ";
+
+            condition = condition + " tblStock.ProductDesc='" + Brand + "' ";
+        }
+
+        if (Product != "" && Productname != "All")
+        {
+            if ((Categoryval != "0") || (Modelval != "0") || (Brandval != "0"))
+                condition = condition + " And ";
+
+            condition = condition + " tblStock.itemcode='" + Product + "' ";
+        }
+
+        if (Request.QueryString["cond3"] != null)
+        {
+            cond3 = Request.QueryString["cond3"].ToString();
+            cond3 = Server.UrlDecode(cond3);
+        }   
+
+        //DataSet purchaseData = rpt.GetPurchaseData(sDataSource, selecteditemCode);
+        DataSet purchaseData = objBL.GetOpeningStockDataNew(sDataSource, selecteditemCode, condition,cond3);
+
+        DataView dv = purchaseData.Tables[0].AsDataView();
+
+        //////if (Categoryval != "0")
+        //////    dv.RowFilter = "CategoryName=" + Category + "";
+
+        //////if (Modelval != "0")
+        //////    dv.RowFilter = "Model=" + Model + "";
+
+        //////if (Brandval != "0")
+        //////    dv.RowFilter = "ProductDesc=" + Brand + "";
+
+        //////if (Product != "" && Productname != "All")
+        //////    dv.RowFilter = "itemcode=" + Product + "";
+
+
+
+
+        if (Request.QueryString["firstLevel"] != null)
+        {
+            firstLevel = Request.QueryString["firstLevel"].ToString();
+        }
+        if (Request.QueryString["secondLevel"] != null)
+        {
+            secondLevel = Request.QueryString["secondLevel"].ToString();
+        }
+        if (Request.QueryString["thirdLevel"] != null)
+        {
+            thirdLevel = Request.QueryString["thirdLevel"].ToString();
+        }
+        if (Request.QueryString["fourthLevel"] != null)
+        {
+            fourthLevel = Request.QueryString["fourthLevel"].ToString();
+        }
+        if (Request.QueryString["duration"] != null)
+        {
+            duration = Convert.ToInt32(Request.QueryString["duration"].ToString());
+        }
+        if (Request.QueryString["noOfColumns"] != null)
+        {
+            noOfColumns = Convert.ToInt32(Request.QueryString["noOfColumns"].ToString());
+        }
+
+        int maxColIndex = dsGrid.Tables[0].Columns.Count - 1;
+
+        foreach (DataRow dr in dv.ToTable().Rows)
+        {
+            bool dupFlag = false;
+            string fiLevel = "";
+            string seLevel = "";
+            string thLevel = "";
+            string foLevel = "";
+            if (firstLevel != "None")
+            {
+                fiLevel = dr[firstLevel].ToString();
+            }
+            if (secondLevel != "None")
+            {
+                seLevel = dr[secondLevel].ToString();
+            }
+            if (thirdLevel != "None")
+            {
+                thLevel = dr[thirdLevel].ToString();
+            }
+            if (fourthLevel != "None")
+            {
+                foLevel = dr[fourthLevel].ToString();
+            }
+
+            string itemCode1 = dr["ItemCode"].ToString();
+            string Description = dr["ProductName"].ToString();
+            //DateTime purchaseDate = DateTime.Parse(dr["BillDate"].ToString());
+            DateTime purchaseDate = DateTime.Parse(dr["DueDate"].ToString());
+            //DateTimeHelper.DateDifference dateHelper = new DateTimeHelper.DateDifference(refDate, purchaseDate);
+
+            int diffDays = int.Parse((endDate - purchaseDate).TotalDays.ToString());
+            int rowIndex = 0;
+
+            foreach (DataRow dR in dsGrid.Tables[0].Rows)
+            {
+                if (dR["itemCode"] != null)
+                {
+                    if (dR["itemCode"].ToString().Trim() == itemCode1.Trim())
+                    {
+                        dupFlag = true;
+                        break;
+                    }
+                    rowIndex++;
+                }
+            }
+            int colDur = 1;
+            int nextDur = duration;
+
+            if (dupFlag)
+            {
+                int colIndex = diffDays / duration;
+                colIndex = colIndex + 2;
+
+
+                //if (colIndex >= maxColIndex)
+                //{
+                //    colIndex = maxColIndex;
+                //}
+
+                for (int i = 0; i < noOfColumns; i++)
+                {
+                    //nextDur = nextDur + duration;
+                    //dc = new DataColumn("Days(" + colDur.ToString() + "-" + nextDur.ToString() + ")");
+                    //dt.Columns.Add(dc);
+
+                    if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 4;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 5;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 6;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 7;
+                        break;
+                    }
+                    else if (diffDays >= colDur)
+                    {
+                        colIndex = 8;
+                        break;
+                    }
+
+                    colDur = nextDur + 1;
+                    nextDur = nextDur + duration;
+                }
+
+
+
+                double currQty = 0;
+
+                if (dsGrid.Tables[0].Rows[rowIndex] != null)
+                {
+                    if (dsGrid.Tables[0].Rows[rowIndex][colIndex] != null)
+                    {
+                        string tt = dsGrid.Tables[0].Rows[rowIndex][colIndex].ToString();
+                        if (dsGrid.Tables[0].Rows[rowIndex][colIndex].ToString() != "")
+                        {
+                            if (colIndex > 4)
+                                currQty = Convert.ToDouble(dsGrid.Tables[0].Rows[rowIndex][colIndex].ToString());
+                        }
+                    }
+                }
+
+                double totQty = currQty + double.Parse(dr["Qty"].ToString());
+
+                dsGrid.Tables[0].Rows[rowIndex][colIndex] = totQty;
+                dsGrid.Tables[0].Rows[rowIndex].EndEdit();
+                dsGrid.Tables[0].AcceptChanges();
+            }
+            else
+            {
+                DataRow gridRow = dsGrid.Tables[0].NewRow();
+                if (firstLevel != "None")
+                    gridRow[firstLevel] = fiLevel;
+                if (secondLevel != "None")
+                    gridRow[secondLevel] = seLevel;
+                if (thirdLevel != "None")
+                    gridRow[thirdLevel] = thLevel;
+                if (fourthLevel != "None")
+                    gridRow[fourthLevel] = foLevel;
+
+                if (selLevels.IndexOf("ProductDesc") < 0)
+                    gridRow["ProductDesc"] = dr["ProductDesc"].ToString();
+                if (selLevels.IndexOf("CategoryName") < 0)
+                    gridRow["CategoryName"] = dr["CategoryName"].ToString();
+                if (selLevels.IndexOf("Model") < 0)
+                    gridRow["Model"] = dr["Model"].ToString();
+                if (selLevels.IndexOf("ItemCode") < 0)
+                    gridRow["ItemCode"] = dr["ItemCode"].ToString();
+
+                int colIndex = diffDays / duration;
+                colIndex = colIndex + 2;
+                //if (colIndex >= maxColIndex)
+                //{
+                //    colIndex = maxColIndex;
+                //}
+                for (int i = 0; i < noOfColumns; i++)
+                {
+                    if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 4;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 5;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 6;
+                        break;
+                    }
+                    else if ((diffDays >= colDur) && (diffDays <= nextDur))
+                    {
+                        colIndex = 7;
+                        break;
+                    }
+                    else if (diffDays >= colDur)
+                    {
+                        colIndex = 8;
+                        break;
+                    }
+
+                    colDur = nextDur + 1;
+                    nextDur = nextDur + duration;
+                }
+
+                gridRow[colIndex] = dr["Qty"].ToString();
+
+                dsGrid.Tables[0].Rows.Add(gridRow);
+            }
+
+        }
+
+        return dsGrid;
+    }
+
     public DataSet UpdatePurchaseData(DataSet dsGrid)
     {
         BusinessLogic objBL = new BusinessLogic(sDataSource);
@@ -562,8 +1295,16 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
             condition = condition + " PI.itemcode='" + Product + "' ";         
         }
 
+
+        if (Request.QueryString["cond2"] != null)
+        {
+            cond2 = Request.QueryString["cond2"].ToString();
+            cond2 = Server.UrlDecode(cond2);
+        }      
+
+
         //DataSet purchaseData = rpt.GetPurchaseData(sDataSource, selecteditemCode);
-        DataSet purchaseData = objBL.GetPurchaseDataNew(sDataSource, selecteditemCode, condition);
+        DataSet purchaseData = objBL.GetPurchaseDataNew(sDataSource, selecteditemCode, condition, cond2);
 
         DataView dv = purchaseData.Tables[0].AsDataView();
 
@@ -1646,6 +2387,164 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
             Response.End();
         }
     }
+
+    public DataSet UpdateManufactureDataRaw(DataSet dsGrid)
+    {
+        BusinessLogic objBL = new BusinessLogic(sDataSource);
+
+        ReportsBL.ReportClass rpt = new ReportsBL.ReportClass();
+        //DataSet productData = rpt.GetProductData(sDataSource);
+        DataSet productData = objBL.ListProdMdlItcd("ProductName");
+
+
+
+        DateTime startDate;
+        DateTime endDate;
+
+        DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
+        DateTime etdt = Convert.ToDateTime(txtEndDate.Text);
+
+        if (Request.QueryString["startDate"] != null)
+        {
+            stdt = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
+        }
+        if (Request.QueryString["endDate"] != null)
+        {
+            etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
+        }
+
+        startDate = Convert.ToDateTime(stdt);
+        endDate = Convert.ToDateTime(etdt);
+
+
+        //DateTime refDate = DateTime.Parse("01/05/2011");
+
+        string selecteditemCode = "0";
+        string Product = "0";
+        if (Request.QueryString["Product"] != null)
+        {
+            Product = Request.QueryString["Product"].ToString();
+        }
+
+        int productindex = 0;
+        if (Request.QueryString["productindex"] != null)
+        {
+            productindex = Convert.ToInt32(Request.QueryString["productindex"].ToString());
+        }
+
+
+        if (Request.QueryString["cond3"] != null)
+        {
+            cond3 = Request.QueryString["cond3"].ToString();
+            cond3 = Server.UrlDecode(cond3);
+        }
+
+        if (productindex > 0)
+            selecteditemCode = Product;
+
+        //DataSet salesData = objBL.GetSalesData(sDataSource, selecteditemCode, cond, cond1);
+        DataSet salesData = objBL.GetManufactureDataNewRaw(sDataSource, selecteditemCode,"", cond3);
+
+        //DataSet salesData = objBL.GetSalesData(sDataSource, selecteditemCode);
+
+        int duration = int.Parse(txtDuration.Text);
+        int noOfColumns = int.Parse(txtColumns.Text);
+        if (Request.QueryString["duration"] != null)
+        {
+            duration = Convert.ToInt32(Request.QueryString["duration"].ToString());
+        }
+        if (Request.QueryString["noOfColumns"] != null)
+        {
+            noOfColumns = Convert.ToInt32(Request.QueryString["noOfColumns"].ToString());
+        }
+
+        int maxColIndex = dsGrid.Tables[0].Columns.Count - 1;
+
+        foreach (DataRow dr in salesData.Tables[0].Rows)
+        {
+            bool dupFlag = false;
+
+            string itemCode = dr["ItemCode"].ToString();
+            string Description = dr["ProductName"].ToString();
+            DateTime purchaseDate = DateTime.Parse(dr["CDate"].ToString());
+
+            //int diffDays = int.Parse(( endDate - purchaseDate).TotalDays.ToString());
+            int rowIndex = 0;
+
+            foreach (DataRow dR in dsGrid.Tables[0].Rows)
+            {
+                if (dR["itemCode"] != null)
+                {
+                    if (dR["itemCode"].ToString().Trim() == itemCode.Trim())
+                    {
+                        dupFlag = true;
+                        break;
+                    }
+                    rowIndex++;
+                }
+            }
+
+            if (dupFlag)
+            {
+                //int colIndex = diffDays / duration;
+                //colIndex = colIndex + 2;
+
+                //if (colIndex >= maxColIndex)
+                //{
+                //    colIndex = maxColIndex;
+                //}
+
+                double currQty = double.Parse(dr["Qty"].ToString());
+
+                for (int i = dsGrid.Tables[0].Columns.Count - 1; i > 1; i--)
+                {
+                    double purchaseQty = 0.0;
+
+                    if (currQty > 0)
+                    {
+                        if (dsGrid.Tables[0].Rows[rowIndex][i] != null)
+                        {
+                            if (dsGrid.Tables[0].Rows[rowIndex][i].ToString() != "")
+                            {
+                                if (i > 3)
+                                {
+                                    purchaseQty = double.Parse(dsGrid.Tables[0].Rows[rowIndex][i].ToString());
+                                    purchaseQty = currQty - purchaseQty;
+                                }
+
+                                if (purchaseQty > 0)
+                                {
+                                    dsGrid.Tables[0].Rows[rowIndex][i] = "0";
+                                    dsGrid.Tables[0].Rows[rowIndex].EndEdit();
+                                    dsGrid.Tables[0].Rows[rowIndex].AcceptChanges();
+                                }
+                                else
+                                {
+                                    dsGrid.Tables[0].Rows[rowIndex][i] = -(purchaseQty);
+                                    dsGrid.Tables[0].Rows[rowIndex].EndEdit();
+                                    dsGrid.Tables[0].Rows[rowIndex].AcceptChanges();
+                                }
+
+                                currQty = purchaseQty;
+                            }
+                        }
+                    }
+                    //if (i == 2)
+                    //{
+                    //    dsGrid.Tables[0].Rows[rowIndex][i] = currQty;
+                    //    dsGrid.Tables[0].Rows[rowIndex].EndEdit();
+                    //    dsGrid.Tables[0].Rows[rowIndex].AcceptChanges();
+                    //}
+                }
+            }
+
+
+        }
+
+        return dsGrid;
+    }
+
+
     public DataSet UpdateSalesData(DataSet dsGrid)
     {
         BusinessLogic objBL = new BusinessLogic(sDataSource);
