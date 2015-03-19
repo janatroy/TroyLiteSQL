@@ -41693,13 +41693,14 @@ public class BusinessLogic
 
 
 
-    public DataSet generateSalesReportDSE(DateTime dtSdate, DateTime dtEdate, string sDataSource, string option)
+    public DataSet generateSalesReportDSE(DateTime dtSdate, DateTime dtEdate, string sDataSource, string option,string branchcode)
     {
         /* Start Variable Declaration */
 
         string sBillDate = string.Empty;
         string sBillNo = string.Empty;
         string sCustomerName = string.Empty;
+        string sBranchCode = string.Empty;
         string sQry = string.Empty;
         string sPayMode = string.Empty;
         string sProductName = string.Empty;
@@ -41731,19 +41732,19 @@ public class BusinessLogic
 
         if (option == "Sales")
         {
-            sQry = "SELECT Billno,BillDate,Customername,paymode FROM tblSales WHERE   BillDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "# and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') Order by BillDate Desc";
+            sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branchcode + ") and  BillDate >='" + dtSdate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + dtEdate.ToString("yyyy-MM-dd") + "' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') Order by BillDate Desc";
         }
         else if (option == "Internal Transfer")
         {
-            sQry = "SELECT Billno,BillDate,Customername,paymode FROM tblSales WHERE   BillDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "# and tblsales.InternalTransfer in ('yes','YES') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
+            sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branchcode + ") and  BillDate >='" + dtSdate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + dtEdate.ToString("yyyy-MM-dd") + "' and tblsales.InternalTransfer in ('yes','YES') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
         }
         else if (option == "Delivery Note")
         {
-            sQry = "SELECT Billno,BillDate,Customername,paymode FROM tblSales WHERE   BillDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "# and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('yes','YES') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
+            sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branchcode + ") and  BillDate >='" + dtSdate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + dtEdate.ToString("yyyy-MM-dd") + "' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('yes','YES') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
         }
         else if (option == "Purchase Return")
         {
-            sQry = "SELECT Billno,BillDate,Customername,paymode FROM tblSales WHERE   BillDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "# and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('yes','YES') and tblsales.DeliveryNote in ('no','NO') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
+            sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branchcode + ") and  BillDate >='" + dtSdate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + dtEdate.ToString("yyyy-MM-dd") + "' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('yes','YES') and tblsales.DeliveryNote in ('no','NO') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
         }
 
         oleCmd.CommandText = sQry;
@@ -41772,6 +41773,8 @@ public class BusinessLogic
         dc = new DataColumn("Paymode");
         dt.Columns.Add(dc);
 
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
 
         ds.Tables.Add(dt);
 
@@ -41784,6 +41787,7 @@ public class BusinessLogic
             drNew["BillDate"] = string.Empty;
             drNew["CustomerName"] = string.Empty;
             drNew["Paymode"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
 
             ds.Tables[0].Rows.Add(drNew);
         }
@@ -41823,11 +41827,17 @@ public class BusinessLogic
                     //reportXMLWriter.WriteElementString("Paymode", sPayMode);
                     //oleSubConn.Close();
                 }
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sBranchCode = drParentQry["BranchCode"].ToString();
+
+                }
                 drNew = dt.NewRow();
                 drNew["Billno"] = sBillNo;
                 drNew["BillDate"] = sBillDate;
                 drNew["CustomerName"] = sCustomerName;
                 drNew["Paymode"] = sPayMode;
+                drNew["BranchCode"] = sBranchCode;
 
                 ds.Tables[0].Rows.Add(drNew);
             }

@@ -1617,13 +1617,14 @@ namespace ReportsBL
         }
 
 
-        public DataSet generateSalesReportDS(DateTime dtSdate, DateTime dtEdate, string sDataSource)
+        public DataSet generateSalesReportDS(DateTime dtSdate, DateTime dtEdate, string sDataSource,string branchcode)
         {
             /* Start Variable Declaration */
 
             string sBillDate = string.Empty;
             string sBillNo = string.Empty;
             string sCustomerName = string.Empty;
+            string sBranchCode = string.Empty;
             string sQry = string.Empty;
             string sPayMode = string.Empty;
             string sProductName = string.Empty;
@@ -1637,9 +1638,9 @@ namespace ReportsBL
 
             /* End Variable Declaration */
 
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
 
 
@@ -1647,16 +1648,16 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
 
-            sQry = "SELECT Billno,BillDate,Customername,paymode FROM tblSales WHERE   BillDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND BillDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "# Order by BillDate Desc";
+            sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branchcode + ") and BillDate >='" + dtSdate.ToString("yyyy-MM-dd") + "' AND BillDate <='" + dtEdate.ToString("yyyy-MM-dd") + "' Order by BillDate Desc";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
@@ -1680,6 +1681,9 @@ namespace ReportsBL
             dc = new DataColumn("Paymode");
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("BranchCode");
+            dt.Columns.Add(dc);
+
 
             ds.Tables.Add(dt);
 
@@ -1692,6 +1696,7 @@ namespace ReportsBL
                 drNew["BillDate"] = string.Empty;
                 drNew["CustomerName"] = string.Empty;
                 drNew["Paymode"] = string.Empty;
+                drNew["BranchCode"] = string.Empty;
 
                 ds.Tables[0].Rows.Add(drNew);
             }
@@ -1731,11 +1736,17 @@ namespace ReportsBL
                         //reportXMLWriter.WriteElementString("Paymode", sPayMode);
                         //oleSubConn.Close();
                     }
+                    if (drParentQry["BranchCode"] != null)
+                    {
+                        sBranchCode = drParentQry["BranchCode"].ToString();
+
+                    }
                     drNew = dt.NewRow();
                     drNew["Billno"] = sBillNo;
                     drNew["BillDate"] = sBillDate;
                     drNew["CustomerName"] = sCustomerName;
                     drNew["Paymode"] = sPayMode;
+                    drNew["BranchCode"] = sBranchCode;
 
                     ds.Tables[0].Rows.Add(drNew);
                 }
@@ -3729,11 +3740,12 @@ namespace ReportsBL
 
         }
 
-        public DataSet getProductsSales(int Billno, string sDataSource)
+
+        public DataSet getProductsSalesreport(int Billno, string sDataSource, string branchcode)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
@@ -3743,16 +3755,53 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            sQry = "SELECT tblSalesItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst, tblSalesItems.BillNo FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo WHERE (((tblSalesItems.BillNo)=" + Billno + "));";
+            //sQry = "SELECT tblSalesItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst, tblSalesItems.BillNo FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo WHERE (((tblSalesItems.BillNo)=" + Billno + "));";
+
+            sQry = " SELECT tblSalesItems.ItemCode, tblProductMaster.ProductName,tblProductMaster.ProductDesc, tblProductMaster.Model, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, " +
+                 " tblSalesItems.Vat,tblSales.BillNo,tblSalesItems.BranchCode,tblSales.BranchCode,tblSalesItems.cst,tblSales.BillNo " +
+                 " FROM tblSales INNER JOIN " +
+                 " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo AND tblSales.BranchCode = tblSalesItems.BranchCode INNER JOIN " +
+                 " tblProductMaster ON tblSalesItems.ItemCode = tblProductMaster.ItemCode " +
+                 " where (" + branchcode + ") and tblSalesItems.BillNo=" + Billno;
 
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
+            dsParentQry = new DataSet();
+            oleAdp.Fill(dsParentQry);
+            return dsParentQry;
+        }
+
+        public DataSet getProductsSales(int Billno, string sDataSource)
+        {
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
+            DataSet dsParentQry;
+            string sQry = string.Empty;
+            string sConStr = string.Empty;
+
+
+            /* Start Ms Access Database Connection Information */
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
+            sConStr = sDataSource;
+            //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
+            oleCmd.Connection = oleConn;
+            /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+            sQry = "SELECT tblSalesItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst, tblSalesItems.BillNo FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo WHERE (((tblSalesItems.BillNo)=" + Billno + "));";
+                     
+
+
+            oleCmd.CommandText = sQry;
+            oleCmd.CommandType = CommandType.Text;
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             return dsParentQry;
