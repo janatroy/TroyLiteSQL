@@ -753,6 +753,15 @@
                                                         <li class="color submenumenu"><a href="./FormulaExecution.aspx" runat="server" id="lnkTransferExecution">Process Manufacturing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                                                     </ul>
                                                 </li>
+                                                   <li class="color submenumenu"><a href="#" id="lnkmanufacturereport" runat="server"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Reports </a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlProductspecification.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Product specification Report</a></li>
+                                                             <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExcelFormulaExecution.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Process Manufacture  Report</a></li>
+                                                    </ul>
+                                                        
+                                                       
+                                                    
+                                                </li>
                                             </ul>
                                         </li>
                                         <%--<li class="color Mainmenu7"><a href="#"><img src="App_Themes/NewTheme/Images/TroyCommission.png" /></a>
@@ -789,7 +798,7 @@
                                                 </li>
                                                 <li class="color submenumenu"><a href="#" id="lnkprojectreport" runat="server"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Reports </a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProjectReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Project Report</a>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProjectReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Project Report</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
