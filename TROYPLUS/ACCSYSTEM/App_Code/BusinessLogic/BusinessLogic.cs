@@ -35847,6 +35847,61 @@ public class BusinessLogic
 
     }
 
+
+
+    public DataSet getSalesExporttoexcel(string selColumn, string field2, string condtion,string branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        string dbQry3 = string.Empty;
+        DataSet dsd = new DataSet();
+
+        string managerid = string.Empty;
+        bool defaultid;
+
+
+        //dbQry3 = "SELECT Username,BranchCheck,DefaultBranch from tblUserInfo  WHERE tblUserinfo.Username='" + username + "'";
+        //manager.Open();
+        //dsd = manager.ExecuteDataSet(CommandType.Text, dbQry3);
+
+        //if (dsd.Tables[0].Rows.Count > 0)
+        //    managerid = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranch"].ToString());
+        //defaultid = Convert.ToBoolean(dsd.Tables[0].Rows[0]["Branchcheck"]);
+
+        if (branch == "0")
+
+        //dbQry = ("SELECT " + selColumn + field2 + " FROM tblEmployee, tblLedger INNER JOIN (tblCategories INNER JOIN (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) ON tblCategories.CategoryID = tblProductMaster.CategoryID) ON tblLedger.LedgerID = tblSales.PayMode WHERE (((tblSales.Executive)=[tblemployee].[empno]))" + condtion + groupBy + ordrby);
+
+        //dbQry = ("SELECT " + selColumn + field2 + " FROM tblEmployee, tblLedger INNER JOIN (tblCategories INNER JOIN (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) ON tblCategories.CategoryID = tblProductMaster.CategoryID) ON tblLedger.LedgerID = tblSales.CustomerId WHERE (((tblSales.Executive)=[tblemployee].[empno]))" + condtion + groupBy + ordrby);
+
+        //dbQry = ("SELECT " + selColumn + field2 + " FROM tblEmployee, tblLedger INNER JOIN (tblCategories INNER JOIN (tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo) ON tblCategories.CategoryID = tblProductMaster.CategoryID) ON tblLedger.LedgerID = tblSales.CustomerId WHERE " + condtion + groupBy + ordrby);
+        {
+            dbQry = ("SELECT " + selColumn + field2 + " ,tblSales.BranchCode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE " + condtion);
+        }
+        else
+        {
+            dbQry = ("SELECT " + selColumn + field2 + " ,tblSales.BranchCode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE " + branch + " and " + condtion);
+        }
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return ds;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+    }
+
     public DataSet getSales1Sub(string selColumn, string field2, string condtion, string groupBy, string sordrby, string username)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -57113,7 +57168,7 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
 
         //sQry = "SELECT tbldaybook.TransDate,tbldaybook.DebtorID,tbldaybook.CreditorID,tbldaybook.Amount,tbldaybook.Narration,tbldaybook.VoucherType FROM tbldaybook inner join tblledger on tbldaybook.creditorid = tblledger.ledgerid or  tbldaybook.debtorid = tblledger.ledgerid where tblledger.groupid=3 AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate ";
-        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") Order by TransDate ";
+        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo,BranchCode FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") Order by TransDate ";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -57128,6 +57183,7 @@ public class BusinessLogic
 
         string date1 = string.Empty;
         string sNarration = string.Empty;
+        string sbranch = string.Empty;
 
         ds = new DataSet();
         dt = new DataTable();
@@ -57153,6 +57209,9 @@ public class BusinessLogic
         dt.Columns.Add(dc);
 
         dc = new DataColumn("Narration");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("BranchCode");
         dt.Columns.Add(dc);
 
         dc = new DataColumn("Amount");
@@ -57208,6 +57267,10 @@ public class BusinessLogic
                 if (drParentQry["Narration"] != null)
                 {
                     sNarration = Convert.ToString(drParentQry["Narration"].ToString());
+                }
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
                 if (drParentQry["ChequeNo"] != null)
                 {
@@ -57285,6 +57348,7 @@ public class BusinessLogic
                 drNew["DebtorID"] = sDebtorID;
                 drNew["CreditorID"] = sCreditorID;
                 drNew["Narration"] = sNarration;
+                drNew["BranchCode"] = sbranch;
                 drNew["VoucherType"] = sVoucherType;
                 drNew["ChequeNo"] = sChequeNo;
                 drNew["Amount"] = samount;
@@ -74317,5 +74381,180 @@ public class BusinessLogic
                 manager.Dispose();
 
         }
+    }
+
+    public DataSet generateReportDS(int iLedgerID, DateTime dtSdate, DateTime dtEdate, string sDataSource, int iOrder)
+    {
+        /* Start Variable Declaration */
+
+        double dDebitAmt = 0;
+        double dCreditAmt = 0;
+        string sTranDate = string.Empty;
+        string iQry = "";
+        string sParticulars = "";
+        string sbranch = "";
+        string sVoucherType = string.Empty;
+        string sQry = string.Empty;
+        string pQry = string.Empty;
+        string sConStr = string.Empty;
+        // OleDbConnection oleConn, oleSubConn;
+
+        SqlConnection oleConn, oleSubConn;
+        SqlCommand oleCmd;
+        SqlDataAdapter oleAdp;
+        // OleDbCommand oleCmd;
+        // OleDbDataAdapter oleAdp;
+        DataSet dsParentQry;
+        DataSet dsChildQry;
+        string sOrder;
+        if (iOrder == 0)
+            sOrder = "asc";
+        else
+            sOrder = "desc";
+        /* End Variable Declaration */
+
+        /* Start Ms Access Database Connection Information */
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+        sConStr = sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleCmd = new SqlCommand();
+        oleCmd.Connection = oleConn;
+        /* End Ms Access Database Connection Information */
+
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,BranchCode FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') Order by TransDate " + sOrder;
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+        oleAdp = new SqlDataAdapter(oleCmd);
+        dsParentQry = new DataSet();
+        oleAdp.Fill(dsParentQry);
+        /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
+
+
+        DataSet ds;
+        DataTable dt;
+        DataRow drNew;
+        DataColumn dc;
+
+
+        ds = new DataSet();
+        dt = new DataTable();
+        dc = new DataColumn("Date");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Particulars");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Debit");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Credit");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("VoucherType");
+        dt.Columns.Add(dc);
+
+
+        ds.Tables.Add(dt);
+
+        if (dsParentQry.Tables[0].Rows.Count == 0)
+        {
+            drNew = dt.NewRow();
+            drNew["Date"] = string.Empty;
+            drNew["Particulars"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
+            drNew["Debit"] = "0.00";
+            drNew["Credit"] = "0.00";
+            drNew["VoucherType"] = string.Empty;
+            ds.Tables[0].Rows.Add(drNew);
+        }
+        else
+        {
+            /* Iterating through the records and forming the custom datamodel and write into XML file */
+
+            foreach (DataRow drParentQry in dsParentQry.Tables[0].Rows)
+            {
+                dDebitAmt = 0;
+                dCreditAmt = 0;
+
+
+                if (drParentQry["TransDate"] != null)
+                {
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
+                }
+                if (drParentQry["VoucherType"] != null)
+                {
+                    sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                }
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
+                }
+
+                /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
+                if (drParentQry["DebtorID"] != null)
+                {
+                    if (Convert.ToInt32(drParentQry["DebtorID"].ToString()) == iLedgerID)
+                    {
+                        dDebitAmt = Convert.ToDouble(drParentQry["Amount"].ToString());
+                        pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
+                    }
+                }
+                if (drParentQry["CreditorID"] != null)
+                {
+                    if (Convert.ToInt32(drParentQry["CreditorID"].ToString()) == iLedgerID)
+                    {
+
+                        dCreditAmt = Convert.ToDouble(drParentQry["Amount"].ToString());
+                        pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString());
+                    }
+                }
+                /* End Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
+
+
+                if (pQry != "")
+                {
+                    oleCmd = new SqlCommand();
+                    oleCmd.CommandText = pQry;
+                    oleSubConn = new SqlConnection(CreateConnectionString(sConStr));
+                    oleCmd.Connection = oleSubConn;
+                    oleAdp = new SqlDataAdapter(oleCmd);
+                    dsChildQry = new DataSet();
+                    oleAdp.Fill(dsChildQry);
+                    if (dsChildQry != null)
+                    {
+                        if (dsChildQry.Tables[0].Rows.Count > 0)
+                        {
+                            sParticulars = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString() + " " + drParentQry["Narration"].ToString();
+                        }
+                    }
+                    oleSubConn.Close();
+                }
+
+                drNew = dt.NewRow();
+                drNew["Date"] = sTranDate;
+                drNew["Particulars"] = sParticulars;
+                drNew["BranchCode"] = sbranch;
+                drNew["Debit"] = dDebitAmt.ToString();
+                drNew["Credit"] = dCreditAmt.ToString();
+                drNew["VoucherType"] = sVoucherType;
+
+                ds.Tables[0].Rows.Add(drNew);
+            }
+
+
+
+        }
+
+
+        /* Clossing the DB Connection */
+        oleConn.Close();
+
+        return ds;
+
+
     }
 }

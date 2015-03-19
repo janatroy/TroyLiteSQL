@@ -208,7 +208,7 @@
                                         </td>
                                         
                                         <td  style="width: 18%">
-                                            <asp:Button ID="BtnClearFilter" runat="server" OnClick="btnClearFilter_Click" EnableTheming="false" CssClass="ClearFilter66"
+                                            <asp:Button ID="BtnClearFilter" runat="server" Visible="false" OnClick="btnClearFilter_Click" EnableTheming="false" CssClass="ClearFilter66"
                                                         Text="" />
                                         </td>
                                         <td  style="width: 18%">

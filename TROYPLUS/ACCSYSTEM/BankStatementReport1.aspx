@@ -223,8 +223,9 @@
                     </PageHeaderTemplate>
                     <Columns>
                         <asp:BoundField ItemStyle-Width="5%" DataField="Date" HeaderText="Date" ItemStyle-HorizontalAlign="Right" />
-                        <asp:BoundField ItemStyle-Width="53%" DataField="Particulars" HeaderText="Particulars" />
-                        <asp:BoundField ItemStyle-Width="20%" DataField="VoucherType" HeaderText="Voucher Type" />
+                        <asp:BoundField ItemStyle-Width="48%" DataField="Particulars" HeaderText="Particulars" />
+                        <asp:BoundField ItemStyle-Width="10%" DataField="BranchCode" HeaderText="Branch" />
+                        <asp:BoundField ItemStyle-Width="15%" DataField="VoucherType" HeaderText="Voucher Type" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Debit" HeaderStyle-HorizontalAlign="Right"
                             HeaderText="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Credit" HeaderStyle-HorizontalAlign="Right"

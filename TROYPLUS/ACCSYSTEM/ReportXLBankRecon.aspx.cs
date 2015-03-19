@@ -206,6 +206,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("TransDate"));
                      dt.Columns.Add(new DataColumn("Name"));
                      dt.Columns.Add(new DataColumn("Ledger Name"));
+                     dt.Columns.Add(new DataColumn("Branch"));
                      dt.Columns.Add(new DataColumn("Amount"));
                      dt.Columns.Add(new DataColumn("Narration"));
                      dt.Columns.Add(new DataColumn("Voucher Type"));
@@ -224,6 +225,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                          dr_final6["TransDate"] = dr["TransDate"];
                          dr_final6["Name"] = dr["Debtor"];
                          dr_final6["Ledger Name"] = dr["Creditor"];
+                         dr_final6["Branch"] = dr["BranchCode"];
                          dr_final6["Amount"] = dr["Amount"];
                          dr_final6["Narration"] = dr["Narration"];
                          dr_final6["ChequeNo"] = dr["ChequeNo"];
@@ -258,6 +260,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("TransDate"));
                      dt.Columns.Add(new DataColumn("Name"));
                      dt.Columns.Add(new DataColumn("Ledger Name"));
+                     dt.Columns.Add(new DataColumn("Branch"));
                      dt.Columns.Add(new DataColumn("Amount"));
                      dt.Columns.Add(new DataColumn("Narration"));
                      dt.Columns.Add(new DataColumn("Voucher Type"));
@@ -276,6 +279,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                          dr_final6["TransDate"] = dr["TransDate"];
                          dr_final6["Name"] = dr["Debtor"];
                          dr_final6["Ledger Name"] = dr["Creditor"];
+                         dr_final6["Branch"] = dr["BranchCode"];
                          dr_final6["Amount"] = dr["Amount"];
                          dr_final6["Narration"] = dr["Narration"];
                          dr_final6["ChequeNo"] = dr["ChequeNo"];
@@ -310,6 +314,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("TransDate"));
                      dt.Columns.Add(new DataColumn("Name"));
                      dt.Columns.Add(new DataColumn("Ledger Name"));
+                     dt.Columns.Add(new DataColumn("BranchCode"));
                      dt.Columns.Add(new DataColumn("Amount"));
                      dt.Columns.Add(new DataColumn("Narration"));
                      dt.Columns.Add(new DataColumn("Voucher Type"));
@@ -328,6 +333,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                          dr_final6["TransDate"] = dr["TransDate"];
                          dr_final6["Name"] = dr["Debtor"];
                          dr_final6["Ledger Name"] = dr["Creditor"];
+                         dr_final6["Branch"] = dr["BranchCode"];
                          dr_final6["Amount"] = dr["Amount"];
                          dr_final6["Narration"] = dr["Narration"];
                          dr_final6["ChequeNo"] = dr["ChequeNo"];

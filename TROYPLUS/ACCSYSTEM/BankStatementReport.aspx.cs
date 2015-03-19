@@ -14,7 +14,8 @@ using System.Xml.Linq;
 using System.Data.OleDb;
 using System.Xml;
 using System.IO;
-
+using System.Data;
+using ClosedXML.Excel;
 public partial class BankStatementReport : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
@@ -86,7 +87,7 @@ public partial class BankStatementReport : System.Web.UI.Page
             //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
             //    string sDataSource = Server.MapPath("App_Data\\Store0910.mdb");
 
-            ReportsBL.ReportClass rptBankReport;
+          //  ReportsBL.ReportClass rptBankReport;
             bnkPanel.Visible = true;
 
             iLedgerID = Convert.ToInt32(drpBankName.SelectedItem.Value);
@@ -94,8 +95,9 @@ public partial class BankStatementReport : System.Web.UI.Page
             endDate = Convert.ToDateTime(txtEndDate.Text);
             lblStartDate.Text = txtStartDate.Text;
             lblEndDate.Text = txtEndDate.Text;
-            rptBankReport = new ReportsBL.ReportClass();
-            DataSet ds = rptBankReport.generateReportDS(iLedgerID, startDate, endDate, sDataSource, 0);
+           // rptBankReport = new ReportsBL.ReportClass();
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            DataSet ds = bl.generateReportDS(iLedgerID, startDate, endDate, sDataSource, 0);
 
             double credit = 0;
             double debit = 0;
@@ -104,10 +106,11 @@ public partial class BankStatementReport : System.Web.UI.Page
             #region Export To Excel
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Bank Statement");
                 dt.Columns.Add(new DataColumn("Date"));
                 dt.Columns.Add(new DataColumn("Particulars"));
-                dt.Columns.Add(new DataColumn("Voucher Type"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
+                dt.Columns.Add(new DataColumn("Voucher Type"));             
                 dt.Columns.Add(new DataColumn("Debit"));
                 dt.Columns.Add(new DataColumn("Credit"));
 
@@ -119,6 +122,7 @@ public partial class BankStatementReport : System.Web.UI.Page
                     DataRow dr_export = dt.NewRow();
                     dr_export["Date"] = dr["Date"];
                     dr_export["Particulars"] = dr["Particulars"];
+                    dr_export["BranchCode"] = dr["BranchCode"];
                     dr_export["Voucher Type"] = dr["VoucherType"];
                     dr_export["Debit"] = dr["Debit"];
                     debit = debit + Convert.ToDouble(dr["Debit"]);
@@ -130,6 +134,7 @@ public partial class BankStatementReport : System.Web.UI.Page
                 DataRow dr_export2 = dt.NewRow();
                 dr_export2["Date"] = "";
                 dr_export2["Particulars"] = "";
+                dr_export2["BranchCode"] = "";
                 dr_export2["Voucher Type"] = "";
                 dr_export2["Debit"] = "";
                 dr_export2["Credit"] = "";
@@ -138,6 +143,7 @@ public partial class BankStatementReport : System.Web.UI.Page
                 DataRow dr_export213 = dt.NewRow();
                 dr_export213["Date"] = "";
                 dr_export213["Particulars"] = "Total";
+                dr_export213["BranchCode"] = "";
                 dr_export213["Voucher Type"] = "";
                 dr_export213["Debit"] = debit;
                 dr_export213["Credit"] = credit;
@@ -146,6 +152,7 @@ public partial class BankStatementReport : System.Web.UI.Page
                 DataRow dr_export21 = dt.NewRow();
                 dr_export21["Date"] = "";
                 dr_export21["Particulars"] = "";
+                dr_export21["BranchCode"] = "";
                 dr_export21["Voucher Type"] = "";
                 dr_export21["Debit"] = "";
                 dr_export21["Credit"] = "";
@@ -157,6 +164,7 @@ public partial class BankStatementReport : System.Web.UI.Page
                 DataRow dr_export23 = dt.NewRow();
                 dr_export23["Date"] = "";
                 dr_export23["Particulars"] = "Difference";
+                dr_export23["BranchCode"] = "";
                 dr_export23["Voucher Type"] = "";
                 if (Diffamt >= 0)
                 {
@@ -166,11 +174,18 @@ public partial class BankStatementReport : System.Web.UI.Page
                 else if (Diffamt <= 0)
                 {
                     dr_export23["Debit"] = 0;
-                    dr_export23["Credit"] = Diffamt;
+                    if (Diffamt < 0)
+                    {
+                        dr_export23["Credit"] = -Diffamt;
+                    }
+                    else
+                    {
+                        dr_export23["Credit"] = Diffamt;
+                    }
                 }
                 dt.Rows.Add(dr_export23);
 
-                ExportToExcel("Bank Statement.xls", dt);
+                ExportToExcel("Bank Statement.xlsx", dt);
             }
             #endregion
         }
@@ -197,23 +212,24 @@ public partial class BankStatementReport : System.Web.UI.Page
     {
         if (dt.Rows.Count > 0)
         {
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+               // string filename = "Absolete report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+
         }
     }
 

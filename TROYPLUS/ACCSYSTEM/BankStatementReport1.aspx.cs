@@ -72,7 +72,7 @@ public partial class BankStatementReport1 : System.Web.UI.Page
                 DateTime startDate, endDate;
                 int iLedgerID = 0;
 
-                ReportsBL.ReportClass rptBankReport;
+               // ReportsBL.ReportClass rptBankReport;
                 bnkPanel.Visible = true;
 
                 //iLedgerID = Convert.ToInt32(drpBankName.SelectedItem.Value);
@@ -100,8 +100,9 @@ public partial class BankStatementReport1 : System.Web.UI.Page
 
                 lblStartDate.Text = startDate.ToString();
                 lblEndDate.Text = endDate.ToString();
-                rptBankReport = new ReportsBL.ReportClass();
-                DataSet ds = rptBankReport.generateReportDS(iLedgerID, startDate, endDate, sDataSource, 0);
+              //  rptBankReport = new ReportsBL.ReportClass();
+                BusinessLogic bl1 = new BusinessLogic(sDataSource);
+                DataSet ds = bl1.generateReportDS(iLedgerID, startDate, endDate, sDataSource, 0);
                 gvBank.DataSource = ds;
                 gvBank.DataBind();
                 bnkPanel.Visible = true;
@@ -320,8 +321,8 @@ public partial class BankStatementReport1 : System.Web.UI.Page
                 dDiffamt = damt - camt;
                 cDiffamt = camt - damt;
 
-                e.Row.Cells[3].Text = debit.ToString("f2");
-                e.Row.Cells[4].Text = credit.ToString("f2");
+                e.Row.Cells[4].Text = debit.ToString("f2");
+                e.Row.Cells[5].Text = credit.ToString("f2");
 
             }
             else
