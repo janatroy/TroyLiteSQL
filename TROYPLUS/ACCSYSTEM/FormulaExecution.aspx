@@ -669,7 +669,7 @@
 
                                                 </td>
                                                 <td style="width: 10%" align="right">
-                                                    <asp:Button ID="btnExportToExcel" runat="server" CssClass="exportexl6forproject" OnClientClick="window.open('ReportExcelFormulaExecution.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');"
+                                                    <asp:Button ID="btnExportToExcel" runat="server" CssClass="exportexl6forproject" OnClientClick="window.open('ReportExcelFormulaExecution.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=300,width=600,left=425,top=220, scrollbars=yes');"
                                                         EnableTheming="false"></asp:Button>
                                                 </td>
                                                 <td style="width: 35%"></td>
