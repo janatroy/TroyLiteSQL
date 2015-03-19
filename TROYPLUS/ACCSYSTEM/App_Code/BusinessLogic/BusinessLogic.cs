@@ -8729,7 +8729,7 @@ public class BusinessLogic
         }
     }
 
-    public void UpdateProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int BuyUnit, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int Productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int Deviation, string IsActive, DataSet dsprice)
+    public void UpdateProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int BuyUnit, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int Productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int Deviation, string IsActive, DataSet dsprice, DataTable dtSalesIncentive)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -8883,6 +8883,18 @@ public class BusinessLogic
             //        ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, oldmrp, olddp, oldnlc, block, MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), mrpdat.ToShortDateString(), mrpprevdat.ToShortDateString(), dpdat.ToShortDateString(), dpprevdat.ToShortDateString(), nlcdat.ToShortDateString(), nlcprevdat.ToShortDateString());
             //    manager.ExecuteDataSet(CommandType.Text, dbQry2);
             //}
+            // Sales Incentive Update
+            if (dtSalesIncentive != null)
+            {
+                if (dtSalesIncentive.Rows.Count > 0)
+                {
+                    DataRow dr = dtSalesIncentive.Rows[0];
+                    dbQry = string.Format("UPDATE tblProdSalesIncentive SET ItemCode='{0}',Slab1={1},Slab2={2},Slab3={3},Slab4={4},Slab5={5},EffectiveDate='{6}',LastUpdatedDate='{7}' WHERE Id={8}",
+                                dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString(), dr["Id"].ToString());
+
+                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                }
+            }
 
             if (dsAudit != null)
             {
@@ -8970,7 +8982,7 @@ public class BusinessLogic
         }
     }
 
-    public void InsertProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, int BuyUnit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int deviation, string IsActive, DataSet dsprice, DataSet dsstock) //Jolo Barcode
+    public void InsertProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, int BuyUnit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int deviation, string IsActive, DataSet dsprice, DataSet dsstock, DataTable dtSalesIncentive) //Jolo Barcode
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -9127,6 +9139,19 @@ public class BusinessLogic
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
                     }
+                }
+            }
+
+            // Add product sales incentive
+            if (dtSalesIncentive != null)
+            {
+                if (dtSalesIncentive.Rows.Count > 0)
+                {
+                    DataRow dr = dtSalesIncentive.Rows[0];
+                    dbQry = string.Format("INSERT INTO tblProdSalesIncentive(ItemCode,Slab1,Slab2,Slab3,Slab4,Slab5,EffectiveDate,LastUpdatedDate) VALUES('{0}',{1},{2},{3},{4},{5},'{6}','{7}')",
+                                dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString());
+
+                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 }
             }
 
@@ -67288,10 +67313,10 @@ public class BusinessLogic
 
             if (string.IsNullOrEmpty(validationMsg))
             {
-            dbQry = string.Format(@"UPDATE tblAttendanceSummary SET DateSubmitted='{0}',Status='{1}' WHERE AttendanceId ={2}", DateTime.Now.ToString(), "Submitted", attendanceID.ToString());
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                dbQry = string.Format(@"UPDATE tblAttendanceSummary SET DateSubmitted='{0}',Status='{1}' WHERE AttendanceId ={2}", DateTime.Now.ToString("MM/dd/yyyy"), "Submitted", attendanceID.ToString());
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 return true;
-        }
+            }
             else
             {
                 return false;
@@ -67989,7 +68014,7 @@ public class BusinessLogic
                         allowedCount = wholePart + 0.5;
                     }
                     else
-                {
+                    {
                         allowedCount = wholePart;
                     }
 
@@ -68209,7 +68234,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry = string.Format(@"SELECT ep.PayslipId,ep.PayrollDate,e.empFirstName as EmployeeName,e.empDesig as Designation,er.Role_Name as Role,e.empDOJ as DateOfJoining,Payments,Deductions,(Payments-Deductions) as TotalPayable, LossOfPayDays, OtherAllowance, OtherDeductions
+            dbQry = string.Format(@"SELECT ep.PayslipId,ep.PayrollDate,e.empFirstName as EmployeeName,e.empDesig as Designation,er.Role_Name as Role,e.empDOJ as DateOfJoining,Payments,Deductions,(Payments-Deductions) as TotalPayable, LossOfPayDays, OtherAllowance, OtherDeductions,SalesIncentive
                                     FROM ((tblEmployeePayslip ep INNER JOIN
                                                 tblEmployee e ON ep.EmployeeId = e.empno)
                                             INNER JOIN tblEmployeeRoles er ON er.Id = e.EmployeeRoleId)
@@ -68255,10 +68280,11 @@ public class BusinessLogic
 
             double otherAllowance = 0;
             double otherDeduction = 0;
+            double salesIncentive = 0;
             double.TryParse(drPaySlip["OtherAllowance"].ToString(), out otherAllowance);
             double.TryParse(drPaySlip["OtherDeductions"].ToString(), out otherDeduction);
-
-            drPaySlip["TotalPayable"] = newTotalPayable + otherAllowance - otherDeduction;
+            double.TryParse(drPaySlip["SalesIncentive"].ToString(), out salesIncentive);
+            drPaySlip["TotalPayable"] = newTotalPayable + otherAllowance - otherDeduction + salesIncentive;
         }
     }
     #endregion
@@ -68549,7 +68575,7 @@ public class BusinessLogic
                 userInfo.RoleId = roleId;
 
                 return userInfo;
-    }
+            }
             else
                 return null;
 
@@ -74251,4 +74277,35 @@ public class BusinessLogic
         }
     }
 
+    public DataTable GetProductSalesIncentive(string ItemCode)
+    {
+        DBManager manager = new DBManager();
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        string dbQry = string.Empty;
+
+        try
+        {
+            manager.Open();
+            dbQry = string.Format(@"SELECT * FROM tblProdSalesIncentive WHERE ItemCode='{0}'", Itemcode);
+            DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            if (ds != null)
+            {
+                if (ds.Tables.Count > 0)
+                {
+                    return ds.Tables[0];
+                }
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+
+        }
+    }
 }

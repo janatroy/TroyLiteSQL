@@ -80,3 +80,7 @@ C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\bin\Debug\FtpClien
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\bin\Debug\FtpClient.pdb
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\obj\Debug\FtpClient.dll
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\obj\Debug\FtpClient.pdb
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\FtpClient\bin\Debug\FtpClient.dll
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\FtpClient\bin\Debug\FtpClient.pdb
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\FtpClient\obj\Debug\FtpClient.dll
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\FtpClient\obj\Debug\FtpClient.pdb
