@@ -19,6 +19,7 @@ public partial class SalesReport1 : System.Web.UI.Page
     public string sDataSource = string.Empty;
     Double SumCashSales = 0.0d;
     BusinessLogic objBL;
+    string cond;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -97,6 +98,10 @@ public partial class SalesReport1 : System.Web.UI.Page
                 if (Request.QueryString["option"] != null)
                     option = Request.QueryString["option"].ToString();
 
+
+                cond = Request.QueryString["cond"].ToString();
+                cond = Server.UrlDecode(cond);
+
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
                 lblStartDate.Text = startDate.ToString();
@@ -108,11 +113,11 @@ public partial class SalesReport1 : System.Web.UI.Page
 
                 if (option == "All")
                 {
-                    ds = rptSalesReport.generateSalesReportDS(startDate, endDate, sDataSource);
+                    ds = rptSalesReport.generateSalesReportDS(startDate, endDate, sDataSource, cond);
                 }
                 else
                 {
-                    ds = bl.generateSalesReportDSE(startDate, endDate, sDataSource, option);
+                    ds = bl.generateSalesReportDSE(startDate, endDate, sDataSource, option, cond);
                 }
 
                 gvSales.DataSource = ds;
@@ -211,11 +216,11 @@ public partial class SalesReport1 : System.Web.UI.Page
 
             if (optionmethod.SelectedItem.Text == "All")
             {
-                ds = rptSalesReport.generateSalesReportDS(startDate, endDate, sDataSource);
+                ds = rptSalesReport.generateSalesReportDS(startDate, endDate, sDataSource, "");
             }
             else
             {
-                ds = bl.generateSalesReportDSE(startDate, endDate, sDataSource, option);
+                ds = bl.generateSalesReportDSE(startDate, endDate, sDataSource, option, "");
             }
 
             gvSales.DataSource = ds;
@@ -365,7 +370,7 @@ public partial class SalesReport1 : System.Web.UI.Page
 
         //ds = objBL.getSalesreport(startDate, endDate, "All", "All", "All");
 
-        ds= objBL.getSales1(selColumn, field2, condtion, "", "","");
+        ds = objBL.getSales1(selColumn, field2, condtion, "", "", "");
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -630,6 +635,7 @@ public partial class SalesReport1 : System.Web.UI.Page
                 GridView gv = e.Row.FindControl("gvProducts") as GridView;
                 Label lblPurchaseID = e.Row.FindControl("lblBillno") as Label;
                 Label lblPaymode = e.Row.FindControl("lblPaymode") as Label;
+                Label lblBranchCode = e.Row.FindControl("lblBranchCode") as Label;
                 if (lblPaymode.Text == "1")
                 {
                     lblPaymode.Text = "Cash";
@@ -645,11 +651,15 @@ public partial class SalesReport1 : System.Web.UI.Page
                 if (lblPurchaseID.Text != "")
                 {
                     int billno = Convert.ToInt32(lblPurchaseID.Text);
+                    string branch = "tblSalesItems.BranchCode='" + lblBranchCode.Text + "'";
                     ReportsBL.ReportClass rptProduct = new ReportsBL.ReportClass();
                     if (Request.Cookies["Company"] != null)
                         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
-                    DataSet ds = rptProduct.getProductsSales(billno, sDataSource);
+                    //cond = Request.QueryString["cond"].ToString();
+                    //cond = Server.UrlDecode(cond);
+
+                    DataSet ds = rptProduct.getProductsSalesreport(billno, sDataSource, branch);
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         gv.DataSource = ds;

@@ -1356,6 +1356,16 @@ public partial class Purchase : System.Web.UI.Page
                                 txtQty.Focus();
                                 return;
                             }
+                            //else if (txtRtnQty.Visible==true)
+                            //{
+                            //    if (txtRtnQty.Text == "" || txtRtnQty.Text == "0")
+                            //    {
+                            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Return Quantity in row " + col + " ')", true);
+                            //        txtQty.Focus();
+                            //        checkflag = true;
+                            //        return;
+                            //    }
+                            //}
                             else if (txtRate.Text == "" || txtRate.Text == "0")
                             {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Rate in row " + col + " ')", true);

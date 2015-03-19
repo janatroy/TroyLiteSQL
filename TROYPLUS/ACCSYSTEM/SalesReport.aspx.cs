@@ -19,6 +19,9 @@ public partial class SalesReport : System.Web.UI.Page
     public string sDataSource = string.Empty;
     Double SumCashSales = 0.0d;
     BusinessLogic objBL;
+    private string connection = string.Empty;
+    string brncode;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -75,12 +78,54 @@ public partial class SalesReport : System.Web.UI.Page
                         }
                     }
                 }
+
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstBranch.Items.Clear();
+
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+            lstBranch.Items.Add(new ListItem("All", "0"));
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
     }
 
     public static string GetMacAdd()
@@ -142,6 +187,26 @@ public partial class SalesReport : System.Web.UI.Page
 
     }
 
+    protected string getCond()
+    {
+        string cond = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond += " tblSales.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond = cond.TrimEnd(',');
+        cond = cond.Replace(",", "or");
+        return cond;
+    }
+
+
     protected void btnReport_Click(object sender, EventArgs e)
     {
         try
@@ -163,6 +228,9 @@ public partial class SalesReport : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
 
+            string cond = "";
+            cond = getCond();
+
             //if (optionmethod.SelectedItem.Text == "All")
             //{
             //    ds = rptSalesReport.generateSalesReportDS(startDate, endDate, sDataSource);
@@ -176,8 +244,14 @@ public partial class SalesReport : System.Web.UI.Page
             //gvSales.DataBind();
             SalesPanel.Visible = false;
             div1.Visible = true;
-
-            Response.Write("<script language='javascript'> window.open('SalesReport1.aspx?startDate=" + startDate + "&endDate=" + endDate + "&option=" + option + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            if (lstBranch.SelectedIndex == -1)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+            }
+            else
+            {
+                Response.Write("<script language='javascript'> window.open('SalesReport1.aspx?startDate=" + startDate + "&cond=" + Server.UrlEncode(cond) + "&endDate=" + endDate + "&option=" + option + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            }
         }
         catch (Exception ex)
         {
@@ -620,6 +694,19 @@ public partial class SalesReport : System.Web.UI.Page
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+    protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        foreach (ListItem li in lstBranch.Items)
+        {
+            if (lstBranch.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }
         }
     }
 }

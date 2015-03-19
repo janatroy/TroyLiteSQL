@@ -57,3 +57,8 @@ C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\bin\Debug\SMSLibr
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\bin\Debug\SMSLibrary.pdb
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.dll
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.pdb
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\SMSLibrary\bin\Debug\SMSLibrary.dll
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\SMSLibrary\bin\Debug\SMSLibrary.pdb
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.csprojResolveAssemblyReference.cache
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.dll
+D:\TroyLite_SQL_19MAR\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.pdb

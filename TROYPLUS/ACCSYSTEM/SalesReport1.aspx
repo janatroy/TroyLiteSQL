@@ -23,7 +23,7 @@
         function switchViews(obj, imG) {
             var div = document.getElementById(obj);
             var img = document.getElementById(imG);
-
+           
             if (div.style.display == "none") {
                 div.style.display = "inline";
 
@@ -323,6 +323,14 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="Customername" HeaderText="Customer" ItemStyle-Width="20%" />
+                    <%--  <asp:BoundField DataField="BranchCode" HeaderText="BranchCode" ItemStyle-Width="20%" />--%>
+                     <asp:TemplateField HeaderText="BranchCode">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ItemStyle-Width="3%"
+                                ID="lblBranchCode" runat="server" Text='<%# Eval("BranchCode") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+
                     <asp:TemplateField HeaderText="Paymode">
                         <ItemTemplate>
                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ItemStyle-Width="3%"
@@ -332,14 +340,14 @@
                     <asp:TemplateField HeaderText="Sold Items" ItemStyle-Width="62%" ItemStyle-HorizontalAlign="Left">
                         <ItemTemplate>
                             <br />
-                            <a href="javascript:switchViews('div<%# Eval("Billno") %>', 'imgdiv<%# Eval("Billno") %>');"
+                            <a href="javascript:switchViews('div<%# Eval("Billno") + "," + Eval("BranchCode")%>', 'imgdiv<%# Eval("Billno")%>');"
                                 style="text-decoration: none;">
-                                <img id="imgdiv<%# Eval("Billno") %>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
+                                <img id="imgdiv<%# Eval("Billno")%>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
                             </a>
                             <%--<a style="text-decoration:none" href='BalanceSheetLevel2.aspx?HeadingName=<%# Eval("HeadingName") %>&HeadingID=<%# Eval("HeadingID") %>'><asp:Label style="font-family:'Trebuchet MS'; font-size:11px;  " ID="lblparticulars" runat="server" Text = '<%# Eval("HeadingName") %>' /></a>--%>
                             View Bill Summary
                             <br />
-                            <div id="div<%# Eval("Billno") %>" style="display: none; position: relative; left: 25px;">
+                            <div id="div<%# Eval("Billno") + "," + Eval("BranchCode") %>" style="display: none; position: relative; left: 25px;">
                                 <wc:ReportGridView runat="server" BorderWidth="1" ID="gvProducts" ShowFooter="true"
                                     AutoGenerateColumns="false" PrintPageSize="23" AllowPrintPaging="true" Width="90%"
                                     Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvProducts_RowDataBound">
@@ -355,6 +363,11 @@
                                         <asp:TemplateField HeaderText="Item Code" ItemStyle-Width="3%">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblItemCode" runat="server" Text='<%# Eval("ItemCode") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Item Code" ItemStyle-Width="3%">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblBranchCode" runat="server" Text='<%# Eval("BranchCode") %>' />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Product Name" ItemStyle-Width="57%">

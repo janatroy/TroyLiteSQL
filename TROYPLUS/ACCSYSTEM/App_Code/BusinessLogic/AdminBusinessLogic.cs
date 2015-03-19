@@ -117,6 +117,7 @@ public class AdminBusinessLogic
                     dtPaySlipInfo.Columns.Add(new DataColumn("LossOfPayDays"));
                     dtPaySlipInfo.Columns.Add(new DataColumn("OtherAllowance"));
                     dtPaySlipInfo.Columns.Add(new DataColumn("OtherDeductions"));
+                    dtPaySlipInfo.Columns.Add(new DataColumn("SalesIncentive"));
 
                     UpdatePayrollStatus(payrollId, "In Progress");
 
@@ -308,8 +309,8 @@ public class AdminBusinessLogic
             {
                 int employeeNo = 0;
                 int.TryParse(dr[0].ToString(), out employeeNo);
-                dbQry = string.Format(@"INSERT INTO tblEmployeePayslip (EmployeeId,PayrollDate,PayrollMonth,Deductions,Payments,PayrollId,PayrollYear,LossOfPayDays,OtherAllowance,OtherDeductions) 
-                                    VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9})", employeeNo, DateTime.Now.Date, month, dr[1], dr[2], payrollId, year, dr["LossOfPayDays"], dr["OtherAllowance"], dr["OtherDeductions"]);
+                dbQry = string.Format(@"INSERT INTO tblEmployeePayslip (EmployeeId,PayrollDate,PayrollMonth,Deductions,Payments,PayrollId,PayrollYear,LossOfPayDays,OtherAllowance,OtherDeductions,SalesIncentive) 
+                                    VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10})", employeeNo, DateTime.Now.Date, month, dr[1], dr[2], payrollId, year, dr["LossOfPayDays"], dr["OtherAllowance"], dr["OtherDeductions"], dr["SalesIncentive"]);
 
                 if (manager.ExecuteNonQuery(CommandType.Text, dbQry) <= 0)
                 {
@@ -421,7 +422,8 @@ public class AdminBusinessLogic
 
             int totalDaysInTheMonth = DateTime.DaysInMonth(year, month);
 
-
+            // Check product sales incentive eligibility
+            double salesIncentiveAmount = GetSalesIncentiveForEmployee(employeeNo, year, month);
 
             payslipInfoRow[0] = employeeNo;
             payslipInfoRow[1] = totalDeductions;
@@ -429,7 +431,7 @@ public class AdminBusinessLogic
             payslipInfoRow[3] = totalLeavesDaysAppliedLeaves;
             payslipInfoRow[4] = otherAllowance;
             payslipInfoRow[5] = otherDeduction;
-
+            payslipInfoRow[6] = salesIncentiveAmount;
             return true;
         }
         catch (Exception ex)
@@ -442,6 +444,120 @@ public class AdminBusinessLogic
         {
 
         }
+    }
+
+    private double GetSalesIncentiveForEmployee(int employeeNo, int year, int month)
+    {
+        // Check eligibilty from product sales.
+        DBManager manager = new DBManager();
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+
+        int empSalesIncentive = 0;
+        try
+        {
+            manager.Open();
+            string dbQuery = string.Format(@"SELECT si.BillNo,s.BillDate,ExecutiveName,CustomerId, si.ItemCode,pp.Price,Rate,(Rate-pp.Price) As Profit, (((Rate-pp.Price)*100)/pp.Price) as ProfitMargin
+                            FROM tblSalesItems si
+                            JOIN tblSales s on S.BillNo = si.BillNo
+                            JOIN tblProductPrices pp on pp.ItemCode = si.ItemCode AND UPPER(pp.PriceName)='DP'
+                            WHERE ExecutiveName={0} AND YEAR(s.BillDate) ={1} AND MONTH(s.BillDate)={2}", employeeNo, year, month);
+            DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQuery);
+
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string itemCode = dr["ItemCode"].ToString();
+                    int profitAmt = int.Parse(dr["Profit"].ToString());
+                    int profitPercent = 0;
+                    int.TryParse(dr["ProfitMargin"].ToString(), out profitPercent);
+                    int incentivePercent = GetIncentivePercentForProduct(itemCode, profitPercent);
+                    int incentiveAmt = (profitAmt * incentivePercent) / 100;
+                    empSalesIncentive += incentiveAmt;
+                }
+            }
+            return empSalesIncentive;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+
+        }
+    }
+
+    private int GetIncentivePercentForProduct(string itemCode, int profitPercent)
+    {
+        DBManager manager = new DBManager();
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+
+        int empSalesIncentivePercent = 0;
+        string incentiveSlab = getIncentiveSlab(profitPercent);
+
+        try
+        {
+            if (!string.IsNullOrEmpty(incentiveSlab))
+            {
+                manager.Open();
+                string dbQuery = string.Format(@"SELECT {0}
+                            FROM tblProdSalesIncentive                            
+                            WHERE ItemCode={1}", incentiveSlab, itemCode);
+                DataSet ds = manager.ExecuteDataSet(CommandType.Text, dbQuery);
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    var tempValue = ds.Tables[0].Rows[0][0].ToString();
+                    int.TryParse(tempValue, out empSalesIncentivePercent);
+                }
+            }
+            return empSalesIncentivePercent;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+
+        }
+    }
+
+    private string getIncentiveSlab(int profitPercent)
+    {
+        string slab = string.Empty;
+        if (profitPercent >= 91)
+        {
+            // slab 5
+            slab = "FifthSlab";
+        }
+        else if (profitPercent >= 61)
+        {
+            // slab #4
+            slab = "FourthSlab";
+        }
+        else if (profitPercent >= 26)
+        {
+            // slab #3
+            slab = "ThirdSlab";
+        }
+        else if (profitPercent >= 11)
+        {
+            // slab #2
+            slab = "SecondSlab";
+        }
+        else if (profitPercent >= 5)
+        {
+            // slab #1
+            slab = "FirstSlab";
+        }
+
+        return slab;
     }
 
     private int GetEmployeeTotalPayComponent(int employeeNo, int year, int month)

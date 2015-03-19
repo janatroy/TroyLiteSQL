@@ -321,7 +321,7 @@ namespace DataAccessLayer
         public void BeginTransaction()
         {
             if (this.idbTransaction == null)
-                idbTransaction = this.idbConnection.BeginTransaction(IsolationLevel.ReadCommitted);  
+                idbTransaction = this.idbConnection.BeginTransaction(IsolationLevel.ReadCommitted);
             //idbTransaction = DBManagerFactory.GetTransaction(this.ProviderType);
 
             this.idbCommand.Transaction = idbTransaction;
