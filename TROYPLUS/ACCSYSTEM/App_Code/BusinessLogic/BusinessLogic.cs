@@ -46268,7 +46268,7 @@ public class BusinessLogic
         else if (Types == "catbrandwise")
         {
             //sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by cat.categoryname, PM.productdesc"); //" order by ProductDesc,CategoryID,Model,ProductName"
-            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+            sQry = (" SELECT distinct " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
           " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
           " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by cat.categoryname, PM.productdesc");
         }
@@ -46282,14 +46282,14 @@ public class BusinessLogic
         else if (Types == "prodmodelwise")
         {
            // sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productname,PM.model"); //" order by ProductDesc,CategoryID,Model,ProductName"
-            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+            sQry = (" SELECT distinct " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
          " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
          " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by PM.model");
         }
         else if (Types == "brandmodelwise")
         {
             //sQry = ("select " + field1 + field2 + " from tblproductmaster PM, tblCategories Cat where PM.CategoryID = Cat.CategoryID  order by PM.productdesc,PM.Model"); //" order by ProductDesc,CategoryID,Model,ProductName"
-            sQry = (" SELECT " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
+            sQry = (" SELECT distinct " + field1 + field2 + " FROM tblProductStock PM INNER JOIN " +
          " tblCategories Cat ON PM.CategoryID = Cat.CategoryID INNER JOIN " +
          " tblProductPrices ON PM.ItemCode = tblProductPrices.ItemCode where " + branchcode + " order by PM.productdesc,PM.Model");
         }

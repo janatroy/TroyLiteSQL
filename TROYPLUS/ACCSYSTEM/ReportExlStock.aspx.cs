@@ -155,6 +155,25 @@ public partial class ReportExlStock : System.Web.UI.Page
         return cond4;
     }
 
+    protected string getCond5()
+    {
+        string cond5 = "";
+
+        foreach (ListItem listItem in lstPricelist.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond5 += "" + listItem.Value + " ,";
+                }
+            }
+        }
+        cond5 = cond5.TrimEnd(',');
+        //cond = cond.Replace(",", " or ");
+        return cond5;
+    }
+
     protected void btnReport_Click(object sender, EventArgs e)
     {
         try
@@ -168,6 +187,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
             string cond4 = "";
             cond4 = getCond4();
+
+            string cond5 = "";
+            cond5 = getCond5();
             //objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
             //DataSet ds = new DataSet();
             //DataTable dtt = new DataTable();
@@ -221,7 +243,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 {
                     bindDatacatprodwise(cond, cond3);
                 }
-                else if ((chkoption.SelectedItem.Text == "Product / Model Wise"))
+                else if ((chkoption.SelectedItem.Text == "Model Wise"))
                 {
                     bindDataprodmodelwise(cond, cond3);
                 }
@@ -311,7 +333,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("ItemCode"));
         dtt.Columns.Add(new DataColumn("Model"));
         dtt.Columns.Add(new DataColumn("BranchCode"));
-
+        dtt.Columns.Add(new DataColumn("pricename"));
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -328,12 +350,12 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -353,7 +375,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
                     dr_final8["BranchCode"] = "";
-
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
 
@@ -370,7 +392,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal = 0;
@@ -389,7 +411,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
                 dr_final88["BranchCode"] = dr["BranchCode"];
-
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -404,9 +426,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -415,12 +437,12 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -434,6 +456,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
         dr_final87["BranchCode"] = "";
+        dr_final87["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal);
 
@@ -450,7 +473,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -464,6 +487,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
         dr_final123["BranchCode"] = "";
+        dr_final123["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal1);
 
@@ -480,7 +504,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -529,7 +553,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -555,7 +579,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal = 0;
@@ -575,9 +599,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -586,10 +610,10 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
 
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
@@ -608,7 +632,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -625,7 +649,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -669,7 +693,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Category"));
         dtt.Columns.Add(new DataColumn("ItemCode"));
         dtt.Columns.Add(new DataColumn("Model"));
-
+        dtt.Columns.Add(new DataColumn("pricename"));
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -686,7 +710,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -710,7 +734,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Brand"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
 
@@ -727,7 +751,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
 
                     producttotal = 0;
                     stktotal = 0;
@@ -745,7 +769,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Category"] = dr["Categoryname"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
-
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -760,9 +784,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -771,12 +795,12 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
-                producttotal = producttotal + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                producttotal = producttotal + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -789,7 +813,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["Category"] = "";
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
-
+        dr_final87["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal);
 
@@ -806,7 +830,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -819,7 +843,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["Brand"] = "";
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
-
+        dr_final123["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal1);
 
@@ -836,7 +860,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -894,7 +918,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -930,7 +954,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
 
                     producttotal = 0;
                     stktotal = 0;
@@ -957,9 +981,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -968,12 +992,12 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 stktotal = stktotal + Convert.ToDouble(dr["stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["stock"]);
-                producttotal = producttotal + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                producttotal = producttotal + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
             }
         }
         
@@ -997,7 +1021,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(producttotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -1023,7 +1047,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -1071,7 +1095,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Product"));
         dtt.Columns.Add(new DataColumn("ItemCode"));
         dtt.Columns.Add(new DataColumn("Model"));
-
+        dtt.Columns.Add(new DataColumn("BranchCode"));
+        dtt.Columns.Add(new DataColumn("pricename"));
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -1088,12 +1113,12 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -1115,7 +1140,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["BranchCode"] = "";
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
 
@@ -1132,7 +1158,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -1152,7 +1178,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["BranchCode"] = "";
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal1);
 
@@ -1169,7 +1196,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -1187,7 +1214,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Product"] = dr["ProductName"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
-
+                dr_final88["BranchCode"] = dr["BranchCode"];
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -1201,13 +1229,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -1218,9 +1246,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -1234,7 +1262,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final8889["Product"] = "";
         dr_final8889["ItemCode"] = "";
         dr_final8889["Model"] = "";
-
+        dr_final8889["BranchCode"] = "";
+        dr_final8889["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final8889["Stock"] = Convert.ToString(stktotal);
 
@@ -1251,7 +1280,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -1263,7 +1292,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["Brand"] = "";
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
-
+        dr_final87["BranchCode"] = "";
+        dr_final87["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal1);
 
@@ -1280,7 +1310,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -1293,7 +1323,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["Product"] = "";
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
-
+        dr_final123["BranchCode"] = "";
+        dr_final123["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal2);
 
@@ -1310,7 +1341,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -1372,7 +1403,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -1413,7 +1444,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -1449,7 +1480,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -1477,13 +1508,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
                     if (Convert.ToDouble(dr["MRPValue"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -1494,8 +1525,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
                 total = total + Convert.ToDouble(dr["MRPValue"]);
             }
         }
@@ -1522,7 +1553,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -1549,7 +1580,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -1577,7 +1608,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -1643,7 +1674,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -1687,7 +1718,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -1723,7 +1754,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -1755,13 +1786,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -1772,9 +1803,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -1805,7 +1836,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -1835,7 +1866,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -1865,7 +1896,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -1927,7 +1958,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -1967,7 +1998,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -2002,7 +2033,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -2029,13 +2060,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
                     if (Convert.ToDouble(dr["MRPValue"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -2046,9 +2077,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
 
             }
         }
@@ -2073,7 +2104,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -2100,7 +2131,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -2127,7 +2158,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -2176,7 +2207,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Category"));       
         dtt.Columns.Add(new DataColumn("ItemCode"));
         dtt.Columns.Add(new DataColumn("Model"));
-
+        dtt.Columns.Add(new DataColumn("pricename"));
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -2193,7 +2224,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -2220,7 +2251,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Category"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
 
@@ -2237,7 +2268,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -2257,7 +2288,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal1);
 
@@ -2274,7 +2305,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -2293,7 +2324,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Category"] = dr["Categoryname"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
-
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -2307,13 +2338,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -2324,9 +2355,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -2340,7 +2371,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final8889["Category"] = "";
         dr_final8889["ItemCode"] = "";
         dr_final8889["Model"] = "";
-
+        dr_final8889["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final8889["Stock"] = Convert.ToString(stktotal);
 
@@ -2357,7 +2388,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -2370,7 +2401,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["Product"] = "";
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
-
+        dr_final87["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal1);
 
@@ -2387,7 +2418,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -2400,7 +2431,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["Product"] = "";
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
-
+        dr_final123["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal2);
 
@@ -2417,7 +2448,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -2479,7 +2510,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -2519,7 +2550,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -2554,7 +2585,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -2583,13 +2614,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -2600,9 +2631,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 
             }
         }
@@ -2630,7 +2661,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -2658,7 +2689,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -2685,7 +2716,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -2733,8 +2764,9 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Model"));
         dtt.Columns.Add(new DataColumn("Product"));
         dtt.Columns.Add(new DataColumn("Category"));
-        dtt.Columns.Add(new DataColumn("ItemCode"));     
-
+        dtt.Columns.Add(new DataColumn("ItemCode"));
+        dtt.Columns.Add(new DataColumn("BranchCode"));
+        dtt.Columns.Add(new DataColumn("pricename")); 
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -2751,12 +2783,12 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -2778,7 +2810,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Category"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "Total : " + sLvlValue;
-
+                    dr_final8["BranchCode"] = "";
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
 
@@ -2795,7 +2828,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -2815,7 +2848,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["BranchCode"] = "";
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal1);
 
@@ -2832,7 +2866,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -2851,7 +2885,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Category"] = dr["Categoryname"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
-
+                dr_final88["BranchCode"] = dr["BranchCode"];
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -2865,13 +2900,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -2882,9 +2917,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -2898,7 +2933,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final8889["Category"] = "";
         dr_final8889["ItemCode"] = "";
         dr_final8889["Model"] = "Total : " + sLvlValue;
-
+        dr_final8889["BranchCode"] = "";
+        dr_final8889["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final8889["Stock"] = Convert.ToString(stktotal);
 
@@ -2915,7 +2951,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -2928,7 +2964,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["Product"] = "";
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
-
+        dr_final87["BranchCode"] = "";
+        dr_final87["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal1);
 
@@ -2945,7 +2982,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -2958,7 +2995,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["Product"] = "";
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
-
+        dr_final123["BranchCode"] = "";
+        dr_final123["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal2);
 
@@ -2975,7 +3013,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -3037,7 +3075,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -3078,7 +3116,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -3115,7 +3153,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -3145,13 +3183,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -3162,9 +3200,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -3191,7 +3229,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -3219,7 +3257,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -3247,7 +3285,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -3297,8 +3335,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         
         dtt.Columns.Add(new DataColumn("Category"));
         dtt.Columns.Add(new DataColumn("ItemCode"));
-        
-
+        dtt.Columns.Add(new DataColumn("BranchCode"));
+        dtt.Columns.Add(new DataColumn("pricename"));
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -3315,12 +3353,12 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -3342,7 +3380,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Category"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Product"] = "";
-
+                    dr_final8["BranchCode"] = "";
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal);
 
@@ -3359,7 +3398,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -3379,7 +3418,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Brand"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["BranchCode"] = "";
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(stktotal1);
 
@@ -3396,7 +3436,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -3415,8 +3455,8 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Model"] = dr["Model"];
                 dr_final88["Category"] = dr["Categoryname"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
-                
-
+                dr_final88["BranchCode"] = dr["BranchCode"];
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -3430,13 +3470,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -3447,9 +3487,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -3463,7 +3503,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final8889["Category"] = "";
         dr_final8889["ItemCode"] = "";
         dr_final8889["Product"] = "";
-
+        dr_final8889["BranchCode"] = "";
+        dr_final8889["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final8889["Stock"] = Convert.ToString(stktotal);
 
@@ -3480,7 +3521,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -3493,7 +3534,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["Brand"] = "";
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
-
+        dr_final87["BranchCode"] = "";
+        dr_final87["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal1);
 
@@ -3510,7 +3552,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -3523,7 +3565,8 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["Brand"] = "";
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
-
+        dr_final123["BranchCode"] = "";
+        dr_final123["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal2);
 
@@ -3540,7 +3583,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -3602,7 +3645,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -3644,7 +3687,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal = 0;
@@ -3681,7 +3724,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal1 = 0;
@@ -3709,13 +3752,13 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final88["DP"] = dr["DP"];
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -3726,9 +3769,9 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
 
             }
         }
@@ -3756,7 +3799,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -3784,7 +3827,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -3812,7 +3855,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -3867,7 +3910,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Model"));
         dtt.Columns.Add(new DataColumn("Category"));
         dtt.Columns.Add(new DataColumn("ItemCode"));
-        
+        dtt.Columns.Add(new DataColumn("pricename"));
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -3884,12 +3927,12 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
 
-        ds = objBL.gethistoryrate(sDataSource, Date, ds);
+        //ds = objBL.gethistoryrate(sDataSource, Date, ds);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -3912,7 +3955,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["Model"] = "Total : " + tLvlValue;
                     dr_final8["ItemCode"] = "";
-
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(Convert.ToDecimal(stktotal));
 
@@ -3929,7 +3972,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
 
                     modeltot = 0;
@@ -3950,7 +3993,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Category"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(Convert.ToDecimal(stktotal1));
 
@@ -3967,7 +4010,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal1 = 0;
@@ -3986,7 +4029,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     dr_final8["Product"] = "";
                     dr_final8["ItemCode"] = "";
                     dr_final8["Model"] = "";
-
+                    dr_final8["pricename"] = "";
                     if (chkboxQty.Checked == true)
                         dr_final8["Stock"] = Convert.ToString(Convert.ToDecimal(stktotal2));
 
@@ -4000,7 +4043,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["DP"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal2 = 0;
@@ -4019,7 +4062,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["Category"] = dr["Categoryname"];
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
-
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -4034,9 +4077,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -4045,17 +4088,17 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
 
                 stktotal3 = stktotal3 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                modeltot = modeltot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                modeltot = modeltot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -4068,6 +4111,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final88899["Product"] = "";
         dr_final88899["Category"] = "";
         dr_final88899["ItemCode"] = "";
+        dr_final88899["pricename"] = "";
         dr_final88899["Model"] = "Total : " + tLvlValue;
 
         if (chkboxQty.Checked == true)
@@ -4086,7 +4130,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final88899["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final88899["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+            dr_final88899["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
         dtt.Rows.Add(dr_final88899);
 
@@ -4099,7 +4143,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final8889["Category"] = "";
         dr_final8889["ItemCode"] = "";
         dr_final8889["Model"] = "";
-
+        dr_final8889["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final8889["Stock"] = Convert.ToString(Convert.ToDecimal(stktotal1));
 
@@ -4116,7 +4160,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -4146,7 +4190,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -4176,7 +4220,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -4245,7 +4289,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -4286,7 +4330,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
 
                     modeltot = 0;
@@ -4323,7 +4367,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal1 = 0;
@@ -4357,7 +4401,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["DP"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal2 = 0;
@@ -4392,9 +4436,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -4403,17 +4447,17 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
 
                 stktotal3 = stktotal3 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                modeltot = modeltot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                modeltot = modeltot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 
             }
         }
@@ -4442,7 +4486,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final88899["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final88899["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+            dr_final88899["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
         dtt.Rows.Add(dr_final88899);
 
@@ -4472,7 +4516,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -4502,7 +4546,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -4532,7 +4576,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -4603,7 +4647,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -4648,7 +4692,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
 
                     modeltot = 0;
@@ -4686,7 +4730,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal1 = 0;
@@ -4722,7 +4766,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal2 = 0;
@@ -4756,9 +4800,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -4767,16 +4811,16 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
                 stktotal3 = stktotal3 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                modeltot = modeltot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                modeltot = modeltot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -4807,7 +4851,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final88899["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final88899["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+            dr_final88899["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
         dtt.Rows.Add(dr_final88899);
 
@@ -4837,7 +4881,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -4867,7 +4911,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -4897,7 +4941,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -4966,7 +5010,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -5008,7 +5052,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
 
                     modeltot = 0;
@@ -5047,7 +5091,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
                     producttot = 0;
                     stktotal1 = 0;
@@ -5081,7 +5125,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
                     brandtotal = 0;
                     stktotal2 = 0;
@@ -5113,9 +5157,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -5131,10 +5175,10 @@ public partial class ReportExlStock : System.Web.UI.Page
                 stktotal2 = stktotal2 + Convert.ToDouble(dr["Stock"]);
 
                 stktotal3 = stktotal3 + Convert.ToDouble(dr["Stock"]);
-                brandtotal = brandtotal + Convert.ToDouble(dr["MRPValue"]);
-                producttot = producttot + Convert.ToDouble(dr["MRPValue"]);
-                modeltot = modeltot + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                brandtotal = brandtotal + Convert.ToDouble(dr["Value"]);
+                producttot = producttot + Convert.ToDouble(dr["Value"]);
+                modeltot = modeltot + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
             }
         }
 
@@ -5162,7 +5206,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final88899["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final88899["MRP Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
+            dr_final88899["Value"] = Convert.ToString(Convert.ToDecimal(modeltot));
 
         dtt.Rows.Add(dr_final88899);
 
@@ -5190,7 +5234,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final8889["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final8889["MRP Value"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dr_final8889["Value"] = Convert.ToString(Convert.ToDecimal(producttot));
 
         dtt.Rows.Add(dr_final8889);
 
@@ -5218,7 +5262,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(brandtotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -5246,7 +5290,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -5333,13 +5377,15 @@ public partial class ReportExlStock : System.Web.UI.Page
 
         field2 += "pm.branchcode,";
 
-       // field2 += "pm.nlc,";
+        field2 += "pricename,";
+
+        // field2 += "pm.nlc,";
 
       //  field2 += "pm.dealerrate as dp,";
 
        // field2 += "pm.rate as mrp,";
 
-        field2 += "(PM.Stock * tblProductPrices.Price) as MRPvalue ";
+        field2 += "(PM.Stock * tblProductPrices.Price) as Value ";
 
         return field2;
     }
@@ -5382,7 +5428,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
 
         //char[] commaSeparator = new char[] { ',' };
@@ -5421,7 +5467,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(cattotal));
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(cattotal));
 
                     cattotal = 0;
                     stktotal = 0;
@@ -5438,9 +5484,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -5449,10 +5495,10 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
-                cattotal = cattotal + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                cattotal = cattotal + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
             }
@@ -5468,7 +5514,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(cattotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(cattotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -5485,7 +5531,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
@@ -5533,7 +5579,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("ItemCode"));
         dtt.Columns.Add(new DataColumn("Model"));
         dtt.Columns.Add(new DataColumn("BranchCode"));
-
+        dtt.Columns.Add(new DataColumn("pricename"));
         if (chkboxQty.Checked == true)
             dtt.Columns.Add(new DataColumn("Stock"));
 
@@ -5550,7 +5596,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dtt.Columns.Add(new DataColumn("Percentage"));
 
         if (chkboxVal.Checked == true)
-            dtt.Columns.Add(new DataColumn("MRP Value"));
+            dtt.Columns.Add(new DataColumn("Value"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -5592,7 +5638,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                         dr_final8["Percentage"] = "";
 
                     if (chkboxVal.Checked == true)
-                        dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(cattotal));            
+                        dr_final8["Value"] = Convert.ToString(Convert.ToDecimal(cattotal));            
 
                     cattotal = 0;
                     stktotal = 0;
@@ -5610,7 +5656,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                 dr_final88["ItemCode"] = dr["ItemCode"];
                 dr_final88["Model"] = dr["Model"];
                 dr_final88["BranchCode"] = dr["BranchCode"];
-
+                dr_final88["pricename"] = dr["pricename"];
                 if (chkboxQty.Checked == true)
                     dr_final88["Stock"] = dr["Stock"];
 
@@ -5627,9 +5673,9 @@ public partial class ReportExlStock : System.Web.UI.Page
 
                 if (chkboxper.Checked == true)
                 {
-                    if (Convert.ToDouble(dr["MRPValue"]) > 0)
+                    if (Convert.ToDouble(dr["Value"]) > 0)
                     {
-                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["MRPValue"])) * 100;
+                        dr_final88["Percentage"] = (100 / Convert.ToDouble(dr["Value"])) * 100;
                     }
                     else
                     {
@@ -5638,12 +5684,12 @@ public partial class ReportExlStock : System.Web.UI.Page
                 }
 
                 if (chkboxVal.Checked == true)
-                    dr_final88["MRP Value"] = dr["MRPValue"];
+                    dr_final88["Value"] = dr["Value"];
 
                 stktotal = stktotal + Convert.ToDouble(dr["Stock"]);
                 stktotal1 = stktotal1 + Convert.ToDouble(dr["Stock"]);
-                cattotal = cattotal + Convert.ToDouble(dr["MRPValue"]);
-                total = total + Convert.ToDouble(dr["MRPValue"]);
+                cattotal = cattotal + Convert.ToDouble(dr["Value"]);
+                total = total + Convert.ToDouble(dr["Value"]);
                 dtt.Rows.Add(dr_final88);
             }
         }
@@ -5657,6 +5703,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final87["ItemCode"] = "";
         dr_final87["Model"] = "";
         dr_final87["BranchCode"] = "";
+        dr_final87["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final87["Stock"] = Convert.ToString(stktotal);
 
@@ -5673,7 +5720,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final87["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final87["MRP Value"] = Convert.ToString(Convert.ToDecimal(cattotal));
+            dr_final87["Value"] = Convert.ToString(Convert.ToDecimal(cattotal));
 
         dtt.Rows.Add(dr_final87);
 
@@ -5687,6 +5734,7 @@ public partial class ReportExlStock : System.Web.UI.Page
         dr_final123["ItemCode"] = "";
         dr_final123["Model"] = "";
         dr_final123["BranchCode"] = "";
+        dr_final123["pricename"] = "";
         if (chkboxQty.Checked == true)
             dr_final123["Stock"] = Convert.ToString(stktotal1);
 
@@ -5703,7 +5751,7 @@ public partial class ReportExlStock : System.Web.UI.Page
             dr_final123["Percentage"] = "";
 
         if (chkboxVal.Checked == true)
-            dr_final123["MRP Value"] = Convert.ToString(Convert.ToDecimal(total));
+            dr_final123["Value"] = Convert.ToString(Convert.ToDecimal(total));
 
         dtt.Rows.Add(dr_final123);
 
