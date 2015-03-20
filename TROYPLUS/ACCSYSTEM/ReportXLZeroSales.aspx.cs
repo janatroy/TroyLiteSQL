@@ -12,7 +12,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Text;
 using System.IO;
-
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class ReportXLZeroSales : System.Web.UI.Page
 {
@@ -45,6 +46,9 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
                 DateTime dtNew = new DateTime(dtCurrent.Year, dtCurrent.Month, 1);
                 txtSrtDate.Text = string.Format("{0:dd/MM/yyyy}", dtNew);
 
+                loadBranch();
+                BranchEnable_Disable();
+
                 //txtSrtDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
                 txtEdDate.Text = DateTime.Now.ToShortDateString();
             }
@@ -53,6 +57,37 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
     }
 
    protected void btnxls_Click(object sender, EventArgs e)
@@ -101,6 +136,9 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
          double val = 0;
          DataSet ds = new DataSet();
 
+         string Branch = string.Empty;
+         Branch = drpBranch.SelectedValue;
+
          if (chkoption.SelectedValue == "Only Value Details")
          {
              Method = "Only";
@@ -111,9 +149,9 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
          }
 
          val = Convert.ToDouble(txtvalue.Text);
-         ds = objBL.getzerosales(sDataSource, startDate, endDate, Method, val);
+         ds = objBL.getzerosales(sDataSource, startDate, endDate, Method, val, Branch);
 
-         DataTable dt = new DataTable();
+         DataTable dt = new DataTable("Sales");
 
          if (ds != null)
          {
@@ -174,24 +212,42 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
 
          if (dt.Rows.Count > 0)
          {
-             string filename = "Sales.xls";
-             System.IO.StringWriter tw = new System.IO.StringWriter();
-             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-             DataGrid dgGrid = new DataGrid();
-             dgGrid.DataSource = dt;
-             dgGrid.DataBind();
-             dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-             dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-             dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-             dgGrid.HeaderStyle.Font.Bold = true;
-             //Get the HTML for the control.
-             dgGrid.RenderControl(hw);
-             //Write the HTML back to the browser.
-             Response.ContentType = "application/vnd.ms-excel";
-             Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-             this.EnableViewState = false;
-             Response.Write(tw.ToString());
-             Response.End();
+             //string filename = "Sales.xls";
+             //System.IO.StringWriter tw = new System.IO.StringWriter();
+             //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+             //DataGrid dgGrid = new DataGrid();
+             //dgGrid.DataSource = dt;
+             //dgGrid.DataBind();
+             //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+             //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+             //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+             //dgGrid.HeaderStyle.Font.Bold = true;
+             ////Get the HTML for the control.
+             //dgGrid.RenderControl(hw);
+             ////Write the HTML back to the browser.
+             //Response.ContentType = "application/vnd.ms-excel";
+             //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+             //this.EnableViewState = false;
+             //Response.Write(tw.ToString());
+             //Response.End();
+
+             using (XLWorkbook wb = new XLWorkbook())
+             {
+                 string filename = "Sales.xlsx";
+                 wb.Worksheets.Add(dt);
+                 Response.Clear();
+                 Response.Buffer = true;
+                 Response.Charset = "";
+                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                 Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                 using (MemoryStream MyMemoryStream = new MemoryStream())
+                 {
+                     wb.SaveAs(MyMemoryStream);
+                     MyMemoryStream.WriteTo(Response.OutputStream);
+                     Response.Flush();
+                     Response.End();
+                 }
+             }
          }
      }
     

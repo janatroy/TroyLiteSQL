@@ -134,7 +134,7 @@
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                                        <asp:TextBox ID="txtStartDate" CssClass="cssTextBox" MaxLength="10"
                                             runat="server" />
                                             <cc1:CalendarExtender ID="calStartDate" runat="server" Enabled="True" 
                                                                                             Format="dd/MM/yyyy"
@@ -172,7 +172,7 @@
                                             CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" />
+                                        <asp:TextBox ID="txtEndDate" CssClass="cssTextBox" MaxLength="10" runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" 
                                                                                             Format="dd/MM/yyyy"
                                                                                             PopupButtonID="ImageButton1" TargetControlID="txtEndDate">
@@ -211,7 +211,8 @@
                                                 <td class="ControlTextBox3" style="width: 90%;">
                                                     <asp:RadioButtonList ID="optionrate" runat="server" CssClass="label" 
                                                             RepeatDirection="Horizontal" BackColor="#e7e7e7" Height="25px">
-                                                            <asp:ListItem Selected="True">Item Wise</asp:ListItem>
+                                                            <asp:ListItem Selected="True">Branch Wise</asp:ListItem>
+                                                            <%--<asp:ListItem Selected="True">Item Wise</asp:ListItem>--%>
                                                             <asp:ListItem>Brand Wise</asp:ListItem>
                                                             <asp:ListItem>Category Wise</asp:ListItem>
                                                     </asp:RadioButtonList>
