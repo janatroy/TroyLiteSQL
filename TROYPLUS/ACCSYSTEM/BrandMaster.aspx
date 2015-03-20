@@ -183,7 +183,7 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 40%">Allowed Price % *
+                                                                <td class="ControlLabel" style="width: 40%">Allowed Price Deviation % *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtDeviation"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Allowed Price %. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid123" runat="server" FilterType="Numbers" TargetControlID="txtDeviation" />
@@ -299,7 +299,7 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 40%">Allowed Price % *
+                                                                <td class="ControlLabel" style="width: 40%">Allowed Price Deviation % *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDeviationAdd"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Allowed Price %. It cannot be left blank.">*</asp:RequiredFieldValidator>
 
@@ -397,7 +397,7 @@
                                             <Columns>
                                                 <asp:BoundField DataField="BrandName" HeaderText="Brand Name" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
                                                 <asp:BoundField DataField="BrandLevel" HeaderText="Brand %" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="200px" />
-                                                <asp:BoundField DataField="Deviation" HeaderText="Allowed Price %" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="200px" />
+                                                <asp:BoundField DataField="Deviation" HeaderText="Allowed Price Deviation %" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="200px" />
                                                 <asp:BoundField DataField="IsActive" HeaderText="IsActive" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="200px" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" ItemStyle-Width="50px" HeaderStyle-BorderColor="Gray"
                                                     ItemStyle-HorizontalAlign="Center">

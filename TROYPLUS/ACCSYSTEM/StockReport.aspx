@@ -65,9 +65,9 @@
                         <td colspan="4">
                             <table style="width: 100%">
                                 <tr>
-                                    <td style="width: 45%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Date
+                                    <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Date
                                     </td>
-                                    <td style="width: 20%" align="left" class="ControlTextBox3">
+                                    <td style="width: 25%" align="left" class="ControlTextBox3">
                                         <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px"
                                             MaxLength="10" />
 
@@ -81,25 +81,28 @@
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                     </td>
                                 </tr>
+                            </table>
+                            <br />                          
+                            <table>
                                 <tr style="height: 10px;" />
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <div style="overflow-y: scroll; height: 150px; width: 300px" runat="server">
+                                        <div style="overflow-y: scroll; height: 150px; width: 250px" runat="server">
                                             <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
 
-                                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "BranchName" DataValueField = "Branchcode" OnSelectedIndexChanged="lstBranch_SelectedIndexChanged1">
+                                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lstBranch_SelectedIndexChanged1">
                                                 <asp:ListItem Text="All" Value="0" />
                                             </asp:CheckBoxList>
                                         </div>
                                     </td>
                                     <td>
-                                        <div style="overflow-y: scroll; height: 150px; width: 300px">
-                                             <asp:Label ID="Label1" CssClass="ControlLabelproject" runat="server" Text="Select Pricelist:"></asp:Label>
+                                        <div style="overflow-y: scroll; height: 150px; width: 250px">
+                                            <asp:Label ID="Label1" CssClass="ControlLabelproject" runat="server" Text="Select Pricelist:"></asp:Label>
 
-                                            <asp:CheckBoxList ID="lstPricelist" AutoPostBack="true" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName" OnSelectedIndexChanged="lstPricelist_SelectedIndexChanged">
-                                                <asp:ListItem Text="All" Value="0" />
-                                            </asp:CheckBoxList>
+                                            <asp:RadioButtonList ID="lstPricelist" AutoPostBack="true" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="PriceName" DataValueField="PriceName">
+                                                <%--  <asp:ListItem Text="All" Value="0" />--%>
+                                            </asp:RadioButtonList>
                                         </div>
                                     </td>
                                 </tr>

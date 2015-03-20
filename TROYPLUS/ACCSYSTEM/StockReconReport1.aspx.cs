@@ -138,7 +138,7 @@ public partial class StockReconReport1 : System.Web.UI.Page
                     gvStock.DataBind();
                 }
                 cond = cond.Replace("'", "");
-                Label1.Text = " Report Date on " + startDate + " for " + cond;
+                Label1.Text = " Report Date on " + startDate.ToString("dd/MM/yyyy") + " for " + cond;
             }
         }
         catch (Exception ex)

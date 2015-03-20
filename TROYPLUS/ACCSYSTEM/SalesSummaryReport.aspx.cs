@@ -39,6 +39,9 @@ public partial class SalesSummaryReport : System.Web.UI.Page
     string strBillno = string.Empty;
     int cnt = 0;
     BusinessLogic objBL;
+    private string connection = string.Empty;
+    string brncode;
+    string usernam;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -87,12 +90,53 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                         }
                     }
                 }
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstBranch.Items.Clear();
+
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+            lstBranch.Items.Add(new ListItem("All", "0"));
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
     }
 
     public void bindData()
@@ -825,6 +869,26 @@ public partial class SalesSummaryReport : System.Web.UI.Page
         }
     }
 
+    protected string getCond()
+    {
+        string cond = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond += " tblSales.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond = cond.TrimEnd(',');
+        cond = cond.Replace(",", "or");
+        return cond;
+    }
+
+
     protected void btnReport_Click(object sender, EventArgs e)
     {
         try
@@ -868,42 +932,45 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 else
                     delNote = "NO";
 
+                string cond = "";
+                cond = getCond();
+
 
                 DataSet BillDs = new DataSet();
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
 
                 }
                 else if (category == "Categorywise")
                 {
-                    BillDs = bl.FirstLevelCategorywise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelCategorywise(startDate, endDate, purRet, intTrans, delNote, cond);
                 }
                 else if (category == "Brandwise")
                 {
-                    BillDs = bl.FirstLevelBrandwise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelBrandwise(startDate, endDate, purRet, intTrans, delNote, cond);
                 }
                 else if (category == "Modelwise")
                 {
-                    BillDs = bl.FirstLevelModelwise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelModelwise(startDate, endDate, purRet, intTrans, delNote, cond);
                 }
                 else if (category == "Billwise")
                 {
-                    BillDs = bl.FirstLevelBillwise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelBillwise(startDate, endDate, purRet, intTrans, delNote, cond);
                 }
                 else if (category == "Customerwise")
                 {
-                    BillDs = bl.FirstLevelCustomerwise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelCustomerwise(startDate, endDate, purRet, intTrans, delNote, cond);
                 }
                 else if (category == "Executivewise")
                 {
-                    BillDs = bl.FirstLevelExecutivewise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelExecutivewise(startDate, endDate, purRet, intTrans, delNote, cond);
                 }
                 /*Start Itemwise*/
                 else if (category == "Itemwise")
                 {
-                    BillDs = bl.FirstLevelItemwise(startDate, endDate, purRet, intTrans, delNote);
+                    BillDs = bl.FirstLevelItemwise(startDate, endDate, purRet, intTrans, delNote, cond);
                 }
                 /*End Itemwise*/
                 //gvMain.DataSource = BillDs;
@@ -914,7 +981,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
 
                 divPrint.Visible = false;
                 divmain.Visible = false;
-                Response.Write("<script language='javascript'> window.open('SalesSummaryReport1.aspx?category=" + category + "&secondLevel=" + secondLevel + "&purRet=" + purRet + "&intTrans=" + intTrans + "&delNote=" + delNote + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                Response.Write("<script language='javascript'> window.open('SalesSummaryReport1.aspx?category=" + category + "&secondLevel=" + secondLevel + "&cond=" + Server.UrlEncode(cond) + "&purRet=" + purRet + "&intTrans=" + intTrans + "&delNote=" + delNote + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
 
             }
         }
@@ -1003,83 +1070,83 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     startDate = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName"));
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelDaywiseBrandWise(startDate, purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelDaywiseBrandWise(startDate, purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelDaywiseCustWise(startDate, purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelDaywiseCustWise(startDate, purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelDaywiseItemWise(startDate, purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelDaywiseItemWise(startDate, purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelDaywiseDayWise(startDate, purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelDaywiseDayWise(startDate, purReturn, intTrans, delNote,"");
 
                     lblLink.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName", "{0:dd/MM/yyyy}"));
                 }
                 else if (category == "Categorywise")
                 {
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelCategorywiseBillWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelCategorywiseBillWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelCategorywiseModelWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelCategorywiseModelWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelCategorywiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelCategorywiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelCategorywiseCustWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelCategorywiseCustWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelCategorywiseItemWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelCategorywiseItemWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Category", "BillDate", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Category", "BillDate", purReturn, intTrans, delNote, "", "");
 
                 }
                 else if (category == "Brandwise")
                 {
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelBrandwiseBillWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBrandwiseBillWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelBrandwiseModelWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBrandwiseModelWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelBrandwiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBrandwiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelBrandWiseCustomerWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductDesc", "CustomerName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBrandWiseCustomerWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductDesc", "CustomerName", purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelBrandWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductDesc", "ProductName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBrandWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductDesc", "ProductName", purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelBrandWiseDayWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "ProductDesc", "BillDate", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBrandWiseDayWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "ProductDesc", "BillDate", purReturn, intTrans, delNote,"","");
 
                 }
                 else if (category == "Modelwise")
                 {
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelModelwiseBillWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelModelwiseBillWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelModelwiseModelWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelModelwiseModelWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelModelwiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelModelwiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelModelWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "ProductName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelModelWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "ProductName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Model", "BillDate", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Model", "BillDate", purReturn, intTrans, delNote, "", "");
 
                     //ds = bl.SecondLevelModelwise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()));
                 }
                 else if (category == "Billwise")
                 {
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "BillNo", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "BillNo", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "Model", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "Model", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductDesc", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductDesc", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "CustomerName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
                         ds = bl.SecondLevelBillWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductName", purReturn, intTrans, delNote);
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "BillNo", "BillDate", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "BillNo", "BillDate", purReturn, intTrans, delNote, "", "");
 
                     //ds = bl.SecondLevelBillwise(Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "LinkName")));
                 }
@@ -1087,36 +1154,36 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 {
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "BillNo", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "BillNo", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "Model", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "Model", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "ProductDesc", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "ProductDesc", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "CustomerName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelCustomerWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "ProductName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelCustomerWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "ProductName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "BillDate", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "CustomerName", "BillDate", purReturn, intTrans, delNote, "", "");
 
                     //ds = bl.SecondLevelCustomerwise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()));
                 }
                 else if (category == "Executivewise")
                 {
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "BillNo", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "BillNo", purReturn, intTrans, delNote, "", "");
                     //ds = bl.SecondLevelExecutivewise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()));
                     //else if (secondLevel == "Modelwise")
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "Model", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "Model", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "ProductDesc", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "ProductDesc", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "CustomerName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "ProductName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "ProductName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "BillDate", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "Executive", "BillDate", purReturn, intTrans, delNote, "", "");
 
                 }
                 /*Start Itemwise*/
@@ -1124,17 +1191,17 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 {
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelGeneralSalesItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "BillNo", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSalesItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "BillNo", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "Model", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "Model", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "ProductDesc", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "ProductDesc", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "CustomerName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "ProductName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "ProductName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "BillDate", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "ProductName", "BillDate", purReturn, intTrans, delNote, "", "");
 
                     var tempRow = ((System.Data.DataRowView)(e.Row.DataItem)).Row.ItemArray;
                     //Label lblProdName = (Label)e.Row.FindControl("lblProductName");
@@ -1371,5 +1438,20 @@ public partial class SalesSummaryReport : System.Web.UI.Page
             Response.End();
         }
     }
+
+    protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        foreach (ListItem li in lstBranch.Items)
+        {
+            if (lstBranch.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }
+        }
+    }
+
 
 }
