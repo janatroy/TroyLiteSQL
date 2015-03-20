@@ -285,7 +285,9 @@ public partial class ReportExcelFormulaExecution : System.Web.UI.Page
     {
         try
         {
+            BusinessLogic bl = new BusinessLogic(sDataSource);
 
+           string connection = Request.Cookies["Company"].Value;
             DateTime date = Convert.ToDateTime(txtStartDate.Text.ToString());
 
             //  DateTime date1 = Convert.ToDateTime(txtEndDate.Text).ToString("dd/MM/yyyy");
@@ -300,6 +302,34 @@ public partial class ReportExcelFormulaExecution : System.Web.UI.Page
 
             bool IsPros = Convert.ToBoolean(rdoIsPros.Checked.ToString());
             //string productid = Convert.ToString(drpproduct.SelectedItem.Text);
+
+            DataSet ds = bl.listCompProductsreport(connection, productId, date, date1, inout, Branch, IsPros);
+
+            //if (!IsPostBack)
+            //{
+
+            if (ds != null)
+            {
+
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    
+                }
+                else
+                {
+
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' No data found');", true);
+                    return;
+
+                }
+            }
+            else
+            {
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' No data found');", true);
+                return;
+
+            }
 
             Response.Write("<script language='javascript'> window.open('ReportExcelFormulaExecution1.aspx?FormulaName=" + productId + "&startdate=" + date + "&enddate=" + date1 + "&Inout=" + inout + "&Branch=" + Branch + "&ispros=" + IsPros + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }

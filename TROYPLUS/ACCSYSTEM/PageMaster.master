@@ -470,7 +470,7 @@
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Salesreport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=420,top=230,resizable=yes, scrollbars=yes');">Daily sales</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Salesreport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=370,width=500,left=420,top=230,resizable=yes, scrollbars=yes');">Daily sales</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('SalesSummaryReport.aspx ','Summary', 'toolbar=no,status=yes,menu=no,location=no,resizable=yes,height=310,width=550,left=425,top=220, scrollbars=yes');">Sales Summary</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlSales.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=555,width=805,resizable=yes,left=210,top=100, scrollbars=yes');">Sales Comprehency</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlSal.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=270,width=500,left=425,top=220, scrollbars=yes');">Sales TurnOver</a></li>
@@ -532,7 +532,7 @@
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('StockAgeingReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=500,width=750,left=359,top=150, scrollbars=no');">Ageing</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlStockLevel.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=400,width=500,left=415,top=260 ,resizable=yes, scrollbars=yes');">Stock Level</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlAbsolute.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=400,width=500,left=415,top=235, scrollbars=yes');">Obsolete item list</a></li>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlStock.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=450,width=600,left=380,top=140, scrollbars=no');">Stock Comprehency</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExlStock.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=580,width=900,left=200,top=110, scrollbars=no');">Stock Comprehency</a></li>
                                                         <%--</ul>
                                     </li>
                                     <%--<li class="color submenumenu"><a href="#">Sales</a><ul>
@@ -561,8 +561,10 @@
                                                         <li class="color submenumenu"><a href="./ChequeBook.aspx" runat="server" id="lnkChequeBook">Cheque Book</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="color submenumenu"><a href="#">Reports</a>
+                                               <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
                                                     <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXLBankRecon.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=300,width=500,left=420,top=230,resizable=yes, scrollbars=yes');">Bank reconciliation</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('BankStatementReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=300,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Bank Statement</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -593,8 +595,6 @@
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlSalesTax.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=340,width=500,left=425,top=220, scrollbars=yes');">Sales Tax</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('DayBookReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Day Book</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('LedgerReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=340,width=500,left=425,top=220, scrollbars=yes');">Ledger</a></li>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Salesreport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=420,top=230,resizable=yes, scrollbars=yes');">Bank reconciliation</a></li>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('BankStatementReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=260,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Bank Statement</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('OutstandingReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=330,width=500,left=425,top=220, scrollbars=yes');">Outstanding</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('OutStandingMasterReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=350,width=700,left=350,top=220, scrollbars=yes');">Outstanding Ageing</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('VATSumaryReport.aspx','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=220,width=500,left=425,top=220, scrollbars=yes');">Vat summary</a></li>
@@ -753,6 +753,15 @@
                                                         <li class="color submenumenu"><a href="./FormulaExecution.aspx" runat="server" id="lnkTransferExecution">Process Manufacturing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                                                     </ul>
                                                 </li>
+                                                   <li class="color submenumenu"><a href="#" id="lnkmanufacturereport" runat="server"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Reports </a>
+                                                    <ul>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportXlProductspecification.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Product specification Report</a></li>
+                                                             <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExcelFormulaExecution.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Process Manufacture  Report</a></li>
+                                                    </ul>
+                                                        
+                                                       
+                                                    
+                                                </li>
                                             </ul>
                                         </li>
                                         <%--<li class="color Mainmenu7"><a href="#"><img src="App_Themes/NewTheme/Images/TroyCommission.png" /></a>
@@ -789,7 +798,7 @@
                                                 </li>
                                                 <li class="color submenumenu"><a href="#" id="lnkprojectreport" runat="server"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Reports </a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProjectReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Project Report</a>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProjectReport.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=700,left=359,top=220, scrollbars=no');">Project Report</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>

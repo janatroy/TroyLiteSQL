@@ -27,7 +27,7 @@ public partial class StockListReport1 : System.Web.UI.Page
             //}
             if (!IsPostBack)
             {
-                loadProducts();
+               // loadProducts();
                 divReport.Visible = false;
                 txtStartDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
                 //txtEndDate.Text = DateTime.Now.ToShortDateString();
@@ -97,10 +97,12 @@ public partial class StockListReport1 : System.Web.UI.Page
                 sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
                 ReportsBL.ReportClass report = new ReportsBL.ReportClass();
                 double openingStock = 0;
-                string[] itemAr = drpLedgerName.SelectedItem.Text.Split('|');
+              //  string[] itemAr = drpLedgerName.SelectedItem.Text.Split('|');
 
                 //string itemCode = Convert.ToString(itemAr[0]).Trim();
                 string itemCode = cmbProdAdd.Text;
+                string branch = string.Empty;
+                int type = 0;
 
                 if (Request.QueryString["itemCode"] != null)
                 {
@@ -118,26 +120,47 @@ public partial class StockListReport1 : System.Web.UI.Page
                     lblModel.Text = Request.QueryString["Model"].ToString();
                     tblproduct1.Text = tblproduct1.Text + "  -  " + Request.QueryString["Model"].ToString();
                 }
+                if (Request.QueryString["Branch"] != null)
+                {
+                    branch = Request.QueryString["Branch"].ToString();
+                    //itemCode1 = Request.QueryString["itemCode"];
+                }
+                if (Request.QueryString["Type"] != null)
+                {
+                    type =Convert.ToInt32(Request.QueryString["Type"].ToString());
+                    //itemCode1 = Request.QueryString["itemCode"];
+                }
+
+                if (Request.QueryString["Check"] != null)
+                {
+                    chkvalue.Checked = true;
+                   // chkvalue=["Check"];
+                    //chkvalue.Checked = Request.QueryString["Check"];
+                  bool  type1 = Convert.ToBoolean(Request.QueryString["Check"].ToString());
+                    //itemCode1 = Request.QueryString["itemCode"];
+                }
 
                 //lblModel.Text = cmbModel.Text;
-                openingStock = Convert.ToDouble(bl.getOpeningStock(sDataSource, itemCode, "")) +
-                    (Convert.ToDouble(bl.getOpeningStockPurchase(sDataSource, itemCode, startDate, "")) - Convert.ToDouble(bl.getOpeningStockSales(sDataSource, itemCode, startDate, "")));
+               // string itemCode = cmbProdAdd.Text;
+                lblModel.Text = cmbModel.Text;
+                openingStock = Convert.ToDouble(bl.getOpeningStock(sDataSource, itemCode, branch)) +
+                    (Convert.ToDouble(bl.getOpeningStockPurchase(sDataSource, itemCode, startDate, branch)) - Convert.ToDouble(bl.getOpeningStockSales(sDataSource, itemCode, startDate, branch)));
 
                 lblOpenStock.Text = Convert.ToString(openingStock);
 
                 sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
-                currStock = bl.getStockInfo(itemCode,"");
+                currStock = bl.getStockInfo(itemCode,branch);
 
-                string[] stkArray = drpLedgerName.SelectedItem.Value.Split('@');
-                //lblItem.Text = cmbProdName.Text;
+                //string[] stkArray = drpLedgerName.SelectedItem.Value.Split('@');
+                lblItem.Text = cmbProdName.Text;
                 lblClosingStockPM.Text = Convert.ToString(currStock);
                 hdStock.Value = Convert.ToString(openingStock);
 
 
-                if ((chkvalue.Checked == false) && (chktrans.Checked == false))
+                if ((chkvalue.Checked == false))
                 {
-                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "",0);
+                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, branch, type);
                     gvLedger.DataSource = dsLedger;
                     gvLedger.DataBind();
                     divReport.Visible = true;
@@ -182,121 +205,18 @@ public partial class StockListReport1 : System.Web.UI.Page
                     //}
                     //#endregion
                 }
-                else if ((chktrans.Checked == true) && (chkvalue.Checked == true))
+                else if ((chkvalue.Checked == true))
                 {
 
-                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
+                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, branch, type);
+                    gvledgerwithvalue.DataSource = dsLedger;
+                    gvledgerwithvalue.DataBind();
+                    divReport.Visible = true;
+                    div1.Visible = false;
 
-                    #region Export To Excel
-                    if (dsLedger.Tables[0].Rows.Count > 0)
-                    {
-                        DataTable dt = new DataTable();
-                        dt.Columns.Add(new DataColumn("Bill Date"));
-                        dt.Columns.Add(new DataColumn("Purchase / Sale"));
-                        dt.Columns.Add(new DataColumn("Bill No."));
-                        dt.Columns.Add(new DataColumn("Qty."));
-                        dt.Columns.Add(new DataColumn("Ledger Name"));
-                        dt.Columns.Add(new DataColumn("Purchase Value"));
-                        dt.Columns.Add(new DataColumn("Sales Value"));
-
-                        foreach (DataRow dr in dsLedger.Tables[0].Rows)
-                        {
-                            DataRow dr_export = dt.NewRow();
-                            dr_export["Bill Date"] = dr["billdate"];
-                            dr_export["Purchase / Sale"] = dr["'Purchase/Sale'"];
-                            dr_export["Bill No."] = dr["billno"];
-                            dr_export["Qty."] = dr["qty"];
-                            dr_export["Ledger Name"] = dr["LedgerName"];
-                            if (dr["'Purchase/Sale'"].ToString() == "PURCHASE")
-                            {
-                                dr_export["Purchase Value"] = dr["rate"];
-                                dr_export["Sales Value"] = "";
-                            }
-                            else if (dr["'Purchase/Sale'"].ToString() == "SALES")
-                            {
-                                dr_export["Sales Value"] = dr["rate"];
-                                dr_export["Purchase Value"] = "";
-                            }
-                            dt.Rows.Add(dr_export);
-                        }
-
-                        DataRow dr_lastexport = dt.NewRow();
-                        dr_lastexport["Bill Date"] = "";
-                        dr_lastexport["Purchase / Sale"] = "";
-                        dr_lastexport["Bill No."] = "";
-                        dr_lastexport["Qty."] = "";
-                        dr_lastexport["Ledger Name"] = "";
-                        dr_lastexport["Purchase Value"] = "";
-                        dr_lastexport["Sales Value"] = "";
-
-                        ExportToExcel("StockListReport.xls", dt);
-                    }
-                    #endregion
+                   
                 }
-                else
-                {
-                    DataSet dsLedger = bl.getProductStockList(sDataSource, itemCode, startDate, endDate, "", 0);
-
-                    #region Export To Excel
-                    if (dsLedger.Tables[0].Rows.Count > 0)
-                    {
-                        DataTable dt = new DataTable();
-                        dt.Columns.Add(new DataColumn("Bill Date"));
-                        dt.Columns.Add(new DataColumn("Purchase / Sale"));
-                        dt.Columns.Add(new DataColumn("Bill No."));
-                        dt.Columns.Add(new DataColumn("Qty."));
-                        dt.Columns.Add(new DataColumn("Ledger Name"));
-                        dt.Columns.Add(new DataColumn("Purchase Value"));
-                        dt.Columns.Add(new DataColumn("Sales Value"));
-
-                        foreach (DataRow dr in dsLedger.Tables[0].Rows)
-                        {
-                            DataRow dr_export = dt.NewRow();
-                            if ((dr["'Purchase/Sale'"].ToString() == "IN") || (dr["'Purchase/Sale'"].ToString() == "OUT"))
-                            {
-                                dr_export["Bill Date"] = dr["cdate"];
-                            }
-                            else
-                            {
-                                dr_export["Bill Date"] = dr["billdate"];
-                            }
-                            dr_export["Purchase / Sale"] = dr["'Purchase/Sale'"];
-                            if ((dr["'Purchase/Sale'"].ToString() == "IN") || (dr["'Purchase/Sale'"].ToString() == "OUT"))
-                            {
-                                dr_export["Bill No."] = dr["compid"];
-                            }
-                            else
-                            {
-                                dr_export["Bill No."] = dr["billno"];
-                            }
-                            dr_export["Qty."] = dr["qty"];
-                            dr_export["Ledger Name"] = dr["LedgerName"];
-                            if (dr["'Purchase/Sale'"].ToString() == "PURCHASE")
-                            {
-                                dr_export["Purchase Value"] = dr["rate"];
-                                dr_export["Sales Value"] = "";
-                            }
-                            else if (dr["'Purchase/Sale'"].ToString() == "SALES")
-                            {
-                                dr_export["Sales Value"] = dr["rate"];
-                                dr_export["Purchase Value"] = "";
-                            }
-                            dt.Rows.Add(dr_export);
-                        }
-
-                        DataRow dr_lastexport = dt.NewRow();
-                        dr_lastexport["Bill Date"] = "";
-                        dr_lastexport["Purchase / Sale"] = "";
-                        dr_lastexport["Bill No."] = "";
-                        dr_lastexport["Qty."] = "";
-                        dr_lastexport["Ledger Name"] = "";
-                        dr_lastexport["Purchase Value"] = "";
-                        dr_lastexport["Sales Value"] = "";
-
-                        ExportToExcel("StockListReport.xls", dt);
-                    }
-                    #endregion
-                }
+                
 
 
             }
@@ -1362,7 +1282,7 @@ public partial class StockListReport1 : System.Web.UI.Page
         {
             Label closeQty = (Label)e.Row.FindControl("lblClosingStock");
             double Qty = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Qty"));
-            string flag = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "'Purchase/Sale'"));
+            string flag = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "PurchaseSale"));
             double clStck = 0;
             if (flag == "PURCHASE")
             {
@@ -1393,7 +1313,7 @@ public partial class StockListReport1 : System.Web.UI.Page
         {
             Label closeQty = (Label)e.Row.FindControl("lblClosingStock");
             double Qty = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Qty"));
-            string flag = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "'Purchase/Sale'"));
+            string flag = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "PurchaseSale"));
             double clStck = 0;
             if (flag == "PURCHASE")
             {
