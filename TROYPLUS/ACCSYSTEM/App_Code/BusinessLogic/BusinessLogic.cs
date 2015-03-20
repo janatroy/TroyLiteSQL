@@ -39119,7 +39119,7 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "SELECT tblProductMaster.Productdesc,tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='NO' and UCASE(tblSales.DeliveryNote)='NO' and UCASE(tblSales.InternalTransfer)='NO' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billdate,tblProductMaster.Productdesc";
+        dbQry = "SELECT tblProductMaster.Productdesc,tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblsales.Branchcode = tblSalesItems.Branchcode  AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblsales.cancelled<>'true' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billdate,tblProductMaster.Productdesc";
 
         try
         {
@@ -39144,7 +39144,7 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='NO' and UCASE(tblSales.DeliveryNote)='NO' and UCASE(tblSales.InternalTransfer)='NO' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billdate";
+        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno  AND tblsales.Branchcode = tblSalesItems.Branchcode  AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblsales.cancelled<>'true' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billdate";
 
         try
         {
@@ -39196,7 +39196,7 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity,tblcategories.categoryname FROM tblSales,tblSalesItems,tblProductMaster,tblcategories WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblProductmaster.categoryid = tblcategories.categoryid AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='NO' and UCASE(tblSales.DeliveryNote)='NO' and UCASE(tblSales.InternalTransfer)='NO' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billdate,tblcategories.categoryname";
+        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity,tblcategories.categoryname FROM tblSales,tblSalesItems,tblProductMaster,tblcategories WHERE tblSales.Billno = tblSalesItems.Billno  AND tblsales.Branchcode = tblSalesItems.Branchcode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblProductmaster.categoryid = tblcategories.categoryid AND tblsales.cancelled<>'true' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billdate,tblcategories.categoryname";
 
         try
         {
@@ -39221,7 +39221,7 @@ public class BusinessLogic
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity FROM tblSales,tblSalesItems,tblProductMaster,tblcategories WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblProductmaster.categoryid = tblcategories.categoryid AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='NO' and UCASE(tblSales.DeliveryNote)='NO' and UCASE(tblSales.InternalTransfer)='NO' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billdate";
+        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity FROM tblSales,tblSalesItems,tblProductMaster,tblcategories WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.Branchcode = tblSalesItems.Branchcode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblProductmaster.categoryid = tblcategories.categoryid AND tblsales.cancelled<>'true' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billdate";
 
         try
         {
@@ -45910,7 +45910,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet getzerosales(string sDataSource, DateTime startDate, DateTime endDate, string Method, double val)
+    public DataSet getzerosales(string sDataSource, DateTime startDate, DateTime endDate, string Method, double val,string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -45924,11 +45924,11 @@ public class BusinessLogic
 
             if (Method == "Only")
             {
-                dbQry2 = "select tblsales.BillNo,billdate,ledgername,tblsales.customerName,tblsales.customeraddress,tblsales.purchasereturn,tblsales.internaltransfer,tblsales.deliverynote,tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblSalesItems.Qty from tblproductmaster,tblsales, tblSalesItems , tblLedger where tblproductmaster.itemcode=tblSalesItems.itemcode and tblSalesItems.BillNo = tblSales.BillNo and tblSalesItems.Rate = " + val + "  and tblLedger.LedgerID=tblsales.CustomerID and tblSales.billdate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tblSales.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# ";
+                dbQry2 = "select tblsales.BillNo,billdate,ledgername,tblsales.customerName,tblsales.customeraddress,tblsales.purchasereturn,tblsales.internaltransfer,tblsales.deliverynote,tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblSalesItems.Qty from tblproductmaster,tblsales, tblSalesItems , tblLedger where tblproductmaster.itemcode=tblSalesItems.itemcode and tblSalesItems.BillNo = tblSales.BillNo and tblSalesItems.Branchcode = tblSales.Branchcode and tblSalesItems.Rate = " + val + "  and tblLedger.LedgerID=tblsales.CustomerID and tblSales.billdate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblSales.Branchcode = '" + Branch + "' ";
             }
             else
             {
-                dbQry2 = "select tblsales.BillNo,billdate,ledgername,tblsales.customerName,tblsales.customeraddress,tblsales.purchasereturn,tblsales.internaltransfer,tblsales.deliverynote,tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblSalesItems.Qty from ((tblsales  inner join tblSalesItems on tblSalesItems.BillNo = tblSales.BillNo) inner join tblproductmaster on tblproductmaster.itemcode=tblSalesItems.itemcode) inner join  tblLedger on tblLedger.LedgerID=tblsales.CustomerID  where tblsales.BillNo in (select tblsales.BillNo from tblsales inner join tblSalesItems on tblSalesItems.BillNo = tblSales.BillNo where tblSalesItems.Rate = " + val + ") and tblSales.billdate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tblSales.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# ";
+                dbQry2 = "select tblsales.BillNo,billdate,ledgername,tblsales.customerName,tblsales.customeraddress,tblsales.purchasereturn,tblsales.internaltransfer,tblsales.deliverynote,tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblSalesItems.Qty from ((tblsales  inner join tblSalesItems on tblSalesItems.BillNo = tblSales.BillNo) inner join tblproductmaster on tblproductmaster.itemcode=tblSalesItems.itemcode) inner join  tblLedger on tblLedger.LedgerID=tblsales.CustomerID  where tblsales.BillNo in (select tblsales.BillNo from tblsales inner join tblSalesItems on tblSalesItems.BillNo = tblSales.BillNo where tblSalesItems.Branchcode = tblSales.Branchcode and tblSalesItems.Rate = " + val + ") and tblSales.billdate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblSales.Branchcode = '" + Branch + "'  ";
             }
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
@@ -54058,11 +54058,11 @@ public class BusinessLogic
                 //                " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                " Where tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
                 
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.entrydate, tblStock.remarks, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                    " Where tblStock.itemCode like '" + txtSearch + "' Order By tblStock.itemCode");
+                                    " Where tblStock.itemCode like '" + txtSearch + "' Order By tblStock.entrydate");
             }
             else
             {
@@ -54072,11 +54072,11 @@ public class BusinessLogic
                 //               " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //               " Where tblStock.BranchCode='" + branch + "' and tblStock.ItemCode like '" + txtSearch + "' Order By tblStock.ItemCode");
                  
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                    " Where tblStock.BranchCode='" + branch + "' and tblStock.itemCode like '" + txtSearch + "' Order By tblStock.itemCode");
+                                    " Where tblStock.BranchCode='" + branch + "' and tblStock.itemCode like '" + txtSearch + "' Order By tblStock.entrydate");
             }
         }
         else if (dropDown == "ProductName")
@@ -54089,11 +54089,11 @@ public class BusinessLogic
                 //                 " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                 " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                 " Where tblStock.ProductName like '" + txtSearch + "' Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                    " Where tblStock.ProductName like '" + txtSearch + "' Order By tblStock.itemCode");
+                                    " Where tblStock.ProductName like '" + txtSearch + "' Order By tblStock.entrydate");
             }
             else
             {
@@ -54102,11 +54102,11 @@ public class BusinessLogic
                 //              " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //              " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //              " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductName like '" + txtSearch + "' Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                     " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductName like '" + txtSearch + "' Order By tblStock.itemCode");
+                                     " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductName like '" + txtSearch + "' Order By tblStock.entrydate");
             }
         }
         else if (dropDown == "Model")
@@ -54119,11 +54119,11 @@ public class BusinessLogic
                 //                      " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                      " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                       " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                       " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                       " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.itemCode");
+                                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.entrydate");
             }
             else
             {
@@ -54132,11 +54132,11 @@ public class BusinessLogic
                 //                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                  " Where tblStock.BranchCode='" + branch + "' and tblStock.Model like '" + txtSearch + "' Order By tblStock.ItemCode");
-                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                       " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                       " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                       " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.itemCode");
+                                      " Where tblStock.Model like '" + txtSearch + "' Order By tblStock.entrydate");
             }
         }
         else if (dropDown == "Brand")
@@ -54149,11 +54149,11 @@ public class BusinessLogic
                 //                   " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                   " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                   " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
-                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                       " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                       " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                       " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
+                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.entrydate");
             }
             else
             {
@@ -54162,11 +54162,11 @@ public class BusinessLogic
                 //                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                  " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode" +
                 //                  " Where tblStock.BranchCode='" + branch + "' and tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.ItemCode");
-                 dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                       " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                       " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                       " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.itemCode");
+                                      " Where tblStock.ProductDesc like '" + txtSearch + "' Order By tblStock.entrydate");
             }
         }
         else
@@ -54178,7 +54178,7 @@ public class BusinessLogic
                 //                    " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
                 //                    " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                    " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                     " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                     " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                     " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID");
@@ -54189,11 +54189,11 @@ public class BusinessLogic
                 //                    " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
                 //                    " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
                 //                    " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Where tblStock.BranchCode='" + branch + "' Order By tblStock.ItemCode");
-                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
+                dbQry = string.Format(" SELECT  tblProductStock.Stock, tblStock.entrydate, tblStock.remarks, tblStock.itemCode, tblStock.OpeningStock, tblStock.ProductName, tblStock.Model, tblStock.ProductDesc, " +
                                    " tblStock.BranchCode, tblCategories.CategoryName FROM tblStock INNER JOIN " +
                                    " tblProductStock ON tblStock.itemCode = tblProductStock.ItemCode AND tblStock.BranchCode = tblProductStock.BranchCode INNER JOIN " +
                                    " tblCategories ON tblStock.CategoryID = tblCategories.CategoryID" +
-                                   " Where tblStock.BranchCode='" + branch + "' Order By tblStock.itemCode");
+                                   " Where tblStock.BranchCode='" + branch + "' Order By tblStock.entrydate");
 
             }
         }
@@ -54218,7 +54218,7 @@ public class BusinessLogic
         }
     }
 
-    public void DeleteOpeningStock(string connection, string ItemCode, string Username)
+    public void DeleteOpeningStock(string connection, string ItemCode, string Username,string branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -54266,7 +54266,7 @@ public class BusinessLogic
                 }
             }
 
-            dbQry = string.Format("Delete from tblStock Where ItemCode = '{0}' ", ItemCode);
+            dbQry = string.Format("Delete from tblStock Where ItemCode = '{0}' and branchcode = '{1}' ", ItemCode, branch);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -54291,7 +54291,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet GetOpeningStockForItemcode(string connection, string ItemCode)
+    public DataSet GetOpeningStockForItemcode(string connection, string ItemCode,string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -54299,7 +54299,7 @@ public class BusinessLogic
 
         string dbQry = string.Empty;
 
-        dbQry = "select tblStock.ItemCode,tblStock.ProductName, tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName,tblStock.DueDate, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Where tblStock.ItemCode = '" + ItemCode + "' Order By tblStock.ItemCode";
+        dbQry = "select tblStock.ItemCode,tblStock.ProductName, tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName,tblStock.DueDate, tblStock.ProductDesc,tblStock.OpeningStock,tblproductmaster.stock,tblStock.entrydate,tblStock.remarks,tblStock.Branchcode from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) inner join tblproductmaster on tblStock.itemcode = tblproductmaster.itemcode Where tblStock.ItemCode = '" + ItemCode + "' and tblStock.Branchcode= '" + Branch + "' Order By tblStock.ItemCode";
 
         try
         {
@@ -54464,7 +54464,7 @@ public class BusinessLogic
         }
     }
 
-    public double InsertOpeningStock(string connection, string itemCode, string ProductName, string ProductDesc, string model, int catid, int opening, string Username, DateTime DueDate, string branchcode)
+    public double InsertOpeningStock(string connection, string itemCode, string ProductName, string ProductDesc, string model, int catid, int opening, string Username, DateTime DueDate, string branchcode, DateTime EntryDate, string remarks)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -54481,8 +54481,8 @@ public class BusinessLogic
 
             manager.BeginTransaction();
 
-            dbQry = string.Format("INSERT INTO tblStock(itemCode,ProductName,ProductDesc,model,categoryid,OpeningStock,DueDate,BranchCode) VALUES('{0}','{1}','{2}','{3}',{4},{5},'{6}','{7}')",
-               itemCode, ProductName, ProductDesc, model, catid, opening, DueDate.ToString("yyyy-MM-dd"), branchcode);
+            dbQry = string.Format("INSERT INTO tblStock(itemCode,ProductName,ProductDesc,model,categoryid,OpeningStock,DueDate,BranchCode,EntryDate,remarks) VALUES('{0}','{1}','{2}','{3}',{4},{5},'{6}','{7}','{8}','{9}')",
+               itemCode, ProductName, ProductDesc, model, catid, opening, DueDate.ToString("yyyy-MM-dd"), branchcode, EntryDate.ToString("yyyy-MM-dd"), remarks);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -54519,7 +54519,7 @@ public class BusinessLogic
         }
     }
 
-    public double UpdateOpeningStock(string connection, string itemCode, string ProductName, string ProductDesc, string model, int catid, int opening, int CurrentStock, int adjustedStock, string Username, DateTime DueDate, string branchcode)
+    public double UpdateOpeningStock(string connection, string itemCode, string ProductName, string ProductDesc, string model, int catid, int opening, int CurrentStock, int adjustedStock, string Username, DateTime DueDate, string branchcode,DateTime sentryDate,string dremarks)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -54542,7 +54542,7 @@ public class BusinessLogic
 
             manager.BeginTransaction();
 
-            dbQry = string.Format("Update tblStock SET tblStock.OpeningStock =  tblStock.OpeningStock + {0} WHERE itemCode='{1}' and BranchCode='{2}'", adjustedStock, itemCode, branchcode);
+            dbQry = string.Format("Update tblStock SET tblStock.OpeningStock =  tblStock.OpeningStock + {0}, remarks = '{3}' WHERE itemCode='{1}' and BranchCode='{2}'", adjustedStock, itemCode, branchcode, dremarks);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -67401,9 +67401,9 @@ public class BusinessLogic
             if (string.IsNullOrEmpty(validationMsg))
             {
                 dbQry = string.Format(@"UPDATE tblAttendanceSummary SET DateSubmitted='{0}',Status='{1}' WHERE AttendanceId ={2}", DateTime.Now.ToString("MM/dd/yyyy"), "Submitted", attendanceID.ToString());
-                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
                 return true;
-            }
+        }
             else
             {
                 return false;
@@ -68101,7 +68101,7 @@ public class BusinessLogic
                         allowedCount = wholePart + 0.5;
                     }
                     else
-                    {
+                {
                         allowedCount = wholePart;
                     }
 
@@ -68662,7 +68662,7 @@ public class BusinessLogic
                 userInfo.RoleId = roleId;
 
                 return userInfo;
-            }
+    }
             else
                 return null;
 
@@ -74217,7 +74217,7 @@ public class BusinessLogic
         }
     }
 
-    public DataSet GetAbsoluteCategorypricelist(string sDataSource, string Category, string Branch)
+    public DataSet GetAbsoluteCategorypricelist(string sDataSource, string Category, string Branch, string types,string price)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -74233,7 +74233,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry2 = "select tblproductprices.itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate,tblproductstock.stock,tblproductstock.Branchcode from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblCategory.CategoryId = tblproductmaster.CategoryId where tblCategory.Categoryname='" + Category + "' and tblproductstock.Branchcode ='" + Branch + "' ";
+            dbQry2 = "select sum(tblproductprices.price * tblproductstock.stock) as price, sum(tblproductstock.stock) as stock from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster on tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblCategories on tblCategories.CategoryId = tblproductmaster.CategoryId where tblCategories.Categoryname='" + Category + "' and tblproductprices.pricename ='" + price + "' and tblCategories.Categoryname='" + Category + "'  and tblproductstock.Stock>0 group by tblproductmaster.CategoryId ";
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
 
@@ -74556,11 +74556,62 @@ public class BusinessLogic
                 drNew["VoucherType"] = sVoucherType;
 
                 ds.Tables[0].Rows.Add(drNew);
-            }
-
-
-
         }
+
+
+
+    }
+
+    public DataSet gettotalBranchsales(DateTime sDate, DateTime eDate)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);// System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity,tblBranch.Branchcode FROM tblSales,tblSalesItems,tblProductMaster,tblBranch WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblsales.Branchcode = tblBranch.Branchcode AND tblsales.cancelled<>'true' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billdate,tblBranch.Branchcode";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return ds;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+
+    public DataSet gettotalBranchsalesdate(DateTime sDate, DateTime eDate)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);// System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        dbQry = "SELECT tblSales.Billdate, SUM(tblSalesItems.Qty) As Quantity FROM tblSales,tblSalesItems,tblProductMaster,tblBranch WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblsales.Branchcode = tblBranch.Branchcode AND tblsales.cancelled<>'true' and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billdate";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return ds;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
 
 
         /* Clossing the DB Connection */
@@ -74569,5 +74620,5 @@ public class BusinessLogic
         return ds;
 
 
-    }
+}
 }

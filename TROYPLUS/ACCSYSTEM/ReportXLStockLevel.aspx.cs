@@ -379,7 +379,7 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
          ds = objBL.getstocklevelcategory(sDataSource, refDate, trange, toption, Branch);
          DataSet dst = new DataSet();
 
-         string itemcode = string.Empty;
+         string Category = string.Empty;
 
          DataTable dt = new DataTable();
 
@@ -392,24 +392,26 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                  //dt.Columns.Add(new DataColumn("ProductName"));
                  //dt.Columns.Add(new DataColumn("Model"));
                  //dt.Columns.Add(new DataColumn("ItemCode"));
-                 dt.Columns.Add(new DataColumn("Category Level"));
+                 dt.Columns.Add(new DataColumn("Category %"));
                  dt.Columns.Add(new DataColumn("Stock"));
 
                  dt.Columns.Add(new DataColumn("Branchcode"));
-                 dt.Columns.Add(new DataColumn("Stock Value"));
+                 
 
                  foreach (ListItem listItem1 in lstPricelist.Items)
                  {
                      if (listItem1.Selected)
                      {
-                         string item1 = listItem1.Value;
+                         string item1 = listItem1.Value + " Value %";
 
                          dt.Columns.Add(new DataColumn(item1));
                      }
                  }
 
-                 DataRow dr_final111 = dt.NewRow();
-                 dt.Rows.Add(dr_final111);
+                 //dt.Columns.Add(new DataColumn("Stock Value %"));
+
+                 //DataRow dr_final111 = dt.NewRow();
+                 //dt.Rows.Add(dr_final111);
 
                  //if (ds.Tables[0].Rows.Count > 0)
                  //{
@@ -424,56 +426,15 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                  //    ds.Tables[0].AcceptChanges();
                  //}
 
-                 if (ds.Tables[0].Rows.Count > 0)
-                 {
-                     if (ttrange == 1)
-                     {
-                         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                         {
-                             tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-                             trol = Convert.ToInt32(ds.Tables[0].Rows[i]["categorylevel"]);
-                             if (tstock > trol)
-                             {
-                                 ds.Tables[0].Rows[i].Delete();
-                             }
-                         }
-                         ds.Tables[0].AcceptChanges();
-                     }
-                     else if (ttrange == 2)
-                     {
-                         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                         {
-                             tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-                             trol = Convert.ToInt32(ds.Tables[0].Rows[i]["categorylevel"]);
-                             if (tstock < trol)
-                             {
-                                 ds.Tables[0].Rows[i].Delete();
-                             }
-                         }
-                         ds.Tables[0].AcceptChanges();
-                     }
-                     else if (ttrange == 3)
-                     {
-                         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                         {
-                             tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-                             trol = Convert.ToInt32(ds.Tables[0].Rows[i]["categorylevel"]);
-                             if ((trol < 0) || (trol > 0))
-                             {
-                                 ds.Tables[0].Rows[i].Delete();
-                             }
-                         }
-                         ds.Tables[0].AcceptChanges();
-                     }
-                 }
+                 
 
                  if (ds.Tables[0].Rows.Count > 0)
                  {
                      foreach (DataRow dr in ds.Tables[0].Rows)
                      {
-                         itemcode = Convert.ToString(dr["Categoryname"]);
+                         Category = Convert.ToString(dr["Categoryname"]);
 
-                         dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode, Branch);
+                         
 
                          DataRow dr_final6 = dt.NewRow();
                          dr_final6["Category"] = dr["Categoryname"];
@@ -481,39 +442,111 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                          //dr_final6["ProductName"] = dr["ProductName"];
                          //dr_final6["Model"] = dr["Model"];
                          //dr_final6["ItemCode"] = dr["Itemcode"];
-                         dr_final6["Category Level"] = dr["categorylevel"];
+                         dr_final6["Category %"] = dr["categorylevel"];
                          dr_final6["Stock"] = dr["Stock"];
-
-                         if (dst != null)
-                         {
-                             if (dst.Tables[0].Rows.Count > 0)
-                             {
-                                 foreach (DataRow drt in dst.Tables[0].Rows)
-                                 {
-                                     dr_final6["Branchcode"] = drt["Branchcode"];
+                         dr_final6["Branchcode"] = drpBranchAdd.SelectedItem.Text;
+                       
 
                                      foreach (ListItem listItem1 in lstPricelist.Items)
                                      {
                                          if (listItem1.Selected)
                                          {
-                                             string item1 = listItem1.Value;
-                                             string item123 = Convert.ToString(drt["pricename"]);
+                                             dst = objBL.GetAbsoluteCategorypricelist(sDataSource, Category, Branch, "Category", listItem1.Value);
 
-                                             if (item123 == item1)
+                                             if (dst != null)
                                              {
-                                                 dr_final6[item1] = drt["price"];
-                                             }
+                                                 if (dst.Tables[0].Rows.Count > 0)
+                                                 {
+                                                     foreach (DataRow drt in dst.Tables[0].Rows)
+                                                     {
+                                                         
 
-                                         }
-                                     }
-                                 }
-                             }
+                                                        string item1 = listItem1.Value + " Value %";
+                                                        //string item123 = Convert.ToString(drt["pricename"]);
+
+                                                        //if (item123 == item1)
+                                                        //{
+                                                            dr_final6[item1] = Convert.ToDouble(drt["price"]);
+                                                        //}
+
+                                                }
+                                            }
+                                        }
+                                    }
                          }
 
 
                          dt.Rows.Add(dr_final6);
                      }
-                     ExportToExcel(dt);
+
+                     DataSet dstt = new DataSet();
+                     dstt.Tables.Add(dt);
+
+                     double troll = 0;
+
+
+                     if (dstt.Tables[0].Rows.Count > 0)
+                     {
+                         if (ttrange == 1)
+                         {
+                             for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                             {
+                                 tstock = Convert.ToInt32(dstt.Tables[0].Rows[i]["Stock"]);
+                                 trol = Convert.ToInt32(dstt.Tables[0].Rows[i]["category %"]);
+
+                                 troll = Convert.ToDouble(dstt.Tables[0].Rows[i]["price"]) / 100;
+
+                                 if (troll > trol)
+                                 {
+                                     dstt.Tables[0].Rows[i].Delete();
+                                 }
+                             }
+                             dstt.Tables[0].AcceptChanges();
+                         }
+                         else if (ttrange == 2)
+                         {
+                             for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                             {
+                                 tstock = Convert.ToInt32(dstt.Tables[0].Rows[i]["Stock"]);
+                                 trol = Convert.ToInt32(dstt.Tables[0].Rows[i]["category %"]);
+
+                                 troll = Convert.ToDouble(dstt.Tables[0].Rows[i]["price"]) / 100;
+
+                                 if (troll < trol)
+                                 {
+                                     dstt.Tables[0].Rows[i].Delete();
+                                 }
+                             }
+                             dstt.Tables[0].AcceptChanges();
+                         }
+                         else if (ttrange == 3)
+                         {
+                             for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                             {
+                                 tstock = Convert.ToInt32(dstt.Tables[0].Rows[i]["Stock"]);
+                                 trol = Convert.ToInt32(dstt.Tables[0].Rows[i]["category %"]);
+
+                                 troll = Convert.ToDouble(dstt.Tables[0].Rows[i]["price"]) / 100;
+
+                                 if ((trol < 0) || (trol > 0))
+                                 {
+                                     dstt.Tables[0].Rows[i].Delete();
+                                 }
+                             }
+                             dstt.Tables[0].AcceptChanges();
+                         }
+                         else
+                         {
+
+                         }
+                     }
+
+                     //DataTable dtt = new DataTable();
+                     //dtt.(dstt);
+
+                     DataTable dtt = dstt.Tables[0];
+
+                     ExportToExcel(dtt);
                  }
                  else
                  {
