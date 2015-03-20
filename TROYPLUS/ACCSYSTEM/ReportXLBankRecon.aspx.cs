@@ -72,27 +72,54 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
         }
    }
 
-   protected void btngriddata_Click(object sender, EventArgs e)
+   protected void btnReport_Click(object sender, EventArgs e)
    {
-       //try
-       //{
-       //    DateTime startDate, endDate;
-       //    startDate = Convert.ToDateTime(txtSrtDate.Text);
-       //    endDate = Convert.ToDateTime(txtEdDate.Text);
-       //    string itemcode;
-       //    itemcode = "";
+       int iLedgerID = 0;
+       DateTime startDate;
 
-       //    DataSet ds = new DataSet();
-       //    ds = objBL.getstockstatement(sDataSource, startDate, endDate, itemcode);
+       DataSet ds = new DataSet();
+       DataSet dsttt = new DataSet();
+       BusinessLogic objBL = new BusinessLogic();
 
-       //    gvLedger.DataSource = ds;
-       //    gvLedger.DataBind();
-       //}
-       //catch (Exception ex)
+       string Types = string.Empty;
+
+       
+       if (opnbank.SelectedItem.Text == "Bank")
+       {
+           if (ddlbank.SelectedValue == "0")
+           {
+               ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select the Bank. It cannot be left blank');", true);
+               return;
+           }
+           else
+           {
+               iLedgerID = Convert.ToInt32(ddlbank.SelectedItem.Value);
+               Types = "Bank";
+           }
+       }
+       
+       
+       else if (opnbank.SelectedItem.Text == "Customer")
+       {
+           if (ddlbank.SelectedValue == "0")
+           {
+               ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select the Bank. It cannot be left blank');", true);
+               return;
+           }
+           else
+           {
+
+               iLedgerID = Convert.ToInt32(ddlCustomer.SelectedItem.Value);
+               Types = "Customer";
+           }
+       }
+
+       string list = btnlist.SelectedItem.Text;
+
+       Response.Write("<script language='javascript'> window.open('ReportXLBankRecon1.aspx?ledger=" + iLedgerID + "&list=" + list + "&type=" + Types + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+       //if (btnlist.SelectedValue == "All")
        //{
-       //    var error = ex.Message.Replace("'", "");
-       //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Error Occured : " + @error + "');", true);
-       //    return;
        //}
    }
 
@@ -151,16 +178,48 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
          BusinessLogic objBL = new BusinessLogic();
 
          string Types = string.Empty;
-         if (opnbank.SelectedItem.Text == "Bank")
-         {
-             iLedgerID = Convert.ToInt32(ddlbank.SelectedItem.Value);
-             Types = "Bank";
-         }
-         else if (opnbank.SelectedItem.Text == "Customer")
-         {
-             iLedgerID = Convert.ToInt32(ddlCustomer.SelectedItem.Value);
-             Types = "Customer";
-         }
+         //if (opnbank.SelectedItem.Text == "Bank")
+         //{
+         //    iLedgerID = Convert.ToInt32(ddlbank.SelectedItem.Value);
+         //    Types = "Bank";
+         //}
+         //else if (opnbank.SelectedItem.Text == "Customer")
+         //{
+         //    iLedgerID = Convert.ToInt32(ddlCustomer.SelectedItem.Value);
+         //    Types = "Customer";
+         //}
+
+
+             if (opnbank.SelectedItem.Text == "Bank")
+             {
+                 if (ddlbank.SelectedValue == "0")
+                 {
+                     ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select the Bank. It cannot be left blank');", true);
+                     return;
+                 }
+                 else
+                 {
+                     iLedgerID = Convert.ToInt32(ddlbank.SelectedItem.Value);
+                     Types = "Bank";
+                 }
+             }
+
+
+             else if (opnbank.SelectedItem.Text == "Customer")
+             {
+                 if (ddlbank.SelectedValue == "0")
+                 {
+                     ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select the Bank. It cannot be left blank');", true);
+                     return;
+                 }
+                 else
+                 {
+
+                     iLedgerID = Convert.ToInt32(ddlCustomer.SelectedItem.Value);
+                     Types = "Customer";
+                 }
+             }
+         
 
          objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -206,6 +265,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("TransDate"));
                      dt.Columns.Add(new DataColumn("Name"));
                      dt.Columns.Add(new DataColumn("Ledger Name"));
+                     dt.Columns.Add(new DataColumn("Branch"));
                      dt.Columns.Add(new DataColumn("Amount"));
                      dt.Columns.Add(new DataColumn("Narration"));
                      dt.Columns.Add(new DataColumn("Voucher Type"));
@@ -224,6 +284,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                          dr_final6["TransDate"] = dr["TransDate"];
                          dr_final6["Name"] = dr["Debtor"];
                          dr_final6["Ledger Name"] = dr["Creditor"];
+                         dr_final6["Branch"] = dr["BranchCode"];
                          dr_final6["Amount"] = dr["Amount"];
                          dr_final6["Narration"] = dr["Narration"];
                          dr_final6["ChequeNo"] = dr["ChequeNo"];
@@ -258,6 +319,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("TransDate"));
                      dt.Columns.Add(new DataColumn("Name"));
                      dt.Columns.Add(new DataColumn("Ledger Name"));
+                     dt.Columns.Add(new DataColumn("Branch"));
                      dt.Columns.Add(new DataColumn("Amount"));
                      dt.Columns.Add(new DataColumn("Narration"));
                      dt.Columns.Add(new DataColumn("Voucher Type"));
@@ -276,6 +338,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                          dr_final6["TransDate"] = dr["TransDate"];
                          dr_final6["Name"] = dr["Debtor"];
                          dr_final6["Ledger Name"] = dr["Creditor"];
+                         dr_final6["Branch"] = dr["BranchCode"];
                          dr_final6["Amount"] = dr["Amount"];
                          dr_final6["Narration"] = dr["Narration"];
                          dr_final6["ChequeNo"] = dr["ChequeNo"];
@@ -310,6 +373,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                      dt.Columns.Add(new DataColumn("TransDate"));
                      dt.Columns.Add(new DataColumn("Name"));
                      dt.Columns.Add(new DataColumn("Ledger Name"));
+                     dt.Columns.Add(new DataColumn("BranchCode"));
                      dt.Columns.Add(new DataColumn("Amount"));
                      dt.Columns.Add(new DataColumn("Narration"));
                      dt.Columns.Add(new DataColumn("Voucher Type"));
@@ -328,6 +392,7 @@ public partial class ReportXLBankRecon : System.Web.UI.Page
                          dr_final6["TransDate"] = dr["TransDate"];
                          dr_final6["Name"] = dr["Debtor"];
                          dr_final6["Ledger Name"] = dr["Creditor"];
+                         dr_final6["Branch"] = dr["BranchCode"];
                          dr_final6["Amount"] = dr["Amount"];
                          dr_final6["Narration"] = dr["Narration"];
                          dr_final6["ChequeNo"] = dr["ChequeNo"];

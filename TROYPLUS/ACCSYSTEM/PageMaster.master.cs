@@ -824,6 +824,11 @@ public partial class PageMaster : System.Web.UI.MasterPage
             lnkprojectreport.Visible = false;
         }
 
+        if (!this.Page.User.IsInRole("Mreport"))
+        {
+            lnkmanufacturereport.Visible = false;
+        }
+
         //if (Helper.GetDecryptedKey("InstallationType") != "ONLINE-OFFLINE-CLIENT")
         //{
            // lnkConfiguration.Visible = true;

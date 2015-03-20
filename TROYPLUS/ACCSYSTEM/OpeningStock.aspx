@@ -135,8 +135,8 @@
                                                                     <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Always">
                                                                         <ContentTemplate>
                                                                             <asp:DropDownList ID="cmbCategory" runat="server" AutoPostBack="true" BackColor="#e7e7e7"
-                                                                                Width="100%" OnSelectedIndexChanged="LoadProducts" AppendDataBoundItems="True" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium">
-                                                                                <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select Category</asp:ListItem>
+                                                                                Width="200px" OnSelectedIndexChanged="LoadProducts" AppendDataBoundItems="True" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="chzn-select">
+                                                                                <asp:ListItem Selected="True" Value="0" >Select Category</asp:ListItem>
                                                                             </asp:DropDownList>
                                                                         </ContentTemplate>
                                                                         <%--<Triggers>
@@ -154,7 +154,7 @@
                                                                 <td class="ControlDrpBorder" style="width: 25%">
                                                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Always">
                                                                         <ContentTemplate>
-                                                                            <asp:DropDownList ID="cmbBrand" runat="server" Width="100%" AutoPostBack="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium"
+                                                                            <asp:DropDownList ID="cmbBrand" runat="server" Width="200px" AutoPostBack="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"  CssClass="chzn-select"
                                                                                 OnSelectedIndexChanged="LoadForBrand" AppendDataBoundItems="True">
                                                                                 <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select Brand</asp:ListItem>
                                                                             </asp:DropDownList>
@@ -197,7 +197,7 @@
                                                                 <td class="ControlDrpBorder" style="width: 25%;">
                                                                     <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Always">
                                                                         <ContentTemplate>
-                                                                            <asp:DropDownList ID="cmbModel" runat="server" OnSelectedIndexChanged="LoadForModel" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium"
+                                                                            <asp:DropDownList ID="cmbModel" runat="server" OnSelectedIndexChanged="LoadForModel" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="chzn-select"
                                                                                 AutoPostBack="true" Width="100%" AppendDataBoundItems="True">
                                                                                 <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select Model</asp:ListItem>
                                                                             </asp:DropDownList>
@@ -222,7 +222,7 @@
                                                                     <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Always">
                                                                         <ContentTemplate>
                                                                             <asp:DropDownList ID="cmbProdAdd" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor="#e7e7e7"
-                                                                                DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="LoadForProduct" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium"
+                                                                                DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="LoadForProduct" Style="border: 1px solid #e7e7e7" Height="26px"  CssClass="chzn-select"
                                                                                 ValidationGroup="product" Width="100%">
                                                                                 <asp:ListItem style="background-color: #e7e7e7;" Text="Select Product Code" Value="0"></asp:ListItem>
                                                                             </asp:DropDownList>
@@ -309,7 +309,38 @@
                                                                 </td>
                                                                 <td style="width: 10%"></td>
                                                             </tr>
+                                                            <tr style="height: 2px">
+                                                            </tr>
+                                                            <tr>
 
+                                                                <td class="ControlLabel" style="width: 25%;">
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtDueDate"
+                                                                        Display="Dynamic" ErrorMessage="please select OpeningStock Due Date. It cannot be let blank.">*</asp:RequiredFieldValidator>--%>
+                                                                    Date *
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 25%">
+                                                                    <asp:TextBox ID="txtdate" Enabled="false" runat="server" BackColor="#e7e7e7" SkinID="skinTxtBoxGrid"
+                                                                        Width="100px"></asp:TextBox>
+                                                                    <%--<cc1:CalendarExtender ID="CalendarExtender1" runat="server" Animated="true" Format="dd/MM/yyyy"
+                                                                        PopupButtonID="btnDate3" PopupPosition="BottomLeft" TargetControlID="txtDueDate">
+                                                                    </cc1:CalendarExtender>--%>
+                                                                </td>
+
+                                                                <td style="width: 5%" align="left">
+                                                                    
+                                                                </td>
+                                                                <td class="ControlLabel" style="width: 15%">
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtremarks"
+                                                                        Display="Dynamic" ErrorMessage="please enter Remarks. It cannot be let blank.">*</asp:RequiredFieldValidator>
+                                                                      Remarks *
+                                                                    
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 25%">
+                                                                    <asp:TextBox ID="txtremarks" runat="server" BackColor="#e7e7e7" SkinID="skinTxtBoxGrid"
+                                                                        Width="100px"></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 10%"></td>
+                                                            </tr>
                                                             <tr style="height: 8px">
                                                             </tr>
                                                             <tr>
@@ -368,6 +399,7 @@
                                                 <asp:BoundField DataField="OpeningStock" HeaderText="Opening Stock" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Stock" HeaderText="Current Stock" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="EntryDate" HeaderText="Date" HeaderStyle-BorderColor="Gray" DataFormatString="{0:dd/MM/yyyy}"/>
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" CausesValidation="false" SkinID="edit"
@@ -435,6 +467,7 @@
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="ItemCode" Type="String" />
                                 <asp:Parameter Name="Username" Type="String" />
+                                <asp:Parameter Name="branch" Type="String" />
                             </DeleteParameters>
                         </asp:ObjectDataSource>
                         <asp:ValidationSummary ID="valSummary" runat="server" ShowMessageBox="true" ShowSummary="false" />

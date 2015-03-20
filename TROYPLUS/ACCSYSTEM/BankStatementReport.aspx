@@ -45,14 +45,14 @@
             <tr>
                 <td  style="width:30%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
                     Bank Name
-                    <asp:CompareValidator ID="cvBank" runat="server" ControlToValidate="drpBankName"
+                 <%--   <asp:CompareValidator ID="cvBank" runat="server" ControlToValidate="drpBankName"
                         EnableClientScript="true" Display="Dynamic" ErrorMessage="Bank is Mandatory"
-                        Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                        Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
                 </td>
                 <td  style="width:20%" class="ControlDrpBorder">
                     <asp:DropDownList ID="drpBankName" runat="server" Width="100%" DataTextField="LedgerName" style="border: 1px solid #e7e7e7" height="26px"
                         DataValueField="LedgerID"  CssClass="drpDownListMedium" BackColor = "#e7e7e7">
-                        <asp:ListItem Selected="True" Value="0" style="background-color: #bce1fe">Select Bank</asp:ListItem>
+                        <asp:ListItem Selected="True" Text="Select Bank" Value="0" ></asp:ListItem>
                     </asp:DropDownList>
                 </td>
                 <td style="width:20%">
@@ -66,7 +66,7 @@
                     Start Date
                 </td>
                 <td class="ControlTextBox3" style="width:25%">
-                    <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10"
+                    <asp:TextBox ID="txtStartDate"  CssClass="cssTextBox" Width="100px" MaxLength="10"
                         runat="server" />
                 </td>
                 <td style="width:20%">
@@ -84,7 +84,7 @@
                     End Date
                 </td>
                 <td class="ControlTextBox3"  style="width:25%">
-                    <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10" runat="server" />
+                    <asp:TextBox ID="txtEndDate"  CssClass="cssTextBox" Width="100px" MaxLength="10" runat="server" />
                 </td>
                 <td style="width:20%">
                     <script type="text/javascript" language="JavaScript">

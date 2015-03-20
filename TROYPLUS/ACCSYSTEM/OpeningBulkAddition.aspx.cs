@@ -130,6 +130,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("MODEL"));
         dt.Columns.Add(new DataColumn("CATEGORY"));
         dt.Columns.Add(new DataColumn("Opening"));
+        dt.Columns.Add(new DataColumn("Remarks"));
         
         DataRow dr_final12 = dt.NewRow();
         dr_final12["ITEMCODE"] = "";
@@ -137,6 +138,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
         dr_final12["PRODUCTNAME"] = "";
         dr_final12["MODEL"] = "";
         dr_final12["Opening"] = "";
+        dr_final12["Remarks"] = "";
         dt.Rows.Add(dr_final12);
 
         ExportToExcel(dt);
@@ -340,7 +342,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == "") || (Convert.ToString(dr["Opening"]) == null) || (Convert.ToString(dr["Opening"]) == "") || (Convert.ToString(dr["brand"]) == null) || (Convert.ToString(dr["brand"]) == "") || (Convert.ToString(dr["category"]) == null) || (Convert.ToString(dr["category"]) == "") || (Convert.ToString(dr["PRODUCTNAME"]) == null) || (Convert.ToString(dr["PRODUCTNAME"]) == ""))
+                    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == "") || (Convert.ToString(dr["Opening"]) == null) || (Convert.ToString(dr["Opening"]) == "") || (Convert.ToString(dr["brand"]) == null) || (Convert.ToString(dr["brand"]) == "") || (Convert.ToString(dr["category"]) == null) || (Convert.ToString(dr["category"]) == "") || (Convert.ToString(dr["PRODUCTNAME"]) == null) || (Convert.ToString(dr["PRODUCTNAME"]) == "") || (Convert.ToString(dr["Remarks"]) == null) || (Convert.ToString(dr["Remarks"]) == ""))
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Missing Datas');", true);
                         return;

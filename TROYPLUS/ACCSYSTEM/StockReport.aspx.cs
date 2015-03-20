@@ -604,7 +604,11 @@ public partial class StockReport : System.Web.UI.Page
                 {
                     li.Selected = true;
                 }
-            }           
+            }
+            else
+            {
+                li.Selected = false;
+            }
         }
     }
   

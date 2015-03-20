@@ -92,7 +92,7 @@
                         </td>
                         <td class="ControlTextBox3"  style="width:40%">
                             <asp:RadioButtonList ID="opnbank" runat="server" style="font-size:14px" 
-                                RepeatDirection="Horizontal" BackColor="#90C9FC" Height="35px" OnSelectedIndexChanged="opnbank_SelectedIndexChanged" AutoPostBack="True">
+                                RepeatDirection="Horizontal"  Height="35px" OnSelectedIndexChanged="opnbank_SelectedIndexChanged" AutoPostBack="True">
                                 <asp:ListItem Selected="True">Bank</asp:ListItem>
                                 <asp:ListItem>Customer</asp:ListItem>
                             </asp:RadioButtonList>
@@ -107,7 +107,9 @@
                             Bank
                         </td>
                         <td class="ControlDrpBorder"  style="width:35%">
-                            <asp:DropDownList ID="ddlbank" AppendDataBoundItems="true" style="border: 1px solid #90C9FC" runat="server" Height="25px" Width="100%"  CssClass="drpDownListMedium" BackColor = "#90C9FC" DataTextField="LedgerName"  DataValueField="LedgerID">
+                            <asp:DropDownList ID="ddlbank" AppendDataBoundItems="true" style="border: 1px solid #90C9FC" runat="server" Height="25px" Width="100%"  CssClass="drpDownListMedium" DataTextField="LedgerName"  DataValueField="LedgerID">
+
+                                <asp:ListItem Text="Select Bank" Value="0"  Selected="True"> </asp:ListItem>
                             </asp:DropDownList>
                         </td>
                                                                                                     
@@ -120,7 +122,8 @@
                             Customer
                         </td>
                         <td class="ControlDrpBorder"  style="width:35%">
-                            <asp:DropDownList ID="ddlCustomer" AppendDataBoundItems="true" style="border: 1px solid #90C9FC" runat="server" Height="25px" Width="100%"  CssClass="drpDownListMedium" BackColor = "#90C9FC" DataTextField="LedgerName"  DataValueField="LedgerID">
+                            <asp:DropDownList ID="ddlCustomer" AppendDataBoundItems="true" style="border: 1px solid #90C9FC" runat="server" Height="25px" Width="100%"  CssClass="drpDownListMedium"  DataTextField="LedgerName"  DataValueField="LedgerID">
+                                 <asp:ListItem Text="Select customer" Value="0"  Selected="True"> </asp:ListItem>
                             </asp:DropDownList>
                         </td>
                                                                                                     
@@ -134,7 +137,7 @@
                         </td>
                         <td class="ControlTextBox3"  style="width:35%" align="left">
                             <asp:RadioButtonList ID="btnlist" runat="server" Width="100%" style="font-size:12px" 
-                                BackColor="#90C9FC" Height="45px">
+                                Height="45px">
                                 <asp:ListItem Selected="True">All</asp:ListItem>
                                 <asp:ListItem>Pending</asp:ListItem>
                                 <asp:ListItem>Reconciliated</asp:ListItem>
@@ -156,8 +159,10 @@
                                             EnableTheming="false" OnClick="btnxls_Click" Width="152px" />
                                     </td>
                                     <td style="width:40%">
-                                        <asp:Button ID="btngriddata" runat="server" CssClass="generatebutton" 
-                                                EnableTheming="false" OnClick="btngriddata_Click" Width="152px" Visible="False" />
+                                          <asp:Button ID="btngriddata" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnReport_Click" />
+                                      <%--  <asp:Button ID="btngriddata" runat="server" CssClass="generatebutton" 
+                                                EnableTheming="false" OnClick="btngriddata_Click" Width="152px"  />--%>
                                     </td>
                                 </tr>
                         </table>

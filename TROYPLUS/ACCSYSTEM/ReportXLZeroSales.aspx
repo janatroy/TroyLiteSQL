@@ -43,7 +43,7 @@
                                         Start Date
                                     </td>
                                     <td style="width:35%;" class="ControlTextBox3">
-                                            <asp:TextBox ID="txtSrtDate" runat="server" Enabled="false"  AutoPostBack="True" BackColor = "#e7e7e7" SkinID="skinTxtBoxGrid"
+                                            <asp:TextBox ID="txtSrtDate" runat="server" AutoPostBack="True" BackColor = "#e7e7e7" SkinID="skinTxtBoxGrid"
                                                 Width="100px"
                                                 MaxLength="10" TabIndex="1"></asp:TextBox>
                                             <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy"
@@ -63,7 +63,7 @@
                                         End Date
                                     </td>
                                     <td style="width:35%;" class="ControlTextBox3">
-                                            <asp:TextBox ID="txtEdDate" runat="server" Enabled="false"  AutoPostBack="True" BackColor = "#e7e7e7" SkinID="skinTxtBoxGrid"
+                                            <asp:TextBox ID="txtEdDate" runat="server" AutoPostBack="True" BackColor = "#e7e7e7" SkinID="skinTxtBoxGrid"
                                                 Width="100px"
                                                 MaxLength="10" TabIndex="1"></asp:TextBox>
                                             <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Format="dd/MM/yyyy"
@@ -73,6 +73,21 @@
                                     <td align="left" style="width:35%;">
                                             <asp:ImageButton ID="btnEdDate" ImageUrl="App_Themes/NewTheme/images/cal.gif"
                                                 CausesValidation="False" Width="20px" runat="server" />    
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr style="height: 2px;"/> 
+                                 <tr>
+                                    <td class="ControlLabel2" style="width:35%;">
+                                       Branch
+                                    </td>
+                                    <td style="width:35%;" class="ControlDrpBorder">
+                                         <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                         </asp:DropDownList>
+                                    </td>
+                                    <td align="left" style="width:35%;">
+                                           
                                     </td>
                                     <td>
                                     </td>
@@ -98,7 +113,7 @@
                                     <td class="ControlLabel2" style="width:35%;">
                                         Option
                                     </td>
-                                    <td style="width:35%;" class="ControlTextBox3">
+                                    <td style="width:35%;" class="ControlTextBox3" align="left">
                                         <asp:RadioButtonList ID="chkoption" runat="server">
                                             <asp:ListItem Text="Only Value Details" Selected="true"></asp:ListItem>
                                             <asp:ListItem Text="Whole Bill Details"></asp:ListItem>
@@ -119,17 +134,18 @@
                                     <tr>
                                         <td style="width:25%">
                                         </td>
-                                        <td style="width:10%">
-                                            
-                                             
-                                        </td>
+                                       
                                         <td style="width:20%">
                                              <asp:Button ID="btnxls" runat="server" CssClass="exportexl6" 
                                                   EnableTheming="false" OnClick="btnxls_Click" Width="152px" />
                                         </td>
-                                        <td style="width:30%">
-                                            <asp:Button ID="btngriddata" runat="server" Visible="false" CssClass="generatebutton" 
+                                        <td style="width:20%">
+                                            <asp:Button ID="btngriddata" runat="server" CssClass="NewReport6" 
                                                   EnableTheming="false" OnClick="btngriddata_Click" Width="152px" />
+                                        </td>
+                                         <td style="width:20%">
+                                            
+                                             
                                         </td>
                                     </tr>
                             </table>

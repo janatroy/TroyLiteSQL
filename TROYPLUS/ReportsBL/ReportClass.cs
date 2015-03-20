@@ -2323,14 +2323,18 @@ namespace ReportsBL
             string sTranDate = string.Empty;
             string iQry = "";
             string sParticulars = "";
+            string sbranch = "";
             string sVoucherType = string.Empty;
             string sQry = string.Empty;
             string pQry = string.Empty;
             string sConStr = string.Empty;
-            OleDbConnection oleConn, oleSubConn;
+           // OleDbConnection oleConn, oleSubConn;
 
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn, oleSubConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
+           // OleDbCommand oleCmd;
+           // OleDbDataAdapter oleAdp;
             DataSet dsParentQry;
             DataSet dsChildQry;
             string sOrder;
@@ -2343,16 +2347,16 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
 
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
-            sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " + sOrder;
+            sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,BranchCode FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') Order by TransDate " + sOrder;
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
@@ -2372,6 +2376,9 @@ namespace ReportsBL
             dc = new DataColumn("Particulars");
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("BranchCode");
+            dt.Columns.Add(dc);
+
             dc = new DataColumn("Debit");
             dt.Columns.Add(dc);
 
@@ -2389,6 +2396,7 @@ namespace ReportsBL
                 drNew = dt.NewRow();
                 drNew["Date"] = string.Empty;
                 drNew["Particulars"] = string.Empty;
+                drNew["BranchCode"] = string.Empty;
                 drNew["Debit"] = "0.00";
                 drNew["Credit"] = "0.00";
                 drNew["VoucherType"] = string.Empty;
@@ -2411,6 +2419,10 @@ namespace ReportsBL
                     if (drParentQry["VoucherType"] != null)
                     {
                         sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                    }
+                    if (drParentQry["BranchCode"] != null)
+                    {
+                        sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                     }
 
                     /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
@@ -2436,11 +2448,11 @@ namespace ReportsBL
 
                     if (pQry != "")
                     {
-                        oleCmd = new OleDbCommand();
+                        oleCmd = new SqlCommand();
                         oleCmd.CommandText = pQry;
-                        oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
+                        oleSubConn = new SqlConnection(CreateConnectionString(sConStr));
                         oleCmd.Connection = oleSubConn;
-                        oleAdp = new OleDbDataAdapter(oleCmd);
+                        oleAdp = new SqlDataAdapter(oleCmd);
                         dsChildQry = new DataSet();
                         oleAdp.Fill(dsChildQry);
                         if (dsChildQry != null)
@@ -2456,6 +2468,7 @@ namespace ReportsBL
                     drNew = dt.NewRow();
                     drNew["Date"] = sTranDate;
                     drNew["Particulars"] = sParticulars;
+                    drNew["BranchCode"] = sbranch;
                     drNew["Debit"] = dDebitAmt.ToString();
                     drNew["Credit"] = dCreditAmt.ToString();
                     drNew["VoucherType"] = sVoucherType;

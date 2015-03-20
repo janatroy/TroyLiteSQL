@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class ReportXlTotalSales : System.Web.UI.Page
 {
@@ -54,6 +57,10 @@ public partial class ReportXlTotalSales : System.Web.UI.Page
             else if (optionrate.SelectedItem.Text == "Category Wise")
             {
                 bindDataSubTotCat(cond);
+            }
+            if (optionrate.SelectedItem.Text == "Branch Wise")
+            {
+                bindDataSubTotBranch(cond);
             }
         }
         catch (Exception ex)
@@ -1097,24 +1104,42 @@ public partial class ReportXlTotalSales : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            string filename = "Total Sales.xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //string filename = "Total Sales.xls";
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Total Sales.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 
@@ -1361,7 +1386,7 @@ public partial class ReportXlTotalSales : System.Web.UI.Page
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
                     dr_final12["Date"] = dtaa;
 
-                    string ledgernam = dr["Categoryname"].ToString().ToUpper().Trim();
+                    string ledgernam = dr["Categoryname"].ToString();
                     for (int ii = 1; ii < dsGir.Tables[0].Columns.Count; ii++)
                     {
                         string ledgerna = dsGir.Tables[0].Columns[ii].ToString();
@@ -1394,6 +1419,117 @@ public partial class ReportXlTotalSales : System.Web.UI.Page
         dtt.Rows.Add(dr_final88);
 
         
+
+            ExportToExcel(dtt);
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
+        }
+    }
+
+
+    public void bindDataSubTotBranch(string cond)
+    {
+        DateTime startDate, endDate, Transdt;
+        startDate = Convert.ToDateTime(txtStartDate.Text);
+        endDate = Convert.ToDateTime(txtEndDate.Text);
+        string condtion = "";
+        condtion = getCond();
+        DataSet ds = new DataSet();
+        DataTable dt = new DataTable();
+        objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
+        //DataSet dsGird = GenerateGridColumns();
+        DataSet dst = new DataSet();
+        DataSet dts = new DataSet();
+        DataSet dstt = new DataSet();
+        DataSet dsGir = new DataSet();
+        DataSet dsG = new DataSet();
+        dst = objBL.gettotalBranchsales(startDate, endDate);
+
+        dts = objBL.gettotalBranchsalesdate(startDate, endDate);
+
+
+        if (dts.Tables[0].Rows.Count > 0)
+        {
+
+            dstt = objBL.ListBranch();
+            DataTable dtt = new DataTable();
+            DataColumn dc;
+            if (dstt.Tables[0].Rows.Count > 0)
+            {
+                dc = new DataColumn("Date");
+                dtt.Columns.Add(dc);
+                for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                {
+                    string ledger = dstt.Tables[0].Rows[i]["Branchcode"].ToString();
+                    dc = new DataColumn(ledger);
+                    dtt.Columns.Add(dc);
+                }
+                dc = new DataColumn("Total");
+                dtt.Columns.Add(dc);
+            }
+            dsGir.Tables.Add(dtt);
+
+
+            DataRow dr_final14 = dtt.NewRow();
+            dtt.Rows.Add(dr_final14);
+
+            double credit = 0.00;
+            double Tottot = 0.00;
+
+            DateTime Transd = Convert.ToDateTime(txtStartDate.Text);
+
+
+            foreach (DataRow dre in dts.Tables[0].Rows)
+            {
+                DataRow dr_final12 = dtt.NewRow();
+                Transdt = Convert.ToDateTime(dre["BillDate"]);
+
+                credit = 0.00;
+
+                foreach (DataRow dr in dst.Tables[0].Rows)
+                {
+                    Transd = Convert.ToDateTime(dr["BillDate"]);
+                    if (Transdt == Transd)
+                    {
+                        string aa = dr["BillDate"].ToString().ToUpper().Trim();
+                        string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
+                        dr_final12["Date"] = dtaa;
+
+                        string ledgernam = dr["Branchcode"].ToString().ToUpper().Trim();
+                        for (int ii = 1; ii < dsGir.Tables[0].Columns.Count; ii++)
+                        {
+                            string ledgerna = dsGir.Tables[0].Columns[ii].ToString();
+                            if (ledgernam == ledgerna)
+                            {
+                                dr_final12[ledgerna] = double.Parse(dr["Quantity"].ToString());
+                                credit = credit + double.Parse(dr["Quantity"].ToString());
+                                Tottot = Tottot + double.Parse(dr["Quantity"].ToString());
+                            }
+                            else
+                            {
+                                if (dr_final12[ledgerna] == null)
+                                {
+                                    dr_final12[ledgerna] = "";
+                                }
+                            }
+                        }
+                        dr_final12["Total"] = credit;
+                    }
+                }
+                dtt.Rows.Add(dr_final12);
+            }
+
+            DataRow dr_final11 = dtt.NewRow();
+            dtt.Rows.Add(dr_final11);
+
+            DataRow dr_final88 = dtt.NewRow();
+            dr_final88["Date"] = "Total";
+            dr_final88["Total"] = Tottot;
+            dtt.Rows.Add(dr_final88);
+
+
 
             ExportToExcel(dtt);
         }
@@ -1471,7 +1607,7 @@ public partial class ReportXlTotalSales : System.Web.UI.Page
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
                     dr_final12["Date"] = dtaa;
 
-                    string ledgernam = dr["ProductDesc"].ToString().ToUpper().Trim();
+                    string ledgernam = dr["ProductDesc"].ToString();
                     for (int ii = 1; ii < dsGir.Tables[0].Columns.Count; ii++)
                     {
                         string ledgerna = dsGir.Tables[0].Columns[ii].ToString();
