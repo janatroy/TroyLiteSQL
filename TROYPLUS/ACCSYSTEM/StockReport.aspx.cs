@@ -63,10 +63,12 @@ public partial class StockReport : System.Web.UI.Page
                 loadBranch();
                 BranchEnable_Disable();
                 loadPriceList();
+
+                txtStartDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             }
 
             lblBillDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
-            //txtStartDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+           
 
             //DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
             //string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
@@ -130,7 +132,7 @@ public partial class StockReport : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         lstPricelist.Items.Clear();
-        lstPricelist.Items.Add(new ListItem("All", "0"));
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
         ds = bl.ListPriceList(connection);
         lstPricelist.DataSource = ds;
         lstPricelist.DataTextField = "PriceName";
@@ -605,17 +607,5 @@ public partial class StockReport : System.Web.UI.Page
             }           
         }
     }
-    protected void lstPricelist_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        foreach (ListItem li in lstPricelist.Items)
-        {
-            if (lstPricelist.SelectedIndex == 0)
-            {
-                if (li.Text != "All")
-                {
-                    li.Selected = true;
-                }
-            }
-        }
-    }
+  
 }

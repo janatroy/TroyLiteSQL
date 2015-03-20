@@ -23646,7 +23646,7 @@ public class BusinessLogic
     #endregion
 
     #region Sales Summary Report
-    public DataSet FirstLevelDaywise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelDaywise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23655,13 +23655,22 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT BillDate As LinkName,Sum(tblSalesItems.Qty) AS Quantity, Sum(tblSalesItems.Qty*Rate) As NetRate , Sum((tblSalesItems.qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS SalesDiscount,");
+            //dbQry.Append("SELECT BillDate As LinkName,Sum(tblSalesItems.Qty) AS Quantity, Sum(tblSalesItems.Qty*Rate) As NetRate , Sum((tblSalesItems.qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS SalesDiscount,");
+            //dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS ActualDiscount,");
+            //dbQry.Append("Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((VAT/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumVAT,");
+            //dbQry.Append(" Sum( ((tblSalesItems.Qty*rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * VAT/100 ) AS ActualVAT,");
+            //dbQry.Append(" Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((CST/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumCST,");
+            //dbQry.Append(" Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading,");
+            //dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By BillDate");
+
+            dbQry.Append("SELECT tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode,BillDate As LinkName,Sum(tblSalesItems.Qty) AS Quantity, Sum(tblSalesItems.Qty*Rate) As NetRate , Sum((tblSalesItems.qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS SalesDiscount,");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS ActualDiscount,");
             dbQry.Append("Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((VAT/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * VAT/100 ) AS ActualVAT,");
             dbQry.Append(" Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((CST/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumCST,");
             dbQry.Append(" Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading,");
-            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By BillDate");
+            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSales ");
+            dbQry.Append(" INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo AND tblSales.BranchCode = tblSalesItems.BranchCode WHERE (" + branchcode + ") and tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By BillDate,tblSales.BillNo,tblSales.BranchCode");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -23718,7 +23727,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelDaywiseBillWise(DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelDaywiseBillWise(DateTime eDate, string purReturn, string intTrans, string delNote,string branchcode,string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23737,8 +23746,8 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<> true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' AND  tblSales.BillDate=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload ");
-
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<> 'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' AND  tblSales.BillDate='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload ");
+           
 
 
             manager.Open();
@@ -23757,7 +23766,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelGeneralSales(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelGeneralSales(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23778,17 +23787,17 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
 
             if (FirstLevelColumn == "BillNo")
-                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSales." + FirstLevelColumn + " = " + itemWise + " AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and  UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSales." + FirstLevelColumn + " = " + itemWise + " and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and  UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "ItemCode")
-                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems." + FirstLevelColumn + " = '" + itemWise + "' AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "Model" || FirstLevelColumn == "ProductDesc" || FirstLevelColumn == "ProductName" || FirstLevelColumn == "Category")
-                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "TransDate")
-                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSales.Billdate =#" + itemWise + "# AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSales.Billdate ='" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "Executive")
-                dbQry.Append("  FROM (((tblSales inner join tblSalesItems on tblSales.billno=tblSalesItems.billno)  inner join tblProductMaster on tblSalesItems.itemcode = tblProductMaster.itemcode)  inner join tblEmployee on tblEmployee.empno=tblSales.Executive) inner join tblLedger on tblSales.customerid = tblLedger.ledgerid WHERE tblsales.cancelled<>true and tblSales.purchaseReturn ='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' AND UCASE(tblSales.InternalTransfer)='" + intTrans + "' And tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# and tblEmployee.empno in (select empno from tblEmployee where empFirstname='" + itemWise + "')  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM (((tblSales inner join tblSalesItems on tblSales.billno=tblSalesItems.billno and tblSales.BranchCode = tblSalesItems.BranchCode)  inner join tblProductMaster on tblSalesItems.itemcode = tblProductMaster.itemcode)  inner join tblEmployee on tblEmployee.empno=tblSales.Executive) inner join tblLedger on tblSales.customerid = tblLedger.ledgerid WHERE tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and tblSales.purchaseReturn ='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' AND UPPER(tblSales.InternalTransfer)='" + intTrans + "' And tblSales.BillDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' and tblEmployee.empno in (select empno from tblEmployee where empFirstname='" + itemWise + "')  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else
-                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSales." + FirstLevelColumn + " = '" + itemWise + "' AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSales." + FirstLevelColumn + " = '" + itemWise + "' AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -23806,7 +23815,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelGeneralSalesItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelGeneralSalesItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23827,15 +23836,15 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
 
             if (FirstLevelColumn == "BillNo")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSalesItems." + FirstLevelColumn + " = " + itemWise + " AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSalesItems." + FirstLevelColumn + " = " + itemWise + " AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "CustomerName")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "ProductDesc")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "ProductName")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSalesItems." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSalesItems." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSalesItems." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
 
 
@@ -23855,7 +23864,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelCustomerWiseItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelCustomerWiseItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23876,7 +23885,7 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
 
             if (FirstLevelColumn == "CustomerName")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -23915,7 +23924,7 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
 
             if (FirstLevelColumn == "BillNo")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSalesItems." + FirstLevelColumn + " = " + itemWise + " AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSalesItems." + FirstLevelColumn + " = " + itemWise + " AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -23933,7 +23942,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelModelWiseItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelModelWiseItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23952,7 +23961,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -23971,7 +23980,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelBrandWiseItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelBrandWiseItemWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23991,7 +24000,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster.ProductDesc = '" + itemWise + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND  tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.ProductName,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblProductMaster.ProductDesc = '" + itemWise + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND  tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.ProductName,tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24010,7 +24019,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelGeneralProductWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelGeneralProductWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24019,7 +24028,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT tblProductMaster." + SecondLevelColumn + " as GroupItem,SUM(tblSalesItems.Qty* tblSalesItems.Rate) As NetRate, ");
+            dbQry.Append("SELECT tblSales." + SecondLevelColumn + " as GroupItem,SUM(tblSalesItems.Qty* tblSalesItems.Rate) As NetRate, ");
             /*March 21*/
             dbQry.Append(" SUM(tblSalesItems.Rate) As SRate ,SUM(tblSalesItems.Qty) As Quantity,");
             /*March 21*/
@@ -24031,17 +24040,17 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
 
             if (FirstLevelColumn == "BillNo")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales." + FirstLevelColumn + " = " + itemWise + " AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales." + FirstLevelColumn + " = " + itemWise + " and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "'  AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "Model")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "'  AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "ProductDesc")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "'  AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "ProductName")
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "'  AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else if (FirstLevelColumn == "Executive")
-                dbQry.Append("  FROM (((tblSales inner join tblSalesItems on tblSales.billno=tblSalesItems.billno)  inner join tblProductMaster on tblSalesItems.itemcode = tblProductMaster.itemcode)  inner join tblEmployee on tblEmployee.empno=tblSales.Executive) inner join tblLedger on tblSales.customerid = tblLedger.ledgerid WHERE tblsales.cancelled<>true and tblSales.purchaseReturn='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# and tblEmployee.empno in (select empno from tblEmployee where empFirstname='" + itemWise + "')  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM (((tblSales inner join tblSalesItems on tblSales.billno=tblSalesItems.billno and tblSales.BranchCode = tblSalesItems.BranchCode)  inner join tblProductMaster on tblSalesItems.itemcode = tblProductMaster.itemcode)  inner join tblEmployee on tblEmployee.empno=tblSalesItems.executivename) inner join tblLedger on tblSales.customerid = tblLedger.ledgerid WHERE tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and tblSales.purchaseReturn='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.BillDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' and tblEmployee.empno in (select empno from tblEmployee where empFirstname='" + itemWise + "')  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
             else
-                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales." + FirstLevelColumn + " = '" + itemWise + "' AND tblsales.cancelled<>true and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+                dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblsales.cancelled<>'true' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "'  AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24060,7 +24069,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelBrandWiseCustomerWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelBrandWiseCustomerWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24079,7 +24088,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24098,7 +24107,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelBrandWiseDayWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelBrandWiseDayWise(DateTime sDate, DateTime eDate, string itemWise, string FirstLevelColumn, string SecondLevelColumn, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24117,7 +24126,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' AND tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblProductMaster." + FirstLevelColumn + " = '" + itemWise + "' and tblSales.BillNo='" + billno + "' and (" + branchcode + ") AND tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "'  AND tblSales.BillDate <='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster." + SecondLevelColumn + ",tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24136,7 +24145,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelDaywiseBrandWise(DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelDaywiseBrandWise(DateTime eDate, string purReturn, string intTrans, string delNote,string branchcode,string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24146,7 +24155,7 @@ public class BusinessLogic
         try
         {
 
-            dbQry.Append("SELECT tblProductMaster.ProductDesc as GroupItem,SUM(tblSalesItems.Qty* tblSalesItems.Rate) As NetRate, ");
+            dbQry.Append("SELECT tblProductMaster.ProductDesc as GroupItem,SUM(tblSalesItems.Qty* tblSalesItems.Rate) As NetRate,tblSales.BranchCode,tblSales.BillNo, ");
             /*March 21*/
             dbQry.Append(" SUM(tblSalesItems.Rate) As SRate ,SUM(tblSalesItems.Qty) As Quantity,");
             /*March 21*/
@@ -24156,7 +24165,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND  tblSales.BillDate=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND  tblSales.BillDate='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload,tblSales.BranchCode,tblSales.BillNo ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -24174,7 +24183,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelDaywiseCustWise(DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelDaywiseCustWise(DateTime eDate, string purReturn, string intTrans, string delNote,string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24194,8 +24203,8 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' AND  tblSales.BillDate=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.CustomerName,tblSales.Freight,tblSales.LoadUnload ");
-
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' AND  tblSales.BillDate='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.CustomerName,tblSales.Freight,tblSales.LoadUnload ");
+            
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             manager.Dispose();
@@ -24212,7 +24221,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelDaywiseItemWise(DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelDaywiseItemWise(DateTime eDate, string purReturn, string intTrans, string delNote,string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24232,8 +24241,8 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<> true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND  tblSales.BillDate=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.ProductName,tblSales.Freight,tblSales.LoadUnload ");
-
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<> 'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND  tblSales.BillDate='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.ProductName,tblSales.Freight,tblSales.LoadUnload ");
+            
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             manager.Dispose();
@@ -24250,7 +24259,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelDaywiseDayWise(DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelDaywiseDayWise(DateTime eDate, string purReturn, string intTrans, string delNote,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24270,7 +24279,8 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND  tblSales.BillDate=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.BillDate,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and (" + branchcode  + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND  tblSales.BillDate='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.BillDate,tblSales.Freight,tblSales.LoadUnload ");
+                     
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -24288,7 +24298,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelDaywiseModelWise(DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelDaywiseModelWise(DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24308,8 +24318,8 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' AND  tblSales.BillDate=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
-
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' AND  tblSales.BillDate='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
+            
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             manager.Dispose();
@@ -24326,7 +24336,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet FirstLevelCategorywise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelCategorywise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24335,14 +24345,16 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT  tblCategories.CategoryName As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
+            dbQry.Append("SELECT tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode, tblCategories.CategoryName As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
             dbQry.Append(" Sum(tblSalesItems.Qty*tblSalesItems.Rate) As NetRate , Sum((tblSalesItems.qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS SalesDiscount, ");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS ActualDiscount,");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.VAT/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100 ) AS ActualVAT, ");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST,");
             dbQry.Append("  Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading, ");
-            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster,tblCategories WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and  tblSalesItems.ItemCode = tblProductmaster.ItemCode And tblProductMaster.CategoryID=tblCategories.CategoryID AND tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By tblCategories.CategoryName");
+            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster,tblCategories WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and  tblSalesItems.ItemCode = tblProductmaster.ItemCode And tblProductMaster.CategoryID=tblCategories.CategoryID AND tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By tblCategories.CategoryName,tblSales.BillNo, tblSales.BranchCode");
+
+
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -24400,7 +24412,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelCategorywiseBillWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelCategorywiseBillWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24421,7 +24433,7 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload");
+            dbQry.Append(" FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload");
 
 
             manager.Open();
@@ -24440,7 +24452,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelCategorywiseModelWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelCategorywiseModelWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24461,7 +24473,7 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24480,7 +24492,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelCategorywiseBrandWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelCategorywiseBrandWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -24501,7 +24513,7 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24520,7 +24532,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelCategorywiseItemWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelCategorywiseItemWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -24541,7 +24553,7 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.ProductName,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.ProductName,tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24560,7 +24572,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelCategorywiseCustWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelCategorywiseCustWise(string categoryName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -24581,7 +24593,7 @@ public class BusinessLogic
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.CustomerName,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster,tblCategories WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode AND tblCategories.CategoryID = tblProductMaster.CategoryID and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND tblCategories.CategoryName='" + categoryName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.CustomerName,tblSales.Freight,tblSales.LoadUnload ");
 
 
             manager.Open();
@@ -24600,7 +24612,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet FirstLevelBrandwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelBrandwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -24610,15 +24622,16 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT  tblProductMaster.ProductDesc As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
+            dbQry.Append("SELECT  tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode,tblProductMaster.ProductDesc As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
             dbQry.Append(" Sum(tblSalesItems.Qty*tblSalesItems.Rate) As NetRate , Sum((tblSalesItems.qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS SalesDiscount, ");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS ActualDiscount,");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.VAT/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100 ) AS ActualVAT, ");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST,");
             dbQry.Append("  Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading, ");
-            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and tblSalesItems.ItemCode = tblProductmaster.ItemCode And  tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By tblProductMaster.ProductDesc ");
+            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and tblSalesItems.ItemCode = tblProductmaster.ItemCode And  tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By tblProductMaster.ProductDesc,tblSales.BillNo, tblSales.BranchCode ");
 
+            
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             manager.Dispose();
@@ -24674,7 +24687,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelBrandwiseBillWise(string BrandName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelBrandwiseBillWise(string BrandName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24694,7 +24707,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND   tblProductMaster.ProductDesc ='" + BrandName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND   tblProductMaster.ProductDesc ='" + BrandName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -24712,7 +24725,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelBrandwiseBrandWise(string BrandName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelBrandwiseBrandWise(string BrandName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24732,7 +24745,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND   tblProductMaster.ProductDesc ='" + BrandName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND   tblProductMaster.ProductDesc ='" + BrandName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -24752,7 +24765,7 @@ public class BusinessLogic
 
 
 
-    public DataSet SecondLevelBrandwiseModelWise(string BrandName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelBrandwiseModelWise(string BrandName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24772,7 +24785,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' AND   tblProductMaster.ProductDesc ='" + BrandName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' AND   tblProductMaster.ProductDesc ='" + BrandName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -24790,7 +24803,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet FirstLevelModelwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelModelwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24799,14 +24812,14 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT  tblProductMaster.Model As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
+            dbQry.Append("SELECT  tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode,tblProductMaster.Model As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
             dbQry.Append(" Sum(tblSalesItems.Qty*tblSalesItems.Rate) As NetRate , Sum((tblSalesItems.qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS SalesDiscount, ");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS ActualDiscount,");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.VAT/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100 ) AS ActualVAT, ");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST,");
             dbQry.Append("  Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading, ");
-            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and  tblSalesItems.ItemCode = tblProductmaster.ItemCode And  tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By tblProductMaster.Model ");
+            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and  tblSalesItems.ItemCode = tblProductmaster.ItemCode And  tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By tblProductMaster.Model,tblSales.BillNo, tblSales.BranchCode ");
 
 
 
@@ -24865,7 +24878,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelModelwiseBillWise(string ModelName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelModelwiseBillWise(string ModelName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24884,7 +24897,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND  tblProductMaster.Model ='" + ModelName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND  tblProductMaster.Model ='" + ModelName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblSales.Billno,tblSales.Freight,tblSales.LoadUnload ");
 
 
 
@@ -24904,7 +24917,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelModelwiseModelWise(string ModelName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelModelwiseModelWise(string ModelName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24923,7 +24936,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND  tblProductMaster.Model ='" + ModelName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND  tblProductMaster.Model ='" + ModelName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.Model,tblSales.Freight,tblSales.LoadUnload ");
 
 
 
@@ -24943,7 +24956,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet SecondLevelModelwiseBrandWise(string ModelName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet SecondLevelModelwiseBrandWise(string ModelName, DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode, string billno)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24962,7 +24975,7 @@ public class BusinessLogic
             dbQry.Append("  SUM(((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100)  AS ActualVAT, ");
             dbQry.Append(" SUM((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST, ");
             dbQry.Append(" SUM(((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100)  AS ActualCST,tblSales.Freight AS SumFreight,tblSales.LoadUnload As Loading ");
-            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' AND  tblProductMaster.Model ='" + ModelName + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload ");
+            dbQry.Append("  FROM tblSales,tblSalesItems,tblProductMaster WHERE tblSales.Billno = tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode AND tblSalesItems.ItemCode = tblProductmaster.ItemCode and tblSales.BillNo='" + billno + "' and (" + branchcode + ") and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' AND  tblProductMaster.Model ='" + ModelName + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "'  Group By tblProductMaster.ProductDesc,tblSales.Freight,tblSales.LoadUnload ");
 
 
 
@@ -24982,7 +24995,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet FirstLevelBillwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelBillwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -24991,14 +25004,14 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT  tblSales.Billno As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
+            dbQry.Append("SELECT  tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode,tblSales.Billno As LinkName,Sum(tblSalesItems.Qty) AS Quantity, ");
             dbQry.Append(" Sum(tblSalesItems.Qty*tblSalesItems.Rate) As NetRate , Sum((tblSalesItems.qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS SalesDiscount, ");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS ActualDiscount,");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.VAT/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100 ) AS ActualVAT, ");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST,");
             dbQry.Append("  Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading, ");
-            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and  tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By tblSales.Billno ");
+            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode  and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and  tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By tblSales.Billno,tblSales.BranchCode ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -25095,7 +25108,7 @@ public class BusinessLogic
 
     }
 
-    public DataSet FirstLevelCustomerwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelCustomerwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -25104,13 +25117,13 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT CustomerName As LinkName,Sum(tblSalesItems.Qty) AS Quantity, Sum(tblSalesItems.Qty*Rate) As NetRate , Sum((tblSalesItems.qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS SalesDiscount,");
+            dbQry.Append("SELECT tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode,CustomerName As LinkName,Sum(tblSalesItems.Qty) AS Quantity, Sum(tblSalesItems.Qty*Rate) As NetRate , Sum((tblSalesItems.qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS SalesDiscount,");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS ActualDiscount,");
             dbQry.Append("Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((VAT/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * VAT/100 ) AS ActualVAT,");
             dbQry.Append(" Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((CST/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumCST,");
             dbQry.Append(" Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading,");
-            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By CustomerName");
+            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By CustomerName,tblSales.BillNo, tblSales.BranchCode");
 
 
 
@@ -25167,7 +25180,7 @@ public class BusinessLogic
         }
 
     }
-    public DataSet FirstLevelExecutivewise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelExecutivewise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -25176,13 +25189,13 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT empFirstName As LinkName,Sum(tblSalesItems.Qty) AS Quantity, Sum(tblSalesItems.Qty*Rate) As NetRate , Sum((tblSalesItems.qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS SalesDiscount,");
+            dbQry.Append("SELECT tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode,empFirstName As LinkName,Sum(tblSalesItems.Qty) AS Quantity, Sum(tblSalesItems.Qty*Rate) As NetRate , Sum((tblSalesItems.qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS SalesDiscount,");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*rate)) AS ActualDiscount,");
             dbQry.Append("Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((VAT/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * VAT/100 ) AS ActualVAT,");
             dbQry.Append(" Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((CST/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumCST,");
             dbQry.Append(" Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading,");
-            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblEmployee,tblLedger WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# And tblEmployee.empno=tblSales.Executive and tblLedger.LedgerID=tblSales.CustomerID Group By empFirstName");
+            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblEmployee,tblLedger WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' And tblEmployee.empno=tblSalesItems.executivename and tblLedger.LedgerID=tblSales.CustomerID Group By empFirstName,tblSales.BillNo, tblSales.BranchCode");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -25238,7 +25251,7 @@ public class BusinessLogic
 
     }
     /*Start Itemwise Report Change*/
-    public DataSet FirstLevelItemwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote)
+    public DataSet FirstLevelItemwise(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -25247,14 +25260,14 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT  tblProductMaster.ProductName As LinkName, Sum(tblSalesItems.Qty) AS Quantity, ");
+            dbQry.Append("SELECT tblSales.BillNo as BillNo,tblSales.BranchCode as BranchCode, tblProductMaster.ProductName As LinkName, Sum(tblSalesItems.Qty) AS Quantity, ");
             dbQry.Append(" Sum(tblSalesItems.Qty*tblSalesItems.Rate) As NetRate , Sum((tblSalesItems.qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS SalesDiscount, ");
             dbQry.Append(" Sum(((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate)) AS ActualDiscount,");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.VAT/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumVAT,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100 ) AS ActualVAT, ");
             dbQry.Append(" Sum((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)+((tblSalesItems.CST/100)*((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)))) AS SumCST,");
             dbQry.Append("  Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading, ");
-            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and  tblSalesItems.ItemCode = tblProductmaster.ItemCode And  tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By tblProductMaster.ProductName ");
+            dbQry.Append("  Sum( ((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100 ) AS ActualCST FROM tblSalesItems,tblSales,tblProductMaster WHERE " + branchcode + " and tblSales.Billno=tblSalesItems.Billno and tblSales.BranchCode = tblSalesItems.BranchCode and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and  tblSalesItems.ItemCode = tblProductmaster.ItemCode And  tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By tblProductMaster.ProductName,tblSales.BillNo, tblSales.BranchCode ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());

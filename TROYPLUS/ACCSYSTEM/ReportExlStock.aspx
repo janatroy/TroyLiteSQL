@@ -143,9 +143,9 @@
                                 </asp:CheckBoxList>--%>
                                 </td>
                                 <td class="ControlTextBox3" style="width: 14%;">
-                                    <asp:CheckBox ID="chkMRP" runat="server" Text="MRP" />
-                                    <asp:CheckBox ID="chkNLC" runat="server" Text="NLC" />
-                                    <asp:CheckBox ID="chkDP" runat="server" Text="DP" />
+                                    <asp:CheckBox ID="chkMRP" runat="server" Text="MRP" Visible="false" />
+                                    <asp:CheckBox ID="chkNLC" runat="server" Text="NLC" Visible="false" />
+                                    <asp:CheckBox ID="chkDP" runat="server" Text="DP" Visible="false" />
                                     <%--<asp:CheckBoxList ID="chkvalue" runat="server"  Font-Size="Small"
                                         BackColor="#90C9FC">
                                         <asp:ListItem>MRP</asp:ListItem>

@@ -124,7 +124,7 @@
                             </asp:CheckBoxList>
                         </div>
                     </td>
-                    <td align="left" width="25%">
+                    <td align="left" width="25%"></td>
                 </tr>
                 <tr style="height: 2px" />
                 <tr>
