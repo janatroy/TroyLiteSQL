@@ -238,8 +238,11 @@ public partial class BankStatementReport : System.Web.UI.Page
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
+        drpBankName.Items.Clear();
+      //  drpBankName.Items.Add(new ListItem("Select Bank", "0"));
         ds = bl.ListBanks();
         drpBankName.DataSource = ds;
+        drpBankName.Items.Add(new ListItem("Select Bank", "1"));
         drpBankName.DataBind();
         drpBankName.DataTextField = "LedgerName";
         drpBankName.DataValueField = "LedgerID";
@@ -259,6 +262,14 @@ public partial class BankStatementReport : System.Web.UI.Page
             bnkPanel.Visible = true;
 
             iLedgerID = Convert.ToInt32(drpBankName.SelectedItem.Value);
+
+            if (drpBankName.SelectedValue == "0")
+            {
+                ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select the Bank. It cannot be left blank');", true);
+                return;
+            }
+            
+
             startDate = Convert.ToDateTime(txtStartDate.Text);
             endDate = Convert.ToDateTime(txtEndDate.Text);
             lblStartDate.Text = txtStartDate.Text;

@@ -35883,7 +35883,7 @@ public class BusinessLogic
         }
         else
         {
-            dbQry = ("SELECT " + selColumn + field2 + " ,tblSales.BranchCode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE " + branch + " and " + condtion);
+            dbQry = ("SELECT " + selColumn + field2 + " ,tblSales.BranchCode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE " + condtion);
         }
         try
         {
@@ -56816,7 +56816,7 @@ public class BusinessLogic
         oleCmd.Connection = oleConn;
 
         //sQry = "SELECT tbldaybook.TransDate,tbldaybook.DebtorID,tbldaybook.CreditorID,tbldaybook.Amount,tbldaybook.Narration,tbldaybook.VoucherType FROM tbldaybook inner join tblledger on tbldaybook.creditorid = tblledger.ledgerid or  tbldaybook.debtorid = tblledger.ledgerid where tblledger.groupid=3 AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate ";
-        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND Transno not in (select transno from tblbankrecon) Order by TransDate ";
+        sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,chequeNo,RefNo,BranchCode FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND Transno not in (select transno from tblbankrecon) Order by TransDate ";
 
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -56831,6 +56831,7 @@ public class BusinessLogic
 
         string date1 = string.Empty;
         string sNarration = string.Empty;
+        string sbranch = string.Empty;
 
         ds = new DataSet();
         dt = new DataTable();
@@ -56856,6 +56857,9 @@ public class BusinessLogic
         dt.Columns.Add(dc);
 
         dc = new DataColumn("Narration");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("BranchCode");
         dt.Columns.Add(dc);
 
         dc = new DataColumn("Amount");
@@ -56911,6 +56915,10 @@ public class BusinessLogic
                 if (drParentQry["Narration"] != null)
                 {
                     sNarration = Convert.ToString(drParentQry["Narration"].ToString());
+                }
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
                 if (drParentQry["ChequeNo"] != null)
                 {
@@ -56988,6 +56996,7 @@ public class BusinessLogic
                 drNew["DebtorID"] = sDebtorID;
                 drNew["CreditorID"] = sCreditorID;
                 drNew["Narration"] = sNarration;
+                drNew["BranchCode"] = sbranch;
                 drNew["VoucherType"] = sVoucherType;
                 drNew["ChequeNo"] = sChequeNo;
                 drNew["Amount"] = samount;
@@ -57024,7 +57033,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry.Append("SELECT TransDate,transno,debtorid,creditorid,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo,RefType,CreditCardNo,ChequeId,ReconcilatedBy,Reconcilateddate,Debtor,Creditor,Result FROM tblBankRecon");
+            dbQry.Append("SELECT TransDate,transno,debtorid,creditorid,Amount,Narration,VoucherType,ChequeNo,Commission,RefNo,RefType,CreditCardNo,ChequeId,ReconcilatedBy,Reconcilateddate,Debtor,Creditor,Result,BranchCode FROM tblBankRecon");
             dbQry.Append(" WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") And Types='" + Types + "'");
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -57063,6 +57072,9 @@ public class BusinessLogic
             dt.Columns.Add(dc);
 
             dc = new DataColumn("Narration");
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("BranchCode");
             dt.Columns.Add(dc);
 
             dc = new DataColumn("Amount");
@@ -57109,6 +57121,7 @@ public class BusinessLogic
                     drNew["DebtorID"] = Convert.ToInt32(drd["DebtorID"]);
                     drNew["CreditorID"] = Convert.ToInt32(drd["CreditorID"]);
                     drNew["Narration"] = drd["Narration"].ToString();
+                    drNew["BranchCode"] = drd["BranchCode"].ToString();
                     drNew["VoucherType"] = drd["VoucherType"].ToString();
                     drNew["ChequeNo"] = drd["ChequeNo"].ToString();
                     drNew["Amount"] = Convert.ToDouble(drd["Amount"]);
@@ -60102,8 +60115,8 @@ public class BusinessLogic
                                 }
                             }
 
-                            dbQry = string.Format("INSERT INTO tblStock(itemCode,ProductName,ProductDesc,model,categoryid,OpeningStock,DueDate,BranchCode) VALUES('{0}','{1}','{2}','{3}',{4},{5},'{6}','{7}')",
-                                Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["Brand"]), Convert.ToString(dr["Model"]), Catname, Convert.ToDouble(dr["opening"]), DateTime.Now.ToString("yyyy-MM-dd"), branch);
+                            dbQry = string.Format("INSERT INTO tblStock(itemCode,ProductName,ProductDesc,model,categoryid,OpeningStock,Remarks,DueDate,entrydate,BranchCode) VALUES('{0}','{1}','{2}','{3}',{4},{5},'{6}','{7}','{8}','{9}')",
+                                Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["Brand"]), Convert.ToString(dr["Model"]), Catname, Convert.ToDouble(dr["opening"]), Convert.ToString(dr["Remarks"]), DateTime.Now.ToString("yyyy-MM-dd"),DateTime.Now.ToString("yyyy-MM-dd"),branch);
 
                             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 

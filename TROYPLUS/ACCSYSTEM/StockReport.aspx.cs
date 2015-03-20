@@ -602,7 +602,11 @@ public partial class StockReport : System.Web.UI.Page
                 {
                     li.Selected = true;
                 }
-            }           
+            }
+            else
+            {
+                li.Selected = false;
+            }
         }
     }
     protected void lstPricelist_SelectedIndexChanged(object sender, EventArgs e)
