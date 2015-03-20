@@ -103,7 +103,7 @@ public partial class SalesReport : System.Web.UI.Page
         if (brncode == "All")
         {
             ds = bl.ListBranch();
-            lstBranch.Items.Add(new ListItem("All", "0"));
+           // lstBranch.Items.Add(new ListItem("All", "0"));
         }
         else
         {
@@ -429,7 +429,7 @@ public partial class SalesReport : System.Web.UI.Page
         //ds = objBL.getSalesreport(startDate, endDate, "All", "All", "All");
         string branch = getCond();
 
-        ds = objBL.getSalesExporttoexcel(selColumn, field2, sQry, branch);
+        ds = objBL.getSalesExporttoexcel(selColumn, field2, condtion, branch);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -636,17 +636,39 @@ public partial class SalesReport : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
-    protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    //protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    foreach (ListItem li in lstBranch.Items)
+    //    {
+    //        if (lstBranch.SelectedIndex == 0)
+    //        {
+    //            if (li.Text != "All")
+    //            {
+    //                li.Selected = true;
+    //            }
+    //        }
+    //    }
+    //}
+
+    protected void lst_SelectedIndexChanged_1(object sender, EventArgs e)
     {
-        foreach (ListItem li in lstBranch.Items)
+        if (CheckBoxList1.Items[0].Selected == true)
         {
-            if (lstBranch.SelectedIndex == 0)
+            foreach (ListItem ls in lstBranch.Items)
             {
-                if (li.Text != "All")
-                {
-                    li.Selected = true;
-                }
+                ls.Selected = true;
+
             }
+
+        }
+        else
+        {
+            foreach (ListItem ls in lstBranch.Items)
+            {
+                ls.Selected = false;
+
+            }
+
         }
     }
 }
