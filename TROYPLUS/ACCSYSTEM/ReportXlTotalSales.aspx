@@ -234,8 +234,10 @@
                                                 <asp:Button ID="btnReport" runat="server" OnClick="btnReport_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
-                                                <td>
-                                                </td>
+                                                 <td style="width:35%">
+                                        <asp:Button ID="btnreportdata" runat="server" CssClass="NewReport6" 
+                                                EnableTheming="false" OnClick="btnreportdata_Click"  />
+                                    </td>
                                             </tr>
                                         </table>
                                     </td>

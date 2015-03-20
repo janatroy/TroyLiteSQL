@@ -118,13 +118,16 @@
                      <td align="left" width="40%">
                         <div style="overflow-y: scroll; height: 150px; width: 300px" runat="server">
                             <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
-
-                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lstBranch_SelectedIndexChanged">
-                                <asp:ListItem Text="All" Value="0" />
+                           <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
+                          <asp:ListItem Text="All" Value="0" />
+                                     </asp:CheckBoxList>
+                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                              
                             </asp:CheckBoxList>
+                           
                         </div>
                     </td>
-                    <td align="left" width="25%">
+                    <td align="left" width="25%"></td>
                 </tr>
                 <tr style="height: 2px" />
                 <tr>

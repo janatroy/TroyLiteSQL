@@ -45944,6 +45944,41 @@ public class BusinessLogic
         }
     }
 
+
+    public DataSet getzerosalesreport(string connection,string sDataSource, DateTime startDate, DateTime endDate, string Method, double val, string Branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            if (Method == "Only")
+            {
+                dbQry2 = "select tblsales.BillNo,billdate,ledgername,tblsales.customerName,tblsales.customeraddress,tblsales.purchasereturn,tblsales.internaltransfer,tblsales.deliverynote,tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblSalesItems.Qty from tblproductmaster,tblsales, tblSalesItems , tblLedger where tblproductmaster.itemcode=tblSalesItems.itemcode and tblSalesItems.BillNo = tblSales.BillNo and tblSalesItems.Branchcode = tblSales.Branchcode and tblSalesItems.Rate = " + val + "  and tblLedger.LedgerID=tblsales.CustomerID and tblSales.billdate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblSales.Branchcode = '" + Branch + "' ";
+            }
+            else
+            {
+                dbQry2 = "select tblsales.BillNo,billdate,ledgername,tblsales.customerName,tblsales.customeraddress,tblsales.purchasereturn,tblsales.internaltransfer,tblsales.deliverynote,tblproductmaster.itemcode,tblproductmaster.productname,tblproductmaster.model,tblproductmaster.productdesc as brand,tblSalesItems.Qty from ((tblsales  inner join tblSalesItems on tblSalesItems.BillNo = tblSales.BillNo) inner join tblproductmaster on tblproductmaster.itemcode=tblSalesItems.itemcode) inner join  tblLedger on tblLedger.LedgerID=tblsales.CustomerID  where tblsales.BillNo in (select tblsales.BillNo from tblsales inner join tblSalesItems on tblSalesItems.BillNo = tblSales.BillNo where tblSalesItems.Branchcode = tblSales.Branchcode and tblSalesItems.Rate = " + val + ") and tblSales.billdate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblSales.Branchcode = '" + Branch + "'  ";
+            }
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public DataSet getproductlist(string sDataSource, string cond, string Method)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -74560,7 +74595,17 @@ public class BusinessLogic
 
 
 
+        }
+
+
+        /* Clossing the DB Connection */
+        oleConn.Close();
+
+        return ds;
+
+
     }
+
 
     public DataSet gettotalBranchsales(DateTime sDate, DateTime eDate)
     {
@@ -74611,14 +74656,5 @@ public class BusinessLogic
         {
             throw ex;
         }
-    }
-
-
-        /* Clossing the DB Connection */
-        oleConn.Close();
-
-        return ds;
-
-
-}
+    }  
 }

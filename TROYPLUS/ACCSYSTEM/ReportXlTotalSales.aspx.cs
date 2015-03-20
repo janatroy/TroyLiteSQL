@@ -81,6 +81,38 @@ public partial class ReportXlTotalSales : System.Web.UI.Page
         }
     }
 
+    protected void btnreportdata_Click(object sender, EventArgs e)
+    {
+
+
+
+      DateTime  startDate = Convert.ToDateTime(txtStartDate.Text);
+       DateTime endDate = Convert.ToDateTime(txtEndDate.Text);
+       string option = string.Empty;
+            string cond = "";
+            cond = getCond();
+            if (optionrate.SelectedItem.Text == "Item Wise")
+            {
+                option = optionrate.SelectedItem.Text;
+            }
+            else if (optionrate.SelectedItem.Text == "Brand Wise")
+            {
+                 option = optionrate.SelectedItem.Text;
+            }
+            else if (optionrate.SelectedItem.Text == "Category Wise")
+            {
+                option = optionrate.SelectedItem.Text;
+            }
+            if (optionrate.SelectedItem.Text == "Branch Wise")
+            {
+               option = optionrate.SelectedItem.Text;
+            }
+
+            Response.Write("<script language='javascript'> window.open('ReportXITotalSales1.aspx?option=" + option + "&startdate=" + startDate + "&enddate=" + endDate + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+       
+    }
+
+
     //protected void CheckBox13_CheckedChanged(object sender, EventArgs e)
     //{
     //    if (CheckBox13.Checked == true)
