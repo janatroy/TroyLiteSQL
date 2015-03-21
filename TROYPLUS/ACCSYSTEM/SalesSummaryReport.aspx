@@ -79,7 +79,7 @@
                         <td style="width: 25%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
                         </td>
                         <td align="left" style="width: 15%" class="ControlTextBox3">
-                            <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10"
+                            <asp:TextBox ID="txtStartDate" Enabled="true" CssClass="cssTextBox" Width="100px" MaxLength="10"
                                 runat="server" />
                             &nbsp; &nbsp; &nbsp;
                         </td>
@@ -99,7 +99,7 @@
                         <td style="width: 25%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
                         </td>
                         <td align="left" class="ControlTextBox3" style="width: 15%">
-                            <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" Width="100px" MaxLength="10" runat="server" />
+                            <asp:TextBox ID="txtEndDate" Enabled="true" CssClass="cssTextBox" Width="100px" MaxLength="10" runat="server" />
                             &nbsp; &nbsp;
                         </td>
                         <td align="left" style="width: 15%">

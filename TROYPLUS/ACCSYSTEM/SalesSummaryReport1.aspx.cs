@@ -86,6 +86,25 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                             }
                         }
                     }
+
+                    DataSet ds1 = bl.getImageInfo();
+                    if (ds1 != null)
+                    {
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                            {
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                                Image1.Height = 35;
+                            }
+                        }
+                        else
+                        {
+                            Image1.Height = 35;
+                            Image1.Width = 220;
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                        }
+                    }
                 }
 
 
@@ -113,6 +132,8 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
 
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
+                lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
+                lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
 
                 if (Request.QueryString["category"] != null)
                 {
@@ -1323,14 +1344,16 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                 e.Row.Cells[5].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[6].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[7].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[8].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[9].HorizontalAlign = HorizontalAlign.Right;
 
-                e.Row.Cells[1].Text = dSNetRate.ToString("f2");
-                e.Row.Cells[2].Text = dSDiscountRate.ToString("f2");
-                e.Row.Cells[3].Text = dSVatRate.ToString("f2");
-                e.Row.Cells[4].Text = dSCSTRate.ToString("f2");
-                e.Row.Cells[5].Text = dSFrRate.ToString("f2");
-                e.Row.Cells[6].Text = dSLURate.ToString("f2");
-                e.Row.Cells[7].Text = dSGrandRate.ToString("f2");
+                e.Row.Cells[3].Text = dSNetRate.ToString("f2");
+                e.Row.Cells[4].Text = dSDiscountRate.ToString("f2");
+                e.Row.Cells[5].Text = dSVatRate.ToString("f2");
+                e.Row.Cells[6].Text = dSCSTRate.ToString("f2");
+                e.Row.Cells[7].Text = dSFrRate.ToString("f2");
+                e.Row.Cells[8].Text = dSLURate.ToString("f2");
+                e.Row.Cells[9].Text = dSGrandRate.ToString("f2");
                 strBillno = "";
             }
         }

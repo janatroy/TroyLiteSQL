@@ -86,7 +86,7 @@
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
                     </td>
                     <td width="40%" class="ControlTextBox3">
-                        <asp:TextBox ID="txtStartDate" Enabled="false" runat="server" CssClass="cssTextBox" Width="100px"
+                        <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px"
                             MaxLength="10" />
                     </td>
                     <td align="left" width="25%">
@@ -100,7 +100,7 @@
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
                     </td>
                     <td align="left" class="ControlTextBox3" width="40%">
-                        <asp:TextBox ID="txtEndDate" Enabled="false" runat="server" CssClass="cssTextBox" Width="100px" MaxLength="10" />
+                        <asp:TextBox ID="txtEndDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px" MaxLength="10" />
                     </td>
                      <td align="left" width="25%">
                         <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>

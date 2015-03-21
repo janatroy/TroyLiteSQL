@@ -290,9 +290,16 @@
                             &nbsp;
                         </td>
                     </tr>
+                     <tr>
+                              <asp:Image ID="Image1" runat="server" />
+                        </tr>
                 </table>
                 <h5>
-                    SALES SUMMARY REPORT</h5>
+                    SALES SUMMARY REPORT
+                     <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
+                            To
+                            <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
+                
             </center>
             <wc:ReportGridView runat="server" BorderWidth="1" ID="gvMain" GridLines="Both" AlternatingRowStyle-CssClass="even"
                 AutoGenerateColumns="false" AllowPaging="false" AllowPrintPaging="true"
