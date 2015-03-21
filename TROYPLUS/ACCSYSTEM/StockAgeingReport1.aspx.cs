@@ -161,6 +161,8 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
                 divmain.Visible = true;
                 div1.Visible = false;
 
+                cond3 = cond3.Replace("'", "");
+                Label1.Text = " Stock Ageing report for " + cond3;
             }
         }
         catch (Exception ex)
