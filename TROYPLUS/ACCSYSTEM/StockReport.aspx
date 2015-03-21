@@ -301,6 +301,34 @@
                         </wc:ReportGridView>
                         <br />
                         <div style="text-align: right">
+                             <div style="text-align: right; width: 98%">
+                        <table>
+                            <tr>                                
+                                <td style="width: 50%; text-align: left" />
+                                <td style="width: 35%; text-align: left" />
+                                <td style="width: 25%; text-align: left">
+                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left">Grand Stock Total : </span>
+                                    </b>
+                                </td>
+                                <td style="width: 15%; text-align: right">
+                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandStockTotal" Text="0"
+                                        runat="server" Font-Bold="true" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; text-align: left" />
+                                <td style="width: 35%; text-align: left" />
+                                <td style="width: 25%; text-align: left">
+                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left">Grand Value Total : </span>
+                                    </b>
+                                </td>
+                                <td style="width: 15%; text-align: right">
+                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandValueTotal" Text="0"
+                                        runat="server" Font-Bold="true" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                             <b><span style="font-family: 'Trebuchet MS'; font-size: 11px;">Grand Total : </span>
                             </b>
                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblGrandTotal"

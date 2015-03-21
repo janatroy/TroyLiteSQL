@@ -53029,7 +53029,7 @@ public class BusinessLogic
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
 
-        sQry = ("select sum(PS.Stock) as Stock,Cat.brandlevel,Cat.brandname from tblproductmaster PM, tblbrand Cat,tblproductstock PS where PM.productdesc = Cat.brandname and PS.ItemCode = PM.ItemCode group by Cat.brandname,Cat.brandlevel"); //" order by ProductDesc,CategoryID,Model,ProductName"
+        sQry = ("select sum(PS.Stock) as Stock,Cat.brandlevel,Cat.brandname from tblproductmaster PM, tblbrand Cat,tblproductstock PS where PM.productdesc = Cat.brandname and PS.ItemCode = PM.ItemCode and PS.Branchcode ='" + Branch + "' group by Cat.brandname,Cat.brandlevel"); //" order by ProductDesc,CategoryID,Model,ProductName"
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -74265,10 +74265,13 @@ public class BusinessLogic
         }
     }
 
-    public DataSet GetAbsoluteCategorypricelist(string sDataSource, string Category, string Branch, string types,string price)
+
+
+
+    public DataSet GetAbsoluteProductpricelist1(string connection,string sDataSource, string itemcode, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
 
         StringBuilder dbQry = new StringBuilder();
@@ -74281,7 +74284,7 @@ public class BusinessLogic
         {
             manager.Open();
 
-            dbQry2 = "select sum(tblproductprices.price * tblproductstock.stock) as price, sum(tblproductstock.stock) as stock from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster on tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblCategories on tblCategories.CategoryId = tblproductmaster.CategoryId where tblCategories.Categoryname='" + Category + "' and tblproductprices.pricename ='" + price + "' and tblCategories.Categoryname='" + Category + "'  and tblproductstock.Stock>0 group by tblproductmaster.CategoryId ";
+            dbQry2 = "select tblproductprices.itemcode,tblproductprices.pricename,tblproductprices.price,tblproductprices.effdate,tblproductstock.stock,tblproductstock.Branchcode from tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode where tblproductprices.itemcode='" + itemcode + "' and tblproductstock.Branchcode ='" + Branch + "' ";
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
 
@@ -74302,6 +74305,93 @@ public class BusinessLogic
         }
     }
 
+    public DataSet GetAbsoluteCategorypricelist(string sDataSource, string Category, string Branch, string types,string price)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        DataSet ds = new DataSet();
+
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+        string smrpeffDate = string.Empty;
+        string sdpeffdate = string.Empty;
+        string snlceffdate = string.Empty;
+
+        try
+        {
+            manager.Open();
+            if (types == "brand")
+            {
+                dbQry2 = "select sum(tblproductprices.price * tblproductstock.stock) as price, sum(tblproductstock.stock) as stock from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster on tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblbrand on tblbrand.Brandname = tblproductmaster.productdesc where tblbrand.brandname='" + Category + "' and tblproductprices.pricename ='" + price + "' and tblbrand.brandname='" + Category + "'  and tblproductstock.Stock>0 group by tblproductmaster.CategoryId ";
+            }
+            else
+            {
+                dbQry2 = "select sum(tblproductprices.price * tblproductstock.stock) as price, sum(tblproductstock.stock) as stock from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster on tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblCategories on tblCategories.CategoryId = tblproductmaster.CategoryId where tblCategories.Categoryname='" + Category + "' and tblproductprices.pricename ='" + price + "' and tblCategories.Categoryname='" + Category + "'  and tblproductstock.Stock>0 group by tblproductmaster.CategoryId ";
+            }
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
+
+
+    public DataSet GetAbsoluteCategorypricelist1(string connection,string sDataSource, string Category, string Branch, string types, string price)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+
+        StringBuilder dbQry = new StringBuilder();
+        string dbQry2 = string.Empty;
+        string smrpeffDate = string.Empty;
+        string sdpeffdate = string.Empty;
+        string snlceffdate = string.Empty;
+
+        try
+        {
+            manager.Open();
+            if (types == "brand")
+            {
+                dbQry2 = "select sum(tblproductprices.price * tblproductstock.stock) as price, sum(tblproductstock.stock) as stock from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster on tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblbrand on tblbrand.Brandname = tblproductmaster.productdesc where tblbrand.brandname='" + Category + "' and tblproductprices.pricename ='" + price + "' and tblbrand.brandname='" + Category + "'  and tblproductstock.Stock>0 group by tblproductmaster.CategoryId ";
+            }
+            else
+            {
+                dbQry2 = "select sum(tblproductprices.price * tblproductstock.stock) as price, sum(tblproductstock.stock) as stock from ((tblproductprices inner join tblproductstock on tblproductstock.itemcode = tblproductprices.itemcode) inner join tblproductmaster on tblproductmaster.itemcode = tblproductprices.itemcode) inner join tblCategories on tblCategories.CategoryId = tblproductmaster.CategoryId where tblCategories.Categoryname='" + Category + "' and tblproductprices.pricename ='" + price + "' and tblCategories.Categoryname='" + Category + "'  and tblproductstock.Stock>0 group by tblproductmaster.CategoryId ";
+            }
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
     public double getOpeningStock(string sDataSource, string itemCode, string BranchCode)
     {
         SqlConnection oleConn;
