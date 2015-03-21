@@ -31,6 +31,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 BindDivisions();
                 GetCompanyInfo();
                 loadPriceList();
+                loadPriceListPurchase();
                 Label1.Text = Helper.GenerateUniqueIDForThisPC();
                 DisableForOffline();
 
@@ -95,6 +96,19 @@ public partial class CompanyInfo : System.Web.UI.Page
         ddPriceList.DataBind();
         ddPriceList.DataTextField = "PriceName";
         ddPriceList.DataValueField = "PriceName";
+    }
+
+    private void loadPriceListPurchase()
+    {
+        string connection = Request.Cookies["Company"].Value;
+        //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        ds = bl.ListPriceListInfo(connection, "", "");
+        drpPurPriceList.DataSource = ds;
+        drpPurPriceList.DataBind();
+        drpPurPriceList.DataTextField = "PriceName";
+        drpPurPriceList.DataValueField = "PriceName";
     }
 
     private void loadBillFormat()
@@ -359,6 +373,11 @@ public partial class CompanyInfo : System.Web.UI.Page
                             if (dr["KeyValue"] != null)
                                 txtExpDay.Text = dr["KeyValue"].ToString();
                         }
+                        else if (dr["KeyName"].ToString() == "PURPRILST")
+                        {
+                            if (dr["KeyValue"] != null)
+                                drpPurPriceList.SelectedValue = dr["KeyValue"].ToString();
+                        }
                     }
                 }
             }
@@ -493,6 +512,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 string openingbalance = string.Empty;
                 string deviationprice = string.Empty;
                 string pwdexpday = string.Empty;
+                string purchasepricelist = string.Empty;
 
                 salesdiscount = RadioButtonDiscount.SelectedValue;
                 openingbalance  = RadioButtonOpening.SelectedValue;
@@ -541,6 +561,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 discType = ddDiscType.SelectedValue;
                 exceedLimit = rdoExceedCreditLimit.SelectedItem.Text;
                 pwdexpday = txtExpDay.Text.Trim();
+                purchasepricelist = drpPurPriceList.SelectedValue;
 
                 clsCompany clscmp = new clsCompany();
                 clscmp.Company = strCompany;
@@ -558,7 +579,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
                 try
                 {
-                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday);
+                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist);
 
                     System.Threading.Thread.Sleep(1000);
 

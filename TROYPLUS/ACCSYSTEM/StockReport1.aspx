@@ -131,10 +131,17 @@
 
                     <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
                         <tr>
-                            <td width="140px" align="left">TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
                             </td>
-                            <td align="center" width="320px" style="font-size: 20px;">
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td width="10px" align="left"><%--TIN#:--%>
+                                <%-- <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>--%>
+                            </td>
+                            <td align="center" width="560px" style="font-size: 20px;">
                                 <asp:Label ID="lblCompany" runat="server"></asp:Label>
                             </td>
                             <td width="140px" align="left">Ph:
@@ -142,8 +149,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left">GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                            <td align="left"><%--GST#:--%>
+                                <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -153,43 +160,36 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>&nbsp;
+                            <td>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblCity" runat="server" />
                                 -
                         <asp:Label ID="lblPincode" runat="server"></asp:Label>
                             </td>
-                            <td>&nbsp;
+                            <td>
                             </td>
                         </tr>
                         <tr>
-                            <td>&nbsp;
+                            <td>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblState" runat="server"> </asp:Label>
                             </td>
-                            <td>&nbsp;
+                            <td>
                             </td>
                         </tr>
                         <tr>
-                            <td>&nbsp;
+                            <td>
                             </td>
-                            <td align="center">&nbsp;
-                            </td>
-                            <td>&nbsp;
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" align="center">
-                                <br />
+                            <td width="560px" align="center">                               
                                 <h5>Stock List As On
-                            <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
+                                <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
+                            </td>
+                             <td>
                             </td>
                         </tr>
-                        <tr>
-                            <asp:Image ID="Image1" runat="server" />
-                        </tr>
+
                     </table>
                     <div>
                         <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
@@ -249,7 +249,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Qty" ItemStyle-Width="30px">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblStock" runat="server" Text='<%# Eval("Stock") %>' />
+                                                            <asp:Label ID="lblStock" Style="text-align: center" runat="server" Text='<%# Eval("Stock") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <%--  <asp:TemplateField HeaderText="Unit" ItemStyle-Width="30px">  
@@ -269,7 +269,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="PriceList" ItemStyle-Width="30px">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblPrice" runat="server" Text='<%# Eval("PriceName") %>' />
+                                                            <asp:Label ID="lblPrice" Style="text-align: right" runat="server" Text='<%# Eval("PriceName") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Amount" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Right">
@@ -298,7 +298,7 @@
                     </div>
                     <div style="text-align: right; width: 98%">
                         <table>
-                            <tr>                                
+                            <tr>
                                 <td style="width: 50%; text-align: left" />
                                 <td style="width: 35%; text-align: left" />
                                 <td style="width: 25%; text-align: left">

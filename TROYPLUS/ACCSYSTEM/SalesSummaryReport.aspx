@@ -191,7 +191,7 @@
                                 <%--<asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>--%>
 
                                 <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lstBranch_SelectedIndexChanged">
-                                    <asp:ListItem Text="All" Value="0" />
+                                  <%--  <asp:ListItem Text="All" Value="0" />--%>
                                 </asp:CheckBoxList>
                             </div>
                         </td>
