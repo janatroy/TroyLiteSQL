@@ -27,7 +27,7 @@ public partial class ReportXLZeroSales1 : System.Web.UI.Page
             Connection = Request.Cookies["Company"].Value;
             if (!IsPostBack)
             {
-
+                lblHeading.Text = "Zero / 1 Rs Value Sales Report";
                 DataSet companyInfo = new DataSet();
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if (Request.Cookies["Company"] != null)
