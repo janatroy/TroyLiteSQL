@@ -107,6 +107,15 @@ public partial class TaskTypes : System.Web.UI.Page
             GrdViewLedger.Visible = true;
             System.Threading.Thread.Sleep(1000);
             GrdViewLedger.DataBind();
+            if (txtSearch.Text == "")
+            {
+
+            }
+            else
+            {
+                txtSearch.Text = "";
+                ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+            }
             StringBuilder scriptMsg = new StringBuilder();
             scriptMsg.Append("alert('Task Type Information Saved Successfully.');");
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
@@ -169,6 +178,15 @@ public partial class TaskTypes : System.Web.UI.Page
 
     protected void GrdViewLedger_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
+        if (txtSearch.Text == "")
+        {
+
+        }
+        else
+        {
+            txtSearch.Text = "";
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        }
         GrdViewLedger.SelectedIndex = e.RowIndex;
     }
 
@@ -182,6 +200,15 @@ public partial class TaskTypes : System.Web.UI.Page
             System.Threading.Thread.Sleep(1000);
             //MyAccordion.Visible = true;
             GrdViewLedger.DataBind();
+            if (txtSearch.Text == "")
+            {
+
+            }
+            else
+            {
+                txtSearch.Text = "";
+                ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+            }
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Task Type Details Updated Successfully.');", true);
         }
         else
@@ -261,7 +288,7 @@ public partial class TaskTypes : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "DEALER")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DEALER")
                 {
                     dealerRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -360,7 +387,17 @@ public partial class TaskTypes : System.Web.UI.Page
         //MyAccordion.Visible = true;
         frmViewAdd.Visible = false;
         lnkBtnAdd.Visible = true;
+        if (txtSearch.Text == "")
+        {
+
+        }
+        else
+        {
+            txtSearch.Text = "";
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        }
         GrdViewLedger.Visible = true;
+        GrdViewLedger.DataBind();
     }
     protected void UpdateButton_Click(object sender, EventArgs e)
     {
@@ -371,7 +408,17 @@ public partial class TaskTypes : System.Web.UI.Page
         //MyAccordion.Visible = true;
         lnkBtnAdd.Visible = true;
         frmViewAdd.Visible = false;
+        if (txtSearch.Text == "")
+        {
+
+        }
+        else
+        {
+            txtSearch.Text = "";
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        }
         GrdViewLedger.Visible = true;
+        GrdViewLedger.DataBind();
 
     }
     protected void InsertButton_Click(object sender, EventArgs e)

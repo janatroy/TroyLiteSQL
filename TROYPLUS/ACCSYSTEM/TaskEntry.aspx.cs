@@ -504,6 +504,7 @@ public partial class TaskEntry : System.Web.UI.Page
             //MyAccordion.Visible = true;
             tbMain.Visible = false;
             GrdWME.Visible = true;
+            BindWME("", "");
             Reset();
         }
         catch (Exception ex)
@@ -514,7 +515,8 @@ public partial class TaskEntry : System.Web.UI.Page
 
     private void ResetSearch()
     {
-        
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
         txtStartDate.Text = "";
         txtEndDate.Text = "";
         txtsCreationDate.Text = "";
@@ -536,6 +538,8 @@ public partial class TaskEntry : System.Web.UI.Page
         txtEWEndDate.Text = "";
         drpTaskType.SelectedIndex = 0;
         txtTaskName.Text = "";
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
        // drpDependencyTask.SelectedIndex = 0;
         drpProjectCode.SelectedIndex = 0;
         txtTaskDesc.Text = "";

@@ -1368,6 +1368,8 @@ public partial class LeadMgmt : System.Web.UI.Page
             //BtnAddStage.Visible = true;
             //ResetStage();
             //BindStage();
+            Reset();
+            GrdViewLead.DataBind();
         }
         catch (Exception ex)
         {
@@ -1472,6 +1474,8 @@ public partial class LeadMgmt : System.Web.UI.Page
         //txtPotentialPotAmount.Text = "";
         //txtPotentialWeightedAmount.Text = "";
         txtPredictedClosingDate.Text = "";
+        ddCriteria.SelectedIndex = 0;
+        txtSearch.Text = "";   
         //txtPredictedClosing.Text = "";
         //txtBranch.Text = "";
         chk.Checked = true;
@@ -2388,6 +2392,9 @@ public partial class LeadMgmt : System.Web.UI.Page
     {
         try
         {
+            Reset();
+            GrdViewLead.DataBind();
+
             //ModalPopupContact.Hide();
             //pnlStage.Visible = false;
             //GrdViewLeadStage.Visible = true;
@@ -2405,6 +2412,8 @@ public partial class LeadMgmt : System.Web.UI.Page
         {
             pnlCompetitor.Visible = false;
             GrdViewLeadCompetitor.Visible = true;
+            Reset();
+            GrdViewLead.DataBind();
             // BtnAddCompetitor.Visible = true;
         }
         catch (Exception ex)
@@ -2419,6 +2428,8 @@ public partial class LeadMgmt : System.Web.UI.Page
         {
             pnlActivity.Visible = false;
             GrdViewLeadActivity.Visible = true;
+            Reset();
+            GrdViewLead.DataBind();
             // BtnAddActivity.Visible = true;
         }
         catch (Exception ex)
@@ -2433,6 +2444,8 @@ public partial class LeadMgmt : System.Web.UI.Page
         {
             pnlproduct.Visible = false;
             GrdViewLeadproduct.Visible = true;
+            Reset();
+            GrdViewLead.DataBind();
             //BtnAddproduct.Visible = true;
         }
         catch (Exception ex)
@@ -3258,6 +3271,9 @@ public partial class LeadMgmt : System.Web.UI.Page
         try
         {
             ModalPopupExtender2.Hide();
+            Reset();
+           // BindGrid("", "");
+           // BtnClearFilter_Click(sender, e);
         }
         catch (Exception ex)
         {
@@ -3332,6 +3348,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                     if (txtBPName.Text == "")
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Select Customer Name')", true);
+                        
                         return;
                     }
                     else
@@ -4082,6 +4099,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 GrdViewLead.DataBind();
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Lead Details Updated successfully.')", true);
+                Reset();
 
                 UpdatePanelPage.Update();
                 BindGrid("Open", "DocStatus");
@@ -4174,7 +4192,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 if (bl2.IsLeadAlreadyFound(connection1,LeadName))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Lead NAme \\'" + txtLeadName.Text + "\\' already exists');", true);
-
+                    Reset();
                     ModalPopupExtender2.Show();
                     tabs2.Visible = true;
                     return;
@@ -4929,6 +4947,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 GrdViewLead.DataBind();
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Lead Details saved successfully.')", true);
+                Reset();
 
                 BindGrid("Open", "DocStatus");
                 UpdatePanelPage.Update();
