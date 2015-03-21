@@ -8883,18 +8883,8 @@ public class BusinessLogic
             //        ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, oldmrp, olddp, oldnlc, block, MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), mrpdat.ToShortDateString(), mrpprevdat.ToShortDateString(), dpdat.ToShortDateString(), dpprevdat.ToShortDateString(), nlcdat.ToShortDateString(), nlcprevdat.ToShortDateString());
             //    manager.ExecuteDataSet(CommandType.Text, dbQry2);
             //}
-            // Sales Incentive Update
-            if (dtSalesIncentive != null)
-            {
-                if (dtSalesIncentive.Rows.Count > 0)
-                {
-                    DataRow dr = dtSalesIncentive.Rows[0];
-                    dbQry = string.Format("UPDATE tblProdSalesIncentive SET ItemCode='{0}',Slab1={1},Slab2={2},Slab3={3},Slab4={4},Slab5={5},EffectiveDate='{6}',LastUpdatedDate='{7}' WHERE Id={8}",
-                                dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString(), dr["Id"].ToString());
 
-                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
-                }
-            }
+            InsertProductSalesIncentive(manager, dtSalesIncentive);
 
             if (dsAudit != null)
             {
@@ -8916,6 +8906,194 @@ public class BusinessLogic
                 manager.Dispose();
         }
     }
+
+    //public void UpdateProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int BuyUnit, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int Productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int Deviation, string IsActive, DataSet dsprice, DataTable dtSalesIncentive)
+    //{
+    //    DBManager manager = new DBManager(DataProvider.SqlServer);
+    //    manager.ConnectionString = CreateConnectionString(connection);
+    //    DataSet ds = new DataSet();
+
+    //    DataSet dsOld = new DataSet();
+    //    string dbQry = string.Empty;
+    //    string dbQry2 = string.Empty;
+    //    string dbQry3 = string.Empty;
+    //    string AuditLog = string.Empty;
+
+    //    string dbQ = string.Empty;
+    //    DataSet dsd = new DataSet();
+    //    string logdescription = string.Empty;
+    //    string description = string.Empty;
+    //    string Logsave = string.Empty;
+
+    //    DataSet dsAudit = GetOldValues(manager.ConnectionString, "Select ProductName,Model,CategoryID,ProductDesc,ROL,Rate,Unit,VAT,Discount,BuyRate,BuyVAT,BuyDiscount,BuyUnit from tblProductMaster Where ItemCode = '" + ItemCode + "'");
+
+    //    DateTime mrpdat = DateTime.Now;
+    //    DateTime dpdat = DateTime.Now;
+    //    DateTime nlcdat = DateTime.Now;
+
+    //    DateTime mrpprevdat = DateTime.Now;
+    //    DateTime nlcprevdat = DateTime.Now;
+    //    DateTime dpprevdat = DateTime.Now;
+
+    //    DateTime mrpnewdat;
+    //    DateTime nlcnewdat;
+    //    DateTime dpnewdat;
+
+    //    double oldmrp = 0;
+    //    double oldnlc = 0;
+    //    double olddp = 0;
+
+    //    try
+    //    {
+    //        manager.Open();
+
+    //        dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
+    //        dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
+    //        if (dsd.Tables[0].Rows.Count > 0)
+    //            Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
+
+    //        if (Logsave == "YES")
+    //        {
+    //            string value1 = string.Empty;
+    //            string value2 = string.Empty;
+    //            string value3 = string.Empty;
+
+    //            int middlePos = 0;
+    //            logdescription = string.Format("UPDATE tblProductMaster SET ProductName={0}, Model={1}, CategoryID={2}, ProductDesc={3},Stock ={4},ROL={5}, Rate={6}, Unit={7}, VAT={8}, Discount={9},BuyRate={10},BuyVAT={11},BuyDiscount={12},BuyUnit={13},DealerUnit={15}, DealerRate={16}, DealerVAT={17}, DealerDiscount={18},Complex={19},Measure_Unit={20},Accept_Role={21}, CST={22}, barcode = {23},ExecutiveCommission={24},CommodityCode={25},NLC={26},block={27},Productlevel={28},MRPEffDate={29},DPEffDate={30},NLCEffDate={31},mrpstartdate={32},dpstartdate={33},nlcstartdate={34},mrpenddate={35},dpenddate={36},nlcenddate={37} where ItemCode = {14} ", //Jolo Barcode
+    //             ProductName, Model, CategoryID, ProductDesc, Stock, ROL, Rate, Unit, VAT, Discount, BuyRate, BuyVAT, BuyDiscount, BuyUnit, ItemCode, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, Productlevel, MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), mrpdat.ToShortDateString(), mrpprevdat.ToShortDateString(), dpdat.ToShortDateString(), dpprevdat.ToShortDateString(), nlcdat.ToShortDateString(), nlcprevdat.ToShortDateString());
+    //            logdescription = logdescription.Trim();
+    //            if (logdescription.Length > 255)
+    //            {
+    //                value1 = logdescription.Substring(0, 255);
+
+
+    //                value2 = logdescription.Substring(256, 255);
+
+
+    //                middlePos = logdescription.Length - (value1.Length + value2.Length);
+    //                if (middlePos > 0)
+    //                    value3 = logdescription.Substring(510, middlePos);
+    //                else
+    //                    value3 = "";
+    //            }
+    //            else
+    //            {
+    //                value1 = logdescription;
+    //                value2 = "";
+    //                value3 = "";
+    //            }
+    //            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+    //                 DateTime.Now.ToString("yyyy-MM-dd"), value1, Username, "", value2, value3, "UpdateProduct");
+    //            manager.ExecuteNonQuery(CommandType.Text, description);
+
+    //            logdescription = string.Format("INSERT INTO tblProducthistory VALUES({0},{1}, {2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18})",
+    //            ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Rate, DealerRate, NLC, block, MRPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"), mrpdat.ToString("yyyy-MM-dd"), mrpprevdat.ToString("yyyy-MM-dd"), dpdat.ToString("yyyy-MM-dd"), dpprevdat.ToString("yyyy-MM-dd"), nlcdat.ToString("yyyy-MM-dd"), nlcprevdat.ToString("yyyy-MM-dd"));
+    //            logdescription = logdescription.Trim();
+    //            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+    //                 DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "UpdateProduct");
+    //            manager.ExecuteNonQuery(CommandType.Text, description);
+    //        }
+
+
+    //        dbQry = string.Format("UPDATE tblProductMaster SET ProductName='{0}', Model='{1}', CategoryID={2}, ProductDesc='{3}',Stock ={4},ROL={5}, Rate={6}, Unit={7}, VAT={8}, Discount={9},BuyRate={10},BuyVAT={11},BuyDiscount={12},BuyUnit={13},DealerUnit='{15}', DealerRate={16}, DealerVAT={17}, DealerDiscount={18},Complex='{19}',Measure_Unit='{20}',Accept_Role='{21}', CST={22}, barcode = '{23}',ExecutiveCommission={24},CommodityCode='{25}',NLC={26},block='{27}',Productlevel={28},MRPEffDate='{29}',DPEffDate='{30}',NLCEffDate={31},mrpstartdate='{32}',dpstartdate='{33}',nlcstartdate='{34}',mrpenddate='{35}',dpenddate='{36}',nlcenddate='{37}', Outdated ='{38}' , Deviation = {39}, IsActive='{40}' where ItemCode = '{14}' ", //Jolo Barcode
+    //             ProductName, Model, CategoryID, ProductDesc, Stock, ROL, Rate, Unit, VAT, Discount, BuyRate, BuyVAT, BuyDiscount, BuyUnit, ItemCode, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, Productlevel, MRPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"), mrpdat.ToString("yyyy-MM-dd"), mrpprevdat.ToString("yyyy-MM-dd"), dpdat.ToString("yyyy-MM-dd"), dpprevdat.ToString("yyyy-MM-dd"), nlcdat.ToString("yyyy-MM-dd"), nlcprevdat.ToString("yyyy-MM-dd"), Outdated, Deviation, IsActive); //Jolo Barcode
+
+    //        manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+
+    //        //dbQry = string.Format("Delete From tblProductPrices Where ItemCode = '{0}'", ItemCode);
+
+    //        //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+    //        if (dsprice != null)
+    //        {
+    //            if (dsprice.Tables.Count > 0)
+    //            {
+    //                foreach (DataRow dr in dsprice.Tables[0].Rows)
+    //                {
+
+    //                    dbQry3 = string.Format("Select Effdate from tblproductprices Where itemcode='{0}' and pricename ='{1}'", ItemCode, Convert.ToString(dr["PriceName"]));
+    //                    dsOld = manager.ExecuteDataSet(CommandType.Text, dbQry3);
+    //                    if (dsOld != null)
+    //                    {
+    //                        if (dsOld.Tables.Count > 0)
+    //                        {
+    //                            mrpdat = Convert.ToDateTime(dsOld.Tables[0].Rows[0]["effdate"]);
+    //                        }
+    //                    }
+
+    //                    dbQry = string.Format("UPDATE tblProductPrices set EffDate = '{0}',Price = {1},PriceId = {2},Discount = {3} where ItemCode = '{4}' and PriceName= '{5}'",
+    //                        Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDouble(dr["Price"]), Convert.ToInt32(dr["Id"]), Convert.ToDouble(dr["Discount"]), ItemCode, Convert.ToString(dr["PriceName"]));
+
+    //                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
+    //                    if (mrpdat == Convert.ToDateTime(dr["EffDate"]))
+    //                    {
+    //                        mrpprevdat = Convert.ToDateTime(dr["EffDate"]);
+    //                    }
+    //                    else
+    //                    {
+    //                        mrpprevdat = Convert.ToDateTime(dr["EffDate"]).AddDays(-1);
+    //                    }
+
+    //                    if (mrpdat == Convert.ToDateTime(dr["EffDate"]))
+    //                    {
+    //                    }
+    //                    else
+    //                    {
+    //                        dbQry2 = string.Format("INSERT INTO tblProductPricehistory VALUES('{0}','{1}', '{2}',{3},'{4}',{5},'{6}','{7}','{8}','{9}',{10},{11},{12},'{13}')",
+    //                                 ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), mrpdat.ToString("yyyy-MM-dd"), mrpprevdat.ToString("yyyy-MM-dd"), Convert.ToString(dr["PriceName"]), Convert.ToDouble(dr["Price"]), Convert.ToDouble(dr["Discount"]), Convert.ToInt32(dr["Id"]), Username);
+
+    //                        manager.ExecuteDataSet(CommandType.Text, dbQry2);
+    //                    }
+
+    //                }
+    //            }
+    //        }
+
+    //        //if ((mrpdat == MRPEffDate) && (nlcdat == NLCEffDate) && (dpdat == DPEffDate))
+    //        //{
+    //        //}
+    //        //else
+    //        //{
+    //        //    dbQry2 = string.Format("INSERT INTO tblProducthistory VALUES('{0}','{1}', '{2}',{3},'{4}',{5},{6},{7},{8},'{9}',Format('{10}', 'dd/mm/yyyy'),Format('{11}', 'dd/mm/yyyy'),Format('{12}', 'dd/mm/yyyy'),Format('{13}', 'dd/mm/yyyy'),Format('{14}', 'dd/mm/yyyy'),Format('{15}', 'dd/mm/yyyy'),Format('{16}', 'dd/mm/yyyy'),Format('{17}', 'dd/mm/yyyy'),Format('{18}', 'dd/mm/yyyy'))",
+    //        //        ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, oldmrp, olddp, oldnlc, block, MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), mrpdat.ToShortDateString(), mrpprevdat.ToShortDateString(), dpdat.ToShortDateString(), dpprevdat.ToShortDateString(), nlcdat.ToShortDateString(), nlcprevdat.ToShortDateString());
+    //        //    manager.ExecuteDataSet(CommandType.Text, dbQry2);
+    //        //}
+    //        // Sales Incentive Update
+    //        if (dtSalesIncentive != null)
+    //        {
+    //            if (dtSalesIncentive.Rows.Count > 0)
+    //            {
+    //                DataRow dr = dtSalesIncentive.Rows[0];
+    //                dbQry = string.Format("UPDATE tblProdSalesIncentive SET ItemCode='{0}',Slab1={1},Slab2={2},Slab3={3},Slab4={4},Slab5={5},EffectiveDate='{6}',LastUpdatedDate='{7}' WHERE Id={8}",
+    //                            dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString(), dr["Id"].ToString());
+
+    //                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+    //            }
+    //        }
+
+    //        if (dsAudit != null)
+    //        {
+    //            System.Threading.Thread.Sleep(1000);
+    //            dsAudit = GetNewValues(manager.ConnectionString, "Select ProductName,Model,CategoryID,ProductDesc,ROL,Rate,Unit,VAT,Discount,BuyRate,BuyVAT,BuyDiscount,BuyUnit,DealerUnit, DealerRate, DealerVAT, DealerDiscount,Complex,Measure_Unit,Accept_Role  from tblProductMaster Where ItemCode = '" + ItemCode + "'", dsAudit);
+    //            AuditLog = GetAuditString(dsAudit);
+    //            AuditLog = AuditLog + " User :" + Username + " :" + DateTime.Now.ToString();
+    //            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", AuditLog, "Update Product", DateTime.Now.ToString("yyyy-MM-dd"));
+    //            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+    //    finally
+    //    {
+    //        if (manager != null)
+    //            manager.Dispose();
+    //    }
+    //}
 
 
     public string[] GetRoles(string connection, string UserName)
@@ -9142,23 +9320,11 @@ public class BusinessLogic
                 }
             }
 
-            // Add product sales incentive
-            if (dtSalesIncentive != null)
-            {
-                if (dtSalesIncentive.Rows.Count > 0)
-                {
-                    DataRow dr = dtSalesIncentive.Rows[0];
-                    dbQry = string.Format("INSERT INTO tblProdSalesIncentive(ItemCode,Slab1,Slab2,Slab3,Slab4,Slab5,EffectiveDate,LastUpdatedDate) VALUES('{0}',{1},{2},{3},{4},{5},'{6}','{7}')",
-                                dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString());
-
-                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
-                }
-            }
+            InsertProductSalesIncentive(manager, dtSalesIncentive);
 
             sAuditStr = "Product added. Record Details :  User :" + Username + "Product Name =" + ProductName + " Model=" + Model + ", Brand=" + ProductDesc + " ,CategoryID=" + CategoryID + " ItemCode :" + ItemCode + " DateTime: " + DateTime.Now.ToString();
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
-
 
 
         }
@@ -9172,6 +9338,224 @@ public class BusinessLogic
                 manager.Dispose();
         }
     }
+
+    private void InsertProductSalesIncentive(DBManager manager, DataTable dtSalesIncentive)
+    {
+
+        // Sales Incentive Insert/Update
+        if (dtSalesIncentive != null)
+        {
+            if (dtSalesIncentive.Rows.Count > 0)
+            {
+                DataRow dr = dtSalesIncentive.Rows[0];
+                if (!string.IsNullOrEmpty(dr["Id"].ToString()))
+                {
+                    string dbQry = string.Format("UPDATE tblProdSalesIncentive SET ItemCode='{0}',FirstSlab={1},SecondSlab={2},ThirdSlab={3},FourthSlab={4},FifthSlab={5},EffectiveDate='{6}',LastUpdatedDate='{7}' WHERE Id={8}",
+                                dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString(), dr["Id"].ToString());
+
+                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                }
+                else
+                {
+                    string dbQry = string.Format("INSERT INTO tblProdSalesIncentive(ItemCode,FirstSlab,SecondSlab,ThirdSlab,FourthSlab,FifthSlab,EffectiveDate,LastUpdatedDate) VALUES('{0}',{1},{2},{3},{4},{5},'{6}','{7}')",
+                            dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString());
+
+                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                }
+            }
+        }
+    }
+
+    //public void InsertProduct(string connection, string ItemCode, string ProductName, string Model, int CategoryID, string ProductDesc, int ROL, double Stock, double Rate, int Unit, int BuyUnit, double VAT, int Discount, double BuyRate, double BuyVAT, int BuyDiscount, int DealerUnit, double DealerRate, double DealerVAT, int DealerDiscount, string Complex, string Measure_Unit, string Accept_Role, double CST, string Barcode, Double ExecutiveCommission, string CommodityCode, double NLC, string block, int productlevel, DateTime MRPEffDate, DateTime DPEffDate, DateTime NLCEffDate, string Username, string Outdated, int deviation, string IsActive, DataSet dsprice, DataSet dsstock, DataTable dtSalesIncentive) //Jolo Barcode
+    //{
+    //    DBManager manager = new DBManager(DataProvider.SqlServer);
+    //    manager.ConnectionString = CreateConnectionString(connection);
+    //    DataSet ds = new DataSet();
+
+    //    string dbQry = string.Empty;
+    //    string dbQry2 = string.Empty;
+    //    DataSet dsOld = new DataSet();
+    //    string dbQry3 = string.Empty;
+
+    //    string sAuditStr = string.Empty;
+
+    //    string dbQ = string.Empty;
+    //    DataSet dsd = new DataSet();
+    //    string logdescription = string.Empty;
+    //    string description = string.Empty;
+    //    string Logsave = string.Empty;
+
+    //    try
+    //    {
+    //        manager.Open();
+
+    //        dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
+    //        dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
+    //        if (dsd.Tables[0].Rows.Count > 0)
+    //            Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
+
+    //        if (Logsave == "YES")
+    //        {
+    //            string value1 = string.Empty;
+    //            string value2 = string.Empty;
+    //            string value3 = string.Empty;
+
+    //            int middlePos = 0;
+    //            logdescription = string.Format("INSERT INTO tblProductMaster VALUES({0},{1}, {2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38})",
+    //            ItemCode, ProductName, Model, CategoryID, ProductDesc, Stock, ROL, Rate, Unit, VAT, Discount, BuyUnit, BuyRate, BuyVAT, BuyDiscount, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, productlevel, MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), MRPEffDate.ToShortDateString(), MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), 0);
+    //            logdescription = logdescription.Trim();
+    //            //if (logdescription.Length > 255)
+    //            //{
+    //            //    value1 = logdescription.Substring(0, 255);
+    //            //    value2 = logdescription.Substring(256, 255);
+    //            //    middlePos = logdescription.Length - (value1.Length + value2.Length);
+    //            //    if (middlePos > 0)
+    //            //        value3 = logdescription.Substring(510, middlePos);
+    //            //    else
+    //            //        value3 = "";
+    //            //}
+    //            //else
+    //            //{
+    //            //    value1 = logdescription;
+    //            //    value2 = "";
+    //            //    value3 = "";
+    //            //}
+
+    //            if (logdescription.Length > 255)
+    //            {
+    //                value1 = logdescription.Substring(0, 255);
+    //                middlePos = logdescription.Length - (value1.Length);
+    //                if (middlePos > 0)
+    //                {
+    //                    if (middlePos < 255)
+    //                        value2 = logdescription.Substring(255, middlePos);
+    //                    else if (middlePos > 255)
+    //                        value2 = logdescription.Substring(256, 255);
+    //                    else
+    //                        value2 = logdescription.Substring(256, 254);
+    //                }
+    //                else
+    //                    value2 = "";
+
+    //                middlePos = logdescription.Length - (value1.Length + value2.Length);
+    //                if (middlePos > 0)
+    //                {
+    //                    if (middlePos < 255)
+    //                    {
+    //                        if (middlePos == 1)
+    //                            value3 = "";
+    //                        else
+    //                            value3 = logdescription.Substring(510, middlePos);
+    //                    }
+    //                    else if (middlePos > 255)
+    //                        value3 = logdescription.Substring(511, 255);
+    //                    else
+    //                        value3 = logdescription.Substring(511, 254);
+    //                }
+    //                else
+    //                    value3 = "";
+    //            }
+    //            else
+    //            {
+    //                value1 = logdescription;
+    //                value2 = "";
+    //                value3 = "";
+    //            }
+
+    //            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+    //                 DateTime.Now.ToString("yyyy-MM-dd"), value1, Username, "", value2, value3, "InsertProduct");
+    //            manager.ExecuteNonQuery(CommandType.Text, description);
+
+    //            logdescription = string.Format("INSERT INTO tblProducthistory VALUES({0},{1}, {2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18})",
+    //            ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Rate, DealerRate, NLC, block, MRPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"), MRPEffDate.ToString("yyyy-MM-dd"), MRPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"));
+    //            logdescription = logdescription.Trim();
+    //            description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}')",
+    //                 DateTime.Now.ToString("yyyy-MM-dd"), logdescription.ToString(), Username, "", "InsertProduct");
+    //            manager.ExecuteNonQuery(CommandType.Text, description);
+    //        }
+
+    //        dbQry = string.Format("INSERT INTO tblProductMaster VALUES('{0}','{1}', '{2}',{3},'{4}',{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},'{19}','{20}','{21}',{22},'{23}',{24},'{25}',{26},'{27}',{28},'{29}','{30}','{31}','{32}','{33}','{34}','{35}','{36}','{37}',{38}, {39},'{40}','{41}')",//Jolo Barcode
+    //            ItemCode, ProductName, Model, CategoryID, ProductDesc, Stock, ROL, Rate, Unit, VAT, Discount, BuyUnit, BuyRate, BuyVAT, BuyDiscount, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, productlevel, MRPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"), MRPEffDate.ToString("yyyy-MM-dd"), MRPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), DPEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"), NLCEffDate.ToString("yyyy-MM-dd"), 0, deviation, Outdated, IsActive);//Jolo Barcode
+
+
+    //        manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+
+    //        //dbQry2 = string.Format("INSERT INTO tblProducthistory VALUES('{0}','{1}', '{2}',{3},'{4}',{5},{6},{7},{8},'{9}',Format('{10}', 'dd/mm/yyyy'),Format('{11}', 'dd/mm/yyyy'),Format('{12}', 'dd/mm/yyyy'),Format('{13}', 'dd/mm/yyyy'),Format('{14}', 'dd/mm/yyyy'),Format('{15}', 'dd/mm/yyyy'),Format('{16}', 'dd/mm/yyyy'),Format('{17}', 'dd/mm/yyyy'),Format('{18}', 'dd/mm/yyyy'))",
+    //        //    ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Rate, DealerRate, NLC, block, MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), MRPEffDate.ToShortDateString(), MRPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), DPEffDate.ToShortDateString(), NLCEffDate.ToShortDateString(), NLCEffDate.ToShortDateString());
+
+    //        //manager.ExecuteDataSet(CommandType.Text, dbQry2);
+
+    //        double MRate = 0;
+    //        double NRate = 0;
+    //        double DRate = 0;
+
+    //        if (dsprice != null)
+    //        {
+    //            if (dsprice.Tables.Count > 0)
+    //            {
+    //                foreach (DataRow dr in dsprice.Tables[0].Rows)
+    //                {
+    //                    dbQry = string.Format("INSERT INTO tblProductPrices(EffDate,PriceName,Price,PriceId,Discount,ItemCode) VALUES('{0}','{1}',{2},{3},{4},'{5}')",
+    //                        Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToString(dr["PriceName"]), Convert.ToDouble(dr["Price"]), Convert.ToInt32(dr["Id"]), Convert.ToDouble(dr["Discount"]), ItemCode);
+
+    //                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+    //                    //dbQry2 = string.Format("INSERT INTO tblProductPricehistory VALUES('{0}','{1}', '{2}',{3},'{4}',{5},'{6}','{7}','{8}','{9}',{10},{11},{12},'{13}')",
+    //                    //            ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToDateTime(dr["EffDate"]).ToString("yyyy-MM-dd"), Convert.ToString(dr["PriceName"]), Convert.ToDouble(dr["Price"]), Convert.ToDouble(dr["Discount"]), Convert.ToInt32(dr["Id"]), Username);
+
+    //                    //manager.ExecuteDataSet(CommandType.Text, dbQry2);
+
+    //                }
+    //            }
+    //        }
+
+
+    //        if (dsstock != null)
+    //        {
+    //            if (dsstock.Tables.Count > 0)
+    //            {
+    //                foreach (DataRow dr in dsstock.Tables[0].Rows)
+    //                {
+    //                    dbQry = string.Format("INSERT INTO tblProductStock(Branchcode,BranchName,Stock,CategoryID,Model,ItemCode,ProductName,ProductDesc) VALUES('{0}','{1}',{2},{3},'{4}','{5}','{6}','{7}')",
+    //                        Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["BranchName"]), Convert.ToDouble(dr["Stock"]), Convert.ToInt32(dr["CategoryID"]), Convert.ToString(dr["Model"]), Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["ProductDesc"]));
+
+    //                    manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+    //                }
+    //            }
+    //        }
+
+    //        // Add product sales incentive
+    //        if (dtSalesIncentive != null)
+    //        {
+    //            if (dtSalesIncentive.Rows.Count > 0)
+    //            {
+    //                DataRow dr = dtSalesIncentive.Rows[0];
+    //                dbQry = string.Format("INSERT INTO tblProdSalesIncentive(ItemCode,Slab1,Slab2,Slab3,Slab4,Slab5,EffectiveDate,LastUpdatedDate) VALUES('{0}',{1},{2},{3},{4},{5},'{6}','{7}')",
+    //                            dr["ItemCode"].ToString(), dr["Slab1"].ToString(), dr["Slab2"].ToString(), dr["Slab3"].ToString(), dr["Slab4"].ToString(), dr["Slab5"].ToString(), dr["EffectiveDate"].ToString(), dr["LastUpdatedDate"].ToString());
+
+    //                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+    //            }
+    //        }
+
+    //        sAuditStr = "Product added. Record Details :  User :" + Username + "Product Name =" + ProductName + " Model=" + Model + ", Brand=" + ProductDesc + " ,CategoryID=" + CategoryID + " ItemCode :" + ItemCode + " DateTime: " + DateTime.Now.ToString();
+    //        dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+    //        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+    //    finally
+    //    {
+    //        if (manager != null)
+    //            manager.Dispose();
+    //    }
+    //}
 
 
     #region Journal Section
