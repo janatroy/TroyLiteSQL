@@ -35896,7 +35896,7 @@ public class BusinessLogic
         }
         else
         {
-            dbQry = ("SELECT " + selColumn + field2 + " ,tblSales.BranchCode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE " + condtion);
+            dbQry = ("SELECT " + selColumn + field2 + " ,tblSales.BranchCode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE " + condtion + " and " + branch);
         }
         try
         {

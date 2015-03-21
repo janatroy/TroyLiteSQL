@@ -155,6 +155,7 @@ public partial class LeadReference : System.Web.UI.Page
                 StringBuilder scriptMsg = new StringBuilder();
                 scriptMsg.Append("alert('Reference Information Saved Successfully.');");
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
+                Reset();
             }
             else
             {
@@ -208,6 +209,7 @@ public partial class LeadReference : System.Web.UI.Page
             if (e.Exception == null)
             {
                 GrdViewLedger.DataBind();
+
             }
             else
             {
@@ -217,6 +219,7 @@ public partial class LeadReference : System.Web.UI.Page
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), e.Exception.Message.ToString(), true);
 
                     e.ExceptionHandled = true;
+                    Reset();
                 }
             }
         }
@@ -231,6 +234,7 @@ public partial class LeadReference : System.Web.UI.Page
         try
         {
             GrdViewLedger.SelectedIndex = e.RowIndex;
+            Reset();
         }
         catch (Exception ex)
         {
@@ -251,6 +255,7 @@ public partial class LeadReference : System.Web.UI.Page
                 //MyAccordion.Visible = true;
                 GrdViewLedger.DataBind();
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Reference Details Updated Successfully.');", true);
+                Reset();
             }
             else
             {
@@ -476,6 +481,7 @@ public partial class LeadReference : System.Web.UI.Page
             frmViewAdd.Visible = false;
             lnkBtnAdd.Visible = true;
             GrdViewLedger.Visible = true;
+            Reset();
         }
         catch (Exception ex)
         {
@@ -494,6 +500,7 @@ public partial class LeadReference : System.Web.UI.Page
             lnkBtnAdd.Visible = true;
             frmViewAdd.Visible = false;
             GrdViewLedger.Visible = true;
+            Reset();
         }
         catch (Exception ex)
         {
@@ -553,5 +560,13 @@ public partial class LeadReference : System.Web.UI.Page
             e.InputParameters["Types"] = "ACTIVITY";
         }
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+    }
+
+    public void Reset()
+    {
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
+        GrdViewLedger.DataBind();
+
     }
 }

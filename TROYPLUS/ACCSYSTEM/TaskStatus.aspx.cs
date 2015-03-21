@@ -214,6 +214,18 @@ public partial class TaskStatus : System.Web.UI.Page
             GrdViewLedger.Visible = true;
             System.Threading.Thread.Sleep(1000);
             GrdViewLedger.DataBind();
+
+            if(txtSearch.Text=="")
+            {
+
+            }
+            else
+            {
+                txtSearch.Text = "";
+                ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+            }
+
+
             StringBuilder scriptMsg = new StringBuilder();
             scriptMsg.Append("alert('Task Status Information Saved Successfully.');");
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), scriptMsg.ToString(), true);
@@ -295,6 +307,15 @@ public partial class TaskStatus : System.Web.UI.Page
 
     protected void GrdViewLedger_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
+        if (txtSearch.Text == "")
+        {
+
+        }
+        else
+        {
+            txtSearch.Text = "";
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        }
         GrdViewLedger.SelectedIndex = e.RowIndex;
     }
 
@@ -308,6 +329,15 @@ public partial class TaskStatus : System.Web.UI.Page
             System.Threading.Thread.Sleep(1000);
             //MyAccordion.Visible = true;
             GrdViewLedger.DataBind();
+            if (txtSearch.Text == "")
+            {
+
+            }
+            else
+            {
+                txtSearch.Text = "";
+                ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+            }
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Task Status Details Updated Successfully.');", true);
         }
         else
@@ -500,7 +530,16 @@ public partial class TaskStatus : System.Web.UI.Page
     }
     protected void UpdateButton_Click(object sender, EventArgs e)
     {
+        if (txtSearch.Text == "")
+        {
 
+        }
+        else
+        {
+            txtSearch.Text = "";
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        }
+        GrdViewLedger.DataBind();
     }
     protected void InsertCancelButton_Click(object sender, EventArgs e)
     {
@@ -508,6 +547,16 @@ public partial class TaskStatus : System.Web.UI.Page
         lnkBtnAdd.Visible = true;
         frmViewAdd.Visible = false;
         GrdViewLedger.Visible = true;
+        if (txtSearch.Text == "")
+        {
+
+        }
+        else
+        {
+            txtSearch.Text = "";
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        }
+        GrdViewLedger.DataBind();
 
     }
     protected void InsertButton_Click(object sender, EventArgs e)
