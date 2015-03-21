@@ -102,7 +102,7 @@
                     <td align="left" class="ControlTextBox3" width="40%">
                         <asp:TextBox ID="txtEndDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px" MaxLength="10" />
                     </td>
-                     <td align="left" width="25%">
+                    <td align="left" width="25%">
                         <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
                         <%--<a href="javascript:NewCal('txtEndDate','ddmmyyyy',false,24)"><img src="cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
@@ -115,16 +115,15 @@
                 <tr style="height: 2px;" />
                 <tr>
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px"></td>
-                     <td align="left" width="40%">
+                    <td align="left" width="40%">
                         <div style="overflow-y: scroll; height: 150px; width: 300px" runat="server">
                             <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
-                           <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
-                          <asp:ListItem Text="All" Value="0" />
-                                     </asp:CheckBoxList>
-                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
-                              
+                            <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
+                                <asp:ListItem Text="All" Value="0" />
                             </asp:CheckBoxList>
-                           
+                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                            </asp:CheckBoxList>
+
                         </div>
                     </td>
                     <td align="left" width="25%"></td>

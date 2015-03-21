@@ -104,10 +104,12 @@ public partial class SalesReport : System.Web.UI.Page
         {
             ds = bl.ListBranch();
            // lstBranch.Items.Add(new ListItem("All", "0"));
+            CheckBoxList1.Visible = true;
         }
         else
         {
             ds = bl.ListDefaultBranch(brncode);
+            CheckBoxList1.Visible = false;
         }
         lstBranch.DataSource = ds;
         lstBranch.DataTextField = "BranchName";

@@ -16841,7 +16841,7 @@ public class BusinessLogic
 
         try
         {
-            dbQry.Append("Select tblSalesitems.ItemCode,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblSalesitems.Rate,tblProductMaster.Measure_Unit, tblSalesitems.Qty,IIF((tblEmployee.empno IS NULL),' --NA-- ',tblEmployee.empno) as executivename, ");
+            dbQry.Append("Select tblSalesitems.ItemCode,tblProductMaster.ProductName,tblProductMaster.ProductDesc,tblSalesitems.Rate,tblProductMaster.Measure_Unit, tblSalesitems.Qty,IIF((tblEmployee.empno IS NULL),'0',tblEmployee.empno) as executivename, ");
             dbQry.Append("tblSalesitems.discount,tblSalesitems.Vat,tblSalesitems.CST,tblSalesitems.Vatamount,tblSalesitems.Totalmrp,tblSalesitems.subtotal,tblSalesitems.billno,tblSalesItems.SlNo,tblSalesItems.RoleID,tblSalesItems.isRole,tblSalesItems.TotalPrice,tblSalesItems.PrdReturnStatus,tblSalesItems.ReturnQty,tblProductMaster.Model,tblSalesItems.Bundles,tblSalesItems.Rods,tblSalesItems.ExecIncharge,tblProductmaster.Stock,tblSalesItems.ExecCharge,tblSalesItems.PriceBeforeVATAmt,tblSalesItems.BranchCode ");
             dbQry.Append(" FROM ((tblSalesitems INNER JOIN tblProductmaster ON tblSalesitems.itemCode = tblProductMaster.itemCode ) LEFT JOIN tblEmployee ON tblEmployee.empno = tblSalesItems.executivename)");
             dbQry.Append(" Where tblSalesItems.BranchCode='" + branchcode + "' and PrdReturnStatus='NO' and tblSalesitems.Billno = " + Billno);
@@ -23442,7 +23442,7 @@ public class BusinessLogic
 
     #region table Settings
 
-    public void InsertSettings(string itemCode, string strIP, string strQtyReturn, string strDate, string strBillFormat, string Currency, string dealer, string barcode, string stockEdit, string SMSrequired, string BiltRequired, string OwnerMobile, string VATReconDate, string VATAmount, string DiscType, string exceedLimit, string strBillMethod, string strobsolute, string droundoff, string dsalesseries, string autolock, string savelog, string enablevat, string emailRequired, string macaddress, string tinnoman, string enabledate, string salesdiscount, string openingbalance, string deviationprice, string pwdexpday)
+    public void InsertSettings(string itemCode, string strIP, string strQtyReturn, string strDate, string strBillFormat, string Currency, string dealer, string barcode, string stockEdit, string SMSrequired, string BiltRequired, string OwnerMobile, string VATReconDate, string VATAmount, string DiscType, string exceedLimit, string strBillMethod, string strobsolute, string droundoff, string dsalesseries, string autolock, string savelog, string enablevat, string emailRequired, string macaddress, string tinnoman, string enabledate, string salesdiscount, string openingbalance, string deviationprice, string pwdexpday, string purchasepricelist)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -23608,6 +23608,11 @@ public class BusinessLogic
             if (pwdexpday.Trim() != "")
             {
                 dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='PWDEXPDAY' ", pwdexpday.ToUpper());
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            }
+            if (purchasepricelist.Trim() != "")
+            {
+                dbQry = string.Format("UPDATE tblSettings SET KEYVALUE='{0}' WHERE KEYNAME='PURPRILST' ", purchasepricelist.ToUpper());
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
@@ -38964,7 +38969,7 @@ public class BusinessLogic
             dbQry.Append(" Sum( ((tblSalesItems.Qty*rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * VAT/100 ) AS ActualVAT,");
             dbQry.Append(" Sum((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)+((CST/100)*((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)))) AS SumCST,");
             dbQry.Append(" Sum(tblSales.Freight) AS SumFreight,Sum(tblSales.LoadUnload) As Loading,");
-            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# Group By BillDate");
+            dbQry.Append(" Sum( ((tblSalesItems.Qty*Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * CST/100 ) AS ActualCST FROM tblSalesItems,tblSales WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>'true' and UPPER(tblSales.purchaseReturn)='" + purReturn + "' and UPPER(tblSales.InternalTransfer)='" + intTrans + "' and UPPER(tblSales.DeliveryNote)='" + delNote + "' and tblSales.Billdate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblSales.BillDate<='" + eDate.ToString("yyyy-MM-dd") + "' Group By BillDate");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -59236,7 +59241,7 @@ public class BusinessLogic
         ds = new DataSet();
         oleAdp.Fill(ds);
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where (" + cond4 + ") and  SI.ItemCode='" + itemcode + "' AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode,SI.BranchCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where (" + cond4 + ") and  SI.ItemCode='" + itemcode + "' AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode,SI.BranchCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -59247,13 +59252,14 @@ public class BusinessLogic
         foreach (DataRow dr in dsSales.Tables[0].Rows)
         {
             var itemCode = dr["ItemCode"].ToString();
+            var branchCode = dr["BranchCode"].ToString();
             decimal Qty = decimal.Parse(dr["Qty"].ToString());
 
             foreach (DataRow row in ds.Tables[0].Rows)
             {
                 rowindex = rowindex + 1;
 
-                if (row["ItemCode"].ToString() == itemCode)
+                if (row["ItemCode"].ToString() == itemCode && row["BranchCode"].ToString() == branchCode)
                 {
                     var currentStock = decimal.Parse(ds.Tables[0].Rows[rowindex]["Stock"].ToString()) + Qty;
                     ds.Tables[0].Rows[rowindex]["Stock"] = currentStock;
@@ -59266,7 +59272,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where (" + cond3 + ") AND PI.ItemCode='" + itemcode + "' AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode,P.BranchCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where (" + cond3 + ") AND PI.ItemCode='" + itemcode + "' AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode,P.BranchCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -59277,13 +59283,14 @@ public class BusinessLogic
         foreach (DataRow dr in dsPurcahse.Tables[0].Rows)
         {
             var itemCode = dr["ItemCode"].ToString();
+            var branchCode = dr["BranchCode"].ToString();
             decimal Qty = decimal.Parse(dr["Qty"].ToString());
 
             foreach (DataRow row in ds.Tables[0].Rows)
             {
                 rowindex = rowindex + 1;
 
-                if (row["ItemCode"].ToString() == itemCode)
+                if (row["ItemCode"].ToString() == itemCode && row["BranchCode"].ToString() == branchCode)
                 {
                     var currentStock = decimal.Parse(ds.Tables[0].Rows[rowindex]["Stock"].ToString()) - Qty;
                     ds.Tables[0].Rows[rowindex]["Stock"] = currentStock > 0 ? currentStock : 0;
@@ -59296,7 +59303,7 @@ public class BusinessLogic
         }
 
 
-        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where (" + cond2 + ") AND SI.ItemCode='" + itemcode + "' AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode ORDER BY SI.Itemcode";
+        sQry = "SELECT SUM(SI.Qty) as Qty,  SI.ItemCode,SI.BranchCode From ((tblSales S Inner join tblSalesItems SI On S.BillNo = SI.BillNo) Inner join tblProductMaster P ON P.ItemCode = SI.ItemCode) Where (" + cond2 + ") AND SI.ItemCode='" + itemcode + "' AND S.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By SI.ItemCode,SI.BranchCode ORDER BY SI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -59307,13 +59314,14 @@ public class BusinessLogic
         foreach (DataRow dr in dsSales.Tables[0].Rows)
         {
             var itemCode = dr["ItemCode"].ToString();
+            var branchCode = dr["BranchCode"].ToString();
             decimal Qty = decimal.Parse(dr["Qty"].ToString());
 
             foreach (DataRow row in ds.Tables[0].Rows)
             {
                 rowindex = rowindex + 1;
 
-                if (row["ItemCode"].ToString() == itemCode)
+                if (row["ItemCode"].ToString() == itemCode && row["BranchCode"].ToString() == branchCode)
                 {
                     var currentStock = decimal.Parse(ds.Tables[0].Rows[rowindex]["Stock"].ToString()) - Qty;
                     ds.Tables[0].Rows[rowindex]["Stock"] = currentStock;
@@ -59326,7 +59334,7 @@ public class BusinessLogic
             rowindex = -1;
         }
 
-        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where (" + cond3 + ") AND PI.ItemCode='" + itemcode + "' AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode ORDER BY PI.Itemcode";
+        sQry = "SELECT SUM(PI.Qty) as Qty,  PI.ItemCode,P.BranchCode From ((tblPurchase P Inner join tblPurchaseItems PI On P.PurchaseID = PI.PurchaseID) Inner join tblProductMaster PM ON PM.ItemCode = PI.ItemCode) Where (" + cond3 + ") AND PI.ItemCode='" + itemcode + "' AND P.BillDate >= '" + refDate.ToString("MM/dd/yyyy") + "'" + " Group By PI.ItemCode,P.BranchCode ORDER BY PI.Itemcode";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
         oleAdp = new SqlDataAdapter(oleCmd);
@@ -59337,13 +59345,14 @@ public class BusinessLogic
         foreach (DataRow dr in dsPurcahse.Tables[0].Rows)
         {
             var itemCode = dr["ItemCode"].ToString();
+            var branchCode = dr["BranchCode"].ToString();
             decimal Qty = decimal.Parse(dr["Qty"].ToString());
 
             foreach (DataRow row in ds.Tables[0].Rows)
             {
                 rowindex = rowindex + 1;
 
-                if (row["ItemCode"].ToString() == itemCode)
+                if (row["ItemCode"].ToString() == itemCode && row["BranchCode"].ToString() == branchCode)
                 {
                     var currentStock = decimal.Parse(ds.Tables[0].Rows[rowindex]["Stock"].ToString()) + Qty;
                     ds.Tables[0].Rows[rowindex]["Stock"] = currentStock > 0 ? currentStock : 0;
@@ -70483,6 +70492,53 @@ public class BusinessLogic
         dbQry = "SELECT tblCategories.CategoryName, tblCategories.CategoryID, tblProductMaster.ItemCode, tblProductMaster.ProductName, tblProductMaster.Model," +
                 " tblProductMaster.ProductDesc FROM  tblCategories INNER JOIN tblProductMaster ON tblCategories.CategoryID = tblProductMaster.CategoryID " +
                 " Where tblProductMaster.itemCode='" + itemCode + "'";
+
+        try
+        {
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+
+    }
+
+    public DataSet ListPurchaseRateDetails(string itemCode)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);// System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+
+        DataSet dsd = new DataSet();
+        string dbQry = string.Empty;
+        string dbQry2 = string.Empty;
+        string pricelist = string.Empty;
+
+        manager.Open();
+
+        dbQry2 = "SELECT KeyValue From tblSettings WHERE keyname='PURPRILST'";
+        dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+        if (dsd.Tables[0].Rows.Count > 0)
+            pricelist = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
+
+        // dbQry = "select tblProductMaster.itemcode,ProductName,ProductDesc,Model,Stock,tblproductprices.Discount as Discount,Vat,tblproductprices.price as Rate,CST,Stock,Accept_Role,ExecutiveCommission,Measure_Unit from tblProductMaster inner join tblproductprices on tblProductMaster.itemCode = tblproductprices.itemCode Where tblProductMaster.itemCode='" + itemCode + "' and tblproductprices.pricename = '" + PriceList_Name + "' ";
+
+        dbQry = " SELECT tblProductMaster.ItemCode,  tblProductPrices.PriceName, tblProductPrices.Price, tblProductPrices.Price,tblProductMaster.Discount, " +
+                " tblProductMaster.VAT,tblProductMaster.CST,tblProductMaster.NLC FROM tblProductMaster INNER JOIN " +
+                " tblProductPrices ON tblProductMaster.ItemCode = tblProductPrices.ItemCode" +
+                " Where tblProductMaster.ItemCode='" + itemCode + "' and tblProductPrices.PriceName = '" + pricelist + "'";
 
         try
         {
