@@ -112,6 +112,9 @@
                                     </td>
                                     <td style="width:60%" class="ControlTextBox3">
                                         <div style="overflow-y: scroll; height: 150px;" align="left">
+                                             <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="PriceName" DataValueField="PriceName" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
+                                                  <asp:ListItem Text="All" Value="0" />
+                                     </asp:CheckBoxList>
                                         <asp:CheckBoxList ID="lstPricelist" runat="server" RepeatDirection="Vertical" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
                                                 <%--<asp:ListItem Text="All" Value="0" />--%>
                                             </asp:CheckBoxList>

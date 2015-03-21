@@ -641,5 +641,27 @@ public partial class ReportXLAbsolute : System.Web.UI.Page
          }
          
      }
+
+     protected void lst_SelectedIndexChanged_1(object sender, EventArgs e)
+     {
+         if (CheckBoxList1.Items[0].Selected == true)
+         {
+             foreach (ListItem ls in lstPricelist.Items)
+             {
+                 ls.Selected = true;
+
+             }
+
+         }
+         else
+         {
+             foreach (ListItem ls in lstPricelist.Items)
+             {
+                 ls.Selected = false;
+
+             }
+
+         }
+     }
     
 }

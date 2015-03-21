@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ReportXLAbsolute1.aspx.cs" Inherits="ReportXLAbsolute1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ReportXLStockLevel1.aspx.cs" Inherits="ReportXLStockLevel1" %>
 
 <%@ Register Assembly="Shared.WebControls" Namespace="Shared.WebControls" TagPrefix="wc" %>
 <%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -54,12 +54,12 @@
                         <td colspan="4">
                             <table width="100%">
                                 <tr>
-                                    <td style="width: 44%"></td>
+                                    <td style="width: 30%"></td>
                                     <td style="width: 19%">
                                         <input type="button" id="Button3" runat="Server" onclick="javascript: CallPrint('divPrint')"
                                             class="printbutton6" style="padding-left: 25px;" />
                                     </td>
-                                    <td style="width: 5%">
+                                    <td style="width: 15%">
                                         <asp:Button ID="btndet" CssClass="GoBack" EnableTheming="false" runat="server"
                                             OnClick="btndet_Click" Visible="False" />
                                     </td>

@@ -183,6 +183,22 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
             return;
         }
+
+
+   }
+
+   protected string getCond1()
+   {
+       string cond1 = "";
+       foreach (ListItem listItem1 in lstPricelist.Items)
+       {
+           if (listItem1.Selected)
+           {
+               cond1 += listItem1.Value + ",";
+           }
+       }
+
+       return cond1;
    }
 
      public void bindData(string sDataSource)
@@ -191,6 +207,7 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
          string trange = string.Empty;
          string toption = string.Empty;
          string Branch = drpBranchAdd.SelectedValue;
+        // string lstPricelist = lstPricelist.items;
 
          DataSet ds = new DataSet();
 
@@ -444,7 +461,7 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                          //dr_final6["ItemCode"] = dr["Itemcode"];
                          dr_final6["Category %"] = dr["categorylevel"];
                          dr_final6["Stock"] = dr["Stock"];
-                         dr_final6["Branchcode"] = drpBranchAdd.SelectedItem.Text;
+                         dr_final6["Branchcode"] = drpBranchAdd.SelectedValue;
                        
 
                                      foreach (ListItem listItem1 in lstPricelist.Items)
@@ -466,7 +483,7 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
 
                                                         //if (item123 == item1)
                                                         //{
-                                                            dr_final6[item1] = Convert.ToDouble(drt["price"]);
+                                                            dr_final6[item1] = Convert.ToDouble(drt["price"])/100;
                                                         //}
 
                                                 }
@@ -600,17 +617,17 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                  //dt.Columns.Add(new DataColumn("ProductName"));
                  //dt.Columns.Add(new DataColumn("Model"));
                  //dt.Columns.Add(new DataColumn("ItemCode"));
-                 dt.Columns.Add(new DataColumn("Brand Level"));
+                 dt.Columns.Add(new DataColumn("Brand %"));
                  dt.Columns.Add(new DataColumn("Stock"));
 
                  dt.Columns.Add(new DataColumn("Branchcode"));
-                 dt.Columns.Add(new DataColumn("Stock Value"));
+               //  dt.Columns.Add(new DataColumn("Stock Value"));
 
                  foreach (ListItem listItem1 in lstPricelist.Items)
                  {
                      if (listItem1.Selected)
                      {
-                         string item1 = listItem1.Value;
+                         string item1 = listItem1.Value + " Value %";
 
                          dt.Columns.Add(new DataColumn(item1));
                      }
@@ -632,85 +649,71 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
                  //    ds.Tables[0].AcceptChanges();
                  //}
 
-                 if (ds.Tables[0].Rows.Count > 0)
-                 {
-                     if (ttrange == 1)
-                     {
-                         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                         {
-                             tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-                             trol = Convert.ToInt32(ds.Tables[0].Rows[i]["brandlevel"]);
-                             if (tstock > trol)
-                             {
-                                 ds.Tables[0].Rows[i].Delete();
-                             }
-                         }
-                         ds.Tables[0].AcceptChanges();
-                     }
-                     else if (ttrange == 2)
-                     {
-                         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                         {
-                             tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-                             trol = Convert.ToInt32(ds.Tables[0].Rows[i]["brandlevel"]);
-                             if (tstock < trol)
-                             {
-                                 ds.Tables[0].Rows[i].Delete();
-                             }
-                         }
-                         ds.Tables[0].AcceptChanges();
-                     }
-                     else if (ttrange == 3)
-                     {
-                         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                         {
-                             tstock = Convert.ToInt32(ds.Tables[0].Rows[i]["Stock"]);
-                             trol = Convert.ToInt32(ds.Tables[0].Rows[i]["brandlevel"]);
-                             if ((trol < 0) || (trol > 0))
-                             {
-                                 ds.Tables[0].Rows[i].Delete();
-                             }
-                         }
-                         ds.Tables[0].AcceptChanges();
-                     }
-                 }
+                 
 
                  if (ds.Tables[0].Rows.Count > 0)
                  {
                      foreach (DataRow dr in ds.Tables[0].Rows)
                      {
-                         itemcode = Convert.ToString(dr["itemcode"]);
+                         brand = Convert.ToString(dr["BrandName"]);
 
-                         dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode, Branch);
+                         //dst = objBL.GetAbsoluteProductpricelist(sDataSource, itemcode, Branch);
 
                          DataRow dr_final6 = dt.NewRow();
                          //dr_final6["Category"] = dr["Categoryname"];
                          dr_final6["Brand"] = dr["brandname"];
                          //dr_final6["ProductName"] = dr["ProductName"];
                          //dr_final6["Model"] = dr["Model"];
-                         //dr_final6["ItemCode"] = dr["Itemcode"];
-                         dr_final6["Brand Level"] = dr["brandlevel"];
+                         dr_final6["BranchCode"] = Branch;
+                         dr_final6["Brand %"] = dr["brandlevel"];
                          dr_final6["Stock"] = dr["Stock"];
 
-                         if (dst != null)
+                         //if (dst != null)
+                         //{
+                         //    if (dst.Tables[0].Rows.Count > 0)
+                         //    {
+                         //        foreach (DataRow drt in dst.Tables[0].Rows)
+                         //        {
+                         //            dr_final6["Branchcode"] = drt["Branchcode"];
+
+                         //            foreach (ListItem listItem1 in lstPricelist.Items)
+                         //            {
+                         //                if (listItem1.Selected)
+                         //                {
+                         //                    string item1 = listItem1.Value;
+                         //                    string item123 = Convert.ToString(drt["pricename"]);
+
+                         //                    if (item123 == item1)
+                         //                    {
+                         //                        dr_final6[item1] = drt["price"];
+                         //                    }
+
+                         //                }
+                         //            }
+                         //        }
+                         //    }
+                         //}
+                         foreach (ListItem listItem1 in lstPricelist.Items)
                          {
-                             if (dst.Tables[0].Rows.Count > 0)
+                             if (listItem1.Selected)
                              {
-                                 foreach (DataRow drt in dst.Tables[0].Rows)
+                                 dst = objBL.GetAbsoluteCategorypricelist(sDataSource, brand, Branch, "brand", listItem1.Value);
+
+                                 if (dst != null)
                                  {
-                                     dr_final6["Branchcode"] = drt["Branchcode"];
-
-                                     foreach (ListItem listItem1 in lstPricelist.Items)
+                                     if (dst.Tables[0].Rows.Count > 0)
                                      {
-                                         if (listItem1.Selected)
+                                         foreach (DataRow drt in dst.Tables[0].Rows)
                                          {
-                                             string item1 = listItem1.Value;
-                                             string item123 = Convert.ToString(drt["pricename"]);
 
-                                             if (item123 == item1)
-                                             {
-                                                 dr_final6[item1] = drt["price"];
-                                             }
+
+                                             string item1 = listItem1.Value + " Value %";
+                                             //string item123 = Convert.ToString(drt["pricename"]);
+
+                                             //if (item123 == item1)
+                                             //{
+                                             dr_final6[item1] = Convert.ToDouble(drt["price"]) / 100;
+                                             //}
 
                                          }
                                      }
@@ -720,7 +723,61 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
 
                          dt.Rows.Add(dr_final6);
                      }
-                     ExportToExcel(dt);
+                     DataSet dstt = new DataSet();
+                     dstt.Tables.Add(dt);
+                     double troll;
+
+
+                     if (dstt.Tables[0].Rows.Count > 0)
+                     {
+                         if (ttrange == 1)
+                         {
+                             for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                             {
+                                 tstock = Convert.ToInt32(dstt.Tables[0].Rows[i]["Stock"]);
+                                 trol = Convert.ToInt32(dstt.Tables[0].Rows[i]["brand %"]);
+
+                                 troll = Convert.ToDouble(dstt.Tables[0].Rows[i]["price"]) / 100;
+                                 if (tstock > trol)
+                                 {
+                                     dstt.Tables[0].Rows[i].Delete();
+                                 }
+                             }
+                             dstt.Tables[0].AcceptChanges();
+                         }
+                         else if (ttrange == 2)
+                         {
+                             for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                             {
+                                 tstock = Convert.ToInt32(dstt.Tables[0].Rows[i]["Stock"]);
+                                 trol = Convert.ToInt32(dstt.Tables[0].Rows[i]["brand %"]);
+
+                                 troll = Convert.ToDouble(dstt.Tables[0].Rows[i]["price"]) / 100;
+                                 if (tstock < trol)
+                                 {
+                                     dstt.Tables[0].Rows[i].Delete();
+                                 }
+                             }
+                             dstt.Tables[0].AcceptChanges();
+                         }
+                         else if (ttrange == 3)
+                         {
+                             for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                             {
+                                 tstock = Convert.ToInt32(dstt.Tables[0].Rows[i]["Stock"]);
+                                 trol = Convert.ToInt32(dstt.Tables[0].Rows[i]["brand %"]);
+
+                                 troll = Convert.ToDouble(dstt.Tables[0].Rows[i]["price"]) / 100;
+                                 if ((trol < 0) || (trol > 0))
+                                 {
+                                     dstt.Tables[0].Rows[i].Delete();
+                                 }
+                             }
+                             dstt.Tables[0].AcceptChanges();
+                         }
+                     }
+                     DataTable dtt = dstt.Tables[0];
+                     ExportToExcel(dtt);
                  }
                  else
                  {
@@ -767,6 +824,73 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
              this.EnableViewState = false;
              Response.Write(tw.ToString());
              Response.End();
+         }
+     }
+
+     protected void lst_SelectedIndexChanged_1(object sender, EventArgs e)
+     {
+         if (CheckBoxList1.Items[0].Selected == true)
+         {
+             foreach (ListItem ls in lstPricelist.Items)
+             {
+                 ls.Selected = true;
+
+             }
+
+         }
+         else
+         {
+             foreach (ListItem ls in lstPricelist.Items)
+             {
+                 ls.Selected = false;
+
+             }
+
+         }
+     }
+
+     protected void btnReport_Click(object sender, EventArgs e)
+     {
+         try
+         {
+             int ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
+
+             //if (ttoption == 1)
+             //{
+             //    bindDataCategory(sDataSource);
+             //}
+             //else if (ttoption == 2)
+             //{
+             //    bindDatabrand(sDataSource);
+             //}
+             //else if (ttoption == 3)
+             //{
+             //    bindData(sDataSource);
+             //}
+
+             string trange = string.Empty;
+             string toption = string.Empty;
+             string Branch = drpBranchAdd.SelectedValue;
+
+           
+
+             DateTime refDate = DateTime.Parse(txtStartDate.Text);
+
+             int ttrange = Convert.ToInt32(cmbtrange.SelectedItem.Value);
+              ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
+
+              string cond1 = "";
+              cond1 = getCond1();
+             //int tstock = 0;
+             //int trol = 0;
+             //string itemcode = string.Empty;
+
+              Response.Write("<script language='javascript'> window.open('ReportXLStockLevel1.aspx?Branch=" + Branch + "&refdate=" + refDate + "&range=" + ttrange + "&option=" + ttoption + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+         }
+         catch (Exception ex)
+         {
+             TroyLiteExceptionManager.HandleException(ex);
+             return;
          }
      }
     
