@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 /// <summary>
 /// Summary description for BusinessLogic
 /// </summary>
-public class BusinessLogic
+public partial class BusinessLogic
 {
     public BusinessLogic()
     {
