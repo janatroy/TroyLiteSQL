@@ -377,59 +377,115 @@ public partial class InternalTransfers : System.Web.UI.Page
         }
     }
 
-    private DataSet GetProductDetails(string ItemCode, string BranchCode, decimal Quantity, DataSet prodData)
+    private string GetDiscType()
     {
+        DataSet appSettings;
+        string discType = string.Empty;
+
+        if (Session["AppSettings"] != null)
+        {
+            appSettings = (DataSet)Session["AppSettings"];
+
+            for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
+            {
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DISCTYPE")
+                {
+                    discType = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
+                    Session["DISCTYPE"] = discType.Trim().ToUpper();
+                }
+
+            }
+        }
+        else if (Session["AppSettings"] == null)
+        {
+            BusinessLogic bl = new BusinessLogic();
+            DataSet ds = bl.GetAppSettings(Request.Cookies["Company"].Value);
+
+            if (ds != null)
+                Session["AppSettings"] = ds;
+
+            appSettings = (DataSet)Session["AppSettings"];
+
+            for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
+            {
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DISCTYPE")
+                {
+                    discType = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
+                    Session["DISCTYPE"] = discType.Trim().ToUpper();
+                }
+
+            }
+        }
+
+        return discType;
+
+    }
+
+    private DataSet GetProductDetails(string ItemCode, string BranchCode, decimal Quantity, string billingMethod, DataSet prodData)
+    {
+        string discType = GetDiscType();
+
         DataSet  ds = new DataSet();
         DataTable dt = new DataTable();
-        DataColumn dc = new DataColumn("itemCode");
+
+        DataColumn dc = new DataColumn("Prd");
         dt.Columns.Add(dc);
-        dc = new DataColumn("PurchaseID");
+        
+        dc = new DataColumn("Emp");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("ProductName");
-        dt.Columns.Add(dc);
-
-        dc = new DataColumn("ProductDesc");
-        dt.Columns.Add(dc);
-
-        dc = new DataColumn("PurchaseRate");
+        dc = new DataColumn("Desc");
         dt.Columns.Add(dc);
 
         dc = new DataColumn("Rate");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("NLP");
+        dc = new DataColumn("TotPrice");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Stock");
         dt.Columns.Add(dc);
 
         dc = new DataColumn("Qty");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("Measure_Unit");
+        dc = new DataColumn("ExeComm");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("Discount");
+        dc = new DataColumn("DisPre");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("VAT");
+        dc = new DataColumn("VATPre");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("Vatamount");
+        dc = new DataColumn("NLP");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("CST");
+        dc = new DataColumn("CSTPre");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("Total");
+        dc = new DataColumn("PrBefVATAmt");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("DiscountAmt");
+        dc = new DataColumn("VATAmt");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("isRole");
+        dc = new DataColumn("RtVAT");
         dt.Columns.Add(dc);
-        
+
+        dc = new DataColumn("Tot");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Prdname");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("MeasureUnit");
+        dt.Columns.Add(dc);
 
         dc = new DataColumn("Roles");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("IsRole");
         dt.Columns.Add(dc);
 
         dc = new DataColumn("Bundles");
@@ -438,10 +494,10 @@ public partial class InternalTransfers : System.Web.UI.Page
         dc = new DataColumn("Rods");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("ExecCharge");
+        dc = new DataColumn("DiscAmt");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("Totalmrp");
+        dc = new DataColumn("TotalMrp");
         dt.Columns.Add(dc);
 
         ds.Tables.Add(dt);
@@ -450,31 +506,83 @@ public partial class InternalTransfers : System.Web.UI.Page
         
         if (prodData != null && prodData.Tables[0].Rows.Count > 0)
         {
-            drNew["itemCode"] = ItemCode;
-            drNew["PurchaseID"] = 0;
-            drNew["ProductName"] = prodData.Tables[0].Rows[0]["ProductName"].ToString() ;
-            drNew["ProductDesc"] = prodData.Tables[0].Rows[0]["ProductDesc"].ToString();
-            drNew["PurchaseRate"] = prodData.Tables[0].Rows[0]["Rate"].ToString();
+            drNew["Prd"] = ItemCode;
+            drNew["Emp"] = 0;
+            drNew["Desc"] = prodData.Tables[0].Rows[0]["ProductDesc"].ToString();
             drNew["Rate"] = prodData.Tables[0].Rows[0]["Rate"].ToString();
-            drNew["NLP"] = prodData.Tables[0].Rows[0]["NLC"].ToString();
+            drNew["TotPrice"] = "0";
+            drNew["Stock"] = prodData.Tables[0].Rows[0]["Stock"].ToString();
             drNew["Qty"] = Quantity;
-            drNew["Measure_Unit"] = prodData.Tables[0].Rows[0]["Measure_Unit"].ToString();
-            drNew["Discount"] = prodData.Tables[0].Rows[0]["Discount"].ToString();
-
+            drNew["ExeComm"] = prodData.Tables[0].Rows[0]["ExecutiveCommission"].ToString();
+            drNew["DisPre"] = prodData.Tables[0].Rows[0]["Discount"].ToString();
+            
 
             //drNew["Roles"] = strRole;
-            drNew["isRole"] = "N";
-            drNew["VAT"] = prodData.Tables[0].Rows[0]["VAT"].ToString();
-            drNew["Vatamount"] = prodData.Tables[0].Rows[0]["VAT"].ToString();
-            drNew["CST"] = prodData.Tables[0].Rows[0]["CST"].ToString();
-            drNew["Discountamt"] = "0.0";
-            drNew["Bundles"] = "0";
+            drNew["Prdname"] = prodData.Tables[0].Rows[0]["ProductName"].ToString();
+            drNew["VATPre"] = prodData.Tables[0].Rows[0]["VAT"].ToString();
+            drNew["VATAmt"] = "0.0";
+            drNew["CSTPre"] = prodData.Tables[0].Rows[0]["CST"].ToString();
+            drNew["PrBefVATAmt"] = "0.0";
+            drNew["RtVAT"] = "0";
             drNew["Rods"] = "0";
-            drNew["ExecCharge"] = "0";
+            //drNew["ExecCharge"] = prodData.Tables[0].Rows[0]["ExecutiveCommission"].ToString();
             drNew["Totalmrp"] = prodData.Tables[0].Rows[0]["Rate"].ToString();
+            drNew["MeasureUnit"] = prodData.Tables[0].Rows[0]["Measure_Unit"].ToString();
+            drNew["Roles"] = "0";
+            drNew["IsRole"] = "N";
+            drNew["Bundles"] = "0";
+            drNew["Roles"] = "0";
+            drNew["Roles"] = "0";
+            drNew["Tot"] = "0";
+            drNew["NLP"] = "0";
+            //drNew["TotalMrp"] = GetTotal(Convert.ToDouble(txtQtyAdd.Text.Trim()), Convert.ToDouble(prodData.Tables[0].Rows[0]["Rate"].ToString()), Convert.ToDouble(prodData.Tables[0].Rows[0]["Discount"].ToString()), Convert.ToDouble(prodData.Tables[0].Rows[0]["VAT"].ToString()), Convert.ToDouble(prodData.Tables[0].Rows[0]["CST"].ToString()), Convert.ToDouble("0.0"));
+            
+            double caldisamt = 0.0;
+            
+            if (billingMethod == "VAT INCLUSIVE")
+            {
+                string total = Convert.ToString(Convert.ToDouble(prodData.Tables[0].Rows[0]["Rate"].ToString()) * Convert.ToDouble(Quantity));
+		        if (discType == "PERCENTAGE")
+                {
+                    caldisamt = Convert.ToDouble(total) * Convert.ToDouble(prodData.Tables[0].Rows[0]["Discount"].ToString()) / 100;
+                }
+                else if (discType == "RUPEE")
+                {
+                    caldisamt = Convert.ToDouble(prodData.Tables[0].Rows[0]["Discount"].ToString());
+                }
 
-            drNew["Total"] = GetTotal(Convert.ToDouble(txtQtyAdd.Text.Trim()), Convert.ToDouble(prodData.Tables[0].Rows[0]["Rate"].ToString()), Convert.ToDouble(prodData.Tables[0].Rows[0]["Discount"].ToString()), Convert.ToDouble(prodData.Tables[0].Rows[0]["VAT"].ToString()), Convert.ToDouble(prodData.Tables[0].Rows[0]["CST"].ToString()), Convert.ToDouble("0.0"));
+                drNew["DiscAmt"] = caldisamt.ToString();      
 
+                double calnet = Convert.ToDouble(total) - caldisamt;
+                double vatper = Convert.ToDouble(prodData.Tables[0].Rows[0]["VAT"].ToString());
+                double vatper1 = vatper + 100;
+                double vatinclusiverate = calnet * vatper / vatper1;
+                double sVatamount = calnet - vatinclusiverate;
+                drNew["TotalMrp"] = calnet.ToString();
+                drNew["TotPrice"] = calnet.ToString();
+            }
+            else if (billingMethod == "VAT EXCLUSIVE")
+            {
+                double vatinclusiverate = 0.0;
+                var total = Convert.ToString(Convert.ToDouble(Convert.ToDouble(prodData.Tables[0].Rows[0]["Rate"].ToString()) * Convert.ToDouble(Quantity)));
+                    
+                if (discType == "PERCENTAGE")
+                {
+                    vatinclusiverate = Convert.ToDouble(total) * Convert.ToDouble(prodData.Tables[0].Rows[0]["Discount"].ToString()) / 100;
+                }
+                else if (discType == "RUPEE")
+                {
+                    vatinclusiverate = Convert.ToDouble(prodData.Tables[0].Rows[0]["Discount"].ToString());
+                }
+
+                drNew["DiscAmt"] = vatinclusiverate.ToString();      
+
+                double vatinclusiverate3 = Convert.ToDouble(total) - vatinclusiverate;
+                double vatinclusiverate1 = Convert.ToDouble(vatinclusiverate3) * Convert.ToDouble(prodData.Tables[0].Rows[0]["VAT"].ToString()) / 100;
+                double vatinclusiverate2 = vatinclusiverate1 + vatinclusiverate3;
+                drNew["TotalMrp"] = vatinclusiverate2.ToString();
+                drNew["TotPrice"] = vatinclusiverate2.ToString();
+            }
 
             ds.Tables[0].Rows.Add(drNew);
         }
@@ -575,6 +683,9 @@ public partial class InternalTransfers : System.Web.UI.Page
             BusinessLogic branchHasStockService = new BusinessLogic(connection);
             BusinessLogic branchRequestedService = new BusinessLogic(connection);
 
+            BusinessLogic bl = new BusinessLogic(connection);
+
+            string BillingMethod = bl.getConfigInfoMethod();
 
             if (transferService.CheckIftheItemHasStock(connection, request.ItemCode, request.BranchHasStock, request.Quantity))
             {
@@ -587,11 +698,15 @@ public partial class InternalTransfers : System.Web.UI.Page
                     string dispatchFrom = request.BranchHasStock + " Internal Trasfer";
 
 
-                    DataSet prodData = branchHasStockService.GetProductForId(connection, request.ItemCode);
+                    //DataSet prodData = branchHasStockService.GetProductForId(connection, request.ItemCode);
+                    
+                    iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
 
-                    DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, prodData);
+                    DataSet customerInfo = bl.GetExecutive(iCustomer);
 
-                    iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);      
+                    DataSet prodData = bl.ListSalesProductPriceDetails(request.ItemCode, customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), request.BranchHasStock);
+
+                    DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
                     int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iCustomer,
                         customer.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "",0.0,
@@ -607,7 +722,7 @@ public partial class InternalTransfers : System.Web.UI.Page
                     request.Status = "Completed";
 
                     transferService.ApproveInternalTrasfer(connection, request);
-
+                    modalPopupApproveReject.Hide();
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Completed Successfully.');", true);
                 }
             }
