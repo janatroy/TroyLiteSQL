@@ -3123,6 +3123,19 @@ public partial class CustomerSales : System.Web.UI.Page
         UpdatePanel11.Update();
     }
 
+    protected void txtmanual_TextChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        if (!bl.IsManualSalesBillNoValid(sDataSource, txtmanual.Text.Trim()))
+        {
+            txtmanual.Text = string.Empty;
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid BillNo. Please correct and try again')", true);
+            return;
+        }
+
+    }
+
     protected void cmdSave_Click(object sender, EventArgs e)
     {
         int iUpdateRtnQty = 0;
