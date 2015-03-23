@@ -88,7 +88,7 @@
             text-align: left">
             <tr>
                 <td colspan="3" class="headerPopUp">
-                    Total Sales Report
+                    Total Quantity Sales Report
                 </td>
             </tr>
 

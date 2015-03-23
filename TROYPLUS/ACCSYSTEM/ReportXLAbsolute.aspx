@@ -44,7 +44,7 @@
                         </td>
                     </tr>--%>
                     <tr>
-                        <td colspan="3" class="headerPopUp">
+                        <td colspan="4" class="headerPopUp">
                             Obsolete Item List
                         </td>
                     </tr>
@@ -58,7 +58,7 @@
                                     <td style="width:25%">
                                     
                                     </td>
-                                    <td style="width:25%">
+                                    <td style="width:25%" class="ControlLabel">
                                         Branch
                                     </td>
                                     <td style="width:25%" class="ControlDrpBorder">
@@ -110,7 +110,7 @@
                                     <td style="width:15%">
                                     
                                     </td>
-                                    <td style="width:60%" class="ControlTextBox3">
+                                    <td style="width:60%" class="ControlDrpBorder">
                                         <div style="overflow-y: scroll; height: 150px;" align="left">
                                              <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="PriceName" DataValueField="PriceName" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
                                                   <asp:ListItem Text="All" Value="0" />
@@ -150,12 +150,14 @@
                                         <asp:CheckBox ID="chkboxNLC" Visible="false" runat="server" Text="With NLC" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
                                              
                                     </td>
-                                    <td style="width:20%">
+                                    <td style="width:25%">
                                              <asp:Button ID="btnReport" EnableTheming="false" runat="server" CssClass="NewReport6"
                                             Width="120px" OnClick="btnReport_Click" />
                                          <asp:CheckBox ID="CheckBox12" Visible="false" runat="server" Text="With MRP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
                                         <asp:CheckBox ID="CheckBox22" Visible="false" runat="server" Text="With DP" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
                                         <asp:CheckBox ID="CheckBox32" Visible="false" runat="server" Text="With NLC" style="color:Black" Font-Names="arial" Font-Size="11px" AutoPostBack="true"/>
+                                    </td>
+                                     <td style="width:25%">
                                     </td>
                                     
                                 </tr>

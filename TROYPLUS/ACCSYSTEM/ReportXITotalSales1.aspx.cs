@@ -26,6 +26,7 @@ public partial class ReportXITotalSales1 : System.Web.UI.Page
             Connection = Request.Cookies["Company"].Value;
             if (!IsPostBack)
             {
+                lblHeading.Text = "Total Quantity Sales report";
 
                 DataSet companyInfo = new DataSet();
                 BusinessLogic bl = new BusinessLogic(sDataSource);
