@@ -550,7 +550,7 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select iCustomerID, iSupplierID from tblBranche Where BranchCode = '{0}'", BranchCode.ToUpper());
+            dbQry = string.Format("select iCustomerID, iSupplierID from tblBranch Where BranchCode = '{0}'", BranchCode.ToUpper());
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
