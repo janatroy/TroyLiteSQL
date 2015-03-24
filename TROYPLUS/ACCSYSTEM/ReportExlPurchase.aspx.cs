@@ -48,6 +48,9 @@ public partial class ReportExlPurchase : System.Web.UI.Page
 
                 //loadBrands();
                 loadCategory();
+
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
@@ -16886,6 +16889,37 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         ddlproduct.Items.Insert(0, new ListItem("All", "All"));
     }
 
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
+    }
+
+
     public void bindData()
     {
         DataSet ds = new DataSet();
@@ -16909,6 +16943,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         Category = ddlCategory.SelectedItem.Text;
         brand = ddlBrand.SelectedValue;
         product = ddlproduct.SelectedValue;
+        string Branch = drpBranchAdd.SelectedValue;
 
         startDate = Convert.ToDateTime(txtStartDate.Text);
         endDate = Convert.ToDateTime(txtEndDate.Text);
@@ -16919,11 +16954,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Brand"));
         dt.Columns.Add(new DataColumn("Product Name"));
         dt.Columns.Add(new DataColumn("Model"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
         dt.Columns.Add(new DataColumn("Qty"));
         dt.Columns.Add(new DataColumn("Rate"));
         dt.Columns.Add(new DataColumn("Amount"));
 
-        ds = objBL.getPurchasereport(startDate, endDate, Category, brand, product);
+        ds = objBL.getPurchasereport(startDate, endDate, Category, brand, product, Branch);
         if (ds.Tables[0].Rows.Count > 0)
         {
             DataRow dr_final11 = dt.NewRow();
@@ -17001,6 +17037,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                 DataRow dr_final12 = dt.NewRow();
                 dr_final12["Category"] = dr["Categoryname"];
                 dr_final12["Brand"] = dr["Brand"];
+                dr_final12["Branchcode"] = dr["Branchcode"];
                 dr_final12["Product Name"] = dr["ProductName"];
                 dr_final12["Model"] = dr["model"];
                 dr_final12["Qty"] = dr["Qty"];

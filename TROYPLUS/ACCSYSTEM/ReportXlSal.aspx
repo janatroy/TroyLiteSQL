@@ -109,7 +109,7 @@
                                     Date Wise
                                 </HeaderTemplate>
                                 <ContentTemplate>
-                                    <table cellpadding="3" cellspacing="1" width="400px">
+                                    <table cellpadding="3" cellspacing="1" width="380px">
                                         <tr style="height: 10px">
                                         </tr>
                                         <tr>
@@ -127,8 +127,8 @@
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                             </td>
-                                            <td class="ControlTextBox3" style="width: 25%;">
-                                                <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                                            <td class="ControlTextBox3" style="width: 20%;">
+                                                <asp:TextBox ID="txtStartDate" Enabled="true" CssClass="cssTextBox" MaxLength="10"
                                                     runat="server" />
                                                 <cc1:CalendarExtender ID="calStartDate" runat="server" Enabled="True"
                                                     Format="dd/MM/yyyy"
@@ -164,8 +164,8 @@
                                                     ControlToValidate="txtEndDate" Display="None" ErrorMessage="Start Date Should Be Less Than the End Date"
                                                     CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                             </td>
-                                            <td class="ControlTextBox3" style="width: 25%;">
-                                                <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" />
+                                            <td class="ControlTextBox3" style="width: 20%;">
+                                                <asp:TextBox ID="txtEndDate" Enabled="true" CssClass="cssTextBox" MaxLength="10" runat="server" />
                                                 <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True"
                                                     Format="dd/MM/yyyy"
                                                     PopupButtonID="ImageButton1" TargetControlID="txtEndDate">
@@ -183,17 +183,17 @@
                                         <tr>
                                             <td class="ControlLabel2" style="width: 20%;">Select Branch
                                             </td>
-                                            <td class="ControlTextBox3" style="width: 25%;">
-                                                <div style="overflow-y: scroll; height: 150px; width: 300px" runat="server">
+                                            <td class="ControlTextBox3" style="width: 20%;">
+                                                <div style="overflow-y: scroll; height: 150px; width: 150px" runat="server">
                                                     <%-- <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>--%>
-                                                    <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                                                    <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="CheckBoxList1_SelectedIndexChanged">
                                                         <asp:ListItem Text="All" Value="0" />
                                                     </asp:CheckBoxList>
                                                     <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
                                                     </asp:CheckBoxList>
                                                 </div>
                                             </td>
-                                           <td style="width: 13%;"/>
+                                            <td style="width: 13%;" />
                                         </tr>
                                         <%--<tr>--%>
                                         <%--<td class="ControlLabel" style="width: 25%;">
@@ -224,15 +224,19 @@
                                         <tr style="height: 10px">
                                         </tr>
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="4">
                                                 <table width="100%">
                                                     <tr>
-                                                        <td style="width: 40%;"></td>
-                                                        <td align="center" style="width: 32%;">
+                                                        <td style="width: 10%;" />
+                                                        <td style="width: 40%;">
+                                                            <asp:Button ID="btnrep" EnableTheming="false" runat="server" OnClick="btnrep_Click"
+                                                                Text="" CssClass="NewReport6" />
+                                                        </td>
+                                                        <td align="center" style="width: 40%;">
                                                             <asp:Button ID="btnReport" runat="server" OnClick="btnReport_Click" CssClass="exportexl6"
                                                                 EnableTheming="false" />
                                                         </td>
-                                                        <td></td>
+                                                        <td style="width: 10%;" />
                                                     </tr>
                                                 </table>
                                             </td>
@@ -333,12 +337,16 @@
                                             <td colspan="4">
                                                 <table width="100%">
                                                     <tr>
-                                                        <td style="width: 40%;"></td>
-                                                        <td align="center" style="width: 32%;">
+                                                        <td style="width: 10%;" />
+                                                        <td style="width: 40%;">
+                                                            <asp:Button ID="btnMRep" EnableTheming="false" runat="server" OnClick="btnMRep_Click"
+                                                                Text="" CssClass="NewReport6" />
+                                                        </td>
+                                                        <td align="center" style="width: 40%;">
                                                             <asp:Button ID="btnExcel" runat="server" OnClick="btnExcel_Click" CssClass="exportexl6"
                                                                 EnableTheming="false" />
                                                         </td>
-                                                        <td></td>
+                                                        <td style="width: 10%;" />
                                                     </tr>
                                                 </table>
                                             </td>

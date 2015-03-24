@@ -6,12 +6,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using ClosedXML.Excel;
+using System.IO;
 public partial class ReportXlSal : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
     BusinessLogic objBL;
-
+    private string connection = string.Empty;
+    string brncode;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -29,6 +32,9 @@ public partial class ReportXlSal : System.Web.UI.Page
 
                 txtStartDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
                 txtEndDate.Text = DateTime.Now.ToShortDateString();
+
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
@@ -44,7 +50,10 @@ public partial class ReportXlSal : System.Web.UI.Page
             string cond = "";
             cond = getCond();
 
-            bindDataSubTot(cond);
+            string cond1 = "";
+            cond1 = getCond1();
+
+            bindDataSubTot(cond,cond1);
         }
         catch (Exception ex)
         {
@@ -72,7 +81,10 @@ public partial class ReportXlSal : System.Web.UI.Page
             {
                 return;
             }
-            bindData();
+            string cond1 = "";
+            cond1 = getCond1();
+
+            bindData(cond1);
         }
         catch (Exception ex)
         {
@@ -121,6 +133,45 @@ public partial class ReportXlSal : System.Web.UI.Page
         }
     }
 
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstBranch.Items.Clear();
+
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+           // lstBranch.Items.Add(new ListItem("All", "0"));
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+    }
 
     protected string getfield()
     {
@@ -930,7 +981,7 @@ public partial class ReportXlSal : System.Web.UI.Page
         }
     }
 
-    public void bindData()
+    public void bindData(string cond1)
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
@@ -945,23 +996,24 @@ public partial class ReportXlSal : System.Web.UI.Page
         endDate = Convert.ToDateTime(txtEndDate.Text);
 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-        dst = objBL.getmonthsales(startDate, endDate, pret, itrans, denot);
+        dst = objBL.getmonthsales(startDate, endDate, pret, itrans, denot,cond1);
 
-        DataTable dtt = new DataTable();
+        DataTable dtt = new DataTable("Sales Turnover report");
         dtt.Columns.Add(new DataColumn("Month"));
-        dtt.Columns.Add(new DataColumn(" "));
+        dtt.Columns.Add(new DataColumn("BillNo"));
+        dtt.Columns.Add(new DataColumn("BranchCode"));       
         dtt.Columns.Add(new DataColumn("Amount"));
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
-
+      
         double credit = 0.00;
         double Tottot = 0.00;
 
         foreach (DataRow dr in dst.Tables[0].Rows)
         {
             DataRow dr_final12 = dtt.NewRow();
-            string aa = dr["monthname"].ToString().ToUpper().Trim();
+            string aa = dr["monthname"].ToString().ToUpper().Trim();           
             if (aa == "1")
             {
                 if (CheckBox10.Checked == true)
@@ -1046,14 +1098,17 @@ public partial class ReportXlSal : System.Web.UI.Page
                 else
                     dr_final12["Month"] = " ";
             }
+
+            dr_final12["BillNo"] = dr["BillNo"].ToString();
+            dr_final12["BranchCode"] = dr["BranchCode"].ToString();
+
             if (dr_final12["Month"] == " ")
             {
             }
             else
             {
-                dr_final12[" "] = " ";
                 credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
-                dr_final12["Amount"] = credit;
+                dr_final12["Amount"] = credit.ToString("#0.00");
                 Tottot = Tottot + credit;
                 credit = 0.00;
                 dtt.Rows.Add(dr_final12);
@@ -1065,8 +1120,7 @@ public partial class ReportXlSal : System.Web.UI.Page
 
         DataRow dr_final88 = dtt.NewRow();
         dr_final88["Month"] = "Total";
-        dr_final88[" "] = " ";
-        dr_final88["Amount"] = Tottot;
+        dr_final88["Amount"] = Tottot.ToString("#0.00");
         dtt.Rows.Add(dr_final88);
 
         if (dst.Tables[0].Rows.Count > 0)
@@ -1079,6 +1133,24 @@ public partial class ReportXlSal : System.Web.UI.Page
         }
     }
 
+    protected string getCond1()
+    {
+        string cond1 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond1 += " tblSales.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond1 = cond1.TrimEnd(',');
+        cond1 = cond1.Replace(",", "or");
+        return cond1;
+    }
 
     protected string getCond()
     {
@@ -1110,21 +1182,39 @@ public partial class ReportXlSal : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            string filename = "Sales Turnover.xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
+            //string filename = "Sales Turnover.xls";
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
 
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Sales Turnover.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 
@@ -1303,7 +1393,7 @@ public partial class ReportXlSal : System.Web.UI.Page
     }
 
 
-    public void bindDataSubTot(string cond)
+    public void bindDataSubTot(string cond,string cond1)
     {
         DateTime startDate, endDate, Transdt;
         startDate = Convert.ToDateTime(txtStartDate.Text);
@@ -1324,13 +1414,14 @@ public partial class ReportXlSal : System.Web.UI.Page
         DataSet dstt = new DataSet();
         DataSet dsGir = new DataSet();
         DataSet dsG = new DataSet();
-        dst = objBL.getdailysales(startDate, endDate, pret, itrans, denot);
+        dst = objBL.getdailysales(startDate, endDate, pret, itrans, denot, cond1);
 
-        DataTable dtt = new DataTable();
+        DataTable dtt = new DataTable("Sales Turnover report");
         if (dst.Tables[0].Rows.Count > 0)
         {
         dtt.Columns.Add(new DataColumn("Date"));
-        dtt.Columns.Add(new DataColumn(" "));
+        dtt.Columns.Add(new DataColumn("BillNo"));
+        dtt.Columns.Add(new DataColumn("BranchCode"));     
         dtt.Columns.Add(new DataColumn("Amount"));
 
         DataRow dr_final14 = dtt.NewRow();
@@ -1347,9 +1438,10 @@ public partial class ReportXlSal : System.Web.UI.Page
             string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
 
             dr_final12["Date"] = dtaa;
-            dr_final12[" "] = " ";
+            dr_final12["BillNo"] = dr["BillNo"].ToString();
+            dr_final12["BranchCode"] = dr["BranchCode"].ToString();          
             credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
-            dr_final12["Amount"] = credit;
+            dr_final12["Amount"] = credit.ToString("#0.00");
             Tottot = Tottot + credit;
             credit = 0.00;
             dtt.Rows.Add(dr_final12);
@@ -1360,8 +1452,7 @@ public partial class ReportXlSal : System.Web.UI.Page
 
         DataRow dr_final88 = dtt.NewRow();
         dr_final88["Date"] = "Total";
-        dr_final88[" "] = " ";
-        dr_final88["Amount"] = Tottot;
+        dr_final88["Amount"] = Tottot.ToString("#0.00");
         dtt.Rows.Add(dr_final88);
         
         
@@ -1866,4 +1957,99 @@ public partial class ReportXlSal : System.Web.UI.Page
 
     //}
 
+    protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        foreach (ListItem li in lstBranch.Items)
+        {
+            if (lstBranch.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }
+            //else
+            //{
+            //    li.Selected = false;
+            //}
+        }
+    }
+    protected void CheckBoxList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (CheckBoxList1.Items[0].Selected == true)
+        {
+            foreach (ListItem ls in lstBranch.Items)
+            {
+                ls.Selected = true;
+
+            }
+
+        }
+        else
+        {
+            foreach (ListItem ls in lstBranch.Items)
+            {
+                ls.Selected = false;
+
+            }
+
+        }
+    }
+    protected void btnrep_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            DateTime startDate, endDate;
+
+            startDate = Convert.ToDateTime(txtStartDate.Text);
+            endDate = Convert.ToDateTime(txtEndDate.Text);
+
+            string cond = "";
+            cond = getCond();
+
+            string cond1 = "";
+            cond1 = getCond1();
+
+            //bindDataSubTot(cond, cond1);
+         
+            if (lstBranch.SelectedIndex == -1)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+            }
+            else
+            {
+               // Response.Write("<script language='javascript'> window.open('ReportXLSal1.aspx?cond=" + cond + "&cond1=" + Server.UrlEncode(cond1) +"' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                Response.Write("<script language='javascript'> window.open('ReportXLSal1.aspx?startDate=" + startDate + "&cond=" + Server.UrlEncode(cond) + "&endDate=" + endDate + "&cond1=" + Server.UrlEncode(cond1) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+    protected void btnMRep_Click(object sender, EventArgs e)
+    {
+        DateTime startDate, endDate;
+
+        startDate = Convert.ToDateTime(txtStartDate.Text);
+        endDate = Convert.ToDateTime(txtEndDate.Text);
+
+        string cond = "";
+        cond = getCond();
+
+        string cond1 = "";
+        cond1 = getCond1();
+
+        //bindDataSubTot(cond, cond1);
+
+        if (lstBranch.SelectedIndex == -1)
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+        }
+        else
+        {
+            // Response.Write("<script language='javascript'> window.open('ReportXLSal1.aspx?cond=" + cond + "&cond1=" + Server.UrlEncode(cond1) +"' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('ReportXLSal2.aspx?startDate=" + startDate + "&cond=" + Server.UrlEncode(cond) + "&endDate=" + endDate + "&cond1=" + Server.UrlEncode(cond1) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+        }
+    }
 }
