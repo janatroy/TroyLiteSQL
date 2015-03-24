@@ -296,6 +296,13 @@
                             &nbsp;
                         </td>
                     </tr>
+                    <tr>
+                            <td colspan="3" align="center">
+                                
+                                <h5>
+                            <asp:Label ID="lblHeading" runat="server"> </asp:Label></h5>
+                            </td>
+                        </tr>
                 </table>
                 <wc:ReportGridView runat="server" BorderWidth="1" ID="gvMain" GridLines="Both" AlternatingRowStyle-CssClass="even"
                     AutoGenerateColumns="false" AllowPrintPaging="true" Width="80%"
@@ -310,14 +317,14 @@
                     <Columns>
                         <asp:TemplateField ItemStyle-HorizontalAlign="Left">
                             <ItemTemplate>
-                                <a href="javascript:switchViews('dv<%# Eval("LinkName") %>', 'imdiv<%# Eval("LinkName") %>');"
+                                <a href="javascript:switchViews('dv<%# Eval("LinkName") +""+ Eval("Branchcode") %>', 'imdiv<%# Eval("LinkName") %>');"
                                     style="text-decoration: none;">
-                                    <img id="imdiv<%# Eval("LinkName") %>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
+                                    <img id="imdiv<%# Eval("LinkName") +""+ Eval("Branchcode") %>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
                                 </a>
                                 <asp:Label ID="lblLink" runat="server" Text='<%# Eval("LinkName") %>' CssClass="lblFont"></asp:Label>
                                 <asp:Label ID="lblProductName" runat="server" Text='' CssClass="lblFont"></asp:Label>
                                 <br />
-                                <div id="dv<%# Eval("LinkName") %>" style="display: none; position: relative; left: 1px;">
+                                <div id="dv<%# Eval("LinkName") +""+ Eval("Branchcode") %>" style="display: none; position: relative; left: 1px;">
                                     <wc:ReportGridView runat="server" BorderWidth="1" ID="gvSecond" GridLines="Both"
                                         AlternatingRowStyle-CssClass="even" AutoGenerateColumns="false" ShowFooter="true"
                                         Width="80%" Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvSecond_RowDataBound">
@@ -410,6 +417,13 @@
                                         </Columns>
                                     </wc:ReportGridView>
                                 </div>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                            HeaderText="Branch">
+                            <ItemTemplate>
+                                <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblBranch"
+                                    runat="server" Text='<%# Eval("Branchcode") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
