@@ -66390,7 +66390,7 @@ public class BusinessLogic
 
             object totLeave = manager.ExecuteScalar(CommandType.Text, "SELECT Yearly_Holiday_Count FROM tblHRAdminSettings");
 
-            object actualLeave = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeaveTypes Where IsActive =" + true);
+            object actualLeave = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeaveTypes Where IsActive = 1");
 
             if (totLeave.ToString() != string.Empty && actualLeave != string.Empty)
             {
@@ -66413,22 +66413,22 @@ public class BusinessLogic
 
             if (IsPayable == true)
             {
-                isPay = -1;
+                isPay = 1;
             }
 
             if (IsActive == true)
             {
-                isAct = -1;
+                isAct = 1;
             }
 
             if (IsEncashable == true)
             {
-                isEnc = -1;
+                isEnc = 1;
             }
 
 
             dbQry = string.Format("INSERT INTO tblLeaveTypes(LeaveTypeName, IsPayable, IsEncashable, IsActive, IsDefault, LeaveDescription) VALUES('{0}', {1}, {2}, {3}, {4},'{5}')",
-                LeaveTypeName, isPay, isEnc, isAct, -1, LeaveDescription);
+                LeaveTypeName, isPay, isEnc, isAct, 1, LeaveDescription);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -66475,23 +66475,23 @@ public class BusinessLogic
 
             if (IsPayable == true)
             {
-                isPay = -1;
+                isPay = 1;
             }
 
             if (IsActive == true)
             {
-                isAct = -1;
+                isAct = 1;
             }
 
             if (IsEncashable == true)
             {
-                isEnc = -1;
+                isEnc = 1;
             }
 
             //int LeaveID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ID) FROM tblLeaveTypes");
 
             dbQry = string.Format("UPDATE tblLeaveTypes SET LeaveTypeName = '{1}', IsPayable = {2}, IsEncashable = {3}, IsActive = {4}, IsDefault = {5}, LeaveDescription = '{6}' WHERE ID = {0}",
-                ID, LeaveTypeName, isPay, isEnc, isAct, -1, LeaveDescription);
+                ID, LeaveTypeName, isPay, isEnc, isAct, 1, LeaveDescription);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -67143,8 +67143,8 @@ public class BusinessLogic
                 }
             }
 
-            dbQry = string.Format("INSERT INTO tblHolidayList([Date], Holiday_Name, Remarks) VALUES(Format('{0}', 'dd/mm/yyyy'), '{1}', '{2}')",
-              Date, Holiday_Name, Remarks);
+            dbQry = string.Format("INSERT INTO tblHolidayList([Date], Holiday_Name, Remarks) VALUES('{0}', '{1}', '{2}')",
+              DateTime.Parse(Date).ToString("MM/dd/yyyy"), Holiday_Name, Remarks);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -67186,8 +67186,8 @@ public class BusinessLogic
             }
 
 
-            dbQry = string.Format("UPDATE tblHolidayList SET [Date] = Format('{1}', 'dd/mm/yyyy'), Holiday_Name = '{2}', Remarks = '{3}' WHERE Holiday_ID = {0}",
-                Holiday_ID, Date, Holiday_Name, Remarks);
+            dbQry = string.Format("UPDATE tblHolidayList SET [Date] = '{1}', Holiday_Name = '{2}', Remarks = '{3}' WHERE Holiday_ID = {0}",
+                Holiday_ID, DateTime.Parse(Date).ToString("MM/dd/yyyy"), Holiday_Name, Remarks);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -67397,12 +67397,12 @@ public class BusinessLogic
 
             if (IsActive == true)
             {
-                isAct = -1;
+                isAct = 1;
             }
 
             if (IsDeduction == true)
             {
-                isDec = -1;
+                isDec = 1;
             }
 
             dbQry = string.Format("UPDATE tblPayComponents SET PayComponentName = '{1}', IsDeduction = '{2}', IsComputes = {3}, IsActive = {4}, Description = '{5}', PayComponentType_ID = {6}  WHERE PayComponentID = {0}",
@@ -69410,7 +69410,7 @@ public class BusinessLogic
 
             if (Is_Active == true)
             {
-                isAct = -1;
+                isAct = 1;
             }
 
             dbQry = string.Format("INSERT INTO tblEmployeeRoles(Role_Name, Remarks, Is_Active) VALUES('{0}', '{1}', '{2}')",
@@ -69458,7 +69458,7 @@ public class BusinessLogic
 
             if (Is_Active == true)
             {
-                isAct = -1;
+                isAct = 1;
             }
 
             dbQry = string.Format("UPDATE tblEmployeeRoles SET Role_Name = '{1}', Remarks = '{2}', Is_Active = '{3}' WHERE ID = {0}",
@@ -69580,7 +69580,7 @@ public class BusinessLogic
                     foreach (DataRow dr in dt.Rows)
                     {
                         dbQry = string.Format("INSERT INTO tblEmployeeRoleLeaveLimit(LeaveType_ID, Role_ID, EffectiveDate, AllowedCount) VALUES({0}, {1}, '{2}', {3})",
-                    dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate"), dr.Field<int>("AllowedCount"));
+                    dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate").ToString("MM/dd/yyyy"), dr.Field<int>("AllowedCount"));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -69593,7 +69593,7 @@ public class BusinessLogic
                     foreach (DataRow dr in dt.Rows)
                     {
                         dbQry = string.Format("INSERT INTO tblEmployeeRoleLeaveLimit(LeaveType_ID, Role_ID, EffectiveDate, AllowedCount) VALUES({0}, {1}, '{2}', {3})",
-                      dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate"), dr.Field<int>("AllowedCount"));
+                      dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate").ToString("MM/dd/yyyy"), dr.Field<int>("AllowedCount"));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -69716,7 +69716,7 @@ public class BusinessLogic
                     manager.CommitTransaction();
 
                     dbQry = string.Format("INSERT INTO tblPayComponentRoleMapping(PayComponent_ID, Role_ID, EffectiveDate, DeclaredAmount) VALUES({0}, {1}, '{2}', {3})",
-                    payCompId, role_ID, frmDate, amtDeclared);
+                    payCompId, role_ID, frmDate.ToString("MM/dd/yyyy"), amtDeclared);
 
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -69725,7 +69725,7 @@ public class BusinessLogic
                 else
                 {
                     dbQry = string.Format("INSERT INTO tblPayComponentRoleMapping(PayComponent_ID, Role_ID, EffectiveDate, DeclaredAmount) VALUES({0}, {1}, '{2}', {3})",
-                    payCompId, role_ID, frmDate, amtDeclared);
+                    payCompId, role_ID, frmDate.ToString("MM/dd/yyyy"), amtDeclared);
 
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -71688,7 +71688,7 @@ public class BusinessLogic
             dbQry = string.Format(@"INSERT INTO tblEmployeePermissions (EmployeeNo,StartTime,EndTime, DateApplied, 
                                         Reason,Status,Approver,ApproverComments,EmailContact,PhoneContact)
                                         VALUES ({0},'{1}','{2}','{3}','{4}','{5}',{6}, '{7}','{8}',{9})"
-                                        , EmpNo, StartTime, EndTime, DateApplied, Reason
+                                        , EmpNo, StartTime.ToString("MM/dd/yyyy HH:mm:ss"), EndTime.ToString("MM/dd/yyyy HH:mm:ss"), DateApplied.ToString("MM/dd/yyyy"), Reason
                                         , "Submitted", Approver, "", EmailContact, PhoneContact);
 
             int resultId = manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -71721,7 +71721,7 @@ public class BusinessLogic
 
             dbQry = string.Format(@"UPDATE tblEmployeePermissions SET EmployeeNo={0},StartTime='{1}', EndTime='{2}', DateApplied='{3}',
                                                 Reason='{4}',Approver={5},EmailContact='{6}',PhoneContact='{7}' WHERE PermissionID={8}"
-                                        , EmployeeNo, StartTime, EndTime, DateApplied, Reason
+                                        , EmployeeNo, StartTime.ToString("MM/dd/yyyy HH:mm:ss"), EndTime.ToString("MM/dd/yyyy HH:mm:ss"), DateApplied.ToString("MM/dd/yyyy"), Reason
                                         , Approver, EmailContact, PhoneContact, PermissionId);
 
             int resultId = manager.ExecuteNonQuery(CommandType.Text, dbQry);
