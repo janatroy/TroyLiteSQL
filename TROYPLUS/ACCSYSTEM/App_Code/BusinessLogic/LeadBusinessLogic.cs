@@ -1585,6 +1585,7 @@ public class LeadBusinessLogic : BaseLogic
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         string dbQry = string.Empty;
+        int qty = 0;
 
         try
         {
@@ -1598,7 +1599,12 @@ public class LeadBusinessLogic : BaseLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                return true;
+                qty = (int)retVal;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
             }
             else
             {
@@ -1608,7 +1614,7 @@ public class LeadBusinessLogic : BaseLogic
         }
         catch (Exception ex)
         {
-            return false;
+            throw ex;
         }
         finally
         {
