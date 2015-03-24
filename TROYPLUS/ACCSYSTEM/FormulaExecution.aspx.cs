@@ -634,6 +634,7 @@ public partial class FormulaExecution : System.Web.UI.Page
 
 
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Released Successfully');", true);
+                        Reset();
 
                     }
                     catch (Exception ex)
@@ -767,6 +768,7 @@ public partial class FormulaExecution : System.Web.UI.Page
     {
         try
         {
+            Reset();
             ModalPopupExtender1.Hide();
             PanelTemplatesList.Visible = false;
             PanelTemplateGrids.Visible = false;
@@ -785,6 +787,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                 lnkBtnAdd.Visible = false;
                 //cmdUpdate.Enabled = false;
                 GridViewProducts.Columns[3].Visible = true;
+               
             }
         }
         catch (Exception ex)
@@ -857,6 +860,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         transaction.Commit();
                         //BindProductsGrid(string.Empty);
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Released Successfully');", true);
+                        Reset();
 
                     }
                     catch (Exception ex)
@@ -1026,9 +1030,15 @@ public partial class FormulaExecution : System.Web.UI.Page
                         ModalPopupExtender1.Hide();
 
                         if (stockHold == "N")
+                        {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Processed Successfully. However the Product is not Released.');", true);
+                            Reset();
+                        }
                         else
+                        {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Processed and Released Successfully');", true);
+                            Reset();
+                        }
 
 
                         BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -1406,6 +1416,7 @@ public partial class FormulaExecution : System.Web.UI.Page
                         ModalPopupExtender1.Hide();
                         //errorDisplay.AddItem("Updated Sucesssfully.", DisplayIcons.GreenTick, false);
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Updated Successfully.');", true);
+                        Reset();
 
                     }
                     catch (Exception ex)
@@ -1844,5 +1855,17 @@ public partial class FormulaExecution : System.Web.UI.Page
         {
             drpBranch.Enabled = false;
         }
+    }
+
+    public void Reset()
+    {
+
+      //  drpIncharge.SelectedIndex = 0;
+
+        txtStartDate.Text = "";
+        txtEndDate.Text = "";
+        rdoIsPros.Checked = false;
+        GridViewTemplates.DataBind();
+
     }
 }

@@ -52,7 +52,7 @@
                 <td  style="width:20%" class="ControlDrpBorder">
                     <asp:DropDownList ID="drpBankName" runat="server" Width="100%" DataTextField="LedgerName" style="border: 1px solid #90c9fc" height="26px"
                         DataValueField="LedgerID"  CssClass="drpDownListMedium" BackColor = "#90c9fc">
-                        <asp:ListItem Selected="True" Value="0" style="background-color: #bce1fe">Select Bank</asp:ListItem>
+                        <asp:ListItem Selected="True" Value="0" Text="select Bank" style="background-color: #bce1fe">Select Bank</asp:ListItem>
                     </asp:DropDownList>
                 </td>
                 <td style="width:20%">

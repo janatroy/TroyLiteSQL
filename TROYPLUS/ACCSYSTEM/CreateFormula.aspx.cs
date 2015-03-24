@@ -557,6 +557,7 @@ public partial class CreateFormula : System.Web.UI.Page
         //txtBillDate.Text = "";
         //txtFormName.Text = "";
         txtFormulaName.Text = "";
+        txtSearch.Text = "";
 
         foreach (Control control in cmbProdAdd.Controls)
         {
@@ -1562,6 +1563,7 @@ public partial class CreateFormula : System.Web.UI.Page
             PanelBill.Visible = true;
             PanelItems.Visible = false;
             GridViewFormula.Visible = true;
+            BindGrid(string.Empty);
             //MyAccordion.Visible = true;
             //tabContol.Visible = false;
             DisableForOffline();

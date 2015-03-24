@@ -103,11 +103,13 @@ public partial class SalesReport : System.Web.UI.Page
         if (brncode == "All")
         {
             ds = bl.ListBranch();
-            lstBranch.Items.Add(new ListItem("All", "0"));
+           // lstBranch.Items.Add(new ListItem("All", "0"));
+            CheckBoxList1.Visible = true;
         }
         else
         {
             ds = bl.ListDefaultBranch(brncode);
+            CheckBoxList1.Visible = false;
         }
         lstBranch.DataSource = ds;
         lstBranch.DataTextField = "BranchName";
@@ -375,6 +377,19 @@ public partial class SalesReport : System.Web.UI.Page
         string groupBy = string.Empty;
         string ordrby = string.Empty;
         string selColumn = string.Empty;
+
+        string sBillDate = string.Empty;
+        string sBillNo = string.Empty;
+        string sCustomerName = string.Empty;
+        string sBranchCode = string.Empty;
+        string sQry = string.Empty;
+        string sPayMode = string.Empty;
+        string sProductName = string.Empty;
+        string sProductModel = string.Empty;
+        string sProductDesc = string.Empty;
+        string sConStr = string.Empty;
+        string branch1 = getCond();
+
         string field2 = " tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname,tblSalesItems.Itemcode,tblSales.Billno,tblSales.billdate,tblSales.Customername,tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst,tblSales.paymode ";
         if (optionmethod.SelectedItem.Text == "All")
         {
@@ -396,11 +411,27 @@ public partial class SalesReport : System.Web.UI.Page
         {
             condtion = condtion + " and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('yes','YES') and tblsales.DeliveryNote in ('no','NO') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') ";
         }
+        //if (optionmethod.SelectedItem.Text == "Sales")
+        //{
+        //    sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branch1 + ") and  " + condtion + " and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') Order by BillDate Desc";
+        //}
+        //else if (optionmethod.SelectedItem.Text == "Internal Transfer")
+        //{
+        //    sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branch1 + ") and  " + condtion + " and tblsales.InternalTransfer in ('yes','YES') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('no','NO') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
+        //}
+        //else if (optionmethod.SelectedItem.Text == "Delivery Note")
+        //{
+        //    sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branch1 + ") and  " + condtion + " and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('no','NO') and tblsales.DeliveryNote in ('yes','YES') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
+        //}
+        //else if (optionmethod.SelectedItem.Text == "Purchase Return")
+        //{
+        //    sQry = "SELECT Billno,BillDate,Customername,paymode,BranchCode FROM tblSales WHERE (" + branch1 + ") and " + condtion + " and tblsales.InternalTransfer in ('no','NO') and tblsales.purchaseReturn in ('yes','YES') and tblsales.DeliveryNote in ('no','NO') and tblsales.NormalSales in ('no','NO') and tblsales.ManualSales in ('no','NO') Order by BillDate Desc";
+        //}
 
         //ds = objBL.getSalesreport(startDate, endDate, "All", "All", "All");
         string branch = getCond();
 
-        ds = objBL.getSalesExporttoexcel(selColumn, field2, condtion,branch);
+        ds = objBL.getSalesExporttoexcel(selColumn, field2, condtion, branch);
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -607,17 +638,39 @@ public partial class SalesReport : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
-    protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    //protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    foreach (ListItem li in lstBranch.Items)
+    //    {
+    //        if (lstBranch.SelectedIndex == 0)
+    //        {
+    //            if (li.Text != "All")
+    //            {
+    //                li.Selected = true;
+    //            }
+    //        }
+    //    }
+    //}
+
+    protected void lst_SelectedIndexChanged_1(object sender, EventArgs e)
     {
-        foreach (ListItem li in lstBranch.Items)
+        if (CheckBoxList1.Items[0].Selected == true)
         {
-            if (lstBranch.SelectedIndex == 0)
+            foreach (ListItem ls in lstBranch.Items)
             {
-                if (li.Text != "All")
-                {
-                    li.Selected = true;
-                }
+                ls.Selected = true;
+
             }
+
+        }
+        else
+        {
+            foreach (ListItem ls in lstBranch.Items)
+            {
+                ls.Selected = false;
+
+            }
+
         }
     }
 }

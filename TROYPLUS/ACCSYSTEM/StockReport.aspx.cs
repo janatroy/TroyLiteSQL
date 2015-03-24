@@ -63,10 +63,12 @@ public partial class StockReport : System.Web.UI.Page
                 loadBranch();
                 BranchEnable_Disable();
                 loadPriceList();
+
+                txtStartDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             }
 
             lblBillDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
-            //txtStartDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+           
 
             //DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
             //string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
@@ -130,7 +132,7 @@ public partial class StockReport : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         lstPricelist.Items.Clear();
-        lstPricelist.Items.Add(new ListItem("All", "0"));
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
         ds = bl.ListPriceList(connection);
         lstPricelist.DataSource = ds;
         lstPricelist.DataTextField = "PriceName";
@@ -289,6 +291,8 @@ public partial class StockReport : System.Web.UI.Page
     {
         try
         {
+            int overallvalue = 0;
+            int overallstock = 0;
             BusinessLogic bl = new BusinessLogic(sDataSource);
             string cond = "";
             cond = getCond();
@@ -345,7 +349,6 @@ public partial class StockReport : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Brand"));
                     dt.Columns.Add(new DataColumn("Model"));
                     //dt.Columns.Add(new DataColumn("Rol"));
-
                     char[] commaSeparator = new char[] { ',' };
                     string[] result;
                     result = cond6.Split(commaSeparator, StringSplitOptions.None);
@@ -363,8 +366,14 @@ public partial class StockReport : System.Web.UI.Page
                     foreach (string str1 in result1)
                     {
                         dt.Columns.Add(new DataColumn(str1));
+                        dt.Columns.Add(new DataColumn(str1 + " - Value"));
                     }
+
+                    dt.Columns.Add(new DataColumn("Overall Stock"));
+                    dt.Columns.Add(new DataColumn("Overall Value"));
                     dt.Columns.Remove("Column1");
+                    dt.Columns.Remove(" - Value");
+
                     DataRow dr_final123 = dt.NewRow();
                     dt.Rows.Add(dr_final123);
 
@@ -374,6 +383,8 @@ public partial class StockReport : System.Web.UI.Page
 
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
+                        overallvalue = 0;
+                        overallstock = 0;
                         itemcode = Convert.ToString(dr["itemcode"]);
 
                         dst = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, itemcode);
@@ -418,13 +429,22 @@ public partial class StockReport : System.Web.UI.Page
                                         if (item1231 == item11)
                                         {
                                             dr_final6[item11] = drt["Stock"];
+                                            overallstock = overallstock + Convert.ToInt32(dr_final6[item11]);
+
+
+                                            dr_final6[item1231 + " - Value"] = Convert.ToInt32(drt["price"]) * Convert.ToInt32(drt["Stock"]);
+                                            overallvalue = overallvalue + Convert.ToInt32(dr_final6[item1231 + " - Value"]);
                                         }
                                     }
-
-
                                 }
                             }
+                            dr_final6["Overall Stock"] = overallstock;
+                            lblGrandStockTotal.Text = Convert.ToString(Convert.ToInt32(lblGrandStockTotal.Text) + Convert.ToInt32(dr_final6["Overall Stock"]));
+                            dr_final6["Overall Value"] = overallvalue;
+                            lblGrandValueTotal.Text = Convert.ToString(Convert.ToInt32(lblGrandValueTotal.Text) + Convert.ToInt32(dr_final6["Overall Value"]));
                         }
+
+                        //dr_final6["Overall Value"] = tot;// Convert.ToInt32(dr_final6[result3 + " - Value"]) + Convert.ToInt32(dr_final6[result3 + " - Value"]);
                         dt.Rows.Add(dr_final6);
                     }
                     DataSet dst2 = new DataSet();
@@ -602,20 +622,12 @@ public partial class StockReport : System.Web.UI.Page
                 {
                     li.Selected = true;
                 }
-            }           
-        }
-    }
-    protected void lstPricelist_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        foreach (ListItem li in lstPricelist.Items)
-        {
-            if (lstPricelist.SelectedIndex == 0)
-            {
-                if (li.Text != "All")
-                {
-                    li.Selected = true;
-                }
             }
+            //else
+            //{
+            //    li.Selected = false;
+            //}
         }
     }
+  
 }

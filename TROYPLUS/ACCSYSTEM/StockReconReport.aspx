@@ -44,7 +44,7 @@
                                                         Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                 </td>
                                 <td class="ControlTextBox3" style="width: 30%">
-                                    <asp:TextBox ID="txtStartDate" Enabled="false" runat="server" CssClass="cssTextBox" Width="100px"
+                                    <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px"
                                         MaxLength="10" />
                                 </td>
                                 <td align="left" style="width: 30%">
@@ -52,16 +52,19 @@
                                         new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                                 </td>
                             </tr>
+                            <tr style="height: 10px">
+                            </tr>
                             <tr>
-                                <td style="width: 40%">
+                                <td style="width: 40%" />
+                                <td style="width: 30%">
                                     <div style="overflow-y: scroll; height: 150px; width: 150px" runat="server">
                                         <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
-
                                         <asp:RadioButtonList ID="lstBranch" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
-                                           <%-- <asp:ListItem Text="All" Value="0" />--%>
+                                            <%-- <asp:ListItem Text="All" Value="0" />--%>
                                         </asp:RadioButtonList>
                                     </div>
                                 </td>
+                                <td style="width: 30%" />
                             </tr>
                         </table>
                     </td>

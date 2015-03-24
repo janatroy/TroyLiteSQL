@@ -761,6 +761,7 @@ public partial class PageMaster : System.Web.UI.MasterPage
         {
             lnkChequeBook.Visible = false;
         }
+        
         //if ((!this.Page.User.IsInRole("STKRPT")) && (!this.Page.User.IsInRole("STKLEDRPT")) && (!this.Page.User.IsInRole("STKRECRPT")) && (!this.Page.User.IsInRole("STKAGE")) && (!this.Page.User.IsInRole("STKCOM")) && (!this.Page.User.IsInRole("STKLVL")) && (!this.Page.User.IsInRole("OBSITEM")))
         //{
         //    lnkInventoryReports.Visible = false;

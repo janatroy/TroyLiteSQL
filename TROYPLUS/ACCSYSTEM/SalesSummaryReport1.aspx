@@ -290,9 +290,16 @@
                             &nbsp;
                         </td>
                     </tr>
+                     <tr>
+                              <asp:Image ID="Image1" runat="server" />
+                        </tr>
                 </table>
                 <h5>
-                    SALES SUMMARY REPORT</h5>
+                    SALES SUMMARY REPORT
+                     <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
+                            To
+                            <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
+                
             </center>
             <wc:ReportGridView runat="server" BorderWidth="1" ID="gvMain" GridLines="Both" AlternatingRowStyle-CssClass="even"
                 AutoGenerateColumns="false" AllowPaging="false" AllowPrintPaging="true"
@@ -307,14 +314,16 @@
                     <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Wrap="false">
                         <ItemTemplate>
                             <div style="white-space: nowrap; width: auto;">
-                                <a href="javascript:switchViews('dv<%# Eval("LinkName") %>', 'imdiv<%# Eval("LinkName") %>');"
+                                <a href="javascript:switchViews('dv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo")  %>', 'imdiv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo") %>');"
                                     style="text-decoration: none;">
-                                    <img id="imdiv<%# Eval("LinkName") %>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
+                                    <img id="imdiv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo")  %>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
                                 </a>
                                 <asp:Label ID="lblLink" runat="server" Text='<%# Eval("LinkName") %>'></asp:Label>
+                               <%-- <asp:Label ID="lblBranchCode" runat="server" Text='<%# Eval("BranchCode") %>'></asp:Label>
+                                <asp:Label ID="lblBillNo" runat="server" Text='<%# Eval("BillNo") %>'></asp:Label>--%>
                                 <asp:Label ID="lblProductName" runat="server" Text=''></asp:Label>
                                 <br />
-                                <div id="dv<%# Eval("LinkName") %>" style="display: none; position: relative; left: 1px;">
+                                <div id="dv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo") %>" style="display: none; position: relative; left: 1px;">
                                     <wc:ReportGridView runat="server" BorderWidth="1" ID="gvSecond" GridLines="Both"
                                         AlternatingRowStyle-CssClass="even" AutoGenerateColumns="false" ShowFooter="true"
                                         Width="70%" Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvSecond_RowDataBound">
@@ -400,6 +409,20 @@
                                     </wc:ReportGridView>
                                 </div>
                             </div>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                        HeaderText="BillNo">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblBillNo"
+                                runat="server" Text='<%# Eval("BillNo") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                        HeaderText="BranchCode">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblBranchCode"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"

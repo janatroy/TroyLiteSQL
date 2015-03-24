@@ -25,8 +25,8 @@ public partial class ProdMaster : System.Web.UI.Page
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-            dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
-            dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
+            //dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
+            //dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
 
             if (!Page.IsPostBack)
             {
@@ -414,7 +414,7 @@ public partial class ProdMaster : System.Web.UI.Page
     {
         //LeadBusinessLogic bl = new LeadBusinessLogic(sDataSource);
         //DataSet ds = new DataSet();
-
+        
         //ds = bl.GetDropdownList(sDataSource, "CONTACT");
         //cmbModeOfContact.DataSource = ds;
         //cmbModeOfContact.DataBind();
@@ -493,13 +493,13 @@ public partial class ProdMaster : System.Web.UI.Page
             //    return;
             //}
             Reset();
-
+            
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
             if (!DealerRequired())
             {
                 rowDealerAdd.Visible = false;
-                rowDealerAdd1.Visible = false;
+                rowDealerAdd1.Visible = false;                   
             }
 
             TextBox txtStock = null;
@@ -622,7 +622,8 @@ public partial class ProdMaster : System.Web.UI.Page
                 BulkEditGridView2.DataBind();
             }
 
-
+            //sales incentive
+            hdnfSalesIncentiveId.Value = string.Empty;
 
             BulkEditGridView1.DataSource = null;
             BulkEditGridView1.DataBind();
@@ -765,10 +766,10 @@ public partial class ProdMaster : System.Web.UI.Page
         txtMrpDateAdd.Text = dtaa;
         txtDpDateAdd.Text = dtaa;
         txtNLCDateAdd.Text = dtaa;
-
+        
         drpMeasureAdd.SelectedIndex = 0;
         drpComplexAdd.SelectedIndex = 0;
-
+        
         txtProdDescAdd.SelectedIndex = 0;
         txtproductlevel.Text = "0";
         drpRoleTypeAdd.SelectedIndex = 0;
@@ -783,6 +784,12 @@ public partial class ProdMaster : System.Web.UI.Page
         txtNLCAdd.Text = "0";
         drpIsActiveAdd.SelectedValue = "YES";
         drpOutdatedAdd.SelectedValue = "N";
+
+        txtSlab1.Text = string.Empty;
+        txtSlab2.Text = string.Empty;
+        txtSlab3.Text = string.Empty;
+        txtSlab4.Text = string.Empty;
+        txtSlab5.Text = string.Empty;
     }
 
     private void ShowLeadContactInfo()
@@ -810,7 +817,7 @@ public partial class ProdMaster : System.Web.UI.Page
 
     private string GetConnectionString()
     {
-        string connStr = string.Empty;
+         string connStr = string.Empty;
 
         if (Request.Cookies["Company"] != null)
             connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -922,10 +929,10 @@ public partial class ProdMaster : System.Web.UI.Page
 
     protected void GrdViewLeadContact_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        
         DataSet ds = new DataSet();
         //GridViewRow row = GrdViewLeadContact.SelectedRow;
-
+        
         //hdCurrentRow.Value = Convert.ToString(row.DataItemIndex);
 
         //txtContactedDate.Text = row.Cells[1].Text;
@@ -1243,7 +1250,7 @@ public partial class ProdMaster : System.Web.UI.Page
             //GridViewRow row = GrdViewLead.Rows[e.RowIndex];
 
             string ItemCode = Convert.ToString(GrdViewProduct.DataKeys[e.RowIndex].Value);
-
+            
             string connection = Request.Cookies["Company"].Value;
 
             string usernam = Request.Cookies["LoggedUserName"].Value;
@@ -1481,7 +1488,7 @@ public partial class ProdMaster : System.Web.UI.Page
                     if (dst != null && dst.Tables[0].Rows.Count > 0)
                     {
                         GrdViewItems.DataSource = dst.Tables[0];
-                        GrdViewItems.DataBind();
+                        GrdViewItems.DataBind();                            
                     }
                     else
                     {
@@ -1559,7 +1566,7 @@ public partial class ProdMaster : System.Web.UI.Page
                         }
 
                         BulkEditGridView1.DataSource = dstd.Tables[0];
-                        BulkEditGridView1.DataBind();
+                        BulkEditGridView1.DataBind();                            
                     }
                     else
                     {
@@ -1647,7 +1654,7 @@ public partial class ProdMaster : System.Web.UI.Page
 
             if (Page.IsValid)
             {
-
+               
                 GridViewRow row = GrdViewProduct.SelectedRow;
 
                 string No = Convert.ToString(GrdViewProduct.SelectedDataKey.Value);
@@ -1847,7 +1854,13 @@ public partial class ProdMaster : System.Web.UI.Page
                 IsActive = drpIsActiveAdd.SelectedValue;
 
                 // product sales incentive
-                DataTable dtSalesIncentive = GetSalesIncentiveData(ItemCode, int.Parse(hdnfSalesIncentiveId.ToString()));
+                int salesIncentiveId = 0;
+                if (!string.IsNullOrEmpty(hdnfSalesIncentiveId.Value))
+                {
+                    int.TryParse(hdnfSalesIncentiveId.Value.ToString(), out salesIncentiveId);
+                }
+
+                DataTable dtSalesIncentive = GetSalesIncentiveData(ItemCode, salesIncentiveId);
 
                 bl.UpdateProduct(connection, ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Stock, Rate, Unit, VAT, Discount, BuyRate, BuyVAT, BuyDiscount, BuyUnit, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, productlevel, MRPEffDate, DPEffDate, NLCEffDate, Username, Outdated, Deviation, IsActive, dstest, dtSalesIncentive);
 
@@ -1982,8 +1995,8 @@ public partial class ProdMaster : System.Web.UI.Page
     protected void AddButton_Click(object sender, EventArgs e)
     {
         try
-        {
-            DateTime creationDate;
+        { 
+        DateTime creationDate;
 
             if (Page.IsValid)
             {
@@ -1992,8 +2005,8 @@ public partial class ProdMaster : System.Web.UI.Page
                 string ItemCode = string.Empty;
                 string ProductName = string.Empty;
                 string Model = string.Empty;
-                int CategoryID = 0;
-                string ProductDesc = string.Empty;
+                int CategoryID = 0; 
+                string ProductDesc = string.Empty; 
                 int ROL = 0;
                 double Stock = 0;
                 double Rate = 0;
@@ -2002,28 +2015,28 @@ public partial class ProdMaster : System.Web.UI.Page
                 double VAT = 0;
                 int Discount = 0;
                 double BuyRate = 0;
-                double BuyVAT = 0;
-                int BuyDiscount = 0;
+                double BuyVAT = 0; 
+                int BuyDiscount = 0; 
                 int DealerUnit = 0;
-                double DealerRate = 0;
+                double DealerRate = 0; 
                 double DealerVAT = 0;
-                int DealerDiscount = 0;
-                string Complex = string.Empty;
-                string Measure_Unit = string.Empty;
-                string Accept_Role = string.Empty;
+                int DealerDiscount = 0; 
+                string Complex  = string.Empty; 
+                string Measure_Unit  = string.Empty; 
+                string Accept_Role  = string.Empty; 
                 double CST = 0;
-                string Barcode = string.Empty;
+                string Barcode  = string.Empty; 
                 Double ExecutiveCommission = 0;
                 string CommodityCode = "";
                 double NLC = 0;
-                string block = string.Empty;
-                int productlevel = 0;
-                DateTime MRPEffDate;
-                DateTime DPEffDate;
-                DateTime NLCEffDate;
-                string Outdated = string.Empty;
+                string block = string.Empty; 
+                int productlevel = 0; 
+                DateTime MRPEffDate; 
+                DateTime DPEffDate; 
+                DateTime NLCEffDate; 
+                string Outdated = string.Empty; 
                 int Deviation = 0;
-                string IsActive = string.Empty;
+                string IsActive = string.Empty; 
 
                 string Username = Request.Cookies["LoggedUserName"].Value;
 
@@ -2040,34 +2053,34 @@ public partial class ProdMaster : System.Web.UI.Page
                 }
 
                 string tDiscount = "";
+                
+                    for (int vLoop = 0; vLoop < GrdViewItems.Rows.Count; vLoop++)
+                    {                        
+                        TextBox Price1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtPrice");
+                        Price = Price1.Text;
+                        TextBox EffDate1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtEffDate");
+                        EffDate = EffDate1.Text;
+                        TextBox Discount1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDiscount1");
+                        tDiscount = Discount1.Text;
 
-                for (int vLoop = 0; vLoop < GrdViewItems.Rows.Count; vLoop++)
-                {
-                    TextBox Price1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtPrice");
-                    Price = Price1.Text;
-                    TextBox EffDate1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtEffDate");
-                    EffDate = EffDate1.Text;
-                    TextBox Discount1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDiscount1");
-                    tDiscount = Discount1.Text;
+                        int col = vLoop + 1;
 
-                    int col = vLoop + 1;
-
-                    if (Price == "")
-                    {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Price in row " + col + " ');", true);
-                        return;
+                        if (Price == "")
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Price in row " + col + " ');", true);
+                            return;
+                        }
+                        else if (EffDate == "")
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Effective Date in row " + col + " ');", true);
+                            return;
+                        }
+                        else if (tDiscount == "")
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Discount in row " + col + " ');", true);
+                            return;
+                        }                        
                     }
-                    else if (EffDate == "")
-                    {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Effective Date in row " + col + " ');", true);
-                        return;
-                    }
-                    else if (tDiscount == "")
-                    {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Discount in row " + col + " ');", true);
-                        return;
-                    }
-                }
 
 
 
@@ -2077,7 +2090,7 @@ public partial class ProdMaster : System.Web.UI.Page
                 DataTable dtt;
                 DataRow drNewt;
                 DataColumn dct;
-
+                    
                 dtt = new DataTable();
 
                 dct = new DataColumn("ID");
@@ -2097,7 +2110,7 @@ public partial class ProdMaster : System.Web.UI.Page
 
                 dstest.Tables.Add(dtt);
 
-
+                
                 for (int vLoop = 0; vLoop < GrdViewItems.Rows.Count; vLoop++)
                 {
                     TextBox txt1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtId");
@@ -2110,7 +2123,7 @@ public partial class ProdMaster : System.Web.UI.Page
                     EffDate = EffDate1.Text;
                     TextBox Discount1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDiscount1");
                     tDiscount = Discount1.Text;
-
+                    
                     drNewt = dtt.NewRow();
                     drNewt["ID"] = ID;
                     drNewt["PriceName"] = PriceName;
@@ -2119,7 +2132,7 @@ public partial class ProdMaster : System.Web.UI.Page
                     drNewt["Discount"] = tDiscount;
                     dstest.Tables[0].Rows.Add(drNewt);
                 }
-
+                
                 CategoryID = Convert.ToInt32(ddCategoryAdd.SelectedValue);
                 ItemCode = txtItemCodeAdd.Text.Trim();
                 Stock = 0;
@@ -2142,23 +2155,23 @@ public partial class ProdMaster : System.Web.UI.Page
                 DealerRate = Convert.ToDouble(txtDealerRateAdd.Text);
                 DPEffDate = DateTime.Parse(txtDpDateAdd.Text);
                 DealerDiscount = Convert.ToInt32(txtDealerDiscountAdd.Text);
-                Measure_Unit = drpMeasureAdd.SelectedValue;
+                Measure_Unit = drpMeasureAdd.SelectedValue;        
                 Complex = drpComplexAdd.SelectedValue;
                 Accept_Role = drpRoleTypeAdd.SelectedValue;
-                Barcode = txtBarcodeAdd.Text.Trim();
-                CommodityCode = txtCommCodeAdd.Text.Trim();
-                ExecutiveCommission = Convert.ToDouble(txtExecutiveCommissionAdd.Text);
+                Barcode = txtBarcodeAdd.Text.Trim();      
+                CommodityCode = txtCommCodeAdd.Text.Trim();  
+                ExecutiveCommission = Convert.ToDouble(txtExecutiveCommissionAdd.Text);        
                 NLC = Convert.ToDouble(txtNLCAdd.Text);
                 NLCEffDate = DateTime.Parse(txtNLCDateAdd.Text);
                 block = drpblockadd.SelectedValue;
-                productlevel = Convert.ToInt32(txtproductlevel.Text);
+                productlevel = Convert.ToInt32(txtproductlevel.Text);         
                 Outdated = drpOutdatedAdd.SelectedValue;
-                Deviation = Convert.ToInt32(txtAllowedPriceAdd.Text);
+                Deviation = Convert.ToInt32(txtAllowedPriceAdd.Text);       
                 IsActive = drpIsActiveAdd.SelectedValue;
 
 
                 DataSet dstest1 = new DataSet();
-
+                
                 DataTable dttt;
                 DataRow drNewtt;
                 DataColumn dctt;
@@ -2203,7 +2216,7 @@ public partial class ProdMaster : System.Web.UI.Page
                     Branchcode1 = Branchcode.Text;
                     Label Stock2 = (Label)BulkEditGridView2.Rows[vLoop].FindControl("txtStock");
                     Stock1 = Stock2.Text;
-
+                    
                     drNewtt = dttt.NewRow();
                     drNewtt["CategoryID"] = CategoryID;
                     drNewtt["BranchName"] = BranchName1;
@@ -2219,7 +2232,7 @@ public partial class ProdMaster : System.Web.UI.Page
                 // product sales incentive
                 DataTable dtSalesIncentive = GetSalesIncentiveData(ItemCode);
 
-                bl.InsertProduct(connection, ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Stock, Rate, Unit, BuyUnit, VAT, Discount, BuyRate, BuyVAT, BuyDiscount, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, productlevel, MRPEffDate, DPEffDate, NLCEffDate, Username, Outdated, Deviation, IsActive, dstest, dstest1, dtSalesIncentive);
+                bl.InsertProduct(connection, ItemCode, ProductName, Model, CategoryID, ProductDesc, ROL, Stock, Rate, Unit, BuyUnit, VAT, Discount, BuyRate, BuyVAT, BuyDiscount, DealerUnit, DealerRate, DealerVAT, DealerDiscount, Complex, Measure_Unit, Accept_Role, CST, Barcode, ExecutiveCommission, CommodityCode, NLC, block, productlevel, MRPEffDate, DPEffDate, NLCEffDate, Username, Outdated, Deviation, IsActive, dstest, dstest1,dtSalesIncentive);
 
                 GrdViewProduct.DataBind();
 
@@ -2240,7 +2253,7 @@ public partial class ProdMaster : System.Web.UI.Page
 
     }
 
-    private DataTable GetSalesIncentiveData(string itemCode, int id = 0)
+    private DataTable GetSalesIncentiveData(string itemCode,int id=0)
     {
         DataTable dtSalesIncentive = new DataTable();
         dtSalesIncentive.Columns.Add("Id");
@@ -2255,15 +2268,15 @@ public partial class ProdMaster : System.Web.UI.Page
 
         // Add values
         DataRow dr = dtSalesIncentive.NewRow();
-        dr["Id"] = id.ToString();
+        dr["Id"] = (id == 0) ? string.Empty : id.ToString();
         dr["ItemCode"] = itemCode;
         dr["Slab1"] = txtSlab1.Text.Trim();
         dr["Slab2"] = txtSlab2.Text.Trim();
         dr["Slab3"] = txtSlab3.Text.Trim();
         dr["Slab4"] = txtSlab4.Text.Trim();
         dr["Slab5"] = txtSlab5.Text.Trim();
-        dr["EffectiveDate"] = DateTime.Now.ToString();
-        dr["LastUpdatedDate"] = DateTime.Now.ToString();
+        dr["EffectiveDate"] = DateTime.Now.ToString("yyyy-MM-dd");
+        dr["LastUpdatedDate"] = DateTime.Now.ToString("yyyy-MM-dd");
 
         dtSalesIncentive.Rows.Add(dr);
         return dtSalesIncentive;

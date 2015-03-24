@@ -180,7 +180,7 @@ public partial class StockAgeingReport : System.Web.UI.Page
         cmbProduct.Items.Insert(0, "All");
     }
 
-    private void loadCategories()
+    private void  loadCategories()
     {
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);

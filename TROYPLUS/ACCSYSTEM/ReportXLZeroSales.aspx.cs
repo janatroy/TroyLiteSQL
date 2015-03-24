@@ -112,12 +112,38 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
            endDate = Convert.ToDateTime(txtEdDate.Text);
            string itemcode;
            itemcode = "";
-
+           string Method = string.Empty;
+           double val = 0;
            DataSet ds = new DataSet();
-           ds = objBL.getstockstatement(sDataSource, startDate, endDate, itemcode);
 
-           gvLedger.DataSource = ds;
-           gvLedger.DataBind();
+           string Branch = string.Empty;
+           Branch = drpBranch.SelectedValue;
+
+
+           if(Branch=="0")
+           {
+               ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select Branch. It cannot be Left Blank.');", true);
+               return;
+           }
+           
+
+           if (chkoption.SelectedValue == "Only Value Details")
+           {
+               Method = "Only";
+           }
+           else if (chkoption.SelectedValue == "Whole Bill Details")
+           {
+               Method = "Whole";
+           }
+
+           val = Convert.ToDouble(txtvalue.Text);
+
+           Response.Write("<script language='javascript'> window.open('ReportXLZeroSales1.aspx?Branch=" + Branch + "&startdate=" + startDate + "&enddate=" + endDate + "&method=" + Method + "&Value=" + val + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+           // ReportXLZeroSales1  DataSet ds = new DataSet();
+           //ds = objBL.getstockstatement(sDataSource, startDate, endDate, itemcode);
+
+           //gvLedger.DataSource = ds;
+           //gvLedger.DataBind();
        }
        catch (Exception ex)
        {
@@ -138,6 +164,12 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
 
          string Branch = string.Empty;
          Branch = drpBranch.SelectedValue;
+
+         if (Branch == "0")
+         {
+             ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select Branch. It cannot be Left Blank.');", true);
+             return;
+         }
 
          if (chkoption.SelectedValue == "Only Value Details")
          {

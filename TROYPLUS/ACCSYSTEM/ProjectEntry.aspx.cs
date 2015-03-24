@@ -423,6 +423,7 @@ public partial class ProjectEntry : System.Web.UI.Page
             //MyAccordion.Visible = true;
             tbMain.Visible = false;
             GrdWME.Visible = true;
+            BindWME("", "");
             Reset();
         }
         catch (Exception ex)
@@ -433,7 +434,8 @@ public partial class ProjectEntry : System.Web.UI.Page
 
     private void ResetSearch()
     {
-        
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
         txtStartDate.Text = "";
         txtEndDate.Text = "";
         txtsCreationDate.Text = "";
@@ -460,6 +462,8 @@ public partial class ProjectEntry : System.Web.UI.Page
         //txtCLSDate.Text = "";
         txtactdate.Text = "";
         txtacenddate.Text = "";
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
         //txtacteffortdays.Text = "";
         //txtproclodate.Text = "";
         ////txtdelaydate.Text = "";

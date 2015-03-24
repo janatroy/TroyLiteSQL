@@ -115,6 +115,9 @@
                                     </td>
                                     <td style="width:35%;" align="left" class="ControlDrpBorder">
                                          <div style="overflow: scroll; height: 150px;" align="left">
+                                              <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="PriceName" DataValueField="PriceName" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
+                                                  <asp:ListItem Text="All" Value="0" />
+                                     </asp:CheckBoxList>
                                         <asp:CheckBoxList ID="lstPricelist" runat="server" RepeatDirection="Vertical" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
                                                 <%--<asp:ListItem Text="All" Value="0" />--%>
                                             </asp:CheckBoxList>
@@ -178,7 +181,7 @@
                             <td>                                    
                                 <table width="100%">
                                     <tr>
-                                        <td style="width:25%">
+                                        <td style="width:10%">
                                         </td>
                                         <td style="width:10%">
                                             
@@ -187,9 +190,11 @@
                                              <asp:Button ID="btnxls" runat="server" CssClass="exportexl6" 
                                                   EnableTheming="false"  Width="152px" OnClick="btnxls_Click"/>
                                         </td>
-                                        <td style="width:30%">
-                                            <asp:Button ID="btngriddata" runat="server" Visible="false" CssClass="generatebutton" 
-                                                  EnableTheming="false" Width="152px" />
+                                        <td style="width:20%">
+                                              <asp:Button ID="btnReport" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnReport_Click" />
+                                        </td>
+                                         <td style="width:10%">
                                         </td>
                                     </tr>
                             </table>

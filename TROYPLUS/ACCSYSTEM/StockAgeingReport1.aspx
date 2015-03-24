@@ -259,7 +259,7 @@
                                 &nbsp;
                             </td>
                             <td align="center">
-                                &nbsp;
+                                <asp:Label ID="Label1" runat="server"></asp:Label>
                             </td>
                             <td>
                                 &nbsp;

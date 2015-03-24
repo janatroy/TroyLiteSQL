@@ -135,7 +135,7 @@
                   <div style="width: 700px" runat="server"  align="center">
                 <wc:ReportGridView runat="server"  BorderWidth="1" ID="Grdreport" GridLines="Both"
                     AutoGenerateColumns="true"
-                    AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
+                    AllowPrintPaging="true" Width="700px" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                      >
                     <HeaderStyle CssClass="ReportHeadataRow" />
                     <RowStyle CssClass="ReportdataRow" />

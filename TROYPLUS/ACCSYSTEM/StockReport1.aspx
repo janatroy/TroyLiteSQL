@@ -1,7 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StockReport1.aspx.cs" Inherits="StockReport1" %>
 
 <%@ Register Assembly="Shared.WebControls" Namespace="Shared.WebControls" TagPrefix="wc" %>
-<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Register Assembly="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
@@ -130,10 +131,17 @@
 
                     <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
                         <tr>
-                            <td width="140px" align="left">TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
                             </td>
-                            <td align="center" width="320px" style="font-size: 20px;">
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td width="10px" align="left"><%--TIN#:--%>
+                                <%-- <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>--%>
+                            </td>
+                            <td align="center" width="560px" style="font-size: 20px;">
                                 <asp:Label ID="lblCompany" runat="server"></asp:Label>
                             </td>
                             <td width="140px" align="left">Ph:
@@ -141,8 +149,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left">GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                            <td align="left"><%--GST#:--%>
+                                <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -152,52 +160,41 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>&nbsp;
-                            </td>
+                            <td></td>
                             <td align="center">
                                 <asp:Label ID="lblCity" runat="server" />
                                 -
                         <asp:Label ID="lblPincode" runat="server"></asp:Label>
                             </td>
-                            <td>&nbsp;
-                            </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <td>&nbsp;
-                            </td>
+                            <td></td>
                             <td align="center">
                                 <asp:Label ID="lblState" runat="server"> </asp:Label>
                             </td>
-                            <td>&nbsp;
-                            </td>
+                            <td></td>
                         </tr>
+
+                    </table>
+                    <table>
                         <tr>
-                            <td>&nbsp;
-                            </td>
-                            <td align="center">&nbsp;
-                            </td>
-                            <td>&nbsp;
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" align="center">
-                                <br />
+                            <td></td>
+                            <td width="560px" align="center">
                                 <h5>Stock List As On
-                            <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
+                                <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
                             </td>
-                        </tr>
-                        <tr>
-                              <asp:Image ID="Image1" runat="server" />
+                            <td></td>
                         </tr>
                     </table>
                     <div>
-                         <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
-                            AlternatingRowStyle-CssClass="even" 
+                        <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
+                            AlternatingRowStyle-CssClass="even"
                             AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;">
                             <HeaderStyle CssClass="ReportHeadataRow" />
                             <RowStyle CssClass="ReportdataRow" />
                             <AlternatingRowStyle CssClass="ReportAltdataRow" />
-                            </wc:ReportGridView>
+                        </wc:ReportGridView>
                     </div>
                     <div style="width: 700px" align="center">
                         <wc:ReportGridView runat="server" BorderWidth="1" ID="gvCategory" GridLines="Both"
@@ -248,7 +245,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Qty" ItemStyle-Width="30px">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblStock" runat="server" Text='<%# Eval("Stock") %>' />
+                                                            <asp:Label ID="lblStock" Style="text-align: center" runat="server" Text='<%# Eval("Stock") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <%--  <asp:TemplateField HeaderText="Unit" ItemStyle-Width="30px">  
@@ -268,7 +265,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="PriceList" ItemStyle-Width="30px">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblPrice" runat="server" Text='<%# Eval("PriceName") %>' />
+                                                            <asp:Label ID="lblPrice" Style="text-align: right" runat="server" Text='<%# Eval("PriceName") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Amount" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Right">
@@ -292,24 +289,43 @@
                             </Columns>
                         </wc:ReportGridView>
                         <br />
-                       
-                        <div style="text-align: right">
-                            <b><span style="font-family: 'Trebuchet MS'; font-size: 11px;">Grand Total : </span>
-                            </b>
-                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblGrandTotal"
-                                runat="server" Font-Bold="true" />
-                        </div>
 
 
                     </div>
-                    
+                    <div style="text-align: right; width: 98%">
+                        <table>
+                            <tr>
+                                <td style="width: 50%; text-align: left" />
+                                <td style="width: 35%; text-align: left" />
+                                <td style="width: 25%; text-align: left">
+                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left">Grand Stock Total : </span>
+                                    </b>
+                                </td>
+                                <td style="width: 15%; text-align: right">
+                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandStockTotal" Text="0"
+                                        runat="server" Font-Bold="true" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; text-align: left" />
+                                <td style="width: 35%; text-align: left" />
+                                <td style="width: 25%; text-align: left">
+                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left">Grand Value Total : </span>
+                                    </b>
+                                </td>
+                                <td style="width: 15%; text-align: right">
+                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandValueTotal" Text="0"
+                                        runat="server" Font-Bold="true" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
 
-                </div>                
+                </div>
+                <br />
+                <br />
+                <br />
             </div>
-            <br />
-            <br />
-            <br />
-        </div>
     </form>
 </body>
 </html>

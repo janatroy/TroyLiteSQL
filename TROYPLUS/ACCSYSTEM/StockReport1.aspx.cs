@@ -41,7 +41,7 @@ public partial class StockReport1 : System.Web.UI.Page
                         {
                             foreach (DataRow dr in companyInfo.Tables[0].Rows)
                             {
-                                lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                               // lblTNGST.Text = Convert.ToString(dr["TINno"]);
                                 lblCompany.Text = Convert.ToString(dr["CompanyName"]);
                                 lblPhone.Text = Convert.ToString(dr["Phone"]);
                                 lblGSTno.Text = Convert.ToString(dr["GSTno"]);
@@ -63,13 +63,14 @@ public partial class StockReport1 : System.Web.UI.Page
                             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                             {
                                 Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds.Tables[0].Rows[i]["img_filename"];
-                                Image1.Height = 35;                               
+                                Image1.Height = 95;
+                                Image1.Width = 114;
                             }
                         }
                         else
                         {
-                            Image1.Height = 35;
-                            Image1.Width = 220;
+                            Image1.Height = 95;
+                            Image1.Width = 114;
                             Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }
@@ -83,7 +84,7 @@ public partial class StockReport1 : System.Web.UI.Page
             string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
             txtStartDate.Text = dtaa;
 
-            lblHeadDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            //lblHeadDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             //string sDataSource = Server.MapPath("App_Data\\Store0910.mdb");
             //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
 
@@ -321,6 +322,8 @@ public partial class StockReport1 : System.Web.UI.Page
 
     private void BindData()
     {
+        int overallvalue = 0;
+        int overallstock = 0;
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
         DateTime refDate = DateTime.Parse(txtStartDate.Text);
@@ -329,6 +332,8 @@ public partial class StockReport1 : System.Web.UI.Page
         if (Request.QueryString["refDate"] != null)
         {
             stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
+            lblHeadDate.Text = stdt.ToString("dd/MM/yyyy");
+
             cond = Request.QueryString["cond"].ToString();
             cond = Server.UrlDecode(cond);
             cond1 = Request.QueryString["cond1"].ToString();
@@ -356,6 +361,8 @@ public partial class StockReport1 : System.Web.UI.Page
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
+                overallvalue = 0;
+                overallstock = 0;
                 dt.Columns.Add(new DataColumn("ItemCode"));
                 dt.Columns.Add(new DataColumn("ProductName"));
                 dt.Columns.Add(new DataColumn("Brand"));  
@@ -379,8 +386,14 @@ public partial class StockReport1 : System.Web.UI.Page
                 foreach (string str1 in result1)
                 {
                     dt.Columns.Add(new DataColumn(str1));
+                    dt.Columns.Add(new DataColumn(str1 + " - Value"));
                 }
+
+                dt.Columns.Add(new DataColumn("Overall Stock"));
+                dt.Columns.Add(new DataColumn("Overall Value"));
                 dt.Columns.Remove("Column1");
+                dt.Columns.Remove(" - Value");
+                
                 DataRow dr_final123 = dt.NewRow();
                 dt.Rows.Add(dr_final123);
 
@@ -390,6 +403,8 @@ public partial class StockReport1 : System.Web.UI.Page
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
+                    overallvalue = 0;
+                    overallstock = 0;
                     itemcode = Convert.ToString(dr["itemcode"]);
 
                     dst = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, itemcode);
@@ -430,17 +445,26 @@ public partial class StockReport1 : System.Web.UI.Page
                                 {
                                     string item11 = str3;
                                     string item1231 = Convert.ToString(drt["BranchCode"]);
-
+                                    
                                     if (item1231 == item11)
                                     {
                                         dr_final6[item11] = drt["Stock"];
-                                    }
+                                        overallstock = overallstock + Convert.ToInt32(dr_final6[item11]);
+
+
+                                        dr_final6[item1231 + " - Value"] = Convert.ToInt32(drt["price"]) * Convert.ToInt32(drt["Stock"]);
+                                        overallvalue = overallvalue + Convert.ToInt32(dr_final6[item1231 + " - Value"]);
+                                    }                                    
                                 }
-
-
                             }
                         }
+                        dr_final6["Overall Stock"] = overallstock;
+                        lblGrandStockTotal.Text = Convert.ToString(Convert.ToInt32(lblGrandStockTotal.Text) + Convert.ToInt32(dr_final6["Overall Stock"]));
+                        dr_final6["Overall Value"] = overallvalue;
+                        lblGrandValueTotal.Text = Convert.ToString(Convert.ToInt32(lblGrandValueTotal.Text) + Convert.ToInt32(dr_final6["Overall Value"]));
                     }
+
+                    //dr_final6["Overall Value"] = tot;// Convert.ToInt32(dr_final6[result3 + " - Value"]) + Convert.ToInt32(dr_final6[result3 + " - Value"]);
                     dt.Rows.Add(dr_final6);
                 }
                 DataSet dst2 = new DataSet();
@@ -475,7 +499,7 @@ public partial class StockReport1 : System.Web.UI.Page
                 Label labelTotal = e.Row.FindControl("lblTotal") as Label;
                 labelTotal.Text = Convert.ToString(sumDbl);
                 grandDbl = grandDbl + sumDbl;
-                lblGrandTotal.Text = grandDbl.ToString("#0.00");
+                lblGrandValueTotal.Text = grandDbl.ToString("#0.00");
             }
         }
         catch (Exception ex)
