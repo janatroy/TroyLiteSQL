@@ -33492,6 +33492,87 @@ public partial class BusinessLogic
 
     }
 
+
+    public DataSet ListBrandsForCategoryIDforpurchase(string CategoryID, string method)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString);// System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        DataSet dsd = new DataSet();
+        string dbQry2 = string.Empty;
+        string obsolute = string.Empty;
+        try
+        {
+            manager.Open();
+
+            int block = 0;
+            object retVal = manager.ExecuteScalar(CommandType.Text, "SELECT ReorderLevel FROM tblObsoluteConfig ");
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                block = int.Parse(retVal.ToString());
+            }
+            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='OBSOLUTE'";
+            dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
+
+            if (dsd.Tables[0].Rows.Count > 0)
+                obsolute = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
+
+            if (method == "Add")
+            {
+                if(CategoryID=="All")
+                {
+                     if (obsolute == "YES")
+                {
+                    //dbQry = "select ItemCode,ProductName from tblProductMaster  Order By ProductName";
+                    dbQry = "SELECT Distinct ProductDesc FROM (tblProductMaster inner join tblBrand on tblProductMaster.ProductDesc = tblBrand.BrandName) Where  tblBrand.IsActive = 'YES' and tblProductMaster.IsActive = 'YES' Order By ProductDesc Asc";
+                }
+                else
+                {
+                    dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster ";
+                }
+            }
+            else
+            {
+                dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster ";
+            }
+           }
+            else
+            {
+                if (CategoryID == CategoryID)
+                {
+                    if (obsolute == "YES")
+                    {
+                        //dbQry = "select ItemCode,ProductName from tblProductMaster  Order By ProductName";
+                        dbQry = "SELECT Distinct ProductDesc FROM (tblProductMaster inner join tblBrand on tblProductMaster.ProductDesc = tblBrand.BrandName) Where CategoryID=" + CategoryID + " and tblBrand.IsActive = 'YES' and tblProductMaster.IsActive = 'YES' Order By ProductDesc Asc";
+                    }
+                    else
+                    {
+                        dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster Where CategoryID=" + CategoryID + "  Order By ProductDesc Asc";
+                    }
+                }
+
+                else
+                {
+                    dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster Where CategoryID=" + CategoryID + "  Order By ProductDesc Asc";
+                }
+        }
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+    }
+
     public DataSet ListProdNameForCategoryID(string CategoryID, string method)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
