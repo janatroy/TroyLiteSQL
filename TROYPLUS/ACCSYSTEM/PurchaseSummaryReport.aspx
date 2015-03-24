@@ -77,15 +77,15 @@
                     
                 </tr>
                 <tr>
-                    <td style="width:25%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                    <td style="width:40%;"  class="ControlLabel">
                         Start Date
                     </td>
-                    <td align="left" style="width:25%" class="ControlTextBox3">
-                        <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" MaxLength="10"
-                            runat="server"  Width="100px"/>
+                    <td align="left" style="width:20%" class="ControlTextBox3">
+                        <asp:TextBox ID="txtStartDate" CssClass="cssTextBox" MaxLength="10"
+                            runat="server" />
                             
                     </td>
-                    <td align="left" style="width:15%">
+                    <td align="left" style="width:40%">
                         <script type="text/javascript" language="JavaScript">
                             new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
@@ -95,11 +95,11 @@
                 </tr>
                 <tr style="height: 2px;"/> 
                 <tr>
-                    <td  style="width:25%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                    <td  style="width:25%;"  class="ControlLabel">
                         End Date
                     </td>
-                    <td align="left" width="25%" class="ControlTextBox3">
-                        <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" Width="100px" />
+                    <td align="left" width="20%" class="ControlTextBox3">
+                        <asp:TextBox ID="txtEndDate" CssClass="cssTextBox" MaxLength="10" runat="server" />
                        
                     </td>
                     <td align="left" style="width:15%">
@@ -115,10 +115,26 @@
                 </tr>
                 <tr style="height: 2px;"/> 
                 <tr>
-                    <td  style="width:25%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                    <td  style="width:25%;"  class="ControlLabel">
+                        Branch *
+                    </td>
+                    <td align="left" width="25%" class="ControlDrpBorder">
+                       <asp:DropDownList ID="drpBranchAdd" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                       
+                    </td>
+                    <td align="left" style="width:15%">
+                        
+                    </td>
+                   
+                </tr>
+                <tr style="height: 2px;"/> 
+                <tr>
+                    <td  style="width:25%;"  class="ControlLabel">
                         Data Display Mode
                     </td>
-                    <td align="left" style="width:25%" class="ControlDrpBorder">
+                    <td align="left" style="width:20%" class="ControlDrpBorder">
                             <asp:DropDownList TabIndex="1" ID="cmbDisplayCat" CssClass="drpDownListMedium" Width="100%" BackColor = "#e7e7e7"
                                 runat="server" style="border: 1px solid #e7e7e7" height="26px">
                                 <asp:ListItem Text="Daywise" Value="1"></asp:ListItem>
@@ -127,7 +143,7 @@
                                 <asp:ListItem Text="Modelwise" Value="4"></asp:ListItem>
                                 <asp:ListItem Text="Billwise" Value="5"></asp:ListItem>
                                 <asp:ListItem Text="Supplierwise" Value="6"></asp:ListItem>
-                                <asp:ListItem Text="Itemwise" Value="7"></asp:ListItem>
+                                <%--<asp:ListItem Text="Itemwise" Value="7"></asp:ListItem>--%>
                             </asp:DropDownList>
                     </td>
                     <td align="left" style="width:15%">
@@ -138,17 +154,17 @@
                 </tr>
                 <tr style="height: 2px;"/> 
                 <tr>
-                    <td  style="width:25%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                    <td  style="width:25%;"  class="ControlLabel">
                         Item Display Mode
                     </td>
-                    <td align="left"  style="width:25%" class="ControlDrpBorder">
+                    <td align="left"  style="width:20%" class="ControlDrpBorder">
                         <asp:DropDownList TabIndex="1" ID="cmbDisplayItem" Width="100%"  CssClass="drpDownListMedium" BackColor = "#e7e7e7"
                             runat="server" style="border: 1px solid #e7e7e7" height="26px">
                             <asp:ListItem Text="Brandwise" Value="ProductDesc"></asp:ListItem>
                             <asp:ListItem Text="Modelwise" Value="Model"></asp:ListItem>
                             <asp:ListItem Text="Billwise" Value="BillNo"></asp:ListItem>
                             <asp:ListItem Text="Supplierwise" Value="Supplierwise"></asp:ListItem>
-                            <asp:ListItem Text="Itemwise" Value="ItemCode"></asp:ListItem>
+                            <%--<asp:ListItem Text="Itemwise" Value="ItemCode"></asp:ListItem>--%>
                         </asp:DropDownList>
                     </td>
                     <td align="left" style="width:15%">
@@ -161,7 +177,7 @@
                 <tr>
                     <td class="lblFont" style="width:20%">
                     </td>
-                    <td align="left" class="ControlTextBox3" style="width:25%">
+                    <td align="left" class="ControlTextBox3" style="width:20%">
                         <asp:RadioButton ID="chkSalesReturn" runat="server" GroupName="1" />
                         Sales Return
                         <br />
@@ -301,6 +317,13 @@
                             &nbsp;
                         </td>
                     </tr>
+                    <tr>
+                            <td colspan="3" align="center">
+                                <br />
+                                <h5>
+                            <asp:Label ID="lblHeading" runat="server"> </asp:Label></h5>
+                            </td>
+                        </tr>
                 </table>
                 <wc:ReportGridView runat="server" BorderWidth="1" ID="gvMain" GridLines="Both" AlternatingRowStyle-CssClass="even"
                     AutoGenerateColumns="false" AllowPrintPaging="true" Width="80%"

@@ -971,7 +971,7 @@ public partial class ReportXlTotalSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txtEndDate.Text);
 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-        dst = objBL.getmonthsales(startDate, endDate, pret, itrans, denot);
+        dst = objBL.getmonthsales(startDate, endDate, pret, itrans, denot,"");
 
         DataTable dtt = new DataTable();
         dtt.Columns.Add(new DataColumn("Month"));

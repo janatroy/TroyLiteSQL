@@ -437,7 +437,7 @@ public partial class StockSummaryReport1 : System.Web.UI.Page
                 //else if (category == "Categorywise")
                 //{
                 //    if (secondLevel == "Billwise")
-                        ds = bl.SecondLevel(field2, Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote, GroupBy);
+                        ds = bl.SecondLevel(field2, Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote, GroupBy,"");
                 //    else if (secondLevel == "Modelwise")
                 //        ds = bl.SecondLevelCategorywiseModelWise("categoryname", Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote);
                 //    else if (secondLevel == "Brandwise")
