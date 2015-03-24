@@ -160,36 +160,32 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                            </td>
+                            <td></td>
                             <td align="center">
                                 <asp:Label ID="lblCity" runat="server" />
                                 -
                         <asp:Label ID="lblPincode" runat="server"></asp:Label>
                             </td>
-                            <td>
-                            </td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <td>
-                            </td>
+                            <td></td>
                             <td align="center">
                                 <asp:Label ID="lblState" runat="server"> </asp:Label>
                             </td>
-                            <td>
-                            </td>
+                            <td></td>
                         </tr>
+
+                    </table>
+                    <table>
                         <tr>
-                            <td>
-                            </td>
-                            <td width="560px" align="center">                               
+                            <td></td>
+                            <td width="560px" align="center">
                                 <h5>Stock List As On
                                 <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
                             </td>
-                             <td>
-                            </td>
+                            <td></td>
                         </tr>
-
                     </table>
                     <div>
                         <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
