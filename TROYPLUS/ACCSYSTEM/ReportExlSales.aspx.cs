@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class ReportExlSales : System.Web.UI.Page
 {
@@ -18375,7 +18378,7 @@ public partial class ReportExlSales : System.Web.UI.Page
     public void bindData()
     {
         DataSet ds = new DataSet();
-        DataTable dt = new DataTable();
+        DataTable dt = new DataTable("sales report");
         DateTime startDate, endDate;      
 
         string fLvlValueTemp = string.Empty;
@@ -18587,28 +18590,26 @@ public partial class ReportExlSales : System.Web.UI.Page
 
     public void ExportToExcel(DataTable dt)
     {
-
         if (dt.Rows.Count > 0)
         {
-            //string filename = "Sales Report.xls";
-            string filename = "Sales Report_" + DateTime.Now.ToString() + ".xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Sales comphrency report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+
         }
     }
 
@@ -18632,5 +18633,36 @@ public partial class ReportExlSales : System.Web.UI.Page
             }
 
         }
-    } 
+    }
+    protected void btnreportbasic_Click(object sender, EventArgs e)
+    {
+        try
+        {
+
+            DateTime startDate, endDate;
+
+
+            string brand = string.Empty;
+            string Category = string.Empty;
+            string product = string.Empty;
+
+            Category = ddlCategory.SelectedItem.Text;
+            brand = ddlBrand.SelectedValue;
+            product = ddlproduct.SelectedValue;
+         //   string Branch = drpBranchAdd.SelectedValue;
+            string cond = "";
+            cond = getCond();
+
+            startDate = Convert.ToDateTime(txtStartDate.Text);
+            endDate = Convert.ToDateTime(txtEndDate.Text);
+
+            Response.Write("<script language='javascript'> window.open('ReportExlSales1.aspx?startDate=" + startDate + "&enddate=" + endDate + "&category=" + Category + "&brand=" + brand + "&product=" + product + "&cond=" + Server.UrlEncode(cond) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
 }

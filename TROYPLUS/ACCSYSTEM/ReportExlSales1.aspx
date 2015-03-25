@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ReportExlPurchase1.aspx.cs" Inherits="ReportExlPurchase1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ReportExlSales1.aspx.cs" Inherits="ReportExlSales1" %>
 
 <%@ Register Assembly="Shared.WebControls" Namespace="Shared.WebControls" TagPrefix="wc" %>
 <%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
-    <title>Purchase comphrency Report</title>
+    <title>Sales comphrency Report</title>
     <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
     <script language="javascript" type="text/javascript" src="Scripts/calendar_eu.js"></script>

@@ -49,6 +49,9 @@ public partial class CSTSumaryReport : System.Web.UI.Page
                         }
                     }
                 }
+                loadBranch();
+                BranchEnable_Disable();
+             
 
                 dvCST.Visible = false;
 
@@ -73,7 +76,9 @@ public partial class CSTSumaryReport : System.Web.UI.Page
             //GetCSTReport(startDate, endDate);
             dvCST.Visible = false;
 
-            Response.Write("<script language='javascript'> window.open('CSTSumaryReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            string branch = drpBranch.SelectedValue;
+
+            Response.Write("<script language='javascript'> window.open('CSTSumaryReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&Branch=" + branch + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {
@@ -404,5 +409,45 @@ public partial class CSTSumaryReport : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
+        // UpdatePanel4.Update();
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("ALL", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        //UpdatePanel4.Update();
     }
 }
