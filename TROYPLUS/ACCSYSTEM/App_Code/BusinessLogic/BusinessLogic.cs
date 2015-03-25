@@ -55638,11 +55638,12 @@ public class BusinessLogic
         int slno = 0;
         string sVoucherType = string.Empty;
 
-        string[] sDate, ddate, ddatestart, stDate;
+        string[] sDate, ddate, ddatestart, stDate, sttDate;
         string delim = "/";
         char[] delimA = delim.ToCharArray();
         CultureInfo culture = new CultureInfo("pt-BR");
         DateTime sBilldate;
+        DateTime sDayofpayment;
         DateTime sddob;
         DateTime dpaydatenew;
         DateTime dstartdatenew;
@@ -55666,6 +55667,9 @@ public class BusinessLogic
             {
                 sDate = Billdate.Trim().Split(delimA);
                 sBilldate = new DateTime(Convert.ToInt32(sDate[2].ToString()), Convert.ToInt32(sDate[1].ToString()), Convert.ToInt32(sDate[0].ToString()));
+
+                sttDate = Dayofpayment.Trim().Split(delimA);
+                sDayofpayment = new DateTime(Convert.ToInt32(sttDate[2].ToString()), Convert.ToInt32(sttDate[1].ToString()), Convert.ToInt32(sttDate[0].ToString()));
 
                 stDate = ddob.Trim().Split(delimA);
                 sddob = new DateTime(Convert.ToInt32(stDate[2].ToString()), Convert.ToInt32(stDate[1].ToString()), Convert.ToInt32(stDate[0].ToString()));
@@ -55798,7 +55802,7 @@ public class BusinessLogic
             }
 
             dbQry = string.Format("INSERT INTO tblHirePurchase(BillDate,CustomerID,Customername,puramt,lnamt,dochr,intamt,finpay,noinst,others,inipay,paydate,startdate,eachpay,BillNoNew,BranchRefNo, down, down1, emi, emiper, upfront,dob,mobile,bankid,BranchName,IFSCCode,AccountNumber,Dayofpayment,paymentmode) VALUES('{0}',{1},'{2}',{3},{4},{5},{6},{7},{8},'{9}',{10},'{11}','{12}',{13},'{14}','{15}',{16},{17},{18},{19},{20},'{21}','{22}',{23},'{24}','{25}','{26}','{27}',{28})",
-            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToString("yyyy-MM-dd"), dstartdatenew.ToString("yyyy-MM-dd"), deachpay, billnonew, branchrefno, down, down1, emi, emiper, upfront, sddob.ToString("yyyy-MM-dd"), dmobile, bankid, BranchName, IFSCCode, AccountNumber, Dayofpayment, paymode);
+            sBilldate.ToString("yyyy-MM-dd"), sCustomerID, sCustomerName, dpurAmt, dlnamt, ddochr, dintamt, dfinpay, dnoinst, txtoth, dpay, dpaydatenew.ToString("yyyy-MM-dd"), dstartdatenew.ToString("yyyy-MM-dd"), deachpay, billnonew, branchrefno, down, down1, emi, emiper, upfront, sddob.ToString("yyyy-MM-dd"), dmobile, bankid, BranchName, IFSCCode, AccountNumber, sDayofpayment.ToString("yyyy-MM-dd"), paymode);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
