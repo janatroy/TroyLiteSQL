@@ -240,6 +240,13 @@
             font-size: 11px;">
             <center>
                 <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                     <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
                     <tr>
                         <td width="140px" align="left">
                             TIN#:
@@ -290,9 +297,7 @@
                             &nbsp;
                         </td>
                     </tr>
-                     <tr>
-                              <asp:Image ID="Image1" runat="server" />
-                        </tr>
+                   
                 </table>
                 <h5>
                     SALES SUMMARY REPORT

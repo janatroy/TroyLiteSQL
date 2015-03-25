@@ -69,6 +69,11 @@ public partial class CSTSumaryReport1 : System.Web.UI.Page
                     etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
                 }
 
+                if (Request.QueryString["Branch"] != null)
+                {
+                    string branch = Convert.ToString(Request.QueryString["Branch"].ToString());
+                }
+
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
 
@@ -106,6 +111,8 @@ public partial class CSTSumaryReport1 : System.Web.UI.Page
 
         if (Request.Cookies["Company"]  != null)
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        string branch = Convert.ToString(Request.QueryString["Branch"].ToString());
         DataSet purchaseDs = new DataSet();
         DataSet salesDs = new DataSet();
         DataSet purchaseReturnDs = new DataSet();
@@ -149,8 +156,8 @@ public partial class CSTSumaryReport1 : System.Web.UI.Page
                     }
                     if (CST > 0)
                     {
-                        purchaseDs = bl.purchaseCSTSummary(startDate, endDate, CST, "No");
-                        purchaseReturnDs = bl.salesCSTSummary(startDate, endDate, CST, "Yes");
+                        purchaseDs = bl.purchaseCSTSummary(startDate, endDate, CST, "No",branch);
+                        purchaseReturnDs = bl.salesCSTSummary(startDate, endDate, CST, "Yes",branch);
 
                         if (purchaseDs != null)
                         {
@@ -228,8 +235,8 @@ public partial class CSTSumaryReport1 : System.Web.UI.Page
                     if (CST > 0)
                     {
 
-                        SalesReturnDs = bl.purchaseCSTSummary(startDate, endDate, CST, "Yes");
-                        salesDs = bl.salesCSTSummary(startDate, endDate, CST, "No");
+                        SalesReturnDs = bl.purchaseCSTSummary(startDate, endDate, CST, "Yes",branch);
+                        salesDs = bl.salesCSTSummary(startDate, endDate, CST, "No",branch);
 
 
 

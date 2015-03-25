@@ -148,6 +148,13 @@
                 
                 <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
                     <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
+                    <tr>
                         <td width="140px" align="left">
                             TIN#:
                             <asp:Label ID="lblTNGST" runat="server"></asp:Label>
@@ -197,14 +204,17 @@
                             &nbsp;
                         </td>
                     </tr>
-                    <tr>
+                   
+                </table>
+                <table>
+                     <tr>
                         <td colspan="3">
                             <br />
-                            <h5>
+                            <h5 style="font-size:large">
                                 Bank Statement From
-                                <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
+                                <asp:Label ID="lblStartDate" Font-Size="Large" runat="server"> </asp:Label>
                                 To
-                                <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
+                                <asp:Label ID="lblEndDate" Font-Size="Large" runat="server"> </asp:Label></h5>
                         </td>
                     </tr>
                 </table>

@@ -180,6 +180,12 @@
                                 runat="server" Text='<%# Eval("VatRate","{0:F2}") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
+                      <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="VAT paid">
                         <ItemTemplate>
                             <asp:Label ID="lblVatPaid" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
@@ -243,6 +249,12 @@
                         <ItemTemplate>
                             <asp:Label ID="lblVatRate" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                                 runat="server" Text='<%# Eval("VatRate","{0:F2}") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                      <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="VAT paid">
@@ -310,6 +322,12 @@
                                 runat="server" Text='<%# Eval("VatRate","{0:F2}") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
+                      <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="VAT paid">
                         <ItemTemplate>
                             <asp:Label ID="lblVatPaid" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
@@ -375,7 +393,14 @@
                                 runat="server" Text='<%# Eval("VatRate","{0:F2}") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
+                      <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="VAT paid">
+
                         <ItemTemplate>
                             <asp:Label ID="lblVatPaid" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                                 runat="server" />
@@ -416,6 +441,12 @@
                         <ItemTemplate>
                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblNarration"
                                 runat="server" Text='<%# Eval("Narration") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                      <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Amount">

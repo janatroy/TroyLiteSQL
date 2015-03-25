@@ -22,7 +22,7 @@ public partial class VATSumaryReport : System.Web.UI.Page
             if (!IsPostBack)
             {
                 dvVat.Visible = false;
-
+               
 
                 if (Request.Cookies["Company"] != null)
                     sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -76,6 +76,9 @@ public partial class VATSumaryReport : System.Web.UI.Page
                         }
                     }
                 }
+
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
@@ -90,7 +93,25 @@ public partial class VATSumaryReport : System.Web.UI.Page
     {
         try
         {
-            Response.Redirect("VATReprt.aspx", true);
+            DateTime startDate, endDate;
+            startDate = Convert.ToDateTime(txtStartDate.Text);
+            endDate = Convert.ToDateTime(txtEndDate.Text);
+            /*March 17*/
+            //GetVatReport(startDate, endDate);
+            dvVat.Visible = true;
+            Session["startDate"] = txtStartDate.Text;
+            Session["endDate"] = txtEndDate.Text;
+            dvVat.Visible = false;
+            string branch = drpBranch.SelectedValue;
+
+
+            GetVatReport(startDate, endDate);
+            dvVat.Visible = true;
+            Session["startDate"] = startDate;
+            Session["endDate"] = endDate;
+            dvVat.Visible = true;
+         //   div1.Visible = false;
+           // Response.Redirect("VATReprt.aspx", true);
         }
         catch (Exception ex)
         {
@@ -113,9 +134,10 @@ public partial class VATSumaryReport : System.Web.UI.Page
             Session["startDate"] = txtStartDate.Text;
             Session["endDate"] = txtEndDate.Text;
             dvVat.Visible = false;
+            string branch = drpBranch.SelectedValue;
 
 
-            Response.Write("<script language='javascript'> window.open('VATSumaryReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('VATSumaryReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&Branch=" + branch + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {
@@ -127,6 +149,11 @@ public partial class VATSumaryReport : System.Web.UI.Page
 
         if (Request.Cookies["Company"] != null)
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+
+
+        string branch = drpBranch.SelectedValue;
+
         DataSet purchaseDs = new DataSet();
         DataSet salesDs = new DataSet();
         DataSet purchaseReturnDs = new DataSet();
@@ -171,8 +198,8 @@ public partial class VATSumaryReport : System.Web.UI.Page
 
                     if (vat > 0)
                     {
-                        purchaseDs = bl.purchaseVatSummary(startDate, endDate, vat, "No");
-                        purchaseReturnDs = bl.salesVatSummary(startDate, endDate, vat, "Yes");
+                        purchaseDs = bl.purchaseVatSummary(startDate, endDate, vat, "No", branch);
+                        purchaseReturnDs = bl.salesVatSummary(startDate, endDate, vat, "Yes", branch);
 
                         if (purchaseDs != null)
                         {
@@ -250,8 +277,8 @@ public partial class VATSumaryReport : System.Web.UI.Page
                     if (vat > 0)
                     {
 
-                        SalesReturnDs = bl.purchaseVatSummary(startDate, endDate, vat, "Yes");
-                        salesDs = bl.salesVatSummary(startDate, endDate, vat, "No");
+                        SalesReturnDs = bl.purchaseVatSummary(startDate, endDate, vat, "Yes", branch);
+                        salesDs = bl.salesVatSummary(startDate, endDate, vat, "No", branch);
 
 
 
@@ -436,5 +463,45 @@ public partial class VATSumaryReport : System.Web.UI.Page
 
 
         return dt;
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
+       // UpdatePanel4.Update();
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("ALL", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";
+        //UpdatePanel4.Update();
     }
 }

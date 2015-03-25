@@ -102,7 +102,14 @@
             <br />
             <div id="divPrint" style="font-family: 'Trebuchet MS'; font-size: 11px;">
 
-                <table width="600px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                <table   border="0" style="font-family: Trebuchet MS; width:600px; font-size: 14px;">
+                     <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
                     <tr>
                         <td width="140px" align="left">TIN#:
                         <asp:Label ID="lblTNGST" runat="server"></asp:Label>
@@ -161,9 +168,7 @@
                         <td>&nbsp;
                         </td>
                     </tr>
-                    <tr>
-                        <asp:Image ID="Image1" runat="server" />
-                    </tr>
+                   
                     <tr>
                         <td colspan="3">
                             <br />

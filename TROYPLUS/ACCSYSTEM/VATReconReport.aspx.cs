@@ -83,7 +83,7 @@ public partial class VATReconReport : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "VATRECDATE")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "VATRECDATE")
                 {
                     vatReconDate = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -105,7 +105,7 @@ public partial class VATReconReport : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "VATAMOUNT")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "VATAMOUNT")
                 {
                     vatOpenBal = double.Parse(appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString());
                 }

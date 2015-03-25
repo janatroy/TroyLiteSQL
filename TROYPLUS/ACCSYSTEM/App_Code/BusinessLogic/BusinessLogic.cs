@@ -19960,11 +19960,53 @@ public partial class BusinessLogic
             manager.Open();
             if (sType == "No")
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
             else
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='Yes')";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes')";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    //new vat summary report
+    public DataSet purchaseVatSummary(DateTime sDate, DateTime eDate, double vat, string sType,string branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        try
+        {
+            manager.Open();
+            if (branch == "0")
+            {
+
+                if (sType == "No")
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                else
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes')";
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            }
+            else
+            {
+                if (sType == "No")
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='"+ branch+"' and pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                else
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='" + branch + "' and pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes')";
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            }
             if (ds.Tables[0].Rows.Count > 0)
                 return ds;
             else
@@ -19988,11 +20030,56 @@ public partial class BusinessLogic
             if (sType == "No")
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
                 //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>true)  ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>'true')  ";
             else
                 //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>true) ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>'true') ";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+
+    public DataSet salesVatSummary(DateTime sDate, DateTime eDate, double vat, string sType,string branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        try
+        {
+            manager.Open();
+            if (branch == "0")
+            {
+                if (sType == "No")
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>'true')  ";
+                else
+                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>'true') ";
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            }
+            else
+            {
+                if (sType == "No")
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='" + branch + "' and pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>'true')  ";
+                else
+                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='" + branch + "' and pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>'true') ";
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+               
+
+            }
             if (ds.Tables[0].Rows.Count > 0)
                 return ds;
             else
@@ -20045,10 +20132,10 @@ public partial class BusinessLogic
             manager.Open();
             if (sType == "No")
                 // dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
             else
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='Yes') ";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes') ";
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
             if (ds.Tables[0].Rows.Count > 0)
@@ -20063,6 +20150,49 @@ public partial class BusinessLogic
     }
 
 
+
+    public DataSet purchaseCSTSummary(DateTime sDate, DateTime eDate, double CST, string sType,string branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        try
+        {
+            manager.Open();
+            if (branch == "0")
+            {
+                if (sType == "No")
+                    // dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                else
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes') ";
+
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            }
+            else
+            {
+                if (sType == "No")
+                    // dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='"+ branch+"' and pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                else
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
+                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='" + branch + "' and pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes') ";
+
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            }
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public DataSet salesCSTSummary(DateTime sDate, DateTime eDate, double CST, string sType)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -20076,11 +20206,56 @@ public partial class BusinessLogic
             if (sType == "No")
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
                 // dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
             else
                 //    dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='Yes') ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes') ";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+
+    public DataSet salesCSTSummary(DateTime sDate, DateTime eDate, double CST, string sType,string branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            manager.Open();
+            if (branch == "0")
+            {
+                if (sType == "No")
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    // dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
+                else
+                    //    dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes') ";
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+            }
+            else
+            {
+                if (sType == "No")
+                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                    // dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='"+ branch +"' and pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
+                else
+                    //    dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
+                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='" + branch + "' and pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes') ";
+                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            }
             if (ds.Tables[0].Rows.Count > 0)
                 return ds;
             else
@@ -42043,6 +42218,7 @@ public partial class BusinessLogic
         string sParticularsI = "";
 
         string sVoucherType = string.Empty;
+        string sbranch = string.Empty;
         string sLedgerID = "0";
         string sLedger = string.Empty;
         string sQry = string.Empty;
@@ -42077,10 +42253,10 @@ public partial class BusinessLogic
 
         /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
         //sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " +sOrder;
-        sQry = "SELECT TransDate,Transno,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+        sQry = "SELECT TransDate,Transno,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
         sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
         sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-        sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+        sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
         if (iLedgerID != 0)
             sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
@@ -42093,10 +42269,10 @@ public partial class BusinessLogic
 
         sQry = sQry + " Union All ";
 
-        sQry = sQry + "SELECT TransDate,Transno,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+        sQry = sQry + "SELECT TransDate,Transno,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
         sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
         sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-        sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+        sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
         if (iLedgerID != 0)
             sQry = sQry + " AND ( DebtorID=" + iLedgerID + ") ";
@@ -42149,6 +42325,9 @@ public partial class BusinessLogic
         dc = new DataColumn("VoucherType");
         dt.Columns.Add(dc);
 
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
+
         dc = new DataColumn("TransNo");
         dt.Columns.Add(dc);
 
@@ -42166,6 +42345,7 @@ public partial class BusinessLogic
             drNew["Debit"] = "0.00";
             drNew["Credit"] = "0.00";
             drNew["VoucherType"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
             ds.Tables[0].Rows.Add(drNew);
         }
         else
@@ -42185,6 +42365,11 @@ public partial class BusinessLogic
                 if (drParentQry["VoucherType"] != null)
                 {
                     sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                }
+
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
 
                 /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
@@ -42267,6 +42452,7 @@ public partial class BusinessLogic
                 drNew["Debit"] = dDebitAmt.ToString();
                 drNew["Credit"] = dCreditAmt.ToString();
                 drNew["VoucherType"] = sVoucherType;
+                drNew["BranchCode"] = sbranch;
                 drNew["TransNo"] = Convert.ToString(drParentQry["TransNo"].ToString());
                 ds.Tables[0].Rows.Add(drNew);
 
@@ -42454,6 +42640,7 @@ public partial class BusinessLogic
         string sParticularsI = "";
 
         string sVoucherType = string.Empty;
+        string sbranch = string.Empty;
         string sQry = string.Empty;
         string pQry = string.Empty;
         string jQry = string.Empty;
@@ -42496,10 +42683,10 @@ public partial class BusinessLogic
         /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
         if (sType == "Sales" && retFlag == "Yes") /* Only Sales Return */
         {
-            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + "AND VoucherType='Purchase Return' ";
 
             if (iLedgerID != 0)
@@ -42513,10 +42700,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + "AND VoucherType='Purchase Return' ";
 
             if (iLedgerID != 0)
@@ -42532,10 +42719,10 @@ public partial class BusinessLogic
         else if (sType == "Purchase" && retFlag == "Yes")/* Only Purchase Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
-            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + "AND VoucherType='Sales Return' ";
 
             if (iLedgerID != 0)
@@ -42549,10 +42736,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + "AND VoucherType='Sales Return' ";
 
             if (iLedgerID != 0)
@@ -42568,10 +42755,10 @@ public partial class BusinessLogic
         else if (sType == "Purchase" && retFlag == "Both")/* Only Purchase Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
             if (iLedgerID != 0)
@@ -42585,10 +42772,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
             if (iLedgerID != 0)
@@ -42604,10 +42791,10 @@ public partial class BusinessLogic
         else if (sType == "Sales" && retFlag == "Both") /* Both Sales and Sales Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
 
             if (iLedgerID != 0)
@@ -42621,10 +42808,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
 
             if (iLedgerID != 0)
@@ -42639,10 +42826,10 @@ public partial class BusinessLogic
         else if (sType == "Sales" && retFlag == "No") /* Both Sales and Sales Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + " AND VoucherType='Sales' ";
 
             if (iLedgerID != 0)
@@ -42656,10 +42843,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + " AND (VoucherType='Sales') ";
 
             if (iLedgerID != 0)
@@ -42674,10 +42861,10 @@ public partial class BusinessLogic
         else if (sType == "Purchase" && retFlag == "No")/* Both Purchase and Purchase Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Purchase Return' OR VoucherType='Purchase')  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + " AND (VoucherType='Purchase') ";
 
             if (iLedgerID != 0)
@@ -42691,10 +42878,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + " AND ( VoucherType='Purchase') ";
 
             if (iLedgerID != 0)
@@ -42709,10 +42896,10 @@ public partial class BusinessLogic
         else
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Transno,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Transno,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
             if (iLedgerID != 0)
                 sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
@@ -42725,10 +42912,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Transno,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Transno,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
             if (iLedgerID != 0)
                 sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
@@ -42782,6 +42969,9 @@ public partial class BusinessLogic
         dc = new DataColumn("VoucherType");
         dt.Columns.Add(dc);
 
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
+
 
         ds.Tables.Add(dt);
 
@@ -42796,6 +42986,7 @@ public partial class BusinessLogic
             drNew["Debit"] = "0.00";
             drNew["Credit"] = "0.00";
             drNew["VoucherType"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
             ds.Tables[0].Rows.Add(drNew);
         }
         else
@@ -42832,6 +43023,11 @@ public partial class BusinessLogic
                 if (drParentQry["VoucherType"] != null)
                 {
                     sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                }
+
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
                 /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
                 if (drParentQry["DebtorID"] != null)
@@ -42930,6 +43126,7 @@ public partial class BusinessLogic
                 drNew["Debit"] = dDebitAmt.ToString();
                 drNew["Credit"] = dCreditAmt.ToString();
                 drNew["VoucherType"] = sVoucherType;
+                drNew["BranchCode"] = sbranch;
                 ds.Tables[0].Rows.Add(drNew);
 
                 sParticularsI = "";
@@ -70145,6 +70342,119 @@ public partial class BusinessLogic
 
             dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact,ExpenseID) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26},{27})",
                 LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, 0);
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            sAuditStr = "Customer Ledger : " + LedgerName + " added. Record Details :  User :" + Username + " AliasName = " + AliasName + " GroupID= " + GroupID + " ,LedgerCategory = " + LedgerCategory + " ,Mobile=" + Mobile + " Phone :" + Phone;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            int LedId = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT LedgerID FROM tblLedger where LedgerName ='" + LedgerName + "' "));
+
+            manager.CommitTransaction();
+
+            return LedId;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
+
+    public int InsertCustomerInfoDirect1(string connection, string LedgerName, string AliasName, int GroupID, double OpenBalanceDR, double OpenBalanceCR, double OpenBalance, string DRORCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, double CreditLimit, int CreditDays, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string Email, int ModeofContact)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        string dbQ = string.Empty;
+        DataSet dsd = new DataSet();
+        string logdescription = string.Empty;
+        string description = string.Empty;
+        string Logsave = string.Empty;
+
+        string sAuditStr = string.Empty;
+
+        try
+        {
+            manager.Open();
+            manager.ProviderType = DataProvider.SqlServer;
+
+            manager.BeginTransaction();
+
+            //object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where LedgerName='" + LedgerName + "'");
+
+            //if (exists.ToString() != string.Empty)
+            //{
+            //    if (int.Parse(exists.ToString()) > 0)
+            //    {
+            //        throw new Exception("Ledger Exists");
+            //    }
+            //}
+
+            int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
+
+
+            string MobileID = Convert.ToString(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(Mobile) FROM tblLedger"));
+
+
+            dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
+            dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
+            if (dsd.Tables[0].Rows.Count > 0)
+                Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
+
+            if (Logsave == "YES")
+            {
+                string value1 = string.Empty;
+                string value2 = string.Empty;
+                string value3 = string.Empty;
+
+                int middlePos = 0;
+
+                logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ExpenseID) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23})",
+                        LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, MobileID + 1, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, 0);
+                logdescription = logdescription.Trim();
+                if (logdescription.Length > 255)
+                {
+                    value1 = logdescription.Substring(0, 255);
+                    middlePos = logdescription.Length - (value1.Length);
+                    if (middlePos > 0)
+                        value2 = logdescription.Substring(255, middlePos);
+                    else
+                        value2 = "";
+
+                    middlePos = logdescription.Length - (value1.Length + value2.Length);
+                    if (middlePos > 0)
+                        value3 = logdescription.Substring(510, middlePos);
+                    else
+                        value3 = "";
+                }
+                else
+                {
+                    value1 = logdescription;
+                    value2 = "";
+                    value3 = "";
+                }
+                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
+                     DateTime.Now.ToString("yyyy-MM-dd"), value1, "", "", value2, value3, "InsertCustmoerInfo");
+                manager.ExecuteNonQuery(CommandType.Text, description);
+            }
+
+            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact,ExpenseID) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26},{27})",
+                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, MobileID + 1, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, 0);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
