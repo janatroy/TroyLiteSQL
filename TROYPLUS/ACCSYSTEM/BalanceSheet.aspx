@@ -62,7 +62,7 @@
                     Start Date
                 </td>
                 <td class="ControlTextBox3" style="width:25%">
-                    <asp:TextBox ID="txtStartDate" Enabled="false" runat="server" CssClass="cssTextBox" Width="100px"
+                    <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px"
                         MaxLength="10" />
                 </td>
                 <td align="left" style="width:10%">
@@ -80,7 +80,7 @@
                     End Date
                 </td>
                 <td class="ControlTextBox3" style="width:25%">
-                    <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" runat="server" Width="100px" MaxLength="10" />
+                    <asp:TextBox ID="txtEndDate" Enabled="true" CssClass="cssTextBox" runat="server" Width="100px" MaxLength="10" />
                 </td>
                 <td align="left" style="width:10%">
                     <script type="text/javascript" language="JavaScript">

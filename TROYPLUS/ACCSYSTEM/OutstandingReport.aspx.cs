@@ -24,6 +24,9 @@ public partial class OutstandingReport : System.Web.UI.Page
     double OpBalance = 0.0;
     double dLedger = 0;
     double cLedger = 0;
+    string brncode;
+    string usernam;
+    private string connection = string.Empty;
     /*End Outstanding Report March 16 */
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -70,14 +73,52 @@ public partial class OutstandingReport : System.Web.UI.Page
                     }
                 }
                 loadSundrys();
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
+        lstBranch.Items.Clear();
+
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+            lstBranch.Items.Add(new ListItem("All", "0"));
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
 
     }
 
@@ -112,7 +153,7 @@ public partial class OutstandingReport : System.Web.UI.Page
         try
         {
             int iGroupID = 0;
-           
+            string branch = "";
             string sGroupName = string.Empty;
             if (opttype.SelectedItem.Text == "All")
             {
@@ -120,6 +161,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 ReportsBL.ReportClass rptOutstandingReport;
                 DataSet ds = new DataSet();
                 iGroupID = Convert.ToInt32(drpLedgerName.SelectedItem.Value);
+                branch = lstBranch.SelectedItem.Value;
                 sGroupName = drpLedgerName.SelectedItem.Text;
                 startDate = Convert.ToDateTime(txtStartDate.Text);
                 endDate = Convert.ToDateTime(txtEndDate.Text);
@@ -139,12 +181,13 @@ public partial class OutstandingReport : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic();
                 DataSet ds = new DataSet();
                 iGroupID = Convert.ToInt32(drpLedgerName.SelectedItem.Value);
+                branch = lstBranch.SelectedItem.Value;
                 sGroupName = drpLedgerName.SelectedItem.Text;
                 lblSundry.Text = drpLedgerName.SelectedItem.Text;
                 startDate = Convert.ToDateTime(txtStartDate.Text);
                 endDate = Convert.ToDateTime(txtEndDate.Text);
 
-                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate,branch);
                 
                 //gvLedger.DataSource = ds;
                 //gvLedger.DataBind();
@@ -153,7 +196,7 @@ public partial class OutstandingReport : System.Web.UI.Page
             OutPanel.Visible = false;
             div1.Visible = true;
 
-            Response.Write("<script language='javascript'> window.open('OutstandingReport1.aspx?iGroupID=" + iGroupID + "&sGroupName=" + sGroupName + "&startDate=" + startDate + "&endDate=" + endDate + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('OutstandingReport1.aspx?iGroupID=" + iGroupID + "&sBranch=" + branch + "&sGroupName=" + sGroupName + "&startDate=" + startDate + "&endDate=" + endDate + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {
@@ -182,7 +225,7 @@ public partial class OutstandingReport : System.Web.UI.Page
             startDate = Convert.ToDateTime(txtStartDate.Text);
             endDate = Convert.ToDateTime(txtEndDate.Text);
             //rptOutstandingReport = new ReportsBL.ReportClass();
-            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate,"");
 
             double debit = 0;
             double credit = 0;

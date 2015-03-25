@@ -3191,11 +3191,11 @@ namespace ReportsBL
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
@@ -3224,11 +3224,11 @@ namespace ReportsBL
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
             double oBal = 0;
@@ -3237,7 +3237,7 @@ namespace ReportsBL
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             if (type == "debit")
             {
-                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
 
                 if (ledgerID > 0)
                     sQry = sQry + " AND B.DebtorID = " + ledgerID.ToString();
@@ -3251,7 +3251,7 @@ namespace ReportsBL
             else
             {
                 //sQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where CreditorID = " + ledgerID + "  AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
-                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
 
                 if (ledgerID > 0)
                     sQry = sQry + " AND B.CreditorID = " + ledgerID.ToString();
@@ -6039,9 +6039,9 @@ namespace ReportsBL
 
         public DataSet getLedgerTransaction(int groupID, string sDataSource, DateTime sDate, DateTime eDate)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
@@ -6052,17 +6052,17 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             sConStr = sDataSource;
 
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (groupID != 0)
-                sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
+                sQry = "SELECT  LedgerID,folionumber, LedgerName,BranchCode FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
             else
-                sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID   ORDER by LedgerName,LedgerID";
+                sQry = "SELECT  LedgerID,folionumber, LedgerName,BranchCode FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID   ORDER by LedgerName,LedgerID";
             //sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration FROM tblDayBook WHERE (DebtorID=" + iLedgerID + "OR CreditorID=" + iLedgerID + ") ";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
 
@@ -6077,7 +6077,8 @@ namespace ReportsBL
             dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Folionumber");
             dtNew.Columns.Add(dcNew);
-
+            dcNew = new DataColumn("BranchCode");
+            dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Debit");
             dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Credit");
@@ -6095,6 +6096,7 @@ namespace ReportsBL
                         drNew = dtNew.NewRow();
                         drNew["LedgerID"] = "";
                         drNew["LedgerName"] = "";
+                        drNew["BranchCode"] = "";
                         drNew["Debit"] = "";
                         drNew["Credit"] = "";
                         drNew["Folionumber"] = "";
@@ -6109,6 +6111,7 @@ namespace ReportsBL
                             drNew = dtNew.NewRow();
                             drNew["LedgerID"] = Convert.ToString(dr["LedgerID"]);
                             drNew["LedgerName"] = Convert.ToString(dr["LedgerName"]);
+                            drNew["BranchCode"] = Convert.ToString(dr["BranchCode"]);
                             drNew["Folionumber"] = Convert.ToString(dr["Folionumber"]);
                             db = GetTotalDebit(sDataSource, Convert.ToInt32(dr["LedgerID"]), sDate, eDate);
                             cr = GetTotalCredit(sDataSource, Convert.ToInt32(dr["LedgerID"]), sDate, eDate);
@@ -6139,9 +6142,9 @@ namespace ReportsBL
         public double GetTotalCredit(string sDataSource, int iLedgerID, DateTime sDate, DateTime eDate)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
@@ -6151,12 +6154,12 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
             oleConn.Open();
-            oleCmd = new OleDbCommand();
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND  tblDaybook.CreditorID=" + iLedgerID;
+            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate <='" + eDate.ToString("yyyy-MM-dd") + "')  AND  tblDaybook.CreditorID=" + iLedgerID;
 
 
             oleCmd.CommandText = sQry;
@@ -6190,9 +6193,9 @@ namespace ReportsBL
         public double GetTotalDebit(string sDataSource, int iLedgerID, DateTime sDate, DateTime eDate)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
@@ -6202,12 +6205,12 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
             oleConn.Open();
-            oleCmd = new OleDbCommand();
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblDaybook.DebtorID=" + iLedgerID;
+            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate <='" + eDate.ToString("yyyy-MM-dd") + "') AND tblDaybook.DebtorID=" + iLedgerID;
 
 
             oleCmd.CommandText = sQry;
@@ -6470,9 +6473,9 @@ namespace ReportsBL
         public DataSet plGetExpenseIncomeSplit(string sDataSource, string expType)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry; string sQry = string.Empty;
             DataSet dsChildQry;
             string sConStr = string.Empty;
@@ -6482,31 +6485,31 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
             oleConn.Open();
-            oleCmd = new OleDbCommand();
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (expType == "IDX")
             {
-                sQry = "SELECT folionumber,LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) ) Group By LedgerName,folionumber";
+                sQry = "SELECT folionumber,LedgerName, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
                 //sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
-                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
             }
 
             else if (expType == "DX")
             {
-                sQry = "SELECT folionumber, LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName,folionumber";
-                oQry = "SELECT LedgerName,folionumber,  (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
+                sQry = "SELECT folionumber, LedgerName, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
+                oQry = "SELECT LedgerName,folionumber,  (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
             }
             else if (expType == "IDI")
             {
-                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) ) Group By LedgerName,folionumber";
-                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
+                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
             }
             else
             {
-                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) ) Group By LedgerName,folionumber";
-                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
+                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
             }
             //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
             //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
@@ -6514,7 +6517,7 @@ namespace ReportsBL
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             //return dsParentQry;

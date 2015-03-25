@@ -95,6 +95,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     int iGroupID = 0;
 
                     string sGroupName = string.Empty;
+                    string sBranch = string.Empty;
                     string sFilename = string.Empty;
                     ReportsBL.ReportClass rptOutstandingReport;
                     DataSet ds = new DataSet();
@@ -109,6 +110,10 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     {
                         sGroupName = Request.QueryString["sGroupName"].ToString();
                     }
+                    if (Request.QueryString["sBranch"] != null)
+                    {
+                        sBranch = Request.QueryString["sBranch"].ToString();
+                    }
 
                     lblSundry.Text = sGroupName;
                     rptOutstandingReport = new ReportsBL.ReportClass();
@@ -121,7 +126,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     int iGroupID = 0;
                     string sGroupName = string.Empty;
                     string sFilename = string.Empty;
-
+                    string sBranch = string.Empty;
 
                     DataSet ds = new DataSet();
                     //iGroupID = Convert.ToInt32(drpLedgerName.SelectedItem.Value);
@@ -136,6 +141,10 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     {
                         sGroupName = Request.QueryString["sGroupName"].ToString();
                     }
+                    if (Request.QueryString["sBranch"] != null)
+                    {
+                        sBranch = Request.QueryString["sBranch"].ToString();
+                    }
                     //if (Request.QueryString["startDate"] != null)
                     //{
                     //    startDate = Request.QueryString["startDate"].ToString();
@@ -145,7 +154,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     //    endDate = Request.QueryString["endDate"].ToString();
                     //}
                     lblSundry.Text = sGroupName;
-                    ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate, endDate);
+                    ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource, startDate, endDate, sBranch);
 
                     gvLedger.DataSource = ds;
                     gvLedger.DataBind();
@@ -228,7 +237,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                 lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
                 lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
 
-                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate,"");
 
                 gvLedger.DataSource = ds;
                 gvLedger.DataBind();
@@ -266,7 +275,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
             lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
             lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
             //rptOutstandingReport = new ReportsBL.ReportClass();
-            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate,"");
 
             double debit = 0;
             double credit = 0;

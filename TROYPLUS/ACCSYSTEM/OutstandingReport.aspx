@@ -50,10 +50,9 @@
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
                             Display="None" ErrorMessage="Please Enter Start Date" CssClass="lblFont"></asp:RequiredFieldValidator>
                     </td>
-                   <%-- <td align="left" style="width: 15%;">
+                    <%-- <td align="left" style="width: 15%;">
                         <asp:ImageButton ID="btnStrDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                     </td>--%>
-
                 </tr>
                 <tr style="height: 2px" />
                 <tr>
@@ -73,7 +72,7 @@
                             ControlToValidate="txtEndDate" Display="None" ErrorMessage="Start Date Should Be Less Than the End Date"
                             CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                     </td>
-                  <%--  <td align="left" style="width: 15%;">
+                    <%--  <td align="left" style="width: 15%;">
                         <asp:ImageButton ID="btnEndDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                     </td>--%>
                 </tr>
@@ -84,6 +83,17 @@
                     <td align="left" style="width: 35%" class="ControlDrpBorder">
                         <asp:DropDownList ID="drpLedgerName" runat="server" Width="100%" DataTextField="GroupName" CssClass="drpDownListMedium" BackColor="#e7e7e7"
                             DataValueField="GroupID" Style="border: 1px solid #e7e7e7" Height="26px">
+                        </asp:DropDownList>
+                    </td>
+                    <td style="width: 15%"></td>
+                </tr>
+                <tr style="height: 2px;" />
+                <tr>
+                    <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Select Branch
+                    </td>
+                    <td align="left" style="width: 35%" class="ControlDrpBorder">
+                        <asp:DropDownList ID="lstBranch" runat="server" AutoPostBack="true" Width="100%" Height="26px" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7">
+                           <%-- <asp:ListItem Text="All" Value="0" />--%>
                         </asp:DropDownList>
                     </td>
                     <td style="width: 15%"></td>
