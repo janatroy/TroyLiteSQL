@@ -97,6 +97,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 }
 
             }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         }
         catch (Exception ex)
         {
@@ -2230,7 +2231,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                   (TextBox)GrdViewLeadCompetitor.Rows[rowIndex2].Cells[4].FindControl("txtCompStrWeakness");
                 TextBox txtremarks =
                   (TextBox)GrdViewLeadCompetitor.Rows[rowIndex2].Cells[5].FindControl("txtRemarks");
-                
+
                 txtComName.Text = "";
                 txtThrlvl.Text = "";
                 txtOuestrweak.Text = "";
@@ -2272,6 +2273,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 drpProduct.SelectedIndex = 0;
                 txtPrdID.Text = "";
             }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         }
     }
 
@@ -2773,23 +2775,25 @@ public partial class LeadMgmt : System.Web.UI.Page
 
                 for (int vLoop = 0; vLoop < GrdViewLeadproduct.Rows.Count; vLoop++)
                 {
-
                     DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
+                    Label txtCat = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtCat");
+                    Label txtBrand = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtBrand");
+                    Label txtModel = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtModel");
                     Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
+                    TextBox txtQty = (TextBox)GrdViewLeadproduct.Rows[vLoop].FindControl("txtQty");
 
                     if (itemDs.Tables[0].Rows[vLoop]["PrdID"] != null)
                     {
-                        sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["PrdID"]);
-                        // sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["Prd"]);
-                        //drpProduct.SelectedValue = Convert.ToString(sCustomer);
+                        sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["PrdID"]);                       
                         drpProduct.ClearSelection();
                         ListItem li = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
                         if (li != null) li.Selected = true;
                     }
-                    // drpProduct.Text = sCustomer;
-                    //drpproduct.SelectedItem.Text = itemDs.Tables[0].Rows[vLoop]["Prd"].ToString();
+                    txtCat.Text = itemDs.Tables[0].Rows[vLoop]["Cate"].ToString();
+                    txtBrand.Text = itemDs.Tables[0].Rows[vLoop]["Brd"].ToString();
+                    txtModel.Text = itemDs.Tables[0].Rows[vLoop]["Model"].ToString();
                     txtPrdID.Text = itemDs.Tables[0].Rows[vLoop]["PrdID"].ToString();
-                    // drpProduct.SelectedValue =Convert.ToString( sCustomer);
+                    txtQty.Text = itemDs.Tables[0].Rows[vLoop]["Qty"].ToString();
                 }
                 //close product details
 
@@ -2888,11 +2892,12 @@ public partial class LeadMgmt : System.Web.UI.Page
                     txtremarks.Text = itemDsAct.Tables[0].Rows[vLoop]["Remarks"].ToString();
                 }
                 //close activity tab
-
+                
                 UpdateButton.Visible = true;
                 AddButton.Visible = false;
                 ModalPopupExtender2.Show();
             }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         }
         catch (Exception ex)
         {
@@ -2927,6 +2932,18 @@ public partial class LeadMgmt : System.Web.UI.Page
             dc = new DataColumn("Prd");
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("Cate");
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("Brd");
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("Qty");
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("Model");
+            dt.Columns.Add(dc);
+
             dc = new DataColumn("PrdID");
             dt.Columns.Add(dc);
 
@@ -2948,6 +2965,14 @@ public partial class LeadMgmt : System.Web.UI.Page
                         dr["PrdID"] = Convert.ToString(dR["Product_ID"]);
                     if (dR["Product_Name"] != null)
                         dr["Prd"] = Convert.ToString(dR["Product_Name"]);
+                    if (dR["Product_Category"] != null)
+                        dr["Cate"] = Convert.ToString(dR["Product_Category"]);
+                    if (dR["Product_Brand"] != null)
+                        dr["Brd"] = Convert.ToString(dR["Product_Brand"]);
+                    if (dR["Product_Quantity"] != null)
+                        dr["Qty"] = Convert.ToString(dR["Product_Quantity"]);
+                    if (dR["Product_Model"] != null)
+                        dr["Model"] = Convert.ToString(dR["Product_Model"]);
                     if (dR["Product_interest_Id"] != null)
                         dr["RowNumber"] = m.ToString();// Convert.ToString(dR["Product_interest_Id"]);
 
@@ -3322,8 +3347,13 @@ public partial class LeadMgmt : System.Web.UI.Page
 
                         for (int vLoop = 0; vLoop < GrdViewLeadproduct.Rows.Count; vLoop++)
                         {
+                          
                             DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
+                            Label txtCat = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtCat");
+                            Label txtBrand = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtBrand");
+                            Label txtModel = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtModel");
                             Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
+                            TextBox txtQty = (TextBox)GrdViewLeadproduct.Rows[vLoop].FindControl("txtQty");
                         }
 
 
@@ -3339,6 +3369,18 @@ public partial class LeadMgmt : System.Web.UI.Page
                         dc = new DataColumn("Prd");
                         dt.Columns.Add(dc);
 
+                        dc = new DataColumn("Cate");
+                        dt.Columns.Add(dc);
+
+                        dc = new DataColumn("Brd");
+                        dt.Columns.Add(dc);
+
+                        dc = new DataColumn("Qty");
+                        dt.Columns.Add(dc);
+
+                        dc = new DataColumn("Model");
+                        dt.Columns.Add(dc);
+
                         dc = new DataColumn("PrdID");
                         dt.Columns.Add(dc);
 
@@ -3347,11 +3389,21 @@ public partial class LeadMgmt : System.Web.UI.Page
                         for (int vLoop = 0; vLoop < GrdViewLeadproduct.Rows.Count; vLoop++)
                         {
                             DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
+                            Label txtCat = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtCat");
+                            Label txtBrand = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtBrand");
+                            Label txtModel = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtModel");
                             Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
-
+                            TextBox txtQty = (TextBox)GrdViewLeadproduct.Rows[vLoop].FindControl("txtQty");
+                                                       
                             drNew = dt.NewRow();
                             drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Text);
+                            drNew["Cate"] = txtCat.Text;
+                            drNew["Brd"] = txtBrand.Text;
+                            drNew["Qty"] = txtQty.Text;
+                            drNew["Model"] = txtModel.Text;
                             drNew["PrdID"] = txtPrdID.Text;
+
+
                             dss.Tables[0].Rows.Add(drNew);
                         }
                     }
@@ -3360,7 +3412,11 @@ public partial class LeadMgmt : System.Web.UI.Page
                 for (int vLoop = 0; vLoop < GrdViewLeadproduct.Rows.Count; vLoop++)
                 {
                     DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
+                    Label txtCat = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtCat");
+                    Label txtBrand = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtBrand");
+                    Label txtModel = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtModel");
                     Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
+                    TextBox txtQty = (TextBox)GrdViewLeadproduct.Rows[vLoop].FindControl("txtQty");
 
                     int col = vLoop + 1;
                     //if (drpProduct.SelectedValue != "0" && txtPrdID.Text != "")
@@ -3370,9 +3426,29 @@ public partial class LeadMgmt : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Product in row " + col + " ')", true);
                         return;
                     }
+                    else if (txtCat.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Category in row " + col + " ')", true);
+                        return;
+                    }
+                    else if (txtBrand.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Brand in row " + col + " ')", true);
+                        return;
+                    }
+                    else if (txtModel.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Model in row " + col + " ')", true);
+                        return;
+                    }
                     else if (txtPrdID.Text == "")
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill ProductID in row " + col + " ')", true);
+                        return;
+                    }
+                    else if (txtQty.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Quantity in row " + col + " ')", true);
                         return;
                     }
                     //}
@@ -4112,7 +4188,11 @@ public partial class LeadMgmt : System.Web.UI.Page
                         for (int vLoop = 0; vLoop < GrdViewLeadproduct.Rows.Count; vLoop++)
                         {
                             DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
+                            Label txtCat = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtCat");
+                            Label txtBrand = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtBrand");
+                            Label txtModel = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtModel");
                             Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
+                            TextBox txtQty = (TextBox)GrdViewLeadproduct.Rows[vLoop].FindControl("txtQty");
                         }
 
 
@@ -4128,6 +4208,18 @@ public partial class LeadMgmt : System.Web.UI.Page
                         dc = new DataColumn("Prd");
                         dt.Columns.Add(dc);
 
+                        dc = new DataColumn("Cate");
+                        dt.Columns.Add(dc);
+
+                        dc = new DataColumn("Brd");
+                        dt.Columns.Add(dc);
+
+                        dc = new DataColumn("Qty");
+                        dt.Columns.Add(dc);
+
+                        dc = new DataColumn("Model");
+                        dt.Columns.Add(dc);
+
                         dc = new DataColumn("PrdID");
                         dt.Columns.Add(dc);
 
@@ -4136,10 +4228,18 @@ public partial class LeadMgmt : System.Web.UI.Page
                         for (int vLoop = 0; vLoop < GrdViewLeadproduct.Rows.Count; vLoop++)
                         {
                             DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
+                            Label txtCat = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtCat");
+                            Label txtBrand = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtBrand");
+                            Label txtModel = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtModel");
                             Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
+                            TextBox txtQty = (TextBox)GrdViewLeadproduct.Rows[vLoop].FindControl("txtQty");
 
                             drNew = dt.NewRow();
                             drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Text);
+                            drNew["Cate"] = txtCat.Text;
+                            drNew["Brd"] = txtBrand.Text;
+                            drNew["Qty"] = txtQty.Text;
+                            drNew["Model"] = txtModel.Text;
                             drNew["PrdID"] = txtPrdID.Text;
                             dss.Tables[0].Rows.Add(drNew);
                         }
@@ -4149,20 +4249,43 @@ public partial class LeadMgmt : System.Web.UI.Page
                 for (int vLoop = 0; vLoop < GrdViewLeadproduct.Rows.Count; vLoop++)
                 {
                     DropDownList drpProduct = (DropDownList)GrdViewLeadproduct.Rows[vLoop].FindControl("drpproduct");
+                    Label txtCat = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtCat");
+                    Label txtBrand = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtBrand");
+                    Label txtModel = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtModel");
                     Label txtPrdID = (Label)GrdViewLeadproduct.Rows[vLoop].FindControl("txtPrdId");
+                    TextBox txtQty = (TextBox)GrdViewLeadproduct.Rows[vLoop].FindControl("txtQty");
 
                     int col = vLoop + 1;
 
-                    //if (drpProduct.SelectedValue != "0" && txtPrdID.Text != "")
-                    //{
+                    
                     if (drpProduct.SelectedValue == "0")
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Product in row " + col + " ')", true);
                         return;
                     }
+                    else if (txtCat.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Category in row " + col + " ')", true);
+                        return;
+                    }
+                    else if (txtBrand.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Brand in row " + col + " ')", true);
+                        return;
+                    }
+                    else if (txtModel.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Model in row " + col + " ')", true);
+                        return;
+                    }
                     else if (txtPrdID.Text == "")
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill ProductID in row " + col + " ')", true);
+                        return;
+                    }
+                    else if (txtQty.Text == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Quantity in row " + col + " ')", true);
                         return;
                     }
                     //}                   
@@ -4769,15 +4892,25 @@ public partial class LeadMgmt : System.Web.UI.Page
                 {
                     DropDownList drpProduct =
                      (DropDownList)GrdViewLeadproduct.Rows[rowIndex].Cells[1].FindControl("drpproduct");
+                    Label txtCat =
+                       (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[2].FindControl("txtCat");
+                    Label txtBrand =
+                     (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[3].FindControl("txtBrand");
+                    Label txtModel =
+                     (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[4].FindControl("txtModel");
                     Label txtPrdID =
-                      (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[2].FindControl("txtPrdId");
+                        (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[5].FindControl("txtPrdId");
+                    TextBox txtQty =
+                    (TextBox)GrdViewLeadproduct.Rows[rowIndex].Cells[6].FindControl("txtQty");
 
                     drCurrentRow = dtCurrentTable1.NewRow();
                     drCurrentRow["RowNumber"] = i + 1;
-
                     dtCurrentTable1.Rows[i - 1]["Prd"] = drpProduct.SelectedValue;
+                    dtCurrentTable1.Rows[i - 1]["Cate"] = txtCat.Text;
+                    dtCurrentTable1.Rows[i - 1]["Brd"] = txtBrand.Text;
+                    dtCurrentTable1.Rows[i - 1]["Model"] = txtModel.Text;
                     dtCurrentTable1.Rows[i - 1]["PrdID"] = txtPrdID.Text;
-
+                    dtCurrentTable1.Rows[i - 1]["Qty"] = txtQty.Text;
 
                     rowIndex++;
                 }
@@ -4793,6 +4926,7 @@ public partial class LeadMgmt : System.Web.UI.Page
             Response.Write("ViewState is null");
         }
         SetPreviousDataProduct();
+
     }
 
     private void AddNewRowCompetitors()
@@ -4922,11 +5056,23 @@ public partial class LeadMgmt : System.Web.UI.Page
                 {
                     DropDownList drpProduct =
                      (DropDownList)GrdViewLeadproduct.Rows[rowIndex].Cells[1].FindControl("drpproduct");
+                    Label txtCat =
+                       (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[2].FindControl("txtCat");
+                    Label txtBrand =
+                     (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[3].FindControl("txtBrand");
+                    Label txtModel =
+                     (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[4].FindControl("txtModel");
                     Label txtPrdID =
-                      (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[2].FindControl("txtPrdId");
-
+                        (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[5].FindControl("txtPrdId");
+                    TextBox txtQty =
+                    (TextBox)GrdViewLeadproduct.Rows[rowIndex].Cells[6].FindControl("txtQty");
+                    
                     drpProduct.SelectedValue = dt.Rows[i]["Prd"].ToString();
+                    txtCat.Text = dt.Rows[i]["Cate"].ToString();
+                    txtBrand.Text = dt.Rows[i]["Brd"].ToString();                   
+                    txtModel.Text = dt.Rows[i]["Model"].ToString();
                     txtPrdID.Text = dt.Rows[i]["PrdID"].ToString();
+                    txtQty.Text = dt.Rows[i]["Qty"].ToString();
 
                     rowIndex++;
                 }
@@ -5031,17 +5177,30 @@ public partial class LeadMgmt : System.Web.UI.Page
             {
                 for (int i = 1; i <= dtCurrentTable1.Rows.Count; i++)
                 {
-                    DropDownList DrpProduct =
-                    (DropDownList)GrdViewLeadproduct.Rows[rowIndex].Cells[1].FindControl("drpproduct");
-                    Label txtprdID =
-                     (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[2].FindControl("txtPrdId");
+                    DropDownList drpProduct =
+                     (DropDownList)GrdViewLeadproduct.Rows[rowIndex].Cells[1].FindControl("drpproduct");
+                    Label txtCat =
+                       (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[2].FindControl("txtCat");
+                    Label txtBrand =
+                     (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[3].FindControl("txtBrand");
+                    Label txtModel =
+                     (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[4].FindControl("txtModel");
+                    Label txtPrdID =
+                        (Label)GrdViewLeadproduct.Rows[rowIndex].Cells[5].FindControl("txtPrdId");
+                    TextBox txtQty =
+                    (TextBox)GrdViewLeadproduct.Rows[rowIndex].Cells[6].FindControl("txtQty");
 
 
                     drCurrentRow = dtCurrentTable1.NewRow();
-                    drCurrentRow["RowNumber"] = i + 1;
+                    drCurrentRow["RowNumber"] = i + 1;                  
 
-                    dtCurrentTable1.Rows[i - 1]["Prd"] = DrpProduct.SelectedValue;
-                    dtCurrentTable1.Rows[i - 1]["PrdID"] = txtprdID.Text;
+                    dtCurrentTable1.Rows[i - 1]["Prd"] = drpProduct.SelectedValue;
+                    dtCurrentTable1.Rows[i - 1]["Cate"] = txtCat.Text;
+                    dtCurrentTable1.Rows[i - 1]["Brd"] = txtBrand.Text;
+                    dtCurrentTable1.Rows[i - 1]["Model"] = txtModel.Text;
+                    dtCurrentTable1.Rows[i - 1]["PrdID"] = txtPrdID.Text;
+                    dtCurrentTable1.Rows[i - 1]["Qty"] = txtQty.Text;
+
                     rowIndex++;
 
                 }
@@ -5172,15 +5331,68 @@ public partial class LeadMgmt : System.Web.UI.Page
         SetPreviousDataActivity();
     }
 
+    //private void loadCategories()
+    //{
+    //    //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
+    //    BusinessLogic bl = new BusinessLogic();
+    //    DataSet ds = new DataSet();
+    //    ds = bl.ListCategory(sDataSource, "");
+    //    cmbCategory.DataTextField = "CategoryName";
+    //    cmbCategory.DataValueField = "CategoryID";
+    //    cmbCategory.DataSource = ds;
+    //    cmbCategory.DataBind();
+    //}
+
+    //protected void LoadProducts(object sender, EventArgs e)
+    //{
+    //    sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+    //    string CategoryID = cmbCategory.SelectedValue;
+    //    BusinessLogic bl = new BusinessLogic(sDataSource);
+    //    DataSet ds = new DataSet();
+    //    ds = bl.ListProductsForCategoryID(CategoryID, "");
+    //    cmbProdAdd.Items.Clear();
+    //    cmbProdAdd.DataSource = ds;
+    //    cmbProdAdd.Items.Insert(0, new ListItem("Select Product Code", "0"));
+    //    cmbProdAdd.DataTextField = "ItemCode";
+    //    cmbProdAdd.DataValueField = "ItemCode";
+    //    cmbProdAdd.DataBind();
+
+    //    ds = bl.ListModelsForCategoryID(CategoryID, "");
+    //    cmbModel.Items.Clear();
+    //    cmbModel.DataSource = ds;
+    //    cmbModel.Items.Insert(0, new ListItem("Select Model", "0"));
+    //    cmbModel.DataTextField = "Model";
+    //    cmbModel.DataValueField = "Model";
+    //    cmbModel.DataBind();
+
+    //    ds = bl.ListBrandsForCategoryID(CategoryID, "");
+    //    cmbBrand.Items.Clear();
+    //    cmbBrand.DataSource = ds;
+    //    cmbBrand.Items.Insert(0, new ListItem("Select Brand", "0"));
+    //    cmbBrand.DataTextField = "ProductDesc";
+    //    cmbBrand.DataValueField = "ProductDesc";
+    //    cmbBrand.DataBind();
+
+    //    ds = bl.ListProdNameForCategoryID(CategoryID, "");
+    //    cmbProdName.Items.Clear();
+    //    cmbProdName.DataSource = ds;
+    //    cmbProdName.Items.Insert(0, new ListItem("Select Product Name", "0"));
+    //    cmbProdName.DataTextField = "ProductName";
+    //    cmbProdName.DataValueField = "ProductName";
+    //    cmbProdName.DataBind();
+
+    //    LoadForProduct(this, null);
+
+
+    //}
 
     protected void GrdViewLeadproduct_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
         {
-            BusinessLogic bl = new BusinessLogic(sDataSource);
+            BusinessLogic bl = new BusinessLogic(sDataSource);          
             DataSet ds = new DataSet();
-
-            ds = bl.ListProducts(sDataSource, "", "");
+            ds = bl.ListProdForDynammicrowLead(sDataSource);
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -5195,6 +5407,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 ddl.DataTextField = "ProductName";
                 ddl.DataValueField = "ItemCode";
             }
+
         }
         catch (Exception ex)
         {
@@ -5207,11 +5420,19 @@ public partial class LeadMgmt : System.Web.UI.Page
         DataTable dt1 = new DataTable();
         DataRow dr = null;
         dt1.Columns.Add(new DataColumn("RowNumber", typeof(string)));
+        dt1.Columns.Add(new DataColumn("Cate", typeof(string)));
+        dt1.Columns.Add(new DataColumn("Brd", typeof(string)));
         dt1.Columns.Add(new DataColumn("Prd", typeof(string)));
+        dt1.Columns.Add(new DataColumn("Qty", typeof(string)));
+        dt1.Columns.Add(new DataColumn("Model", typeof(string)));
         dt1.Columns.Add(new DataColumn("PrdID", typeof(string)));
         dr = dt1.NewRow();
         dr["RowNumber"] = 1;
         dr["Prd"] = string.Empty;
+        dr["Cate"] = string.Empty;
+        dr["Brd"] = string.Empty;
+        dr["Qty"] = string.Empty;
+        dr["Model"] = string.Empty;
         dr["PrdID"] = string.Empty;
 
         dt1.Rows.Add(dr);
@@ -5405,17 +5626,48 @@ public partial class LeadMgmt : System.Web.UI.Page
     protected void ButtonAdd_Click(object sender, EventArgs e)
     {
         AddNewRowProduct();
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
     }
     protected void drpproduct_SelectedIndexChanged(object sender, EventArgs e)
     {
+        BusinessLogic bll = new BusinessLogic(sDataSource);
         for (int i = GrdViewLeadproduct.Rows.Count; i == GrdViewLeadproduct.Rows.Count; i++)
         {
             DropDownList DrpProduct =
               (DropDownList)GrdViewLeadproduct.Rows[i - 1].Cells[1].FindControl("drpproduct");
+            Label txtCat =
+              (Label)GrdViewLeadproduct.Rows[i - 1].Cells[2].FindControl("txtCat");
+            Label txtBrand =
+            (Label)GrdViewLeadproduct.Rows[i - 1].Cells[3].FindControl("txtBrand");
+            Label txtModel =
+             (Label)GrdViewLeadproduct.Rows[i - 1].Cells[4].FindControl("txtModel");
             Label txtPrdID =
               (Label)GrdViewLeadproduct.Rows[i - 1].Cells[2].FindControl("txtPrdId");
+            TextBox txtQty =
+            (TextBox)GrdViewLeadproduct.Rows[i - 1].Cells[6].FindControl("txtQty");
+
 
             txtPrdID.Text = DrpProduct.SelectedValue;
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+
+            DataSet LeadDs = bll.ListSalesProductPriceDetailsLead(DrpProduct.SelectedValue);
+            
+            string address = string.Empty;
+
+            if (LeadDs != null && LeadDs.Tables[0].Rows.Count > 0)
+            {
+                if (LeadDs.Tables[0].Rows[0]["CategoryName"] != null)
+                    txtCat.Text = LeadDs.Tables[0].Rows[0]["CategoryName"].ToString();
+
+                if (LeadDs.Tables[0].Rows[0]["ProductDesc"] != null)
+                    txtBrand.Text = LeadDs.Tables[0].Rows[0]["ProductDesc"].ToString();
+
+                if (LeadDs.Tables[0].Rows[0]["Model"] != null)
+                    txtModel.Text = LeadDs.Tables[0].Rows[0]["Model"].ToString();
+            }
+
+            txtQty.Focus();
         }
     }
     protected void ButtonAddCom_Click(object sender, EventArgs e)
