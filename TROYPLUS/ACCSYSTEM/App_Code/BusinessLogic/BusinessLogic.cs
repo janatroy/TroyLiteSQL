@@ -19565,7 +19565,7 @@ public partial class BusinessLogic
         oB = GetOpeningBalanceSum(GroupID, sDate, "debit");
 
         //AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) 
-        dbQry = "Select SUM(Amount) As DebitSum FROM tblDayBook WHERE  DebtorID IN (Select LedgerID FROM tblLedger Where GroupID=" + GroupID + ") AND (TransDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND TransDate <='" + eDate.ToString("yyyy-MM-dd") + "')";
+        dbQry = "Select SUM(Amount) As DebitSum FROM tblDayBook WHERE  DebtorID IN (Select LedgerID FROM tblLedger Where GroupID=" + GroupID + ") AND (TransDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#)";
         object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
 
         if (retVal != null && retVal != DBNull.Value)
@@ -19593,9 +19593,9 @@ public partial class BusinessLogic
         manager.BeginTransaction();
 
         if (type == "debit")
-            dbQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where DebtorID IN (Select LedgerID From tblLedger Where  GroupID=" + GroupID + ")  AND TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
+            dbQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where DebtorID IN (Select LedgerID From tblLedger Where  GroupID=" + GroupID + ")  AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
         else
-            dbQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where CreditorID IN (Select LedgerID From tblLedger Where GroupID=" + GroupID + ")  AND TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
+            dbQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where CreditorID IN (Select LedgerID From tblLedger Where GroupID=" + GroupID + ")  AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
 
         object retOB = manager.ExecuteScalar(CommandType.Text, dbQry);
 
@@ -19626,7 +19626,7 @@ public partial class BusinessLogic
 
         oB = GetOpeningBalanceSum(GroupID, sDate, "credit");
 
-        dbQry = "Select SUM(Amount) As CreditSum FROM tblDayBook WHERE  CreditorID IN (Select LedgerID FROM tblLedger Where GroupID=" + GroupID + ") AND (TransDate >='" + sDate.ToString("yyyy-MM-dd") + "' AND TransDate <='" + eDate.ToString("yyyy-MM-dd") + "')";
+        dbQry = "Select SUM(Amount) As CreditSum FROM tblDayBook WHERE  CreditorID IN (Select LedgerID FROM tblLedger Where GroupID=" + GroupID + ") AND (TransDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#)";
         //dbQry = string.Format("Select SUM(Amount) As CreditSum FROM tblDayBook WHERE  CreditorID IN (Select LedgerID FROM tblLedger Where GroupID={0})", GroupID);
         object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
 
@@ -19905,7 +19905,7 @@ public partial class BusinessLogic
 
         try
         {
-            dbQry = "SELECT HeadingID,Heading,[Order] FROM tblAccHeading WHERE  BalanceSheet = '" + type + "' Order by 3";
+            dbQry = "SELECT HeadingID,Heading,Order FROM tblAccHeading WHERE  BalanceSheet = '" + type + "' Order by 3";
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -19960,53 +19960,11 @@ public partial class BusinessLogic
             manager.Open();
             if (sType == "No")
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
             else
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes')";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='Yes')";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            if (ds.Tables[0].Rows.Count > 0)
-                return ds;
-            else
-                return null;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-
-    //new vat summary report
-    public DataSet purchaseVatSummary(DateTime sDate, DateTime eDate, double vat, string sType,string branch)
-    {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
-        DataSet ds = new DataSet();
-        string dbQry = string.Empty;
-        try
-        {
-            manager.Open();
-            if (branch == "0")
-            {
-
-                if (sType == "No")
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                else
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes')";
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            }
-            else
-            {
-                if (sType == "No")
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='"+ branch+"' and pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                else
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='" + branch + "' and pi.VAT = " + vat + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes')";
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            }
             if (ds.Tables[0].Rows.Count > 0)
                 return ds;
             else
@@ -20030,56 +19988,11 @@ public partial class BusinessLogic
             if (sType == "No")
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
                 //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>'true')  ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>true)  ";
             else
                 //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>'true') ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>true) ";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            if (ds.Tables[0].Rows.Count > 0)
-                return ds;
-            else
-                return null;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-
-
-    public DataSet salesVatSummary(DateTime sDate, DateTime eDate, double vat, string sType,string branch)
-    {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
-        DataSet ds = new DataSet();
-        string dbQry = string.Empty;
-        try
-        {
-            manager.Open();
-            if (branch == "0")
-            {
-                if (sType == "No")
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>'true')  ";
-                else
-                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>'true') ";
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            }
-            else
-            {
-                if (sType == "No")
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='" + branch + "' and pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) and (p.cancelled<>'true')  ";
-                else
-                    //dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.VAT/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As VatPaid    FROM tblSalesItems si,tblSales s WHERE si.VAT = " + vat + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.VAT/100))  As VatPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='" + branch + "' and pi.VAT = " + vat + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes')  and (p.cancelled<>'true') ";
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-               
-
-            }
             if (ds.Tables[0].Rows.Count > 0)
                 return ds;
             else
@@ -20132,10 +20045,10 @@ public partial class BusinessLogic
             manager.Open();
             if (sType == "No")
                 // dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
             else
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes') ";
+                dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='Yes') ";
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
             if (ds.Tables[0].Rows.Count > 0)
@@ -20149,49 +20062,6 @@ public partial class BusinessLogic
         }
     }
 
-
-
-    public DataSet purchaseCSTSummary(DateTime sDate, DateTime eDate, double CST, string sType,string branch)
-    {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
-        DataSet ds = new DataSet();
-        string dbQry = string.Empty;
-        try
-        {
-            manager.Open();
-            if (branch == "0")
-            {
-                if (sType == "No")
-                    // dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                else
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes') ";
-
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            }
-            else
-            {
-                if (sType == "No")
-                    // dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='"+ branch+"' and pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                else
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.CST/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.CST = " + CST + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND p.SalesReturn='Yes' ";
-                    dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE p.BranchCode='" + branch + "' and pi.CST = " + CST + "  AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.SalesReturn='Yes') ";
-
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            }
-            if (ds.Tables[0].Rows.Count > 0)
-                return ds;
-            else
-                return null;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
 
     public DataSet salesCSTSummary(DateTime sDate, DateTime eDate, double CST, string sType)
     {
@@ -20206,56 +20076,11 @@ public partial class BusinessLogic
             if (sType == "No")
                 //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
                 // dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
             else
                 //    dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes') ";
+                dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.PurchaseReturn='Yes') ";
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            if (ds.Tables[0].Rows.Count > 0)
-                return ds;
-            else
-                return null;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-
-
-    public DataSet salesCSTSummary(DateTime sDate, DateTime eDate, double CST, string sType,string branch)
-    {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
-        DataSet ds = new DataSet();
-        string dbQry = string.Empty;
-
-        try
-        {
-            manager.Open();
-            if (branch == "0")
-            {
-                if (sType == "No")
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    // dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
-                else
-                    //    dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes') ";
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-            }
-            else
-            {
-                if (sType == "No")
-                    //dbQry = "SELECT SUM((pi.PurchaseRate * pi.Qty) - ((pi.purchaseRate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100)) + ((pi.purchaseRate* pi.Qty ) * (pi.VAT/100)))-SUM((pi.PurchaseRate* pi.Qty ) - ((pi.purchaseRate* pi.Qty ) * (pi.discount/100))) As VatPaid    FROM tblPurchaseItems pi,tblPurchase p WHERE pi.VAT = " + vat + "   AND p.PurchaseID = pi.purchaseID  AND  (p.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND p.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#)  AND (p.SalesReturn='No' or p.SalesReturn is null) ";
-                    // dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='No' OR s.PurchaseReturn is null) ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='"+ branch +"' and pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='No' or p.PurchaseReturn is null) ";
-                else
-                    //    dbQry = "SELECT SUM((si.Rate * si.qty) - ((si.Rate * si.qty)* (si.discount/100))) As ActualPaid ,  SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100)) + ((si.Rate * si.qty) * (si.CST/100)))-SUM((si.Rate * si.qty) - ((si.Rate * si.qty) * (si.discount/100))) As CSTPaid    FROM tblSalesItems si,tblSales s WHERE si.CST = " + CST + "   AND s.Billno = si.Billno  AND  (s.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND s.BillDate <= #" + eDate.ToString("MM/dd/yyyy") + "#) AND (s.PurchaseReturn='Yes') ;";
-                    dbQry = "SELECT SUM((pi.Rate * pi.Qty) - ((pi.Rate * pi.Qty ) * (pi.discount/100))) As ActualPaid ,  SUM(((pi.Rate* pi.Qty ) - ((pi.Rate* pi.Qty ) * (pi.discount/100))) * (pi.CST/100))  As CSTPaid    FROM tblSalesItems pi,tblSales p WHERE p.BranchCode='" + branch + "' and pi.CST = " + CST + "  AND p.Billno = pi.Billno  AND  (p.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND p.BillDate <= '" + eDate.ToString("MM/dd/yyyy") + "')  AND (p.PurchaseReturn='Yes') ";
-                ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-
-            }
             if (ds.Tables[0].Rows.Count > 0)
                 return ds;
             else
@@ -26842,7 +26667,7 @@ public partial class BusinessLogic
             /*Start March 22*/
             dbQry.Append("SELECT tblSales.Billno,tblSales.BillDate,tblSalesItems.ItemCode,tblSales.CustomerID,tblSales.CustomerName,tblSalesItems.Rate As Rate,");
             dbQry.Append(" tblSalesItems.Discount, tblSalesItems.Qty,tblSalesItems.VAT,tblSalesItems.CST,tblSales.Freight,tblSales.LoadUnload From tblSalesItems,tblSales ");
-            dbQry.Append(" where tblSales.Billno=tblSalesItems.Billno AND tblSales.cancelled='false' AND (tblSales.PurchaseReturn<>'Yes' or  tblSales.PurchaseReturn is null)  order by tblSales.Billdate,tblSales.Billno,tblSalesItems.ItemCode ");
+            dbQry.Append(" where tblSales.Billno=tblSalesItems.Billno AND tblSales.cancelled=false AND (tblSales.PurchaseReturn<>'Yes' or  tblSales.PurchaseReturn is null)  order by tblSales.Billdate,tblSales.Billno,tblSalesItems.ItemCode ");
 
             /*End March 22*/
 
@@ -28129,7 +27954,7 @@ public partial class BusinessLogic
             dbQry.Append("SELECT  Sum((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100)) + ");
             dbQry.Append("(((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100))) * (tblpurchaseitems.VAT / 100)) ");
             dbQry.Append("+ (((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100))) * (tblpurchaseitems.CST / ");
-            dbQry.Append("100))) As PurchaseValue From tblPurchaseItems,tblPurchase  where (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND tblPurchase.purchaseID=tblpurchaseitems.purchaseid AND billdate>='" + sDate.ToString("yyyy-MM-dd") + "' and billdate<='" + eDate.ToString("yyyy-MM-dd") + "' ;");
+            dbQry.Append("100))) As PurchaseValue From tblPurchaseItems,tblPurchase  where (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND tblPurchase.purchaseID=tblpurchaseitems.purchaseid AND billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# and billdate<=#" + eDate.ToString("MM/dd/yyyy") + "# ;");
 
             manager.Open();
 
@@ -28165,7 +27990,7 @@ public partial class BusinessLogic
             dbQry.Append("SELECT  Sum((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100)) + ");
             dbQry.Append("(((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100))) * (tblpurchaseitems.VAT / 100)) ");
             dbQry.Append("+ (((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100))) * (tblpurchaseitems.CST / ");
-            dbQry.Append("100))) As SalesReturnValue From tblPurchaseItems,tblPurchase  where (tblPurchase.SalesReturn = 'Yes') AND tblPurchase.purchaseID=tblpurchaseitems.purchaseid AND billdate>='" + sDate.ToString("yyyy-MM-dd") + "' and billdate<='" + eDate.ToString("yyyy-MM-dd") + "' ;");
+            dbQry.Append("100))) As SalesReturnValue From tblPurchaseItems,tblPurchase  where (tblPurchase.SalesReturn = 'Yes') AND tblPurchase.purchaseID=tblpurchaseitems.purchaseid AND billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# and billdate<=#" + eDate.ToString("MM/dd/yyyy") + "# ;");
 
             manager.Open();
 
@@ -28201,7 +28026,7 @@ public partial class BusinessLogic
             dbQry.Append("SELECT  Sum((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100)) + ");
             dbQry.Append("(((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100))) * (tblpurchaseitems.VAT / 100)) ");
             dbQry.Append("+ (((tblpurchaseitems.qty * purchaserate) - ((tblpurchaseitems.qty * purchaserate) * (tblpurchaseitems.discount / 100))) * (tblpurchaseitems.CST / ");
-            dbQry.Append("100))) As PurchaseOpeningValue From tblPurchaseItems,tblPurchase  where (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND tblPurchase.purchaseID=tblpurchaseitems.purchaseid AND billdate<'" + sDate.ToString("yyyy-MM-dd") + "'");
+            dbQry.Append("100))) As PurchaseOpeningValue From tblPurchaseItems,tblPurchase  where (tblPurchase.SalesReturn <> 'Yes' OR tblPurchase.SalesReturn is null) AND tblPurchase.purchaseID=tblpurchaseitems.purchaseid AND billdate<#" + sDate.ToString("MM/dd/yyyy") + "#");
 
             manager.Open();
             object retVal = manager.ExecuteScalar(CommandType.Text, dbQry.ToString());
@@ -28285,7 +28110,7 @@ public partial class BusinessLogic
             dbQry.Append("SELECT  Sum((tblSalesitems.qty * rate) - ((tblSalesitems.qty * rate) * (tblSalesitems.discount / 100)) + ");
             dbQry.Append("(((tblSalesitems.qty * rate) - ((tblSalesitems.qty * rate) * (tblSalesitems.discount / 100))) * (tblSalesitems.VAT / 100)) ");
             dbQry.Append("+ (((tblSalesitems.qty * rate) - ((tblSalesitems.qty * rate) * (tblSalesitems.discount / 100))) * (tblSalesitems.CST / ");
-            dbQry.Append("100))) As SalesValue From tblSalesitems,tblSales  where (tblSales.PurchaseReturn <> 'Yes' OR tblSales.PurchaseReturn is null) AND tblSales.cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND billdate>='" + sDate.ToString("yyyy-MM-dd") + "' and billdate<='" + eDate.ToString("yyyy-MM-dd") + "' ");
+            dbQry.Append("100))) As SalesValue From tblSalesitems,tblSales  where (tblSales.PurchaseReturn <> 'Yes' OR tblSales.PurchaseReturn is null) AND tblSales.cancelled=false AND tblSales.Billno=tblSalesitems.Billno AND billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# and billdate<=#" + eDate.ToString("MM/dd/yyyy") + "# ");
 
             manager.Open();
             object retVal = manager.ExecuteScalar(CommandType.Text, dbQry.ToString());
@@ -28319,7 +28144,7 @@ public partial class BusinessLogic
             dbQry.Append("SELECT  Sum((tblSalesitems.qty * rate) - ((tblSalesitems.qty * rate) * (tblSalesitems.discount / 100)) + ");
             dbQry.Append("(((tblSalesitems.qty * rate) - ((tblSalesitems.qty * rate) * (tblSalesitems.discount / 100))) * (tblSalesitems.VAT / 100)) ");
             dbQry.Append("+ (((tblSalesitems.qty * rate) - ((tblSalesitems.qty * rate) * (tblSalesitems.discount / 100))) * (tblSalesitems.CST / ");
-            dbQry.Append("100))) As PurchaseReturnValue From tblSalesitems,tblSales  where (tblSales.PurchaseReturn = 'Yes') AND tblSales.cancelled='false' AND tblSales.Billno=tblSalesitems.Billno AND billdate>='" + sDate.ToString("yyyy-MM-dd") + "' and billdate<='" + eDate.ToString("yyyy-MM-dd") + "' ");
+            dbQry.Append("100))) As PurchaseReturnValue From tblSalesitems,tblSales  where (tblSales.PurchaseReturn = 'Yes') AND tblSales.cancelled=false AND tblSales.Billno=tblSalesitems.Billno AND billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# and billdate<=#" + eDate.ToString("MM/dd/yyyy") + "# ");
 
             manager.Open();
             object retVal = manager.ExecuteScalar(CommandType.Text, dbQry.ToString());
@@ -28357,28 +28182,28 @@ public partial class BusinessLogic
 
             if (expType == "IDX")
             {
-                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND TransDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
-                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<'" + sDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
+                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<#" + sDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
             }
 
             else if (expType == "DX")
             {
-                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND TransDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE  GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) )";
-                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<'" + sDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) )";
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE  GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) )";
+                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<#" + sDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) )";
                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
             }
             else if (expType == "IDI")
             {
                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
-                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND TransDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) )";
-                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<'" + sDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) )";
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) )";
+                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<#" + sDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) )";
             }
             else
             {
                 oQry = "SELECT (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
-                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND TransDate<='" + eDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID  IN (14,9) ) )";
-                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<'" + sDate.ToString("yyyy-MM-dd") + "') AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) )";
+                sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND TransDate<=#" + eDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID  IN (14,9) ) )";
+                obQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE (TransDate<#" + sDate.ToString("MM/dd/yyyy") + "#) AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) )";
             }
 
             manager.Open();
@@ -33652,87 +33477,6 @@ public partial class BusinessLogic
             {
                 dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster Where CategoryID=" + CategoryID + "  Order By ProductDesc Asc";
             }
-
-            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
-
-            if (ds.Tables[0].Rows.Count > 0)
-                return ds;
-            else
-                return null;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-
-    }
-
-
-    public DataSet ListBrandsForCategoryIDforpurchase(string CategoryID, string method)
-    {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString);// System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
-        DataSet ds = new DataSet();
-        string dbQry = string.Empty;
-
-        DataSet dsd = new DataSet();
-        string dbQry2 = string.Empty;
-        string obsolute = string.Empty;
-        try
-        {
-            manager.Open();
-
-            int block = 0;
-            object retVal = manager.ExecuteScalar(CommandType.Text, "SELECT ReorderLevel FROM tblObsoluteConfig ");
-            if ((retVal != null) && (retVal != DBNull.Value))
-            {
-                block = int.Parse(retVal.ToString());
-            }
-            dbQry2 = "SELECT KeyValue From tblSettings WHERE KEYNAME='OBSOLUTE'";
-            dsd = manager.ExecuteDataSet(CommandType.Text, dbQry2.ToString());
-
-            if (dsd.Tables[0].Rows.Count > 0)
-                obsolute = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
-
-            if (method == "Add")
-            {
-                if(CategoryID=="All")
-                {
-                     if (obsolute == "YES")
-                {
-                    //dbQry = "select ItemCode,ProductName from tblProductMaster  Order By ProductName";
-                    dbQry = "SELECT Distinct ProductDesc FROM (tblProductMaster inner join tblBrand on tblProductMaster.ProductDesc = tblBrand.BrandName) Where  tblBrand.IsActive = 'YES' and tblProductMaster.IsActive = 'YES' Order By ProductDesc Asc";
-                }
-                else
-                {
-                    dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster ";
-                }
-            }
-            else
-            {
-                dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster ";
-            }
-           }
-            else
-            {
-                if (CategoryID == CategoryID)
-                {
-                    if (obsolute == "YES")
-                    {
-                        //dbQry = "select ItemCode,ProductName from tblProductMaster  Order By ProductName";
-                        dbQry = "SELECT Distinct ProductDesc FROM (tblProductMaster inner join tblBrand on tblProductMaster.ProductDesc = tblBrand.BrandName) Where CategoryID=" + CategoryID + " and tblBrand.IsActive = 'YES' and tblProductMaster.IsActive = 'YES' Order By ProductDesc Asc";
-                    }
-                    else
-                    {
-                        dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster Where CategoryID=" + CategoryID + "  Order By ProductDesc Asc";
-                    }
-                }
-
-                else
-                {
-                    dbQry = "SELECT Distinct ProductDesc FROM tblProductMaster Where CategoryID=" + CategoryID + "  Order By ProductDesc Asc";
-                }
-        }
 
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
@@ -41982,11 +41726,11 @@ public partial class BusinessLogic
 
     //public DataSet generateOutStandingReportDSe(int iGroupID, string sDataSource, DateTime startDate, DateTime endDate)
 
-    public DataSet generateOutStandingReportDSe(int iGroupID, string sDataSource, DateTime startDate, DateTime endDate,string branchcode)
+    public DataSet generateOutStandingReportDSe(int iGroupID, string sDataSource, DateTime startDate, DateTime endDate)
     {
 
         Decimal temp_balance;
-        string sLedgerName = string.Empty, sConStr = string.Empty, sAliasName = string.Empty, sBranchCode = string.Empty, sQry = string.Empty;
+        string sLedgerName = string.Empty, sConStr = string.Empty, sAliasName = string.Empty, sQry = string.Empty;
         string sLedgerId = string.Empty;
         string sLedgerPhone = string.Empty;
         SqlConnection oleConn;
@@ -41997,7 +41741,7 @@ public partial class BusinessLogic
         oleConn = new SqlConnection(CreateConnectionString(sConStr));
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
-        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName,tblLedger.BranchCode, (IIF((tblLedger.OpenBalanceDR is null),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount is null),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR is null),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount is null),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount,tblDayBook.BranchCode FROM tblDayBook WHERE tblDayBook.BranchCode='" + branchcode + "' and tblDayBook.TransDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate<='" + endDate.ToString("yyyy-MM-dd") + "' and  DebtorID > 0 group by DebtorID,BranchCode) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount,tblDayBook.BranchCode FROM tblDayBook WHERE tblDayBook.BranchCode='" + branchcode + "' and tblDayBook.TransDate >='" + startDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate<='" + endDate.ToString("yyyy-MM-dd") + "' and  CreditorID > 0 group by CreditorID,BranchCode) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID=" + iGroupID + " and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF((tblLedger.OpenBalanceDR is null),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount is null),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR is null),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount is null),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
+        sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE tblDayBook.TransDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate<=#" + endDate.ToString("MM/dd/yyyy") + "# and  DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE tblDayBook.TransDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate<=#" + endDate.ToString("MM/dd/yyyy") + "# and  CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID=" + iGroupID + " and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
         //sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblDayBook.TransDate,tblLedger.phone,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE tblDayBook.TransDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate<=#" + endDate.ToString("MM/dd/yyyy") + "# and  DebtorID > 0 group by DebtorID,TransDate) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE tblDayBook.TransDate >=#" + startDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate<=#" + endDate.ToString("MM/dd/yyyy") + "# and  CreditorID > 0 group by CreditorID,TransDate) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID=" + iGroupID + " and tblledger.inttrans = 'NO' and tblledger.dc = 'NO' and (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
 
         //// SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.phone,tblLedger.AliasName,debittable.TransDate,credittable.TransDate,
@@ -42036,8 +41780,6 @@ public partial class BusinessLogic
         dt.Columns.Add(dc);
         dc = new DataColumn("AliasName");
         dt.Columns.Add(dc);
-        dc = new DataColumn("BranchCode");
-        dt.Columns.Add(dc);
         dc = new DataColumn("Debit");
         dt.Columns.Add(dc);
         dc = new DataColumn("Credit");
@@ -42052,7 +41794,6 @@ public partial class BusinessLogic
                 drNew["AliasName"] = string.Empty;
                 drNew["LedgerID"] = string.Empty;
                 drNew["Phone"] = string.Empty;
-                drNew["BranchCode"] = string.Empty;
                 drNew["Debit"] = "0.00";
                 drNew["Credit"] = "0.00";
                 ds.Tables[0].Rows.Add(drNew);
@@ -42065,8 +41806,6 @@ public partial class BusinessLogic
                         sLedgerName = drParentQry["LedgerName"].ToString();
                     if (drParentQry["AliasName"] != null)
                         sAliasName = drParentQry["AliasName"].ToString();
-                    if (drParentQry["BranchCode"] != null)
-                        sBranchCode = drParentQry["BranchCode"].ToString();
                     if (drParentQry["LedgerID"] != null)
                         sLedgerId = drParentQry["LedgerID"].ToString();
                     if (drParentQry["Phone"] != null)
@@ -42080,7 +41819,6 @@ public partial class BusinessLogic
                         drNew = dt.NewRow();
                         drNew["LedgerName"] = sLedgerName;
                         drNew["AliasName"] = sAliasName;
-                        drNew["BranchCode"] = sBranchCode;
                         drNew["LedgerID"] = sLedgerId;
                         drNew["Phone"] = sLedgerPhone;
                         drNew["Debit"] = temp_balance;
@@ -42092,7 +41830,6 @@ public partial class BusinessLogic
                         drNew = dt.NewRow();
                         drNew["LedgerName"] = sLedgerName;
                         drNew["AliasName"] = sAliasName;
-                        drNew["BranchCode"] = sBranchCode;
                         drNew["LedgerID"] = sLedgerId;
                         drNew["Phone"] = sLedgerPhone;
                         drNew["Debit"] = "0.00";
@@ -42225,7 +41962,6 @@ public partial class BusinessLogic
         string sParticularsI = "";
 
         string sVoucherType = string.Empty;
-        string sbranch = string.Empty;
         string sLedgerID = "0";
         string sLedger = string.Empty;
         string sQry = string.Empty;
@@ -42260,10 +41996,10 @@ public partial class BusinessLogic
 
         /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
         //sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " +sOrder;
-        sQry = "SELECT TransDate,Transno,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+        sQry = "SELECT TransDate,Transno,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
         sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
         sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-        sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+        sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
 
         if (iLedgerID != 0)
             sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
@@ -42276,10 +42012,10 @@ public partial class BusinessLogic
 
         sQry = sQry + " Union All ";
 
-        sQry = sQry + "SELECT TransDate,Transno,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+        sQry = sQry + "SELECT TransDate,Transno,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
         sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
         sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-        sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+        sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
 
         if (iLedgerID != 0)
             sQry = sQry + " AND ( DebtorID=" + iLedgerID + ") ";
@@ -42332,9 +42068,6 @@ public partial class BusinessLogic
         dc = new DataColumn("VoucherType");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("BranchCode");
-        dt.Columns.Add(dc);
-
         dc = new DataColumn("TransNo");
         dt.Columns.Add(dc);
 
@@ -42352,7 +42085,6 @@ public partial class BusinessLogic
             drNew["Debit"] = "0.00";
             drNew["Credit"] = "0.00";
             drNew["VoucherType"] = string.Empty;
-            drNew["BranchCode"] = string.Empty;
             ds.Tables[0].Rows.Add(drNew);
         }
         else
@@ -42372,11 +42104,6 @@ public partial class BusinessLogic
                 if (drParentQry["VoucherType"] != null)
                 {
                     sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
-                }
-
-                if (drParentQry["BranchCode"] != null)
-                {
-                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
 
                 /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
@@ -42459,7 +42186,6 @@ public partial class BusinessLogic
                 drNew["Debit"] = dDebitAmt.ToString();
                 drNew["Credit"] = dCreditAmt.ToString();
                 drNew["VoucherType"] = sVoucherType;
-                drNew["BranchCode"] = sbranch;
                 drNew["TransNo"] = Convert.ToString(drParentQry["TransNo"].ToString());
                 ds.Tables[0].Rows.Add(drNew);
 
@@ -42647,7 +42373,6 @@ public partial class BusinessLogic
         string sParticularsI = "";
 
         string sVoucherType = string.Empty;
-        string sbranch = string.Empty;
         string sQry = string.Empty;
         string pQry = string.Empty;
         string jQry = string.Empty;
@@ -42690,10 +42415,10 @@ public partial class BusinessLogic
         /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
         if (sType == "Sales" && retFlag == "Yes") /* Only Sales Return */
         {
-            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + "AND VoucherType='Purchase Return' ";
 
             if (iLedgerID != 0)
@@ -42707,10 +42432,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + "AND VoucherType='Purchase Return' ";
 
             if (iLedgerID != 0)
@@ -42726,10 +42451,10 @@ public partial class BusinessLogic
         else if (sType == "Purchase" && retFlag == "Yes")/* Only Purchase Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
-            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,Transno,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + "AND VoucherType='Sales Return' ";
 
             if (iLedgerID != 0)
@@ -42743,10 +42468,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + "AND VoucherType='Sales Return' ";
 
             if (iLedgerID != 0)
@@ -42762,10 +42487,10 @@ public partial class BusinessLogic
         else if (sType == "Purchase" && retFlag == "Both")/* Only Purchase Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
             if (iLedgerID != 0)
@@ -42779,10 +42504,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
             if (iLedgerID != 0)
@@ -42798,10 +42523,10 @@ public partial class BusinessLogic
         else if (sType == "Sales" && retFlag == "Both") /* Both Sales and Sales Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
 
             if (iLedgerID != 0)
@@ -42815,10 +42540,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Transno,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
 
             if (iLedgerID != 0)
@@ -42833,10 +42558,10 @@ public partial class BusinessLogic
         else if (sType == "Sales" && retFlag == "No") /* Both Sales and Sales Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + " AND VoucherType='Sales' ";
 
             if (iLedgerID != 0)
@@ -42850,10 +42575,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + " AND (VoucherType='Sales') ";
 
             if (iLedgerID != 0)
@@ -42868,10 +42593,10 @@ public partial class BusinessLogic
         else if (sType == "Purchase" && retFlag == "No")/* Both Purchase and Purchase Return */
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Purchase Return' OR VoucherType='Purchase')  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Transno,Amount,Narration,VoucherType,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + " AND (VoucherType='Purchase') ";
 
             if (iLedgerID != 0)
@@ -42885,10 +42610,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
             sQry = sQry + " AND ( VoucherType='Purchase') ";
 
             if (iLedgerID != 0)
@@ -42903,10 +42628,10 @@ public partial class BusinessLogic
         else
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Transno,Narration,VoucherType,B.BranchCode,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Transno,Narration,VoucherType,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
 
             if (iLedgerID != 0)
                 sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
@@ -42919,10 +42644,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Transno,Narration,VoucherType,B.BranchCode, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Transno,Narration,VoucherType, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
+            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
 
             if (iLedgerID != 0)
                 sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
@@ -42976,9 +42701,6 @@ public partial class BusinessLogic
         dc = new DataColumn("VoucherType");
         dt.Columns.Add(dc);
 
-        dc = new DataColumn("BranchCode");
-        dt.Columns.Add(dc);
-
 
         ds.Tables.Add(dt);
 
@@ -42993,7 +42715,6 @@ public partial class BusinessLogic
             drNew["Debit"] = "0.00";
             drNew["Credit"] = "0.00";
             drNew["VoucherType"] = string.Empty;
-            drNew["BranchCode"] = string.Empty;
             ds.Tables[0].Rows.Add(drNew);
         }
         else
@@ -43030,11 +42751,6 @@ public partial class BusinessLogic
                 if (drParentQry["VoucherType"] != null)
                 {
                     sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
-                }
-
-                if (drParentQry["BranchCode"] != null)
-                {
-                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
                 /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
                 if (drParentQry["DebtorID"] != null)
@@ -43133,7 +42849,6 @@ public partial class BusinessLogic
                 drNew["Debit"] = dDebitAmt.ToString();
                 drNew["Credit"] = dCreditAmt.ToString();
                 drNew["VoucherType"] = sVoucherType;
-                drNew["BranchCode"] = sbranch;
                 ds.Tables[0].Rows.Add(drNew);
 
                 sParticularsI = "";
@@ -44243,7 +43958,7 @@ public partial class BusinessLogic
     }
 
 
-    public DataSet PurchaseAnnuxere(DateTime sDate, DateTime eDate, string salesReturn, string intTrans, string delNote, string condi)
+    public DataSet PurchaseAnnuxere(DateTime sDate, DateTime eDate, string salesReturn, string intTrans, string delNote, string condi, string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -44252,9 +43967,16 @@ public partial class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT tblLedger.LedgerName As LinkName,tblPurchase.billno,tblLedger.tinnumber,tblPurchase.billdate,tblPurchaseItems.vat, Sum(tblPurchaseItems.Qty*PurchaseRate) As NetPurchaseRate , Sum((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) AS ActualDiscount, ");
+            dbQry.Append("SELECT tblLedger.LedgerName As LinkName,tblPurchase.Branchcode,tblPurchase.billno,tblLedger.tinnumber,tblPurchase.billdate,tblPurchaseItems.vat, Sum(tblPurchaseItems.Qty*PurchaseRate) As NetPurchaseRate , Sum((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) AS ActualDiscount, ");
             dbQry.Append(" Sum( ((tblPurchaseItems.Qty*PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*PurchaseRate) - tblPurchaseItems.discamt) * VAT/100 ) AS ActualVAT , sum(tblPurchaseItems.discamt) as discamt, sum(tblPurchase.discamount) as discamount ");
-            dbQry.Append(" FROM tblPurchaseItems,tblPurchase,tblLedger WHERE tblPurchase.purchaseID=tblPurchaseItems.purchaseID And ( UCASE(tblPurchase.SalesReturn)='" + salesReturn + "' OR tblPurchase.SalesReturn = '' OR tblPurchase.SalesReturn Is NULL) and UCASE(tblPurchase.DeliveryNote)='" + delNote + "' AND ( UCASE(tblPurchase.InternalTransfer)='" + intTrans + "' OR tblPurchase.InternalTransfer = '' OR tblPurchase.InternalTransfer Is NULL ) And tblPurchase.InvoiceDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.InvoiceDate<=#" + eDate.ToString("MM/dd/yyyy") + "# AND tblLedger.LedgerID = tblPurchase.SupplierID " + condi + "  Group By  tblLedger.LedgerName,tblPurchase.billno,tblPurchaseItems.vat,tblLedger.tinnumber,tblPurchase.billdate");
+            dbQry.Append(" FROM tblPurchaseItems,tblPurchase,tblLedger WHERE tblPurchase.purchaseID=tblPurchaseItems.purchaseID And ( Upper(tblPurchase.SalesReturn)='" + salesReturn + "' OR tblPurchase.SalesReturn = '' OR tblPurchase.SalesReturn Is NULL) and Upper(tblPurchase.DeliveryNote)='" + delNote + "' AND ( Upper(tblPurchase.InternalTransfer)='" + intTrans + "' OR tblPurchase.InternalTransfer = '' OR tblPurchase.InternalTransfer Is NULL ) And tblPurchase.InvoiceDate>='" + sDate.ToString("MM/dd/yyyy") + "' AND tblPurchase.InvoiceDate<='" + eDate.ToString("MM/dd/yyyy") + "' AND tblLedger.LedgerID = tblPurchase.SupplierID " + condi + "  ");
+
+            if (Branch != "0")
+            {
+                dbQry.Append(" and tblPurchase.Branchcode='" + Branch + "'  ");
+            }
+
+            dbQry.Append(" Group By  tblLedger.LedgerName,tblPurchase.billno,tblPurchaseItems.vat,tblLedger.tinnumber,tblPurchase.billdate,tblPurchase.Branchcode");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -44272,7 +43994,7 @@ public partial class BusinessLogic
 
     }
 
-    public DataSet SalesAnnuxere(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string condi)
+    public DataSet SalesAnnuxere(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string condi,string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -44281,9 +44003,16 @@ public partial class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT CustomerName As LinkName,tblSales.billdate,tblSales.billno,tblSalesitems.vat,tblLedger.tinnumber, Sum(tblSalesItems.Qty*Rate) As NetRate ,");
+            dbQry.Append("SELECT CustomerName As LinkName,tblSales.billdate,tblSales.billno,tblSales.Branchcode,tblSalesitems.vat,tblLedger.tinnumber, Sum(tblSalesItems.Qty*Rate) As NetRate ,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * VAT/100 ) AS ActualVAT");
-            dbQry.Append(" FROM tblSalesItems,tblSales,tblLedger WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "'  AND tblLedger.LedgerID = tblSales.customerid and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#  " + condi + " Group By CustomerName,tblSales.billno,tblSalesitems.vat,tblLedger.tinnumber,tblSales.billdate");
+            dbQry.Append(" FROM tblSalesItems,tblSales,tblLedger WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>'true' and Upper(tblSales.purchaseReturn)='" + purReturn + "' and Upper(tblSales.DeliveryNote)='" + delNote + "' and Upper(tblSales.InternalTransfer)='" + intTrans + "'  AND tblLedger.LedgerID = tblSales.customerid and tblSales.Billdate>='" + sDate.ToString("MM/dd/yyyy") + "' AND tblSales.BillDate<='" + eDate.ToString("MM/dd/yyyy") + "'  " + condi + " ");
+
+            if (Branch != "0")
+            {
+                dbQry.Append(" and tblSales.Branchcode='" + Branch + "'  ");
+            }
+
+            dbQry.Append(" Group By CustomerName,tblSales.billno,tblSalesitems.vat,tblLedger.tinnumber,tblSales.billdate,tblSales.Branchcode");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -44301,7 +44030,7 @@ public partial class BusinessLogic
 
     }
 
-    public DataSet SalesPurRetAnnuxere(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string condi)
+    public DataSet SalesPurRetAnnuxere(DateTime sDate, DateTime eDate, string purReturn, string intTrans, string delNote, string condi,string Branch)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -44311,9 +44040,16 @@ public partial class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT CustomerName As LinkName,tblSales.billdate,tblSales.billno,tblSalesitems.vat,tblLedger.tinnumber, Sum(tblSalesItems.Qty*Rate) As NetRate ,");
+            dbQry.Append("SELECT CustomerName As LinkName,tblSales.billdate,tblSales.billno,tblSales.Branchcode,tblSalesitems.vat,tblLedger.tinnumber, Sum(tblSalesItems.Qty*Rate) As NetRate ,");
             dbQry.Append(" Sum( ((tblSalesItems.Qty*rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*Rate)) * VAT/100 ) AS ActualVAT");
-            dbQry.Append(" FROM tblSalesItems,tblSales,tblLedger WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>true and UCASE(tblSales.purchaseReturn)='" + purReturn + "' and UCASE(tblSales.DeliveryNote)='" + delNote + "' and UCASE(tblSales.InternalTransfer)='" + intTrans + "'  AND tblLedger.LedgerID = tblSales.customerid and tblSales.Billdate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "# " + condi + "  Group By CustomerName,tblSales.billno,tblSalesitems.vat,tblLedger.tinnumber,tblSales.billdate");
+            dbQry.Append(" FROM tblSalesItems,tblSales,tblLedger WHERE tblSales.Billno=tblSalesItems.Billno and tblsales.cancelled<>'true' and Upper(tblSales.purchaseReturn)='" + purReturn + "' and Upper(tblSales.DeliveryNote)='" + delNote + "' and Upper(tblSales.InternalTransfer)='" + intTrans + "'  AND tblLedger.LedgerID = tblSales.customerid and tblSales.Billdate>='" + sDate.ToString("MM/dd/yyyy") + "' AND tblSales.BillDate<='" + eDate.ToString("MM/dd/yyyy") + "' " + condi + " ");
+
+            if (Branch != "0")
+            {
+                dbQry.Append(" and tblSales.Branchcode='" + Branch + "'  ");
+            }
+
+            dbQry.Append("  Group By CustomerName,tblSales.billno,tblSalesitems.vat,tblLedger.tinnumber,tblSales.billdate,tblSales.Branchcode");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -44331,7 +44067,7 @@ public partial class BusinessLogic
 
     }
 
-    public DataSet PurchaseSalesRetAnnuxere(DateTime sDate, DateTime eDate, string salesReturn, string intTrans, string delNote, string condi)
+    public DataSet PurchaseSalesRetAnnuxere(DateTime sDate, DateTime eDate, string salesReturn, string intTrans, string delNote, string condi,string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -44340,9 +44076,16 @@ public partial class BusinessLogic
 
         try
         {
-            dbQry.Append("SELECT tblLedger.LedgerName As LinkName,tblPurchase.billno,tblLedger.tinnumber,tblPurchase.billdate,tblPurchaseItems.vat, Sum(tblPurchaseItems.Qty*PurchaseRate) As NetPurchaseRate ,");
+            dbQry.Append("SELECT tblLedger.LedgerName As LinkName,tblPurchase.billno,tblPurchase.Branchcode,tblLedger.tinnumber,tblPurchase.billdate,tblPurchaseItems.vat, Sum(tblPurchaseItems.Qty*PurchaseRate) As NetPurchaseRate ,");
             dbQry.Append(" Sum( ((tblPurchaseItems.Qty*PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*PurchaseRate)) * VAT/100 ) AS ActualVAT ");
-            dbQry.Append(" FROM tblPurchaseItems,tblPurchase,tblLedger WHERE tblPurchase.purchaseID=tblPurchaseItems.purchaseID And ( UCASE(tblPurchase.SalesReturn)='" + salesReturn + "' OR tblPurchase.SalesReturn = '' OR tblPurchase.SalesReturn Is NULL) and UCASE(tblPurchase.DeliveryNote)='" + delNote + "' AND ( UCASE(tblPurchase.InternalTransfer)='" + intTrans + "' OR tblPurchase.InternalTransfer = '' OR tblPurchase.InternalTransfer Is NULL ) And tblPurchase.InvoiceDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.InvoiceDate<=#" + eDate.ToString("MM/dd/yyyy") + "# AND tblLedger.LedgerID = tblPurchase.SupplierID  " + condi + "  Group By  tblLedger.LedgerName,tblPurchase.billno,tblPurchaseItems.vat,tblLedger.tinnumber,tblPurchase.billdate");
+            dbQry.Append(" FROM tblPurchaseItems,tblPurchase,tblLedger WHERE tblPurchase.purchaseID=tblPurchaseItems.purchaseID And ( Upper(tblPurchase.SalesReturn)='" + salesReturn + "' OR tblPurchase.SalesReturn = '' OR tblPurchase.SalesReturn Is NULL) and Upper(tblPurchase.DeliveryNote)='" + delNote + "' AND ( Upper(tblPurchase.InternalTransfer)='" + intTrans + "' OR tblPurchase.InternalTransfer = '' OR tblPurchase.InternalTransfer Is NULL ) And tblPurchase.InvoiceDate>='" + sDate.ToString("MM/dd/yyyy") + "' AND tblPurchase.InvoiceDate<='" + eDate.ToString("MM/dd/yyyy") + "' AND tblLedger.LedgerID = tblPurchase.SupplierID  " + condi + " ");
+
+            if (Branch != "0")
+            {
+                dbQry.Append(" and tblPurchase.Branchcode='" + Branch + "'  ");
+            }
+
+            dbQry.Append("  Group By  tblLedger.LedgerName,tblPurchase.billno,tblPurchaseItems.vat,tblLedger.tinnumber,tblPurchase.billdate,tblPurchase.Branchcode");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
@@ -50915,7 +50658,7 @@ public partial class BusinessLogic
     }
 
 
-    public DataSet getSalesreport(DateTime startDate, DateTime endDate, string Category, string brand, string product,string branchcode)
+    public DataSet getSalesreport(DateTime startDate, DateTime endDate, string Category, string brand, string product)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -50928,22 +50671,22 @@ public partial class BusinessLogic
             {
                 if (product == "All")
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname,tblSalesItems.Itemcode,tblSales.Billno,tblSales.billdate,tblSales.Customername,tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst,tblSales.paymode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and (" + branchcode + ") order by tblsales.billno,productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname,tblSalesItems.Itemcode,tblSales.Billno,tblSales.billdate,tblSales.Customername,tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst,tblSales.paymode FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' order by tblsales.billno,productdesc,productname");
                 }
                 else
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblProductStock.productname = '" + product + "' and (" + branchcode + ") order by productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblProductMaster.productname = '" + product + "' order by productdesc,productname");
                 }
             }
             else
             {
                 if (product == "All")
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,tblSalesItems.Rate,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblProductStock.productdesc = '" + brand + "' and (" + branchcode + ") order by productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,tblSalesItems.Rate,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblProductMaster.productdesc = '" + brand + "' order by productdesc,productname");
                 }
                 else
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,tblSalesItems.Rate,tblSalesItems.Qty,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblProductStock.productdesc = '" + brand + "' and tblProductStock.productname = '" + product + "' and (" + branchcode + ") order by productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,tblSalesItems.Rate,tblSalesItems.Qty,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblProductMaster.productdesc = '" + brand + "' and tblProductMaster.productname = '" + product + "' order by productdesc,productname");
                 }
             }
         }
@@ -50953,22 +50696,22 @@ public partial class BusinessLogic
             {
                 if (product == "All")
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,tblSalesItems.Rate,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblCategories.categoryname = '" + Category + "' and (" + branchcode + ") order by productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,tblSalesItems.Rate,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblCategories.categoryname = '" + Category + "' order by productdesc,productname");
                 }
                 else
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "'  and tblCategories.categoryname = '" + Category + "' and tblProductStock.productname = '" + product + "' and (" + branchcode + ") order by productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "'  and tblCategories.categoryname = '" + Category + "' and tblProductMaster.productname = '" + product + "' order by productdesc,productname");
                 }
             }
             else
             {
                 if (product == "All")
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblCategories.categoryname = '" + Category + "' and tblProductStock.productdesc = '" + brand + "' and (" + branchcode + ") order by productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,tblProductMaster.model,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblCategories.categoryname = '" + Category + "' and tblProductMaster.productdesc = '" + brand + "' order by productdesc,productname");
                 }
                 else
                 {
-                    dbQry = ("SELECT tblProductStock.productdesc as brand,tblProductStock.productname,tblProductStock.model,tblSales.BillNo,tblSales.BranchCode,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblProductStock.model,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo and tblSales.BranchCode = tblSalesItems.BranchCode) inner join tblProductStock on tblSalesItems.ItemCode = tblProductStock.ItemCode and tblSales.BranchCode = tblProductStock.BranchCode) inner join tblCategories ON tblProductStock.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblCategories.categoryname = '" + Category + "' and tblProductStock.productdesc = '" + brand + "' and tblProductStock.productname = '" + product + "' and (" + branchcode + ") order by productdesc,productname");
+                    dbQry = ("SELECT tblProductMaster.productdesc as brand,tblProductMaster.productname,(((tblSalesItems.Qty * tblSalesItems.Rate) - ((tblSalesItems.discount/100)*tblSalesItems.qty*tblSalesItems.rate) + (((tblSalesItems.Qty*tblSalesItems.rate)- ((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.VAT/100) + (((tblSalesItems.Qty*tblSalesItems.Rate)-((tblSalesItems.discount/100)*tblSalesItems.Qty*tblSalesItems.Rate)) * tblSalesItems.CST/100))) as amount,tblProductMaster.model,tblSalesItems.Rate,tblSalesItems.Qty,tblCategories.categoryname FROM  (((tblSales INNER JOIN tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo) inner join tblProductMaster on tblSalesItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblLedger ON tblSales.CustomerId = tblLedger.LedgerID WHERE tblSales.billdate>='" + startDate.ToString("yyyy-MM-dd") + "'nd tblSales.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblCategories.categoryname = '" + Category + "' and tblProductMaster.productdesc = '" + brand + "' and tblProductMaster.productname = '" + product + "' order by productdesc,productname");
                 }
             }
         }
@@ -56811,7 +56554,7 @@ public partial class BusinessLogic
     //    }
     //}
 
-    public DataSet getallhistoryrate(string sDataSource, DataSet dsrate)
+    public DataSet getallhistoryrate(string sDataSource, DataSet dsrate,string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -57025,7 +56768,7 @@ public partial class BusinessLogic
         }
     }
 
-    public DataSet getPurchaselistNormal(DateTime startDate, DateTime endDate, string Types, string options)
+    public DataSet getPurchaselistNormal(DateTime startDate, DateTime endDate, string Types, string options,string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString);
@@ -57037,236 +56780,236 @@ public partial class BusinessLogic
         {
             if (Types == "CategoryWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname");
             }
             else if (Types == "ProductWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productname");
             }
             else if (Types == "BrandWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productdesc");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.Branchcode,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productdesc");
             }
             else if (Types == "BrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,( tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,( tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.Branchcode,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "BrandProductModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, ( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, ( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblPurchase.Branchcode,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
             }
             else if (Types == "BillWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.productname,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billno");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.productname,tblPurchase.Branchcode,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billno");
             }
             else if (Types == "BrandModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo ,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo,tblPurchase.Branchcode ,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.Model");
             }
             else if (Types == "CategoryBrandWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc");
             }
             else if (Types == "CategoryBrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "PayModeWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.paymode");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate,tblPurchase.Branchcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.paymode");
             }
             else if (Types == "ExecutiveWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.executivename,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.executivename");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.executivename,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Branchcode,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.executivename");
             }
             else if (Types == "DateWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billdate");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billdate");
             }
             else if (Types == "CustomerWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as Customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger ON tblPurchase.supplierid = tblledger.ledgerid WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblledger.ledgerid");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as Customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger ON tblPurchase.supplierid = tblledger.ledgerid WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblledger.ledgerid");
             }
             else if (Types == "MonthWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblPurchase.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "#  and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by month(tblPurchase.billdate) ");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblPurchase.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "'  and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by month(tblPurchase.billdate) ");
             }
         }
         else if (options == "Internal Transfer")
         {
             if (Types == "CategoryWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname");
             }
             else if (Types == "ProductWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productname");
             }
             else if (Types == "BrandWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productdesc");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.Branchcode,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productdesc");
             }
             else if (Types == "BrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,( tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,( tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.Branchcode,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "BrandProductModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,( tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,( tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblPurchase.Branchcode,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
             }
             else if (Types == "BillWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.productname,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billno");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.productname,tblPurchase.Branchcode,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billno");
             }
             else if (Types == "BrandModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo ,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo ,tblPurchase.Branchcode,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.Model");
             }
             else if (Types == "CategoryBrandWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc");
             }
             else if (Types == "CategoryBrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "# and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "PayModeWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.paymode");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Branchcode,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.paymode");
             }
             else if (Types == "ExecutiveWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblSales.executivename,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.executivename");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblSales.executivename,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.executivename");
             }
             else if (Types == "DateWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billdate");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billdate");
             }
             else if (Types == "CustomerWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger on tblpurchase.supplierid=tblledger.ledgerid WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblledger.ledgername");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger on tblpurchase.supplierid=tblledger.ledgerid WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by tblledger.ledgername");
             }
             else if (Types == "MonthWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblPurchase.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "#  and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by month(tblPurchase.billdate) ");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblPurchase.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "'  and tblPurchase.InternalTransfer in ('yes','YES') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('no','NO') order by month(tblPurchase.billdate) ");
             }
         }
         else if (options == "Delivery Note")
         {
             if (Types == "CategoryWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblcategories.categoryname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblcategories.categoryname");
             }
             else if (Types == "ProductWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES')  order by tblProductMaster.productname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES')  order by tblProductMaster.productname");
             }
             else if (Types == "BrandWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES')  order by tblProductMaster.productdesc");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.Branchcode,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES')  order by tblProductMaster.productdesc");
             }
             else if (Types == "BrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, ( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, ( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.Branchcode,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "BrandProductModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.Branchcode,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
             }
             else if (Types == "BillWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.productname,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.billno");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.productname,tblPurchase.Branchcode,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.billno");
             }
             else if (Types == "BrandModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate as rate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo ,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblProductMaster.productdesc,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate as rate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblPurchase.BillNo ,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblProductMaster.productdesc,tblProductMaster.Model");
             }
             else if (Types == "CategoryBrandWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate as rate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblcategories.categoryname,tblProductMaster.productdesc");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate as rate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblcategories.categoryname,tblProductMaster.productdesc");
             }
             else if (Types == "CategoryBrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate as rate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate as rate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "PayModeWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.paymode");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Branchcode,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.paymode");
             }
             else if (Types == "ExecutiveWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.executivename,tblSales.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.executivename");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.executivename,tblSales.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Branchcode,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<=#" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.executivename");
             }
             else if (Types == "DateWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.billdate");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblPurchase.billdate");
             }
             else if (Types == "CustomerWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as Customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger on tblpurchase.supplierid=tblledger.ledgerid WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblledger.ledgerid");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as Customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger on tblpurchase.supplierid=tblledger.ledgerid WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by tblledger.ledgerid");
             }
             else if (Types == "MonthWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblSales.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblSalesItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "#  and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by month(tblPurchase.billdate) ");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblSales.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblSalesItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "'  and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('no','NO') and tblPurchase.DeliveryNote in ('yes','YES') order by month(tblPurchase.billdate) ");
             }
         }
         else if (options == "Sales Return")
         {
             if (Types == "CategoryWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc as brand, tblProductMaster.productname,tblProductMaster.model,tblProductMaster.itemcode, tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname");
             }
             else if (Types == "ProductWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productname");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productname,tblcategories.categoryname,tblProductMaster.productdesc as brand,tblProductMaster.model,tblProductMaster.itemcode,tblProductMaster.nlc, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productname");
             }
             else if (Types == "BrandWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productdesc");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as amount,( tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.productname as brand,tblcategories.categoryname,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.itemcode,tblProductMaster.nlc,tblProductMaster.dealerrate as dp, tblPurchase.billno,tblPurchase.Branchcode,tblPurchase.billdate,tblProductMaster.rate as mrp FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO')  order by tblProductMaster.productdesc");
             }
             else if (Types == "BrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount, (tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.Branchcode,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "BrandProductModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblProductMaster.model,tblPurchase.Branchcode,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.productname,tblProductMaster.Model");
             }
             else if (Types == "BillWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblProductMaster.productname,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billno");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp, tblProductMaster.dealerrate as dp,tblPurchase.billno,tblPurchase.billdate,tblPurchaseItems.itemcode,tblProductMaster.model,tblcategories.categoryname,tblPurchase.billno,tblPurchase.billdate,tblPurchase.Branchcode,tblProductMaster.productname,tblProductMaster.productdesc  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billno");
             }
             else if (Types == "BrandModelWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo ,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.Model");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblPurchase.BillNo ,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblProductMaster.productdesc,tblProductMaster.Model");
             }
             else if (Types == "CategoryBrandWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.dealerrate as dp,tblProductMaster.rate as mrp,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchase.Branchcode,tblPurchaseItems.itemcode,tblProductMaster.productdesc ,tblPurchase.BillNo,tblPurchase.Billdate FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc");
             }
             else if (Types == "CategoryBrandProductWise")
             {
-                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
+                dbQry = ("SELECT (((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100))) as amount,(tblPurchaseItems.PurchaseRate) as rate1, tblPurchaseItems.PurchaseRate,tblPurchaseItems.Qty,tblProductMaster.productdesc,tblProductMaster.nlc,tblProductMaster.model,tblProductMaster.productname,tblProductMaster.rate as mrp,tblProductMaster.productname,tblProductMaster.dealerrate as dp,tblcategories.categoryname,tblPurchase.Branchcode,tblPurchaseItems.itemcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblcategories.categoryname,tblProductMaster.productdesc,tblProductMaster.productname");
             }
             else if (Types == "PayModeWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.paymode");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.paymode,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Branchcode,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.paymode");
             }
             else if (Types == "ExecutiveWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.executivename,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.executivename");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.executivename,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo,tblPurchase.Billdate  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.executivename");
             }
             else if (Types == "DateWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billdate");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.Branchcode,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblPurchase.billdate");
             }
             else if (Types == "CustomerWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as Customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger on tblledger.ledgerid=tblpurchase.supplierid WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "# and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblledger.ledgerid");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.Qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,tblledger.ledgername as Customername,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblPurchase.Branchcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  (((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID) inner join tblledger on tblledger.ledgerid=tblpurchase.supplierid WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "' and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by tblledger.ledgerid");
             }
             else if (Types == "MonthWise")
             {
-                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblPurchase.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>=#" + startDate.ToString("MM/dd/yyyy") + "# and tblPurchase.billdate<=#" + endDate.ToString("MM/dd/yyyy") + "#  and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by month(tblPurchase.billdate) ");
+                dbQry = ("SELECT ((((tblPurchaseItems.Qty * tblPurchaseItems.PurchaseRate) - ((tblPurchaseItems.discount/100)*tblPurchaseItems.qty*tblPurchaseItems.PurchaseRate) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)- ((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.VAT/100) + (((tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)-((tblPurchaseItems.discount/100)*tblPurchaseItems.Qty*tblPurchaseItems.PurchaseRate)) * tblPurchaseItems.CST/100)))) as rate,(tblPurchaseItems.PurchaseRate) as rate1,tblPurchaseItems.qty,tblProductMaster.nlc,tblProductMaster.rate as mrp,tblProductMaster.dealerrate as dp,month(tblPurchase.billdate) as monthname,tblPurchase.billdate,tblProductMaster.model,tblProductMaster.productname,tblPurchase.Branchcode,tblcategories.categoryname,tblPurchaseItems.itemcode,tblProductMaster.productdesc,tblPurchase.BillNo  FROM  ((tblPurchase INNER JOIN tblPurchaseItems ON tblPurchase.purchaseid = tblPurchaseItems.purchaseid) inner join tblProductMaster on tblPurchaseItems.ItemCode = tblProductMaster.ItemCode) inner join tblCategories ON tblProductMaster.CategoryID = tblCategories.CategoryID WHERE tblPurchase.billdate>='" + startDate.ToString("yyyy-MM-dd") + "' and tblPurchase.billdate<='" + endDate.ToString("yyyy-MM-dd") + "'  and tblPurchase.InternalTransfer in ('no','NO') and tblPurchase.salesReturn in ('yes','YES') and tblPurchase.DeliveryNote in ('no','NO') order by month(tblPurchase.billdate) ");
             }
         }
 
@@ -58544,9 +58287,9 @@ public partial class BusinessLogic
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
         if (groupID != 0)
-            sQry = "SELECT  LedgerID,folionumber, LedgerName,BranchCode FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
+            sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
         else
-            sQry = "SELECT  LedgerID,folionumber, LedgerName,BranchCode FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID   ORDER by LedgerName,LedgerID";
+            sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID   ORDER by LedgerName,LedgerID";
         //sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration FROM tblDayBook WHERE (DebtorID=" + iLedgerID + "OR CreditorID=" + iLedgerID + ") ";
         oleCmd.CommandText = sQry;
         oleCmd.CommandType = CommandType.Text;
@@ -58564,8 +58307,6 @@ public partial class BusinessLogic
         dcNew = new DataColumn("LedgerID");
         dtNew.Columns.Add(dcNew);
         dcNew = new DataColumn("Folionumber");
-        dtNew.Columns.Add(dcNew);
-        dcNew = new DataColumn("BranchCode");
         dtNew.Columns.Add(dcNew);
 
         dcNew = new DataColumn("Debit");
@@ -58585,7 +58326,6 @@ public partial class BusinessLogic
                     drNew = dtNew.NewRow();
                     drNew["LedgerID"] = "";
                     drNew["LedgerName"] = "";
-                    drNew["BranchCode"] = "";
                     drNew["Debit"] = "";
                     drNew["Credit"] = "";
                     drNew["Folionumber"] = "";
@@ -58600,7 +58340,6 @@ public partial class BusinessLogic
                         drNew = dtNew.NewRow();
                         drNew["LedgerID"] = Convert.ToString(dr["LedgerID"]);
                         drNew["LedgerName"] = Convert.ToString(dr["LedgerName"]);
-                        drNew["BranchCode"] = Convert.ToString(dr["BranchCode"]);
                         drNew["Folionumber"] = Convert.ToString(dr["Folionumber"]);
                         db = GetTotalDebit(sDataSource, Convert.ToInt32(dr["LedgerID"]), sDate, eDate);
                         cr = GetTotalCredit(sDataSource, Convert.ToInt32(dr["LedgerID"]), sDate, eDate);
@@ -58649,7 +58388,7 @@ public partial class BusinessLogic
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
 
-        sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate <='" + eDate.ToString("yyyy-MM-dd") + "')  AND  tblDaybook.CreditorID=" + iLedgerID;
+        sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND  tblDaybook.CreditorID=" + iLedgerID;
 
 
         oleCmd.CommandText = sQry;
@@ -58700,7 +58439,7 @@ public partial class BusinessLogic
         oleCmd = new SqlCommand();
         oleCmd.Connection = oleConn;
 
-        sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate <='" + eDate.ToString("yyyy-MM-dd") + "') AND tblDaybook.DebtorID=" + iLedgerID;
+        sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblDaybook.DebtorID=" + iLedgerID;
 
 
         oleCmd.CommandText = sQry;
@@ -58750,7 +58489,7 @@ public partial class BusinessLogic
         /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
         if (type == "debit")
         {
-            sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
+            sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
 
             if (ledgerID > 0)
                 sQry = sQry + " AND B.DebtorID = " + ledgerID.ToString();
@@ -58764,7 +58503,7 @@ public partial class BusinessLogic
         else
         {
             //sQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where CreditorID = " + ledgerID + "  AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
-            sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
+            sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
 
             if (ledgerID > 0)
                 sQry = sQry + " AND B.CreditorID = " + ledgerID.ToString();
@@ -66843,7 +66582,7 @@ public partial class BusinessLogic
 
             object totLeave = manager.ExecuteScalar(CommandType.Text, "SELECT Yearly_Holiday_Count FROM tblHRAdminSettings");
 
-            object actualLeave = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeaveTypes Where IsActive = 1");
+            object actualLeave = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLeaveTypes Where IsActive =" + true);
 
             if (totLeave.ToString() != string.Empty && actualLeave != string.Empty)
             {
@@ -66866,22 +66605,22 @@ public partial class BusinessLogic
 
             if (IsPayable == true)
             {
-                isPay = 1;
+                isPay = -1;
             }
 
             if (IsActive == true)
             {
-                isAct = 1;
+                isAct = -1;
             }
 
             if (IsEncashable == true)
             {
-                isEnc = 1;
+                isEnc = -1;
             }
 
 
             dbQry = string.Format("INSERT INTO tblLeaveTypes(LeaveTypeName, IsPayable, IsEncashable, IsActive, IsDefault, LeaveDescription) VALUES('{0}', {1}, {2}, {3}, {4},'{5}')",
-                LeaveTypeName, isPay, isEnc, isAct, 1, LeaveDescription);
+                LeaveTypeName, isPay, isEnc, isAct, -1, LeaveDescription);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -66928,23 +66667,23 @@ public partial class BusinessLogic
 
             if (IsPayable == true)
             {
-                isPay = 1;
+                isPay = -1;
             }
 
             if (IsActive == true)
             {
-                isAct = 1;
+                isAct = -1;
             }
 
             if (IsEncashable == true)
             {
-                isEnc = 1;
+                isEnc = -1;
             }
 
             //int LeaveID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(ID) FROM tblLeaveTypes");
 
             dbQry = string.Format("UPDATE tblLeaveTypes SET LeaveTypeName = '{1}', IsPayable = {2}, IsEncashable = {3}, IsActive = {4}, IsDefault = {5}, LeaveDescription = '{6}' WHERE ID = {0}",
-                ID, LeaveTypeName, isPay, isEnc, isAct, 1, LeaveDescription);
+                ID, LeaveTypeName, isPay, isEnc, isAct, -1, LeaveDescription);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -67596,8 +67335,8 @@ public partial class BusinessLogic
                 }
             }
 
-            dbQry = string.Format("INSERT INTO tblHolidayList([Date], Holiday_Name, Remarks) VALUES('{0}', '{1}', '{2}')",
-              DateTime.Parse(Date).ToString("MM/dd/yyyy"), Holiday_Name, Remarks);
+            dbQry = string.Format("INSERT INTO tblHolidayList([Date], Holiday_Name, Remarks) VALUES(Format('{0}', 'dd/mm/yyyy'), '{1}', '{2}')",
+              Date, Holiday_Name, Remarks);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -67639,8 +67378,8 @@ public partial class BusinessLogic
             }
 
 
-            dbQry = string.Format("UPDATE tblHolidayList SET [Date] = '{1}', Holiday_Name = '{2}', Remarks = '{3}' WHERE Holiday_ID = {0}",
-                Holiday_ID, DateTime.Parse(Date).ToString("MM/dd/yyyy"), Holiday_Name, Remarks);
+            dbQry = string.Format("UPDATE tblHolidayList SET [Date] = Format('{1}', 'dd/mm/yyyy'), Holiday_Name = '{2}', Remarks = '{3}' WHERE Holiday_ID = {0}",
+                Holiday_ID, Date, Holiday_Name, Remarks);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -67850,12 +67589,12 @@ public partial class BusinessLogic
 
             if (IsActive == true)
             {
-                isAct = 1;
+                isAct = -1;
             }
 
             if (IsDeduction == true)
             {
-                isDec = 1;
+                isDec = -1;
             }
 
             dbQry = string.Format("UPDATE tblPayComponents SET PayComponentName = '{1}', IsDeduction = '{2}', IsComputes = {3}, IsActive = {4}, Description = '{5}', PayComponentType_ID = {6}  WHERE PayComponentID = {0}",
@@ -69863,7 +69602,7 @@ public partial class BusinessLogic
 
             if (Is_Active == true)
             {
-                isAct = 1;
+                isAct = -1;
             }
 
             dbQry = string.Format("INSERT INTO tblEmployeeRoles(Role_Name, Remarks, Is_Active) VALUES('{0}', '{1}', '{2}')",
@@ -69911,7 +69650,7 @@ public partial class BusinessLogic
 
             if (Is_Active == true)
             {
-                isAct = 1;
+                isAct = -1;
             }
 
             dbQry = string.Format("UPDATE tblEmployeeRoles SET Role_Name = '{1}', Remarks = '{2}', Is_Active = '{3}' WHERE ID = {0}",
@@ -70033,7 +69772,7 @@ public partial class BusinessLogic
                     foreach (DataRow dr in dt.Rows)
                     {
                         dbQry = string.Format("INSERT INTO tblEmployeeRoleLeaveLimit(LeaveType_ID, Role_ID, EffectiveDate, AllowedCount) VALUES({0}, {1}, '{2}', {3})",
-                    dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate").ToString("MM/dd/yyyy"), dr.Field<int>("AllowedCount"));
+                    dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate"), dr.Field<int>("AllowedCount"));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -70046,7 +69785,7 @@ public partial class BusinessLogic
                     foreach (DataRow dr in dt.Rows)
                     {
                         dbQry = string.Format("INSERT INTO tblEmployeeRoleLeaveLimit(LeaveType_ID, Role_ID, EffectiveDate, AllowedCount) VALUES({0}, {1}, '{2}', {3})",
-                      dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate").ToString("MM/dd/yyyy"), dr.Field<int>("AllowedCount"));
+                      dr.Field<int>("LeaveType_ID"), dr.Field<int>("Role_ID"), dr.Field<DateTime>("EffectiveDate"), dr.Field<int>("AllowedCount"));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -70169,7 +69908,7 @@ public partial class BusinessLogic
                     manager.CommitTransaction();
 
                     dbQry = string.Format("INSERT INTO tblPayComponentRoleMapping(PayComponent_ID, Role_ID, EffectiveDate, DeclaredAmount) VALUES({0}, {1}, '{2}', {3})",
-                    payCompId, role_ID, frmDate.ToString("MM/dd/yyyy"), amtDeclared);
+                    payCompId, role_ID, frmDate, amtDeclared);
 
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -70178,7 +69917,7 @@ public partial class BusinessLogic
                 else
                 {
                     dbQry = string.Format("INSERT INTO tblPayComponentRoleMapping(PayComponent_ID, Role_ID, EffectiveDate, DeclaredAmount) VALUES({0}, {1}, '{2}', {3})",
-                    payCompId, role_ID, frmDate.ToString("MM/dd/yyyy"), amtDeclared);
+                    payCompId, role_ID, frmDate, amtDeclared);
 
                     manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -70353,119 +70092,6 @@ public partial class BusinessLogic
 
             dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact,ExpenseID) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26},{27})",
                 LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, 0);
-
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
-
-            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger OFF");
-            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
-
-            sAuditStr = "Customer Ledger : " + LedgerName + " added. Record Details :  User :" + Username + " AliasName = " + AliasName + " GroupID= " + GroupID + " ,LedgerCategory = " + LedgerCategory + " ,Mobile=" + Mobile + " Phone :" + Phone;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
-
-            int LedId = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT LedgerID FROM tblLedger where LedgerName ='" + LedgerName + "' "));
-
-            manager.CommitTransaction();
-
-            return LedId;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-        finally
-        {
-            manager.Dispose();
-        }
-
-    }
-
-
-    public int InsertCustomerInfoDirect1(string connection, string LedgerName, string AliasName, int GroupID, double OpenBalanceDR, double OpenBalanceCR, double OpenBalance, string DRORCR, string ContactName, string Add1, string Add2, string Add3, string Phone, string LedgerCategory, int ExecutiveIncharge, string TinNumber, string Mobile, double CreditLimit, int CreditDays, string Inttrans, string Paymentmade, string dc, string ChequeName, string Username, string unuse, string Email, int ModeofContact)
-    {
-        DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(connection);
-        DataSet ds = new DataSet();
-        string dbQry = string.Empty;
-
-        string dbQ = string.Empty;
-        DataSet dsd = new DataSet();
-        string logdescription = string.Empty;
-        string description = string.Empty;
-        string Logsave = string.Empty;
-
-        string sAuditStr = string.Empty;
-
-        try
-        {
-            manager.Open();
-            manager.ProviderType = DataProvider.SqlServer;
-
-            manager.BeginTransaction();
-
-            //object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where LedgerName='" + LedgerName + "'");
-
-            //if (exists.ToString() != string.Empty)
-            //{
-            //    if (int.Parse(exists.ToString()) > 0)
-            //    {
-            //        throw new Exception("Ledger Exists");
-            //    }
-            //}
-
-            int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
-
-
-            string MobileID = Convert.ToString(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(Mobile) FROM tblLedger"));
-
-
-            dbQ = "SELECT KeyValue From tblSettings WHERE keyname='SAVELOG'";
-            dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
-            if (dsd.Tables[0].Rows.Count > 0)
-                Logsave = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
-
-            if (Logsave == "YES")
-            {
-                string value1 = string.Empty;
-                string value2 = string.Empty;
-                string value3 = string.Empty;
-
-                int middlePos = 0;
-
-                logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ExpenseID) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23})",
-                        LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, MobileID + 1, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, 0);
-                logdescription = logdescription.Trim();
-                if (logdescription.Length > 255)
-                {
-                    value1 = logdescription.Substring(0, 255);
-                    middlePos = logdescription.Length - (value1.Length);
-                    if (middlePos > 0)
-                        value2 = logdescription.Substring(255, middlePos);
-                    else
-                        value2 = "";
-
-                    middlePos = logdescription.Length - (value1.Length + value2.Length);
-                    if (middlePos > 0)
-                        value3 = logdescription.Substring(510, middlePos);
-                    else
-                        value3 = "";
-                }
-                else
-                {
-                    value1 = logdescription;
-                    value2 = "";
-                    value3 = "";
-                }
-                description = string.Format("INSERT INTO tblLog(LogDate,LogDescription,LogUsername,LogKey,LogDescription1,LogDescription2,LogMethod) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')",
-                     DateTime.Now.ToString("yyyy-MM-dd"), value1, "", "", value2, value3, "InsertCustmoerInfo");
-                manager.ExecuteNonQuery(CommandType.Text, description);
-            }
-
-            //dbQry = string.Format("SET IDENTITY_INSERT tblLedger ON");
-            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
-
-            dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact,ExpenseID) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26},{27})",
-                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, MobileID + 1, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, 0);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -72254,7 +71880,7 @@ public partial class BusinessLogic
             dbQry = string.Format(@"INSERT INTO tblEmployeePermissions (EmployeeNo,StartTime,EndTime, DateApplied, 
                                         Reason,Status,Approver,ApproverComments,EmailContact,PhoneContact)
                                         VALUES ({0},'{1}','{2}','{3}','{4}','{5}',{6}, '{7}','{8}',{9})"
-                                        , EmpNo, StartTime.ToString("MM/dd/yyyy HH:mm:ss"), EndTime.ToString("MM/dd/yyyy HH:mm:ss"), DateApplied.ToString("MM/dd/yyyy"), Reason
+                                        , EmpNo, StartTime, EndTime, DateApplied, Reason
                                         , "Submitted", Approver, "", EmailContact, PhoneContact);
 
             int resultId = manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -72287,7 +71913,7 @@ public partial class BusinessLogic
 
             dbQry = string.Format(@"UPDATE tblEmployeePermissions SET EmployeeNo={0},StartTime='{1}', EndTime='{2}', DateApplied='{3}',
                                                 Reason='{4}',Approver={5},EmailContact='{6}',PhoneContact='{7}' WHERE PermissionID={8}"
-                                        , EmployeeNo, StartTime.ToString("MM/dd/yyyy HH:mm:ss"), EndTime.ToString("MM/dd/yyyy HH:mm:ss"), DateApplied.ToString("MM/dd/yyyy"), Reason
+                                        , EmployeeNo, StartTime, EndTime, DateApplied, Reason
                                         , Approver, EmailContact, PhoneContact, PermissionId);
 
             int resultId = manager.ExecuteNonQuery(CommandType.Text, dbQry);
@@ -75768,10 +75394,550 @@ public partial class BusinessLogic
     }
 
 
-        /* Clossing the DB Connection */
+        ///* Clossing the DB Connection */
         //oleConn.Close();
 
         //return ds;
 
+    public DataSet generateReportDSCash(string iLedgerID, DateTime dtSdate, DateTime dtEdate, string sDataSource, int iOrder, string Branch, string connection)
+    {
+        /* Start Variable Declaration */
+
+        double dDebitAmt = 0;
+        double dCreditAmt = 0;
+        string sTranDate = string.Empty;
+        string iQry = "";
+        string sParticulars = "";
+        string sbranch = "";
+        string sVoucherType = string.Empty;
+        string sQry = string.Empty;
+        string pQry = string.Empty;
+        string sConStr = string.Empty;
+        // OleDbConnection oleConn, oleSubConn;
+
+        SqlConnection oleConn, oleSubConn;
+        SqlCommand oleCmd;
+        SqlDataAdapter oleAdp;
+        // OleDbCommand oleCmd;
+        // OleDbDataAdapter oleAdp;
+        DataSet dsParentQry;
+        DataSet dsChildQry;
+        string sOrder;
+        if (iOrder == 0)
+            sOrder = "asc";
+        else
+            sOrder = "desc";
+        /* End Variable Declaration */
+
+        /* Start Ms Access Database Connection Information */
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+        sConStr = sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleCmd = new SqlCommand();
+        oleCmd.Connection = oleConn;
+        /* End Ms Access Database Connection Information */
+
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        if (Branch == "0")
+        {
+            sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,BranchCode FROM tblDayBook WHERE (DebtorID in (" + iLedgerID + ") OR CreditorID in (" + iLedgerID + ") ) AND (TransDate >='" + dtSdate.ToString("yyyy-MM-dd") + "' AND TransDate <='" + dtEdate.ToString("yyyy-MM-dd") + "') Order by TransDate " + sOrder;
+        }
+        else
+        {
+            sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,BranchCode FROM tblDayBook WHERE (DebtorID in (" + iLedgerID + ") OR CreditorID in (" + iLedgerID + ") ) and BranchCode='" + Branch + "' AND (TransDate >='" + dtSdate.ToString("yyyy-MM-dd") + "' AND TransDate <='" + dtEdate.ToString("yyyy-MM-dd") + "') Order by TransDate " + sOrder;
+        }
+
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+        oleAdp = new SqlDataAdapter(oleCmd);
+        dsParentQry = new DataSet();
+        oleAdp.Fill(dsParentQry);
+        /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
+
+
+        DataSet ds;
+        DataTable dt;
+        DataRow drNew;
+        DataColumn dc;
+
+
+        ds = new DataSet();
+        dt = new DataTable();
+        dc = new DataColumn("Date");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Particulars");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Debit");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Credit");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("VoucherType");
+        dt.Columns.Add(dc);
+
+
+        ds.Tables.Add(dt);
+
+        if (dsParentQry.Tables[0].Rows.Count == 0)
+        {
+            drNew = dt.NewRow();
+            drNew["Date"] = string.Empty;
+            drNew["Particulars"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
+            drNew["Debit"] = "0.00";
+            drNew["Credit"] = "0.00";
+            drNew["VoucherType"] = string.Empty;
+            ds.Tables[0].Rows.Add(drNew);
+        }
+        else
+        {
+            /* Iterating through the records and forming the custom datamodel and write into XML file */
+
+            foreach (DataRow drParentQry in dsParentQry.Tables[0].Rows)
+            {
+                dDebitAmt = 0;
+                dCreditAmt = 0;
+
+
+                if (drParentQry["TransDate"] != null)
+                {
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
+                }
+                if (drParentQry["VoucherType"] != null)
+                {
+                    sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                }
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
+                }
+
+                //string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+                /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
+                if (drParentQry["DebtorID"] != null)
+                {
+                    int iLedID = getCashACLedgerId(connection, sbranch);
+
+                    if (Convert.ToInt32(drParentQry["DebtorID"].ToString()) == Convert.ToInt32(iLedID))
+                    {
+                        dDebitAmt = Convert.ToDouble(drParentQry["Amount"].ToString());
+                        pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
+                    }
+                }
+                if (drParentQry["CreditorID"] != null)
+                {
+                    int iLedID = getCashACLedgerId(connection, sbranch);
+
+                    if (Convert.ToInt32(drParentQry["CreditorID"].ToString()) == Convert.ToInt32(iLedID))
+                    {
+
+                        dCreditAmt = Convert.ToDouble(drParentQry["Amount"].ToString());
+                        pQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString());
+                    }
+                }
+                /* End Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
+
+
+                if (pQry != "")
+                {
+                    oleCmd = new SqlCommand();
+                    oleCmd.CommandText = pQry;
+                    oleSubConn = new SqlConnection(CreateConnectionString(sConStr));
+                    oleCmd.Connection = oleSubConn;
+                    oleAdp = new SqlDataAdapter(oleCmd);
+                    dsChildQry = new DataSet();
+                    oleAdp.Fill(dsChildQry);
+                    if (dsChildQry != null)
+                    {
+                        if (dsChildQry.Tables[0].Rows.Count > 0)
+                        {
+                            sParticulars = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString() + " " + drParentQry["Narration"].ToString();
+                        }
+                    }
+                    oleSubConn.Close();
+                }
+
+                drNew = dt.NewRow();
+                drNew["Date"] = sTranDate;
+                drNew["Particulars"] = sParticulars;
+                drNew["BranchCode"] = sbranch;
+                drNew["Debit"] = dDebitAmt.ToString();
+                drNew["Credit"] = dCreditAmt.ToString();
+                drNew["VoucherType"] = sVoucherType;
+
+                ds.Tables[0].Rows.Add(drNew);
+            }
+
+
+
+        }
+
+
+        /* Clossing the DB Connection */
+        oleConn.Close();
+
+        return ds;
+
+
+    }
+
+    public double getOpeningBalanceCash(int AccHeadingID, int GroupID, int ledgerID, string type, DateTime oDate, string sDataSource,string Branch)
+    {
+        string sConStr = string.Empty;
+        string sQry = string.Empty;
+        SqlConnection oleConn;
+        SqlCommand oleCmd;
+        sConStr = sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleCmd = new SqlCommand();
+        oleConn.Open();
+        oleCmd.Connection = oleConn;
+        double oBal = 0;
+        /* End Ms Access Database Connection Information */
+
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        if (type == "debit")
+        {
+            if (Branch == "0")
+            {
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
+            }
+            else
+            {
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'  and B.BranchCode='" + Branch + "' ";
+            }
+
+            if (ledgerID > 0)
+                sQry = sQry + " AND B.DebtorID = " + ledgerID.ToString();
+            if (AccHeadingID > 0)
+                sQry = sQry + " AND G.HeadingID = " + AccHeadingID.ToString();
+            if (GroupID > 0)
+                sQry = sQry + " AND L.GroupID = " + GroupID.ToString();
+
+
+        }
+        else
+        {
+            //sQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where CreditorID = " + ledgerID + "  AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
+            if (Branch == "0")
+            {
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
+            }
+            else
+            {
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'  and B.BranchCode='" + Branch + "' ";
+            }
+
+            if (ledgerID > 0)
+                sQry = sQry + " AND B.CreditorID = " + ledgerID.ToString();
+            if (AccHeadingID > 0)
+                sQry = sQry + " AND G.HeadingID = " + AccHeadingID.ToString();
+            if (GroupID > 0)
+                sQry = sQry + " AND L.GroupID = " + GroupID.ToString();
+
+        }
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+        oBal = getLedgerOpeningBalanceCash(ledgerID, type, sDataSource, Branch);
+
+        object amtObj;
+
+        amtObj = oleCmd.ExecuteScalar();
+        double amt = 0.0;
+        if (amtObj != null && amtObj != DBNull.Value)
+            amt = (double)amtObj;
+        amt = amt + oBal;
+        oleConn.Close();
+        return amt;
+    }
+
+    public double getLedgerOpeningBalanceCash(int ledgerID, string type, string sDataSource,string Branch)
+    {
+        string sConStr = string.Empty;
+        string sQry = string.Empty;
+        SqlConnection oleConn;
+        SqlCommand oleCmd;
+        sConStr = sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleCmd = new SqlCommand();
+        oleConn.Open();
+        oleCmd.Connection = oleConn;
+        /* End Ms Access Database Connection Information */
+
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+
+        if (Branch == "0")
+        {
+            if (type == "debit")
+                sQry = "SELECT OpenBalanceDr  FROM tblLedger Where  ledgerID=" + ledgerID;
+            else
+                sQry = "SELECT OpenBalanceCr  FROM tblLedger Where  ledgerID=" + ledgerID;
+        }
+        else
+        {
+            if (type == "debit")
+                sQry = "SELECT OpenBalanceDr  FROM tblLedger Where   BranchCode='" + Branch + "' and ledgerID=" + ledgerID;
+            else
+                sQry = "SELECT OpenBalanceCr  FROM tblLedger Where  BranchCode='" + Branch + "' and ledgerID=" + ledgerID;
+        }
+
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+        //oleAdp = new SqlDataAdapter(oleCmd);
+        //dsParentQry = new DataSet();
+        //oleAdp.Fill(dsParentQry);
+        object amtObj;
+
+        amtObj = oleCmd.ExecuteScalar();
+        double amt = 0.0;
+        if (amtObj != null && amtObj != DBNull.Value)
+            amt = (double)amtObj;
+        oleConn.Close();
+        return amt;
+    }
+
+    public DataSet generateDayBookDS(DateTime dtSdate, DateTime dtEdate, string sDataSource,string Branch)
+    {
+        /* Start Variable Declaration */
+        Decimal dDebitAmt, dCreditAmt, dSumDr, dSumCr, dDiffDrCr;
+        string sDebtor = string.Empty;
+        string sCreditor = string.Empty;
+        string sTranDate = string.Empty;
+        string iQry = "";
+        string sQry = string.Empty;
+        string sConStr = string.Empty;
+        string sNarration = string.Empty;
+        SqlConnection oleConn, oleSubConn; ;
+        SqlCommand oleCmd;
+        SqlDataAdapter oleAdp;
+        DataSet dsParentQry;
+        DataSet dsChildQry;
+
+        string dBranchcode = string.Empty;
+        
+
+        /* End Variable Declaration */
+        /* Start Ms Access Database Connection Information */
+        //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
+        sConStr = sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleCmd = new SqlCommand();
+        oleCmd.Connection = oleConn;
+        /* End Ms Access Database Connection Information */
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+
+        if (Branch == "0")
+        {
+            sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,Branchcode FROM tblDayBook WHERE  (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') Order by TransDate Desc";
+        }
+        else
+        {
+            sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,Branchcode FROM tblDayBook WHERE Branchcode ='" + Branch + "' and (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') Order by TransDate Desc";
+        }
+
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+        oleAdp = new SqlDataAdapter(oleCmd);
+        dsParentQry = new DataSet();
+        oleAdp.Fill(dsParentQry);
+        /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
+
+        /* XML Forming using the records gathered in the DayBook */
+
+
+
+        /* Intialization of Sum of Debit and Credit and their Difference */
+        dSumDr = 0;
+        dSumCr = 0;
+        dDiffDrCr = 0;
+        DataSet ds;
+        DataTable dt;
+        DataRow drNew;
+        DataColumn dc;
+
+
+        ds = new DataSet();
+        dt = new DataTable();
+        dc = new DataColumn("Date");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Narration");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Debit");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Credit");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Debitor");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Creditor");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Branchcode");
+        dt.Columns.Add(dc);
+        
+
+        ds.Tables.Add(dt);
+        if (dsParentQry.Tables[0].Rows.Count == 0)
+        {
+            /* Empty XML Formation if there is no record */
+
+            drNew = dt.NewRow();
+            drNew["Date"] = string.Empty;
+            drNew["Narration"] = string.Empty;
+            drNew["Debit"] = "0.00";
+            drNew["Credit"] = "0.00";
+            drNew["Debitor"] = string.Empty;
+            drNew["Creditor"] = string.Empty;
+            ds.Tables[0].Rows.Add(drNew);
+
+        }
+        else
+        {
+            foreach (DataRow drParentQry in dsParentQry.Tables[0].Rows)
+            {
+                dDebitAmt = 0;
+                dCreditAmt = 0;
+
+                if (drParentQry["TransDate"] != null)
+                {
+                    sTranDate = Convert.ToDateTime(drParentQry["TransDate"].ToString()).ToShortDateString();
+                }
+
+
+                if (drParentQry["Narration"] != null)
+                {
+                    sNarration = "(" + drParentQry["Narration"].ToString() + ")";
+                }
+
+                dBranchcode = drParentQry["Branchcode"].ToString();
+
+                /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
+                if (drParentQry["CreditorID"] != null)
+                {
+                    dDebitAmt = Convert.ToDecimal(drParentQry["Amount"].ToString());
+                    iQry = "SELECT Ledgername FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["CreditorID"].ToString());
+                    dSumCr = dSumCr + dCreditAmt;
+                    oleCmd = new SqlCommand();
+                    oleCmd.CommandText = iQry;
+                    oleSubConn = new SqlConnection(CreateConnectionString(sConStr));
+                    oleCmd.Connection = oleSubConn;
+                    oleAdp = new SqlDataAdapter(oleCmd);
+                    dsChildQry = new DataSet();
+                    oleAdp.Fill(dsChildQry);
+                    if (dsChildQry != null)
+                    {
+                        if (dsChildQry.Tables[0].Rows.Count > 0)
+                            sCreditor = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString();
+                        else
+                            sCreditor = "";
+                    }
+                    else
+                    {
+                        sCreditor = "";
+                    }
+                    oleSubConn.Close();
+                }
+                if (drParentQry["DebtorID"] != null)
+                {
+
+                    dCreditAmt = Convert.ToDecimal(drParentQry["Amount"].ToString());
+                    iQry = "SELECT Ledgername  FROM tblLedger WHERE LedgerID=" + Convert.ToInt32(drParentQry["DebtorID"].ToString());
+                    dSumDr = dSumDr + dDebitAmt;
+                    oleCmd = new SqlCommand();
+                    oleCmd.CommandText = iQry;
+                    oleSubConn = new SqlConnection(CreateConnectionString(sConStr));
+                    oleCmd.Connection = oleSubConn;
+                    oleAdp = new SqlDataAdapter(oleCmd);
+                    dsChildQry = new DataSet();
+                    oleAdp.Fill(dsChildQry);
+                    if (dsChildQry != null)
+                    {
+                        if (dsChildQry.Tables[0].Rows.Count > 0)
+                            sDebtor = dsChildQry.Tables[0].Rows[0]["ledgername"].ToString();
+                        else
+                            sDebtor = "";
+                    }
+                    else
+                    {
+                        sDebtor = "";
+                    }
+                    oleSubConn.Close();
+                }
+                /* End Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
+
+
+                drNew = dt.NewRow();
+                drNew["Date"] = sTranDate;
+                drNew["Narration"] = sNarration;
+                drNew["Debit"] = dDebitAmt.ToString();
+                drNew["Credit"] = dCreditAmt.ToString();
+                drNew["Branchcode"] = dBranchcode;
+                
+                drNew["Debitor"] = sDebtor;
+                drNew["Creditor"] = sCreditor;
+                ds.Tables[0].Rows.Add(drNew);
+
+            }//End foreach
+
+
+
+        }
+
+
+
+        /* Clossing the DB Connection */
+        oleConn.Close();
+        return ds;
+
+    }
+
+    public double GetDayBookOB(DateTime dtSdate, string sDataSource,string Branch)
+    {
+        //SELECT Sum(Amount) FROM tblDayBook Where TransDate < #09/20/2009#
+        string sConStr = string.Empty;
+        string sQry = string.Empty;
+        SqlConnection oleConn;
+        SqlCommand oleCmd;
+        sConStr = sDataSource;
+        oleConn = new SqlConnection(CreateConnectionString(sConStr));
+        oleCmd = new SqlCommand();
+        oleConn.Open();
+        oleCmd.Connection = oleConn;
+        /* End Ms Access Database Connection Information */
+
+        /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
+        if (Branch == "0")
+        {
+        sQry = "SELECT Sum(Amount) FROM tblDayBook Where  TransDate <'" + dtSdate.ToString("MM/dd/yyyy") + "'";
+        }
+        else
+        {
+            sQry = "SELECT Sum(Amount) FROM tblDayBook Where  TransDate <'" + dtSdate.ToString("MM/dd/yyyy") + "' and Branchcode='" + Branch + "'";
+    }
+        oleCmd.CommandText = sQry;
+        oleCmd.CommandType = CommandType.Text;
+        //oleAdp = new OleDbDataAdapter(oleCmd);
+        //dsParentQry = new DataSet();
+        //oleAdp.Fill(dsParentQry);
+        object amtObj;
+
+        amtObj = oleCmd.ExecuteScalar();
+        double amt = 0.0;
+        if (amtObj != null && amtObj != DBNull.Value)
+            amt = (double)amtObj;
+        oleConn.Close();
+        return amt;
+    }
 
 }
