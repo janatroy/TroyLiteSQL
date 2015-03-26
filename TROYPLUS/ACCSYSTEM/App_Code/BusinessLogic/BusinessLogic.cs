@@ -71784,7 +71784,7 @@ public partial class BusinessLogic
         string dbQry = string.Empty;
         int empNo = GetUserInfoByName(userName).EmpNo;
 
-        dbQry = string.Format(@"SELECT a.PermissionId, a.EmployeeNo, e.EmpFirstName as EmployeeName, FORMAT(a.StartTime, 'Short Time')+' - '+FORMAT(a.EndTime, 'Short Time') as TimeRange, a.DateApplied, a.Reason, a.Status, a.Approver, e1.EmpFirstName as ApproverName, a.ApproverComments, a.EmailContact, a.PhoneContact 
+        dbQry = string.Format(@"SELECT a.PermissionId, a.EmployeeNo, e.EmpFirstName as EmployeeName, CONVERT(VARCHAR(5),a.StartTime,108)+' - '+  CONVERT(VARCHAR(5),a.EndTime,108) as TimeRange,, a.DateApplied, a.Reason, a.Status, a.Approver, e1.EmpFirstName as ApproverName, a.ApproverComments, a.EmailContact, a.PhoneContact 
                                 FROM (tblEmployeePermissions a                                 
                                 INNER JOIN tblEmployee e on a.EmployeeNo = e.EmpNo)
                                 INNER JOIN tblEmployee e1 on a.Approver = e1.EmpNo
