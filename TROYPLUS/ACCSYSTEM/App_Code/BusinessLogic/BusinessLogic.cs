@@ -42254,6 +42254,7 @@ public partial class BusinessLogic
         string sParticularsI = "";
 
         string sVoucherType = string.Empty;
+        string sbranch = string.Empty;
         string sLedgerID = "0";
         string sLedger = string.Empty;
         string sQry = string.Empty;
@@ -42360,6 +42361,9 @@ public partial class BusinessLogic
         dc = new DataColumn("VoucherType");
         dt.Columns.Add(dc);
 
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
+
         dc = new DataColumn("TransNo");
         dt.Columns.Add(dc);
 
@@ -42377,6 +42381,7 @@ public partial class BusinessLogic
             drNew["Debit"] = "0.00";
             drNew["Credit"] = "0.00";
             drNew["VoucherType"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
             ds.Tables[0].Rows.Add(drNew);
         }
         else
@@ -42396,6 +42401,11 @@ public partial class BusinessLogic
                 if (drParentQry["VoucherType"] != null)
                 {
                     sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                }
+
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
 
                 /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
@@ -42478,6 +42488,7 @@ public partial class BusinessLogic
                 drNew["Debit"] = dDebitAmt.ToString();
                 drNew["Credit"] = dCreditAmt.ToString();
                 drNew["VoucherType"] = sVoucherType;
+                drNew["BranchCode"] = sbranch;
                 drNew["TransNo"] = Convert.ToString(drParentQry["TransNo"].ToString());
                 ds.Tables[0].Rows.Add(drNew);
 
@@ -42488,6 +42499,7 @@ public partial class BusinessLogic
         oleConn.Close();
         return ds;
     }
+
 
 
 
@@ -42665,6 +42677,7 @@ public partial class BusinessLogic
         string sParticularsI = "";
 
         string sVoucherType = string.Empty;
+        string sbranch = string.Empty;
         string sQry = string.Empty;
         string pQry = string.Empty;
         string jQry = string.Empty;
@@ -42867,10 +42880,10 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Transno,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
             sQry = sQry + " AND (VoucherType='Sales') ";
 
             if (iLedgerID != 0)
@@ -42920,10 +42933,10 @@ public partial class BusinessLogic
         else
         {
             //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " + sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Transno,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Transno,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
             if (iLedgerID != 0)
                 sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
@@ -42936,7 +42949,7 @@ public partial class BusinessLogic
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Transno,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Transno,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
             sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
@@ -42993,6 +43006,9 @@ public partial class BusinessLogic
         dc = new DataColumn("VoucherType");
         dt.Columns.Add(dc);
 
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
+
 
         ds.Tables.Add(dt);
 
@@ -43007,6 +43023,7 @@ public partial class BusinessLogic
             drNew["Debit"] = "0.00";
             drNew["Credit"] = "0.00";
             drNew["VoucherType"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
             ds.Tables[0].Rows.Add(drNew);
         }
         else
@@ -43043,6 +43060,11 @@ public partial class BusinessLogic
                 if (drParentQry["VoucherType"] != null)
                 {
                     sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                }
+
+                if (drParentQry["BranchCode"] != null)
+                {
+                    sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                 }
                 /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
                 if (drParentQry["DebtorID"] != null)
@@ -43141,6 +43163,7 @@ public partial class BusinessLogic
                 drNew["Debit"] = dDebitAmt.ToString();
                 drNew["Credit"] = dCreditAmt.ToString();
                 drNew["VoucherType"] = sVoucherType;
+                drNew["BranchCode"] = sbranch;
                 ds.Tables[0].Rows.Add(drNew);
 
                 sParticularsI = "";
@@ -43176,6 +43199,7 @@ public partial class BusinessLogic
 
 
     }
+
     /*End Ledger Report March 16*/
 
 
