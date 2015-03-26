@@ -39,6 +39,10 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
 
                 txtStDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
                 txtEdDate.Text = DateTime.Now.ToShortDateString();
+
+                loadBranch();
+                BranchEnable_Disable();
+
             }
         }
         catch (Exception ex)
@@ -47,7 +51,70 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         }
     }
 
-    protected void btnReport_Click(object sender, EventArgs e)
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        DropDownList1.ClearSelection();
+        ListItem lit = DropDownList1.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (lit != null) lit.Selected = true;
+
+        DropDownList2.ClearSelection();
+        ListItem litt = DropDownList2.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (litt != null) litt.Selected = true;
+
+        DropDownList3.ClearSelection();
+        ListItem littt = DropDownList3.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (littt != null) littt.Selected = true;
+
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
+
+        DropDownList1.Items.Clear();
+        DropDownList1.Items.Add(new ListItem("All", "0"));
+        DropDownList1.DataSource = ds;
+        DropDownList1.DataBind();
+        DropDownList1.DataTextField = "BranchName";
+        DropDownList1.DataValueField = "Branchcode";
+
+        DropDownList2.Items.Clear();
+        DropDownList2.Items.Add(new ListItem("All", "0"));
+        DropDownList2.DataSource = ds;
+        DropDownList2.DataBind();
+        DropDownList2.DataTextField = "BranchName";
+        DropDownList2.DataValueField = "Branchcode";
+
+        DropDownList3.Items.Clear();
+        DropDownList3.Items.Add(new ListItem("All", "0"));
+        DropDownList3.DataSource = ds;
+        DropDownList3.DataBind();
+        DropDownList3.DataTextField = "BranchName";
+        DropDownList3.DataValueField = "Branchcode";
+    }
+
+    protected void btnReport2_Click(object sender, EventArgs e)
     {
         try
         {
@@ -81,6 +148,10 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    protected void btnReport_Click(object sender, EventArgs e)
+    {
     }
 
     protected void btnt_Click(object sender, EventArgs e)
@@ -126,8 +197,10 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStrtDt.Text.Trim());
         endDate = Convert.ToDateTime(txtEdDt.Text.Trim());
 
+        string Branch = DropDownList2.SelectedValue;
+
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-        ds = objBL.SalesPurRetAnnuxere(startDate, endDate, salesRet, intTrans, delNote, condi);
+        ds = objBL.SalesPurRetAnnuxere(startDate, endDate, salesRet, intTrans, delNote, condi,Branch);
         Double serialno = 1;
         if (ds != null)
         {
@@ -144,6 +217,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Tax Rate"));
                 dt.Columns.Add(new DataColumn("Vat CST Paid"));
                 dt.Columns.Add(new DataColumn("Category"));
+                dt.Columns.Add(new DataColumn("Branchcode"));
 
                 DataRow dr_export1 = dt.NewRow();
                 dt.Rows.Add(dr_export1);
@@ -161,6 +235,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
                     dr_export["Invoice Date"] = dtaa;
 
+                    dr_export["Branchcode"] = dr["Branchcode"];
                     dr_export["Sales Value"] = dr["NetRate"];
                     dr_export["Tax Rate"] = dr["vat"];
                     dr_export["Vat CST Paid"] = dr["ActualVAT"];
@@ -207,7 +282,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         intTrans = "NO";
         salesRet = "NO";
         delNote = "NO";
-
+        string Branch = drpBranchAdd.SelectedValue;
         if (optionrate.SelectedItem.Text == "5%")
         {
             condi = " And tblPurchaseItems.vat = 5" ;
@@ -225,7 +300,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-        ds = objBL.PurchaseAnnuxere(startDate, endDate, salesRet, intTrans, delNote, condi);
+        ds = objBL.PurchaseAnnuxere(startDate, endDate, salesRet, intTrans, delNote, condi, Branch);
         Double serialno = 1;
 
         if (ds != null)
@@ -243,6 +318,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Tax Rate"));
                 dt.Columns.Add(new DataColumn("Vat CST Paid"));
                 dt.Columns.Add(new DataColumn("Category"));
+                dt.Columns.Add(new DataColumn("Branchcode"));
 
                 DataRow dr_export1 = dt.NewRow();
                 dt.Rows.Add(dr_export1);
@@ -255,6 +331,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                     dr_export["Seller Tin"] = dr["Tinnumber"];
                     dr_export["Commodity Code"] = "";
                     dr_export["Invoice No"] = dr["BillNo"];
+                    dr_export["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -359,11 +436,13 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
             condi = "";
         }
 
+        string Branch = DropDownList3.SelectedValue;
+
         startDate = Convert.ToDateTime(txtStDate.Text.Trim());
         endDate = Convert.ToDateTime(txtEdDate.Text.Trim());
 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-        ds = objBL.PurchaseSalesRetAnnuxere(startDate, endDate, salesRet, intTrans, delNote, condi);
+        ds = objBL.PurchaseSalesRetAnnuxere(startDate, endDate, salesRet, intTrans, delNote, condi, Branch);
         Double serialno = 1;
         if (ds != null)
         {
@@ -380,6 +459,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Tax Rate"));
                 dt.Columns.Add(new DataColumn("Vat CST Paid"));
                 dt.Columns.Add(new DataColumn("Category"));
+                dt.Columns.Add(new DataColumn("Branchcode"));
 
                 DataRow dr_export1 = dt.NewRow();
                 dt.Rows.Add(dr_export1);
@@ -392,6 +472,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                     dr_export["Seller Tin"] = dr["Tinnumber"];
                     dr_export["Commodity Code"] = "";
                     dr_export["Invoice No"] = dr["BillNo"];
+                    dr_export["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -459,8 +540,10 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStartDt.Text.Trim());
         endDate = Convert.ToDateTime(txtEndDt.Text.Trim());
 
+        string Branch = DropDownList1.SelectedValue;
+
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-        ds = objBL.SalesAnnuxere(startDate, endDate, salesRet, intTrans, delNote,condi);
+        ds = objBL.SalesAnnuxere(startDate, endDate, salesRet, intTrans, delNote, condi, Branch);
         Double serialno = 1;
 
         if (ds != null)
@@ -478,6 +561,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Tax Rate"));
                 dt.Columns.Add(new DataColumn("Vat CST Paid"));
                 dt.Columns.Add(new DataColumn("Category"));
+                dt.Columns.Add(new DataColumn("Branchcode"));
 
                 DataRow dr_export1 = dt.NewRow();
                 dt.Rows.Add(dr_export1);
@@ -490,6 +574,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                     dr_export["Buyer Tin"] = dr["Tinnumber"];
                     dr_export["Commodity Code"] = "";
                     dr_export["Invoice No"] = dr["BillNo"];
+                    dr_export["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");

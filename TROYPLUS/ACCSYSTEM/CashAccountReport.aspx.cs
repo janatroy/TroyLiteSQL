@@ -14,7 +14,7 @@ using System.Xml.Linq;
 using System.Data.OleDb;
 using System.Xml;
 using System.IO;
-
+using ClosedXML.Excel;
 
 public partial class CashAccountReport : System.Web.UI.Page
 {
@@ -69,7 +69,8 @@ public partial class CashAccountReport : System.Web.UI.Page
                         }
                     }
                 }
-
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
@@ -77,6 +78,37 @@ public partial class CashAccountReport : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
 
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+      
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
     }
 
     protected void btndetails_Click(object sender, EventArgs e)
@@ -92,15 +124,41 @@ public partial class CashAccountReport : System.Web.UI.Page
             CashPanel.Visible = true;
             startDate = Convert.ToDateTime(txtStartDate.Text);
             endDate = Convert.ToDateTime(txtEndDate.Text);
-
-
+            string Branch = drpBranchAdd.SelectedValue;
+            string LedgerID = string.Empty;
             lblStartDate.Text = txtStartDate.Text;
             lblEndDate.Text = txtEndDate.Text;
             double credit = 0;
             double debit = 0;
 
+            string connection = Request.Cookies["Company"].Value;
+            BusinessLogic bl = new BusinessLogic(sDataSource);
 
-            DataSet ds = rptCashReport.generateReportDS(iLedgerID, startDate, endDate, sDataSource, 0);
+            DataSet dst = new DataSet();
+            if (Branch == "0")
+            {
+                dst = bl.ListBranchInfo(connection, "", "");
+
+                if (dst.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dst.Tables[0].Rows)
+                    {
+                        iLedgerID = bl.getCashACLedgerId(connection, dr["Branchcode"].ToString());
+
+                        LedgerID = LedgerID + iLedgerID;
+                        LedgerID = LedgerID + ",";
+                    }
+                    LedgerID = LedgerID.TrimEnd(',');
+                    //LedgerID = LedgerID.Replace(",", "");
+                }
+            }
+            else
+            {
+                iLedgerID = bl.getCashACLedgerId(connection, Branch);
+                LedgerID = iLedgerID.ToString();
+            }
+
+            DataSet ds = bl.generateReportDSCash(LedgerID, startDate, endDate, sDataSource, 0, Branch, connection);
 
             gvCash.DataSource = ds;
             gvCash.DataBind();
@@ -111,10 +169,11 @@ public partial class CashAccountReport : System.Web.UI.Page
             #region Export To Excel
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Cash");
                 dt.Columns.Add(new DataColumn("Date"));
                 dt.Columns.Add(new DataColumn("Particulars"));
                 dt.Columns.Add(new DataColumn("Voucher Type"));
+                dt.Columns.Add(new DataColumn("Branchcode"));
                 dt.Columns.Add(new DataColumn("Debit"));
                 dt.Columns.Add(new DataColumn("Credit"));
 
@@ -127,6 +186,7 @@ public partial class CashAccountReport : System.Web.UI.Page
                     dr_export["Date"] = dr["Date"];
                     dr_export["Particulars"] = dr["Particulars"];
                     dr_export["Voucher Type"] = dr["VoucherType"];
+                    dr_export["Branchcode"] = dr["Branchcode"];
                     dr_export["Debit"] = dr["Debit"];
                     debit = debit + Convert.ToDouble(dr["Debit"]);
                     dr_export["Credit"] = dr["Credit"];
@@ -184,7 +244,7 @@ public partial class CashAccountReport : System.Web.UI.Page
                 dr_export3["Credit"] = Convert.ToDouble(lblCreditDiff.Text);
                 dt.Rows.Add(dr_export3);
 
-                ExportToExcel("Cash Account Report.xls", dt);
+                ExportToExcel("", dt);
             }
             #endregion
         }
@@ -194,27 +254,45 @@ public partial class CashAccountReport : System.Web.UI.Page
         }
     }
 
-    public void ExportToExcel(string filename, DataTable dt)
+    public void ExportToExcel(string filenam, DataTable dt)
     {
         if (dt.Rows.Count > 0)
         {
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Cash Account Report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 
@@ -241,6 +319,8 @@ public partial class CashAccountReport : System.Web.UI.Page
             lblStartDate.Text = txtStartDate.Text;
             lblEndDate.Text = txtEndDate.Text;
 
+            string Branch = drpBranchAdd.SelectedValue;
+
             //DataSet ds = rptCashReport.generateReportDS(iLedgerID, startDate, endDate, sDataSource, 0);
 
             //gvCash.DataSource = ds;
@@ -250,7 +330,7 @@ public partial class CashAccountReport : System.Web.UI.Page
             div1.Visible = true;
 
 
-            Response.Write("<script language='javascript'> window.open('CashAccountReport2.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&iLedgerID=" + iLedgerID + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('CashAccountReport2.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&iLedgerID=" + iLedgerID + "&Branch=" + Branch + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {
@@ -286,8 +366,8 @@ public partial class CashAccountReport : System.Web.UI.Page
                 camt = camt + credit;
                 lblDebitSum.Text = damt.ToString("f2");  //Convert.ToString(damt);
                 lblCreditSum.Text = camt.ToString("f2");// Convert.ToString(camt);
-                e.Row.Cells[3].Text = debit.ToString("f2");
-                e.Row.Cells[4].Text = credit.ToString("f2");
+                e.Row.Cells[4].Text = debit.ToString("f2");
+                e.Row.Cells[5].Text = credit.ToString("f2");
             }
         }
         catch (Exception ex)
@@ -302,7 +382,7 @@ public partial class CashAccountReport : System.Web.UI.Page
 
         ReportsBL.ReportClass rpt = new ReportsBL.ReportClass();
 
-        if (Request.Cookies["Company"]  != null)
+        if (Request.Cookies["Company"] != null)
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         double opCr = 0.0;
@@ -312,10 +392,36 @@ public partial class CashAccountReport : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStartDate.Text);
         endDate = Convert.ToDateTime(txtEndDate.Text);
 
+
+
+        DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
+        DateTime etdt = Convert.ToDateTime(txtEndDate.Text);
+
+        if (Request.QueryString["startDate"] != null)
+        {
+            stdt = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
+        }
+        if (Request.QueryString["endDate"] != null)
+        {
+            etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
+        }
+
+        string Branch = string.Empty;
+
+        if (Request.QueryString["Branch"] != null)
+        {
+            Branch = Request.QueryString["Branch"].ToString();
+        }
+
+        startDate = Convert.ToDateTime(stdt);
+        endDate = Convert.ToDateTime(etdt);
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
         //opCr = rpt.getLedgerOpeningBalance(1, "credit", sDataSource) + rpt.getOpeningBalance(1, "credit", Convert.ToDateTime(Session["startDate"]), sDataSource);
-        opCr = rpt.getOpeningBalance(0, 0, 1, "credit", startDate, sDataSource);
+        opCr = bl.getOpeningBalanceCash(0, 0, 1, "credit", startDate, sDataSource, Branch);
         //opDr = rpt.getLedgerOpeningBalance(1, "debit", sDataSource) + rpt.getOpeningBalance(1, "debit", Convert.ToDateTime(Session["startDate"]), sDataSource);
-        opDr = rpt.getOpeningBalance(0, 0, 1, "debit", startDate, sDataSource);
+        opDr = bl.getOpeningBalanceCash(0, 0, 1, "debit", startDate, sDataSource, Branch);
 
         if (opDr > opCr)
         {

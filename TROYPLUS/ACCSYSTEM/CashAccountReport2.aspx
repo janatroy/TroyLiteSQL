@@ -27,7 +27,7 @@
     <form id="form1" runat="server">
     <br />
     <div align="center" style="min-height: 300px">
-        <div id="div1" runat="server">
+        <div id="div1" runat="server" visible="false">
         <table cellpadding="2" cellspacing="2" width="450px" border="0" style="border: 1px solid blue; background-color:White;
             text-align: left">
             <tr>
@@ -212,6 +212,7 @@
                         <asp:BoundField ItemStyle-Width="5%" DataField="Date" HeaderText="Date" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="53%" DataField="Particulars" HeaderText="Particulars" />
                         <asp:BoundField ItemStyle-Width="15%" DataField="VoucherType" HeaderText="Voucher Type" />
+                        <asp:BoundField ItemStyle-Width="5%" DataField="Branchcode" HeaderText="Branch" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Debit" HeaderStyle-HorizontalAlign="Right"
                             HeaderText="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Credit" HeaderStyle-HorizontalAlign="Right"
