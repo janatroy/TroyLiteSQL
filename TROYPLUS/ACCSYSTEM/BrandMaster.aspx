@@ -155,6 +155,8 @@
                                                                 <td class="ControlLabel" style="width: 40%">Brand Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtBrandName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                      <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
+                                                                        TargetControlID="txtBrandName" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtBrandName" runat="server" Text='<%# Bind("BrandName") %>' SkinID="skinTxtBoxGrid"
@@ -171,9 +173,11 @@
                                                                     <asp:RequiredFieldValidator ID="rvAliasName" runat="server" ControlToValidate="txtBrandLevel"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand %. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtBrandLevel" />
+                                                                        <asp:RangeValidator ID="rvAliasNameAddrangeValidator1" runat="server" ControlToValidate="txtBrandLevel" MaximumValue="100" MinimumValue="0"
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Brand % Out of Range" Text="*" Type="Integer" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
-                                                                    <asp:TextBox ID="txtBrandLevel" runat="server" Text='<%# Bind("Brandlevel") %>' SkinID="skinTxtBoxGrid"
+                                                                    <asp:TextBox ID="txtBrandLevel" MaxLength="3" runat="server" Text='<%# Bind("Brandlevel") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="2"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 30%"></td>
@@ -187,10 +191,12 @@
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtDeviation"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Allowed Price %. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid123" runat="server" FilterType="Numbers" TargetControlID="txtDeviation" />
+                                                                    <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="txtDeviation" MaximumValue="200" MinimumValue="0"
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Allowed Price Deviation % Out of Range" Text="*" Type="Integer" />
 
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
-                                                                    <asp:TextBox ID="txtDeviation" runat="server" Text='<%# Bind("Deviation") %>' SkinID="skinTxtBoxGrid"
+                                                                    <asp:TextBox ID="txtDeviation" MaxLength="3" runat="server" Text='<%# Bind("Deviation") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="3"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 30%"></td>
@@ -271,6 +277,8 @@
                                                                 <td class="ControlLabel" style="width: 40%">Brand Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtBrandNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand Name. It cannot be left blank."></asp:RequiredFieldValidator>
+                                                                        <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
+                                                                        TargetControlID="txtBrandNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtBrandNameAdd" runat="server" Text='<%# Bind("BrandName") %>'
@@ -287,9 +295,11 @@
                                                                     <asp:RequiredFieldValidator ID="rvAliasNameAdd" runat="server" ControlToValidate="txtBrandLevelAdd"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand %. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtBrandLevelAdd" />
+                                                                      <asp:RangeValidator ID="RangeValidator2" runat="server" ControlToValidate="txtBrandLevelAdd" MaximumValue="100" MinimumValue="0"
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="brand % Out of Range" Text="*" Type="Integer" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
-                                                                    <asp:TextBox ID="txtBrandLevelAdd" runat="server" Text="0"
+                                                                    <asp:TextBox ID="txtBrandLevelAdd" MaxLength="3" runat="server" Text="0"
                                                                         SkinID="skinTxtBoxGrid" TabIndex="2"></asp:TextBox>
                                                                 </td>
 
@@ -304,9 +314,11 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Allowed Price %. It cannot be left blank.">*</asp:RequiredFieldValidator>
 
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid12" runat="server" FilterType="Numbers" TargetControlID="txtDeviationAdd" />
+                                                                      <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="txtDeviationAdd" MaximumValue="200" MinimumValue="0"
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Allowed Price Deviation % Out of Range" Text="*" Type="Integer" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
-                                                                    <asp:TextBox ID="txtDeviationAdd" runat="server" Text="0"
+                                                                    <asp:TextBox ID="txtDeviationAdd" MaxLength="3" runat="server" Text="0"
                                                                         SkinID="skinTxtBoxGrid" TabIndex="3"></asp:TextBox>
                                                                 </td>
 
