@@ -41,7 +41,7 @@
                     <td style="width: 15%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
                     </td>
                     <td class="ControlTextBox3" style="width: 24%;">
-                        <asp:TextBox ID="txtStartDate" Enabled="false" runat="server" AutoPostBack="True" BackColor="#e7e7e7" CssClass="cssTextBox" Height="23px" MaxLength="10" TabIndex="1" ValidationGroup="salesval"></asp:TextBox>
+                        <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" AutoPostBack="True" BackColor="#e7e7e7" CssClass="cssTextBox" Height="23px" MaxLength="10" TabIndex="1" ValidationGroup="salesval"></asp:TextBox>
                         <cc1:CalendarExtender ID="calStrDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnStrDate" TargetControlID="txtStartDate">
                         </cc1:CalendarExtender>
                     </td>
@@ -59,7 +59,7 @@
                     <td style="width: 10%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
                     </td>
                     <td class="ControlTextBox3" style="width: 24%;">
-                        <asp:TextBox ID="txtEndDate" Enabled="false" runat="server" AutoPostBack="True" BackColor="#e7e7e7" CssClass="cssTextBox" Height="23px" MaxLength="10" TabIndex="1" ValidationGroup="salesval"></asp:TextBox>
+                        <asp:TextBox ID="txtEndDate" Enabled="true" runat="server" AutoPostBack="True" BackColor="#e7e7e7" CssClass="cssTextBox" Height="23px" MaxLength="10" TabIndex="1" ValidationGroup="salesval"></asp:TextBox>
                         <cc1:CalendarExtender ID="calEndDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnEndDate" TargetControlID="txtEndDate">
                         </cc1:CalendarExtender>
                     </td>
