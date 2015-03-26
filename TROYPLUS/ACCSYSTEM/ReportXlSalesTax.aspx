@@ -181,7 +181,7 @@
                                                 </td>
                                                 <td align="center" style="width: 32%;">
                                                     <asp:Button ID="Button4" EnableTheming="false" runat="server" CssClass="NewReport6"
-                                            Width="120px" OnClick="btnReport_Click" />
+                                            Width="120px" OnClick="btnReport1_Click" />
                                                 <asp:Button ID="btnReport" runat="server" OnClick="btnReport2_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
@@ -290,7 +290,7 @@
                                                 </td>
                                                 <td align="center" style="width: 32%;">
                                                     <asp:Button ID="Button3" EnableTheming="false" runat="server" CssClass="NewReport6"
-                                            Width="120px" OnClick="btnReport_Click" />
+                                            Width="120px" OnClick="btnReport22_Click" />
                                                 <asp:Button ID="btnExcel" runat="server" OnClick="btnExcel_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
@@ -399,7 +399,7 @@
                                                 </td>
                                                 <td align="center" style="width: 32%;">
                                                     <asp:Button ID="Button1" EnableTheming="false" runat="server" CssClass="NewReport6"
-                                                        Width="120px" OnClick="btnReport_Click" />
+                                                        Width="120px" OnClick="btnReport3_Click" />
                                                 <asp:Button ID="btnRep" runat="server" OnClick="btnRep_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
@@ -508,7 +508,7 @@
                                                 </td>
                                                 <td align="center" style="width: 32%;">
                                                     <asp:Button ID="Button2" EnableTheming="false" runat="server" CssClass="NewReport6"
-                                            Width="120px" OnClick="btnReport_Click" />
+                                            Width="120px" OnClick="btnReport4_Click" />
                                                 <asp:Button ID="btnt" runat="server" OnClick="btnt_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>

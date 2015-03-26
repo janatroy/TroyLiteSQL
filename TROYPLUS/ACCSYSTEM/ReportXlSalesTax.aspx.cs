@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class ReportXlSalesTax : System.Web.UI.Page
 {
@@ -150,8 +153,182 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         }
     }
 
-    protected void btnReport_Click(object sender, EventArgs e)
+    //report purchase
+    protected void btnReport1_Click(object sender, EventArgs e)
     {
+        try
+        {
+            DateTime startDate, endDate;
+            DataSet ds = new DataSet();
+          
+            string intTrans = "";
+            string salesRet = "";
+            string delNote = "";
+
+            string condi = "";
+
+            intTrans = "NO";
+            salesRet = "NO";
+            delNote = "NO";
+            string Branch = drpBranchAdd.SelectedValue;
+            if (optionrate.SelectedItem.Text == "5%")
+            {
+                condi = " And tblPurchaseItems.vat = 5";
+            }
+            else if (optionrate.SelectedItem.Text == "14.5%")
+            {
+                condi = " And tblPurchaseItems.vat = 14.5";
+            }
+            if (optionrate.SelectedItem.Text == "All")
+            {
+                condi = "";
+            }
+
+            startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
+            endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
+
+            Response.Write("<script language='javascript'> window.open('ReportSaleSalesTax1.aspx?Branch=" + Branch + "&condi=" + Server.UrlEncode(condi) + "&startdate=" + startDate + "&enddate=" + endDate + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+           // bindData();
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    //report Sales
+       protected void btnReport22_Click(object sender, EventArgs e)
+    {
+      
+            try
+            {
+                DateTime startDate, endDate;
+                DataSet ds = new DataSet();
+
+                string intTrans = "";
+                string salesRet = "";
+                string delNote = "";
+
+                string condi = "";
+
+                intTrans = "NO";
+                salesRet = "NO";
+                delNote = "NO";
+                string Branch = drpBranchAdd.SelectedValue;
+                if (optionrate.SelectedItem.Text == "5%")
+                {
+                    condi = " And tblPurchaseItems.vat = 5";
+                }
+                else if (optionrate.SelectedItem.Text == "14.5%")
+                {
+                    condi = " And tblPurchaseItems.vat = 14.5";
+                }
+                if (optionrate.SelectedItem.Text == "All")
+                {
+                    condi = "";
+                }
+
+                startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
+                endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
+
+                Response.Write("<script language='javascript'> window.open('ReportSalesSaleTax1.aspx?Branch=" + Branch + "&condi=" + Server.UrlEncode(condi) + "&startdate=" + startDate + "&enddate=" + endDate + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                
+            }
+            catch (Exception ex)
+            {
+                TroyLiteExceptionManager.HandleException(ex);
+            }
+            //bindDataSales();
+        
+     
+    }
+
+
+    //report purchase return
+       protected void btnReport3_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            DateTime startDate, endDate;
+            DataSet ds = new DataSet();
+
+            string intTrans = "";
+            string salesRet = "";
+            string delNote = "";
+
+            string condi = "";
+
+            intTrans = "NO";
+            salesRet = "NO";
+            delNote = "NO";
+            string Branch = drpBranchAdd.SelectedValue;
+            if (optionrate.SelectedItem.Text == "5%")
+            {
+                condi = " And tblPurchaseItems.vat = 5";
+            }
+            else if (optionrate.SelectedItem.Text == "14.5%")
+            {
+                condi = " And tblPurchaseItems.vat = 14.5";
+            }
+            if (optionrate.SelectedItem.Text == "All")
+            {
+                condi = "";
+            }
+
+            startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
+            endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
+
+            Response.Write("<script language='javascript'> window.open('ReportPurchaseReturnSaleTax1.aspx?Branch=" + Branch + "&condi=" + Server.UrlEncode(condi) + "&startdate=" + startDate + "&enddate=" + endDate + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+       
+    }
+
+    //report sales return
+       protected void btnReport4_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            DateTime startDate, endDate;
+            DataSet ds = new DataSet();
+
+            string intTrans = "";
+            string salesRet = "";
+            string delNote = "";
+
+            string condi = "";
+
+            intTrans = "NO";
+            salesRet = "NO";
+            delNote = "NO";
+            string Branch = drpBranchAdd.SelectedValue;
+            if (optionrate.SelectedItem.Text == "5%")
+            {
+                condi = " And tblPurchaseItems.vat = 5";
+            }
+            else if (optionrate.SelectedItem.Text == "14.5%")
+            {
+                condi = " And tblPurchaseItems.vat = 14.5";
+            }
+            if (optionrate.SelectedItem.Text == "All")
+            {
+                condi = "";
+            }
+
+            startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
+            endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
+
+            Response.Write("<script language='javascript'> window.open('ReportSalesReturnSaleTax1.aspx?Branch=" + Branch + "&condi=" + Server.UrlEncode(condi) + "&startdate=" + startDate + "&enddate=" + endDate + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
     }
 
     protected void btnt_Click(object sender, EventArgs e)
@@ -206,7 +383,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Purchase Return Report");
                 dt.Columns.Add(new DataColumn("SNo"));
                 dt.Columns.Add(new DataColumn("Name of the buyer"));
                 dt.Columns.Add(new DataColumn("Buyer Tin"));
@@ -257,8 +434,9 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dr_export2["Vat CST Paid"] = "";
                 dr_export2["Category"] = "";
                 dt.Rows.Add(dr_export2);
+                string filename = "Purchase Return Report";
 
-                ExportToExcel(dt);
+                ExportToExcel(filename,dt);
             }
         }
         else
@@ -307,7 +485,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Purchase Report");
                 dt.Columns.Add(new DataColumn("SNo"));
                 dt.Columns.Add(new DataColumn("Name of the Seller"));
                 dt.Columns.Add(new DataColumn("Seller Tin"));
@@ -394,8 +572,8 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dr_export213["Vat CST Paid"] = total14;
                 dr_export213["Category"] = "";
                 dt.Rows.Add(dr_export213);
-
-                ExportToExcel(dt);
+                string filename = "Purchase Report";
+                ExportToExcel(filename,dt);
             }
             else
             {
@@ -448,7 +626,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("SalesReturn Report");
                 dt.Columns.Add(new DataColumn("SNo"));
                 dt.Columns.Add(new DataColumn("Name of the Seller"));
                 dt.Columns.Add(new DataColumn("Seller Tin"));
@@ -500,7 +678,9 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dr_export2["Category"] = "";
                 dt.Rows.Add(dr_export2);
 
-                ExportToExcel(dt);
+                string filename = "Sales Return Report";
+
+                ExportToExcel(filename,dt);
             }
         }
         else
@@ -550,7 +730,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Sales Report");
                 dt.Columns.Add(new DataColumn("SNo"));
                 dt.Columns.Add(new DataColumn("Name of the buyer"));
                 dt.Columns.Add(new DataColumn("Buyer Tin"));
@@ -602,7 +782,9 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 dr_export2["Category"] = "";
                 dt.Rows.Add(dr_export2);
 
-                ExportToExcel(dt);
+                string filename = "Sales Report";
+
+                ExportToExcel(filename,dt);
             }
             else
             {
@@ -622,30 +804,45 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         return cond;
     }
 
-    public void ExportToExcel(DataTable dt)
+    public void ExportToExcel(string filename,DataTable dt)
     {
 
         if (dt.Rows.Count > 0)
         {
-            //string filename = "Sales Tax Filing.xls";
-            string filename = "Sales Tax Filing_" + DateTime.Now.ToString() + ".xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                if (filename == "Purchase Return Report")
+                {
+                    filename = "Purchase Return Report.xlsx";
+                }
+                else if(filename=="Sales Report")
+                {
+                    filename= "Sales Report.xlsx";
+                }
+                else if(filename=="Sales Return Report")
+                {
+                    filename="Sales Return Report.xlsx";
+                }
+                else if(filename=="Purchase Report")
+                {
+                    filename = "Purchase Report.xlsx";
+                }
+                //filename
+                //string filename = "Sales report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 
@@ -912,7 +1109,8 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         dr_final88["Total"] = Tottot;
         dtt.Rows.Add(dr_final88);
 
-        ExportToExcel(dtt);
+        string filename = "";
+        ExportToExcel(filename,dtt);
         }
         else
         {
