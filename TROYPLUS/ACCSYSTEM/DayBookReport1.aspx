@@ -220,6 +220,8 @@
                             <asp:Label ID="lblTranDate" runat="server" Text='<%# Eval("Date","{0:dd/MM/yyyy}") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
+                    <asp:BoundField ItemStyle-VerticalAlign="Top" ItemStyle-Width="15%"
+                        DataField="Branchcode" HeaderText="Branch" />
                     <asp:TemplateField ItemStyle-Width="65%" HeaderText="Particulars" ItemStyle-VerticalAlign="Top">
                         <ItemTemplate>
                             <asp:Label ID="lblDebtor" runat="server" Text='<%# Eval("Debitor") %>'></asp:Label><br />

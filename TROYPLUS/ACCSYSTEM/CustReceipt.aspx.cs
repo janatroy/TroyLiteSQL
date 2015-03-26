@@ -2666,9 +2666,10 @@ public partial class CustReceipt : System.Web.UI.Page
         drpLedger.Items.Add(new ListItem("Select Customer", "0"));
         ds = bl.ListSundryDebitorsIsActive(connection, Branch);
         drpLedger.DataSource = ds;
-        drpLedger.DataBind();
+        
         drpLedger.DataTextField = "LedgerName";
         drpLedger.DataValueField = "LedgerID";
+        drpLedger.DataBind();
 
     }
 

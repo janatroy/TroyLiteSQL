@@ -76,6 +76,23 @@
                         CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                 </td>
             </tr>
+            <tr style="height: 2px;"/>
+            <tr>
+                <td style="width:35%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                    Branch
+                </td>
+                <td class="ControlDrpBorder" width="25%">
+                     <asp:DropDownList ID="drpBranchAdd" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                </td>
+                <td width="15%">
+                   
+                </td>
+                <td align="left" width="15%">
+                    
+                </td>
+            </tr>
             <tr style="height:6px">
 
             </tr>

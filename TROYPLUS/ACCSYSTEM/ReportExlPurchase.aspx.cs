@@ -51,6 +51,8 @@ public partial class ReportExlPurchase : System.Web.UI.Page
 
                 loadBranch();
                 BranchEnable_Disable();
+
+                loadPriceList();
             }
         }
         catch (Exception ex)
@@ -175,6 +177,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -218,9 +221,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
       
 
         if (ds != null)
@@ -317,6 +323,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["BillNo"] = dr["BillNo"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -578,6 +585,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         DataSet dstotal = new DataSet();
 
         dt.Columns.Add(new DataColumn("CategoryName"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -621,9 +629,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
 
         if (ds != null)
@@ -701,6 +712,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
 
                     DataRow dr_final12 = dt.NewRow();
                     dr_final12["CategoryName"] = dr["CategoryName"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     if (chkboxQty.Checked == true)
                         dr_final12["Qty"] = dr["Qty"];
@@ -769,6 +781,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
 
             DataRow dr_final897 = dt.NewRow();
             dr_final897["CategoryName"] = fLvlValue;
+            
 
             if (chkboxQty.Checked == true)
                 dr_final897["Qty"] = Convert.ToString(Convert.ToDecimal(qtyTotal));
@@ -1277,6 +1290,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -1320,9 +1334,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -1412,6 +1429,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Brand"] = dr["Brand"];
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -1665,6 +1683,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Product Name"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -1708,9 +1727,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -2021,6 +2043,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -2064,9 +2087,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -2156,6 +2182,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["BillNo"] = dr["BillNo"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -2400,6 +2427,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Brand Name"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -2443,9 +2471,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -2946,6 +2977,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -2989,9 +3021,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -3161,6 +3196,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
                     dr_final12["BillDate"] = dtaa;
 
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     //dr_final12["BillDate"] = dr["BillDate"];
 
@@ -3545,9 +3581,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -4365,6 +4404,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -4408,9 +4448,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -4648,6 +4691,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Category"] = dr["CategoryName"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["BillNo"] = dr["BillNo"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -5078,6 +5122,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Brand Name"));
         dt.Columns.Add(new DataColumn("Product Name"));
         dt.Columns.Add(new DataColumn("Model"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -5121,9 +5166,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -6110,6 +6158,21 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         }
     }
 
+    private void loadPriceList()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstPricelist.Items.Clear();
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListPriceList(connection);
+        lstPricelist.DataSource = ds;
+        lstPricelist.DataTextField = "PriceName";
+        lstPricelist.DataValueField = "PriceName";
+        lstPricelist.DataBind();
+    }
+
     public void bindDataBillWiseNormal()
     {
         DataSet ds = new DataSet();
@@ -6157,6 +6220,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Product"));
         dt.Columns.Add(new DataColumn("Model"));
         dt.Columns.Add(new DataColumn("Itemcode"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -6200,9 +6264,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -6298,6 +6365,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["Brand"] = dr["productdesc"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     if (chkboxQty.Checked == true)
                         dr_final12["Qty"] = dr["Qty"];
@@ -6545,6 +6613,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Bill No"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -6588,9 +6657,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -6909,7 +6981,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
 
         ds = objBL.getSaleslist(startDate, endDate, Types);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds,"");
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -7416,6 +7488,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -7459,9 +7532,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -7626,6 +7702,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["BillNo"] = dr["BillNo"];
                     //dr_final12["BillDate"] = dr["BillDate"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -7969,7 +8046,8 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Brand Name"));
-        dt.Columns.Add(new DataColumn("Model"));       
+        dt.Columns.Add(new DataColumn("Model"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -8013,9 +8091,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -8476,6 +8557,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -8519,9 +8601,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -8645,6 +8730,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     //dr_final12["BillDate"] = dr["BillDate"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -8913,7 +8999,8 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Pay Mode"));
-        
+        dt.Columns.Add(new DataColumn("Branchcode"));
+
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
@@ -8956,9 +9043,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -9493,6 +9583,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -9536,9 +9627,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -9630,6 +9724,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Brand"] = dr["productdesc"];
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -9882,6 +9977,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Executive"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -9925,9 +10021,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -10394,6 +10493,9 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         options = opttype.SelectedItem.Text; 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
+
         dt.Columns.Add(new DataColumn("Date"));
         dt.Columns.Add(new DataColumn("Category"));
         dt.Columns.Add(new DataColumn("ProductName"));
@@ -10444,9 +10546,9 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -10542,6 +10644,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["BillNo"] = dr["BillNo"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     if (chkboxQty.Checked == true)
                         dr_final12["Qty"] = dr["Qty"];
@@ -10786,6 +10889,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Date"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -10829,9 +10933,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -11318,7 +11425,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
 
         dt.Columns.Add(new DataColumn("Model"));
-        
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -11362,9 +11469,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -11560,6 +11670,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Product"] = dr["Productname"];
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     if (chkboxQty.Checked == true)
                         dr_final12["Qty"] = dr["Qty"];
@@ -11854,6 +11965,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Month"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -11897,9 +12009,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -12563,6 +12678,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Model"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -12606,9 +12722,13 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
+
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -12701,6 +12821,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["BillNo"] = dr["BillNo"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -12954,7 +13075,8 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         options = opttype.SelectedItem.Text;
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
-        dt.Columns.Add(new DataColumn("Customer Name"));      
+        dt.Columns.Add(new DataColumn("Customer Name"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -12998,9 +13120,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -13460,6 +13585,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
 
         dt.Columns.Add(new DataColumn("Category"));
         dt.Columns.Add(new DataColumn("Brand Name"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -13503,9 +13629,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -13976,6 +14105,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -14019,9 +14149,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -14186,6 +14319,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["ProductName"] = dr["ProductName"];
                     dr_final12["BillNo"] = dr["BillNo"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -14879,6 +15013,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Itemcode"));
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BillDate"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -14922,9 +15057,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if(ds!=null)
         {
@@ -15160,6 +15298,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
                     dr_final12["Model"] = dr["Model"];
                     dr_final12["Itemcode"] = dr["Itemcode"];
                     dr_final12["BillNo"] = dr["BillNo"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
 
                     string aa = dr["BillDate"].ToString().ToUpper().Trim();
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
@@ -15588,6 +15727,7 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Category"));
         dt.Columns.Add(new DataColumn("Brand Name"));
         dt.Columns.Add(new DataColumn("Product Name"));
+        dt.Columns.Add(new DataColumn("Branchcode"));
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -15631,9 +15771,12 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         if (chkgpdp.Checked == true)
             dt.Columns.Add(new DataColumn("GP for DP"));
 
-        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options);
+        string Branch = string.Empty;
+        Branch = drpBranchAdd.SelectedValue;
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getPurchaselistNormal(startDate, endDate, Types, options, Branch);
+
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -16902,6 +17045,9 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
         if (li != null) li.Selected = true;
 
+        DropDownList1.ClearSelection();
+        ListItem lit = DropDownList1.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (lit != null) lit.Selected = true;
     }
 
     private void loadBranch()
@@ -16911,12 +17057,19 @@ public partial class ReportExlPurchase : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         drpBranchAdd.Items.Clear();
-        drpBranchAdd.Items.Add(new ListItem("Select Branch", "0"));
+        drpBranchAdd.Items.Add(new ListItem("All", "0"));
         ds = bl.ListBranch();
         drpBranchAdd.DataSource = ds;
         drpBranchAdd.DataBind();
         drpBranchAdd.DataTextField = "BranchName";
         drpBranchAdd.DataValueField = "Branchcode";
+
+        DropDownList1.Items.Clear();
+        DropDownList1.Items.Add(new ListItem("All", "0"));
+        DropDownList1.DataSource = ds;
+        DropDownList1.DataBind();
+        DropDownList1.DataTextField = "BranchName";
+        DropDownList1.DataValueField = "Branchcode";
     }
 
 

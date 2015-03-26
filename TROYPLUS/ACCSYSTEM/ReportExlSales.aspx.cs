@@ -230,7 +230,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds,"");
       
 
         if (ds != null)
@@ -682,7 +682,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
 
         if (ds != null)
@@ -1429,7 +1429,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -1865,7 +1865,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -2270,7 +2270,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -2697,7 +2697,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -3291,7 +3291,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -3900,7 +3900,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -4816,7 +4816,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -5581,7 +5581,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -6713,7 +6713,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -7149,7 +7149,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -7507,7 +7507,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         ds = objBL.getSaleslist(startDate, endDate, Types);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds.Tables[0].Rows.Count > 0)
         {
@@ -8068,7 +8068,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -8675,7 +8675,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -9233,7 +9233,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -9718,7 +9718,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -10346,7 +10346,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -10784,7 +10784,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -11359,7 +11359,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -11799,7 +11799,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -12380,7 +12380,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -12963,7 +12963,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -13723,7 +13723,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -14167,7 +14167,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -14721,7 +14721,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -15289,7 +15289,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
@@ -16245,7 +16245,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if(ds!=null)
         {
@@ -17008,7 +17008,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         }
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds);
+        ds = objBL.getallhistoryrate(sDataSource, ds, "");
 
         if (ds != null)
         {
