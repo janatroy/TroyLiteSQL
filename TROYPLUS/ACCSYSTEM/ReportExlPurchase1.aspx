@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ReportXLZeroSales1.aspx.cs" Inherits="ReportXLZeroSales1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ReportExlPurchase1.aspx.cs" Inherits="ReportExlPurchase1" %>
 
 <%@ Register Assembly="Shared.WebControls" Namespace="Shared.WebControls" TagPrefix="wc" %>
 <%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
-    <title>Obsolete Report</title>
+    <title>Purchase comphrency Report</title>
     <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
     <script language="javascript" type="text/javascript" src="Scripts/calendar_eu.js"></script>
@@ -145,7 +145,7 @@
                   <div style="width: 700px" runat="server"  align="center">
                 <wc:ReportGridView runat="server"  BorderWidth="1" ID="Grdreport" GridLines="Both"
                     AutoGenerateColumns="true"
-                    AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
+                    AllowPrintPaging="true" Width="700px" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                      >
                     <HeaderStyle CssClass="ReportHeadataRow" />
                     <RowStyle CssClass="ReportdataRow" />

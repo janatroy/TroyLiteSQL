@@ -3343,6 +3343,17 @@ public partial class LeadMgmt : System.Web.UI.Page
 
                 string check = string.Empty;
 
+                LeadBusinessLogic bl2 = new LeadBusinessLogic();
+                string connection1 = Request.Cookies["Company"].Value;
+                if (bl2.IsLeadAlreadyFound1(connection1, LeadName, LeadNo))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Lead Name \\'" + txtLeadName.Text + "\\' already exists');", true);
+                    //   Reset();
+                    ModalPopupExtender2.Show();
+                    tabs2.Visible = true;
+                    return;
+                }
+
                 if (chk.Checked == false)
                 {
                     if (txtBPName.Text == "")
@@ -4191,7 +4202,7 @@ public partial class LeadMgmt : System.Web.UI.Page
                 string connection1 = Request.Cookies["Company"].Value;
                 if (bl2.IsLeadAlreadyFound(connection1,LeadName))
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Lead NAme \\'" + txtLeadName.Text + "\\' already exists');", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Lead Name \\'" + txtLeadName.Text + "\\' already exists');", true);
                     Reset();
                     ModalPopupExtender2.Show();
                     tabs2.Visible = true;

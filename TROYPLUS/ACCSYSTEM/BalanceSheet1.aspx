@@ -259,6 +259,7 @@
                                                                         <Columns>
                                                                             <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                                             <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger Name" />
+                                                                            <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                                             <asp:BoundField DataField="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="right"
                                                                                 HeaderText="Debit" />
                                                                             <asp:BoundField DataField="Credit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="right"
@@ -342,6 +343,7 @@
                                                                         <Columns>
                                                                             <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                                             <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger Name" />
+                                                                            <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                                             <asp:BoundField DataField="Debit" ItemStyle-HorizontalAlign="right" DataFormatString="{0:F2}"
                                                                                 HeaderText="Debit" />
                                                                             <asp:BoundField DataField="Credit" ItemStyle-HorizontalAlign="right" DataFormatString="{0:F2}"

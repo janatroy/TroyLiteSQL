@@ -77,6 +77,26 @@ public partial class PurchaseSummaryReport1 : System.Web.UI.Page
                             }
                         }
                     }
+                    DataSet ds1 = bl.getImageInfo();
+                    if (ds1 != null)
+                    {
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                            {
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                                Image1.Height = 95;
+                                Image1.Width = 114;
+                            }
+                        }
+                        else
+                        {
+                            Image1.Height = 95;
+                            Image1.Width = 114;
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                        }
+                    }
+
                 }
 
                 

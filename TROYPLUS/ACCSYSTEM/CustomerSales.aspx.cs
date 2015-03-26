@@ -3265,7 +3265,8 @@ public partial class CustomerSales : System.Web.UI.Page
                 sCustomerAddress2 = txtAddress2.Text.Trim();//Senthil
                 sCustomerAddress3 = txtAddress3.Text.Trim();//Senthil
                 //sCustomerContact = hdContact.Value.Trim();
-                sCustomerContact = txtCustPh.Text;
+
+                sCustomerContact = txtCustomerId.Text;
 
                 dTotalAmt = Convert.ToDouble(lblNet.Text);
                 //executive = drpIncharge.SelectedValue;
@@ -3594,9 +3595,16 @@ public partial class CustomerSales : System.Web.UI.Page
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer " + CName + " with this name already exists.');", true);
                                 return;
                             }
-
-                            sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
-                            sCustomerName = txtCustomerName.Text;
+                            if (chk.Checked == false && txtCustomerId.Text == "")
+                            {
+                                sCustomerID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
+                                sCustomerName = txtCustomerName.Text;
+                            }
+                            else
+                            {
+                                sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
+                                sCustomerName = txtCustomerName.Text;
+                            }
                         }
                         else
                         {
@@ -10441,7 +10449,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             BusinessLogic bl = new BusinessLogic(sDataSource);
             // DataSet customerDs = bl.getProdInfo(Convert.ToString(DrpProduct.SelectedItem.Value));
-            if (cmbCustomer.SelectedValue == "0")
+            if (cmbCustomer.SelectedValue == "0" && chk.Checked==true)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select Customer Name in Invoice Header Details tab');", true);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);

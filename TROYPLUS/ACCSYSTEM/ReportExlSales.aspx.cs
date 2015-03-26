@@ -6,12 +6,17 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class ReportExlSales : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
     BusinessLogic objBL;
-
+    private string connection = string.Empty;
+    string brncode;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -49,12 +54,55 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 //loadBrands();
                 loadCategory();
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        lstBranch.Items.Clear();
+
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+            // lstBranch.Items.Add(new ListItem("All", "0"));
+            CheckBoxList1.Visible = true;
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+            CheckBoxList1.Visible = false;
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
     }
 
     private bool isValidLevels()
@@ -18308,10 +18356,29 @@ public partial class ReportExlSales : System.Web.UI.Page
         ddlproduct.Items.Insert(0, new ListItem("All", "All"));
     }
 
+    protected string getCond()
+    {
+        string cond = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond += " tblSales.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond = cond.TrimEnd(',');
+        cond = cond.Replace(",", "or");
+        return cond;
+    }
+
     public void bindData()
     {
         DataSet ds = new DataSet();
-        DataTable dt = new DataTable();
+        DataTable dt = new DataTable("sales report");
         DateTime startDate, endDate;      
 
         string fLvlValueTemp = string.Empty;
@@ -18335,17 +18402,22 @@ public partial class ReportExlSales : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStartDate.Text);
         endDate = Convert.ToDateTime(txtEndDate.Text);
 
+        string cond = "";
+        cond = getCond();
+
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Category"));
         dt.Columns.Add(new DataColumn("Brand"));
         dt.Columns.Add(new DataColumn("Product Name"));
         dt.Columns.Add(new DataColumn("Model"));
+        dt.Columns.Add(new DataColumn("BillNo"));
+        dt.Columns.Add(new DataColumn("BranchCode"));
         dt.Columns.Add(new DataColumn("Qty"));
         dt.Columns.Add(new DataColumn("Rate"));
         dt.Columns.Add(new DataColumn("Amount"));
 
-        ds = objBL.getSalesreport(startDate, endDate, Category,brand, product);
+        ds = objBL.getSalesreport(startDate, endDate, Category,brand, product,cond);
         if (ds.Tables[0].Rows.Count > 0)
         {
             DataRow dr_final11 = dt.NewRow();
@@ -18369,9 +18441,11 @@ public partial class ReportExlSales : System.Web.UI.Page
                     dr_final8["Brand"] = "";
                     dr_final8["Product Name"] = "Total : " + tLvlValue;
                     dr_final8["Model"] = "";
+                    dr_final8["BillNo"] = "";
+                    dr_final8["BranchCode"] = "";
                     dr_final8["Qty"] = "";
                     dr_final8["Rate"] = "";
-                    dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(producttot));
+                    dr_final8["Amount"] = producttot.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(producttot));
                     producttot = 0;
                     dt.Rows.Add(dr_final8);
 
@@ -18387,9 +18461,11 @@ public partial class ReportExlSales : System.Web.UI.Page
                     dr_final8["Brand"] = "Total : " + sLvlValue;
                     dr_final8["Product Name"] = "";
                     dr_final8["Model"] = "";
+                    dr_final8["BillNo"] = "";
+                    dr_final8["BranchCode"] = "";
                     dr_final8["Qty"] = "";
                     dr_final8["Rate"] = "";
-                    dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(brandTotal));
+                    dr_final8["Amount"] =brandTotal.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(brandTotal).ToString("#0.00"));
                     brandTotal = 0;
                     dt.Rows.Add(dr_final8);
 
@@ -18407,9 +18483,11 @@ public partial class ReportExlSales : System.Web.UI.Page
                     dr_final8["Brand"] = "";
                     dr_final8["Product Name"] = "";
                     dr_final8["Model"] = "";
+                    dr_final8["BillNo"] = "";
+                    dr_final8["BranchCode"] = "";
                     dr_final8["Qty"] = "";
                     dr_final8["Rate"] = "";
-                    dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(catTotal));
+                    dr_final8["Amount"] = catTotal.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(catTotal).ToString("#0.00"));
                     catTotal = 0;
                     dt.Rows.Add(dr_final8);
 
@@ -18425,9 +18503,11 @@ public partial class ReportExlSales : System.Web.UI.Page
                 dr_final12["Brand"] = dr["Brand"];
                 dr_final12["Product Name"] = dr["ProductName"];
                 dr_final12["Model"] = dr["model"];
+                dr_final12["BillNo"] = dr["BillNo"];
+                dr_final12["BranchCode"] = dr["BranchCode"];
                 dr_final12["Qty"] = dr["Qty"];
                 dr_final12["Rate"] = dr["Rate"];
-                dr_final12["Amount"] = Convert.ToDouble(dr["Amount"]);
+                dr_final12["Amount"] = Convert.ToDouble(dr["Amount"]).ToString("#0.00");
                 brandTotal = brandTotal + (Convert.ToDouble(dr["Amount"]));
                 catTotal = catTotal + (Convert.ToDouble(dr["Amount"]));
                 producttot = producttot + (Convert.ToDouble(dr["Amount"]));
@@ -18444,9 +18524,11 @@ public partial class ReportExlSales : System.Web.UI.Page
         dr_final88["Brand"] = "";
         dr_final88["Product Name"] = "Total : " + tLvlValueTemp;
         dr_final88["Model"] = "";
+        dr_final88["BillNo"] = "";
+        dr_final88["BranchCode"] = "";
         dr_final88["Qty"] = "";
         dr_final88["Rate"] = "";
-        dr_final88["Amount"] = Convert.ToString(Convert.ToDecimal(producttot));
+        dr_final88["Amount"] = producttot.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(producttot).ToString("#0.00"));
         dt.Rows.Add(dr_final88);
 
         DataRow dr_final79 = dt.NewRow();
@@ -18457,9 +18539,11 @@ public partial class ReportExlSales : System.Web.UI.Page
         dr_final89["Brand"] = "Total : " + sLvlValueTemp;
         dr_final89["Product Name"] = "";
         dr_final89["Model"] = "";
+        dr_final89["BillNo"] = "";
+        dr_final89["BranchCode"] = "";
         dr_final89["Qty"] = "";
         dr_final89["Rate"] = "";
-        dr_final89["Amount"] = Convert.ToString(Convert.ToDecimal(brandTotal));
+        dr_final89["Amount"] = brandTotal.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(brandTotal).ToString("#0.00"));
         dt.Rows.Add(dr_final89);
 
         DataRow dr_final8879 = dt.NewRow();
@@ -18470,9 +18554,11 @@ public partial class ReportExlSales : System.Web.UI.Page
         dr_final869["Brand"] = "";
         dr_final869["Product Name"] = "";
         dr_final869["Model"] = "";
+        dr_final869["BillNo"] = "";
+        dr_final869["BranchCode"] = "";
         dr_final869["Qty"] = "";
         dr_final869["Rate"] = "";
-        dr_final869["Amount"] = Convert.ToString(Convert.ToDecimal(catTotal));
+        dr_final869["Amount"] = catTotal.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(catTotal).ToString("#0.00"));
         dt.Rows.Add(dr_final869);
 
         DataRow dr_final9 = dt.NewRow();
@@ -18483,9 +18569,11 @@ public partial class ReportExlSales : System.Web.UI.Page
         dr_final789["Brand"] = "Grand Total : ";
         dr_final789["Product Name"] = "";
         dr_final789["Model"] = "";
+        dr_final789["BillNo"] = "";
+        dr_final789["BranchCode"] = "";
         dr_final789["Qty"] = "";
         dr_final789["Rate"] = "";
-        dr_final789["Amount"] = Convert.ToString(Convert.ToDecimal(total));
+        dr_final789["Amount"] = total.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(total).ToString("#0.00"));
         dt.Rows.Add(dr_final789);
 
         if (ds.Tables[0].Rows.Count > 0)
@@ -18499,41 +18587,82 @@ public partial class ReportExlSales : System.Web.UI.Page
     }
 
 
-    protected string getCond()
-    {
-        string cond = "";
-
-        
-        return cond;
-    }
 
     public void ExportToExcel(DataTable dt)
     {
-
         if (dt.Rows.Count > 0)
         {
-            //string filename = "Sales Report.xls";
-            string filename = "Sales Report_" + DateTime.Now.ToString() + ".xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Sales comphrency report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+
         }
     }
 
+    protected void lst_SelectedIndexChanged_1(object sender, EventArgs e)
+    {
+        if (CheckBoxList1.Items[0].Selected == true)
+        {
+            foreach (ListItem ls in lstBranch.Items)
+            {
+                ls.Selected = true;
 
- 
+            }
+
+        }
+        else
+        {
+            foreach (ListItem ls in lstBranch.Items)
+            {
+                ls.Selected = false;
+
+            }
+
+        }
+    }
+    protected void btnreportbasic_Click(object sender, EventArgs e)
+    {
+        try
+        {
+
+            DateTime startDate, endDate;
+
+
+            string brand = string.Empty;
+            string Category = string.Empty;
+            string product = string.Empty;
+
+            Category = ddlCategory.SelectedItem.Text;
+            brand = ddlBrand.SelectedValue;
+            product = ddlproduct.SelectedValue;
+         //   string Branch = drpBranchAdd.SelectedValue;
+            string cond = "";
+            cond = getCond();
+
+            startDate = Convert.ToDateTime(txtStartDate.Text);
+            endDate = Convert.ToDateTime(txtEndDate.Text);
+
+            Response.Write("<script language='javascript'> window.open('ReportExlSales1.aspx?startDate=" + startDate + "&enddate=" + endDate + "&category=" + Category + "&brand=" + brand + "&product=" + product + "&cond=" + Server.UrlEncode(cond) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+
+    }
 }

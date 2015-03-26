@@ -116,7 +116,7 @@
                 <tr>
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px"></td>
                     <td align="left" width="40%">
-                        <div style="overflow-y: scroll; height: 150px; width: 300px" runat="server">
+                        <div style="overflow-y: scroll; height: 150px; width: 150px" runat="server">
                             <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
                             <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
                                 <asp:ListItem Text="All" Value="0" />

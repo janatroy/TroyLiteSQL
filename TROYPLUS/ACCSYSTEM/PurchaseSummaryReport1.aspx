@@ -236,6 +236,13 @@
             
                 <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
                     <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
+                    <tr>
                         <td width="140px" align="left">
                             TIN#:
                             <asp:Label ID="lblTNGST" runat="server"></asp:Label>
@@ -296,11 +303,14 @@
                             &nbsp;
                         </td>
                     </tr>
-                    <tr>
+                   
+                </table>
+                <table>
+                     <tr>
                             <td colspan="3" align="center">
                                 
                                 <h5>
-                            <asp:Label ID="lblHeading" runat="server"> </asp:Label></h5>
+                            <asp:Label ID="lblHeading" Font-Size="Large" runat="server"> </asp:Label></h5>
                             </td>
                         </tr>
                 </table>

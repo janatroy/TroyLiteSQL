@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.IO;
+using ClosedXML.Excel;
 
 public partial class Trialbalance : System.Web.UI.Page
 {
@@ -146,10 +147,11 @@ public partial class Trialbalance : System.Web.UI.Page
 
             if (grdDs.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Trial Balance");
                 dt.Columns.Add(new DataColumn("Particulars"));
                 dt.Columns.Add(new DataColumn("L.FNO"));
                 dt.Columns.Add(new DataColumn("Ledger Name"));
+                dt.Columns.Add(new DataColumn("Branch Code"));
                 dt.Columns.Add(new DataColumn("Debit"));
                 dt.Columns.Add(new DataColumn("Credit"));
 
@@ -179,6 +181,7 @@ public partial class Trialbalance : System.Web.UI.Page
                                 //}
                                 dr_export["L.FNO"] = drd["Folionumber"];
                                 dr_export["Ledger Name"] = drd["LedgerName"];
+                                dr_export["Branch Code"] = drd["BranchCode"];
                                 dr_export["Debit"] = drd["Debit"];
                                 //debit = debit + Convert.ToDouble(drd["Debit"]);
                                 dr_export["Credit"] = drd["Credit"];
@@ -202,8 +205,16 @@ public partial class Trialbalance : System.Web.UI.Page
                             credit = 0;
                         }
                     }
+                    DataRow dr_export2132 = dt.NewRow();
+                    dr_export2132["Particulars"] = " Total : ";
+                    dr_export2132["Debit"] = lblDebitTotal.Text;
+                    dr_export2132["Credit"] = lblCreditTotal.Text;
+                    dt.Rows.Add(dr_export2132);
+
+                    DataRow dr_export2311 = dt.NewRow();
+                    dt.Rows.Add(dr_export2311);
                 }
-                ExportToExcel("Trial Balance.xls", dt);
+                ExportToExcel(dt);
             }
         }
         catch (Exception ex)
@@ -212,27 +223,45 @@ public partial class Trialbalance : System.Web.UI.Page
         }
     }
 
-    public void ExportToExcel(string filename, DataTable dt)
+    public void ExportToExcel(DataTable dt)
     {
         if (dt.Rows.Count > 0)
         {
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename1 = "Trial Balance.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename1 + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 

@@ -11,13 +11,12 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 
-public partial class ReportXLAbsolute1 : System.Web.UI.Page
+
+public partial class ReportExlPurchase1 : System.Web.UI.Page
 {
-    private string sDataSource = string.Empty;
+     private string sDataSource = string.Empty;
     private string Connection = string.Empty;
     BusinessLogic objBL = new BusinessLogic();
- ////   private string sDataSource = string.Empty;
- //   private string Connection = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -26,6 +25,8 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
             Connection = Request.Cookies["Company"].Value;
             if (!IsPostBack)
             {
+
+                lblHeading.Text = " Purchase Comprehency Report";
 
                 DataSet companyInfo = new DataSet();
                 BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -79,9 +80,9 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
 
             DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
             string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
-           // txtStartDate.Text = dtaa;
+            // txtStartDate.Text = dtaa;
 
-          //  lblHeadDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            //  lblHeadDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             //string sDataSource = Server.MapPath("App_Data\\Store0910.mdb");
             //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
 
@@ -90,156 +91,221 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
             divPrint.Visible = true;
             divPr.Visible = true;
             DataSet dstt = new DataSet();
+
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
+           // DateTime startDate, endDate;
+            double brandTotal = 0;
+            double catTotal = 0;
+            double total = 0;
+            double producttot = 0;
+            string fLvlValueTemp = string.Empty;
+            string fLvlValue = string.Empty;
+            string tLvlValueTemp = string.Empty;
+            string tLvlValue = string.Empty;
+            string sLvlValueTemp = string.Empty;
+            string sLvlValue = string.Empty;
             string connection = Request.Cookies["Company"].Value;
 
-              string branch = Convert.ToString(Request.QueryString["Branch"].ToString());
-              string method = Convert.ToString(Request.QueryString["Method"].ToString());
+            string brand = Convert.ToString(Request.QueryString["brand"].ToString());
+            string Category = Convert.ToString(Request.QueryString["category"].ToString());
+            string product = Convert.ToString(Request.QueryString["product"].ToString());
+            string Branch = Convert.ToString(Request.QueryString["Branch"].ToString());
 
-              if (method == "All")
+            DateTime startDate = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
+            DateTime endDate = Convert.ToDateTime(Request.QueryString["enddate"].ToString());
+
+
+            objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
+
+            dt.Columns.Add(new DataColumn("Category"));
+            dt.Columns.Add(new DataColumn("Brand"));
+            dt.Columns.Add(new DataColumn("Product Name"));
+            dt.Columns.Add(new DataColumn("Model"));
+            dt.Columns.Add(new DataColumn("Branchcode"));
+            dt.Columns.Add(new DataColumn("Qty"));
+            dt.Columns.Add(new DataColumn("Rate"));
+            dt.Columns.Add(new DataColumn("Amount"));
+
+            ds = objBL.getPurchasereport(startDate, endDate, Category, brand, product, Branch);
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                lblHeading.Text = "All ItemList";
+                DataRow dr_final11 = dt.NewRow();
+                dt.Rows.Add(dr_final11);
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    fLvlValueTemp = dr["CategoryName"].ToString().ToUpper().Trim();
+                    sLvlValueTemp = dr["Brand"].ToString().ToUpper().Trim();
+                    tLvlValueTemp = dr["ProductName"].ToString().ToUpper().Trim();
+
+                    if ((fLvlValue != "" && fLvlValue != fLvlValueTemp) ||
+                       (sLvlValue != "" && sLvlValue != sLvlValueTemp) ||
+                       (tLvlValue != "" && tLvlValue != tLvlValueTemp))
+                    {
+                        DataRow dr_final889 = dt.NewRow();
+                        dt.Rows.Add(dr_final889);
+
+                        DataRow dr_final8 = dt.NewRow();
+                        dr_final8["Category"] = "";
+                        dr_final8["Brand"] = "";
+                        dr_final8["Product Name"] = "Total : " + tLvlValue;
+                        dr_final8["Model"] = "";
+                        dr_final8["Qty"] = "";
+                        dr_final8["Rate"] = "";
+                        dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(producttot));
+                        producttot = 0;
+                        dt.Rows.Add(dr_final8);
+
+                        DataRow dr_final888 = dt.NewRow();
+                        dt.Rows.Add(dr_final888);
+                    }
+
+                    if ((fLvlValue != "" && fLvlValue != fLvlValueTemp) ||
+                    (sLvlValue != "" && sLvlValue != sLvlValueTemp))
+                    {
+                        DataRow dr_final8 = dt.NewRow();
+                        dr_final8["Category"] = "";
+                        dr_final8["Brand"] = "Total : " + sLvlValue;
+                        dr_final8["Product Name"] = "";
+                        dr_final8["Model"] = "";
+                        dr_final8["Qty"] = "";
+                        dr_final8["Rate"] = "";
+                        dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(brandTotal));
+                        brandTotal = 0;
+                        dt.Rows.Add(dr_final8);
+
+                        DataRow dr_final888 = dt.NewRow();
+                        dt.Rows.Add(dr_final888);
+                    }
+
+                    if (fLvlValue != "" && fLvlValue != fLvlValueTemp)
+                    {
+                        //DataRow dr_final889 = dt.NewRow();
+                        //dt.Rows.Add(dr_final889);
+
+                        DataRow dr_final8 = dt.NewRow();
+                        dr_final8["Category"] = "Total : " + fLvlValue;
+                        dr_final8["Brand"] = "";
+                        dr_final8["Product Name"] = "";
+                        dr_final8["Model"] = "";
+                        dr_final8["Qty"] = "";
+                        dr_final8["Rate"] = "";
+                        dr_final8["Amount"] = Convert.ToString(Convert.ToDecimal(catTotal));
+                        catTotal = 0;
+                        dt.Rows.Add(dr_final8);
+
+                        DataRow dr_final888 = dt.NewRow();
+                        dt.Rows.Add(dr_final888);
+                    }
+                    fLvlValue = fLvlValueTemp;
+                    sLvlValue = sLvlValueTemp;
+                    tLvlValue = tLvlValueTemp;
+
+                    DataRow dr_final12 = dt.NewRow();
+                    dr_final12["Category"] = dr["Categoryname"];
+                    dr_final12["Brand"] = dr["Brand"];
+                    dr_final12["Branchcode"] = dr["Branchcode"];
+                    dr_final12["Product Name"] = dr["ProductName"];
+                    dr_final12["Model"] = dr["model"];
+                    dr_final12["Qty"] = dr["Qty"];
+                    dr_final12["Rate"] = dr["purchaseRate"];
+                    dr_final12["Amount"] = Convert.ToDouble(dr["Amount"]);
+                    brandTotal = brandTotal + (Convert.ToDouble(dr["Amount"]));
+                    catTotal = catTotal + (Convert.ToDouble(dr["Amount"]));
+                    producttot = producttot + (Convert.ToDouble(dr["Amount"]));
+                    total = total + (Convert.ToDouble(dr["Amount"]));
+                    dt.Rows.Add(dr_final12);
+                }
             }
-              else if (method == "Absolute")
+
+            DataRow dr_final879 = dt.NewRow();
+            dt.Rows.Add(dr_final879);
+
+            DataRow dr_final88 = dt.NewRow();
+            dr_final88["Category"] = "";
+            dr_final88["Brand"] = "";
+            dr_final88["Product Name"] = "Total : " + tLvlValueTemp;
+            dr_final88["Model"] = "";
+            dr_final88["Qty"] = "";
+            dr_final88["Rate"] = "";
+            dr_final88["Amount"] = Convert.ToString(Convert.ToDecimal(producttot));
+            dt.Rows.Add(dr_final88);
+
+            DataRow dr_final79 = dt.NewRow();
+            dt.Rows.Add(dr_final79);
+
+            DataRow dr_final89 = dt.NewRow();
+            dr_final88["Category"] = "";
+            dr_final89["Brand"] = "Total : " + sLvlValueTemp;
+            dr_final89["Product Name"] = "";
+            dr_final89["Model"] = "";
+            dr_final89["Qty"] = "";
+            dr_final89["Rate"] = "";
+            dr_final89["Amount"] = Convert.ToString(Convert.ToDecimal(brandTotal));
+            dt.Rows.Add(dr_final89);
+
+            DataRow dr_final8879 = dt.NewRow();
+            dt.Rows.Add(dr_final8879);
+
+            DataRow dr_final869 = dt.NewRow();
+            dr_final869["Category"] = "Total : " + fLvlValueTemp;
+            dr_final869["Brand"] = "";
+            dr_final869["Product Name"] = "";
+            dr_final869["Model"] = "";
+            dr_final869["Qty"] = "";
+            dr_final869["Rate"] = "";
+            dr_final869["Amount"] = Convert.ToString(Convert.ToDecimal(catTotal));
+            dt.Rows.Add(dr_final869);
+
+            DataRow dr_final9 = dt.NewRow();
+            dt.Rows.Add(dr_final9);
+
+            DataRow dr_final789 = dt.NewRow();
+            dr_final88["Category"] = "";
+            dr_final789["Brand"] = "Grand Total : ";
+            dr_final789["Product Name"] = "";
+            dr_final789["Model"] = "";
+            dr_final789["Qty"] = "";
+            dr_final789["Rate"] = "";
+            dr_final789["Amount"] = Convert.ToString(Convert.ToDecimal(total));
+            dt.Rows.Add(dr_final789);
+
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                lblHeading.Text = "Obsolete ItemList";
+               // ExportToExcel(dt);
+                dstt.Tables.Add(dt);
+                ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
+                // DataSet ds = new DataSet(sDataSource);
+                //  DataSet ds = rptStock.getCategory(sDataSource);
+                Grdreport.Visible = true;
+                Grdreport.DataSource = dstt;
+                Grdreport.DataBind();
             }
             else
             {
-                lblHeading.Text = "Other Than Obsolete";
+                ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
             }
 
-              cond1 = Request.QueryString["cond1"].ToString();
-              cond1 = Server.UrlDecode(cond1);
-              string field = string.Empty;
-
-            //  DataSet ds = objBL.GetAbsoluteProductlist(sDataSource, field, method, branch);
-       //   bool IsPro= = Convert.ToBoolean(Request.QueryString["Method"].ToString());
-
-         DataSet ds = new DataSet();
-
-
-         ds = objBL.GetAbsoluteProductlist(sDataSource,connection, field, method, branch);
-
-         DataTable dt = new DataTable();
-
-         if (ds != null)
-         {
-             if (ds.Tables[0].Rows.Count > 0)
-             {
-                 dt.Columns.Add(new DataColumn("Brand"));
-                 dt.Columns.Add(new DataColumn("ProductName"));
-                 dt.Columns.Add(new DataColumn("ItemCode"));
-                 dt.Columns.Add(new DataColumn("Model"));
-                 dt.Columns.Add(new DataColumn("Rol"));
-                 dt.Columns.Add(new DataColumn("Stock"));
-                 dt.Columns.Add(new DataColumn("Branchcode"));
-
-                 char[] commaSeparator = new char[] { ',' };
-                 string[] result;
-                 result = cond1.Split(commaSeparator, StringSplitOptions.None);
-
-                 foreach (string str in result)
-                 {
-                     dt.Columns.Add(new DataColumn(str));
-                 }
-                 dt.Columns.Remove("Column1");
-
-               
-
-                 DataRow dr_final123 = dt.NewRow();
-                 dt.Rows.Add(dr_final123);
-
-                 DataSet dst = new DataSet();
-
-                 string itemcode = "";
-
-                 foreach (DataRow dr in ds.Tables[0].Rows)
-                 {
-                     itemcode = Convert.ToString(dr["itemcode"]);
-
-                     dst = objBL.GetAbsoluteProductpricelist(sDataSource,connection,itemcode, branch);
-
-
-                     DataRow dr_final6 = dt.NewRow();
-                     dr_final6["Brand"] = dr["brand"];
-                     dr_final6["ProductName"] = dr["ProductName"];
-                     dr_final6["Model"] = dr["Model"];
-                     dr_final6["ItemCode"] = dr["Itemcode"];
-
-                     dr_final6["Rol"] = dr["Rol"];
-
-
-                     if (dst != null)
-                     {
-                         if (dst.Tables[0].Rows.Count > 0)
-                         {
-                             foreach (DataRow drt in dst.Tables[0].Rows)
-                             {
-                                 dr_final6["Stock"] = drt["Stock"];
-                                 dr_final6["Branchcode"] = drt["Branchcode"];
-
-
-                                 char[] commaSeparator2 = new char[] { ',' };
-                                 string[] result2;
-                                 result2 = cond1.Split(commaSeparator, StringSplitOptions.None);
-
-                                 foreach (string str2 in result2)
-                                 {
-                                     string item1 = str2;
-                                     string item123 = Convert.ToString(drt["pricename"]);
-
-                                     if (item123 == item1)
-                                     {
-                                         dr_final6[item1] = drt["price"];
-                                     }
-                                 }
-                             }
-                         }
-                     }
-
-                    
-                     dt.Rows.Add(dr_final6);
-
-                 }
-
-             
-
-                 
-                 dstt.Tables.Add(dt);
-             }
-             else
-             {
-                 ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-             }
-         }
-         else
-         {
-             ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-         }
-     
-
-
-            ReportsBL.ReportClass rptStock = new ReportsBL.ReportClass();
-           // DataSet ds = new DataSet(sDataSource);
-          //  DataSet ds = rptStock.getCategory(sDataSource);
-            Grdreport.Visible = true;
-            Grdreport.DataSource = dstt;
-            Grdreport.DataBind();
-
-           // div1.Visible = false;
+           
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
-
     }
+
+
+
+
+
+
 
     protected void btndet_Click(object sender, EventArgs e)
     {
         try
         {
-           // div1.Visible = true;
+            // div1.Visible = true;
             divPrint.Visible = false;
             divPr.Visible = false;
 
@@ -257,10 +323,10 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
         {
             DataSet ds = new DataSet();
             DataSet ddd = new DataSet();
-           // DateTime refDate = DateTime.Parse(txtStartDate.Text);
+            // DateTime refDate = DateTime.Parse(txtStartDate.Text);
 
             BusinessLogic bl = new BusinessLogic(sDataSource);
-        //    ds = bl.getProductsstock(sDataSource, refDate);
+            //    ds = bl.getProductsstock(sDataSource, refDate);
             double Amount = 0;
 
             DataTable dt = new DataTable();
@@ -361,9 +427,9 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
             //Grdreport.DataSource = ds;
             //Grdreport.DataBind();
 
-          //  div1.Visible = false;
+            //  div1.Visible = false;
 
-           // BindData();
+            // BindData();
         }
         catch (Exception ex)
         {
@@ -381,26 +447,26 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
     {
         try
         {
-           // sumDbl = 0;
+            // sumDbl = 0;
             //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
             //    string sDataSource = Server.MapPath("App_Data\\Store0910.mdb");
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-               
-              
+
+
                 ReportsBL.ReportClass rptProduct = new ReportsBL.ReportClass();
 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-             
 
-             
-                  
-                    cond1 = Request.QueryString["cond1"].ToString();
-                    cond1 = Server.UrlDecode(cond1);
-                
-               
-             
+
+
+
+                cond1 = Request.QueryString["cond1"].ToString();
+                cond1 = Server.UrlDecode(cond1);
+
+
+
 
 
                 DataSet ds = bl.GetProductlist(sDataSource, cond);
@@ -448,7 +514,7 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
                         {
                             itemcode = Convert.ToString(dr["itemcode"]);
 
-                           // dst = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, itemcode);
+                            // dst = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, itemcode);
 
                             DataRow dr_final6 = dt.NewRow();
                             dr_final6["Brand"] = dr["brand"];
@@ -501,35 +567,12 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
                         }
                         DataSet dst2 = new DataSet();
                         dst2.Tables.Add(dt);
-                        //ReportGridView1.DataSource = dst2;
-                        //ReportGridView1.DataBind();
+                       
 
                     }
                 }
 
-             //   DataSet dss = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, "");
-//                DataTable customerTable = dss.Tables[0];
-
-
-                //ConvertToCrossTab(customerTable);
-                //if (dss.Tables[0].Rows.Count > 0)
-                //{
-                // //   gv.DataSource = dss;
-                // //   gv.DataBind();
-
-                //    //ReportViewer1.ProcessingMode = ProcessingMode.Local;
-                //    //ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/Report.rdlc");
-                //    //Customers dsCustomers = GetData("select top 20 * from customers");
-                //    //ReportDataSource datasource = new ReportDataSource("Stock", ds.Tables[0]);
-                //    //ReportViewer1.LocalReport.DataSources.Clear();
-                //    //ReportViewer1.LocalReport.DataSources.Add(datasource);
-
-                //}
-                //else
-                //{
-                //    //lblCategory.Text = "";
-                //}
-               // lblTotal.Text = sumDbl.ToString("f2");
+             
             }
         }
         catch (Exception ex)
@@ -538,140 +581,6 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
         }
     }
 
-
-    //private void BindData()
-    //{
-    //    BusinessLogic bl = new BusinessLogic(sDataSource);
-
-    //    //DateTime refDate = DateTime.Parse(txtStartDate.Text);
-    //    //DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
-
-    //    if (Request.QueryString["refDate"] != null)
-    //    {
-    //        //    stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
-    //        //    cond = Request.QueryString["cond"].ToString();
-    //        //    cond = Server.UrlDecode(cond);
-    //        //    cond1 = Request.QueryString["cond1"].ToString();
-    //        //    cond1 = Server.UrlDecode(cond1);
-    //        //    cond2 = Request.QueryString["cond2"].ToString();
-    //        //    cond2 = Server.UrlDecode(cond2);
-    //        //    cond3 = Request.QueryString["cond3"].ToString();
-    //        //    cond3 = Server.UrlDecode(cond3);
-    //        //    cond4 = Request.QueryString["cond4"].ToString();
-    //        //    cond4 = Server.UrlDecode(cond4);
-    //        //    cond5 = Request.QueryString["cond5"].ToString();
-    //        //    cond5 = cond5.ToString();
-    //        //    cond6 = Request.QueryString["cond6"].ToString();
-    //        //    cond6 = cond6.ToString();
-    //        //}
-    //        //refDate = Convert.ToDateTime(stdt);
-
-
-    //        DataSet ds = bl.GetProductlist(sDataSource, cond);
-
-    //        DataTable dt = new DataTable();
-
-
-    //        if (ds != null)
-    //        {
-    //            if (ds.Tables[0].Rows.Count > 0)
-    //            {
-    //                dt.Columns.Add(new DataColumn("ItemCode"));
-    //                dt.Columns.Add(new DataColumn("ProductName"));
-    //                dt.Columns.Add(new DataColumn("Brand"));
-    //                dt.Columns.Add(new DataColumn("Model"));
-    //                //dt.Columns.Add(new DataColumn("Rol"));
-
-    //                char[] commaSeparator = new char[] { ',' };
-    //                string[] result;
-    //                result = cond6.Split(commaSeparator, StringSplitOptions.None);
-
-    //                foreach (string str in result)
-    //                {
-    //                    dt.Columns.Add(new DataColumn(str));
-    //                }
-    //                dt.Columns.Remove("Column1");
-
-    //                char[] commaSeparator1 = new char[] { ',' };
-    //                string[] result1;
-    //                result1 = cond5.Split(commaSeparator, StringSplitOptions.None);
-
-    //                foreach (string str1 in result1)
-    //                {
-    //                    dt.Columns.Add(new DataColumn(str1));
-    //                }
-    //                dt.Columns.Remove("Column1");
-    //                DataRow dr_final123 = dt.NewRow();
-    //                dt.Rows.Add(dr_final123);
-
-    //                DataSet dst = new DataSet();
-
-    //                string itemcode = "";
-
-    //                foreach (DataRow dr in ds.Tables[0].Rows)
-    //                {
-    //                    itemcode = Convert.ToString(dr["itemcode"]);
-
-    //                    dst = bl.getProducts(sDataSource, refDate, cond, cond1, cond2, cond3, cond4, itemcode);
-
-    //                    DataRow dr_final6 = dt.NewRow();
-    //                    dr_final6["Brand"] = dr["brand"];
-    //                    dr_final6["ProductName"] = dr["ProductName"];
-    //                    dr_final6["Model"] = dr["Model"];
-    //                    dr_final6["ItemCode"] = dr["Itemcode"];
-
-    //                    if (dst != null)
-    //                    {
-    //                        if (dst.Tables[0].Rows.Count > 0)
-    //                        {
-    //                            foreach (DataRow drt in dst.Tables[0].Rows)
-    //                            {
-    //                                char[] commaSeparator2 = new char[] { ',' };
-    //                                string[] result2;
-    //                                result2 = cond6.Split(commaSeparator, StringSplitOptions.None);
-
-    //                                foreach (string str2 in result2)
-    //                                {
-    //                                    string item1 = str2;
-    //                                    string item123 = Convert.ToString(drt["pricename"]);
-
-    //                                    if (item123 == item1)
-    //                                    {
-    //                                        dr_final6[item1] = drt["price"];
-    //                                    }
-    //                                }
-
-
-    //                                char[] commaSeparator3 = new char[] { ',' };
-    //                                string[] result3;
-    //                                result3 = cond5.Split(commaSeparator, StringSplitOptions.None);
-
-    //                                foreach (string str3 in result3)
-    //                                {
-    //                                    string item11 = str3;
-    //                                    string item1231 = Convert.ToString(drt["BranchCode"]);
-
-    //                                    if (item1231 == item11)
-    //                                    {
-    //                                        dr_final6[item11] = drt["Stock"];
-    //                                    }
-    //                                }
-
-
-    //                            }
-    //                        }
-    //                    }
-    //                    dt.Rows.Add(dr_final6);
-    //                }
-    //                DataSet dst2 = new DataSet();
-    //                dst2.Tables.Add(dt);
-    //                //ReportGridView1.DataSource = dst2;
-    //                //ReportGridView1.DataBind();
-
-    //            }
-    //        }
-    //    }
-    //}
 
     protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e)
     {
@@ -679,12 +588,12 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                
+
 
             }
             if (e.Row.RowType == DataControlRowType.Footer)
             {
-                
+
             }
         }
         catch (Exception ex)
@@ -692,5 +601,4 @@ public partial class ReportXLAbsolute1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
-
 }

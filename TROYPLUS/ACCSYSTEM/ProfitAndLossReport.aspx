@@ -61,7 +61,7 @@
                     Start Date
                 </td>
                 <td class="ControlTextBox3" width="25%">
-                    <asp:TextBox ID="txtStartDate" Enabled="false" runat="server" CssClass="cssTextBox" Width="100px"
+                    <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px"
                         MaxLength="10" />
                 </td>
                 <td width="20%">
@@ -79,7 +79,7 @@
                     End Date
                 </td>
                 <td class="ControlTextBox3" width="25%">
-                    <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" runat="server" Width="100px" MaxLength="10" />
+                    <asp:TextBox ID="txtEndDate" Enabled="true" CssClass="cssTextBox" runat="server" Width="100px" MaxLength="10" />
                 </td>
                 <td width="15%">
                     <script type="text/javascript" language="JavaScript">
@@ -139,9 +139,22 @@
                 </tr>
             </table>
             <br />
-        <div id="divPrint" runat="server" style="font-family: 'Trebuchet MS'; font-size: 11px;"
-            visible="false">
-            
+        <div id="divPrint" runat="server" style="font-family: 'Trebuchet MS'; font-size: 11px;" visible="false">
+           
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <br />
+                            <h5>
+                                Profit and Loss Report From
+                                <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
+                                To
+                                <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
+                        </td>
+                         <td></td>
+                    </tr>
+                </table>
         
             <table cellpadding="2" cellspacing="0" width="700px" border="0" class="lblFont" style="border: 1px solid black">
                 <tr class="subHeadFont2">
@@ -184,7 +197,7 @@
                                     &nbsp;<asp:Label ID="lblFirstMidTotal" Text="0" runat="server" CssClass="lblFont"></asp:Label>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr> 
                                 <td align="left">
                                     &nbsp;
                                     <img onclick="javascript:switchViews('dvDX','imgDX');" id="imgDX" runat="server"
@@ -222,6 +235,7 @@
                                             <Columns>
                                                 <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                 <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger" />
+                                                <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                 <asp:BoundField DataField="Expenses" ItemStyle-HorizontalAlign="Right" HeaderText="Amount" />
                                             </Columns>
                                         </wc:ReportGridView>
@@ -311,6 +325,7 @@
                                             <Columns>
                                                 <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                 <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger" />
+                                                <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                 <asp:BoundField DataField="Expenses" ItemStyle-HorizontalAlign="Right" HeaderText="Amount" />
                                             </Columns>
                                         </wc:ReportGridView>
@@ -370,6 +385,7 @@
                                             <Columns>
                                                 <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                 <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger" />
+                                                <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                 <asp:BoundField DataField="Expenses" ItemStyle-HorizontalAlign="Right" HeaderText="Amount" />
                                             </Columns>
                                         </wc:ReportGridView>
@@ -427,6 +443,7 @@
                                             <Columns>
                                                 <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                 <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger" />
+                                                <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                 <asp:BoundField DataField="Expenses" ItemStyle-HorizontalAlign="Right" HeaderText="Amount" />
                                             </Columns>
                                         </wc:ReportGridView>

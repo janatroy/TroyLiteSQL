@@ -181,8 +181,8 @@
                         <tr>
                             <td></td>
                             <td width="560px" align="center">
-                                <h5>Stock List As On
-                                <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
+                                <h5 style="font-size:large" >Stock List As On
+                                <asp:Label ID="lblHeadDate" Font-Size="Large" runat="server"> </asp:Label></h5>
                             </td>
                             <td></td>
                         </tr>

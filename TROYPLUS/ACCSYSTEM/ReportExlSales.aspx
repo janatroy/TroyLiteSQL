@@ -220,6 +220,23 @@
                                         </td>
                                     </tr>
                                     <tr style="height: 2px;"/> 
+                                    <tr>
+                                         <td style="width:40%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                                            Select Branch
+                                        </td>
+                                        <td align="left" width="25%">
+                        <div style="overflow-y: scroll; height: 150px; width: 300px" runat="server">                         
+                            <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
+                                <asp:ListItem Text="All" Value="0" />
+                            </asp:CheckBoxList>
+                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                            </asp:CheckBoxList>
+
+                        </div>
+                    </td>
+                    <td align="left" width="35%"></td>
+                                    </tr>
+                                    <tr style="height: 2px;"/> 
                                     <%--<tr>--%>
                                         <%--<td class="ControlLabel" style="width: 25%;">
                                             Missed Visits
@@ -252,13 +269,19 @@
                                         <td colspan="3">
                                             <table width="100%">
                                                 <tr>
-                                                    <td style="width: 43%;">
+                                                    <td style="width: 30%;">
+                                                    </td>
+                                                    <td align="right" style="width: 20% ;">
+                                                          
+                                        <asp:Button ID="btnreportbasic"  EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnreportbasic_Click" />
+                                    
                                                     </td>
                                                     <td align="center" style="width: 20%;">
                                                     <asp:Button ID="btnReport" runat="server" OnClick="btnReport_Click" CssClass="exportexl6"
                                                         EnableTheming="false" />
                                                     </td>
-                                                    <td style="width: 37%;">
+                                                    <td style="width: 30%;">
                                                     </td>
                                                 </tr>
                                             </table>

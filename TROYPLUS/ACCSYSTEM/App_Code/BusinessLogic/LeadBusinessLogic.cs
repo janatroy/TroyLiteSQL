@@ -1585,6 +1585,7 @@ public class LeadBusinessLogic : BaseLogic
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         string dbQry = string.Empty;
+        int qty = 0;
 
         try
         {
@@ -1598,7 +1599,12 @@ public class LeadBusinessLogic : BaseLogic
 
             if ((retVal != null) && (retVal != DBNull.Value))
             {
-                return true;
+                qty = (int)retVal;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
             }
             else
             {
@@ -1608,7 +1614,49 @@ public class LeadBusinessLogic : BaseLogic
         }
         catch (Exception ex)
         {
-            return false;
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+    public bool IsLeadAlreadyFound1(string connection, string leadName,int leadno)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        string dbQry = string.Empty;
+        int qty = 0;
+
+        try
+        {
+
+            dbQry = ("SELECT Count(*) FROM tblLeadHeader Where Lead_Name= '" + leadName + "' And Lead_no <> " + leadno.ToString() + "");
+
+
+
+            manager.Open();
+            object retVal = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if ((retVal != null) && (retVal != DBNull.Value))
+            {
+                qty = (int)retVal;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
         }
         finally
         {
