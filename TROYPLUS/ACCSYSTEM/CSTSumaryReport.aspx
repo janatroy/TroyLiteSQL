@@ -98,7 +98,7 @@
                     <table width="100%">
                         <tr>
                             <td style="width:40%">
-
+                             <asp:Button ID="btndetails" CssClass="exportExcel" EnableTheming="false" runat="server" OnClick="btndetails_Click" />
                             </td>
                             <td style="width:20%">
                                 <asp:Button ID="btnReport" runat="server" OnClick="btnReport_Click" CssClass="NewReport6"
