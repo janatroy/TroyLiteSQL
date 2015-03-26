@@ -3559,13 +3559,13 @@ public partial class CustomerSales : System.Web.UI.Page
                 string check = "Y";
                 string DuplicateCopy = "N";
                 string CName = txtCustomerName.Text;
-
+                bool mobchk;
                 int CustomerIdMobile = 0;
                 if (chk.Checked == false)
                 {
                     if (txtCustomerId.Text != "")
                     {
-                        CustomerIdMobile = Convert.ToInt32(txtCustomerId.Text);
+                        CustomerIdMobile =Convert.ToInt32(txtCustomerId.Text);
                     }
                 }
                 else
@@ -3597,11 +3597,13 @@ public partial class CustomerSales : System.Web.UI.Page
                             }
                             if (chk.Checked == false && txtCustomerId.Text == "")
                             {
-                                sCustomerID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
+                                mobchk = false;
+                                sCustomerID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk,branchcode);
                                 sCustomerName = txtCustomerName.Text;
                             }
                             else
                             {
+                                mobchk = false;
                                 sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
                                 sCustomerName = txtCustomerName.Text;
                             }
@@ -3694,7 +3696,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Stock is empty in row " + col + " ')", true);
                                 return;
                             }
-                           
+
                             else if (txtExeComm.Text == "")
                             {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Executive Commission in row " + col + " ')", true);
@@ -10449,7 +10451,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             BusinessLogic bl = new BusinessLogic(sDataSource);
             // DataSet customerDs = bl.getProdInfo(Convert.ToString(DrpProduct.SelectedItem.Value));
-            if (cmbCustomer.SelectedValue == "0" && chk.Checked==true)
+            if (cmbCustomer.SelectedValue == "0" && chk.Checked == true)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select Customer Name in Invoice Header Details tab');", true);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);

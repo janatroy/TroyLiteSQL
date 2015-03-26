@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -112,6 +113,7 @@ public partial class VATSumaryReport : System.Web.UI.Page
             dvVat.Visible = true;
          //   div1.Visible = false;
            // Response.Redirect("VATReprt.aspx", true);
+            ExportToExcel();
         }
         catch (Exception ex)
         {
@@ -119,6 +121,159 @@ public partial class VATSumaryReport : System.Web.UI.Page
         }
     }
 
+
+    public void ExportToExcel()
+    {
+
+        try
+        {
+            Response.Clear();
+
+            Response.Buffer = true;
+
+
+
+            Response.AddHeader("content-disposition",
+
+             "attachment;filename=GridViewExport.xls");
+
+            Response.Charset = "";
+
+            Response.ContentType = "application/vnd.ms-excel";
+
+            StringWriter sw = new StringWriter();
+
+            HtmlTextWriter hw = new HtmlTextWriter(sw);
+
+
+            Table tb = new Table();
+
+            TableRow tr1 = new TableRow();
+
+            TableCell cell1 = new TableCell();
+
+            cell1.Text = "Liability Balance";
+
+            TableCell cell2 = new TableCell();
+
+            cell2.Controls.Add(grdSalesVat.FindControl("grdSalesVat"));
+
+            TableCell cell3 = new TableCell();
+
+            cell3.Text = "&nbsp;";
+
+            TableCell cell4 = new TableCell();
+
+            cell4.Text = "Asset Balance";
+
+            TableCell cell5 = new TableCell();
+
+            cell5.Controls.Add(grdPurchaseVat.FindControl("grdPurchaseVat"));
+
+            TableCell cell6 = new TableCell();
+
+            cell6.Text = "&nbsp;";
+
+            ////TableCell cell7 = new TableCell();
+
+            ////cell7.Text = "Missing Ledger in Daybook (Debit)";
+
+            ////TableCell cell8 = new TableCell();
+
+            ////cell8.Controls.Add(ReportGridView2);
+
+            ////TableCell cell9 = new TableCell();
+
+            ////cell9.Text = "&nbsp;";
+
+            ////TableCell cell10 = new TableCell();
+
+            ////cell10.Text = "Missing Ledger in sales";
+
+
+            tr1.Cells.Add(cell1);
+
+            TableRow tr2 = new TableRow();
+
+            tr2.Cells.Add(cell2);
+
+            TableRow tr3 = new TableRow();
+
+            tr3.Cells.Add(cell3);
+
+            TableRow tr4 = new TableRow();
+
+            tr4.Cells.Add(cell4);
+
+            TableRow tr5 = new TableRow();
+
+            tr5.Cells.Add(cell5);
+
+            TableRow tr6 = new TableRow();
+
+            tr6.Cells.Add(cell6);
+
+            //TableRow tr7 = new TableRow();
+
+            //tr7.Cells.Add(cell7);
+
+
+            //TableRow tr8 = new TableRow();
+
+            //tr8.Cells.Add(cell8);
+
+            //TableRow tr9 = new TableRow();
+
+            //tr9.Cells.Add(cell9);
+
+            //TableRow tr10 = new TableRow();
+
+            //tr10.Cells.Add(cell10);
+
+
+            tb.Rows.Add(tr1);
+
+            tb.Rows.Add(tr2);
+
+            tb.Rows.Add(tr3);
+
+            tb.Rows.Add(tr4);
+
+            tb.Rows.Add(tr5);
+
+            tb.Rows.Add(tr6);
+
+            //tb.Rows.Add(tr7);
+
+            //tb.Rows.Add(tr8);
+
+            //tb.Rows.Add(tr9);
+
+            //tb.Rows.Add(tr10);
+
+
+            tb.RenderControl(hw);
+
+
+
+            //style to format numbers to string
+
+            string style = @"<style> .textmode { mso-number-format:\@; } </style>";
+
+            Response.Write(style);
+
+            Response.Output.Write(sw.ToString());
+
+            Response.Flush();
+
+            Response.End();
+
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
 
     protected void btnReport_Click(object sender, EventArgs e)
     {
