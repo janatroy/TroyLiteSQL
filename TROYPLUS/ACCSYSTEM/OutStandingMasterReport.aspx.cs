@@ -194,8 +194,9 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
             string Catval = cmbCategory.SelectedValue;
             string Brandval = cmbCategory.SelectedValue;
             string Modelval = cmbCategory.SelectedValue;
+            string Branch = drpBranchAdd.SelectedValue;
 
-            Response.Write("<script language='javascript'> window.open('OutstandingMasterReport1.aspx?Catval=" + Catval + "&Brandval=" + Brandval + "&Modelval=" + Modelval + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl5=" + ddl5 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&fifthLevel=" + fifthLevel + "&duration=" + duration + "&noOfColumns=" + noOfColumns + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('OutstandingMasterReport1.aspx?Catval=" + Catval + "&Brandval=" + Brandval + "&Modelval=" + Modelval + "&ddl3=" + ddl3 + "&ddl4=" + ddl4 + "&ddl5=" + ddl5 + "&ddl1=" + ddl1 + "&ddl2=" + ddl2 + "&Product=" + Product + "&Model=" + Model + "&Brand=" + Brand + "&itemCode=" + itemCode + "&Category=" + Category + "&firstLevel=" + firstLevel + "&secondLevel=" + secondLevel + "&thirdLevel=" + thirdLevel + "&fourthLevel=" + fourthLevel + "&fifthLevel=" + fifthLevel + "&duration=" + duration + "&noOfColumns=" + noOfColumns + "&Branch=" + Branch + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
 
 
 

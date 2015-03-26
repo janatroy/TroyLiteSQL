@@ -157,8 +157,12 @@
                         </asp:DropDownList>
                     </td>
                     <td style="width:20%">
+                        Branch
                     </td>
                     <td style="width:25%">
+                         <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
                     </td>
                     <td style="width:5%">
                         
