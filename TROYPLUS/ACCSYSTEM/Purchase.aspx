@@ -189,18 +189,19 @@
                                                                             <tr style="height: 10px">
                                                                             </tr>
                                                                             <tr>
-                                                                                <td style="width: 16%"></td>
-                                                                                <td style="width: 69%;" class="ControlTextBox3">
+                                                                                <td style="width: 4%"></td>
+                                                                                <td style="width: 92%;" class="ControlTextBox3">
 
                                                                                     <asp:RadioButtonList ID="optionmethod" runat="server" Style="font-size: 14px" align="center"
                                                                                         RepeatDirection="Horizontal" BackColor="#e7e7e7" Height="35px">
                                                                                         <asp:ListItem Selected="True" Value="Purchase">Purchase&nbsp;&nbsp;</asp:ListItem>
-                                                                                        <asp:ListItem Value="InternalTransfer">Internal Transfer&nbsp;&nbsp;</asp:ListItem>
-                                                                                        <asp:ListItem Value="DeliveryNote">Delivery Return&nbsp;&nbsp;</asp:ListItem>
+                                                                                        <asp:ListItem Value="DeliveryNote">Delivery Note&nbsp;&nbsp;</asp:ListItem>
+                                                                                        <%-- <asp:ListItem Value="InternalTransfer">Internal Transfer&nbsp;&nbsp;</asp:ListItem>--%>
+                                                                                        <asp:ListItem Value="DeliveryReturn">Delivery Return&nbsp;&nbsp;</asp:ListItem>
                                                                                         <asp:ListItem Value="SalesReturn">Sales Return</asp:ListItem>
                                                                                     </asp:RadioButtonList>
                                                                                 </td>
-                                                                                <td style="width: 12%"></td>
+                                                                                <td style="width: 3%"></td>
 
                                                                             </tr>
                                                                             <tr style="height: 7px">
@@ -260,7 +261,7 @@
                                                                 CancelControlID="BtnPopUpCancel1" DynamicServicePath="" Enabled="True" PopupControlID="purchasePanel"
                                                                 RepositionMode="RepositionOnWindowResizeAndScroll" TargetControlID="dummyPurchase">
                                                             </cc1:ModalPopupExtender>
-                                                            <asp:Panel ID="purchasePanel" runat="server" Style="width: 95%; display: none">
+                                                            <asp:Panel ID="purchasePanel" runat="server" Style="width: 95%; height: 90%; display: none">
                                                                 <asp:UpdatePanel ID="updatePnlPurchase" runat="server" RenderMode="Block" UpdateMode="Conditional">
                                                                     <ContentTemplate>
                                                                         <div id="Div1" style="background-color: White; width: 95%">
@@ -305,9 +306,12 @@
                                                                                                                             </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 10%;"></td>
-                                                                                                                        <td class="ControlLabelproject" style="width: 10%;">Sales Invoice No                                                                                                        
+                                                                                                                        <td class="ControlLabelproject" style="width: 10%;">
+                                                                                                                            <asp:Label ID="SaInNo" runat="server">   
+                                                                                                                                  Sales Invoice No 
+                                                                                                                            </asp:Label>
                                                                                                                         </td>
-                                                                                                                        <td class="ControlDrpBorder" style="width: 24%;">
+                                                                                                                        <td class="ControlDrpBorder" style="width: 24%;" id="salinvno" runat="server">
 
                                                                                                                             <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
                                                                                                                                 <ContentTemplate>
@@ -1500,7 +1504,7 @@
                                                     <asp:BoundField DataField="Creditor" HeaderStyle-Width="130px" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-Width="60px" DataFormatString="{0:F2}" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="SalesReturn" HeaderText="Sales Return" HeaderStyle-Wrap="true" HeaderStyle-BorderColor="Gray" />
-                                                     <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Wrap="true" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Wrap="true" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="SalesReturnReason" HeaderText="Sales Return - Reason" HeaderStyle-BorderColor="Gray"
                                                         Visible="false" />
                                                     <asp:BoundField DataField="SupplierID" HeaderText="Supplier ID" Visible="false" HeaderStyle-BorderColor="Gray" />
