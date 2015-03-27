@@ -147,8 +147,8 @@ public partial class LedgerReport1 : System.Web.UI.Page
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
 
-                lblStartDate.Text = startDate.ToString();
-                lblEndDate.Text = endDate.ToString();
+                lblStartDate.Text = startDate.ToString("dd-MM-yyyy");
+                lblEndDate.Text = endDate.ToString("dd-MM-yyyy");
 
                 lblLedger.Text = sLedgerName;
                 rptLedgerAccount = new ReportsBL.ReportClass();

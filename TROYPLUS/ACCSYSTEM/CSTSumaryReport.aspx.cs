@@ -317,8 +317,8 @@ public partial class CSTSumaryReport : System.Web.UI.Page
                 }
             }
         }
-        grdSalesCST.DataSource = grdDs;
-        grdSalesCST.DataBind();
+        grdSalesCst.DataSource = grdDs;
+        grdSalesCst.DataBind();
       
     }
     public void GeneratePurchaceCST(string CSTStr)
@@ -461,6 +461,7 @@ public partial class CSTSumaryReport : System.Web.UI.Page
         startDate = Convert.ToDateTime(txtStartDate.Text);
         endDate = Convert.ToDateTime(txtEndDate.Text);
         GetCSTReport(startDate, endDate);
+        dvCST.Visible = true;
         ExportToExcel();
     }
 
@@ -497,9 +498,9 @@ public partial class CSTSumaryReport : System.Web.UI.Page
 
             cell1.Text = "Liability Balance";
 
-            TableCell cell2 = new TableCell();
+            //TableCell cell2 = new TableCell();
 
-            cell2.Controls.Add(grdSalesCST.FindControl("grdSalesCST"));
+            //cell2.Controls.Add(grdSalesCst.FindControl("grdSalesCst"));
 
             TableCell cell3 = new TableCell();
 
@@ -536,9 +537,9 @@ public partial class CSTSumaryReport : System.Web.UI.Page
 
             tr1.Cells.Add(cell1);
 
-            TableRow tr2 = new TableRow();
+            //TableRow tr2 = new TableRow();
 
-            tr2.Cells.Add(cell2);
+            //tr2.Cells.Add(cell2);
 
             TableRow tr3 = new TableRow();
 
@@ -576,7 +577,7 @@ public partial class CSTSumaryReport : System.Web.UI.Page
 
             tb.Rows.Add(tr1);
 
-            tb.Rows.Add(tr2);
+            //tb.Rows.Add(tr2);
 
             tb.Rows.Add(tr3);
 

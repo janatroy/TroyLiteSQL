@@ -90,14 +90,16 @@
                 <tr style="height: 10px">
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="6">
                         <table width="100%">
                             <tr>
-                                <td style="width: 40%">
-                                       <asp:Button ID="Button1" runat="server" CssClass="VatDetail" Height="45px" OnClick="btnVATDetailedReport_Click" CausesValidation="false"
+                                 <td style="width: 10%"></td>
+                                <td style="width: 20%"></td>
+                                <td style="width: 10%" align="right">
+                                       <asp:Button ID="Button1" runat="server" CssClass="exportexl6forproject" OnClick="btnVATDetailedReport_Click" 
                                     EnableTheming="false" />
                                 </td>
-                                <td style="width: 20%">
+                                <td style="width: 10%">
                                     <asp:Button ID="btnReport" runat="server" OnClick="btnReport_Click" CssClass="NewReport6"
                                         EnableTheming="false" />
                                 </td>
