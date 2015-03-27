@@ -48,7 +48,7 @@
             <div id="div1" runat="server">
                 <table cellpadding="1" cellspacing="2" width="450px" border="0" style="border: 1px solid blue; background-color: White; text-align: left">
                     <tr>
-                        <td colspan="4" class="subHeadFont2">Profit and Loss Report
+                        <td colspan="4" class="subHeadFont2">Profit and Loss
                         </td>
                     </tr>
                     <tr style="height: 6px">
@@ -187,7 +187,7 @@
                             <td></td>
                             <td>
                                 <br />
-                                <h5>Profit & Loss Report From
+                                <h5 style="font-size:large" >Profit & Loss From
                                 <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                     To
                                 <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
@@ -198,7 +198,7 @@
                     <table cellpadding="2" cellspacing="0" width="700px" border="0" class="lblFont" style="border: 1px solid black">
                         <tr class="subHeadFont2">
                             <td align="center" colspan="2">
-                                <b>Profit & Loss Report </b>
+                                <b>Profit & Loss </b>
                             </td>
                         </tr>
                         <tr>

@@ -51,7 +51,7 @@
         <table cellpadding="1" cellspacing="2" border="0" width="450px"  style="border: 1px solid blue; background-color:White;">
             <tr>
                 <td colspan="4" class="subHeadFont2">
-                    Balance Sheet Report
+                    Balance Sheet
                 </td>
             </tr>
             <tr style="height:6px">
@@ -211,8 +211,8 @@
                         <td></td>
                         <td>
                             <br />
-                            <h5>
-                                Balance Sheet Report From
+                           <h5 style="font-size:large" >
+                                Balance Sheet From
                                 <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                 To
                                 <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
@@ -405,7 +405,7 @@
                     </tr>
                     <tr>
                         <td class="lblFont" valign="top" align="left">
-                            <a href="ProfitAndLossReport.aspx">Profit & Loss Account</a>
+                            <a href="ProfitAndLossReport.aspx" style="font-size:large">Profit & Loss Account</a>
                         </td>
                         <td>
                         </td>
@@ -426,10 +426,16 @@
                     </tr>
                     <tr>
                         <td align="right">
+                           <hr style="border-style:inset; border-width:1px"/>
+                            <asp:Label ID="Label1" Text="Total :   " runat="server" align="center"></asp:Label>
                             <asp:Label CssClass="tblLeft" ID="lblCreditTotal" runat="server"></asp:Label>
+                            <hr style="border-style:inset; border-width:1px"/>
                         </td>
                         <td align="right">
+                           <hr style="border-style:inset; border-width:1px"/>
+                             <asp:Label ID="Label2" Text="Total :   " runat="server" align="center"></asp:Label>
                             <asp:Label CssClass="tblLeft" ID="lblDebitTotal" runat="server"></asp:Label>
+                             <hr style="border-style:inset; border-width:1px"/>
                         </td>
                     </tr>
                 </table>

@@ -3678,7 +3678,39 @@ public partial class Purchase : System.Web.UI.Page
                 cmdPaymode.SelectedValue = "3";
                 drpSalesID.Enabled = false;
                 drpSalesID.Items.Clear();
+                salinvno.Visible = false;
+                SaInNo.Visible = false;
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+            }
+            else if (optionmethod.SelectedValue == "DeliveryNote")
+            {
+                lblHeading.Text = "Delivery Note Details";
 
+                drpIntTrans.ClearSelection();
+                ListItem cli = drpIntTrans.Items.FindByValue(Convert.ToString("NO"));
+                if (cli != null) cli.Selected = true;
+
+                drpSalesReturn.ClearSelection();
+                ListItem c = drpSalesReturn.Items.FindByValue(Convert.ToString("NO"));
+                if (c != null) c.Selected = true;
+
+                ddDeliveryNote.ClearSelection();
+                ListItem cl = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                if (cl != null) cl.Selected = true;
+
+                rqSalesReturn.Enabled = false;
+                rowdcnum.Visible = false;
+                rowSalesRet.Visible = false;
+                RequiredFieldValidator2.Enabled = false;
+                drpIntTrans.Enabled = false;
+                drpSalesReturn.Enabled = false;
+                ddDeliveryNote.Enabled = false;
+
+                cmdPaymode.SelectedValue = "3";
+                drpSalesID.Enabled = false;
+                drpSalesID.Items.Clear();
+                salinvno.Visible = false;
+                SaInNo.Visible = false;
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
             }
             else if (optionmethod.SelectedValue == "InternalTransfer")
@@ -3706,8 +3738,10 @@ public partial class Purchase : System.Web.UI.Page
                 cmdPaymode.SelectedValue = "3";
                 drpSalesID.Enabled = false;
                 drpSalesID.Items.Clear();
+                salinvno.Visible = false;
+                SaInNo.Visible = false;
             }
-            else if (optionmethod.SelectedValue == "DeliveryNote")
+            else if (optionmethod.SelectedValue == "DeliveryReturn")
             {
                 lblHeading.Text = "Delivery Return";
 
@@ -3745,6 +3779,8 @@ public partial class Purchase : System.Web.UI.Page
                 drpSalesID.DataBind();
                 drpSalesID.DataTextField = "BillNo";
                 drpSalesID.DataValueField = "BillNo";
+                salinvno.Visible = true;
+                SaInNo.Visible = true;
             }
             else if (optionmethod.SelectedValue == "SalesReturn")
             {
@@ -3769,7 +3805,8 @@ public partial class Purchase : System.Web.UI.Page
                 drpIntTrans.Enabled = false;
                 drpSalesReturn.Enabled = false;
                 ddDeliveryNote.Enabled = false;
-
+                SaInNo.Visible = true;
+                salinvno.Visible = true;
 
                 DataSet dsa = new DataSet();
                 dsa = bl.ListSalesreturn(sDataSource, drpBranch.SelectedValue);
@@ -7107,7 +7144,7 @@ public partial class Purchase : System.Web.UI.Page
             }
 
 
-            if (optionmethod.SelectedValue != "Purchase")
+            if (optionmethod.SelectedValue != "Purchase" && optionmethod.SelectedValue != "DeliveryNote")
             {
                 for (int vLoop = 0; vLoop < grvStudentDetails.Rows.Count; vLoop++)
                 {

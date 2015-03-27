@@ -1295,6 +1295,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         lblledgerCategory.Font.Bold = true;
                         lblledgerCategory.Visible = false;
                         drpCustomerCategoryAdd.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["LedgerCategory"]);
+                        drpCustomerCategoryAdd.Enabled = false;
                     }
                     else
                     {
@@ -2451,6 +2452,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             txtCustomerId.Visible = true;
             drpMobile.Visible = false;
+            drpCustomerCategoryAdd.Enabled = true;
         }
         else
         {
@@ -2459,6 +2461,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             drpMobile.Visible = true;
             txtCustomerId.Visible = false;
+            drpCustomerCategoryAdd.Enabled = false;
         }
         //UpdatePanel21.Update();
     }
@@ -3283,8 +3286,14 @@ public partial class CustomerSales : System.Web.UI.Page
                 snarr = txtnarr.Text;
                 fixedtotal = Convert.ToDouble(txtfixedtotal.Text);
 
-                manualno = Convert.ToInt32(txtmanual.Text);
-
+                if (txtmanual.Text != "")
+                {
+                    manualno = Convert.ToInt32(txtmanual.Text);
+                }
+                else
+                {
+                    manualno = 0;
+                }
                 //if (chkboxManual.Checked == true)
                 //{
                 //    manual = "YES";
@@ -4735,8 +4744,14 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 despatchedfrom = txtdespatced.Text;
                 fixedtotal = Convert.ToDouble(txtfixedtotal.Text);
-
-                manualno = Convert.ToInt32(txtmanual.Text);
+                if (txtmanual.Text != "")
+                {
+                    manualno = Convert.ToInt32(txtmanual.Text);
+                }
+                else
+                {
+                    manualno = 0;
+                }
                 //if (chkboxManual.Checked == true)
                 //{
                 //    manual = "YES";
@@ -6316,7 +6331,9 @@ public partial class CustomerSales : System.Web.UI.Page
                 rowmanual.Visible = false;
                 drpPurID.Items.Clear();
                 loadDropDowns();
-
+                PurInNo.Visible=false;
+                drpPurID.Visible = false;
+                tdpurin.Visible = false;
             }
             else if (optionmethod.SelectedValue == "InternalTransfer")
             {
@@ -6390,7 +6407,9 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 drpPaymode.SelectedValue = "3";
                 drpPurID.Items.Clear();
-
+                PurInNo.Visible = true;
+                drpPurID.Visible = true;
+                tdpurin.Visible = true;
             }
             else if (optionmethod.SelectedValue == "PurchaseReturn")
             {
@@ -6428,6 +6447,9 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 loadPurchaseID();
                 FirstGridViewRow();
+                PurInNo.Visible = true;
+                drpPurID.Visible = true;
+                tdpurin.Visible = true;
             }
             else if (optionmethod.SelectedValue == "ManualSales")
             {
@@ -6464,6 +6486,9 @@ public partial class CustomerSales : System.Web.UI.Page
                 rowmanual.Visible = true;
                 drpPurID.Items.Clear();
                 loadDropDowns();
+                PurInNo.Visible = false;
+                drpPurID.Visible = false;
+                tdpurin.Visible = false;
             }
 
             if (drpPurchaseReturn.SelectedValue == "NO")

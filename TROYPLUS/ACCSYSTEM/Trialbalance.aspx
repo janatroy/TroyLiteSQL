@@ -50,7 +50,7 @@
             <table cellpadding="1" cellspacing="2" width="450px" border="0" style="border: 1px solid blue; background-color:White;">
                 <tr>
                     <td colspan="4" class="headerPopUp">
-                        Trail Balance Report
+                        Trial Balance Report
                     </td>
                 </tr>
                 <tr style="height:6px">
@@ -60,15 +60,15 @@
                     <td style="width:35%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
                         Start Date
                     </td>
-                    <td width="25%" class="ControlTextBox3">
+                    <td style="width:25%" class="ControlTextBox3">
                         <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox"
                             MaxLength="10" />
                     </td>
-                    <td width="10%">
+                    <td style="width:10%">
                         <script type="text/javascript" language="JavaScript">
                             new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                     </td>
-                    <td align="left" width="20%">
+                    <td align="left" style="width:20%">
                         <asp:RequiredFieldValidator class="lblFont" CssClass="lblFont" ID="RequiredFieldValidator1"
                             runat="server" ControlToValidate="txtStartDate" Display="None" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                     </td>
@@ -78,14 +78,14 @@
                     <td  style="width:35%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
                         End Date
                     </td>
-                    <td  width="25%" class="ControlTextBox3">
+                    <td  style="width:25%" class="ControlTextBox3">
                         <asp:TextBox ID="txtEndDate" Enabled="true" CssClass="cssTextBox" runat="server" MaxLength="10" />
                     </td>
-                    <td width="10%">
+                    <td style="width:10%">
                         <script type="text/javascript" language="JavaScript">
                             new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
                     </td>
-                    <td align="left" width="20%">
+                    <td align="left" style="width:20%">
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter The End Date"></asp:RequiredFieldValidator>
                         <asp:CompareValidator ID="CompareValidator1" runat="server" CssClass="lblFont" ControlToCompare="txtStartDate"

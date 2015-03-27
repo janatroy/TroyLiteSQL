@@ -248,11 +248,11 @@
                             <td />
                         </tr>
                     <tr>
-                        <td width="140px" align="left">
-                            TIN#:
-                            <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                        <td width="10px" align="left">
+                           <%-- TIN#:
+                            <asp:Label ID="lblTNGST" runat="server"></asp:Label>--%>
                         </td>
-                        <td align="center" width="420px" style="font-size: 20px;">
+                        <td align="center" width="560px" style="font-size: 20px;">
                             <asp:Label ID="lblCompany" runat="server"></asp:Label>
                         </td>
                         <td width="140px" align="left">
@@ -262,8 +262,8 @@
                     </tr>
                     <tr>
                         <td align="left">
-                            GST#:
-                            <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                           <%-- GST#:
+                            <asp:Label ID="lblGSTno" runat="server"></asp:Label>--%>
                         </td>
                         <td align="center">
                             <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -299,7 +299,7 @@
                     </tr>
                    
                 </table>
-                <h5>
+                <h5 style="font-size:large" >
                     SALES SUMMARY REPORT
                      <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                             To

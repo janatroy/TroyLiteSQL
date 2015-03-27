@@ -190,7 +190,7 @@
                             <td></td>
                             <td>
                                 <br />
-                                <h5>Trial Balance From
+                                <h5 style="font-size:large" >Trial Balance From
                             <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                     To
                             <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
@@ -220,7 +220,7 @@
                                         <br />
                                     </PageHeaderTemplate>
                                     <Columns>
-                                        <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="80%">
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="80%" HeaderText="Particulars" HeaderStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <a href="javascript:switchViews('dv<%# Eval("GroupID") %>', 'imdiv<%# Eval("GroupID") %>');"
                                                     style="text-decoration: none;">
@@ -240,19 +240,19 @@
                                                             <br />
                                                         </PageHeaderTemplate>
                                                         <Columns>
-                                                            <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
-                                                            <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger Name" />
-                                                            <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
+                                                            <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger Name" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" HeaderStyle-HorizontalAlign="Center" />
                                                             <asp:BoundField DataField="Debit" DataFormatString="{0:F2}" ItemStyle-HorizontalAlign="right"
-                                                                HeaderText="Debit" />
+                                                                HeaderText="Debit" HeaderStyle-HorizontalAlign="Center" />
                                                             <asp:BoundField DataField="Credit" DataFormatString="{0:F2}" ItemStyle-HorizontalAlign="right"
-                                                                HeaderText="Credit" />
+                                                                HeaderText="Credit" HeaderStyle-HorizontalAlign="Center" />
                                                         </Columns>
                                                     </wc:ReportGridView>
                                                 </div>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Debit" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="10%">
+                                        <asp:TemplateField HeaderText="Debit" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="10%" HeaderStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblDebit" runat="server"
                                                     Text='<%# Eval("Debit","{0:f2}") %>' />
@@ -265,11 +265,11 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
-                                    <PagerTemplate>
+                                  <%--  <PagerTemplate>
                                     </PagerTemplate>
                                     <PageFooterTemplate>
                                         <br />
-                                    </PageFooterTemplate>
+                                    </PageFooterTemplate>--%>
                                 </wc:ReportGridView>
                                 <%--<h5>Total Outstading Amount:</h5>--%>
                             </td>
@@ -280,10 +280,10 @@
                             <td width="80%">&nbsp;
                             </td>
                             <td width="10%" align="right">
-                                <asp:Label CssClass="tblLeft" ID="lblDebitTotal" runat="server"></asp:Label>
+                                <asp:Label CssClass="tblLeft" ID="lblDebitTotal" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td width="10%" align="right">
-                                <asp:Label CssClass="tblLeft" ID="lblCreditTotal" runat="server"></asp:Label>
+                                <asp:Label CssClass="tblLeft" ID="lblCreditTotal" runat="server" Visible="false"></asp:Label>
                             </td>
                         </tr>
                     </table>
