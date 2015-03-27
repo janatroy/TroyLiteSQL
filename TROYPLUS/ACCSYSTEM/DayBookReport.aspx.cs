@@ -204,12 +204,12 @@ public partial class DayBookReport : System.Web.UI.Page
                     //}
                     //else if (i == 4)
                     //{
-                    DataRow dr_export123123 = dt.NewRow();
-                    dr_export123123["Date"] = "";
-                    dr_export123123["Particulars"] = "";
-                    dr_export123123["Debit"] = "";
-                    dr_export123123["Credit"] = "";
-                    dt.Rows.Add(dr_export123123);
+                    //DataRow dr_export123123 = dt.NewRow();
+                    //dr_export123123["Date"] = "";
+                    //dr_export123123["Particulars"] = "";
+                    //dr_export123123["Debit"] = "";
+                    //dr_export123123["Credit"] = "";
+                    //dt.Rows.Add(dr_export123123);
                     i = 1;
                     //}
                 }

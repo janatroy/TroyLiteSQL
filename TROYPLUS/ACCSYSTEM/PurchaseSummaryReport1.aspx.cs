@@ -86,13 +86,13 @@ public partial class PurchaseSummaryReport1 : System.Web.UI.Page
                             {
                                 Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
                                 Image1.Height = 95;
-                                Image1.Width = 114;
+                                Image1.Width = 95;
                             }
                         }
                         else
                         {
                             Image1.Height = 95;
-                            Image1.Width = 114;
+                            Image1.Width = 95;
                             Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }
@@ -170,7 +170,7 @@ public partial class PurchaseSummaryReport1 : System.Web.UI.Page
 
                 DataSet BillDs = new DataSet();
 
-                lblHeading.Text = "Purchase Bill Summary Report";
+                
 
                 if (category == "Daywise")
                 {
@@ -197,6 +197,9 @@ public partial class PurchaseSummaryReport1 : System.Web.UI.Page
                 {
                     BillDs = bl.FirstLevelCustomerwisePurchase(startDate, endDate, salesRet, intTrans, delNote, Branch);
                 }
+
+                lblHeading.Text = "Purchase " + category + " Bill Summary Report";
+
                 /*Start Itemwise*/
                 //else if (category == "Itemwise")
                 //{

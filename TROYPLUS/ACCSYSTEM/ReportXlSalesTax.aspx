@@ -95,7 +95,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label runat="server" Text="Purchase Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label runat="server" Text="Purchase Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -177,15 +177,18 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
+                                                <td align="center" style="width: 20%;">
                                                     <asp:Button ID="Button4" EnableTheming="false" runat="server" CssClass="NewReport6"
                                             Width="120px" OnClick="btnReport1_Click" />
+                                                    </td>
+                                                    <td style="width: 20%;">
+                                                
                                                 <asp:Button ID="btnReport" runat="server" OnClick="btnReport2_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
-                                                <td>
+                                                <td style="width:30%;">
                                                 </td>
                                             </tr>
                                         </table>
@@ -204,7 +207,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label ID="Label1" runat="server" Text="Sales Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label ID="Label1" runat="server" Text="Sales Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -286,15 +289,17 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
+                                                <td align="center" style="width: 20%;">
                                                     <asp:Button ID="Button3" EnableTheming="false" runat="server" CssClass="NewReport6"
                                             Width="120px" OnClick="btnReport22_Click" />
+                                                    </td>
+                                                    <td align="center" style="width: 20%;">
                                                 <asp:Button ID="btnExcel" runat="server" OnClick="btnExcel_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
-                                                <td>
+                                                <td style="width:30%;">
                                                 </td>
                                             </tr>
                                         </table>
@@ -313,7 +318,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label ID="Label2" runat="server" Text="Purchase Return Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label ID="Label2" runat="server" Text="Purchase Return Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -395,15 +400,17 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
+                                                <td align="center" style="width: 20%;">
                                                     <asp:Button ID="Button1" EnableTheming="false" runat="server" CssClass="NewReport6"
                                                         Width="120px" OnClick="btnReport3_Click" />
+                                                    </td>
+                                                    <td align="center" style="width: 20%;">
                                                 <asp:Button ID="btnRep" runat="server" OnClick="btnRep_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
-                                                <td>
+                                                <td style="width:30%;">
                                                 </td>
                                             </tr>
                                         </table>
@@ -422,7 +429,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label ID="Label3" runat="server" Text="Sales Return Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label ID="Label3" runat="server" Text="Sales Return Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -504,11 +511,13 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
+                                                <td align="center" style="width: 20%;">
                                                     <asp:Button ID="Button2" EnableTheming="false" runat="server" CssClass="NewReport6"
                                             Width="120px" OnClick="btnReport4_Click" />
+                                                    </td>
+                                                    <td align="center" style="width: 20%;">
                                                 <asp:Button ID="btnt" runat="server" OnClick="btnt_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
