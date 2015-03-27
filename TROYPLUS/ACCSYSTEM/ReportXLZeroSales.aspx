@@ -28,7 +28,7 @@
                     <tr>
                         
                                     <td colspan="3" class="headerPopUp">
-                                        Zero / 1 Rs Value Sales Report
+                                        Zero / 1 Rupee Value Sales Report
                                     </td>
                                 
                     </tr>

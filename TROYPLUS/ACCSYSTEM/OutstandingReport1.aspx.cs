@@ -502,7 +502,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet debitData = bl.GetCustDebitData();
+        DataSet debitData = bl.GetCustDebitData("");
 
         return debitData;
     }
@@ -511,7 +511,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet creditData = bl.GetAllReceivedAmount();
+        DataSet creditData = bl.GetAllReceivedAmount("");
 
         
         if (creditData != null)

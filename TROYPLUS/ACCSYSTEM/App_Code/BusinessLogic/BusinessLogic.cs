@@ -34673,7 +34673,7 @@ public partial class BusinessLogic
 
     }
 
-    public DataSet GetAllReceivedAmount()
+    public DataSet GetAllReceivedAmount(string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -34687,7 +34687,7 @@ public partial class BusinessLogic
             dbQry.Append(" FROM (((tblDayBook LEFT JOIN tblLedger ON tblDayBook.CreditorID = tblLedger.LedgerID)");
             dbQry.Append(" LEFT JOIN tblGroups ON tblGroups.GroupID = tblLedger.GroupID) LEFT OUTER JOIN tblReceivedAmount ON tblReceivedAmount.ReceiptNo = tblDayBook.TransNo) ");
             //dbQry.Append(" Where tblDayBook.Amount is not null AND tblDayBook.DebtorID <> 0 AND");
-            dbQry.Append(" Where tblDayBook.Amount is not null AND ");
+            dbQry.Append(" Where tblDayBook.Amount is not null AND tblDayBook.Branchcode='"+Branch+"' and ");
             //dbQry.Append(" tblGroups.GroupName = 'Sundry Debtors' AND (EXISTS (SELECT ReceiptNo FROM tblReceivedAmount R WHERE (ReceiptNo = tblDayBook.TransNo))) Group By tblLedger.LedgerName,tblDayBook.CreditorID,tblLedger.OpenbalanceCR,tblReceivedAmount.BillNo");
             dbQry.Append(" tblGroups.GroupName = 'Sundry Debtors' Group By tblLedger.LedgerName,tblDayBook.CreditorID,tblLedger.OpenbalanceCR,tblReceivedAmount.BillNo HAVING SUM(tblReceivedAmount.Amount) >= 0");
             dbQry.Append(" ORDER BY tblLedger.LedgerName");
@@ -34877,7 +34877,7 @@ public partial class BusinessLogic
     }
 
 
-    public DataSet GetCustDebitData()
+    public DataSet GetCustDebitData(string Branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
@@ -34887,7 +34887,7 @@ public partial class BusinessLogic
         try
         {
 
-            dbQry.Append("SELECT tblDayBook.Amount,tblDayBook.TransNo,tblDayBook.TransDate,tblSales.executive,tblSalesItems.BillNo,tblCategories.CategoryName, tblDayBook.VoucherType,tblLedger.LedgerName as Customer,tblLedger.LedgerName,tblDayBook.DebtorID,tblDayBook.CreditorID,tblSalesItems.ItemCode, ");
+            dbQry.Append("SELECT tblDayBook.Amount,tblDayBook.TransNo,tblDayBook.TransDate,tblSalesItems.executivename,tblSalesItems.BillNo,tblCategories.CategoryName, tblDayBook.VoucherType,tblLedger.LedgerName as Customer,tblLedger.LedgerName,tblDayBook.DebtorID,tblDayBook.CreditorID,tblSalesItems.ItemCode, ");
 
             dbQry.Append(" tblProductMaster.ProductDesc,tblProductMaster.Model, tblSalesItems.Qty * tblSalesItems.Rate AS NetRate, ");
 
@@ -34921,12 +34921,12 @@ public partial class BusinessLogic
             dbQry.Append(" LEFT JOIN tblProductMaster ON tblSalesItems.ItemCode = tblProductMaster.ItemCode)");
             dbQry.Append(" LEFT JOIN tblLedger ON tblDayBook.DebtorID = tblLedger.LedgerID)");
             dbQry.Append(" LEFT JOIN tblGroups ON tblGroups.GroupID = tblLedger.GroupID)");
-            dbQry.Append(" LEFT JOIN tblEmployee ON tblSales.executive = tblEmployee.empno)");
+            dbQry.Append(" LEFT JOIN tblEmployee ON tblSalesItems.executivename = tblEmployee.empno)");
             dbQry.Append(" LEFT JOIN tblCategories  ON tblCategories.CategoryID = tblProductMaster.CategoryID ) ");
             dbQry.Append(" Where tblDayBook.Amount is not null AND tblDayBook.DebtorID <> 0 AND");
-            dbQry.Append(" tblGroups.GroupName = 'Sundry Debtors' ");
+            dbQry.Append(" tblGroups.GroupName = 'Sundry Debtors' and tblDayBook.Branchcode='" + Branch + "' and tblSalesItems.Branchcode = tblSales.Branchcode");
 
-            dbQry.Append(" GROUP BY tblDayBook.Amount, tblDayBook.TransNo, tblDayBook.TransDate, tblSales.Executive, tblSalesItems.BillNo, tblCategories.CategoryName, tblDayBook.VoucherType, tblLedger.LedgerName, tblLedger.LedgerName, tblDayBook.DebtorID, tblDayBook.CreditorID, tblSalesItems.ItemCode,");
+            dbQry.Append(" GROUP BY tblDayBook.Amount, tblDayBook.TransNo, tblDayBook.TransDate,tblSalesItems.executivename, tblSalesItems.BillNo, tblCategories.CategoryName, tblDayBook.VoucherType, tblLedger.LedgerName, tblLedger.LedgerName, tblDayBook.DebtorID, tblDayBook.CreditorID, tblSalesItems.ItemCode,");
 
             dbQry.Append(" tblProductMaster.ProductDesc, tblProductMaster.Model, tblSalesItems.Qty * tblSalesItems.Rate, tblSalesItems.Rate, tblSalesItems.Qty,  ");
 
@@ -76376,6 +76376,47 @@ public partial class BusinessLogic
             amt = (double)amtObj;
         oleConn.Close();
         return amt;
+    }
+
+    public DataSet GetAllCustCreditData1(string Branch)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString;
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+
+        try
+        {
+
+            //dbQry.Append("SELECT SUM(tblDayBook.Amount) as Amount,tblLedger.OpenbalanceCR, tblLedger.LedgerName as Creditor,tblDayBook.CreditorID ");
+            //dbQry.Append(" FROM ((tblDayBook LEFT JOIN tblLedger ON tblDayBook.CreditorID = tblLedger.LedgerID)");
+            //dbQry.Append(" LEFT JOIN tblGroups ON tblGroups.GroupID = tblLedger.GroupID)");
+            ////dbQry.Append(" Where tblDayBook.Amount is not null AND tblDayBook.DebtorID <> 0 AND");
+            //dbQry.Append(" Where tblDayBook.Amount is not null AND ");
+            //dbQry.Append(" tblGroups.GroupName = 'Sundry Debtors' AND (NOT EXISTS (SELECT ReceiptNo FROM tblReceivedAmount R WHERE (ReceiptNo = tblDayBook.TransNo))) Group By tblLedger.LedgerName,tblDayBook.CreditorID,tblLedger.OpenbalanceCR");
+            //dbQry.Append(" ORDER BY tblLedger.LedgerName");
+
+            dbQry.Append("SELECT Sum(tblDayBook.Amount) - Sum(iif((R.ramount is null),0,R.ramount )) AS Amount, tblLedger.OpenbalanceCR, tblLedger.LedgerName AS Creditor, tblDayBook.CreditorID ");
+            dbQry.Append(" FROM ((tblDayBook LEFT JOIN tblLedger ON tblDayBook.CreditorID = tblLedger.LedgerID) LEFT JOIN tblGroups ON tblLedger.GroupID = tblGroups.GroupID) LEFT JOIN (SELECT ");
+            dbQry.Append(" ReceiptNo,sum(Amount) as ramount FROM tblReceivedAmount  group by ReceiptNo )  AS R ON tblDayBook.TransNo = R.ReceiptNo");
+            dbQry.Append(" WHERE (((tblDayBook.Amount) Is Not Null) AND tblDayBook.Branchcode='" + Branch + "' and ((tblGroups.GroupName)='Sundry Debtors'))");
+            dbQry.Append(" GROUP BY tblLedger.OpenbalanceCR, tblLedger.LedgerName, tblDayBook.CreditorID");
+            dbQry.Append(" having Sum(tblDayBook.Amount) - Sum(iif((R.ramount is null),0,R.ramount )) > 0 ORDER BY tblLedger.LedgerName ");
+
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+            manager.Dispose();
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
     }
 
 }

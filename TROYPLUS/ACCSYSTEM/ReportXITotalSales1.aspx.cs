@@ -26,7 +26,7 @@ public partial class ReportXITotalSales1 : System.Web.UI.Page
             Connection = Request.Cookies["Company"].Value;
             if (!IsPostBack)
             {
-                lblHeading.Text = "Total Quantity Sales report";
+                
 
                 DataSet companyInfo = new DataSet();
                 BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -62,13 +62,13 @@ public partial class ReportXITotalSales1 : System.Web.UI.Page
                             {
                                 Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
                                 Image1.Height = 95;
-                                Image1.Width = 114;
+                                Image1.Width = 95;
                             }
                         }
                         else
                         {
                             Image1.Height = 95;
-                            Image1.Width = 114;
+                            Image1.Width = 95;
                             Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }
@@ -119,6 +119,7 @@ public partial class ReportXITotalSales1 : System.Web.UI.Page
                 bindDataSubTotBranch(cond);
             }
 
+            lblHeading.Text = "Total Quantity " + option + " Sales report from " + startdate.ToString("dd/MM/yyyy") + " to " + enddate.ToString("dd/MM/yyyy");
 
         }
         catch (Exception ex)
@@ -639,7 +640,23 @@ public partial class ReportXITotalSales1 : System.Web.UI.Page
     string cond6;
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            int colCount = e.Row.Cells.Count;
+
+            e.Row.Cells[0].HorizontalAlign = HorizontalAlign.Center;
+            
+
+            for (int i = 1; i <= colCount - 1; i++)
+            {
+                e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Center;
+            }
+           
+        }
+        if (e.Row.RowType == DataControlRowType.Footer)
+        {
+
+        }
     }
 
 

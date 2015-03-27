@@ -83,8 +83,8 @@
                         </tr>
 
                         <tr>
-                            <td width="140px" align="left">TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                            <td width="3px" align="left">
+                        <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center" width="320px" style="font-size: 20px;">
                                 <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -94,8 +94,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left">GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                            <td align="left">
+                        <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -124,7 +124,7 @@
                             <td>&nbsp;
                             </td>
                         </tr>
-                        <tr>
+                        <%--<tr>
                             <td>&nbsp;
                             </td>
                             <td align="center">&nbsp;
@@ -132,7 +132,7 @@
                             <td>&nbsp;
                             </td>
                         </tr>
-                   
+                   --%>
                     </table>
                     <table>
                              <tr>
@@ -145,8 +145,8 @@
                     </table>
                   <div style="width: 700px" runat="server"  align="center">
                 <wc:ReportGridView runat="server"  BorderWidth="1" ID="Grdreport" GridLines="Both"
-                    AutoGenerateColumns="true"
-                    AllowPrintPaging="true" Width="700px" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
+                    AutoGenerateColumns="true" Width="100%" OnRowDataBound="GridView1_RowDataBound"
+                    AllowPrintPaging="true" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                      >
                     <HeaderStyle CssClass="ReportHeadataRow" />
                     <RowStyle CssClass="ReportdataRow" />

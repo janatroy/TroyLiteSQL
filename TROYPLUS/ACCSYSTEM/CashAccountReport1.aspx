@@ -63,9 +63,9 @@
                             <td />
                         </tr>
                     <tr>
-                        <td width="140px" align="left">
-                            TIN#:
-                            <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                        <td width="3px" align="left">
+                            
+                            <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>
                         </td>
                         <td align="center" width="420px" style="font-size: 20px;">
                             <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -77,8 +77,8 @@
                     </tr>
                     <tr>
                         <td align="left">
-                            GST#:
-                            <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                           
+                            <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                         </td>
                         <td align="center">
                             <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -165,7 +165,7 @@
                             <asp:Label ID="lblOBDR" runat="server"></asp:Label><hr />
                         </td>
                         <td width="80px" align="right">
-                            <hr />
+                           
                             <asp:Label ID="lblOBCR" runat="server"></asp:Label><hr />
                         </td>
                     </tr>
@@ -177,11 +177,11 @@
                             &nbsp;
                         </td>
                         <td align="right">
-                            <hr />
+                           
                             <asp:Label ID="lblDebitSum" runat="server"></asp:Label><hr />
                         </td>
                         <td align="right">
-                            <hr />
+                           
                             <asp:Label ID="lblCreditSum" runat="server"></asp:Label><hr />
                         </td>
                     </tr>
@@ -194,7 +194,7 @@
                             &nbsp;
                         </td>
                         <td align="right">
-                            <hr />
+                           
                             <asp:Label ID="lblDebitDiff" runat="server"></asp:Label><hr />
                         </td>
                         <td align="right">

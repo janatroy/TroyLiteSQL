@@ -243,9 +243,9 @@
                             <td />
                         </tr>
                     <tr>
-                        <td width="140px" align="left">
-                            TIN#:
-                            <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                        <td width="3px" align="left">
+                           
+                            <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>
                         </td>
                         <td align="center" width="420px" style="font-size: 20px;">
                             <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -257,8 +257,8 @@
                     </tr>
                     <tr>
                         <td align="left">
-                            GST#:
-                            <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                           
+                            <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                         </td>
                         <td align="center">
                             <asp:Label ID="lblAddress" runat="server"></asp:Label>

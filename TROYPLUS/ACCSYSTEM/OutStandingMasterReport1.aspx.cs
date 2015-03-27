@@ -79,6 +79,27 @@ public partial class OutStandingMasterReport1 : System.Web.UI.Page
                     }
                     //}
                 }
+
+                DataSet ds1 = bl.getImageInfo();
+                if (ds1 != null)
+                {
+                    if (ds1.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                        {
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                            Image1.Height = 95;
+                            Image1.Width = 95;
+                        }
+                    }
+                    else
+                    {
+                        Image1.Height = 95;
+                        Image1.Width = 95;
+                        Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                    }
+                }
+
                 txtDuration.Text = "7";
                 txtColumns.Text = "4";
                 loadCategories();
@@ -1411,8 +1432,14 @@ public partial class OutStandingMasterReport1 : System.Web.UI.Page
     public DataSet GetCustDebitData()
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
+        string Branch = string.Empty;
 
-        DataSet debitData = bl.GetCustDebitData();
+        if (Request.QueryString["Branch"] != null)
+        {
+            Branch = Request.QueryString["Branch"].ToString();
+        }
+
+        DataSet debitData = bl.GetCustDebitData(Branch);
 
         return debitData;
     }
@@ -1650,7 +1677,14 @@ public partial class OutStandingMasterReport1 : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet creditData = bl.GetAllReceivedAmount();
+        string Branch = string.Empty;
+
+        if (Request.QueryString["Branch"] != null)
+        {
+            Branch = Request.QueryString["Branch"].ToString();
+        }
+
+        DataSet creditData = bl.GetAllReceivedAmount(Branch);
 
         int maxColIndex = int.Parse(txtColumns.Text) + 4;
 
@@ -1762,7 +1796,14 @@ public partial class OutStandingMasterReport1 : System.Web.UI.Page
 
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet creditData = bl.GetAllCustCreditData();
+        string Branch = string.Empty;
+
+        if (Request.QueryString["Branch"] != null)
+        {
+            Branch = Request.QueryString["Branch"].ToString();
+        }
+
+        DataSet creditData = bl.GetAllCustCreditData1(Branch);
 
         //DataSet receivedData = bl.GetAllReceivedAmount();
 
@@ -2361,7 +2402,7 @@ public partial class OutStandingMasterReport1 : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("ItemCode"));
 
         int colDur = 0;
-        int nextDur = 5;
+        int nextDur = duration;
 
         for (int i = 0; i < noOfColumns; i++)
         {
@@ -2369,10 +2410,10 @@ public partial class OutStandingMasterReport1 : System.Web.UI.Page
             dc = new DataColumn("Days(" + colDur.ToString() + "-" + nextDur.ToString() + ")", typeof(double));
             dt.Columns.Add(dc);
             colDur = nextDur + 1;
-            nextDur = nextDur + 5;
+            nextDur = nextDur + duration;
         }
 
-        dc = new DataColumn("Days(" + 20 + ") Above");
+        dc = new DataColumn("Days(" + colDur + ") Above");
         dt.Columns.Add(dc);
 
         ds.Tables.Add(dt);

@@ -424,12 +424,12 @@
                                                           <asp:CheckBox ID="chkboxPer" runat="server" Text="Per%"/>
                                                       </td>
                                                       <td class="ControlTextBox3" style="width: 16%;">
-                                                          <asp:CheckBox ID="chkboxNlcvalue" runat="server" Text="NLC Value"/>
-                                                          <asp:CheckBox ID="chkboxNlcper" runat="server" Text="NLC Per%"/>
-                                                          <asp:CheckBox ID="chkboxMRPvalue" runat="server" Text="MRP Value"/>
-                                                          <asp:CheckBox ID="chkboxMRPper" runat="server" Text="MRP Per%" />
-                                                          <asp:CheckBox ID="chkboxDpvalue" runat="server" Text="DP Value" />
-                                                          <asp:CheckBox ID="chkboxDpper" runat="server" Text="DP Per%" />
+                                                          <asp:CheckBox ID="chkboxNlcvalue" runat="server" Text="NLC Value" Visible="false"/>
+                                                          <asp:CheckBox ID="chkboxNlcper" runat="server" Text="NLC Per%" Visible="false"/>
+                                                          <asp:CheckBox ID="chkboxMRPvalue" runat="server" Text="MRP Value" Visible="false"/>
+                                                          <asp:CheckBox ID="chkboxMRPper" runat="server" Text="MRP Per%" Visible="false" />
+                                                          <asp:CheckBox ID="chkboxDpvalue" runat="server" Text="DP Value"  Visible="false"/>
+                                                          <asp:CheckBox ID="chkboxDpper" runat="server" Text="DP Per%" Visible="false" />
                                                            <asp:CheckBoxList ID="lstPricelist" runat="server" RepeatDirection="Vertical" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
                                                             </asp:CheckBoxList>
                                                       </td>
