@@ -83,8 +83,8 @@
                         </tr>
 
                         <tr>
-                            <td width="140px" align="left">TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                            <td width="3px" align="left">
+                        <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center" width="320px" style="font-size: 20px;">
                                 <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -94,8 +94,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left">GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                            <td align="left">
+                        <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -145,7 +145,7 @@
                     </table>
                   <div style="width: 700px" runat="server"  align="center">
                 <wc:ReportGridView runat="server"  BorderWidth="1" ID="Grdreport" GridLines="Both"
-                    AutoGenerateColumns="true"
+                    AutoGenerateColumns="true" OnRowDataBound="GridView1_RowDataBound"
                     AllowPrintPaging="true" Width="700px" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                      >
                     <HeaderStyle CssClass="ReportHeadataRow" />

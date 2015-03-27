@@ -44,7 +44,7 @@
             class="printbutton6" />
         <br />
         <div id="divPrint" align="center" runat="server" style="font-family: 'Trebuchet MS'; font-size: 11px;">
-            <table style="font-family: 'Trebuchet MS'; border: solid 1px blue; font-size: 11px;"
+            <table style="font-family: 'Trebuchet MS';  border: solid 1px blue; font-size: 11px;"
                 cellspacing="3" cellpadding="3" width="100%">
                 <tr>
                     <td colspan="3" class="subHeadFont2">

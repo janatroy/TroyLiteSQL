@@ -91,7 +91,6 @@
                                     </td>
                                     <td style="width: 13%">
                                         <div style="text-align: right;">
-                                          
                                         </div>
                                     </td>
                                     <td style="width: 10%; color: White;" align="right">Search
@@ -154,6 +153,7 @@
                                                                 <td class="ControlLabel" style="width: 40%">Category Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtCategoryName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers" TargetControlID="txtCategoryName" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtCategoryName" runat="server" Text='<%# Bind("CategoryName") %>' SkinID="skinTxtBoxGrid"
@@ -170,9 +170,11 @@
                                                                     <asp:RequiredFieldValidator ID="rvAliasName" runat="server" ControlToValidate="txtCategoryLevel"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Level. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtCategoryLevel" />
+                                                                       <asp:RangeValidator ID="rangeValidator1" runat="server" ControlToValidate="txtCategoryLevel" MaximumValue="100" MinimumValue="0"
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Out of Range" Text="*" Type="Integer" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
-                                                                    <asp:TextBox ID="txtCategoryLevel" runat="server" Text='<%# Bind("Categorylevel") %>' SkinID="skinTxtBoxGrid"
+                                                                    <asp:TextBox ID="txtCategoryLevel" MaxLength="3" runat="server" Text='<%# Bind("Categorylevel") %>' SkinID="skinTxtBoxGrid"
                                                                         TabIndex="4"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 30%"></td>
@@ -253,6 +255,8 @@
                                                                 <td class="ControlLabel" style="width: 40%">Category Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtCategoryNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Name. It cannot be left blank."></asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
+                                                                        TargetControlID="txtCategoryNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtCategoryNameAdd" runat="server" Text='<%# Bind("CategoryName") %>'
@@ -269,9 +273,11 @@
                                                                     <asp:RequiredFieldValidator ID="rvAliasNameAdd" runat="server" ControlToValidate="txtCategoryLevelAdd"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Level. It cannot be left blank. ">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtCategoryLevelAdd" />
+                                                                    <asp:RangeValidator ID="rvAliasNameAddrangeValidator1" runat="server" ControlToValidate="txtCategoryLevelAdd" MaximumValue="100" MinimumValue="0"
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Out of Range" Text="*" Type="Integer" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
-                                                                    <asp:TextBox ID="txtCategoryLevelAdd" runat="server" Text="0"
+                                                                    <asp:TextBox ID="txtCategoryLevelAdd" MaxLength="3" runat="server" Text="0"
                                                                         SkinID="skinTxtBoxGrid" TabIndex="4"></asp:TextBox>
                                                                 </td>
 
@@ -471,14 +477,12 @@
                     <td>
                         <table align="center" style="width: 100%">
                             <tr>
-                                <td style="width: 20%">
-
-                                </td>
+                                <td style="width: 20%"></td>
                                 <td style="width: 15%">
-                                      <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                                <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
-                                                    EnableTheming="false" Width="80px" Text=""></asp:Button>
-                                            </asp:Panel>
+                                    <asp:Panel ID="pnlSearch" runat="server" Width="100px">
+                                        <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                                            EnableTheming="false" Width="80px" Text=""></asp:Button>
+                                    </asp:Panel>
                                 </td>
                                 <td style="width: 15%">
                                     <asp:Button ID="BlkAdd" runat="server" OnClientClick="window.open('BulkAdditionCategory.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');" CssClass="bulkaddition"

@@ -79,6 +79,9 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
                     }
                     //}
                 }
+
+                loadBranch();
+
                 txtDuration.Text = "7";
                 txtColumns.Text = "4";
                 loadCategories();
@@ -1364,7 +1367,14 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet debitData = bl.GetCustDebitData();
+        string Branch = string.Empty;
+
+
+        Branch = drpBranchAdd.SelectedValue;
+      
+
+
+        DataSet debitData = bl.GetCustDebitData(Branch);
 
         return debitData;
     }
@@ -1596,13 +1606,49 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
     }
 
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
+        drpBranchAdd.Items.Clear();
+
+     
+            ds = bl.ListBranch();
+            //drpBranchAdd.Items.Add(new ListItem("All", "0"));
+
+            drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
+        drpBranchAdd.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+    }
 
     public DataSet GetReceivedAmount(DataSet dsGrid)
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet creditData = bl.GetAllReceivedAmount();
+        string Branch = string.Empty;
+
+
+        Branch = drpBranchAdd.SelectedValue;
+
+        DataSet creditData = bl.GetAllReceivedAmount(Branch);
 
         int maxColIndex = int.Parse(txtColumns.Text) + 4;
 
@@ -1699,7 +1745,12 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
 
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet creditData = bl.GetAllCustCreditData();
+        string Branch = string.Empty;
+
+
+        Branch = drpBranchAdd.SelectedValue;
+
+        DataSet creditData = bl.GetAllCustCreditData1(Branch);
 
         //DataSet receivedData = bl.GetAllReceivedAmount();
 
@@ -2153,14 +2204,15 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("ItemCode"));
 
         int colDur = 0;
-        int nextDur = 0;
+        int nextDur = duration;
 
         for (int i = 0; i < noOfColumns; i++)
         {
-            nextDur = nextDur + duration;
+            
             dc = new DataColumn("Days(" + colDur.ToString() + "-" + nextDur.ToString() + ")", typeof(double));
             dt.Columns.Add(dc);
             colDur = nextDur + 1;
+            nextDur = nextDur + duration;
         }
 
         dc = new DataColumn("Days(" + nextDur.ToString() + ") Above");
@@ -2200,8 +2252,8 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
         DataSet dsFinal = ConsolidatedGridColumns();
         ds = UpdateFinalData(dsGird, dsFinal);
         ds = CalculateTotal(ds);
-        DataTable dts = new DataTable();
-        if (ds.Tables[0].Rows.Count > 0)
+        DataTable dts = new DataTable("OutStanding");
+        if (dsGird.Tables[0].Rows.Count > 0)
         {
             if (ddlFirstLvl.SelectedIndex > 0)
             {
@@ -2257,7 +2309,7 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
             string fLvlValue = "", sLvlValue = "", tLvlValue = "", frthLvlValue = "", fifthLvlValue = "";
             string fLvlValueTemp = "", sLvlValueTemp = "", tLvlValueTemp = "", frthLvlValueTemp = "", fifthLvlValueTemp = "";
 
-            foreach (DataRow dr in ds.Tables[0].Rows)
+            foreach (DataRow dr in dsGird.Tables[0].Rows)
             {
                 //initialize column values for entire row 
                 if (ddlFirstLvl.SelectedIndex > 0)

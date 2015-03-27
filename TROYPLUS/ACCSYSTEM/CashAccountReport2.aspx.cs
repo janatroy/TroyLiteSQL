@@ -77,13 +77,13 @@ public partial class CashAccountReport2 : System.Web.UI.Page
                             {
                                 Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
                                 Image1.Height = 95;
-                                Image1.Width = 114;
+                                Image1.Width = 95;
                             }
                         }
                         else
                         {
                             Image1.Height = 95;
-                            Image1.Width = 114;
+                            Image1.Width = 95;
                             Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }
@@ -147,8 +147,8 @@ public partial class CashAccountReport2 : System.Web.UI.Page
                 endDate = Convert.ToDateTime(etdt);
 
 
-                lblStartDate.Text = startDate.ToString();
-                lblEndDate.Text = endDate.ToString();
+                lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
+                lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
 
                 DataSet dst = bl.generateReportDSCash(LedgerID, startDate, endDate, sDataSource, 0, Branch, connection);
 

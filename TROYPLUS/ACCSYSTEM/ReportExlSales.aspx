@@ -343,6 +343,22 @@
                                             <td colspan="6">
                                                 <table style="width:100%" cellpadding="0" cellspacing="0">
                                                     <tr>
+                                                        <td class="ControlLabel" style="width: 7%;">
+                                                Branch
+                                            </td>
+                                            <td class="ControlDrpBorder" style="width: 18%;">
+                                                <asp:DropDownList ID="DropDownList1" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                            </td>
+                                            <td class="ControlLabel" style="width: 5%;">
+                                                
+                                            </td>
+                                            <td class="ControlLabel" style="width: 20%;">
+                                                
+                                            </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td style="width:11%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
                                                             Option
                                                         </td>
@@ -425,13 +441,16 @@
                                                           <asp:CheckBox ID="chkboxPer" runat="server" Text="Per%"  />
                                                       </td>
                                                       <td class="ControlTextBox3" style="width: 16%;">
-                                                          <asp:CheckBox ID="chkboxNlcvalue" runat="server" Text="NLC Value" />
-                                                          <asp:CheckBox ID="chkboxNlcper" runat="server" Text="NLC Per%" />
-                                                          <asp:CheckBox ID="chkboxMRPvalue" runat="server" Text="MRP Value" />
-                                                          <asp:CheckBox ID="chkboxMRPper" runat="server" Text="MRP Per%" />
-                                                          <asp:CheckBox ID="chkboxDpvalue" runat="server" Text="DP Value" />
-                                                          <asp:CheckBox ID="chkboxDpper" runat="server" Text="DP Per%"  />
+                                                          <asp:CheckBox ID="chkboxNlcvalue" runat="server" Visible="false" Text="NLC Value" />
+                                                          <asp:CheckBox ID="chkboxNlcper" runat="server" Visible="false" Text="NLC Per%" />
+                                                          <asp:CheckBox ID="chkboxMRPvalue" runat="server" Visible="false" Text="MRP Value" />
+                                                          <asp:CheckBox ID="chkboxMRPper" runat="server" Visible="false" Text="MRP Per%" />
+                                                          <asp:CheckBox ID="chkboxDpvalue" runat="server" Visible="false" Text="DP Value" />
+                                                          <asp:CheckBox ID="chkboxDpper" runat="server" Visible="false" Text="DP Per%"  />
+                                                          <asp:CheckBoxList ID="lstPricelist" runat="server" RepeatDirection="Vertical" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField = "PriceName" DataValueField = "PriceName">
+                                                            </asp:CheckBoxList>
                                                       </td>
+                                                       
                                                       <td class="ControlTextBox3" style="width: 16%;">
                                                           <asp:CheckBox ID="chkgpmrp" runat="server" Text="GP for MRP" />
                                                           <asp:CheckBox ID="chkgpnlc" runat="server" Text="GP for NLC" />

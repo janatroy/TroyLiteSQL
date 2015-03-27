@@ -212,13 +212,13 @@ public partial class CashAccountReport : System.Web.UI.Page
                 dr_export213["Credit"] = Convert.ToDouble(lblOBCR.Text);
                 dt.Rows.Add(dr_export213);
 
-                DataRow dr_export21 = dt.NewRow();
-                dr_export21["Date"] = "";
-                dr_export21["Particulars"] = "";
-                dr_export21["Voucher Type"] = "";
-                dr_export21["Debit"] = "";
-                dr_export21["Credit"] = "";
-                dt.Rows.Add(dr_export21);
+                //DataRow dr_export21 = dt.NewRow();
+                //dr_export21["Date"] = "";
+                //dr_export21["Particulars"] = "";
+                //dr_export21["Voucher Type"] = "";
+                //dr_export21["Debit"] = "";
+                //dr_export21["Credit"] = "";
+                //dt.Rows.Add(dr_export21);
 
                 DataRow dr_export23 = dt.NewRow();
                 dr_export23["Date"] = "";
@@ -228,13 +228,13 @@ public partial class CashAccountReport : System.Web.UI.Page
                 dr_export23["Credit"] = Convert.ToDouble(lblCreditSum.Text);
                 dt.Rows.Add(dr_export23);
 
-                DataRow dr_export231 = dt.NewRow();
-                dr_export231["Date"] = "";
-                dr_export231["Particulars"] = "";
-                dr_export231["Voucher Type"] = "";
-                dr_export231["Debit"] = "";
-                dr_export231["Credit"] = "";
-                dt.Rows.Add(dr_export231);
+                //DataRow dr_export231 = dt.NewRow();
+                //dr_export231["Date"] = "";
+                //dr_export231["Particulars"] = "";
+                //dr_export231["Voucher Type"] = "";
+                //dr_export231["Debit"] = "";
+                //dr_export231["Credit"] = "";
+                //dt.Rows.Add(dr_export231);
 
                 DataRow dr_export3 = dt.NewRow();
                 dr_export3["Date"] = "";

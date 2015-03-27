@@ -156,10 +156,10 @@
                         <asp:DropDownList ID="ddlFifthLvl" runat="server"  CssClass="drpDownListMedium" BackColor = "#e7e7e7" AppendDataBoundItems="True" Width="100%"  style="border: 1px solid #e7e7e7" height="26px">
                         </asp:DropDownList>
                     </td>
-                    <td style="width:20%">
+                    <td style="width:20%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
                         Branch
                     </td>
-                    <td style="width:25%">
+                    <td style="width:25%" class="ControlDrpBorder">
                          <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                         runat="server">
                                                                                                     </asp:DropDownList>
@@ -184,7 +184,7 @@
                     <td colspan="5">
                         <table width="100%">
                             <tr>
-                                <td style="width:30%">
+                                <td style="width:35%">
                                 </td>
 
                                 <td style="width:20%">
@@ -195,7 +195,7 @@
                                     <asp:Button ID="btnExcel" runat="server" OnClick="btnExcel_Click" CssClass="exportexl6" EnableTheming="false"
                                         ValidationGroup="btnRpt" />
                                 </td>
-                                <td style="width:30%">
+                                <td style="width:27%">
                                     
                                 </td>
                                 <td>
