@@ -144,7 +144,7 @@
                     </table>
                   <div style="width: 700px" runat="server"  align="center">
                 <wc:ReportGridView runat="server"  BorderWidth="1" ID="Grdreport" GridLines="Both"
-                    AutoGenerateColumns="true"
+                    AutoGenerateColumns="true" ShowFooter="true"
                     AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                      >
                     <HeaderStyle CssClass="ReportHeadataRow" />
@@ -162,6 +162,15 @@
                            <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Green" />--%>
                                                                                                     
                                                 <%--</Columns>--%>
+                 <%--   <Columns>
+                         <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                                                HeaderText="Qty" ItemStyle-Width="10%">
+                            <ItemTemplate>
+                                <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblVatRate"
+                                    runat="server" Text='<%# Eval("Qty","{0:f2}") %>' />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>--%>
                 </wc:ReportGridView>
                 <br />
                 <div style="text-align: right; visibility:hidden">

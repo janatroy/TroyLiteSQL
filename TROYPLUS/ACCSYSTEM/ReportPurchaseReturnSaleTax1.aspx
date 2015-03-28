@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
-    <title>Obsolete Report</title>
+    <title>Purchase Return Annexure </title>
     <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
     <script language="javascript" type="text/javascript" src="Scripts/calendar_eu.js"></script>

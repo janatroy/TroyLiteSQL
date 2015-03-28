@@ -90,6 +90,7 @@ public partial class ReportXLZeroSales1 : System.Web.UI.Page
 
             divPrint.Visible = true;
             divPr.Visible = true;
+            double tot = 0;
             DataSet dstt = new DataSet();
             DataSet ds = new DataSet();
             DataSet dsttt = new DataSet();
@@ -121,6 +122,10 @@ public partial class ReportXLZeroSales1 : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("Delivery Note"));
                     dt.Columns.Add(new DataColumn("Purchase Return"));
                     dt.Columns.Add(new DataColumn("Qty"));
+                  //  dt.Columns.Add(new DataColumn("Total"));
+
+                    DataRow dr_export1 = dt.NewRow();
+                    dt.Rows.Add(dr_export1);
 
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
@@ -137,15 +142,37 @@ public partial class ReportXLZeroSales1 : System.Web.UI.Page
                         dr_final6["Delivery Note"] = dr["DeliveryNote"];
                         dr_final6["Purchase Return"] = dr["PurchaseReturn"];
                         dr_final6["Qty"] = dr["Qty"];
+                      //  dr_final6["Total"] = dr["Qty"];
 
-
+                        tot = tot + Convert.ToDouble(dr["Qty"]);
                         dt.Rows.Add(dr_final6);
                     }
 
+                        DataRow dr_export2 = dt.NewRow();
+                        dr_export2["Brand"] = "Total";
+                        dr_export2["ProductName"] = "";
+                        dr_export2["Model"] = "";
+                        dr_export2["ItemCode"] = "";
+                        dr_export2["BillNo"] = "";
+                        dr_export2["BillDate"] = "";
+                        dr_export2["LedgerName"] = "";
+                        dr_export2["LedgerDetails"] = "";
+                        dr_export2["Internal Transfer"] = "";
+                        dr_export2["Delivery Note"] = "";
+                        dr_export2["Purchase Return"] = "";
+                        dr_export2["Qty"] = tot;
+
+                        dt.Rows.Add(dr_export2);
+
+                       
+                    
+
+                  
+                  //  ExportToExcel(dt);
+                    dstt.Tables.Add(dt);
                     Grdreport.Visible = true;
                     Grdreport.DataSource = dt;
                     Grdreport.DataBind();
-                  //  ExportToExcel(dt);
                 }
                 else
                 {
@@ -165,6 +192,52 @@ public partial class ReportXLZeroSales1 : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+    //public void gvMain_RowDataBound(object sender, GridViewRowEventArgs e)
+    //{
+    //    try
+    //    {
+    //        if (e.Row.RowType == DataControlRowType.DataRow)
+    //        {
+    //            double dtotal = 0;
+               
+    //            if (DataBinder.Eval(e.Row.DataItem, "Qty") != DBNull.Value)
+    //                dtotal = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Qty"));
+               
+
+    //            dtotal = dtotal + dtotal;
+               
+              
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        TroyLiteExceptionManager.HandleException(ex);
+    //    }
+    //}
+    //public void gvSecond_RowDataBound(object sender, GridViewRowEventArgs e)
+    //{
+    //    try
+    //    {
+    //        if (e.Row.RowType == DataControlRowType.DataRow)
+    //        {
+    //            double dtotal = 0;
+
+    //            if (DataBinder.Eval(e.Row.DataItem, "Qty") != DBNull.Value)
+    //                dtotal = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Qty"));
+
+
+    //            dtotal = dtotal + dtotal;
+
+    //            e.Row.Cells[7].Text = dtotal.ToString("f2");
+    //        }
+
+           
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        TroyLiteExceptionManager.HandleException(ex);
+    //    }
+    //}
 
     protected void btndet_Click(object sender, EventArgs e)
     {
