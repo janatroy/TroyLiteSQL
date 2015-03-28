@@ -248,7 +248,7 @@ public partial class Purchase : System.Web.UI.Page
 
         if (cmdSave.Visible == true)
         {
-            if (ddDeliveryNote.SelectedValue == "YES" || drpSalesReturn.SelectedValue == "YES")
+            if (ddDeliveryReturn.SelectedValue == "YES" || drpSalesReturn.SelectedValue == "YES")
             {
                 grvStudentDetails.Columns[3].Visible = true;
             }
@@ -923,6 +923,7 @@ public partial class Purchase : System.Web.UI.Page
 
                 string salesReturn = string.Empty;
                 string intTrans = string.Empty;
+                string deliveryReturn = string.Empty;
                 string deliveryNote = string.Empty;
                 string srReason = string.Empty;
                 string branchcode = string.Empty;
@@ -1013,6 +1014,7 @@ public partial class Purchase : System.Web.UI.Page
 
                 salesReturn = drpSalesReturn.SelectedValue;
                 intTrans = drpIntTrans.SelectedValue;
+                deliveryReturn = ddDeliveryReturn.SelectedValue;
                 deliveryNote = ddDeliveryNote.SelectedValue;
                 srReason = txtSRReason.Text.Trim();
                 iPaymode = Convert.ToInt32(cmdPaymode.SelectedItem.Value);
@@ -1029,7 +1031,7 @@ public partial class Purchase : System.Web.UI.Page
 
                 sInvoiceno = txtInvoiveNo.Text.Trim();
 
-                if (ddDeliveryNote.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
+                if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
                 {
                     dcbillno = Convert.ToDouble(txtdcbillno.Text);
                 }
@@ -1051,6 +1053,8 @@ public partial class Purchase : System.Web.UI.Page
 
                 if (intTrans == "YES")
                     cnt = cnt + 1;
+                if (deliveryReturn == "YES")
+                    cnt = cnt + 1;
                 if (deliveryNote == "YES")
                     cnt = cnt + 1;
                 if (salesReturn == "YES")
@@ -1058,7 +1062,7 @@ public partial class Purchase : System.Web.UI.Page
 
                 if (cnt > 1)
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Either one of Sales Return or Delivery Note or Internal Transfer should be selected')", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Either one of Sales Return or Delivery Note or Internal Transfer or Delivery Return should be selected')", true);
                     tabs2.ActiveTabIndex = 1;
                     //updatePnlSales.Update();
                     return;
@@ -1356,7 +1360,7 @@ public partial class Purchase : System.Web.UI.Page
                                 txtQty.Focus();
                                 return;
                             }
-                            else if (optionmethod.SelectedValue == "SalesReturn" ||optionmethod.SelectedValue == "DeliveryNote")
+                            else if (optionmethod.SelectedValue == "SalesReturn" ||optionmethod.SelectedValue == "DeliveryReturn")
                             {
                                 if (txtRtnQty.Text == "" || txtRtnQty.Text == "0")
                                 {
@@ -1404,7 +1408,7 @@ public partial class Purchase : System.Web.UI.Page
                             }
                             else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) <= 0) && (Convert.ToDouble(txtCSTPre.Text) <= 0)) || ((Convert.ToDouble(txtVATPre.Text) > 0) && (Convert.ToDouble(txtCSTPre.Text) > 0)))
                             {
-                                if (ddDeliveryNote.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
+                                if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES")
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
                                     return;
@@ -1484,14 +1488,14 @@ public partial class Purchase : System.Web.UI.Page
                             TextBox txtTotal = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtTotal");
 
 
-                            if (ddDeliveryNote.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
+                            if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                             {
                                 if (txtRtnQty.Text == "")
                                     txtRtnQty.Text = "0";
 
                                 drNew = dt.NewRow();
                                 drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value);
-                                if (ddDeliveryNote.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
+                                if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                                 {
                                     drNew["Qty"] = txtQty.Text;
                                     drNew["RtnQty"] = txtRtnQty.Text;
@@ -1518,7 +1522,7 @@ public partial class Purchase : System.Web.UI.Page
                                 {
                                     drNew = dt.NewRow();
                                     drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value);
-                                    if (ddDeliveryNote.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
+                                    if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                                     {
                                         drNew["Qty"] = txtQty.Text;
                                         drNew["RtnQty"] = txtRtnQty.Text;
@@ -1546,9 +1550,9 @@ public partial class Purchase : System.Web.UI.Page
 
                         /*Start Purchase Loading / Unloading Freight Change - March 16*/
                         /*Start InvoiceNo and InvoiceDate - Jan 26*/
-                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection);
+                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn);
                         //if(deliveryNote=="YES")
-                        if (ddDeliveryNote.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
+                        if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
                         {
                             iUpdateRtnQty = bl.UpdateSalesRtnStatus(iSalesID, branchcode);
                         }
@@ -1570,7 +1574,7 @@ public partial class Purchase : System.Web.UI.Page
                             salestype = "Internal Transfer";
                             ScreenName = "Internal Transfer Purchase";
                         }
-                        else if (deliveryNote == "YES")
+                        else if (deliveryReturn == "YES")
                         {
                             salestype = "Delivery Note";
                             ScreenName = "Delivery Note Purchase";
@@ -1976,11 +1980,13 @@ public partial class Purchase : System.Web.UI.Page
                 string recondate = txtBillDate.Text.Trim();
                 string salesReturn = string.Empty;
                 string intTrans = string.Empty;
+                string deliveryReturn = string.Empty;
                 string deliveryNote = string.Empty;
                 string srReason = string.Empty;
                 string branchcode = string.Empty;
                 salesReturn = drpSalesReturn.SelectedItem.Text;
                 intTrans = drpIntTrans.SelectedValue;
+                deliveryReturn = ddDeliveryReturn.SelectedValue;
                 deliveryNote = ddDeliveryNote.SelectedValue;
                 srReason = txtSRReason.Text.Trim();
                 branchcode = drpBranch.SelectedValue;
@@ -2047,6 +2053,8 @@ public partial class Purchase : System.Web.UI.Page
                 int cnt = 0;
 
                 if (intTrans == "YES")
+                    cnt = cnt + 1;
+                if (deliveryReturn == "YES")
                     cnt = cnt + 1;
                 if (deliveryNote == "YES")
                     cnt = cnt + 1;
@@ -2437,8 +2445,11 @@ public partial class Purchase : System.Web.UI.Page
                                 }
                                 else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) <= 0) && (Convert.ToDouble(txtCSTPre.Text) <= 0)) || ((Convert.ToDouble(txtVATPre.Text) > 0) && (Convert.ToDouble(txtCSTPre.Text) > 0)))
                                 {
-                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
-                                    return;
+                                    if ((ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES"))
+                                    {
+                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
+                                        return;
+                                    }
                                 }
                                 else if (txtDiscAmt.Text == "")
                                 {
@@ -2527,7 +2538,7 @@ public partial class Purchase : System.Web.UI.Page
 
                             //*******************************
 
-                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, connection, branchcode);
+                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, connection, branchcode, deliveryReturn);
 
 
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
@@ -2565,7 +2576,7 @@ public partial class Purchase : System.Web.UI.Page
                                 salestype = "Internal Transfer";
                                 ScreenName = "Internal Transfer Purchase";
                             }
-                            else if (deliveryNote == "YES")
+                            else if (deliveryReturn == "YES")
                             {
                                 salestype = "Delivery Note";
                                 ScreenName = "Delivery Note Purchase";
@@ -3119,7 +3130,7 @@ public partial class Purchase : System.Web.UI.Page
 
 
             iPurchase = Convert.ToInt32(GrdViewPurchase.DataKeys[e.RowIndex].Value.ToString());
-            string branchcode = row.Cells[10].Text;
+            string branchcode = GrdViewPurchase.Rows[e.RowIndex].Cells[10].Text.Trim();// row.Cells[10].Text;
             //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
             BusinessLogic bl = new BusinessLogic(sDataSource);
             string usernam = Request.Cookies["LoggedUserName"].Value;
@@ -3159,7 +3170,7 @@ public partial class Purchase : System.Web.UI.Page
             double Amount = 0;
             string InternalTransfer = string.Empty;
             string Billno = string.Empty;
-            string deliveryNote = string.Empty;
+            string deliveryReturn = string.Empty;
             string SalesReturn = string.Empty;
             string PayTo = string.Empty;
             int DebitorID = 0;
@@ -3171,7 +3182,7 @@ public partial class Purchase : System.Web.UI.Page
                 Billno = Convert.ToString(ds.Tables[0].Rows[0]["Billno"].ToString());
                 SalesReturn = Convert.ToString(ds.Tables[0].Rows[0]["SalesReturn"]);
                 InternalTransfer = Convert.ToString(ds.Tables[0].Rows[0]["InternalTransfer"]);
-                deliveryNote = Convert.ToString(ds.Tables[0].Rows[0]["deliveryNote"]);
+                deliveryReturn = Convert.ToString(ds.Tables[0].Rows[0]["deliveryNote"]);
                 SalesReturn = Convert.ToString(ds.Tables[0].Rows[0]["SalesReturn"]);
                 PayTo = ds.Tables[0].Rows[0]["paymode"].ToString();
                 Amount = Convert.ToDouble(ds.Tables[0].Rows[0]["Amount"]);
@@ -3186,7 +3197,7 @@ public partial class Purchase : System.Web.UI.Page
                     salestype = "Internal Transfer";
                     ScreenName = "Internal Transfer Purchase";
                 }
-                else if (deliveryNote == "YES")
+                else if (deliveryReturn == "YES")
                 {
                     salestype = "Delivery Note";
                     ScreenName = "Delivery Note Purchase";
@@ -3663,9 +3674,13 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem c = drpSalesReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (c != null) c.Selected = true;
 
-                ddDeliveryNote.ClearSelection();
-                ListItem cl = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                ddDeliveryReturn.ClearSelection();
+                ListItem cl = ddDeliveryReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (cl != null) cl.Selected = true;
+
+                ddDeliveryNote.ClearSelection();
+                ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                if (clii != null) clii.Selected = true;
 
                 rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = false;
@@ -3673,6 +3688,7 @@ public partial class Purchase : System.Web.UI.Page
                 RequiredFieldValidator2.Enabled = false;
                 drpIntTrans.Enabled = false;
                 drpSalesReturn.Enabled = false;
+                ddDeliveryReturn.Enabled = false;
                 ddDeliveryNote.Enabled = false;
 
                 cmdPaymode.SelectedValue = "3";
@@ -3694,9 +3710,13 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem c = drpSalesReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (c != null) c.Selected = true;
 
-                ddDeliveryNote.ClearSelection();
-                ListItem cl = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                ddDeliveryReturn.ClearSelection();
+                ListItem cl = ddDeliveryReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (cl != null) cl.Selected = true;
+
+                ddDeliveryNote.ClearSelection();
+                ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("YES"));
+                if (clii != null) clii.Selected = true;
 
                 rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = false;
@@ -3704,7 +3724,7 @@ public partial class Purchase : System.Web.UI.Page
                 RequiredFieldValidator2.Enabled = false;
                 drpIntTrans.Enabled = false;
                 drpSalesReturn.Enabled = false;
-                ddDeliveryNote.Enabled = false;
+                ddDeliveryReturn.Enabled = false;
 
                 cmdPaymode.SelectedValue = "3";
                 drpSalesID.Enabled = false;
@@ -3723,9 +3743,13 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem c = drpSalesReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (c != null) c.Selected = true;
 
-                ddDeliveryNote.ClearSelection();
-                ListItem cl = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                ddDeliveryReturn.ClearSelection();
+                ListItem cl = ddDeliveryReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (cl != null) cl.Selected = true;
+
+                ddDeliveryNote.ClearSelection();
+                ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                if (clii != null) clii.Selected = true;
 
                 rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = false;
@@ -3733,7 +3757,7 @@ public partial class Purchase : System.Web.UI.Page
                 RequiredFieldValidator2.Enabled = false;
                 drpIntTrans.Enabled = false;
                 drpSalesReturn.Enabled = false;
-                ddDeliveryNote.Enabled = false;
+                ddDeliveryReturn.Enabled = false;
 
                 cmdPaymode.SelectedValue = "3";
                 drpSalesID.Enabled = false;
@@ -3745,8 +3769,8 @@ public partial class Purchase : System.Web.UI.Page
             {
                 lblHeading.Text = "Delivery Return";
 
-                ddDeliveryNote.ClearSelection();
-                ListItem cl = ddDeliveryNote.Items.FindByValue(Convert.ToString("YES"));
+                ddDeliveryReturn.ClearSelection();
+                ListItem cl = ddDeliveryReturn.Items.FindByValue(Convert.ToString("YES"));
                 if (cl != null) cl.Selected = true;
 
                 drpIntTrans.ClearSelection();
@@ -3757,13 +3781,17 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem c = drpSalesReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (c != null) c.Selected = true;
 
+                ddDeliveryNote.ClearSelection();
+                ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                if (clii != null) clii.Selected = true;
+
                 RequiredFieldValidator2.Enabled = true;
                 rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = true;
                 rowSalesRet.Visible = false;
                 drpIntTrans.Enabled = false;
                 drpSalesReturn.Enabled = false;
-                ddDeliveryNote.Enabled = false;
+                ddDeliveryReturn.Enabled = false;
 
                 cmdPaymode.SelectedValue = "3";
 
@@ -3790,13 +3818,17 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem cliddd = drpSalesReturn.Items.FindByValue(Convert.ToString("YES"));
                 if (cliddd != null) cliddd.Selected = true;
 
-                ddDeliveryNote.ClearSelection();
-                ListItem cl = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                ddDeliveryReturn.ClearSelection();
+                ListItem cl = ddDeliveryReturn.Items.FindByValue(Convert.ToString("NO"));
                 if (cl != null) cl.Selected = true;
 
                 drpIntTrans.ClearSelection();
                 ListItem cli = drpIntTrans.Items.FindByValue(Convert.ToString("NO"));
                 if (cli != null) cli.Selected = true;
+
+                ddDeliveryNote.ClearSelection();
+                ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+                if (clii != null) clii.Selected = true;
 
                 rqSalesReturn.Enabled = true;
                 rowdcnum.Visible = false;
@@ -3804,7 +3836,7 @@ public partial class Purchase : System.Web.UI.Page
                 RequiredFieldValidator2.Enabled = false;
                 drpIntTrans.Enabled = false;
                 drpSalesReturn.Enabled = false;
-                ddDeliveryNote.Enabled = false;
+                ddDeliveryReturn.Enabled = false;
                 SaInNo.Visible = true;
                 salinvno.Visible = true;
 
@@ -4013,7 +4045,7 @@ public partial class Purchase : System.Web.UI.Page
             {
                 ds = bl.ListLedgersTransferIsActive(sDataSource);
             }
-            else if (ddDeliveryNote.SelectedValue == "YES")
+            else if (ddDeliveryReturn.SelectedValue == "YES")
             {
                 ds = bl.ListSundryLedgersDcIsActive(sDataSource);
             }
@@ -4054,7 +4086,7 @@ public partial class Purchase : System.Web.UI.Page
                 ds = bl.ListLedgersTransfer(sDataSource);
                 //ds = bl.ListSundryCreditorsTransfer(sDataSource);
             }
-            else if (ddDeliveryNote.SelectedValue == "YES")
+            else if (ddDeliveryReturn.SelectedValue == "YES")
             {
                 //ds = bl.ListSundryCreditorsDc(sDataSource);
                 ds = bl.ListSundryLedgersDc(sDataSource);
@@ -4360,6 +4392,7 @@ public partial class Purchase : System.Web.UI.Page
                 drpIntTrans.SelectedIndex = 0;
             }
 
+
             if (ds.Tables[0].Rows[0]["DeliveryNote"] != null && !string.IsNullOrEmpty(ds.Tables[0].Rows[0]["DeliveryNote"].ToString()))
             {
                 ddDeliveryNote.ClearSelection();
@@ -4368,6 +4401,17 @@ public partial class Purchase : System.Web.UI.Page
             else
             {
                 ddDeliveryNote.SelectedIndex = 0;
+            }
+
+
+            if (ds.Tables[0].Rows[0]["DeliveryReturn"] != null && !string.IsNullOrEmpty(ds.Tables[0].Rows[0]["DeliveryReturn"].ToString()))
+            {
+                ddDeliveryReturn.ClearSelection();
+                ddDeliveryReturn.SelectedValue = ds.Tables[0].Rows[0]["DeliveryReturn"].ToString().ToUpper();
+            }
+            else
+            {
+                ddDeliveryReturn.SelectedIndex = 0;
             }
 
 
@@ -4496,7 +4540,7 @@ public partial class Purchase : System.Web.UI.Page
                 optionmethod.SelectedIndex = 1;
                 rowdcnum.Visible = false;
             }
-            else if (ddDeliveryNote.SelectedItem.Text == "YES")
+            else if (ddDeliveryReturn.SelectedItem.Text == "YES")
             {
                 optionmethod.SelectedIndex = 2;
                 rowdcnum.Visible = true;
@@ -4514,7 +4558,7 @@ public partial class Purchase : System.Web.UI.Page
 
             drpIntTrans.Enabled = false;
             drpSalesReturn.Enabled = false;
-            ddDeliveryNote.Enabled = false;
+            ddDeliveryReturn.Enabled = false;
 
             //if (txtBillnoSrc.Text == "")
             BindGrid("0", "0");
@@ -5601,7 +5645,7 @@ public partial class Purchase : System.Web.UI.Page
     {
         try
         {
-            if (ddDeliveryNote.SelectedItem.Text == "NO")
+            if (ddDeliveryReturn.SelectedItem.Text == "NO")
             {
                 RequiredFieldValidator2.Enabled = false;
                 rowdcnum.Visible = false;
@@ -7161,7 +7205,7 @@ public partial class Purchase : System.Web.UI.Page
 
                     if (cmdSave.Visible == true)
                     {
-                        if (ddDeliveryNote.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
+                        if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
                         {
                             drpProduct.Enabled = false;
                             txtQty.ReadOnly = true;
@@ -7272,7 +7316,7 @@ public partial class Purchase : System.Web.UI.Page
                 if (customerDs != null && customerDs.Tables[0].Rows.Count > 0)
                 {
 
-                    if (ddDeliveryNote.SelectedValue != "YES")
+                    if (ddDeliveryReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES")
                     {
                         if (customerDs.Tables[0].Rows[0]["Price"] != null)
                             txtRate.Text = Convert.ToDouble(customerDs.Tables[0].Rows[0]["Price"].ToString()).ToString("#0.00");
@@ -7559,13 +7603,13 @@ public partial class Purchase : System.Web.UI.Page
 
                 if (ds.Tables[0].Rows[0]["DeliveryNote"] != null)
                 {
-                    ddDeliveryNote.ClearSelection();
-                    ListItem cli = ddDeliveryNote.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["DeliveryNote"]));
+                    ddDeliveryReturn.ClearSelection();
+                    ListItem cli = ddDeliveryReturn.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["DeliveryNote"]));
 
                     if (cli != null) cli.Selected = true;
                 }
                 else
-                    ddDeliveryNote.SelectedIndex = 0;
+                    ddDeliveryReturn.SelectedIndex = 0;
 
 
                 if (ds.Tables[0].Rows[0]["CustomerID"] != null)
@@ -7687,7 +7731,7 @@ public partial class Purchase : System.Web.UI.Page
                     optionmethod.SelectedIndex = 1;
                     lblVATAdd.Enabled = false;
                 }
-                else if (ddDeliveryNote.SelectedItem.Text == "YES")
+                else if (ddDeliveryReturn.SelectedItem.Text == "YES")
                 {
                     optionmethod.SelectedIndex = 2;
                     lblVATAdd.Enabled = true;
@@ -7710,7 +7754,7 @@ public partial class Purchase : System.Web.UI.Page
 
 
                 drpIntTrans.Enabled = false;
-                ddDeliveryNote.Enabled = false;
+                ddDeliveryReturn.Enabled = false;
                 //drpPurchaseReturn.Enabled = false;
                 //drpmanualsales.Enabled = false;
                 //drpnormalsales.Enabled = false;
