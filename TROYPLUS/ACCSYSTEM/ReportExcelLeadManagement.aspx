@@ -24,18 +24,18 @@
                     <td class="ControlLabelproject" style="width: 35%">Start Date
                     </td>
                     <td class="ControlTextBox3" style="width: 45%">
-                        <asp:TextBox ID="txtStrtDt" Enabled="false" runat="server" CssClass="textbox" Style="border: 1px solid #e7e7e7" BackColor="#e7e7e7"></asp:TextBox>
+                        <asp:TextBox ID="txtStrtDt"  runat="server" CssClass="textbox" Style="border: 1px solid #e7e7e7" BackColor="#e7e7e7"></asp:TextBox>
                         <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True"
                             Format="dd/MM/yyyy"
                             PopupButtonID="ImageButton2" TargetControlID="txtStrtDt">
                         </cc1:CalendarExtender>
                     </td>
-                    <td style="width: 30%" align="left">
+                    <td style="width: 10%" align="left">
                         <asp:ImageButton ID="ImageButton2" runat="server" CausesValidation="False"
                             ImageUrl="App_Themes/NewTheme/images/cal.gif"
                             Width="20px" />
                     </td>
-                    <td style="width: 15%"></td>
+                    <td style="width: 30%"></td>
                     <%--<td style="width: 0%"></td>--%>
                 </tr>
                 <tr style="height: 2px">
@@ -45,18 +45,18 @@
                     <td class="ControlLabelproject" style="width: 35%">End Date
                     </td>
                     <td class="ControlTextBox3" style="width: 45%">
-                        <asp:TextBox ID="txtEndDt" Enabled="false" runat="server" CssClass="textbox" Style="border: 1px solid #e7e7e7" BackColor="#e7e7e7"></asp:TextBox>
+                        <asp:TextBox ID="txtEndDt" runat="server" CssClass="textbox" Style="border: 1px solid #e7e7e7" BackColor="#e7e7e7"></asp:TextBox>
                         <cc1:CalendarExtender ID="CalendarExtender123" runat="server" Enabled="True"
                             Format="dd/MM/yyyy"
                             PopupButtonID="ImageButton1" TargetControlID="txtEndDt">
                         </cc1:CalendarExtender>
                     </td>
-                    <td style="width:30%" align="left">
+                    <td style="width:10%" align="left">
                         <asp:ImageButton ID="ImageButton1" runat="server" CausesValidation="False"
                             ImageUrl="App_Themes/NewTheme/images/cal.gif"
                             Width="20px" />
                     </td>
-                    <td style="width: 15%"></td>
+                    <td style="width: 30%"></td>
                     <%--<td style="width: 0%"></td>--%>
                 </tr>
                 <tr style="height: 2px">
@@ -72,7 +72,7 @@
                             <tr>
                                 <td class="ControlLabelproject" style="width: 15%;">Status                              
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%;">
+                                <td class="ControlDrpBorder" style="width: 15%;">
                                    
                                     <asp:DropDownList ID="drpStatus" runat="server" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true"
                                         Width="100%" AppendDataBoundItems="True" Height="26px" CssClass="drpDownListMedium">
@@ -85,7 +85,7 @@
 
                                 <td class="ControlLabelproject" style="width: 15%;">Employee
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%">
+                                <td class="ControlDrpBorder" style="width: 15%">
                                     <asp:DropDownList ID="drpIncharge" DataTextField="empFirstName" DataValueField="empno" runat="server" Width="100%" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true" Height="26px" CssClass="drpDownListMedium"
                                         AppendDataBoundItems="True">
                                         <asp:ListItem Selected="True" Value="0" style="background-color: White">Select Employee Responsible</asp:ListItem>
@@ -98,7 +98,7 @@
                             <tr>
                                 <td class="ControlLabelproject" style="width: 15%;">Location
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%">
+                                <td class="ControlDrpBorder" style="width: 15%">
                                     <asp:DropDownList ID="drpArea" runat="server" DataTextField="TextValue" DataValueField="ID" Width="100%" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true" Height="26px" CssClass="drpDownListMedium"
                                         AppendDataBoundItems="True">
                                         <asp:ListItem Selected="True" Value="0" style="background-color: white">Select Location</asp:ListItem>
@@ -106,7 +106,7 @@
                                 </td>
                                 <td class="ControlLabelproject" style="width: 15%;">Category
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%">
+                                <td class="ControlDrpBorder" style="width: 15%">
                                     <asp:DropDownList ID="drpCategory" runat="server" DataTextField="TextValue" DataValueField="ID" Width="100%" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true" Height="26px" CssClass="drpDownListMedium"
                                         AppendDataBoundItems="True">
                                         <asp:ListItem Selected="True" Value="0" style="background-color: white">Select Category</asp:ListItem>
@@ -119,7 +119,7 @@
                             <tr>
                                 <td class="ControlLabelproject" style="width: 15%;">Lead Activity
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%">
+                                <td class="ControlDrpBorder" style="width: 15%">
                                     <asp:DropDownList ID="drpactivityName" runat="server" DataTextField="TextValue" DataValueField="ID" Width="100%" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true" Height="26px" CssClass="drpDownListMedium"
                                         AppendDataBoundItems="True">
                                         <asp:ListItem Selected="True" Value="0" style="background-color: white">Select Lead Activity</asp:ListItem>
@@ -127,7 +127,7 @@
                                 </td>
                                 <td class="ControlLabelproject" style="width: 15%;">Follow-up Activity
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%">
+                                <td class="ControlDrpBorder" style="width: 15%">
                                     <asp:DropDownList ID="drpnxtActivity" runat="server" DataTextField="TextValue" DataValueField="ID" Width="100%" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true" Height="26px" CssClass="drpDownListMedium"
                                         AppendDataBoundItems="True">
                                         <asp:ListItem Selected="True" Value="0" style="background-color: white">Select Follow-up Activity</asp:ListItem>
@@ -140,7 +140,7 @@
                             <tr>
                                 <td class="ControlLabelproject" style="width: 15%;">Additional Information3
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%">
+                                <td class="ControlDrpBorder" style="width: 15%">
                                     <asp:DropDownList ID="drpInformation3" runat="server" Width="100%" DataTextField="TextValue" DataValueField="ID" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true" Height="26px" CssClass="drpDownListMedium"
                                         AppendDataBoundItems="True">
                                         <asp:ListItem Selected="True" Value="0" style="background-color: white">Select Additional Information 3</asp:ListItem>
@@ -148,7 +148,7 @@
                                 </td>
                                 <td class="ControlLabelproject" style="width: 15%;">Additional Information4
                                 </td>
-                                <td class="ControlDrpBorder" style="width: 30%">
+                                <td class="ControlDrpBorder" style="width: 15%">
                                     <asp:DropDownList ID="drpInformation4" runat="server" Width="100%" DataTextField="TextValue" DataValueField="ID" AutoPostBack="true" BackColor="White" ForeColor="#0567AE" Font-Bold="true" Height="26px" CssClass="drpDownListMedium"
                                         AppendDataBoundItems="True">
                                         <asp:ListItem Selected="True" Value="0" style="background-color: white">Select Additional Information 4</asp:ListItem>

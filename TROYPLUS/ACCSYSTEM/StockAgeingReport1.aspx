@@ -204,7 +204,7 @@
                 <br />
                 <div id="divPrint" style="font-family: 'Trebuchet MS'; font-size: 11px; width: 100%"
                     runat="server">
-                    <table width="600px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                    <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
                          <tr>
                             <td rowspan="5" width="140px">
                                 <asp:Image ID="Image1" runat="server" />
@@ -214,11 +214,11 @@
                         </tr>
 
                         <tr>
-                            <td width="140px" align="left">
-                                <asp:Label runat="server" ID="Label16">TIN#:</asp:Label>
-                                <asp:Label ID="lblTNGST" runat="server" Font-Bold="True"></asp:Label>
+                            <td width="10px" align="left">
+                                <asp:Label runat="server" ID="Label16"><%--TIN#:--%></asp:Label>
+                               <%-- <asp:Label ID="lblTNGST" runat="server" Font-Bold="True"></asp:Label>--%>
                             </td>
-                            <td align="center" width="320px" style="font-size: 20px;">
+                            <td align="center" width="560px" style="font-size: 20px;">
                                 <asp:Label ID="lblCompany" runat="server" Font-Bold="True"></asp:Label>
                             </td>
                             <td width="140px" align="left">
@@ -228,8 +228,8 @@
                         </tr>
                         <tr>
                             <td align="left">
-                                <asp:Label runat="server" ID="Label18">GST#:</asp:Label>
-                                <asp:Label ID="lblGSTno" runat="server" Font-Bold="True"></asp:Label>
+                                <asp:Label runat="server" ID="Label18"><%--GST#:--%></asp:Label>
+                                <%--<asp:Label ID="lblGSTno" runat="server" Font-Bold="True"></asp:Label>--%>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblAddress" runat="server" ></asp:Label>
@@ -267,14 +267,13 @@
                     </table>
                     <table>
                          <tr>
-                            <td>
-                                &nbsp;
+                            <td>                              
                             </td>
                             <td align="center">
-                                <asp:Label ID="Label1" Font-Size="Large" runat="server"></asp:Label>
+                                <h5 style="font-size:large" >
+                                <asp:Label ID="Label1" Font-Size="Large" runat="server"></asp:Label></h5>
                             </td>
-                            <td>
-                                &nbsp;
+                            <td>                               
                             </td>
                         </tr>
                     </table>
@@ -327,8 +326,8 @@
                                 </PageFooterTemplate>
                             </wc:ReportGridView>
                             <br />
-    Total :
-    <asp:Label ID="lblTotalStockaging" runat="server" Text="0"></asp:Label>
+   <%-- Total :--%>
+    <asp:Label ID="lblTotalStockaging" runat="server" Text=""></asp:Label>
     </div>
     </div>
 

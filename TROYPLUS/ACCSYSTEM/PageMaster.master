@@ -623,7 +623,7 @@
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExcelLeadManagement.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,height=380,width=480,left=405,top=220 ,resizable=yes, scrollbars=no');">Lead Management</a>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExcelLeadManagement.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,height=380,width=830,left=250,top=200 ,resizable=yes, scrollbars=no');">Lead Management</a>
                                                         </li>
                                                     </ul>
                                                 </li>

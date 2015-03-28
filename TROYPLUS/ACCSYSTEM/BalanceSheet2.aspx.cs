@@ -704,6 +704,16 @@ public partial class BalanceSheet2 : System.Web.UI.Page
                     }
                 }
             }
+
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                e.Row.Cells[0].HorizontalAlign = HorizontalAlign.Center;
+                e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Right;              
+
+                e.Row.Cells[0].Text = "Total";
+                e.Row.Cells[1].Text = debitTotal.ToString("f2");              
+
+            }
         }
         catch (Exception ex)
         {
@@ -746,6 +756,15 @@ public partial class BalanceSheet2 : System.Web.UI.Page
                         }
                     }
                 }
+            }
+
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                e.Row.Cells[0].HorizontalAlign = HorizontalAlign.Center;
+                e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Right;              
+
+                e.Row.Cells[0].Text = "Total";
+                e.Row.Cells[1].Text = creditTotal.ToString("f2");
             }
         }
         catch (Exception ex)
@@ -939,6 +958,16 @@ public partial class BalanceSheet2 : System.Web.UI.Page
                         gv.DataBind();
                     }
                 }
+
+            }
+
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                e.Row.Cells[0].HorizontalAlign = HorizontalAlign.Center;
+                e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Right;          
+
+                e.Row.Cells[0].Text = "Total";
+                e.Row.Cells[1].Text = debitTotal.ToString("f2");             
 
             }
         }

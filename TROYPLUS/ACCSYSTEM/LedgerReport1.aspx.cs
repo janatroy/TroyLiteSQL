@@ -147,8 +147,8 @@ public partial class LedgerReport1 : System.Web.UI.Page
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
 
-                lblStartDate.Text = startDate.ToString();
-                lblEndDate.Text = endDate.ToString();
+                lblStartDate.Text = startDate.ToString("dd-MM-yyyy");
+                lblEndDate.Text = endDate.ToString("dd-MM-yyyy");
 
                 lblLedger.Text = sLedgerName;
                 rptLedgerAccount = new ReportsBL.ReportClass();
@@ -1120,8 +1120,8 @@ public partial class LedgerReport1 : System.Web.UI.Page
                 cDiffamt = camt - damt; // +cLedger;
                 //dLedger = 0;
                 //cLedger = 0;
-                e.Row.Cells[3].Text = debit.ToString("f2");
-                e.Row.Cells[4].Text = credit.ToString("f2");
+                e.Row.Cells[4].Text = debit.ToString("f2");
+                e.Row.Cells[5].Text = credit.ToString("f2");
                 /*Start Ledger Report*/
                 Label lblBal = (Label)e.Row.FindControl("lblBalance");
                 /*End Ledger Report*/
@@ -1330,8 +1330,8 @@ public partial class LedgerReport1 : System.Web.UI.Page
                 cDiffamt = camt - damt; // +cLedger;
                 //dLedger = 0;
                 //cLedger = 0;
-                e.Row.Cells[1].Text = debit.ToString("f2");
-                e.Row.Cells[2].Text = credit.ToString("f2");
+                e.Row.Cells[2].Text = debit.ToString("f2");
+                e.Row.Cells[3].Text = credit.ToString("f2");
                 /*Start Ledger Report*/
                 Label lblBal = (Label)e.Row.FindControl("lblBalance");
                 /*End Ledger Report*/

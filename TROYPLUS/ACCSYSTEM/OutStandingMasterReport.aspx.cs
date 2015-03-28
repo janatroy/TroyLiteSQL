@@ -2294,6 +2294,9 @@ public partial class OutStandingMasterReport : System.Web.UI.Page
             DataTable dt = new DataTable();
             DataColumn dc;
 
+            txtDuration.Text = "7";
+            txtColumns.Text = "4";
+
             for (int i = 0; i < columnNo; i++)
             {
                 nextDur = nextDur + duration;

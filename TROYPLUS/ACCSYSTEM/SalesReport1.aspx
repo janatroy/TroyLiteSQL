@@ -204,10 +204,10 @@
                         <td />
                     </tr>
                     <tr>
-                        <td width="140px" align="left">TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                        <td width="10px" align="left"><%--TIN#:
+                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>--%>
                         </td>
-                        <td align="center" width="320px" style="font-size: 20px;">
+                        <td align="center" width="560px" style="font-size: 20px;">
                             <asp:Label ID="lblCompany" runat="server"></asp:Label>
                         </td>
                         <td width="140px" align="left">Ph:
@@ -215,8 +215,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="left">GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                        <td align="left"><%--GST#:
+                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>--%>
                         </td>
                         <td align="center">
                             <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -268,7 +268,7 @@
                      <tr>
                         <td colspan="3" align="center">
                             <br />
-                            <h5>Sales Register From
+                            <h5 style="font-size:large" >Sales Register From
                             <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                 To
                             <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
@@ -359,32 +359,32 @@
                                                     <b>Description :</b><asp:Label ID="lblDes" runat="server" Text='<%# Eval("ProductDesc") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Qty" ItemStyle-Width="5%">
+                                            <asp:TemplateField HeaderText="Qty" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblQty" runat="server" Text='<%# Eval("Qty") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Rate" ItemStyle-Width="10%">
+                                            <asp:TemplateField HeaderText="Rate" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblRate" runat="server" Text='<%# Eval("Rate","{0:f2}") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Discount" ItemStyle-Width="5%">
+                                            <asp:TemplateField HeaderText="Discount" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblDisc" runat="server" Text='<%# Eval("Discount","{0:f2}") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="VAT" ItemStyle-Width="5%">
+                                            <asp:TemplateField HeaderText="VAT" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblVat" runat="server" Text='<%# Eval("VAT","{0:f2}") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="CST" ItemStyle-Width="5%">
+                                            <asp:TemplateField HeaderText="CST" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblCst" runat="server" Text='<%# Eval("CST","{0:f2}") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Value" ItemStyle-Width="10%">
+                                            <asp:TemplateField HeaderText="Value" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblValue" runat="server" />
                                                 </ItemTemplate>

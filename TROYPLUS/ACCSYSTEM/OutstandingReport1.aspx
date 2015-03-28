@@ -204,7 +204,7 @@
                         <td>
                             <br />
                           
-                                <h5>Outstanding Report For
+                                <h5 style="font-size:large" >Outstanding Report For
                             <asp:Label ID="lblSundry" runat="server" />
                                     From
                             <asp:Label ID="lblStartDate" runat="server"> </asp:Label>

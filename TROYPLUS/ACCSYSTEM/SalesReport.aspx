@@ -83,50 +83,55 @@
                 <tr style="height: 6px">
                 </tr>
                 <tr>
-                    <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
-                    </td>
-                    <td width="40%" class="ControlTextBox3">
-                        <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px"
-                            MaxLength="10" />
-                    </td>
-                    <td align="left" width="25%">
-                        <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
-                            Display="None" ErrorMessage="Please Enter Start Date" CssClass="lblFont"></asp:RequiredFieldValidator>
-                    </td>
-                </tr>
-                <tr style="height: 2px;" />
-                <tr>
-                    <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
-                    </td>
-                    <td align="left" class="ControlTextBox3" width="40%">
-                        <asp:TextBox ID="txtEndDate" Enabled="true" runat="server" CssClass="cssTextBox" Width="100px" MaxLength="10" />
-                    </td>
-                    <td align="left" width="25%">
-                        <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
-                        <%--<a href="javascript:NewCal('txtEndDate','ddmmyyyy',false,24)"><img src="cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
-                            Display="None" ErrorMessage="Please Enter The End Date" CssClass="lblFont"></asp:RequiredFieldValidator>
-                        <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToCompare="txtStartDate"
-                            ControlToValidate="txtEndDate" Display="None" ErrorMessage="Start Date Should Be Less Than the End Date"
-                            CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
-                    </td>
-                </tr>
-                <tr style="height: 2px;" />
-                <tr>
-                    <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px"></td>
-                    <td align="left" width="40%">
-                        <div style="overflow-y: scroll; height: 150px; width: 150px" runat="server">
-                            <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
-                            <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
-                                <asp:ListItem Text="All" Value="0" />
-                            </asp:CheckBoxList>
-                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
-                            </asp:CheckBoxList>
+                    <td colspan="4">
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
+                                </td>
+                                <td style="width:20%" class="ControlTextBox3">
+                                    <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox"
+                                        MaxLength="10" />
+                                </td>
+                                <td align="left" style="width:45%">
+                                    <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
+                                        Display="None" ErrorMessage="Please Enter Start Date" CssClass="lblFont"></asp:RequiredFieldValidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
+                                </td>
+                                <td align="left" class="ControlTextBox3" style="width:20%">
+                                    <asp:TextBox ID="txtEndDate" Enabled="true" runat="server" CssClass="cssTextBox" MaxLength="10" />
+                                </td>
+                                <td align="left" style="width:45%">
+                                    <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
+                                    <%--<a href="javascript:NewCal('txtEndDate','ddmmyyyy',false,24)"><img src="cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
+                                        Display="None" ErrorMessage="Please Enter The End Date" CssClass="lblFont"></asp:RequiredFieldValidator>
+                                    <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToCompare="txtStartDate"
+                                        ControlToValidate="txtEndDate" Display="None" ErrorMessage="Start Date Should Be Less Than the End Date"
+                                        CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px"></td>
+                                <td align="left" style="width:20%">
+                                    <div style="overflow-y: scroll; height: 150px; width: 150px" runat="server">
+                                        <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
+                                        <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
+                                            <asp:ListItem Text="All" Value="0" />
+                                        </asp:CheckBoxList>
+                                        <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                                        </asp:CheckBoxList>
 
-                        </div>
+                                    </div>
+                                </td>
+                                <td align="left" style="width:45%"></td>
+                            </tr>
+                        </table>
                     </td>
-                    <td align="left" width="25%"></td>
+
                 </tr>
                 <tr style="height: 2px" />
                 <tr>
@@ -134,7 +139,7 @@
                         <table style="width: 100%">
                             <tr>
                                 <td class="ControlTextBox3" style="width: 100%">
-                                    <asp:RadioButtonList ID="optionmethod" runat="server" Style="font-size: 12px" align="center"
+                                    <asp:RadioButtonList ID="optionmethod" runat="server" Style="font-size: 12px" align="center" Font-Bold="true"
                                         RepeatDirection="Horizontal" BackColor="#e7e7e7">
                                         <asp:ListItem Selected="True">All</asp:ListItem>
                                         <asp:ListItem>Sales</asp:ListItem>
