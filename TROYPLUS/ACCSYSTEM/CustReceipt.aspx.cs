@@ -1352,10 +1352,24 @@ public partial class CustReceipt : System.Web.UI.Page
         string sPath = string.Empty;
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
+        if (txtDate.Text == "")
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Date. It cannot be left blank.')", true);
+            return;
+
+        }
+
         if (!bl.IsValidDate(connection, Convert.ToDateTime(txtDate.Text)))
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date is invalid')", true);
             return;
+        }
+
+        if (drpBranchAdd.SelectedValue == "0")
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Branch. It cannot be left blank.')", true);
+            return;
+
         }
 
         if (chk.Checked==true)
@@ -2732,7 +2746,29 @@ public partial class CustReceipt : System.Web.UI.Page
 
             ShowPendingBillsAuto();
             Panel4.Visible = true;
-            
+
+            if (chk.Checked == true)
+            {
+                if (drpReceiptType.SelectedValue == "1")
+                {
+                    totalrow1.Visible = true;
+                    totalrow.Visible = true;
+                    totalrow123.Visible = true;
+                }
+                else
+                {
+                    totalrow1.Visible = false;
+                    totalrow.Visible = false;
+                    totalrow123.Visible = false;
+                }
+            }
+            else
+            {
+                totalrow1.Visible = false;
+                totalrow.Visible = false;
+                totalrow123.Visible = false;
+            }
+
         }
         catch (Exception ex)
         {
@@ -3148,6 +3184,11 @@ public partial class CustReceipt : System.Web.UI.Page
                 chk.Enabled = false;
                 txtCustomerId.Visible = false;
                 txtCustomerName.Visible = false;
+
+
+                totalrow.Visible = true;
+                totalrow1.Visible = true;
+                totalrow123.Visible = true;
             }
             else
             {
@@ -3163,6 +3204,12 @@ public partial class CustReceipt : System.Web.UI.Page
                 txtCustomerName.Text = "";
                 chk.Checked = true;
                 chk.Enabled = true;
+
+                GridView1.DataSource = null;
+                GridView1.DataBind();
+                totalrow.Visible = false;
+                totalrow1.Visible = false;
+                totalrow123.Visible = false;
 
                 drpCustomerCategoryAdd.Enabled = true;
             }
