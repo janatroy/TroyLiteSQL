@@ -240,6 +240,20 @@ public partial class ManualClearance : System.Web.UI.Page
 
                 string CustomerName = string.Empty;
 
+
+
+                
+
+                var dsSales2 = bl.ListCreditPurchaseNotCleared(connStr.Trim());
+
+                if (dsSales != null)
+                {
+                    if (dsSales2 != null)
+                    {
+                        dsSales.Tables[0].Merge(dsSales2.Tables[0]);
+                    }
+                }
+
                 if (dsSales != null)
                 {
                     for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
@@ -256,18 +270,6 @@ public partial class ManualClearance : System.Web.UI.Page
 
                     }
                     dsSales.Tables[0].AcceptChanges();
-                }
-
-                
-
-                var dsSales2 = bl.ListCreditPurchaseNotCleared(connStr.Trim());
-
-                if (dsSales != null)
-                {
-                    if (dsSales2 != null)
-                    {
-                        dsSales.Tables[0].Merge(dsSales2.Tables[0]);
-                    }
                 }
 
                 //string CustomerName2 = string.Empty;
@@ -1068,8 +1070,8 @@ public partial class ManualClearance : System.Web.UI.Page
         {
             if (dsSales.Tables[0].Rows.Count > 0)
             {
-                GrdViewSales.DataSource = dsSales;
-                GrdViewSales.DataBind();
+                GrdCreditSales.DataSource = dsSales;
+                GrdCreditSales.DataBind();
             }
             else
             {
@@ -2437,6 +2439,8 @@ public partial class ManualClearance : System.Web.UI.Page
         }
         else
         {
+            lblledger.Text = ddReceivedFrom.SelectedItem.Text;
+
             if (Request.Cookies["Company"] != null)
                 connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
             else

@@ -986,9 +986,9 @@
                                                                                                                         <tr>
                                                                                                                             <td class="ControlLabelNew" style="width: 19%">
                                                                                                                                 Branch *
-                                                                                            <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpBranchAdd"
+                                                                                           <%-- <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpBranchAdd"
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
-                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
+                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>--%>
                                                                                                                             </td>
                                                                                                                             <td class="ControlDrpBorder" style="width: 22%">
                                                                                                                                 <asp:DropDownList ID="drpBranchAdd" TabIndex="10" AutoPostBack="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
@@ -1018,7 +1018,7 @@
                                                                                                                                 
                                                                                                                             
                                                                                                                             <td style="width: 19%;" class="ControlLabelNew">
-                                                                                                                                        <asp:CompareValidator ID="cvCustomer" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Customer Category. It cannot be left blank." Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                                        <%--<asp:CompareValidator ID="cvCustomer" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Customer Category. It cannot be left blank." Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>--%>
                                                                                                                                         Category of Customer *
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlDrpBorder" style="width: 22%">
@@ -1045,10 +1045,10 @@
                                                                                                                         </tr>
                                                                                                                         <tr>
                                                                                                                             <td class="ControlLabelNew" style="width: 17%">Received Date *
-                                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDate" Display="Dynamic"
+                                                                                                                               <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDate" Display="Dynamic"
                                                                                                                                     ErrorMessage="Please select Received Date. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                                 <asp:CompareValidator ControlToValidate="txtDate" Operator="DataTypeCheck" Type="Date" Display="Dynamic"
-                                                                                                                                    ErrorMessage="Please enter a valid date" runat="server" ID="CompareValidator2">*</asp:CompareValidator>
+                                                                                                                                    ErrorMessage="Please enter a valid date" runat="server" ID="CompareValidator2">*</asp:CompareValidator>--%>
                                                                                                                             </td>
                                                                                                                             <td class="ControlTextBox3" style="width: 22%">
                                                                                                                                 <asp:TextBox ID="txtDate" runat="server" Font-Bold="true" ForeColor="Black" OnTextChanged="txtDate_TextChanged" AutoPostBack="true"
@@ -1339,7 +1339,9 @@
                                                                                                                                 </table>
                                                                                                                             </td>
                                                                                                                         </tr>--%>
-                                                                                                                        
+                                                                                                                        </table>
+                                                                                                                        <table style="width: 100%;">
+                                                                                                                                    
                                                                                                                         <tr  id="totalrow1" runat="server" visible="false">
                                                                                                                             <td colspan="6">
                                                                                                                                 <table style="width: 100%">
