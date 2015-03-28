@@ -324,7 +324,7 @@ public partial class MobilePurchase : System.Web.UI.Page
                                 return;
                             }
                             /*Start Purchase Loading / Unloading Freight Change - March 16*/
-                            iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dTotalAmt, salesReturn, srReason, dFreight, dLU, 0, "NO", ds, "NO", sInvoiceno, sInvoicedate, 0, 0, 0, 0, usernam, narration2,0,"","");
+                            iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dTotalAmt, salesReturn, srReason, dFreight, dLU, 0, "NO", ds, "NO", sInvoiceno, sInvoicedate, 0, 0, 0, 0, usernam, narration2,0,"","","");
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
                             Reset();
 
