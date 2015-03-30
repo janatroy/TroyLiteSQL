@@ -116,6 +116,8 @@ public partial class ReportSaleSalesTax1 : System.Web.UI.Page
         DataSet ds = new DataSet();
         double total14 = 0;
         double total5 = 0;
+        double tot = 0;
+        double tot1 = 0;
         string intTrans = "";
         string salesRet = "";
         string delNote = "";
@@ -197,6 +199,9 @@ public partial class ReportSaleSalesTax1 : System.Web.UI.Page
                     {
                         total14 = total14 + Convert.ToDouble(dr["ActualVAT"]);
                     }
+                    tot = tot + Convert.ToDouble(dr["NetPurchaseRate"]);
+
+                    tot1 = tot1 + Convert.ToDouble(dr["ActualVAT"]);
 
                     dr_export["Tax Rate"] = dr["vat"];
                     dr_export["Vat CST Paid"] = dr["ActualVAT"];
@@ -225,10 +230,10 @@ public partial class ReportSaleSalesTax1 : System.Web.UI.Page
                 dr_export211["Seller Tin"] = "";
                 dr_export211["Commodity Code"] = "";
                 dr_export211["Invoice No"] = "";
-                dr_export211["Invoice Date"] = "";
-                dr_export211["Purchase Value"] = "";
-                dr_export211["Tax Rate"] = "Total 5% ";
-                dr_export211["Vat CST Paid"] = total5;
+                dr_export211["Invoice Date"] = "Total = ";
+                dr_export211["Purchase Value"] = tot;
+                dr_export211["Tax Rate"] ="Total = ";
+                dr_export211["Vat CST Paid"] = tot1;
                 dr_export211["Category"] = "";
                 dt.Rows.Add(dr_export211);
 
@@ -240,8 +245,8 @@ public partial class ReportSaleSalesTax1 : System.Web.UI.Page
                 dr_export213["Invoice No"] = "";
                 dr_export213["Invoice Date"] = "";
                 dr_export213["Purchase Value"] = "";
-                dr_export213["Tax Rate"] = "Total 14.5% ";
-                dr_export213["Vat CST Paid"] = total14;
+                dr_export213["Tax Rate"] = "";
+                dr_export213["Vat CST Paid"] = "";
                 dr_export213["Category"] = "";
                 dt.Rows.Add(dr_export213);
 

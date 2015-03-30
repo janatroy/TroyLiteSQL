@@ -309,6 +309,12 @@ public partial class BulkAdditionCategory : System.Web.UI.Page
 
                     //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
                 }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Attach Correct Format file Extension.(.xls or .xlsx)');", true);
+                    return;
+
+                }
                 OleDbConnection con = new OleDbConnection(connectionString);
                 OleDbCommand cmd = new OleDbCommand();
                 cmd.CommandType = System.Data.CommandType.Text;

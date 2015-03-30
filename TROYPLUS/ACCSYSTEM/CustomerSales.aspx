@@ -1473,7 +1473,7 @@
                                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtmanual" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please enter Manual Bill No. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                                             Manual Bill No </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 25%;">
-                                                                                                                            <asp:TextBox ID="txtmanual" runat="server" BackColor="#e7e7e7" OnTextChanged="txtmanual_TextChanged" CssClass="cssTextBox" Text="" Width="25px"></asp:TextBox>
+                                                                                                                            <asp:TextBox ID="txtmanual" runat="server" BackColor="#e7e7e7" OnTextChanged="txtmanual_TextChanged" CssClass="cssTextBox" Text="" Width="25px" AutoPostBack="True"></asp:TextBox>
                                                                                                                         </td>
                                                                                                                         <td style="width: 20%"></td>
                                                                                                                         <td style="width: 25%"></td>
