@@ -47,7 +47,7 @@ public partial class ProdMaster : System.Web.UI.Page
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                if (bl.CheckUserHaveAdd(usernam, "HIPUR"))
+                if (bl.CheckUserHaveAdd(usernam, "PRDMST"))
                 {
                     lnkBtnAdd.Enabled = false;
                     lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";

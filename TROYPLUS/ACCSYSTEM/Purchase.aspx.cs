@@ -858,7 +858,7 @@ public partial class Purchase : System.Web.UI.Page
         int ichequestatus = 0;
         int iUpdateRtnQty = 0;
         string connection = string.Empty;
-
+        DataSet paymentData = null;
         try
         {
             if (Page.IsValid)
@@ -1546,11 +1546,42 @@ public partial class Purchase : System.Web.UI.Page
                             }
                         }
 
+                        DataSet ds1 = bl.generateOutStandingforAdjust(2, sDataSource, branchcode, iSupplier);
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>Confirm();</script>", false);
+                            string confirmValue = Request.Form["confirm_value"];
+
+                            if (confirmValue == "Yes")
+                            {
+                                paymentData = GeneratePaymentData();
+                                DataRow dr = paymentData.Tables[0].NewRow();
+                                dr["RefNo"] = "";
+                                dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
+                                dr["DebitorID"] = bl.getCashACLedgerId(connection, branchcode);   //"1";                      
+                                dr["CreditorID"] = cmbSupplier.SelectedValue;
+                                dr["Amount"] = dTotalAmt;
+                                dr["Narration"] = "";
+                                dr["VoucherType"] = "Receipt";
+                                dr["ChequeNo"] = "";
+                                dr["Paymode"] = "Cash";
+                                dr["SFRefNo"] = "";
+
+                                paymentData.Tables[0].Rows.Add(dr);
+                                paymentData.Tables[0].AcceptChanges();
+                              
+                            }
+                            else if (confirmValue == "No")
+                            {
+                            }
+                        }
+
+
                         //*******************************
 
                         /*Start Purchase Loading / Unloading Freight Change - March 16*/
                         /*Start InvoiceNo and InvoiceDate - Jan 26*/
-                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn);
+                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData);
                         //if(deliveryNote=="YES")
                         if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
                         {
@@ -2929,6 +2960,48 @@ public partial class Purchase : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+
+    private DataSet GeneratePaymentData()
+    {
+        DataSet ds = new DataSet();
+        DataTable dt = new DataTable();
+
+        DataColumn dc = new DataColumn("RefNo");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("TransDate");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("DebitorID");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("CreditorID");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Amount");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Narration");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("VoucherType");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("ChequeNo");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("Paymode");
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("SFRefNo");
+        dt.Columns.Add(dc);
+
+        ds.Tables.Add(dt);
+
+        return ds;
+    }
+
 
     protected void GrdViewItems_SelectedIndexChanged(object sender, EventArgs e)
     {

@@ -24,7 +24,7 @@
             var confirm_value = document.createElement("INPUT");
             confirm_value.type = "hidden";
             confirm_value.name = "confirm_value";
-            if (confirm("Do you want to adjust credit amount for this bill.Do you want to continue?")) {
+            if (confirm("Do you want to adjust advanced amount for this bill.Do you want to continue?")) {
                 confirm_value.value = "Yes";
             } else {
                 confirm_value.value = "No";
@@ -1644,7 +1644,7 @@
                                                                                                                 <asp:Button ID="cmdUpdate" runat="server" Enabled="false" OnClick="cmdUpdate_Click"
                                                                                                                     OnClientClick="javascript:Mobile_Validator();ConfirmSMSUpdate();" SkinID="Updatebutton1231"
                                                                                                                     CssClass="Updatebutton1231" EnableTheming="false" Text="" ValidationGroup="salesval" />
-                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click" 
+                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click" OnClientClick="Confirm();"
                                                                                                                     SkinID="skinBtnSave" Text="" ValidationGroup="salesval" CssClass="savebutton1231"
                                                                                                                     EnableTheming="false" />
                                                                                                             </td>

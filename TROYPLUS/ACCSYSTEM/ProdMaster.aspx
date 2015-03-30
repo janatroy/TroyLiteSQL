@@ -1056,8 +1056,8 @@
                 <td style="width: 30%">
                     <div style="text-align: right;">
                         <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                            <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CausesValidation="false"
-                                EnableTheming="false" Text="Add New Product"></asp:Button>
+                            <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CausesValidation="false" ForeColor="White" CssClass="ButtonAdd66"
+                                EnableTheming="false"></asp:Button>
                         </asp:Panel>
                     </div>
                 </td>

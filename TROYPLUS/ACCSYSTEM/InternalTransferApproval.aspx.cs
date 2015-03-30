@@ -664,7 +664,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
-
+        DataSet paymentdata = null;
         if (cmbApproveReject.SelectedValue == "Approve")
         {
             string connection = Request.Cookies["Company"].Value;
@@ -715,7 +715,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
                     iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.BranchHasStock);
 
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iSupplier, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.BranchHasStock, connection, "NO");
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iSupplier, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.BranchHasStock, connection, "NO", paymentdata);
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;
