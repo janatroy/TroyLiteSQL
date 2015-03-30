@@ -406,7 +406,7 @@
                                                 <asp:BoundField DataField="CompletedDate" HeaderStyle-Wrap="false" HeaderText="CompletedDate" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Approve/Reject"
-                                                    HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center">
+                                                    HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" Visible="false">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnApprove" runat="server" SkinID="edit" CommandName="Select" />
                                                         <asp:ImageButton ID="btnApproveDisabled" Enabled="false" SkinID="editDisable" runat="Server">
