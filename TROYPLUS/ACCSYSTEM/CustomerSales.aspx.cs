@@ -10832,7 +10832,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     TextBoxDisPre.Text = string.Empty;
                     TextBoxVATPre.Text = string.Empty;
                     TextBoxCSTPre.Text = string.Empty;
-                }
+                }  
                 TextBoxQty.Focus();
                 errPanel.Visible = false;
                 ErrMsg.Text = "";
