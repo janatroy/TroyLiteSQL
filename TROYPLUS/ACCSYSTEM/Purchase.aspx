@@ -7,6 +7,18 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <script language="javascript" type="text/javascript">
+        function Confirm() {
+            var confirm_value = document.createElement("INPUT");
+            confirm_value.type = "hidden";
+            confirm_value.name = "confirm_value";
+            if (confirm("Do you want to adjust advanced amount for this bill.Do you want to continue?")) {
+                confirm_value.value = "Yes";
+            } else {
+                confirm_value.value = "No";
+            }
+            document.forms[0].appendChild(confirm_value);
+        }
+
 
         window.onload = function Showalert() {
 
@@ -1442,7 +1454,7 @@
                                                                                                             <td style="width: 17%">
                                                                                                                 <asp:Button ID="cmdUpdate" ValidationGroup="purchaseval" runat="server" Text="" CssClass="Updatebutton1231"
                                                                                                                     EnableTheming="false" OnClick="cmdUpdate_Click" SkinID="skinBtnSave" />
-                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231"
+                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231" OnClientClick="Confirm();"
                                                                                                                     EnableTheming="false" OnClick="cmdSave_Click" SkinID="skinBtnSave" />
                                                                                                             </td>
                                                                                                             <td style="width: 17%">

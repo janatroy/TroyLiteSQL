@@ -3394,7 +3394,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         DataRow dr = receiptData.Tables[0].NewRow();
                         dr["RefNo"] = "";
-                        dr["TransDate"] = recondate;
+                        dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
                         dr["DebitorID"] = ddBank1.SelectedValue;
                         dr["CreditorID"] = cmbCustomer.SelectedValue;
                         dr["Amount"] = txtAmount1.Text;
@@ -3411,7 +3411,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         DataRow dr = receiptData.Tables[0].NewRow();
                         dr["RefNo"] = "";
-                        dr["TransDate"] = recondate;
+                        dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
                         dr["DebitorID"] = ddBank2.SelectedValue;
                         dr["CreditorID"] = cmbCustomer.SelectedValue;
                         dr["Amount"] = txtAmount2.Text;
@@ -3428,7 +3428,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         DataRow dr = receiptData.Tables[0].NewRow();
                         dr["RefNo"] = "";
-                        dr["TransDate"] = recondate;
+                        dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
                         dr["DebitorID"] = ddBank3.SelectedValue;
                         dr["CreditorID"] = cmbCustomer.SelectedValue;
                         dr["Amount"] = txtAmount3.Text;
@@ -3445,8 +3445,8 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         DataRow dr = receiptData.Tables[0].NewRow();
                         dr["RefNo"] = "";
-                        dr["TransDate"] = recondate;
-                        dr["DebitorID"] = "1";
+                        dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
+                        dr["DebitorID"] = bl.getCashACLedgerId(connection, branchcode);   //"1";                      
                         dr["CreditorID"] = cmbCustomer.SelectedValue;
                         dr["Amount"] = txtCashAmount.Text;
                         dr["Narration"] = "";
@@ -4314,20 +4314,36 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
 
-                        //DataSet ds1 = bl.generateOutStandingforCustomer(1, sDataSource, branchcode, sCustomerID);
-                        //if (ds1.Tables[0].Rows.Count > 0)
-                        //{
-                        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>Confirm();</script>", false);
-                        //    string confirmValue = Request.Form["confirm_value"];
+                        DataSet ds1 = bl.generateOutStandingforAdjust(1, sDataSource, branchcode, sCustomerID);
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>Confirm();</script>", false);
+                            string confirmValue = Request.Form["confirm_value"];
 
-                        //    if (confirmValue == "Yes")
-                        //    {
+                            if (confirmValue == "Yes")
+                            {
+                                receiptData = GenerateReceiptData();
+                                DataRow dr = receiptData.Tables[0].NewRow();
+                                dr["RefNo"] = "";
+                                dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
+                                dr["DebitorID"] = cmbCustomer.SelectedValue; //"1";                      
+                                dr["CreditorID"] =  bl.getCashACLedgerId(connection, branchcode);
+                                dr["Amount"] = dTotalAmt;
+                                dr["Narration"] = "";
+                                dr["VoucherType"] = "Receipt";
+                                dr["ChequeNo"] = "";
+                                dr["Paymode"] = "Cash";
+                                dr["SFRefNo"] = "";
 
-                        //    }
-                        //    else if (confirmValue == "No")
-                        //    {
-                        //    }
-                        //}
+                                receiptData.Tables[0].Rows.Add(dr);
+                                receiptData.Tables[0].AcceptChanges();
+                              
+                                MultiPayment = "YES";
+                            }
+                            else if (confirmValue == "No")
+                            {
+                            }
+                        }
 
 
                         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -7685,12 +7701,15 @@ public partial class CustomerSales : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+    int salesID1;
     protected void GrdViewSales_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                
+
                 string paymode = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "paymode"));
                 Label payMode = (Label)e.Row.FindControl("lblPaymode");
                 if (paymode == "1")
@@ -7715,11 +7734,27 @@ public partial class CustomerSales : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
+                GridViewRow row = GrdViewSales.SelectedRow;
+                //int sBillNo = Convert.ToInt32(GrdViewSales.DataKeys[e.RowIndex].Value.ToString());
+                //string branchcode = GrdViewSales.Rows[e.RowIndex].Cells[9].Text.Trim(); //row.Cells[9].Text;
+
+               
+                salesID1 = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value.ToString());
+                string branchcode = row.Cells[9].Text;
+
+
                 if (bl.CheckUserHaveEdit(usernam, "SALES"))
                 {
                     ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
                     ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
                 }
+
+                if (bl.CheckAdvAmtAdjustSales(salesID1, branchcode))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
+
 
                 if (bl.CheckUserHaveDelete(usernam, "SALES"))
                 {
@@ -10732,6 +10767,12 @@ public partial class CustomerSales : System.Web.UI.Page
             if (cmbCustomer.SelectedValue == "0" && chk.Checked == true)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select Customer Name in Invoice Header Details tab');", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+                DrpProduct.SelectedIndex = 0;
+            }
+            else if (drpCustomerCategoryAdd.SelectedValue == "0" && chk.Checked == false)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select Category in Invoice Header Details tab');", true);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
                 DrpProduct.SelectedIndex = 0;
             }
