@@ -125,6 +125,7 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         DataTable dt = new DataTable();
 
         dt.Columns.Add(new DataColumn("LedgerName"));
+        dt.Columns.Add(new DataColumn("AliasName"));
         dt.Columns.Add(new DataColumn("OpenBalanceDR"));
         dt.Columns.Add(new DataColumn("OpenBalanceCR"));
         dt.Columns.Add(new DataColumn("ContactName"));
@@ -135,12 +136,17 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Mobile"));
         dt.Columns.Add(new DataColumn("CreditLimit"));
         dt.Columns.Add(new DataColumn("CreditDays"));
-        dt.Columns.Add(new DataColumn("TinNumber"));
+       dt.Columns.Add(new DataColumn("TinNumber"));
+        dt.Columns.Add(new DataColumn("Emailid"));
+        dt.Columns.Add(new DataColumn("Opduedate"));
+       // dt.Columns.Add(new DataColumn("IsActive"));
+       // dt.Columns.Add(new DataColumn("DC"));
         //dt.Columns.Add(new DataColumn("Paymentmade"));
         //dt.Columns.Add(new DataColumn("dc"));
         
         DataRow dr_final12 = dt.NewRow();
         dr_final12["LedgerName"] = "";
+        dr_final12["AliasName"] = "";
         dr_final12["OpenBalanceDR"] = "0";
         dr_final12["OpenBalanceCR"] = "0";
         dr_final12["ContactName"] = "";
@@ -150,7 +156,11 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         dr_final12["Mobile"] = "0";
         dr_final12["CreditLimit"] = "0";
         dr_final12["CreditDays"] = "0";
-        dr_final12["TinNumber"] = "0";
+       dr_final12["TinNumber"] = "0";
+        dr_final12["Emailid"] = "";
+        dr_final12["Opduedate"] = "";
+       // dr_final12["IsActive"] = "YES";
+      //  dr_final12["DC"] = "NO";
         //dr_final12["Inttrans"] = "NO";
         //dr_final12["Paymentmade"] = "NO";
         //dr_final12["dc"] = "NO";
