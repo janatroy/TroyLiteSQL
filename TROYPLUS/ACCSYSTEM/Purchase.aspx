@@ -1454,7 +1454,7 @@
                                                                                                             <td style="width: 17%">
                                                                                                                 <asp:Button ID="cmdUpdate" ValidationGroup="purchaseval" runat="server" Text="" CssClass="Updatebutton1231"
                                                                                                                     EnableTheming="false" OnClick="cmdUpdate_Click" SkinID="skinBtnSave" />
-                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231" OnClientClick="Confirm();"
+                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231"
                                                                                                                     EnableTheming="false" OnClick="cmdSave_Click" SkinID="skinBtnSave" />
                                                                                                             </td>
                                                                                                             <td style="width: 17%">

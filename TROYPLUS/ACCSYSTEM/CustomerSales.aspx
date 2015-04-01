@@ -1644,7 +1644,7 @@
                                                                                                                 <asp:Button ID="cmdUpdate" runat="server" Enabled="false" OnClick="cmdUpdate_Click"
                                                                                                                     OnClientClick="javascript:Mobile_Validator();ConfirmSMSUpdate();" SkinID="Updatebutton1231"
                                                                                                                     CssClass="Updatebutton1231" EnableTheming="false" Text="" ValidationGroup="salesval" />
-                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click" OnClientClick="Confirm();"
+                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click" 
                                                                                                                     SkinID="skinBtnSave" Text="" ValidationGroup="salesval" CssClass="savebutton1231"
                                                                                                                     EnableTheming="false" />
                                                                                                             </td>

@@ -1732,6 +1732,16 @@ public partial class ProdMaster : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Discount in row " + col + " ');", true);
                         return;
                     }
+                    else if (Convert.ToInt32(Discount1.Text) < 0)
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Discount cannot be Greater than 100% and Less than 0% in row " + col + " ');", true);
+                        return;
+                    }
+                    else if (Convert.ToInt32(Discount1.Text) > 100)
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Discount cannot be Greater than 100% and Less than 0% in row " + col + " ');", true);
+                        return;
+                    }
                 }
 
                 string ItemCode1 = txtItemCodeAdd.Text.Trim();
@@ -2079,7 +2089,17 @@ public partial class ProdMaster : System.Web.UI.Page
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Discount in row " + col + " ');", true);
                             return;
-                        }                        
+                        }
+                        else if (Convert.ToInt32(Discount1.Text) < 0)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Discount cannot be Greater than 100% and Less than 0% in row " + col + " ');", true);
+                            return;
+                        }
+                        else if (Convert.ToInt32(Discount1.Text) > 100)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Discount cannot be Greater than 100% and Less than 0% in row " + col + " ');", true);
+                            return;
+                        }
                     }
 
 

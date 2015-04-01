@@ -72327,6 +72327,36 @@ public partial class BusinessLogic
         }
     }
 
+    public DataSet GetPriceListName(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            dbQry = "select * from tblPriceList";
+            manager.Open();
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
     public DataSet GetPriceListForId(string connection, int Id)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
