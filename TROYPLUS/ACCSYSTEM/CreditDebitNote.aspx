@@ -389,7 +389,7 @@
                                                                 <asp:ObjectDataSource ID="srcCreditorDebitor" runat="server" SelectMethod="ListCreditorDebitorSuppliers"
                                                                     TypeName="BusinessLogic">
                                                                     <SelectParameters>
-                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                        <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />                                                                       
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
                                                             </td>
@@ -552,10 +552,11 @@
                                                     <table cellspacing="0">
                                                         <tr>
                                                             <td>
-                                                                <asp:ObjectDataSource ID="srcCreditorDebitorAdd" runat="server" SelectMethod="ListCreditorDebitorSuppliersIsActive"
+                                                                <asp:ObjectDataSource ID="srcCreditorDebitorAdd" runat="server" SelectMethod="ListCreditorDebitorSuppliersForBranch"
                                                                     TypeName="BusinessLogic">
                                                                     <SelectParameters>
                                                                         <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
+                                                                         <asp:CookieParameter Name="Username" CookieName="LoggedUserName" Type="String" />
                                                                     </SelectParameters>
                                                                 </asp:ObjectDataSource>
                                                             </td>

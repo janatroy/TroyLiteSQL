@@ -1671,7 +1671,7 @@ public partial class CustomerPayment : System.Web.UI.Page
                 if (li != null) li.Selected = true;
 
                 string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue;
-                loadChequeNoEdit(Convert.ToInt32(dfg)); 
+               // loadChequeNoEdit(Convert.ToInt32(dfg)); 
 
             }
 

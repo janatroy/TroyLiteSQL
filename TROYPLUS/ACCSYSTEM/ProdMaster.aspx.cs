@@ -1411,6 +1411,9 @@ public partial class ProdMaster : System.Web.UI.Page
                     if (ds.Tables[0].Rows[0]["NLC"] != null)
                         txtNLCAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["NLC"]);
 
+                    if (ds.Tables[0].Rows[0]["ROL"] != null)
+                        txtROLAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["ROL"]);
+
                     if (ds.Tables[0].Rows[0]["productlevel"] != null)
                         txtproductlevel.Text = Convert.ToString(ds.Tables[0].Rows[0]["productlevel"]);
 
@@ -1510,6 +1513,7 @@ public partial class ProdMaster : System.Web.UI.Page
                     }
 
                     DataSet dstt = bl.ListProductPriceHistory(connection, ItemCode);
+                    //DataSet dse = bl.ListProduct(connection, ItemCode);
                     if (dstt != null && dstt.Tables[0].Rows.Count > 0)
                     {
                         DataTable dttt;
@@ -1546,6 +1550,23 @@ public partial class ProdMaster : System.Web.UI.Page
                         {
                             if (dstt.Tables[0].Rows.Count > 0)
                             {
+                                //for (int i = 0; i < dse.Tables[0].Rows.Count; i++)
+                                //{
+                                //    drNew = dttt.NewRow();
+                                //    drNew["Row"] = sno;
+                                //    drNew["ID"] = Convert.ToInt32(dse.Tables[0].Rows[i]["ID"]);
+                                //    drNew["PriceName"] = Convert.ToString(dse.Tables[0].Rows[i]["PriceName"]);
+                                //    drNew["Price"] = Convert.ToDouble(dse.Tables[0].Rows[i]["Price"]);
+
+                                //    string dtaa = Convert.ToDateTime(dse.Tables[0].Rows[i]["EffDate"]).ToString("dd/MM/yyyy");
+
+                                //    drNew["EffDate"] = dtaa;
+                                //    drNew["Discount"] = Convert.ToDouble(dse.Tables[0].Rows[i]["Discount"]);
+                                //    drNew["UserName"] = "";// Convert.ToString(dse.Tables[0].Rows[i]["UserName"]);
+                                //    dstd.Tables[0].Rows.Add(drNew);
+                                //    sno = sno + 1;
+                                //}
+
                                 for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
                                 {
                                     drNew = dttt.NewRow();
@@ -1716,6 +1737,8 @@ public partial class ProdMaster : System.Web.UI.Page
                     EffDate = EffDate1.Text;
                     TextBox Discount1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDiscount1");
                     tDiscount = Discount1.Text;
+                    DateTime dt = Convert.ToDateTime(EffDate);
+
 
                     if (Price == "")
                     {
@@ -1725,6 +1748,11 @@ public partial class ProdMaster : System.Web.UI.Page
                     else if (EffDate == "")
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Effective Date in row " + col + " ');", true);
+                        return;
+                    }
+                    else if (dt > DateTime.Now)
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Effective date not greater then Current date in row " + col + " ');", true);
                         return;
                     }
                     else if (tDiscount == "")
@@ -2072,7 +2100,7 @@ public partial class ProdMaster : System.Web.UI.Page
                         EffDate = EffDate1.Text;
                         TextBox Discount1 = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDiscount1");
                         tDiscount = Discount1.Text;
-
+                        DateTime dt = Convert.ToDateTime(EffDate);
                         int col = vLoop + 1;
 
                         if (Price == "")
@@ -2083,6 +2111,11 @@ public partial class ProdMaster : System.Web.UI.Page
                         else if (EffDate == "")
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Effective Date in row " + col + " ');", true);
+                            return;
+                        }
+                        else if (dt > DateTime.Now)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Effective date not greater then Current date in row " + col + " ');", true);
                             return;
                         }
                         else if (tDiscount == "")

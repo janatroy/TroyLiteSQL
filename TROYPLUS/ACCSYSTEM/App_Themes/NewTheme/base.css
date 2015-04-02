@@ -1601,16 +1601,7 @@ h2
     padding-right:0px;
 }
 
-.ControlDrpBorder
-{
-    width:60%;
-    height:24px;
-    border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
-    padding-left:0px;
-    padding-right:0px;
-    text-align:center;
-}
+
 
 .ControlDrpBorderreport
 {
@@ -6627,7 +6618,7 @@ h2
     padding-right:5px;
     text-align:right;
     vertical-align:middle;
-    color:#0567AE;
+    color:#414141;
     font-family:'ARIAL';
     font-size:14px;
     font-weight:bold;
@@ -7830,7 +7821,7 @@ option
     font-size: 20px;
     color: #ffffff;
     vertical-align: middle;
-    background: transparent url(images/titleHd.jpg) repeat-x top left;
+    background:#2d3e50; /*transparent url(images/titleHd.jpg) repeat-x top left;*/
     /*background: transparent url(images/popupheader.png) no-repeat;*/
     font-family: 'arial';
     padding: 0px;
@@ -8050,7 +8041,7 @@ legend
 
 .searchbg
 {
-    background-color : #7c7c7c;
+    background-color : #2d3e50;
     /*background: url(images/searchbg.jpg) repeat-x;*/
     height: 47px;
     border: 1px Solid Gray;
@@ -8207,7 +8198,7 @@ legend
 .ButtonAdd66
 {
     /*background: url(images/addnew66.png) left no-repeat;*/
-    background: url(images/TroyAddNew.png) left no-repeat;
+    background: url(images/AddNew_Latest.png) left no-repeat;
     
     border: none;
     height: 34px;
@@ -8263,7 +8254,7 @@ legend
 .ButtonSearch6
 {   
     /*background: url(images/search6.png) left no-repeat;*/
-    background: url(images/TroySearchbtn.png) left no-repeat;
+    background: url(images/Search_Btn_Latest.png) left no-repeat;
     
     height: 34px;
     width: 125px !important;
@@ -8727,7 +8718,7 @@ fieldset
 
 .printbutton6
 {
-    background: url(images/TroyPrint.png) no-repeat !important;
+    background: url(images/Print_Btn_Latest.png) no-repeat !important;
     width: 120px !important;
     height: 34px !important;
     display: block !important;
@@ -8758,7 +8749,7 @@ fieldset
 .savebutton1231
 {
    
-    background: url(images/TroySave.png) no-repeat !important;
+    background: url(images/Save_Latest.png) no-repeat !important;
     width: 120px !important;
     height: 34px !important;
     display: block !important;
@@ -8819,7 +8810,7 @@ fieldset
     
 .ClearFilter6
 {
-    background: url(images/clearfilter6.png) left no-repeat;
+    background: url(images/ClearFilter_Latest.png) left no-repeat;
     height: 34px;
     width: 125px !important;
     border: none;
@@ -8944,7 +8935,7 @@ fieldset
 
 .cancelbutton6
 {
-    background: url(images/TroyCancel.png) no-repeat !important;
+    background: url(images/Cancel_Btn_Latest.png) no-repeat !important;
     width: 120px !important;
     height: 34px !important;
     display: block !important;
@@ -9882,7 +9873,7 @@ fieldset
 
 .exportexl6
 {
-    background: url(images/TroyExporttoExcel.png) no-repeat !important;
+    background: url(images/ExportToExcel_Latest.png) no-repeat !important;
     width: 125px !important;
     height: 34px !important;
     display: block !important;
@@ -10060,7 +10051,7 @@ fieldset
 
 .Start6
 {
-    background: url(images/TroyStart.png) no-repeat !important;
+    background: url(images/Start_Btn_Latest.png) no-repeat !important;
     width: 120px !important;
     height: 34px !important;
     display: block !important;
@@ -10108,6 +10099,11 @@ fieldset
     text-transform: uppercase;
 }
 
+.datepicker
+{
+    background: url(images/cal_Latest.png) no-repeat !important;
+}
+
 .Bulkupdation
 {
     background: url(images/bulkupdation6.png) no-repeat !important;
@@ -10120,7 +10116,7 @@ fieldset
 
 .bulkaddition
 {
-    background: url(images/TroyBulkAddition.png) no-repeat !important;
+    background: url(images/BulkAddition_Btn_Latest.png) no-repeat !important;
     width: 120px !important;
     height: 34px !important;
     display: block !important;
@@ -10474,3 +10470,51 @@ left:-180px !important;
     
 >>>>>>> 8970176488ebf726b4b699303f1d245275e859ec
 }*/
+  .fancy-green .ajax__tab_header {
+            background:#2d3e50; /*url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;*/           
+            color: #FFFFFF;
+        }
+
+        .fancy-green .ajax__tab_hover .ajax__tab_outer, .fancy-green .ajax__tab_active .ajax__tab_outer {
+            background-color:#EBBF2F; /*url(App_Themes/NewTheme/Images/green_left_Tab.gif) no-repeat left top;*/
+            color: #2d3e50;
+        }
+
+        .fancy-green .ajax__tab_hover .ajax__tab_inner, .fancy-green .ajax__tab_active .ajax__tab_inner {
+            background-color:#EBBF2F; /*url(App_Themes/NewTheme/Images/green_right_Tab.gif) no-repeat right top;*/
+            color: #2d3e50;
+        }
+
+        .fancy .ajax__tab_header {
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
+            font-family: sans-serif;
+        }
+
+            .fancy .ajax__tab_active .ajax__tab_outer, .fancy .ajax__tab_header .ajax__tab_outer, .fancy .ajax__tab_hover .ajax__tab_outer {
+                height: 46px;
+            }
+
+            .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
+                height: 46px;
+                margin-left: 16px; /* offset the width of the left image */
+            }
+
+            .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
+                margin: 16px 16px 0px 0px;
+            }
+
+        .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_active .ajax__tab_tab {
+            color: black;
+        }
+
+        .fancy .ajax__tab_body {
+            font-family: Arial;
+            font-size: 10pt;
+            border-top: 0;
+            border: 1px solid #999999;
+            padding: 8px;
+            background-color: #ffc000;
+            width: 98.5%;
+        }

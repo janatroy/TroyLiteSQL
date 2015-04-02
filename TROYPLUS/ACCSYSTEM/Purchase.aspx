@@ -47,7 +47,7 @@
         }
     </script>
     <style id="Style1" runat="server">
-        .fancy-green .ajax__tab_header {
+        /*.fancy-green .ajax__tab_header {
             background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
             cursor: pointer;
         }
@@ -74,7 +74,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            }
+            /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -91,7 +91,7 @@
             border: 1px solid #999999;
             padding: 8px;
             background-color: #ffffff;
-        }
+        }*/
     </style>
 
     <asp:UpdatePanel ID="UpdatePnlMaster" runat="server" UpdateMode="Conditional">
@@ -120,7 +120,7 @@
                                                 <div style="text-align: right;">
                                                 </div>
                                             </td>
-                                            <td style="width: 12%; color: #000000;" align="right">
+                                            <td style="width: 12%; color: White;" align="right">
                                                 <%--Bill No.--%>
                                                 Search
                                             </td>
@@ -292,6 +292,7 @@
                                                                                                     </table>
                                                                                                 </td>
                                                                                             </tr>
+                                                                                            <tr style="height:6px"></tr>
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <cc1:TabContainer ID="tabs2" runat="server" Width="1225px" CssClass="fancy fancy-green">
@@ -1515,22 +1516,22 @@
                                                 OnSelectedIndexChanged="GrdViewPurchase_SelectedIndexChanged" OnRowCreated="GrdViewPurchase_RowCreated"
                                                 OnRowDataBound="GrdViewPurchase_RowDataBound" OnRowDeleting="GrdViewPurchase_RowDeleting">
                                                 <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                                <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                                <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                                 <Columns>
-                                                    <asp:BoundField DataField="PurchaseID" HeaderText="Voucher No" HeaderStyle-Width="50px" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="TransNo" HeaderText="Trans. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray"
+                                                    <asp:BoundField DataField="PurchaseID" HeaderText="Voucher No" HeaderStyle-Width="50px" HeaderStyle-Wrap="false"  HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="TransNo" HeaderText="Trans. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" 
                                                         HeaderStyle-Width="50px" />
-                                                    <asp:BoundField DataField="Billno" HeaderText="Bill No." HeaderStyle-Width="60px" HeaderStyle-BorderColor="Gray"
+                                                    <asp:BoundField DataField="Billno" HeaderText="Bill No." HeaderStyle-Width="60px" HeaderStyle-BorderColor="Gray" 
                                                         HeaderStyle-Wrap="false" />
-                                                    <asp:BoundField DataField="InvoiceDate" HeaderText="Voucher Date" HeaderStyle-Width="65px" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:TemplateField HeaderText="Payment Mode" HeaderStyle-BorderColor="Gray">
+                                                    <asp:BoundField DataField="InvoiceDate" HeaderText="Voucher Date" HeaderStyle-Width="65px" HeaderStyle-BorderColor="Gray"  />
+                                                    <asp:TemplateField HeaderText="Payment Mode" HeaderStyle-BorderColor="Gray" >
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblPaymode" runat="server"></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:BoundField DataField="Supplier" HeaderStyle-Width="130px" HeaderText="Supplier" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="Chequeno" Visible="false" HeaderText="Chequeno" HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="Creditor" HeaderStyle-Width="130px" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="Supplier" HeaderStyle-Width="130px" HeaderText="Supplier"  HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="Chequeno" Visible="false" HeaderText="Chequeno"  HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="Creditor" HeaderStyle-Width="130px" HeaderText="Creditor"  HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-Width="60px" DataFormatString="{0:F2}" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="SalesReturn" HeaderText="Sales Return" HeaderStyle-Wrap="true" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Wrap="true" HeaderStyle-BorderColor="Gray" />
