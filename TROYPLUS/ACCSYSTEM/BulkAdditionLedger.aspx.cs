@@ -135,6 +135,9 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Mobile"));
         dt.Columns.Add(new DataColumn("CreditLimit"));
         dt.Columns.Add(new DataColumn("CreditDays"));
+        dt.Columns.Add(new DataColumn("Emailid"));
+        dt.Columns.Add(new DataColumn("OpDueDate"));
+      //  dt.Columns.Add(new DataColumn("TinNumber"));
         //dt.Columns.Add(new DataColumn("Inttrans"));
         //dt.Columns.Add(new DataColumn("Paymentmade"));
         //dt.Columns.Add(new DataColumn("dc"));
@@ -147,9 +150,12 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         dr_final12["Add1"] = "";
         dr_final12["Add2"] = "";
         dr_final12["Add3"] = "";
-        dr_final12["Mobile"] = "0";
+        dr_final12["Mobile"] = "";
         dr_final12["CreditLimit"] = "0";
         dr_final12["CreditDays"] = "0";
+        dr_final12["Emailid"] = "";
+        dr_final12["OpDueDate"] = "";
+      //  dr_final12["TinNumber"] = "";
         //dr_final12["Inttrans"] = "NO";
         //dr_final12["Paymentmade"] = "NO";
         //dr_final12["dc"] = "NO";

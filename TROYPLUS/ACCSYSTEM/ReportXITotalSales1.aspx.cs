@@ -539,9 +539,11 @@ public partial class ReportXITotalSales1 : System.Web.UI.Page
                         dr_final12["Date"] = dtaa;
 
                         string ledgernam = dr["Branchcode"].ToString().ToUpper().Trim();
+                      //  Tottot = Tottot + double.Parse(dr["Quantity"].ToString());
                         for (int ii = 1; ii < dsGir.Tables[0].Columns.Count; ii++)
                         {
                             string ledgerna = dsGir.Tables[0].Columns[ii].ToString();
+                          
                             if (ledgernam == ledgerna)
                             {
                                 dr_final12[ledgerna] = double.Parse(dr["Quantity"].ToString());

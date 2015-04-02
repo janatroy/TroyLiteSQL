@@ -115,7 +115,8 @@ public partial class ReportPurchaseReturnSaleTax1 : System.Web.UI.Page
        // DateTime startDate, endDate;
         DataSet ds = new DataSet();
         DataSet dstt = new DataSet();
-
+        double tot = 0;
+        double tot1 = 0;
         string intTrans = "";
         string salesRet = "";
         string delNote = "";
@@ -187,6 +188,10 @@ public partial class ReportPurchaseReturnSaleTax1 : System.Web.UI.Page
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
                     dr_export["Invoice Date"] = dtaa;
 
+                    tot = tot + Convert.ToDouble(dr["NetRate"]);
+
+                    tot1 = tot1 + Convert.ToDouble(dr["ActualVAT"]);
+
                     dr_export["Branchcode"] = dr["Branchcode"];
                     dr_export["Sales Value"] = dr["NetRate"];
                     dr_export["Tax Rate"] = dr["vat"];
@@ -203,10 +208,10 @@ public partial class ReportPurchaseReturnSaleTax1 : System.Web.UI.Page
                 dr_export2["Buyer Tin"] = "";
                 dr_export2["Commodity Code"] = "";
                 dr_export2["Invoice No"] = "";
-                dr_export2["Invoice Date"] = "";
-                dr_export2["Sales Value"] = "";
-                dr_export2["Tax Rate"] = "";
-                dr_export2["Vat CST Paid"] = "";
+                dr_export2["Invoice Date"] = "Total =";
+                dr_export2["Sales Value"] = tot;
+                dr_export2["Tax Rate"] = "Total = ";
+                dr_export2["Vat CST Paid"] = tot1;
                 dr_export2["Category"] = "";
                 dt.Rows.Add(dr_export2);
 

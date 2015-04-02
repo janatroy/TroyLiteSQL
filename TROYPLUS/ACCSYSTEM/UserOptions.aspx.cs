@@ -298,11 +298,11 @@ public partial class UserOptions : System.Web.UI.Page
             Session["Show"] = "Edit";
 
 
-            DataSet ds = bl.GetUserOptionsForId(username, connection, "CUSTOMERS");
+            DataSet ds = bl.GetUserOptionsForId(username, connection, "SALES");
             GrdViewItem.DataSource = ds;
             GrdViewItem.DataBind();
 
-            DataSet dst = bl.GetUserOptionsForId(username, connection, "SUPPLIERS");
+            DataSet dst = bl.GetUserOptionsForId(username, connection, "PURCHASE");
             GridSupplier.DataSource = dst;
             GridSupplier.DataBind();
 
@@ -310,7 +310,7 @@ public partial class UserOptions : System.Web.UI.Page
             GridBANKING.DataSource = dstd;
             GridBANKING.DataBind();
 
-            DataSet dstdd = bl.GetUserOptionsForId(username, connection, "EXPENSES");
+            DataSet dstdd = bl.GetUserOptionsForId(username, connection, "FINACIAL");
             GridEXPENSES.DataSource = dstdd;
             GridEXPENSES.DataBind();
 
@@ -518,7 +518,7 @@ public partial class UserOptions : System.Web.UI.Page
 
             Session["Show"] = "Add New";
 
-            ds = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "CUSTOMERS");
+            ds = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SALES");
             GrdViewItem.DataSource = ds;
             GrdViewItem.DataBind();
 
@@ -537,7 +537,7 @@ public partial class UserOptions : System.Web.UI.Page
             DataSet dstttttdffmanu = new DataSet();
             DataSet dstttttdfflead = new DataSet();
 
-            dst = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SUPPLIERS");
+            dst = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "PURCHASE");
             GridSupplier.DataSource = dst;
             GridSupplier.DataBind();
 
@@ -545,7 +545,7 @@ public partial class UserOptions : System.Web.UI.Page
             GridBANKING.DataSource = dstt;
             GridBANKING.DataBind();
 
-            dsttt = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "EXPENSES");
+            dsttt = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "FINACIAL");
             GridEXPENSES.DataSource = dsttt;
             GridEXPENSES.DataBind();
 

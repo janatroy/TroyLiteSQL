@@ -1344,28 +1344,38 @@
                                                                                                                         </table>
                                                                                                                         <table style="width: 100%; border: 1px solid gray">
                                                                                                                               
-                                                                                                                        <tr  id="totalrow1" runat="server" visible="false">
+                                                                                                                        <tr >
                                                                                                                             <td colspan="6">
                                                                                                                                 <table style="width: 100%">
                                                                                                                                     <tr>
                                                                                                                                         <td style="background-color:#cccccc;  border: 1px solid gray">
-                                                                                                                                            
+
+                                                                                                                                              <asp:UpdatePanel ID="UpdatePanel122" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                            <asp:Panel   id="totalrow1" runat="server" visible="false"
+                                                                                                    Width="100%">
                                                                                                                                              <asp:Label ID="Label2" runat="server" Text="Pending Bills to be Adjusted" Font-Bold="true" ForeColor="Black" Font-Size="Medium" >
 
                                                                                                                                              </asp:Label>
+                                                                                                                                                    </asp:Panel>
+                                                                                                                                        </ContentTemplate>
+                                                                                                                                 
+                                                                                                                                </asp:UpdatePanel>
                                                                                                                                         </td>
                                                                                                                                     </tr>
                                                                                                                                 </table>
                                                                                                                             </td>
                                                                                                                         </tr>  
                                                                                                                                    
-                                                                                                                        <tr  id="totalrow123" runat="server" visible="false">
+                                                                                                                        <tr >
                                                                                                                             <td colspan="6">
                                                                                                                                 <table style="width: 100%;  border: 1px solid gray" >
                                                                                                                                     <tr>
                                                                                                                                         <td>
-                                                                                                                                            <asp:Panel ID="Panel4" 
-                                                                                                    Width="100%" runat="server">
+                                                                                                                                             <asp:UpdatePanel ID="UpdatePanel111" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                            <asp:Panel  id="totalrow123" runat="server" visible="false" 
+                                                                                                    Width="100%">
                                                                                                                                             <div id="div1" runat="server" style="height: 100px; overflow: scroll">
                                                                                                                                                 <asp:UpdatePanel ID="UpdatePanel112" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
@@ -1486,12 +1496,15 @@
                                                                                                                                 </asp:UpdatePanel>
                                                                                                                                             </div>
                                                                                                                                                 </asp:Panel>
+                                                                                                                                        </ContentTemplate>
+                                                                                                                                 
+                                                                                                                                </asp:UpdatePanel>
                                                                                                                                         </td>
                                                                                                                                     </tr>
                                                                                                                                 </table>
                                                                                                                             </td>
                                                                                                                         </tr>
-                                                                                                                        <tr id="totalrow" runat="server" visible="false">
+                                                                                                                        <tr i>
                                                                                                                             <td colspan="6">
                                                                                                                                 <table style="width: 100%">
                                                                                                                                     <tr>
@@ -1499,7 +1512,15 @@
                                                                                                                                             
                                                                                                                                         </td>
                                                                                                                                         <td class="ControlLabelNew" style="width: 20%">
+                                                                                                                                             <asp:UpdatePanel ID="UpdatePanel12222" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                            <asp:Panel id="totalrow" runat="server" visible="false"
+                                                                                                    Width="100%">
                                                                                                                                             Total Amount Adjusted
+                                                                                                                                                  </asp:Panel>
+                                                                                                                                        </ContentTemplate>
+                                                                                                                                 
+                                                                                                                                </asp:UpdatePanel>
                                                                                                                                 
                                                                                                                                         </td>
                                                                                                                                         <td style="width: 16%">

@@ -248,7 +248,7 @@ public partial class CustomerPayment : System.Web.UI.Page
     }
 
     protected override void OnInit(EventArgs e)
-    {
+     {
         base.OnInit(e);
         //TextBox search = (TextBox)Accordion1.FindControl("txtSearch");
         GridSource.SelectParameters.Add(new CookieParameter("connection", "Company"));
@@ -1671,7 +1671,7 @@ public partial class CustomerPayment : System.Web.UI.Page
                 if (li != null) li.Selected = true;
 
                 string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue;
-                loadChequeNoEdit(Convert.ToInt32(dfg)); 
+               // loadChequeNoEdit(Convert.ToInt32(dfg)); 
 
             }
 
@@ -2629,4 +2629,17 @@ public partial class CustomerPayment : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+    protected void ddCriteria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddCriteria.SelectedItem.Text == "Transaction Date")
+        {
+            //txtdate.EnableViewState = 1;
+            txtdate.Enabled = true;
+        }
+        else
+        {
+           txtdate.Enabled = false;
+        }
+    }
+  
 }

@@ -246,12 +246,13 @@
                                                                                                 <td style="width: 20%" class="ControlLabelNew">Name of Product *
                                                                                                             <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="txtItemNameAdd"
                                                                                                                 Text="*" Display="Dynamic" ValidationGroup="salesval" ErrorMessage="Please enter Product Name. It cannot be left blank."></asp:RequiredFieldValidator>
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" " TargetControlID="txtItemNameAdd" />
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                                                     <asp:TextBox ID="txtItemNameAdd" runat="server" Text='<%# Bind("ProductName") %>'
                                                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
-                                                                                                <td style="width: 28%" class="ControlLabelNew">Dealer Rate Effective dateUnit of Measure
+                                                                                                <td style="width: 28%" class="ControlLabelNew">Unit of Measure
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlDrpBorder">
                                                                                                     <asp:DropDownList ID="drpMeasureAdd" runat="server" DataTextField="Unit" DataValueField="Unit" Width="100%" Style="border: 1px solid #e7e7e7" Height="26px"
@@ -282,6 +283,8 @@
                                                                                                     <asp:RangeValidator ID="cvVATAdd" runat="server" ControlToValidate="txtVATAdd" Display="Dynamic"
                                                                                                         Text="*" MaximumValue="100" Type="Double" MinimumValue="0" ValidationGroup="salesval"
                                                                                                         ErrorMessage="VAT cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
+                                                                                                    <cc1:FilteredTextBoxExtender ID="fltReorderAd" runat="server" FilterType="Numbers"
+                                                                                                        TargetControlID="txtVATAdd" />
 
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
@@ -325,8 +328,7 @@
                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator786" runat="server" ControlToValidate="txtMrpDateAdd"
                                                                                                                 Text="*" Display="Dynamic" ErrorMessage="Please select MRP Effective date. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                                 </td>
-                                                                                                <td style="width: 25%" class="ControlTextBox3" runat="server">
-                                                                                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                                                                                <td style="width: 25%" class="ControlTextBox3" runat="server">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                                                                                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                                                                                     <asp:TextBox ID="txtMrpDateAdd" runat="server"
                                                                                                         CssClass="cssTextBox" Width="100px"></asp:TextBox>
@@ -341,9 +343,8 @@
                                                                                                         Width="20px" runat="server" />
                                                                                                 </td>
                                                                                             </tr>
-                                                                                            <tr style="height: 30px; " class="tblLeft">
-                                                                                                <td style="width: 20%" class="ControlLabelNew">
-                                                                                                    Name of Category *
+                                                                                            <tr style="height: 30px;" class="tblLeft">
+                                                                                                <td style="width: 20%" class="ControlLabelNew">Name of Category *
                                                                                                     <asp:CompareValidator ID="cvCatergoryAdd" runat="server" ControlToValidate="ddCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Name of Category. It cannot be left blank." Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlDrpBorder">
@@ -352,7 +353,7 @@
                                                                                                     </asp:DropDownList>
                                                                                                 </td>
                                                                                                 <td style="width: 28%" class="ControlLabelNew">Reorder Level *
-                                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtROLAdd" Display="Dynamic" ErrorMessage="Please enter Reorder Level. It cannot be left blank." Text="*"></asp:RequiredFieldValidator>
+                                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtROLAdd" Display="Dynamic" ErrorMessage="Please enter Reorder Level. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     <cc1:FilteredTextBoxExtender ID="fltReorderAdd" runat="server" Enabled="True" FilterType="Numbers" TargetControlID="txtROLAdd">
                                                                                                     </cc1:FilteredTextBoxExtender>
                                                                                                 </td>
@@ -364,8 +365,8 @@
                                                                                             <tr style="height: 30px" class="tblLeft" id="rowDealerAdd" runat="server" visible="False">
                                                                                                 <td style="width: 20%" class="ControlLabel" runat="server">Name of Category *
                                                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDealerRateAdd" Display="Dynamic" ErrorMessage="Please enter Dealer Rate. It cannot be left blank." Text="*"></asp:RequiredFieldValidator>
-                                                                                                            <cc1:FilteredTextBoxExtender ID="FTDUnitRAdd" runat="server" FilterType="Custom, Numbers"
-                                                                                                                TargetControlID="txtDealerRateAdd" ValidChars="." Enabled="True" />
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FTDUnitRAdd" runat="server" FilterType="Custom, Numbers"
+                                                                                                        TargetControlID="txtDealerRateAdd" ValidChars="." Enabled="True" />
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3" runat="server">
                                                                                                     <asp:TextBox ID="txtDealerRateAdd" runat="server" Text="0" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -401,8 +402,7 @@
                                                                                                 <td runat="server" class="ControlTextBox3" style="width: 25%">
                                                                                                     <asp:TextBox ID="txtDealerDiscountAdd" runat="server" SkinID="skinTxtBoxGrid" Text="0"></asp:TextBox>
                                                                                                 </td>
-                                                                                                <td style="width: 25%" class="ControlTextBox3" runat="server">
-                                                                                                </td>
+                                                                                                <td style="width: 25%" class="ControlTextBox3" runat="server"></td>
 
                                                                                                 <td style="width: 25%" align="right" runat="server">
                                                                                                     <asp:ObjectDataSource ID="srcUnitMntAdd" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ListMeasurementUnits" TypeName="BusinessLogic">
@@ -417,15 +417,14 @@
                                                                                                     </asp:ObjectDataSource>
                                                                                                 </td>
 
-                                                                                                <td style="width: 20%" runat="server">IsActive *
-                                                                                                    <asp:DropDownList ID="drpblockadd" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" SelectedValue='<%# Bind("block") %>' Style="border: 1px solid #e7e7e7" Visible="False" Width="100%">
+                                                                                               <td style="width: 20%" runat="server">IsActive *
+                                                                                                    <asp:DropDownList ID="drpblockadd" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" SelectedValue='<%# Bind("block") %>' Style="border: 1px solid #e7e7e7" Visible="true" Width="100%">
                                                                                                         <asp:ListItem Selected="True" Value="NO">NO</asp:ListItem>
                                                                                                         <asp:ListItem Value="YES">YES</asp:ListItem>
                                                                                                     </asp:DropDownList>
 
                                                                                                 </td>
-                                                                                                <td style="width: 28%" runat="server">
-                                                                                                    Outdated? *
+                                                                                                <td style="width: 28%" runat="server">Outdated? *
                                                                                                     <asp:ObjectDataSource ID="srcCategoryAdd" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ListCategory" TypeName="BusinessLogic">
                                                                                                         <SelectParameters>
                                                                                                             <asp:CookieParameter CookieName="Company" Name="connection" Type="String" />
@@ -436,13 +435,12 @@
                                                                                                 </td>
 
                                                                                                 <td style="width: 2%" runat="server"></td>
-                                                                                                <td style="width: 2%" runat="server">
-                                                                                                </td>
+                                                                                                <td style="width: 2%" runat="server"></td>
                                                                                                 <td style="width: 20%" class="ControlLabelNew" runat="server">
                                                                                                     <asp:CompareValidator ID="CompareValidator5" runat="server" ControlToValidate="drpIsActiveAdd" Display="Dynamic" ErrorMessage="IsActive is Mandatory" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlDrpBorder" runat="server">
-                                                                                                    <asp:DropDownList ID="drpIsActiveAdd" runat="server" BackColor="#E7E7E7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%">
+                                                                                                    <asp:DropDownList ID="drpIsActiveAdd1" runat="server" BackColor="#E7E7E7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%">
                                                                                                         <asp:ListItem Text="NO" Value="NO"></asp:ListItem>
                                                                                                         <asp:ListItem Selected="True" Text="YES" Value="YES"></asp:ListItem>
                                                                                                     </asp:DropDownList>
@@ -452,7 +450,7 @@
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlDrpBorder" runat="server">
                                                                                                     <asp:TextBox ID="txtUnitAdd" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                                                    <asp:DropDownList ID="drpOutdatedAdd" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" SelectedValue='<%# Bind("Outdated") %>' Style="border: 1px solid #e7e7e7" Width="100%">
+                                                                                                    <asp:DropDownList ID="drpOutdatedAdd1" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" SelectedValue='<%# Bind("Outdated") %>' Style="border: 1px solid #e7e7e7" Width="100%">
                                                                                                         <asp:ListItem Selected="True" Value="N">NO</asp:ListItem>
                                                                                                         <asp:ListItem Value="Y">YES</asp:ListItem>
                                                                                                     </asp:DropDownList>
@@ -483,17 +481,48 @@
                                                                                             <tr>
                                                                                                 <td class="ControlLabelNew" style="width: 20%">Name of Model *
                                                                                                     <asp:RequiredFieldValidator ID="rvModelAdd" runat="server" ControlToValidate="txtModelAdd" Display="Dynamic" ErrorMessage="Please enter Name of Model. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers" TargetControlID="txtModelAdd" />
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 25%;">
                                                                                                     <asp:TextBox ID="txtModelAdd" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td class="ControlLabelNew" style="width: 28%">Allowed Price Deviation % *
-                                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtAllowedPriceAdd" Display="Dynamic" ErrorMessage="Please enter Allowed Price Deviation %. It cannot be left blank." Text="*"></asp:RequiredFieldValidator>
+                                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtAllowedPriceAdd" Display="Dynamic" ErrorMessage="Please enter Allowed Price Deviation %. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" Enabled="True" FilterType="Custom, Numbers" TargetControlID="txtAllowedPriceAdd" ValidChars=".">
                                                                                                     </cc1:FilteredTextBoxExtender>
+                                                                                                    <asp:RangeValidator ID="RangeValidator5" runat="server" ControlToValidate="txtAllowedPriceAdd" Display="Dynamic"
+                                                                                                        Text="*" MaximumValue="200" Type="Double" MinimumValue="0" ValidationGroup="salesval"
+                                                                                                        ErrorMessage="Price deviation cannot be Greater than 200% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 25%">
                                                                                                     <asp:TextBox ID="txtAllowedPriceAdd" runat="server" SkinID="skinTxtBoxGrid" Text="0"></asp:TextBox>
+                                                                                                </td>
+                                                                                                <td style="width: 2%"></td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td style="width: 20%" class="ControlLabelNew">IsActive *
+                                                                                                            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="drpIsActiveAdd"
+                                                                                                                Display="Dynamic" ErrorMessage="IsActive is Mandatory" Operator="GreaterThan"
+                                                                                                                Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                </td>
+                                                                                                <td style="width: 25%;" class="ControlDrpBorder">
+                                                                                                    <asp:DropDownList ID="drpIsActiveAdd" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium"
+                                                                                                        Width="100%" Style="border: 1px solid #e7e7e7" Height="26px">
+                                                                                                        <asp:ListItem Text="NO" Value="NO"></asp:ListItem>
+                                                                                                        <asp:ListItem Text="YES" Value="YES" Selected="True"></asp:ListItem>
+                                                                                                    </asp:DropDownList>
+                                                                                                </td>
+                                                                                                <td style="width: 28%" class="ControlLabelNew">Outdated? *
+                                                                                                            <asp:CompareValidator ID="CompareValidator4" runat="server" ControlToValidate="drpOutdatedAdd"
+                                                                                                                Display="Dynamic" ErrorMessage="Outdated is Mandatory" Operator="GreaterThan"
+                                                                                                                Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                </td>
+                                                                                                <td style="width: 25%" class="ControlDrpBorder">
+                                                                                                    <asp:DropDownList ID="drpOutdatedAdd" runat="server" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7" SelectedValue='<%# Bind("Outdated") %>'
+                                                                                                        AppendDataBoundItems="True" EnableTheming="False" Style="border: 1px solid #e7e7e7" Height="26px">
+                                                                                                        <asp:ListItem Value="N" Selected="True">NO</asp:ListItem>
+                                                                                                        <asp:ListItem Value="Y">YES</asp:ListItem>
+                                                                                                    </asp:DropDownList>
                                                                                                 </td>
                                                                                                 <td style="width: 2%"></td>
                                                                                             </tr>
@@ -550,7 +579,7 @@
                                                                                                                 </asp:TemplateField>
                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Center" HeaderStyle-ForeColor="Black" HeaderText="Date Effective From" ItemStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
                                                                                                                     <ItemTemplate>
-                                                                                                                        <asp:TextBox ID="txtEffDate" runat="server" Width="70%" Style="text-align: Center" Text='<%# Eval("EffDate","{0:dd/MM/yyyy}")%>' CssClass="cssTextBoxGrid1" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"></asp:TextBox>
+                                                                                                                        <asp:TextBox ID="txtEffDate" runat="server" Enabled="false" Width="70%" Style="text-align: Center" Text='<%# Eval("EffDate","{0:dd/MM/yyyy}")%>' CssClass="cssTextBoxGrid1" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"></asp:TextBox>
                                                                                                                         <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"
                                                                                                                             PopupButtonID="btnBillDate" TargetControlID="txtEffDate" Enabled="True">
                                                                                                                         </cc1:CalendarExtender>
@@ -562,6 +591,9 @@
                                                                                                                     <ItemTemplate>
                                                                                                                         <cc1:FilteredTextBoxExtender ID="FTBRadeA" runat="server" FilterType="Custom, Numbers"
                                                                                                                             TargetControlID="txtDiscount1" ValidChars="." />
+                                                                                                                        <%--  <asp:RangeValidator ID="RangeValidator5" runat="server" ControlToValidate="txtDiscount1" Display="Dynamic"
+                                                                                                        Text="*" MaximumValue="100" Type="Double" MinimumValue="0" ValidationGroup="salesval"
+                                                                                                        ErrorMessage="Discount cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>--%>
                                                                                                                         <asp:TextBox ID="txtDiscount1" runat="server" Width="90%" Style="text-align: Center" Text='<%# Eval("Discount")%>' CssClass="cssTextBoxGrid" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"></asp:TextBox>
                                                                                                                     </ItemTemplate>
                                                                                                                 </asp:TemplateField>
@@ -638,10 +670,15 @@
 
                                                                                             <tr style="height: 30px" class="tblLeft">
 
-                                                                                                <td style="width: 25%" class="ControlLabelNew">Central Sales Tax (CST) %
-                                                                                                <asp:RangeValidator ID="RangeValidator2Add" runat="server" ControlToValidate="txtCSTAdd"
-                                                                                                    Display="Dynamic" EnableClientScript="True" MaximumValue="100" Type="Double"
-                                                                                                    MinimumValue="0" Text="CST cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
+                                                                                                <td style="width: 25%" class="ControlLabelNew">Central Sales Tax (CST) %                                                                                            
+                                                                                                    
+                                                                                                        <asp:RangeValidator ID="RangeValidator44" runat="server" ControlToValidate="txtCSTAdd" Display="Dynamic"
+                                                                                                            Text="*" MaximumValue="100" Type="Double" MinimumValue="0" ValidationGroup="salesval"
+                                                                                                            ErrorMessage="CST cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
+
+
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" runat="server" FilterType="Numbers"
+                                                                                                        TargetControlID="txtCSTAdd" />
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                                                     <asp:TextBox ID="txtCSTAdd" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -659,9 +696,16 @@
                                                                                             </tr>
                                                                                             <tr style="height: 30px" class="tblLeft">
                                                                                                 <td style="width: 25%" class="ControlLabelNew">Executive Commission %
-                                                                                                <asp:CompareValidator ID="rvExecCommAdd" runat="server" ControlToValidate="txtExecutiveCommissionAdd"
+                                                                                              <%--  <asp:CompareValidator ID="rvExecCommAdd" runat="server" ControlToValidate="txtExecutiveCommissionAdd"
                                                                                                     Display="Dynamic" EnableClientScript="True" Type="Double" Operator="DataTypeCheck"
-                                                                                                    Text="Commission should be Numeric value"></asp:CompareValidator>
+                                                                                                    Text="Commission should be Numeric value"></asp:CompareValidator>--%>
+
+                                                                                                    <asp:RangeValidator ID="RangeValidator6" runat="server" ControlToValidate="txtExecutiveCommissionAdd" Display="Dynamic"
+                                                                                                        Text="*" MaximumValue="100" Type="Double" MinimumValue="0" ValidationGroup="salesval"
+                                                                                                        ErrorMessage="Executive commission cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
+
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" FilterType="Numbers"
+                                                                                                        TargetControlID="txtExecutiveCommissionAdd" />
                                                                                                 </td>
                                                                                                 <td style="width: 20%" class="ControlDrpBorder">
                                                                                                     <asp:TextBox ID="txtExecutiveCommissionAdd" runat="server"
@@ -758,19 +802,18 @@
                                                                                     <ContentTemplate>
                                                                                         <table width="800px" cellpadding="3" cellspacing="1" align="center">
                                                                                             <tr style="height: 30px" class="tblLeft">
-                                                                                                <td style="width: 50%; align-content:center;" align="center" class="ControlLabelNew" >Profit Margin
+                                                                                                <td style="width: 50%; align-content: center;" align="center" class="ControlLabelNew">Profit Margin
 				                                                                                    <asp:HiddenField ID="hdnfSalesIncentiveId" Value="" runat="server" />
                                                                                                     <asp:HiddenField ID="hdnfItemCode" Value="" runat="server" />
                                                                                                 </td>
-                                                                                                <td style="width: 25%" align="center" class="ControlLabelNew" >
-                                                                                                    Incentive Amount (%)
+                                                                                                <td style="width: 25%" align="center" class="ControlLabelNew">Incentive Amount (%)
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
                                                                                             <tr style="height: 2px">
                                                                                             </tr>
                                                                                             <tr style="height: 30px" class="tblLeft">
-                                                                                                <td style="width: 50%" class="ControlText3, alignCenter" >Slab #1 ( 1% - 10% )
+                                                                                                <td style="width: 50%" class="ControlText3, alignCenter">Slab #1 ( 1% - 10% )
 				                                                                                    <asp:RangeValidator ID="RangeValidatorSlab1" runat="server" ControlToValidate="txtSlab1"
                                                                                                         Display="Dynamic" EnableClientScript="True" MaximumValue="100" Type="Double"
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
@@ -781,7 +824,7 @@
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
                                                                                             <tr style="height: 30px" class="tblLeft">
-                                                                                                <td style="width: 50%" class="ControlText3, alignCenter" >Slab #2 ( 11% - 25% )
+                                                                                                <td style="width: 50%" class="ControlText3, alignCenter">Slab #2 ( 11% - 25% )
 				                                                                                    <asp:RangeValidator ID="RangeValidator1" runat="server" ControlToValidate="txtSlab2"
                                                                                                         Display="Dynamic" EnableClientScript="True" MaximumValue="100" Type="Double"
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
@@ -791,8 +834,8 @@
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
-                                                                                             <tr style="height: 30px" class="tblLeft">
-                                                                                                <td style="width: 50%" class="ControlText3, alignCenter" >Slab #3 ( 26% - 60% )
+                                                                                            <tr style="height: 30px" class="tblLeft">
+                                                                                                <td style="width: 50%" class="ControlText3, alignCenter">Slab #3 ( 26% - 60% )
 				                                                                                    <asp:RangeValidator ID="RangeValidator2" runat="server" ControlToValidate="txtSlab3"
                                                                                                         Display="Dynamic" EnableClientScript="True" MaximumValue="100" Type="Double"
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
@@ -802,8 +845,8 @@
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
-                                                                                             <tr style="height: 30px" class="tblLeft">
-                                                                                                <td style="width: 50%" class="ControlText3, alignCenter" >Slab #4 ( 61% - 90% )
+                                                                                            <tr style="height: 30px" class="tblLeft">
+                                                                                                <td style="width: 50%" class="ControlText3, alignCenter">Slab #4 ( 61% - 90% )
 				                                                                                    <asp:RangeValidator ID="RangeValidator3" runat="server" ControlToValidate="txtSlab4"
                                                                                                         Display="Dynamic" EnableClientScript="True" MaximumValue="100" Type="Double"
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
@@ -813,8 +856,8 @@
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
-                                                                                             <tr style="height: 30px" class="tblLeft">
-                                                                                                <td style="width: 50%" class="ControlText3, alignCenter" >Slab #5 ( 91% - 100% )
+                                                                                            <tr style="height: 30px" class="tblLeft">
+                                                                                                <td style="width: 50%" class="ControlText3, alignCenter">Slab #5 ( 91% - 100% )
 				                                                                                    <asp:RangeValidator ID="RangeValidator4" runat="server" ControlToValidate="txtSlab5"
                                                                                                         Display="Dynamic" EnableClientScript="True" MaximumValue="100" Type="Double"
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
@@ -1056,8 +1099,8 @@
                 <td style="width: 30%">
                     <div style="text-align: right;">
                         <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                            <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CausesValidation="false"
-                                EnableTheming="false" Text="Add New Product"></asp:Button>
+                            <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CausesValidation="false" ForeColor="White" CssClass="ButtonAdd66"
+                                EnableTheming="false"></asp:Button>
                         </asp:Panel>
                     </div>
                 </td>

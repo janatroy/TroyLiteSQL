@@ -120,6 +120,9 @@ public partial class ReportSalesReturnSaleTax1 : System.Web.UI.Page
         string salesRet = "";
         string delNote = "";
 
+        double tot = 0;
+        double tot1 = 0;
+
         string condi = "";
 
         intTrans = "NO";
@@ -187,6 +190,10 @@ public partial class ReportSalesReturnSaleTax1 : System.Web.UI.Page
                     string dtaa = Convert.ToDateTime(aa).ToString("dd/MM/yyyy");
                     dr_export["Invoice Date"] = dtaa;
 
+                    tot = tot + Convert.ToDouble(dr["NetPurchaseRate"]);
+
+                    tot1 = tot1 + Convert.ToDouble(dr["ActualVAT"]);
+
                     dr_export["Purchase Value"] = dr["NetPurchaseRate"];
                     dr_export["Tax Rate"] = dr["vat"];
                     dr_export["Vat CST Paid"] = dr["ActualVAT"];
@@ -202,10 +209,10 @@ public partial class ReportSalesReturnSaleTax1 : System.Web.UI.Page
                 dr_export2["Seller Tin"] = "";
                 dr_export2["Commodity Code"] = "";
                 dr_export2["Invoice No"] = "";
-                dr_export2["Invoice Date"] = "";
-                dr_export2["Purchase Value"] = "";
-                dr_export2["Tax Rate"] = "";
-                dr_export2["Vat CST Paid"] = "";
+                dr_export2["Invoice Date"] = "Total =";
+                dr_export2["Purchase Value"] = tot;
+                dr_export2["Tax Rate"] = "Total =";
+                dr_export2["Vat CST Paid"] = tot1;
                 dr_export2["Category"] = "";
                 dt.Rows.Add(dr_export2);
 

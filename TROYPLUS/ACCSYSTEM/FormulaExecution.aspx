@@ -607,7 +607,7 @@
                                                             <cc1:ConfirmButtonExtender ID="CnrfmDel" TargetControlID="btnRelease" ConfirmText="Are you sure to complete the processing?"
                                                                 runat="server">
                                                             </cc1:ConfirmButtonExtender>
-                                                            <asp:ImageButton ID="btnEditDisabled" ToolTip="you are not allow to Process this item" Enabled="false" runat="Server"></asp:ImageButton>
+                                                            <asp:ImageButton ID="btnEditDisabled" Visible="false" ToolTip="you are not allow to Process this item" Enabled="false" runat="Server"></asp:ImageButton>
                                                             <asp:ImageButton ID="btnRelease" runat="server" SkinID="GridRelease" ToolTip="Click here to complete the processing."
                                                                 CommandName="Delete" />
                                                              <asp:HiddenField ID="hdcompID" runat="server" Value='<% #Bind("CompID") %>' />

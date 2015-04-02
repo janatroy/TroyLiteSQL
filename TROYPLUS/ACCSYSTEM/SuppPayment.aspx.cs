@@ -646,7 +646,7 @@ public partial class SuppPayment : System.Web.UI.Page
             }
 
             ShowPendingBillsAuto();
-            Panel4.Visible = true;
+           // Panel4.Visible = true;
         }
         catch (Exception ex)
         {
@@ -1355,7 +1355,7 @@ public partial class SuppPayment : System.Web.UI.Page
                 return;
             }
 
-            DebitorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 2, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
+            DebitorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 2, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,true,"");
             //iSupplier = bl.InsertCustomerInfoDirect(connection, sSupplierName, sSupplierName, 2, 0, 0, 0, "", sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", sSupplierName, usernam, "YES", "", 3);
 
             sCustomerName = txtCustomerName.Text;
@@ -2043,7 +2043,7 @@ public partial class SuppPayment : System.Web.UI.Page
         }
 
 
-        Panel4.Visible = true;
+      //  Panel4.Visible = true;
 
 
     }
@@ -2111,7 +2111,10 @@ public partial class SuppPayment : System.Web.UI.Page
             }
 
             ShowPendingBillsAuto();
-            Panel4.Visible = true;
+            UpdatePanel111.Update();
+            UpdatePanel122.Update();
+            UpdatePanel12222.Update();
+         //   Panel4.Visible = true;
 
             
 

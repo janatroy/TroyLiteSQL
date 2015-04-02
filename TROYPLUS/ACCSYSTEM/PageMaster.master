@@ -9,7 +9,7 @@
     <title>TROY-PLUS</title>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
-    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />    
     <link href="App_Themes/NewTheme/navmenu.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/ComboBox.css" rel="Stylesheet" type="text/css" />
@@ -467,6 +467,7 @@
                                                         <li class="color submenumenu"><a href="./CustomerPayment.aspx" runat="server" id="lnkCustomerPayment">Payments to Customer</a></li>
                                                         <li class="color submenumenu"><a href="./HirePurchase.aspx" runat="server" id="lnkHirePurchaseNew">Hire Sales</a></li>
                                                         <li class="color submenumenu"><a href="./InternalTransfers.aspx" runat="server" id="lnkInternalTransfers">Internal Transfers</a></li>
+                                                        <li class="color submenumenu"><a href="./InternalTransferApproval.aspx" runat="server" id="lnkInternalTransferApprovals">Internal Transfers Approvals</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
@@ -586,6 +587,7 @@
                                                         <li class="color submenumenu"><a href="./CreditDebitNote.aspx" runat="server" id="lnkCreditDebitNote">Credit / Debit Note</a></li>
                                                         <li class="color submenumenu"><a href="./MultipleJournal.aspx" runat="server" id="lnkMultipleInfo">Journals</a></li>
                                                         <li class="color submenumenu"><a href="./ExpPayment.aspx" runat="server" id="lnkExpensePayment">Expense payments</a></li>
+                                                          <li class="color submenumenu"><a href="./ManualClearance.aspx" runat="server">Manual Clearance</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
