@@ -678,7 +678,7 @@
                                                                                         <td class="ControlLabel" style="width: 14%">
                                                                                             <asp:RequiredFieldValidator ID="hRequiredFieldValidator1" runat="server" ControlToValidate="txtTinAdd"
                                                                                                 Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter TIN No.It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                                            TIN No.
+                                                                                            TIN No.*
                                                                     
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">

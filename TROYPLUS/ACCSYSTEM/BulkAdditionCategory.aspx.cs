@@ -289,6 +289,10 @@ public partial class BulkAdditionCategory : System.Web.UI.Page
 
             String strConnection = "ConnectionString";
             string connectionString = "";
+
+            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+            char[] specialCharactersArray = specialCharacters.ToCharArray();
+
             if (FileUpload1.HasFile)
             {
                 string datett = DateTime.Now.ToString();
@@ -346,7 +350,7 @@ public partial class BulkAdditionCategory : System.Web.UI.Page
                 {
                     if ((Convert.ToString(dr["category"]) == null) || (Convert.ToString(dr["category"]) == ""))
                     {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Missing Datas');", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Category name is empty');", true);
                         return;
                     }
                 }
@@ -380,8 +384,58 @@ public partial class BulkAdditionCategory : System.Web.UI.Page
                         }
                 }
 
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["CATEGORY%"]) == null) || (Convert.ToString(dr["CATEGORY%"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Category(%)  is empty');", true);
+                        return;
+                    }
+                }
 
-                //foreach (DataRow dr in ds.Tables[0].Rows)
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["category"]) != null) || (Convert.ToString(dr["category"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["category"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in category');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["CATEGORY%"]) != null) || (Convert.ToString(dr["CATEGORY%"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["CATEGORY%"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in CATEGORY%');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["CATEGORY%"]) != null) || (Convert.ToString(dr["CATEGORY%"]) != ""))
+                    {
+                        if (Convert.ToInt32(dr["CATEGORY%"]) > 100)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('CATEGORY% cannot be Greater than 100% and Less than 0%');", true);
+                            return;
+                        }
+                    }
+                }
+
+
+                //foreach CATEGORY%(DataRow dr in ds.Tables[0].Rows)
                 //{
                 //    string item = Convert.ToString(dr["ItemCode"]);
                 //    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))

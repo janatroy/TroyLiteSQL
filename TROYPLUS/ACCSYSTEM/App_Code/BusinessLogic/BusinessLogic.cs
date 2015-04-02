@@ -5113,8 +5113,8 @@ public partial class BusinessLogic
             manager.Open();
             object reconDate = manager.ExecuteScalar(CommandType.Text, "Select recon_date from last_recon");
 
-            dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.BranchCode, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
-            dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo, Payment.Paymode,Payment.Billno FROM ((((tblDayBook INNER JOIN ");
+            dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.BranchCode,tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+            dbQry.Append("tblDayBook.VoucherType,Debitor.AutoLedgerID, tblDayBook.RefNo, tblDayBook.ChequeNo, Payment.Paymode,Payment.Billno FROM ((((tblDayBook INNER JOIN ");
             dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) INNER JOIN ");
             dbQry.Append("tblPayMent Payment ON tblDayBook.TransNo = Payment.JournalID) INNER JOIN tblGroups G ON G.GroupID = Debitor.GroupID) ");
 
@@ -5128,11 +5128,15 @@ public partial class BusinessLogic
             }
             else if (dropDown == "TransDate" && txtSearch != null)
             {
-                dbQry.AppendFormat("WHERE tblDayBook.VoucherType = 'Payment' and [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+                dbQry.AppendFormat("WHERE tblDayBook.VoucherType = 'Payment' and tblDayBook.TransDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
             else if (dropDown == "LedgerName" && txtSearch != null)
             {
                 dbQry.AppendFormat("Where tblDayBook.VoucherType = 'Payment' and Debitor.LedgerName like '{0}' ", txtSearch);
+            }
+            else if (dropDown == "AutoLedgerID" && txtSearch != null)
+            {
+                dbQry.AppendFormat("Where tblDayBook.VoucherType = 'Payment' and Debitor.AutoLedgerID like '{0}' ", txtSearch);
             }
             else if (dropDown == "Narration" && txtSearch != null)
             {
@@ -5697,17 +5701,20 @@ public partial class BusinessLogic
         StringBuilder dbQry = new StringBuilder();
 
 
-        if (dropDown == "TransDate" || dropDown == "RefNo" || dropDown == "TransNo")
-            txtSearch = txtSearch;
-        else
+        if (dropDown == "LedgerName" || dropDown == "Narration" || dropDown == "All")
+        //    txtSearch = txtSearch;
+        //else
+        //    txtSearch = "%" + txtSearch + "%";
+        {
             txtSearch = "%" + txtSearch + "%";
+        }
 
         try
         {
             manager.Open();
             object reconDate = manager.ExecuteScalar(CommandType.Text, "Select recon_date from last_recon");
 
-            dbQry.Append("SELECT  tblDayBook.TransNo,tblDayBook.BranchCode, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+            dbQry.Append("SELECT  tblDayBook.TransNo,tblDayBook.BranchCode,Creditor.AutoLedgerID, tblDayBook.TransDate, Creditor.LedgerName, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
             dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo, Receipt.Paymode FROM  ((((tblDayBook INNER JOIN ");
             dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) LEFT JOIN ");
             dbQry.Append("tblReceipt Receipt ON tblDayBook.TransNo = Receipt.JournalID) INNER JOIN tblGroups G ON Creditor.GroupID = G.GroupID) ");
@@ -5722,11 +5729,15 @@ public partial class BusinessLogic
             }
             else if (dropDown == "TransDate" && txtSearch != null)
             {
-                dbQry.AppendFormat("WHERE tblDayBook.VoucherType= 'Receipt' and [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+                dbQry.AppendFormat("WHERE tblDayBook.VoucherType= 'Receipt' and tblDayBook.TransDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
             else if (dropDown == "LedgerName" && txtSearch != null)
             {
                 dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and Creditor.LedgerName like '{0}' ", txtSearch);
+            }
+            else if (dropDown == "AutoLedgerID" && txtSearch != null)
+            {
+                dbQry.AppendFormat("Where tblDayBook.VoucherType= 'Receipt' and Creditor.AutoLedgerID like '{0}' ", txtSearch);
             }
             else if (dropDown == "Narration" && txtSearch != null)
             {
@@ -6685,6 +6696,24 @@ public partial class BusinessLogic
                 }
             }
 
+            if(Mobile=="")
+            {
+
+            }
+            else
+            {
+                object exists1 = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where Mobile='" + Mobile + "'");
+
+                if (exists1.ToString() != string.Empty)
+                {
+                    if (int.Parse(exists1.ToString()) > 0)
+                    {
+                        throw new Exception("Number Exists1");
+                    }
+                }
+            }
+           
+
 
             int LedgerID = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(LedgerID) FROM tblLedger"));
 
@@ -6737,7 +6766,7 @@ public partial class BusinessLogic
             if (Mobile == "")
             {
                 dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId,ModeofContact,OpDueDate,BranchCode,ExpenseID,AutoLedgerID,ManualClearing,MobAuto) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}',{26},'{27}','{28}',{29},'{30}','{31}','{32}')",
-               LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, MobileID + 1, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, OpDueDate, BranchCode, 0, MobileID + 1, ManualClearing,"False");
+               LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, OpDueDate, BranchCode, 0, MobileID + 1, ManualClearing,"False");
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -8724,6 +8753,22 @@ public partial class BusinessLogic
                     throw new Exception("Ledger Exists");
                 }
             }
+            if (Mobile == "")
+            {
+
+            }
+            else
+            {
+                object exists1 = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where  Mobile='" + Mobile + "'");
+
+                if (exists1.ToString() != string.Empty)
+                {
+                    if (int.Parse(exists1.ToString()) > 0)
+                    {
+                        throw new Exception("Number Exists1");
+                    }
+                }
+            }
 
 
             //sDate = OpDueDate.Trim().Split(delimA);
@@ -8798,7 +8843,7 @@ public partial class BusinessLogic
             if (Mobile == "")
             {
 
-                dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}',CreditLimit={15},CreditDays={16}, Inttrans='{17}',Paymentmade='{18}',dc='{19}',ChequeName='{20}',unuse='{21}',EmailId='{22}',ModeofContact={23},OpDueDate='{24}',BranchCode='{25}',AutoLedgerID='{26}',ManualClearing='{27}',MobAuto='{28}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, MobileID + 1, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, OpDueDate, BranchCode, MobileID + 1, ManualClearing,"False");
+                dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}',CreditLimit={15},CreditDays={16}, Inttrans='{17}',Paymentmade='{18}',dc='{19}',ChequeName='{20}',unuse='{21}',EmailId='{22}',ModeofContact={23},OpDueDate='{24}',BranchCode='{25}',AutoLedgerID='{26}',ManualClearing='{27}',MobAuto='{28}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, CreditLimit, CreditDays, Inttrans, Paymentmade, dc, ChequeName, unuse, Email, ModeofContact, OpDueDate, BranchCode, MobileID + 1, ManualClearing,"False");
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -55217,21 +55262,21 @@ public partial class BusinessLogic
 
         try
         {
-            if (Types == "CUSTOMERS")
+            if (Types == "SALES")
             {
-                dbQry = "Select * from tblRoleMaster where Area = 'CUSTOMERS' order by orderno";
+                dbQry = "Select * from tblRoleMaster where Area = 'SALES' order by orderno";
             }
-            else if (Types == "SUPPLIERS")
+            else if (Types == "PURCHASE")
             {
-                dbQry = "Select * from tblRoleMaster where Area = 'SUPPLIERS' order by orderno";
+                dbQry = "Select * from tblRoleMaster where Area = 'PURCHASE' order by orderno";
             }
             else if (Types == "BANKING")
             {
                 dbQry = "Select * from tblRoleMaster where Area = 'BANKING' order by orderno";
             }
-            else if (Types == "EXPENSES")
+            else if (Types == "FINACIAL")
             {
-                dbQry = "Select * from tblRoleMaster where Area = 'EXPENSES' order by orderno";
+                dbQry = "Select * from tblRoleMaster where Area = 'FINACIAL' order by orderno";
             }
             else if (Types == "INVENTORY")
             {
@@ -55400,19 +55445,19 @@ public partial class BusinessLogic
         {
             if (Types == "CUSTOMERS")
             {
-                dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'CUSTOMERS' order by orderno";
+                dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'SALES' order by orderno";
             }
             else if (Types == "SUPPLIERS")
             {
-                dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'SUPPLIERS' order by orderno";
+                dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'PURCHASE' order by orderno";
             }
             else if (Types == "BANKING")
             {
                 dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'BANKING' order by orderno";
             }
-            else if (Types == "EXPENSES")
+            else if (Types == "FINACIAL")
             {
-                dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'EXPENSES' order by orderno";
+                dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'FINACIAL' order by orderno";
             }
             else if (Types == "INVENTORY")
             {

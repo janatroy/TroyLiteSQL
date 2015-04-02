@@ -401,7 +401,7 @@
                                                                         TargetControlID="txtPhone" ValidChars="+" />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtPhone" TabIndex="9" runat="server" Text='<%# Bind("Phone") %>'
+                                                                                            <asp:TextBox ID="txtPhone" MaxLength="7" TabIndex="9" runat="server" Text='<%# Bind("Phone") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
                                                                                         <td style="width: 10%"></td>
@@ -461,10 +461,15 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%">Email Id
+                                                                                              <asp:RegularExpressionValidator ID="remail1" runat="server"
+                                                                                                ControlToValidate="txtEmailId" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtEmailId" TabIndex="8" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                                            <asp:TextBox ID="txtEmailId"  TabIndex="8" MaxLength="20" runat="server" Text='<%# Bind("EmailId") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                          
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mobile
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Custom, Numbers"
@@ -529,9 +534,9 @@
                                                                                         <td style="width: 20%;" align="left" class="ControlLabel">Customer ID
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
-                                                                                        <asp:TextBox ID="txtcustomeridauto" MaxLength="10" TabIndex="13" Enabled="false" runat="server" Text='<%# Bind("AutoLedgerID") %>'
-                                                                                            SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                                            </td>
+                                                                                            <asp:TextBox ID="txtcustomeridauto" MaxLength="10" TabIndex="13" Enabled="false" runat="server" Text='<%# Bind("AutoLedgerID") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                        </td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td></td>
@@ -809,7 +814,7 @@
                                                                         TargetControlID="txtPhoneAdd" ValidChars="+" />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtPhoneAdd" runat="server" TabIndex="9" BackColor="#e7e7e7" Text='<%# Bind("Phone") %>'
+                                                                                            <asp:TextBox ID="txtPhoneAdd" runat="server" MaxLength="7" TabIndex="9" BackColor="#e7e7e7" Text='<%# Bind("Phone") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
                                                                                         <td style="width: 10%;"></td>
@@ -873,11 +878,16 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%">Email Id
+                                                                                              <asp:RegularExpressionValidator ID="remail123" runat="server"
+                                                                                                ControlToValidate="txtEmailIdAdd" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                     
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtEmailIdAdd" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                                            <asp:TextBox ID="txtEmailIdAdd" MaxLength="20" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                             
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mobile
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender123" runat="server" FilterType="Custom, Numbers"
@@ -939,9 +949,9 @@
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
 
-                                                                                        <asp:TextBox ID="txtcustomeridautoAdd" MaxLength="10" TabIndex="13"  runat="server" Text='<%# Bind("AutoLedgerID") %>'
-                                                                                            SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                                            </td>
+                                                                                            <asp:TextBox ID="txtcustomeridautoAdd" MaxLength="10" TabIndex="13" runat="server" Text='<%# Bind("AutoLedgerID") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                        </td>
                                                                                     </tr>
                                                                                     <%--<tr>
                                                                 <td class="ControlLabel" style="width:20%">
@@ -1305,9 +1315,9 @@
                                 <asp:Parameter Name="Email" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="string" />
-                                <asp:Parameter Name="BranchCode" Type="string" />                             
+                                <asp:Parameter Name="BranchCode" Type="string" />
                                 <asp:Parameter Name="AutoLedgerID" Type="String" />
-                                 <asp:Parameter Name="ManualClearing" Type="String" />
+                                <asp:Parameter Name="ManualClearing" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -1343,9 +1353,9 @@
                                 <asp:Parameter Name="Email" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="string" />
-                                <asp:Parameter Name="BranchCode" Type="string" />                             
+                                <asp:Parameter Name="BranchCode" Type="string" />
                                 <asp:Parameter Name="AutoLedgerID" Type="String" />
-                                 <asp:Parameter Name="ManualClearing" Type="String" />
+                                <asp:Parameter Name="ManualClearing" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>
@@ -1357,13 +1367,13 @@
                                 <td style="width: 20%"></td>
                                 <td style="width: 15%" align="right">
 
-                                    <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                        <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66" ForeColor="White" EnableTheming="false"
-                                            Width="80px"></asp:Button>
-                                    </asp:Panel>
+
+                                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66" ForeColor="White" EnableTheming="false"
+                                        Width="80px"></asp:Button>
+
 
                                 </td>
-                                <td style="width: 15%">
+                                <td style="width: 10%" align="left">
                                     <asp:Button ID="BlkAdd" runat="server" OnClientClick="window.open('BulkAdditionLedger.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');" CssClass="bulkaddition"
                                         EnableTheming="false" Text=""></asp:Button>
                                 </td>
