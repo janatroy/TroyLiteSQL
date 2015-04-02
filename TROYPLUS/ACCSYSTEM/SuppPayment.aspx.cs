@@ -1355,7 +1355,7 @@ public partial class SuppPayment : System.Web.UI.Page
                 return;
             }
 
-            DebitorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 2, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
+            DebitorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 2, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,true,"");
             //iSupplier = bl.InsertCustomerInfoDirect(connection, sSupplierName, sSupplierName, 2, 0, 0, 0, "", sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", sSupplierName, usernam, "YES", "", 3);
 
             sCustomerName = txtCustomerName.Text;

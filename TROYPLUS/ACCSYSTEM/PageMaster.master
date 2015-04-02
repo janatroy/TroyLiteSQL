@@ -9,7 +9,7 @@
     <title>TROY-PLUS</title>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
-    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />    
     <link href="App_Themes/NewTheme/navmenu.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/ComboBox.css" rel="Stylesheet" type="text/css" />
