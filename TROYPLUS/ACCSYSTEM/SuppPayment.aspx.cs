@@ -646,7 +646,7 @@ public partial class SuppPayment : System.Web.UI.Page
             }
 
             ShowPendingBillsAuto();
-            Panel4.Visible = true;
+           // Panel4.Visible = true;
         }
         catch (Exception ex)
         {
@@ -2043,7 +2043,7 @@ public partial class SuppPayment : System.Web.UI.Page
         }
 
 
-        Panel4.Visible = true;
+      //  Panel4.Visible = true;
 
 
     }
@@ -2111,7 +2111,10 @@ public partial class SuppPayment : System.Web.UI.Page
             }
 
             ShowPendingBillsAuto();
-            Panel4.Visible = true;
+            UpdatePanel111.Update();
+            UpdatePanel122.Update();
+            UpdatePanel12222.Update();
+         //   Panel4.Visible = true;
 
             
 

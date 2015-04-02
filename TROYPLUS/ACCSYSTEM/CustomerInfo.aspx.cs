@@ -183,10 +183,12 @@ public partial class CustomerInfo : System.Web.UI.Page
                 if (e.Exception != null)
                 {
                     StringBuilder script = new StringBuilder();
-                    script.Append("alert('Customer with this name already exists, Please try with a different name.');");
+                   
 
                     if (e.Exception.InnerException != null)
                     {
+                        script.Append("alert('Customer with this name already exists, Please try with a different name.');");
+
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Ledger Exists") > -1))
                         {
@@ -195,6 +197,17 @@ public partial class CustomerInfo : System.Web.UI.Page
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
                             ModalPopupExtender1.Show();
                             return;
+                        }
+                        else if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) || 
+                            (e.Exception.InnerException.Message.IndexOf("Number Exists1") > -1))
+                        {
+                            e.ExceptionHandled = true;
+                            e.KeepInInsertMode = true;
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer Mobile Number with this Number already exists.Please try different Mobile Number');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+
+
                         }
                     }
                     else
@@ -241,6 +254,16 @@ public partial class CustomerInfo : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
                         ModalPopupExtender1.Show();
                         return;
+                    }
+                    else if ((e.Exception.InnerException.Message.IndexOf("Ledger Exists1") > -1))
+                    {
+                        e.ExceptionHandled = true;
+                        e.KeepInEditMode = true;
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer Number with this name already exists.');", true);
+                        ModalPopupExtender1.Show();
+                        return;
+                       
+
                     }
 
                 }

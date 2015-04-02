@@ -2114,4 +2114,17 @@ public partial class SupplierReceipt : System.Web.UI.Page
 
     }
 
+    protected void ddCriteria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddCriteria.SelectedItem.Text == "Transaction Date")
+        {
+            //txtdate.EnableViewState = 1;
+            txtdate.Enabled = true;
+        }
+        else
+        {
+            txtdate.Enabled = false;
+        }
+    }
+
 }
