@@ -31,7 +31,7 @@ public partial class ManualClearance : System.Web.UI.Page
                 else
                     Response.Redirect("~/Login.aspx");
 
-                CheckSMSRequired();
+                //CheckSMSRequired();
 
                 loadBanks();
 
@@ -130,189 +130,193 @@ public partial class ManualClearance : System.Web.UI.Page
                 Response.Redirect("~/Login.aspx");
 
             //ds = bl.ListSundryCreditorsSuppliers(sDataSource);
-            if (ddCriteria.SelectedValue == "Cleared")
-            {
-                if (Request.Cookies["Company"] != null)
-                    connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-                else
-                    Response.Redirect("~/Login.aspx");
+            //if (ddCriteria.SelectedValue == "Cleared")
+            //{
+            //    if (Request.Cookies["Company"] != null)
+            //        connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+            //    else
+            //        Response.Redirect("~/Login.aspx");
 
-                var dsSales = bl.ListCreditPurchaseCleared(connStr.Trim());
+            //    var dsSales = bl.ListCreditPurchaseCleared(connStr.Trim());
 
-                var receivedData = bl.GetSupplierReceivedAmount(connStr);
+            //    var receivedData = bl.GetSupplierReceivedAmount(connStr);
 
-                if (dsSales != null)
-                {
-                    foreach (DataRow dr in receivedData.Tables[0].Rows)
-                    {
-                        var billNo = dr["BillNo"].ToString();
-                        var billAmount = dr["TotalAmount"].ToString();
+            //    if (dsSales != null)
+            //    {
+            //        foreach (DataRow dr in receivedData.Tables[0].Rows)
+            //        {
+            //            var billNo = dr["BillNo"].ToString();
+            //            var billAmount = dr["TotalAmount"].ToString();
 
-                        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                        {
-                            if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
-                            {
-                                dsSales.Tables[0].Rows[i].BeginEdit();
-                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                dsSales.Tables[0].Rows[i]["pay"] = val;
-                                dsSales.Tables[0].Rows[i].EndEdit();
+            //            for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+            //            {
+            //                if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
+            //                {
+            //                    dsSales.Tables[0].Rows[i].BeginEdit();
+            //                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
+            //                    dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
+            //                    dsSales.Tables[0].Rows[i]["pay"] = val;
+            //                    dsSales.Tables[0].Rows[i].EndEdit();
 
-                                if (val != 0.0)
-                                    dsSales.Tables[0].Rows[i].Delete();
-                            }
-                        }
-                        dsSales.Tables[0].AcceptChanges();
-                    }
-                }
+            //                    if (val != 0.0)
+            //                        dsSales.Tables[0].Rows[i].Delete();
+            //                }
+            //            }
+            //            dsSales.Tables[0].AcceptChanges();
+            //        }
+            //    }
 
-                string CustomerName = string.Empty;
+            //    string CustomerName = string.Empty;
 
-                if (dsSales != null)
-                {
-                    for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                    {
-                        if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                            dsSales.Tables[0].Rows[i].Delete();
-                        }
-                        else
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                        }
+            //    if (dsSales != null)
+            //    {
+            //        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+            //        {
+            //            if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
+            //            {
+            //                CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            //                dsSales.Tables[0].Rows[i].Delete();
+            //            }
+            //            else
+            //            {
+            //                CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            //            }
                         
-                    }
-                    dsSales.Tables[0].AcceptChanges();
-                }
+            //        }
+            //        dsSales.Tables[0].AcceptChanges();
+            //    }
 
-                if (dsSales != null)
-                {
-                    if (dsSales.Tables[0].Rows.Count > 0)
-                    {
-                        ddReceivedFrom.DataSource = dsSales;
-                        ddReceivedFrom.DataBind();
-                        ddReceivedFrom.DataTextField = "customerName";
-                        ddReceivedFrom.DataValueField = "customerid";
-                    }
-                }
-            }
-            else if (ddCriteria.SelectedValue == "PartiallyCleared")
-            {
+            //    if (dsSales != null)
+            //    {
+            //        if (dsSales.Tables[0].Rows.Count > 0)
+            //        {
+            //            ddReceivedFrom.DataSource = dsSales;
+            //            ddReceivedFrom.DataBind();
+            //            ddReceivedFrom.DataTextField = "customerName";
+            //            ddReceivedFrom.DataValueField = "customerid";
+            //        }
+            //    }
+            //}
+            //else if (ddCriteria.SelectedValue == "PartiallyCleared")
+            //{
                 
-            }          
-            else if (ddCriteria.SelectedValue == "NotCleared")
-            {
-                if (Request.Cookies["Company"] != null)
-                    connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-                else
-                    Response.Redirect("~/Login.aspx");
+            //}          
+            //else if (ddCriteria.SelectedValue == "NotCleared")
+            //{
+            //    if (Request.Cookies["Company"] != null)
+            //        connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+            //    else
+            //        Response.Redirect("~/Login.aspx");
 
-                var dsSales = bl.ListCreditPurchaseCleared(connStr.Trim());
+            //    var dsSales = bl.ListCreditPurchaseCleared(connStr.Trim());
 
-                var receivedData = bl.GetSupplierReceivedAmount(connStr);
+            //    var receivedData = bl.GetSupplierReceivedAmount(connStr);
 
-                if (dsSales != null)
-                {
+            //    if (dsSales != null)
+            //    {
 
-                    foreach (DataRow dr in receivedData.Tables[0].Rows)
-                    {
-                        var billNo = dr["BillNo"].ToString();
-                        var billAmount = dr["TotalAmount"].ToString();
+            //        foreach (DataRow dr in receivedData.Tables[0].Rows)
+            //        {
+            //            var billNo = dr["BillNo"].ToString();
+            //            var billAmount = dr["TotalAmount"].ToString();
 
-                        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                        {
-                            if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
-                            {
-                                dsSales.Tables[0].Rows[i].BeginEdit();
-                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                dsSales.Tables[0].Rows[i]["pay"] = val;
-                                dsSales.Tables[0].Rows[i].EndEdit();
+            //            for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+            //            {
+            //                if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
+            //                {
+            //                    dsSales.Tables[0].Rows[i].BeginEdit();
+            //                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
+            //                    dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
+            //                    dsSales.Tables[0].Rows[i]["pay"] = val;
+            //                    dsSales.Tables[0].Rows[i].EndEdit();
 
-                                if (val == 0.0)
-                                    dsSales.Tables[0].Rows[i].Delete();
-                            }
-                        }
-                        dsSales.Tables[0].AcceptChanges();
-                    }
-                }
+            //                    if (val == 0.0)
+            //                        dsSales.Tables[0].Rows[i].Delete();
+            //                }
+            //            }
+            //            dsSales.Tables[0].AcceptChanges();
+            //        }
+            //    }
 
-                string CustomerName = string.Empty;
+            //    string CustomerName = string.Empty;
 
 
 
                 
 
-                var dsSales2 = bl.ListCreditPurchaseNotCleared(connStr.Trim());
+            //    var dsSales2 = bl.ListCreditPurchaseNotCleared(connStr.Trim());
 
-                if (dsSales != null)
-                {
-                    if (dsSales2 != null)
-                    {
-                        dsSales.Tables[0].Merge(dsSales2.Tables[0]);
-                    }
-                }
+            //    if (dsSales != null)
+            //    {
+            //        if (dsSales2 != null)
+            //        {
+            //            dsSales.Tables[0].Merge(dsSales2.Tables[0]);
+            //        }
+            //    }
 
-                if (dsSales != null)
-                {
-                    for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                    {
-                        if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                            dsSales.Tables[0].Rows[i].Delete();
-                        }
-                        else
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                        }
+            //    if (dsSales != null)
+            //    {
+            //        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+            //        {
+            //            if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
+            //            {
+            //                CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            //                dsSales.Tables[0].Rows[i].Delete();
+            //            }
+            //            else
+            //            {
+            //                CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            //            }
 
-                    }
-                    dsSales.Tables[0].AcceptChanges();
-                }
+            //        }
+            //        dsSales.Tables[0].AcceptChanges();
+            //    }
 
-                //string CustomerName2 = string.Empty;
+            //    //string CustomerName2 = string.Empty;
 
-                //if (dsSales2 != null)
-                //{
-                //    for (int i = 0; i < dsSales2.Tables[0].Rows.Count; i++)
-                //    {
-                //        if (CustomerName.Trim() == dsSales2.Tables[0].Rows[i]["CustomerName"].ToString())
-                //        {
-                //            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                //            dsSales.Tables[0].Rows[i].Delete();
-                //        }
-                //        else
-                //        {
-                //            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                //        }
+            //    //if (dsSales2 != null)
+            //    //{
+            //    //    for (int i = 0; i < dsSales2.Tables[0].Rows.Count; i++)
+            //    //    {
+            //    //        if (CustomerName.Trim() == dsSales2.Tables[0].Rows[i]["CustomerName"].ToString())
+            //    //        {
+            //    //            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            //    //            dsSales.Tables[0].Rows[i].Delete();
+            //    //        }
+            //    //        else
+            //    //        {
+            //    //            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            //    //        }
                        
-                //    }
-                //    dsSales.Tables[0].AcceptChanges();
-                //}
+            //    //    }
+            //    //    dsSales.Tables[0].AcceptChanges();
+            //    //}
 
-                if (dsSales != null)
-                {
-                    if (dsSales.Tables[0].Rows.Count > 0)
-                    {
-                        ddReceivedFrom.DataSource = dsSales;
+            //    if (dsSales != null)
+            //    {
+            //        if (dsSales.Tables[0].Rows.Count > 0)
+            //        {
+            //            ddReceivedFrom.DataSource = dsSales;
+            //            ddReceivedFrom.DataBind();
+            //            ddReceivedFrom.DataTextField = "customerName";
+            //            ddReceivedFrom.DataValueField = "customerid";
+            //        }
+            //    }
+            //    else if (dsSales2 != null)
+            //    {
+            //        if (dsSales2.Tables[0].Rows.Count > 0)
+            //        {
+                        string connection = Request.Cookies["Company"].Value;
+
+                        DataSet dst = bl.ListSundryCreditors(connection);
+
+                        ddReceivedFrom.DataSource = dst;
                         ddReceivedFrom.DataBind();
-                        ddReceivedFrom.DataTextField = "customerName";
-                        ddReceivedFrom.DataValueField = "customerid";
-                    }
-                }
-                else if (dsSales2 != null)
-                {
-                    if (dsSales2.Tables[0].Rows.Count > 0)
-                    {
-                        ddReceivedFrom.DataSource = dsSales2;
-                        ddReceivedFrom.DataBind();
-                        ddReceivedFrom.DataTextField = "customerName";
-                        ddReceivedFrom.DataValueField = "customerid";
-                    }
-                }
-            }
+                        ddReceivedFrom.DataTextField = "ledgerName";
+                        ddReceivedFrom.DataValueField = "ledgerid";
+            //        }
+            //    }
+            //}
         }
 
         
@@ -346,83 +350,15 @@ public partial class ManualClearance : System.Web.UI.Page
             Panel1.Visible = false;
             Div1.Visible = false;
 
-            if (ddCriteria.SelectedValue == "Cleared")
-            {
-                if (Request.Cookies["Company"] != null)
-                    connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-                else
-                    Response.Redirect("~/Login.aspx");
-
-                
-                var dsSales = bl.ListCreditSalesCleared(connStr.Trim());
-
-                var receivedData = bl.GetCustReceivedAmount(connStr);
-
-                if (dsSales != null)
-                {
-                    foreach (DataRow dr in receivedData.Tables[0].Rows)
-                    {
-                        var billNo = dr["BillNo"].ToString();
-                        var billAmount = dr["TotalAmount"].ToString();
-
-                        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                        {
-                            if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
-                            {
-                                dsSales.Tables[0].Rows[i].BeginEdit();
-                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                dsSales.Tables[0].Rows[i]["pay"] = val;
-                                dsSales.Tables[0].Rows[i].EndEdit();
-
-                                if (val != 0.0)
-                                    dsSales.Tables[0].Rows[i].Delete();
-                            }
-                        }
-                        dsSales.Tables[0].AcceptChanges();
-                    }
-
-                }
-                string CustomerName = string.Empty;
-
-                if (dsSales != null)
-                {
-                    for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                    {
-                        if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                            dsSales.Tables[0].Rows[i].Delete();
-                        }
-                        else
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                        }
-                        
-                    }
-                    dsSales.Tables[0].AcceptChanges();
-                }
-
-                if (dsSales != null)
-                {
-                    if (dsSales.Tables[0].Rows.Count > 0)
-                    {
-                        ddReceivedFrom.DataSource = dsSales;
-                        ddReceivedFrom.DataBind();
-                        ddReceivedFrom.DataTextField = "customerName";
-                        ddReceivedFrom.DataValueField = "customerid";
-                    }
-                }
-                
-            }
-            //else if (ddCriteria.SelectedValue == "PartiallyCleared")
+            //if (ddCriteria.SelectedValue == "Cleared")
             //{
             //    if (Request.Cookies["Company"] != null)
             //        connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
             //    else
             //        Response.Redirect("~/Login.aspx");
 
-            //    var dsSales = bl.ListCreditSalesClearedCustomerOdr(connStr.Trim());
+                
+            //    var dsSales = bl.ListCreditSalesCleared(connStr.Trim());
 
             //    var receivedData = bl.GetCustReceivedAmount(connStr);
 
@@ -443,54 +379,20 @@ public partial class ManualClearance : System.Web.UI.Page
             //                    dsSales.Tables[0].Rows[i]["pay"] = val;
             //                    dsSales.Tables[0].Rows[i].EndEdit();
 
-            //                    if (val == 0.0)
+            //                    if (val != 0.0)
             //                        dsSales.Tables[0].Rows[i].Delete();
             //                }
             //            }
             //            dsSales.Tables[0].AcceptChanges();
             //        }
+
             //    }
-
             //    string CustomerName = string.Empty;
-
-            //    //DataTable dt = new DataTable();
-            //    //dt.Columns.Add(new DataColumn("BillNo"));
-            //    //dt.Columns.Add(new DataColumn("BillDate"));
-            //    //dt.Columns.Add(new DataColumn("CustomerName"));
-            //    //dt.Columns.Add(new DataColumn("CustomerID"));
-            //    //dt.Columns.Add(new DataColumn("Amount"));
-            //    //dt.Columns.Add(new DataColumn("Pay"));
-
-            //    //if (dsSales != null)
-            //    //{
-            //    //    foreach (DataRow dr in ds.Tables[0].Rows)
-            //    //    {                        
-            //    //        if (CustomerName.Trim() == dr["CustomerName"].ToString())
-            //    //        {
-
-            //    //        }
-            //    //        else
-            //    //        {
-            //    //            DataRow dr_final1 = dt.NewRow();
-            //    //            dr_final1["BillNo"] = dr["BillNo"];
-            //    //            dr_final1["BillDate"] = dr["BillDate"];
-            //    //            dr_final1["CustomerID"] = dr["CustomerID"];
-            //    //            dr_final1["Amount"] = dr["Amount"];
-            //    //            dr_final1["Pay"] = dr["Pay"];
-            //    //            dt.Rows.Add(dr_final1);                                   
-            //    //        }
-            //    //        CustomerName = dr["CustomerName"].ToString();
-            //    //    }
-            //    //}
-            //    //DataSet dsddd = new DataSet();
-            //    ////dsddd = dt.tables[0];
-            //    //dsddd.Tables.Add(dt);
-
 
             //    if (dsSales != null)
             //    {
             //        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-            //        {                        
+            //        {
             //            if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
             //            {
             //                CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
@@ -515,105 +417,212 @@ public partial class ManualClearance : System.Web.UI.Page
             //            ddReceivedFrom.DataValueField = "customerid";
             //        }
             //    }
+                
             //}
-            else if (ddCriteria.SelectedValue == "NotCleared")
-            {
-                var dsSales = bl.ListCreditSalesClearedCustomerOdr(connStr.Trim());
+            ////else if (ddCriteria.SelectedValue == "PartiallyCleared")
+            ////{
+            ////    if (Request.Cookies["Company"] != null)
+            ////        connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+            ////    else
+            ////        Response.Redirect("~/Login.aspx");
 
-                var receivedData = bl.GetCustReceivedAmount(connStr);
+            ////    var dsSales = bl.ListCreditSalesClearedCustomerOdr(connStr.Trim());
 
-                if (dsSales != null)
-                {
-                    foreach (DataRow dr in receivedData.Tables[0].Rows)
-                    {
-                        var billNo = dr["BillNo"].ToString();
-                        var billAmount = dr["TotalAmount"].ToString();
+            ////    var receivedData = bl.GetCustReceivedAmount(connStr);
 
-                        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                        {
-                            if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
-                            {
-                                dsSales.Tables[0].Rows[i].BeginEdit();
-                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                dsSales.Tables[0].Rows[i]["pay"] = val;
-                                dsSales.Tables[0].Rows[i].EndEdit();
+            ////    if (dsSales != null)
+            ////    {
+            ////        foreach (DataRow dr in receivedData.Tables[0].Rows)
+            ////        {
+            ////            var billNo = dr["BillNo"].ToString();
+            ////            var billAmount = dr["TotalAmount"].ToString();
 
-                                if (val == 0.0)
-                                    dsSales.Tables[0].Rows[i].Delete();
-                            }
-                        }
-                        dsSales.Tables[0].AcceptChanges();
-                    }
-                }
+            ////            for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+            ////            {
+            ////                if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
+            ////                {
+            ////                    dsSales.Tables[0].Rows[i].BeginEdit();
+            ////                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
+            ////                    dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
+            ////                    dsSales.Tables[0].Rows[i]["pay"] = val;
+            ////                    dsSales.Tables[0].Rows[i].EndEdit();
 
-                var dsSalesd = bl.ListCreditSalesNotCleared(connStr.Trim());
+            ////                    if (val == 0.0)
+            ////                        dsSales.Tables[0].Rows[i].Delete();
+            ////                }
+            ////            }
+            ////            dsSales.Tables[0].AcceptChanges();
+            ////        }
+            ////    }
 
-                if (dsSales != null)
-                {
-                    if (dsSalesd != null)
-                    {
-                        dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
-                    }
-                }
-                string CustomerName = string.Empty;
+            ////    string CustomerName = string.Empty;
 
-                if (dsSales != null)
-                {
-                    for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                    {
-                        if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                            dsSales.Tables[0].Rows[i].Delete();
-                        }
-                        else
-                        {
-                            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
-                        }
+            ////    //DataTable dt = new DataTable();
+            ////    //dt.Columns.Add(new DataColumn("BillNo"));
+            ////    //dt.Columns.Add(new DataColumn("BillDate"));
+            ////    //dt.Columns.Add(new DataColumn("CustomerName"));
+            ////    //dt.Columns.Add(new DataColumn("CustomerID"));
+            ////    //dt.Columns.Add(new DataColumn("Amount"));
+            ////    //dt.Columns.Add(new DataColumn("Pay"));
 
-                    }
-                    dsSales.Tables[0].AcceptChanges();
-                }
-                else if (dsSalesd != null)
-                {
-                    for (int i = 0; i < dsSalesd.Tables[0].Rows.Count; i++)
-                    {
-                        if (CustomerName.Trim() == dsSalesd.Tables[0].Rows[i]["CustomerName"].ToString())
-                        {
-                            CustomerName = dsSalesd.Tables[0].Rows[i]["CustomerName"].ToString();
-                            dsSalesd.Tables[0].Rows[i].Delete();
-                        }
-                        else
-                        {
-                            CustomerName = dsSalesd.Tables[0].Rows[i]["CustomerName"].ToString();
-                        }
+            ////    //if (dsSales != null)
+            ////    //{
+            ////    //    foreach (DataRow dr in ds.Tables[0].Rows)
+            ////    //    {                        
+            ////    //        if (CustomerName.Trim() == dr["CustomerName"].ToString())
+            ////    //        {
 
-                    }
-                    dsSalesd.Tables[0].AcceptChanges();
-                }
+            ////    //        }
+            ////    //        else
+            ////    //        {
+            ////    //            DataRow dr_final1 = dt.NewRow();
+            ////    //            dr_final1["BillNo"] = dr["BillNo"];
+            ////    //            dr_final1["BillDate"] = dr["BillDate"];
+            ////    //            dr_final1["CustomerID"] = dr["CustomerID"];
+            ////    //            dr_final1["Amount"] = dr["Amount"];
+            ////    //            dr_final1["Pay"] = dr["Pay"];
+            ////    //            dt.Rows.Add(dr_final1);                                   
+            ////    //        }
+            ////    //        CustomerName = dr["CustomerName"].ToString();
+            ////    //    }
+            ////    //}
+            ////    //DataSet dsddd = new DataSet();
+            ////    ////dsddd = dt.tables[0];
+            ////    //dsddd.Tables.Add(dt);
 
-                if (dsSales != null)
-                {
-                    if (dsSales.Tables[0].Rows.Count > 0)
-                    {
-                        ddReceivedFrom.DataSource = dsSales;
+
+            ////    if (dsSales != null)
+            ////    {
+            ////        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+            ////        {                        
+            ////            if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
+            ////            {
+            ////                CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            ////                dsSales.Tables[0].Rows[i].Delete();
+            ////            }
+            ////            else
+            ////            {
+            ////                CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+            ////            }
+                        
+            ////        }
+            ////        dsSales.Tables[0].AcceptChanges();
+            ////    }
+
+            ////    if (dsSales != null)
+            ////    {
+            ////        if (dsSales.Tables[0].Rows.Count > 0)
+            ////        {
+            ////            ddReceivedFrom.DataSource = dsSales;
+            ////            ddReceivedFrom.DataBind();
+            ////            ddReceivedFrom.DataTextField = "customerName";
+            ////            ddReceivedFrom.DataValueField = "customerid";
+            ////        }
+            ////    }
+            ////}
+            //else if (ddCriteria.SelectedValue == "NotCleared")
+            //{
+                //var dsSales = bl.ListCreditSalesClearedCustomerOdr(connStr.Trim());
+
+                //var receivedData = bl.GetCustReceivedAmount(connStr);
+
+                //if (dsSales != null)
+                //{
+                //    foreach (DataRow dr in receivedData.Tables[0].Rows)
+                //    {
+                //        var billNo = dr["BillNo"].ToString();
+                //        var billAmount = dr["TotalAmount"].ToString();
+
+                //        for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+                //        {
+                //            if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
+                //            {
+                //                dsSales.Tables[0].Rows[i].BeginEdit();
+                //                double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
+                //                dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
+                //                dsSales.Tables[0].Rows[i]["pay"] = val;
+                //                dsSales.Tables[0].Rows[i].EndEdit();
+
+                //                if (val == 0.0)
+                //                    dsSales.Tables[0].Rows[i].Delete();
+                //            }
+                //        }
+                //        dsSales.Tables[0].AcceptChanges();
+                //    }
+                //}
+
+                //var dsSalesd = bl.ListCreditSalesNotCleared(connStr.Trim());
+
+                //if (dsSales != null)
+                //{
+                //    if (dsSalesd != null)
+                //    {
+                //        dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
+                //    }
+                //}
+                //string CustomerName = string.Empty;
+
+                //if (dsSales != null)
+                //{
+                //    for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+                //    {
+                //        if (CustomerName.Trim() == dsSales.Tables[0].Rows[i]["CustomerName"].ToString())
+                //        {
+                //            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+                //            dsSales.Tables[0].Rows[i].Delete();
+                //        }
+                //        else
+                //        {
+                //            CustomerName = dsSales.Tables[0].Rows[i]["CustomerName"].ToString();
+                //        }
+
+                //    }
+                //    dsSales.Tables[0].AcceptChanges();
+                //}
+                //else if (dsSalesd != null)
+                //{
+                //    for (int i = 0; i < dsSalesd.Tables[0].Rows.Count; i++)
+                //    {
+                //        if (CustomerName.Trim() == dsSalesd.Tables[0].Rows[i]["CustomerName"].ToString())
+                //        {
+                //            CustomerName = dsSalesd.Tables[0].Rows[i]["CustomerName"].ToString();
+                //            dsSalesd.Tables[0].Rows[i].Delete();
+                //        }
+                //        else
+                //        {
+                //            CustomerName = dsSalesd.Tables[0].Rows[i]["CustomerName"].ToString();
+                //        }
+
+                //    }
+                //    dsSalesd.Tables[0].AcceptChanges();
+                //}
+
+                //if (dsSales != null)
+                //{
+                //    if (dsSales.Tables[0].Rows.Count > 0)
+                //    {
+
+            string connection = Request.Cookies["Company"].Value;
+
+            DataSet dst = bl.ListSundryDebtors(connection);
+
+                        ddReceivedFrom.DataSource = dst;
                         ddReceivedFrom.DataBind();
-                        ddReceivedFrom.DataTextField = "customerName";
-                        ddReceivedFrom.DataValueField = "customerid";
-                    }
-                }
-                else if (dsSalesd != null)
-                {
-                    if (dsSalesd.Tables[0].Rows.Count > 0)
-                    {
-                        ddReceivedFrom.DataSource = dsSalesd;
-                        ddReceivedFrom.DataBind();
-                        ddReceivedFrom.DataTextField = "customerName";
-                        ddReceivedFrom.DataValueField = "customerid";
-                    }
-                }
-            }           
+                        ddReceivedFrom.DataTextField = "ledgerName";
+                        ddReceivedFrom.DataValueField = "ledgerid";
+                //    }
+                //}
+                //else if (dsSalesd != null)
+                //{
+                //    if (dsSalesd.Tables[0].Rows.Count > 0)
+                //    {
+                //        ddReceivedFrom.DataSource = dsSalesd;
+                //        ddReceivedFrom.DataBind();
+                //        ddReceivedFrom.DataTextField = "customerName";
+                //        ddReceivedFrom.DataValueField = "customerid";
+                //    }
+                //}
+            //}           
         }
 
         
@@ -1657,11 +1666,11 @@ public partial class ManualClearance : System.Web.UI.Page
             var customerID = ddReceivedFrom.SelectedValue.Trim();
             if (ddoption.SelectedValue == "Customer")
             {
-                if (ddCriteria.SelectedValue == "Cleared")
-                {
+                //if (ddCriteria.SelectedValue == "Cleared")
+                //{
                     int ledID = Convert.ToInt32(ddReceivedFrom.SelectedValue);
 
-                    var dsSales = bl.ListCreditSalesCleared(connStr.Trim(), customerID);
+                    var dsSales = bl.ListCreditSales(connStr.Trim(), customerID);
 
                     var receivedData = bl.GetCustReceivedAmount(connStr);
 
@@ -1677,9 +1686,9 @@ public partial class ManualClearance : System.Web.UI.Page
                                 if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
                                 {
                                     dsSales.Tables[0].Rows[i].BeginEdit();
-                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                    dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                    dsSales.Tables[0].Rows[i]["pay"] = val;
+                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString()) - double.Parse(billAmount));
+                                    dsSales.Tables[0].Rows[i]["PendingAmount"] = double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString());
+                                    dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                                     dsSales.Tables[0].Rows[i].EndEdit();
 
                                     if (val != 0.0)
@@ -1708,80 +1717,80 @@ public partial class ManualClearance : System.Web.UI.Page
                         txtBillNo1.DataSource = null;
                         txtBillNo1.DataBind();
                     }
-                }
-                else if ((ddCriteria.SelectedValue == "PartiallyCleared") || (ddCriteria.SelectedValue == "NotCleared"))
-                {
-                    string ledID = ddReceivedFrom.SelectedValue.Trim();
-                    var dsSales = bl.ListCreditSalesCleared(connStr.Trim(), ledID);
+                //}
+                //else if ((ddCriteria.SelectedValue == "PartiallyCleared") || (ddCriteria.SelectedValue == "NotCleared"))
+                //{
+                //    string ledID = ddReceivedFrom.SelectedValue.Trim();
+                //    var dsSales = bl.ListCreditSalesCleared(connStr.Trim(), ledID);
 
-                    var receivedDat = bl.GetCustReceivedAmount(connStr);
+                //    var receivedDat = bl.GetCustReceivedAmount(connStr);
 
-                    if (dsSales != null)
-                    {
-                        foreach (DataRow dr in receivedDat.Tables[0].Rows)
-                        {
-                            var billNo = dr["BillNo"].ToString();
-                            var billAmount = dr["TotalAmount"].ToString();
+                //    if (dsSales != null)
+                //    {
+                //        foreach (DataRow dr in receivedDat.Tables[0].Rows)
+                //        {
+                //            var billNo = dr["BillNo"].ToString();
+                //            var billAmount = dr["TotalAmount"].ToString();
 
-                            for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
-                            {
-                                if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
-                                {
-                                    dsSales.Tables[0].Rows[i].BeginEdit();
-                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                    dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                    dsSales.Tables[0].Rows[i]["pay"] = val;
-                                    dsSales.Tables[0].Rows[i].EndEdit();
+                //            for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
+                //            {
+                //                if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
+                //                {
+                //                    dsSales.Tables[0].Rows[i].BeginEdit();
+                //                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
+                //                    dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
+                //                    dsSales.Tables[0].Rows[i]["pay"] = val;
+                //                    dsSales.Tables[0].Rows[i].EndEdit();
 
-                                    if (val == 0.0)
-                                        dsSales.Tables[0].Rows[i].Delete();
-                                }
-                            }
-                            dsSales.Tables[0].AcceptChanges();
-                        }
-                    }
-                    var dsSal = bl.ListCreditSalesNotCleared(connStr.Trim(), customerID);
-                    if (dsSales != null)
-                    {
-                        if (dsSal != null)
-                        {
-                            dsSales.Tables[0].Merge(dsSal.Tables[0]);
-                        }
-                        if (dsSales.Tables[0].Rows.Count > 0)
-                        {
-                            txtBillNo1.DataSource = dsSales;
-                            txtBillNo1.DataBind();
+                //                    if (val == 0.0)
+                //                        dsSales.Tables[0].Rows[i].Delete();
+                //                }
+                //            }
+                //            dsSales.Tables[0].AcceptChanges();
+                //        }
+                //    }
+                //    var dsSal = bl.ListCreditSalesNotCleared(connStr.Trim(), customerID);
+                //    if (dsSales != null)
+                //    {
+                //        if (dsSal != null)
+                //        {
+                //            dsSales.Tables[0].Merge(dsSal.Tables[0]);
+                //        }
+                //        if (dsSales.Tables[0].Rows.Count > 0)
+                //        {
+                //            txtBillNo1.DataSource = dsSales;
+                //            txtBillNo1.DataBind();
 
 
-                        }
-                        else
-                        {
-                            txtBillNo1.DataSource = null;
-                            txtBillNo1.DataBind();
-                        }
-                    }
-                    else
-                    {
-                        if (dsSal != null)
-                        {
-                            if (dsSal.Tables[0].Rows.Count > 0)
-                            {
-                                txtBillNo1.DataSource = dsSal;
-                                txtBillNo1.DataBind();
-                            }
-                            else
-                            {
-                                txtBillNo1.DataSource = null;
-                                txtBillNo1.DataBind();
-                            }
-                        }
-                        else
-                        {
-                            txtBillNo1.DataSource = null;
-                            txtBillNo1.DataBind();
-                        }
-                    }
-                }
+                //        }
+                //        else
+                //        {
+                //            txtBillNo1.DataSource = null;
+                //            txtBillNo1.DataBind();
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (dsSal != null)
+                //        {
+                //            if (dsSal.Tables[0].Rows.Count > 0)
+                //            {
+                //                txtBillNo1.DataSource = dsSal;
+                //                txtBillNo1.DataBind();
+                //            }
+                //            else
+                //            {
+                //                txtBillNo1.DataSource = null;
+                //                txtBillNo1.DataBind();
+                //            }
+                //        }
+                //        else
+                //        {
+                //            txtBillNo1.DataSource = null;
+                //            txtBillNo1.DataBind();
+                //        }
+                //    }
+                //}
             }
             else
             {
@@ -2288,17 +2297,17 @@ public partial class ManualClearance : System.Web.UI.Page
             Panel1.Visible = false;
             Div1.Visible = false;
 
-            if (ddCriteria.SelectedValue == "Cleared")
-                ShowFullBills();
-            else if (ddCriteria.SelectedValue == "NotCleared")
-            {
-                if (Request.Cookies["Company"] != null)
-                    connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-                else
-                    Response.Redirect("~/Login.aspx");
+            //if (ddCriteria.SelectedValue == "Cleared")
+            //    ShowFullBills();
+            //else if (ddCriteria.SelectedValue == "NotCleared")
+            //{
+            //    if (Request.Cookies["Company"] != null)
+            //        connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+            //    else
+            //        Response.Redirect("~/Login.aspx");
 
                 string ledID = ddReceivedFrom.SelectedValue.Trim();
-                var dsSales = bl.ListCreditSalesCleared(connStr.Trim(), ledID);
+                var dsSales = bl.ListCreditSales(connStr.Trim(), ledID);
 
                 var receivedDat = bl.GetCustReceivedAmount(connStr);
 
@@ -2314,9 +2323,9 @@ public partial class ManualClearance : System.Web.UI.Page
                             if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
                             {
                                 dsSales.Tables[0].Rows[i].BeginEdit();
-                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                dsSales.Tables[0].Rows[i]["pay"] = val;
+                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString()) - double.Parse(billAmount));
+                                //dsSales.Tables[0].Rows[i]["PendingAmount"] = double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString());
+                                dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                                 dsSales.Tables[0].Rows[i].EndEdit();
 
                                 if (val == 0.0)
@@ -2327,56 +2336,67 @@ public partial class ManualClearance : System.Web.UI.Page
                     }
                 }
 
-                var dsSalesd = bl.ListCreditSalesNotCleared(connStr.Trim(), customerID);
+                if (dsSales.Tables[0].Rows.Count > 0)
+            {
+                GrdCreditSales.DataSource = dsSales;
+                GrdCreditSales.DataBind();
+            }
+            else
+            {
+                GrdCreditSales.DataSource = null;
+                GrdCreditSales.DataBind();
+            }
+
+                //var dsSalesd = bl.ListCreditSalesNotCleared(connStr.Trim(), customerID);
 
 
-                if (dsSales != null)
-                {
-                    if (dsSales.Tables[0].Rows.Count > 0)
-                    {
-                        if (dsSalesd != null)
-                        {
-                            dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
-                        }
+                //if (dsSales != null)
+                //{
+                //    if (dsSales.Tables[0].Rows.Count > 0)
+                //    {
+                //        if (dsSalesd != null)
+                //        {
+                //            dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
+                //        }
 
-                        GrdCreditSales.DataSource = dsSales;
-                        GrdCreditSales.DataBind();
-                    }
-                    else
-                    {
-                        if (dsSalesd != null)
-                        {
-                            if (dsSalesd.Tables[0].Rows.Count > 0)
-                            {
-                                GrdCreditSales.DataSource = dsSalesd;
-                                GrdCreditSales.DataBind();
-                            }
-                        }
-                        else
-                        {
-                            GrdCreditSales.DataSource = null;
-                            GrdCreditSales.DataBind();
-                        }
-                    }
-                }
-                else if (dsSalesd != null)
-                {
-                    if (dsSalesd.Tables[0].Rows.Count > 0)
-                    {
-                        GrdCreditSales.DataSource = dsSalesd;
-                        GrdCreditSales.DataBind();
-                    }
-                    else
-                    {
-                        GrdCreditSales.DataSource = null;
-                        GrdCreditSales.DataBind();
-                    }
-                }
-                else
-                {
-                    GrdCreditSales.DataSource = null;
-                    GrdCreditSales.DataBind();
-                }
+                //        GrdCreditSales.DataSource = dsSales;
+                //        GrdCreditSales.DataBind();
+                //    }
+                //    else
+                //    {
+                //        if (dsSalesd != null)
+                //        {
+                //            if (dsSalesd.Tables[0].Rows.Count > 0)
+                //            {
+                //                GrdCreditSales.DataSource = dsSalesd;
+                //                GrdCreditSales.DataBind();
+                //            }
+                //        }
+                //        else
+                //        {
+                //            GrdCreditSales.DataSource = null;
+                //            GrdCreditSales.DataBind();
+                //        }
+                //    }
+                //}
+                //else if (dsSalesd != null)
+                //{
+                //    if (dsSalesd.Tables[0].Rows.Count > 0)
+                //    {
+                //        GrdCreditSales.DataSource = dsSalesd;
+                //        GrdCreditSales.DataBind();
+                //    }
+                //    else
+                //    {
+                //        GrdCreditSales.DataSource = null;
+                //        GrdCreditSales.DataBind();
+                //    }
+                //}
+                //else
+                //{
+                //    GrdCreditSales.DataSource = null;
+                //    GrdCreditSales.DataBind();
+                //}
 
                 var receivedData = bl.GetReceiptForLedger(connStr, ledgerID);
                 if (receivedData != null)
@@ -2397,7 +2417,7 @@ public partial class ManualClearance : System.Web.UI.Page
                     GrdViewSales.DataSource = null;
                     GrdViewSales.DataBind();
                 }
-            }
+            //}
 
 
             var received = bl.GetCustReceivedAmountCustomer(connStr, ledgerID);

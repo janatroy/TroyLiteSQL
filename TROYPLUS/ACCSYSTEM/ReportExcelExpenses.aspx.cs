@@ -44,19 +44,19 @@ public partial class ReportExcelExpenses : System.Web.UI.Page
                 Response.Redirect("Login.aspx");
 
             DataSet ds = new DataSet();
-            ds = objBL.ListExpensesTypes(connection);
+            ds = objBL.ListExpenseInfo(connection, "", "", "");
 
             if (ds.Tables[0].Rows.Count > 0)
             {
                 DataTable dt = new DataTable("Expense Details");
-                dt.Columns.Add(new DataColumn("LedgerName"));
+                dt.Columns.Add(new DataColumn("ExpenseName"));
                 dt.Columns.Add(new DataColumn("AliasName"));
                 //dt.Columns.Add(new DataColumn("Address"));
                 //dt.Columns.Add(new DataColumn("TINnumber"));
                 //dt.Columns.Add(new DataColumn("CreditLimit"));
-                dt.Columns.Add(new DataColumn("OpenBalanceDR"));
-                dt.Columns.Add(new DataColumn("OpenBalanceCR"));
-                dt.Columns.Add(new DataColumn("BranchCode"));
+                //dt.Columns.Add(new DataColumn("OpenBalanceDR"));
+                //dt.Columns.Add(new DataColumn("OpenBalanceCR"));
+                //dt.Columns.Add(new DataColumn("BranchCode"));
                 //dt.Columns.Add(new DataColumn("Phone"));
                 //dt.Columns.Add(new DataColumn("LedgerCategory"));
                 //dt.Columns.Add(new DataColumn("ExecutiveIncharge"));
@@ -65,13 +65,13 @@ public partial class ReportExcelExpenses : System.Web.UI.Page
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     DataRow dr_final1 = dt.NewRow();
-                    dr_final1["LedgerName"] = dr["LedgerName"];
+                    dr_final1["ExpenseName"] = dr["Expensehead"];
                     dr_final1["AliasName"] = dr["AliasName"];
-                    dr_final1["Branchcode"] = dr["BranchCode"];
+                    //dr_final1["Branchcode"] = dr["BranchCode"];
                     //dr_final1["TINnumber"] = dr["TINnumber"];
                     //dr_final1["CreditLimit"] = dr["CreditLimit"];
-                    dr_final1["OpenBalanceDR"] = dr["OpenBalanceDR"];
-                    dr_final1["OpenBalanceCR"] = dr["OpenBalanceCR"];
+                    //dr_final1["OpenBalanceDR"] = dr["OpenBalanceDR"];
+                    //dr_final1["OpenBalanceCR"] = dr["OpenBalanceCR"];
                     //dr_final1["Phone"] = dr["Phone"];
                     //dr_final1["LedgerCategory"] = dr["LedgerCategory"];
                     //dr_final1["ExecutiveIncharge"] = dr["ExecutiveIncharge"];
@@ -92,9 +92,9 @@ public partial class ReportExcelExpenses : System.Web.UI.Page
                     //} 
                 }
                 DataRow dr_final2 = dt.NewRow();
-                dr_final2["LedgerName"] = "";
+                dr_final2["ExpenseName"] = "";
                 dr_final2["AliasName"] = "";
-                dr_final2["BranchCode"] = "";
+                //dr_final2["BranchCode"] = "";
                 //dr_final2["TINnumber"] = "Grand Total:";
                 //dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
                 //dr_final2["OpenBalanceDR"] = Convert.ToDecimal(GtotalOpenDR);

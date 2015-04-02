@@ -228,12 +228,12 @@
                                                 Manual Clearance
                                             </td>
                                             <td style="width: 12%; color: white;" align="right">
-                                                Option
+                                               
                                             </td>
                                             
-                                            <td style="width: 22%" class="NewBox">
+                                            <td style="width: 22%">
                                                 <div style="width: 160px; font-family: 'Trebuchet MS';">
-                                                <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="white" Height="23px" AutoPostBack="True" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" style="text-align:center;border:1px solid white ">
+                                                <asp:DropDownList ID="ddCriteria" Visible="false" runat="server" Width="154px" BackColor="white" Height="23px" AutoPostBack="True" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" style="text-align:center;border:1px solid white ">
                                                     <asp:ListItem Value="Cleared">Cleared</asp:ListItem>
                                                     <asp:ListItem Value="NotCleared">Not Cleared</asp:ListItem>
                                                 </asp:DropDownList>
@@ -250,8 +250,8 @@
                                             <td style="width: 22%" class="NewBox">
                                             <div style="width: 160px; font-family: 'Trebuchet MS';">
                                                <asp:DropDownList ID="ddReceivedFrom" runat="server" AutoPostBack="True" BackColor="white" Width="154px" CssClass="drpDownListMedium" style="text-align:center;border:1px solid white "
-                                                    DataValueField="customerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" height="23px" 
-                                                    DataTextField="customerName" AppendDataBoundItems="True">
+                                                    DataValueField="ledgerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" height="23px" 
+                                                    DataTextField="ledgerName" AppendDataBoundItems="True">
                                                 </asp:DropDownList>
                                                 </div>
                                             </td>
@@ -331,8 +331,8 @@
                                                                                                         <asp:BoundField DataField="Billno" HeaderText="Bill No."  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
                                                                                                         <asp:BoundField DataField="BillDate" HeaderText="Bill Date" DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
                                                                                                         <asp:BoundField DataField="CustomerName" HeaderText="CustomerName"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
-                                                                                                        <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
-                                                                                                        <asp:BoundField DataField="pay" HeaderText="To Be Paid" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
+                                                                                                        <asp:BoundField DataField="BillAmount" HeaderText="Amount" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
+                                                                                                        <asp:BoundField DataField="PendingAmount" HeaderText="To Be Paid" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
                                                                                                         <%--<asp:TemplateField ItemStyle-CssClass="command" ItemStyle-Width="50px" HeaderText="Show" HeaderStyle-BorderColor="blue">
                                                                                                             <ItemTemplate>
                                                                                                                 <asp:ImageButton ID="btnSelect" runat="server" SkinID="GridForward" ToolTip="Click To Get Bill Details"

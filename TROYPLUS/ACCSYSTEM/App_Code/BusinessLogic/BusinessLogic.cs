@@ -2550,16 +2550,148 @@ public partial class BusinessLogic
 
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
+        DataSet dst = new DataSet();
+
+        DataSet dstt = new DataSet();
+        StringBuilder dbQryt = new StringBuilder();
 
         try
         {
-            dbQry = "Select BillNo,BillDate,CustomerName,Amount as BillAmount, Amount as PendingAmount from tblSales inner join tblDayBook on tblSales.JournalID = tblDayBook.TransNo Where PayMode = 3 AND CustomerID=" + CustomerID;
+
+            DataTable dttt;
+            DataRow drNew;
+            DataColumn dct;
+            DataSet dstd = new DataSet();
+            dttt = new DataTable();
+
+            dct = new DataColumn("Billno");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("CustomerName");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("BillAmount");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("BillDate");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("PendingAmount");
+            dttt.Columns.Add(dct);
+
+            dstd.Tables.Add(dttt);
+
+
+            dbQry = "Select tblDayBook.TransNo AS BillNo,BillDate,CustomerName,Amount as BillAmount, Amount as PendingAmount from tblSales inner join tblDayBook on tblSales.JournalID = tblDayBook.TransNo Where PayMode = 3 AND CustomerID=" + CustomerID;
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
-            if (ds.Tables[0].Rows.Count > 0)
-                return ds;
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                int sno = 1;
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(ds.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(ds.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(ds.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(ds.Tables[0].Rows[i]["BillAmount"]);
+
+                    drNew["BillDate"] = ds.Tables[0].Rows[i]["BillDate"];
+
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+            }
+
+
+
+            dbQry = "SELECT td.TransNo As BillNo,tc.NoteDate as BillDate,tl.ledgername As CustomerName,tc.Amount as BillAmount,tc.Amount as PendingAmount FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit'  AND DebtorID=" + CustomerID + " order by tc.NoteDate";
+
+            dst = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (dst != null && dst.Tables[0].Rows.Count > 0)
+            {
+                int sno = 1;
+
+                for (int i = 0; i < dst.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(dst.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(dst.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["BillAmount"]);
+
+                    drNew["BillDate"] = dst.Tables[0].Rows[i]["BillDate"];
+
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+
+                dstd.Tables[0].Merge(dstd.Tables[0]);
+
+            }
+
+            dbQryt.Append("SELECT  tblDayBook.TransDate As BillDate, Creditor.LedgerName As Cred, Debitor.LedgerName AS CustomerName, tblDayBook.Amount as PendingAmount, tblDayBook.Amount as BillAmount, ");
+            dbQryt.Append(" tblDayBook.TransNo As BillNo FROM  (((tblDayBook INNER JOIN ");
+            dbQryt.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID))");
+
+            dbQryt.AppendFormat(" Where VoucherType='Journal' AND tblDayBook.DebtorID=" + CustomerID + " Order By tblDayBook.TransDate Desc");
+
+            dstt = manager.ExecuteDataSet(CommandType.Text, dbQryt.ToString());
+
+            if (dstt != null && dstt.Tables[0].Rows.Count > 0)
+            {
+                int sno = 1;
+
+                for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(dstt.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(dstt.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(dstt.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(dstt.Tables[0].Rows[i]["BillAmount"]);
+
+                    drNew["BillDate"] = dstt.Tables[0].Rows[i]["BillDate"];
+
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+
+                dstd.Tables[0].Merge(dstd.Tables[0]);
+
+            }
+
+
+            dbQry = "select AutoLedgerID as BillNo,opduedate as BillDate,LedgerName as CustomerName, tblGroups.GroupID,OpenBalanceDR as BillAmount,OpenBalanceDR as PendingAmount from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID where LedgerID = " + CustomerID + " and OpenBalanceDR > 0 ";
+            dst = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (dst != null && dst.Tables[0].Rows.Count > 0)
+            {       
+                int sno = 1;
+
+                for (int i = 0; i < dst.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(dst.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(dst.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["BillAmount"]);
+                            
+                    drNew["BillDate"] = dst.Tables[0].Rows[i]["BillDate"];
+                          
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+                
+                dstd.Tables[0].Merge(dstd.Tables[0]);
+               
+            }
+
+            if (dstd.Tables[0].Rows.Count > 0)
+                return dstd;
             else
                 return null;
         }
@@ -6827,11 +6959,11 @@ public partial class BusinessLogic
             dbQry = string.Format("INSERT INTO tblAuditDayBook Select * From tblDayBook Where TransNo={0}", TransNo);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("INSERT INTO tblAuditReceipt Select * From tblReceipt Where JournalID = {0}", TransNo);
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            //dbQry = string.Format("INSERT INTO tblAuditReceipt Select * From tblReceipt Where JournalID = {0}", TransNo);
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            dbQry = string.Format("INSERT INTO tblAuditReceivedAmount Select * From tblReceivedAmount Where ReceiptNo = {0}", TransNo);
-            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            //dbQry = string.Format("INSERT INTO tblAuditReceivedAmount Select * From tblReceivedAmount Where ReceiptNo = {0}", TransNo);
+            //manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             dbQry = string.Format("Delete From tblDayBook Where TransNo={0}", TransNo);
 
@@ -32290,7 +32422,7 @@ public partial class BusinessLogic
 
 
             dbQry = string.Format("INSERT INTO tblDayBook(TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType,CreditCardNo,RefNo,BranchCode) VALUES('{0}',{1},{2},{3},'{4}','{5}','{6}',{7},'{8}')",
-            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, 0, "All");
+            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, Note, sVoucherType, sCreditCardno, RefNo, "All");
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -32562,8 +32694,8 @@ public partial class BusinessLogic
                 manager.ExecuteNonQuery(CommandType.Text, description);
             }
 
-            dbQry = string.Format("UPDATE tblDayBook SET TransDate='{0}',DebtorID = {1},CreditorID = {2},Amount={3},Narration='{5}' WHERE TransNo={4}",
-            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, TransNo, Note);
+            dbQry = string.Format("UPDATE tblDayBook SET TransDate='{0}',DebtorID = {1},CreditorID = {2},Amount={3},Narration='{5}',RefNo={6} WHERE TransNo={4}",
+            NoteDate.ToString("yyyy-MM-dd"), DebtorID, CreditorID, Amount, TransNo, Note, RefNo);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -62543,7 +62675,7 @@ public partial class BusinessLogic
                 {
                     foreach (DataRow dr1 in dsbulk.Tables[0].Rows)
                     {
-                        if ((Convert.ToString(dr1["LedgerName"]) == null) || (Convert.ToString(dr1["LedgerName"]) == ""))
+                        if ((Convert.ToString(dr1["ExpenseName"]) == null) || (Convert.ToString(dr1["ExpenseName"]) == ""))
                         {
 
                         }
@@ -62576,7 +62708,7 @@ public partial class BusinessLogic
 
                             int middlePos = 0;
                             logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode,ModeofContact) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22})",
-                                           LedgerID + 1, Convert.ToString(dr["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["AliasName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["GroupID"]), 0, 0, 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, Convert.ToString(dr["LedgerCategory"]), Convert.ToString(dr["xecutiveIncharge"]), Convert.ToString(dr["BTinNumber"]), Convert.ToString(dr["Mobile"]), Convert.ToString(dr["Inttrans"]), Convert.ToString(dr["Paymentmade"]), Convert.ToString(dr["dc"]), Convert.ToString(dr["Branchcode"]), 3);
+                                           LedgerID + 1, Convert.ToString(dr["ExpenseName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["ExpenseName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr["GroupID"]), 0, 0, 0, 0, "", "", "", "", 0, 0, "", 0, Convert.ToString(dr["BTinNumber"]), Convert.ToString(dr["Mobile"]), Convert.ToString(dr["Inttrans"]), Convert.ToString(dr["Paymentmade"]), Convert.ToString(dr["dc"]), Convert.ToString(dr["Branchcode"]), 3);
 
                             //logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21})",
                             //LedgerID + 1, leadgername + " - " + Convert.ToString(dr["Branchcode"]), AliasName + " - " + Convert.ToString(dr["Branchcode"]), GroupID, 0, 0, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, Convert.ToString(dr["Branchcode"]));
@@ -62610,24 +62742,27 @@ public partial class BusinessLogic
                         }
 
                         dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
-                            LedgerID + 1, Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]), 8, Convert.ToDouble(dr1["OpenBalanceDR"]), Convert.ToDouble(dr1["OpenBalanceCR"]), 0, 0, Convert.ToString(dr1["ContactName"]), Convert.ToString(dr1["Add1"]), Convert.ToString(dr1["Add2"]), Convert.ToString(dr1["Add3"]), 0, 0, "0", "0", "0", "0", "NO", "NO", "NO", Convert.ToString(dr1["LedgerName"]), "YES", "", 3, "", Convert.ToString(dr["Branchcode"]));
+                            LedgerID + 1, Convert.ToString(dr1["ExpenseName"]) + " - " + Convert.ToString(dr["Branchcode"]), Convert.ToString(dr1["ExpenseName"]) + " - " + Convert.ToString(dr["Branchcode"]), 8, 0, 0, 0, 0, "", "", "", "", 0, 0, "0", "0", "0", "0", "NO", "NO", "NO", Convert.ToString(dr1["ExpenseName"]), "YES", "", 3, "", Convert.ToString(dr["Branchcode"]));
 
                         //dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,ChequeName,unuse, EmailId, ModeofContact,OpDueDate,BranchCode) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}',{24},'{25}','{26}')",
                         //    LedgerID + 1, LedgerName + " - " + Convert.ToString(dr["Branchcode"]), AliasName + " - " + Convert.ToString(dr["Branchcode"]), GroupID, 0, 0, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, Convert.ToString(dr["Branchcode"]));
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-                        sAuditStr = "Ledger : " + Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " added. Record Details :  User :" + Username + " AliasName = " + Convert.ToString(dr1["LedgerName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " GroupID= " + 8 + " ,LedgerCategory = " + 0 + " ,Mobile=" + 0 + " Phone :" + 0;
+                        sAuditStr = "Ledger : " + Convert.ToString(dr1["ExpenseName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " added. Record Details :  User :" + Username + " AliasName = " + Convert.ToString(dr1["ExpenseName"]) + " - " + Convert.ToString(dr["Branchcode"]) + " GroupID= " + 8 + " ,LedgerCategory = " + 0 + " ,Mobile=" + 0 + " Phone :" + 0;
                         dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
-                        dbQry = string.Format("INSERT INTO tblExpenseMaster(ExpenseHead, GroupID) VALUES('{0}','{1}')",
-                                   Convert.ToString(dr1["LedgerName"]), 8);
 
-                        manager.ExecuteNonQuery(CommandType.Text, dbQry);
+                        
                     }
                     
                 }
             }
+
+            dbQry = string.Format("INSERT INTO tblExpenseMaster(ExpenseHead, GroupID,isactive,AliasName) VALUES('{0}','{1}','{2}','{3}')",
+                   Convert.ToString(dr1["ExpenseName"]), 8, "YES", Convert.ToString(dr1["ExpenseName"]));
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
           
 
                             //dbQry = string.Format("SET IDENTITY_INSERT [tblLedger] OFF");
@@ -71819,6 +71954,8 @@ public partial class BusinessLogic
             }
             int DebitorID = 0;
 
+            int Recid = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(Recid +1 ) FROM tblReceipt"));
+
             int paymodeno = 0;
             int TransNo = 0;
             if (ds != null)
@@ -71846,7 +71983,7 @@ public partial class BusinessLogic
 
                         TransNo = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(TransNo) FROM tblDayBook"));
 
-                        dbQry = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode,Branchcode) Values({0},{1},'{2}','{3}')", CreditorID, TransNo, Convert.ToString(dr["Paymode"]), Branchcode);
+                        dbQry = string.Format("Insert Into tblReceipt(CreditorID,JournalID,Paymode,Branchcode,Recid) Values({0},{1},'{2}','{3}',{4})", CreditorID, TransNo, Convert.ToString(dr["Paymode"]), Branchcode, Recid);
 
                         manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -71889,7 +72026,7 @@ public partial class BusinessLogic
                                         {
                                             if (cheque == drd["ChequeNo"].ToString())
                                             {
-                                                dbQry = string.Format("INSERT INTO tblReceivedAmount(ReceiptNo,BillNo,Amount,Branchcode) VALUES({0},{1},{2},'{3}')", TransNo.ToString(), drd["BillNo"].ToString(), Convert.ToDouble(drd["Amount"]), Branchcode);
+                                                dbQry = string.Format("INSERT INTO tblReceivedAmount(ReceiptNo,BillNo,Amount,Branchcode,Recid,CustomerName,BillDate) VALUES({0},{1},{2},'{3}',{4},'{5}','{6}')", TransNo.ToString(), drd["BillNo"].ToString(), Convert.ToDouble(drd["Amount"]), Branchcode, Recid, drd["CustomerName"].ToString(), Convert.ToDateTime(drd["BillDate"]).ToString("yyyy-MM-dd"));
                                                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
                                             }
                                         }
@@ -75225,7 +75362,7 @@ public partial class BusinessLogic
             manager.BeginTransaction();
 
             //  object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where LedgerName='" + LedgerName + "' And LedgerID <> " + LedgerID.ToString() + "");
-            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblExpenseMaster Where ExpenseHead='" + Expensehead + "'");
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblExpenseMaster Where ExpenseHead='" + Expensehead + "' And ID <> " + ID.ToString() + "");
             if (exists.ToString() != string.Empty)
             {
                 if (int.Parse(exists.ToString()) > 0)
@@ -77123,6 +77260,339 @@ public partial class BusinessLogic
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
+    public DataSet GetRecForId(string connection, int TransNo)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+        StringBuilder dbQrytt = new StringBuilder();
+        DataSet dst = new DataSet();
+        StringBuilder dbQryttt = new StringBuilder();
+
+        string dbQryt = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            dbQry.Append("SELECT Receipt.recid FROM  (((tblDayBook INNER JOIN ");
+            dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) LEFT JOIN ");
+            dbQry.Append(" tblReceipt Receipt ON tblDayBook.TransNo = Receipt.JournalID)");
+            dbQry.AppendFormat("Where tblDayBook.TransNo = {0}", TransNo);
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds != null)
+            {
+                foreach (DataRow drd in ds.Tables[0].Rows)
+                {
+                    dbQrytt.Append("SELECT JournalID FROM  tblReceipt ");
+                    dbQrytt.AppendFormat("Where tblReceipt.recid = {0}", drd["recid"]);
+
+                    dst = manager.ExecuteDataSet(CommandType.Text, dbQrytt.ToString());
+                }
+
+                if (dst != null)
+                {
+                    foreach (DataRow drdd in dst.Tables[0].Rows)
+                    {
+                        dbQryt = dbQryt + drdd["JournalID"] + ",";
+                    }
+                    dbQryt = dbQryt.TrimEnd(',');
+                }
+            }
+
+            dbQryttt.Append("SELECT  tblDayBook.TransNo,tblDayBook.BranchCode, tblDayBook.TransDate, Creditor.LedgerName,tblDayBook.CreditorID,tblDayBook.DebtorID,Creditor.Mobile, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+            dbQryttt.Append("tblDayBook.VoucherType,Receipt.ReceiptNo, tblDayBook.RefNo, tblDayBook.ChequeNo, Receipt.Paymode FROM  (((tblDayBook INNER JOIN ");
+            dbQryttt.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) LEFT JOIN ");
+            dbQryttt.Append(" tblReceipt Receipt ON tblDayBook.TransNo = Receipt.JournalID)");
+            dbQryttt.AppendFormat("Where tblDayBook.TransNo in (" + dbQryt + ")" );
+
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQryttt.ToString());
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
+    public string GetReceivedAmtId(string connection, int ReceiptNo)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+        StringBuilder dbQrytt = new StringBuilder();
+        DataSet dst = new DataSet();
+        StringBuilder dbQryttt = new StringBuilder();
+
+        string dbQryt = string.Empty;
+
+        try
+        {
+            manager.Open();
+
+            dbQry.Append("SELECT Recid From tblReceivedAmount ");
+            dbQry.AppendFormat("Where ReceiptNo = {0}", ReceiptNo);
+
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+
+            if (ds != null)
+            {
+                foreach (DataRow drd in ds.Tables[0].Rows)
+                {
+                    dbQrytt.Append("SELECT ReceiptNo FROM  tblReceivedAmount ");
+                    dbQrytt.AppendFormat("Where tblReceivedAmount.recid = {0}", drd["recid"]);
+
+                    dst = manager.ExecuteDataSet(CommandType.Text, dbQrytt.ToString());
+                }
+
+                if (dst != null)
+                {
+                    foreach (DataRow drdd in dst.Tables[0].Rows)
+                    {
+                        dbQryt = dbQryt + drdd["ReceiptNo"] + ",";
+                    }
+                    dbQryt = dbQryt.TrimEnd(',');
+                }
+            }
+
+
+            //dbQryttt.Append("SELECT ReceiptNo,BillNo,CustomerName,BillDate, Amount From tblReceivedAmount ");
+            //dbQryttt.AppendFormat("Where ReceiptNo in (" + dbQryt + ")");
+
+            
+            //ds = manager.ExecuteDataSet(CommandType.Text, dbQryttt.ToString());
+
+            //DataTable dt = new DataTable();
+            //DataColumn dc;
+
+            //dc = new DataColumn("ID");
+            //dt.Columns.Add(dc);
+
+            //dc = new DataColumn("BillNo");
+            //dt.Columns.Add(dc);
+
+            //dc = new DataColumn("Amount");
+            //dt.Columns.Add(dc);
+
+            //dc = new DataColumn("CustomerName");
+            //dt.Columns.Add(dc);
+
+            //dc = new DataColumn("BillDate");
+            //dt.Columns.Add(dc);
+
+            //ds.Tables.Add(dt);
+
+            ////DataRow dr = ds.Tables[0].NewRow();
+
+            ////dr["ReceiptNo"] = "0";
+            ////dr["BillNo"] = "0";
+            ////dr["Amount"] = "0";
+            ////dr["CustomerName"] = "0";
+            ////dr["BillDate"] = "0";
+
+            ////if (ds == null || ds.Tables[0].Rows.Count == 0)
+            ////{
+            ////    if (ds.Tables[0].Rows.Count == 0)
+            ////        ds.Tables[0].Rows.InsertAt(dr, 0);
+            ////}
+
+            //return ds;
+
+            return dbQryt;
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+
+    }
+
+    public DataSet ListCreditSalesT(string connection, string CustomerID,string billsData)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        if (connection.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
+            manager.ConnectionString = CreateConnectionString(connection);
+        else
+            manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+        DataSet dst = new DataSet();
+
+        DataSet dstt = new DataSet();
+        StringBuilder dbQryt = new StringBuilder();
+
+        try
+        {
+            DataTable dttt;
+            DataRow drNew;
+            DataColumn dct;
+            DataSet dstd = new DataSet();
+            dttt = new DataTable();
+
+            dct = new DataColumn("Billno");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("CustomerName");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("BillAmount");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("BillDate");
+            dttt.Columns.Add(dct);
+
+            dct = new DataColumn("PendingAmount");
+            dttt.Columns.Add(dct);
+
+            dstd.Tables.Add(dttt);
+
+
+            dbQry = "Select tblDayBook.TransNo as BillNo,BillDate,CustomerName,Amount as BillAmount, Amount as PendingAmount from tblSales inner join tblDayBook on tblSales.JournalID = tblDayBook.TransNo Where PayMode = 3 AND CustomerID=" + CustomerID;
+
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds != null && ds.Tables[0].Rows.Count > 0)
+            {
+                int sno = 1;
+
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(ds.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(ds.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(ds.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(ds.Tables[0].Rows[i]["BillAmount"]);
+
+                    drNew["BillDate"] = ds.Tables[0].Rows[i]["BillDate"];
+
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+            }
+
+
+
+            dbQry = "SELECT td.TransNo As BillNo,tc.NoteDate as BillDate,tl.ledgername As CustomerName,tc.Amount as BillAmount,tc.Amount as PendingAmount FROM tblCreditDebitNote tc, tblDayBook td,tblledger tl where tc.TransNo=td.TransNo and td.DebtorID = tl.ledgerid and tc.CDType='Debit'  AND DebtorID=" + CustomerID + " order by tc.NoteDate";
+
+            dst = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (dst != null && dst.Tables[0].Rows.Count > 0)
+            {
+                int sno = 1;
+
+                for (int i = 0; i < dst.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(dst.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(dst.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["BillAmount"]);
+
+                    drNew["BillDate"] = dst.Tables[0].Rows[i]["BillDate"];
+
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+
+                dstd.Tables[0].Merge(dstd.Tables[0]);
+
+            }
+
+            dbQryt.Append("SELECT  tblDayBook.TransDate As BillDate, Creditor.LedgerName As Cred, Debitor.LedgerName AS CustomerName, tblDayBook.Amount as PendingAmount, tblDayBook.Amount as BillAmount, ");
+            dbQryt.Append(" tblDayBook.TransNo As BillNo FROM  (((tblDayBook INNER JOIN ");
+            dbQryt.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID))");
+
+            dbQryt.AppendFormat(" Where VoucherType='Journal' AND tblDayBook.DebtorID=" + CustomerID + " Order By tblDayBook.TransDate Desc");
+
+            dstt = manager.ExecuteDataSet(CommandType.Text, dbQryt.ToString());
+
+            if (dstt != null && dstt.Tables[0].Rows.Count > 0)
+            {
+                int sno = 1;
+
+                for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(dstt.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(dstt.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(dstt.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(dstt.Tables[0].Rows[i]["BillAmount"]);
+
+                    drNew["BillDate"] = dstt.Tables[0].Rows[i]["BillDate"];
+
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+
+                dstd.Tables[0].Merge(dstd.Tables[0]);
+
+            }
+
+
+            dbQry = "select AutoLedgerID as BillNo,opduedate as BillDate,LedgerName as CustomerName, tblGroups.GroupID,OpenBalanceDR as BillAmount,OpenBalanceDR as PendingAmount from tblLedger inner join tblGroups on tblLedger.GroupID = tblGroups.GroupID where LedgerID = " + CustomerID + " and OpenBalanceDR > 0 ";
+            dst = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (dst != null && dst.Tables[0].Rows.Count > 0)
+            {
+                int sno = 1;
+
+                for (int i = 0; i < dst.Tables[0].Rows.Count; i++)
+                {
+                    drNew = dttt.NewRow();
+                    drNew["Billno"] = Convert.ToInt32(dst.Tables[0].Rows[i]["Billno"]);
+                    drNew["CustomerName"] = Convert.ToString(dst.Tables[0].Rows[i]["CustomerName"]);
+                    drNew["PendingAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["PendingAmount"]);
+                    drNew["BillAmount"] = Convert.ToDouble(dst.Tables[0].Rows[i]["BillAmount"]);
+
+                    drNew["BillDate"] = dst.Tables[0].Rows[i]["BillDate"];
+
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
+                }
+
+                dstd.Tables[0].Merge(dstd.Tables[0]);
+
+            }
+
+            if (dstd.Tables[0].Rows.Count > 0)
+                return dstd;
+            else
+                return null;
 
         }
         catch (Exception ex)
