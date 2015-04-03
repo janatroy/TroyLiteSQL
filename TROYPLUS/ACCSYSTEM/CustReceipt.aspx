@@ -1339,30 +1339,39 @@
                                                                                                                                 </table>
                                                                                                                             </td>
                                                                                                                         </tr>--%>
-                                                                                                                        </table>
-                                                                                                                        <table style="width: 100%;">
+                                                                                                                        
                                                                                                                                     
-                                                                                                                        <tr  id="totalrow1" runat="server" visible="false">
+                                                                                                                        <tr >
                                                                                                                             <td colspan="6">
                                                                                                                                 <table style="width: 100%">
                                                                                                                                     <tr>
                                                                                                                                         <td style="background-color:#cccccc;  border: 1px solid gray">
-                                                                                                                                            
+                                                                                                                                             <asp:UpdatePanel ID="UpdatePanel12" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                            <asp:Panel  id="totalrow1" runat="server" visible="false"
+                                                                                                    Width="100%" >
+
                                                                                                                                              <asp:Label ID="Label2" runat="server" Text="Pending Bills to be Adjusted" Font-Bold="true" ForeColor="Black" Font-Size="Medium" >
 
                                                                                                                                              </asp:Label>
+                                                                                                                                                </asp:Panel>
+                                                                                                                                        </ContentTemplate>
+                                                                                                                                                 </asp:UpdatePanel>
                                                                                                                                         </td>
                                                                                                                                     </tr>
                                                                                                                                 </table>
                                                                                                                             </td>
                                                                                                                         </tr>
-                                                                                                                        <tr  id="totalrow123" runat="server" visible="false">
+                                                                                                                              
+                                                                                                                        <tr >
                                                                                                                             <td colspan="6">
                                                                                                                                 <table style="width: 100%;  border: 1px solid gray" >
                                                                                                                                     <tr>
                                                                                                                                         <td>
-                                                                                                                                            <asp:Panel ID="Panel4" 
-                                                                                                    Width="100%" runat="server">
+                                                                                                                                            <asp:UpdatePanel ID="UpdatePanel13" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                            <asp:Panel id="totalrow123"
+                                                                                                    Width="100%" runat="server" visible="false">
                                                                                                                                             <div id="div1" runat="server" style="height: 100px; overflow: scroll">
                                                                                                                                                 <asp:UpdatePanel ID="UpdatePanel112" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
@@ -1426,7 +1435,7 @@
                                                                                                                                                         </asp:TemplateField>
                                                                                                                                                         <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Amount to be Adjusted" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="17%">
                                                                                                                                                             <ItemTemplate>
-                                                                                                                                                                <asp:TextBox ID="txtAdjustAmount" runat="server" Width="92%"  Height="20px" Text='<%# Eval("AdjustAmount")%>'  BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
+                                                                                                                                                                <asp:TextBox ID="txtAdjustAmount" runat="server" AutoPostBack="true" OnTextChanged="txtAdjustAmount_TextChanged" Width="92%"  Height="20px" Text='<%# Eval("AdjustAmount")%>'  BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
                                                                                                                                                                     ></asp:TextBox>
                                                                                                                                                             </ItemTemplate>
                                                                                                                                                         </asp:TemplateField>
@@ -1483,15 +1492,22 @@
                                                                                                                                 </asp:UpdatePanel>
                                                                                                                                             </div>
                                                                                                                                                 </asp:Panel>
+                                                                                                                                        </ContentTemplate>
+                                                                                                                                                </asp:UpdatePanel>
                                                                                                                                         </td>
                                                                                                                                     </tr>
                                                                                                                                 </table>
                                                                                                                             </td>
                                                                                                                         </tr>
-                                                                                                                        <tr id="totalrow" runat="server" visible="false">
+                                                                                                                        <tr >
                                                                                                                             <td colspan="6">
+                                                                                                                                 
                                                                                                                                 <table style="width: 100%">
                                                                                                                                     <tr>
+                                                                                                                                        <asp:UpdatePanel ID="UpdatePanel14" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                        <asp:Panel  id="totalrow" runat="server" visible="false"
+                                                                                                    Width="100%" >
                                                                                                                                         <td style="width: 57%">
                                                                                                                                             
                                                                                                                                         </td>
@@ -1505,10 +1521,125 @@
                                                                                                                                         <td style="width: 8%">
                                                                                                                                             
                                                                                                                                         </td>
+                                                                                                                                            </asp:Panel>
+                                                                                                                                        </ContentTemplate>
+                                                                                                                                            </asp:UpdatePanel>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                                     
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                            <tr  id="Tr1" runat="server" visible="false">
+                                                                                                                            <td colspan="6">
+                                                                                                                                <table style="width: 100%;  border: 1px solid gray" >
+                                                                                                                                    <tr>
+                                                                                                                                        <td>
+                                                                                                                                            <asp:Panel ID="Panel5" 
+                                                                                                    Width="100%" runat="server">
+                                                                                                                                            <div id="div2" runat="server" style="height: 100px; overflow: scroll">
+                                                                                                                                                <asp:UpdatePanel ID="UpdatePanel11" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                                <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False"
+                                                                                                                                                    Width="100%" DataKeyNames="Billno" EmptyDataText="No Credit Sales found." GridLines="None">
+                                                                                                                                                    <EmptyDataRowStyle CssClass="GrdContent" />
+                                                                                                                                                    <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" Font-Size="Small" />
+                                                                                                                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="25px" Font-Size="Small" ForeColor="#0567AE" />
+                                                                                                                                                    <Columns>
+                                                                                                                                                        <%--<asp:BoundField DataField="Billno" HeaderText="Bill No." HeaderStyle-BorderColor="Gray" />--%>
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Bill Number" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="15%">
+                                                                                                                                                            <ItemTemplate>
+                                                                                                                                                                <%--<asp:TextBox ID="txtBillno" runat="server" Width="90%"  Text='<%# Eval("Billno")%>' Height="26px"
+                                                                                                                                                                    ></asp:TextBox>--%>
+                                                                                                                                                                <asp:Label ID="txtBillno" runat="server" Text='<%# Eval("Billno")%>' Font-Bold="true">
+
+                                                                                                                                                                </asp:Label>
+                                                                                                                                                            </ItemTemplate>
+                                                                                                                                                        </asp:TemplateField>
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Amount" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="12%">
+                                                                                                                                                            <ItemTemplate>
+                                                                                                                                                                <%--<asp:TextBox ID="txtAmount" runat="server" Width="90%"  Text='<%# Eval("Amount")%>' Height="26px"
+                                                                                                                                                                    ></asp:TextBox>--%>
+                                                                                                                                                                <asp:Label ID="txtAmount123" runat="server" Text='<%# Eval("Amount")%>' Font-Bold="true">
+
+                                                                                                                                                                </asp:Label>
+                                                                                                                                                            </ItemTemplate>
+                                                                                                                                                        </asp:TemplateField>
+
+                                                                                                                                                        <%--<asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:F2}" HeaderStyle-BorderColor="Gray" />--%>
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="ChequeNo" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="13%">
+                                                                                                                                                            <ItemTemplate>
+                                                                                                                                                                <%--<asp:TextBox ID="txtAmount" runat="server" Width="90%"  Text='<%# Eval("Amount")%>' Height="26px"
+                                                                                                                                                                    ></asp:TextBox>--%>
+                                                                                                                                                                <asp:Label ID="txtAmount" runat="server" Text='<%# Eval("ChequeNo")%>' Font-Bold="true">
+
+                                                                                                                                                                </asp:Label>
+                                                                                                                                                            </ItemTemplate>
+                                                                                                                                                        </asp:TemplateField>
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Type" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="17%">
+                                                                                                                                                            <ItemTemplate>
+                                                                                                                                                                <asp:TextBox ID="txtAdjustAmount" runat="server" Width="92%"  Height="20px" Text='<%# Eval("Type")%>'  BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
+                                                                                                                                                                    ></asp:TextBox>
+                                                                                                                                                            </ItemTemplate>
+                                                                                                                                                        </asp:TemplateField>
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Completed" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center">
+                                                                                                                                                            <ItemTemplate>
+                                                                                                                                                                <asp:Label ID="txtCompleted" runat="server" Width="90%"  Height="23px" Text='<%# Eval("Completed")%>'  BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
+                                                                                                                                                                    ></asp:Label>
+                                                                                                                                                            </ItemTemplate>
+                                                                                                                                                        </asp:TemplateField>
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Amount1" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center">
+                                                                                                                                                            <ItemTemplate>
+                                                                                                                                                                <asp:Label ID="txtAmount1" runat="server" Width="90%"  Height="23px" Text='<%# Eval("Amount1")%>'  BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" Font-Bold="true"
+                                                                                                                                                                    ></asp:Label>
+                                                                                                                                                            </ItemTemplate>
+                                                                                                                                                        </asp:TemplateField>
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="5%">
+                                                                                                                                                            <ItemTemplate>
+                                                                                                                                                                
+                                                                                                                                                            </ItemTemplate>
+                                                                                                                                                        </asp:TemplateField>
+                                                                                                                                                    </Columns>
+                                                                                                                                                    <PagerTemplate>
+                                                                                                                                                        <table style="border-color: white">
+                                                                                                                                                            <tr style="border-color: white">
+                                                                                                                                                                <td style="border-color: white">Goto Page
+                                                                                                                                                                </td>
+                                                                                                                                                                <td style="border-color: white">
+                                                                                                                                                                    <asp:DropDownList ID="ddlPageSelector" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPageSelector_SelectedIndexChanged" SkinID="skinPagerDdlBox2" Style="border: 1px solid blue">
+                                                                                                                                                                    </asp:DropDownList>
+                                                                                                                                                                </td>
+                                                                                                                                                                <td style="border-color: white; width: 5px"></td>
+                                                                                                                                                                <td style="border-color: white">
+                                                                                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="First" CausesValidation="false" runat="server" CssClass="NewFirst" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                                                                                        ID="btnFirst" />
+                                                                                                                                                                </td>
+                                                                                                                                                                <td style="border-color: white">
+                                                                                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="Prev" CausesValidation="false" runat="server" CssClass="NewPrev" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                                                                                        ID="btnPrevious" />
+                                                                                                                                                                </td>
+                                                                                                                                                                <td style="border-color: white">
+                                                                                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="Next" CausesValidation="false" runat="server" CssClass="NewNext" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                                                                                        ID="btnNext" />
+                                                                                                                                                                </td>
+                                                                                                                                                                <td style="border-color: white">
+                                                                                                                                                                    <asp:Button Text="" CommandName="Page" CommandArgument="Last" CausesValidation="false" runat="server" CssClass="NewLast" EnableTheming="false" Width="22px" Height="18px"
+                                                                                                                                                                        ID="btnLast" />
+                                                                                                                                                                </td>
+                                                                                                                                                            </tr>
+                                                                                                                                                        </table>
+                                                                                                                                                    </PagerTemplate>
+                                                                                                                                                </asp:GridView>
+                                                                                                                                        </ContentTemplate>
+                                                                                                                                    
+                                                                                                                                </asp:UpdatePanel>
+                                                                                                                                            </div>
+                                                                                                                                                </asp:Panel>
+                                                                                                                                        </td>
                                                                                                                                     </tr>
                                                                                                                                 </table>
                                                                                                                             </td>
                                                                                                                         </tr>
+                                                                                                                            
                                                                                                                         <tr>
                                                                                                                             <td colspan="4">
                                                                                                                                 <table style="width: 100%;">
