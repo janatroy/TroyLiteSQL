@@ -2634,11 +2634,11 @@ public partial class CustomerPayment : System.Web.UI.Page
         if (ddCriteria.SelectedItem.Text == "Transaction Date")
         {
             //txtdate.EnableViewState = 1;
-            txtdate.Enabled = true;
+            //txtdate.Enabled = true;
         }
         else
         {
-           txtdate.Enabled = false;
+           //txtdate.Enabled = false;
         }
     }
   

@@ -1224,11 +1224,11 @@ public partial class BusinessLogic
         }
     }
 
-    public string IsAmountPaidForBill(string billNo)
+    public string IsAmountPaidForBill(string connection,string billNo)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        manager.ConnectionString = CreateConnectionString(connection);
         string dbQry = string.Empty;
 
         try
@@ -32818,9 +32818,10 @@ public partial class BusinessLogic
         DataSet ds = new DataSet();
 
         string dbQry = string.Empty;
+        string dbQry1 = string.Empty;
         string sAuditStr = string.Empty;
         DataSet ds1 = new DataSet();
-
+        DataSet ds2 = new DataSet();
         string dbQ = string.Empty;
         DataSet dsd = new DataSet();
         string logdescription = string.Empty;
@@ -32835,10 +32836,24 @@ public partial class BusinessLogic
                 throw new Exception("Invalid Date");
             }
 
+
+
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
             manager.BeginTransaction();
+
+
+            dbQry1 = string.Format("Select * from tblCreditDebitNote Where CDType='" + CDType + "' and  Amount='" + Amount + "' and NoteDate='" + NoteDate.ToString("yyyy-MM-dd") + "' and LedgerID='" + LedgerID + "'");         
+            ds2 = manager.ExecuteDataSet(CommandType.Text, dbQry1);
+            if (ds2 != null)
+            {
+                if (ds2.Tables.Count > 0)
+                {
+                    throw new Exception("Already entered");                   
+                }
+            }
+
 
             int CreditorID = 0;
             int DebtorID = 0;

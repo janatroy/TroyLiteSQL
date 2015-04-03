@@ -988,7 +988,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1274,7 +1274,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1514,7 +1514,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -6314,7 +6314,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7393,7 +7393,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7560,7 +7560,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -9265,7 +9265,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                     if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                     {
-                        var receivedBill = bl.IsAmountPaidForBill(sBillNo.ToString());
+                        var receivedBill = bl.IsAmountPaidForBill(connection,sBillNo.ToString());
 
                         if (receivedBill != string.Empty)
                         {
