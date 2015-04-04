@@ -20,7 +20,7 @@
 
                 $addHandler(
                 tab.get_headerTab(),
-                'mouseover',
+                'click',
                 Function.createDelegate(tab, function () {
                     tabContainer.set_activeTab(this);
                 }
@@ -31,113 +31,49 @@
     </script>
 
     <style id="Style1" runat="server">
-        .fancy-green .ajax__tab_header {
-            background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
-            cursor: pointer;
-        }
-
-        .fancy-green .ajax__tab_hover .ajax__tab_outer, .fancy-green .ajax__tab_active .ajax__tab_outer {
-            background: url(App_Themes/NewTheme/Images/green_left_Tab.gif) no-repeat left top;
-        }
-
-        .fancy-green .ajax__tab_hover .ajax__tab_inner, .fancy-green .ajax__tab_active .ajax__tab_inner {
-            background: url(App_Themes/NewTheme/Images/green_right_Tab.gif) no-repeat right top;
-        }
-
-        .fancy .ajax__tab_header {
-            font-size: 13px;
-            font-weight: bold;
-            color: #000;
-            font-family: sans-serif;
-        }
-
-            .fancy .ajax__tab_active .ajax__tab_outer, .fancy .ajax__tab_header .ajax__tab_outer, .fancy .ajax__tab_hover .ajax__tab_outer {
-                height: 46px;
-            }
-
-            .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
-                height: 46px;
-                margin-left: 16px; /* offset the width of the left image */
-            }
-
-            .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
-                margin: 16px 16px 0px 0px;
-            }
-
-        .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_active .ajax__tab_tab {
-            color: #fff;
-        }
-
-        .fancy .ajax__tab_body {
-            font-family: Arial;
-            font-size: 10pt;
-            border-top: 0;
-            border: 1px solid #999999;
-            padding: 8px;
-            background-color: #ffffff;
-        }
     </style>
 
     <table style="width: 100%">
         <tr style="width: 100%">
             <td style="width: 100%;">
-                <%--<table style="width: 100%">
-                    <tr style="width: 100%">
-                        <td style="width: 100%">
-                            <%--<table class="mainConHd" style="width: 994px;">
-                                <tr valign="middle">
-                                    <td style="font-size: 20px;">
-                                        Basic Settings
-                                    </td>
-                                </tr>
-                                <tr valign="middle">
-
-                                </tr>
-                            </table>--%>
-                <%--<table class="mainConHd" style="width: 994px;">
-                                <tr valign="middle">
-                                    <td style="font-size: 20px;">
-                                        Basic Settings
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>--%>
-                <%--<table class="mainConHd" style="width: 994px;">
-                    <tr valign="middle">
-                        <td style="font-size: 20px;">
-                            Basic Settings
-                        </td>
-                    </tr>
-                </table>--%>
                 <div class="mainConBody">
-                    <table style="width: 100.3%; margin: -3px 0px 0px 2px;" cellpadding="2px" cellspacing="2px" class="searchbg">
+                    <table style="width: 100%; margin: -1px 0px 0px 0px;" cellpadding="2px" cellspacing="2px" class="searchbg">
                         <tr>
                             <td style="width: 1%"></td>
-                            <td style="width: 25%; font-size: 22px; color: #000000;">Basic Settings
+                            <td style="width: 25%; font-size: 22px; color: white;">Basic Settings
                             </td>
                             <td style="width: 14%"></td>
                             <td style="width: 10%; color: #000000;" align="right"></td>
                             <td style="width: 19%"></td>
                             <td style="width: 18%"></td>
-
                         </tr>
                     </table>
                 </div>
-                <table style="text-align: left; border: 0px solid #5078B3; margin: -6px 0px 0px 0px; padding-left: 3px; width: 980px" cellpadding="0"
+                <div class="mainConBody">
+                    <table style="width: 100%; height: 10%">
+                        <tr>
+                            <td style="width: 1%"></td>
+                            <td style="width: 25%;"></td>
+                            <td style="width: 14%"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 19%"></td>
+                            <td style="width: 18%"></td>
+                        </tr>
+                    </table>
+                </div>
+                <table style="text-align: left; border: 0px solid #5078B3; margin: -5px 0px 0px 1px; padding-left: 3px; width: 992px" cellpadding="0"
                     cellspacing="0">
                     <tr>
                         <td>
-                            <div align="center" style="width: 980px; margin: -6px 0px 0px 0px; text-align: left">
-                                <cc1:TabContainer ID="tabs2" runat="server" ActiveTabIndex="0" CssClass="fancy fancy-green">
+                            <div align="center" style="width: 990px; margin: -5px 0px 0px 0px; text-align: left">
+                                <cc1:TabContainer ID="tabs2" runat="server" ActiveTabIndex="0" CssClass="fancy fancy-green" Width="990px">
                                     <cc1:TabPanel ID="tabMaster" runat="server" HeaderText="Company Details">
                                         <ContentTemplate>
                                             <div style="text-align: left;">
-                                                <table style="width: 977px; font-size: 11px; font-family: 'Trebuchet MS';" cellpadding="1"
+                                                <table style="width: 990px; font-size: 11px; font-family: 'Trebuchet MS';" cellpadding="1"
                                                     cellspacing="1">
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">
+                                                        <td style="width: 25%" class="ControlLabelproject">
                                                             <asp:RequiredFieldValidator ID="rqCompany" ForeColor="Red" ValidationGroup="compInfo"
                                                                 ErrorMessage="Company Name is mandatory" Font-Bold="true" runat="server" Text="*"
                                                                 ControlToValidate="txtCompanyName"></asp:RequiredFieldValidator>
@@ -146,7 +82,7 @@
                                                         <td style="width: 25%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtCompanyName" runat="server" Width="300px" CssClass="cssTextBox"></asp:TextBox>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">
+                                                        <td style="width: 15%" class="ControlLabelproject">
                                                             <asp:RegularExpressionValidator ID="rgEmail" runat="server" ErrorMessage="Wrong Email Format"
                                                                 ValidationGroup="compInfo" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
                                                                 ControlToValidate="txtEmail"></asp:RegularExpressionValidator>
@@ -174,13 +110,13 @@
                                                         </td>
                                                     </tr>--%>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Address
+                                                        <td style="width: 25%" class="ControlLabelproject">Address
                                                         </td>
                                                         <td style="width: 25%" class="ControlTextBox3">
                                                             <asp:TextBox TextMode="MultiLine" ID="txtAddress" runat="server" CssClass="cssTextBox"
                                                                 Width="300px" Height="46px"></asp:TextBox>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">
+                                                        <td style="width: 15%" class="ControlLabelproject">
                                                             <asp:RequiredFieldValidator ID="rvCity" ForeColor="Red" ValidationGroup="compInfo"
                                                                 ErrorMessage="City is mandatory" Font-Bold="true" runat="server" Text="*" ControlToValidate="txtCity"></asp:RequiredFieldValidator>
                                                             City
@@ -207,7 +143,7 @@
                                                         </td>
                                                     </tr>--%>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">
+                                                        <td style="width: 25%" class="ControlLabelproject">
                                                             <asp:RequiredFieldValidator ID="rvPin" ForeColor="Red" ValidationGroup="compInfo"
                                                                 ErrorMessage="Pincode is mandatory" Font-Bold="true" runat="server" Text="*"
                                                                 ControlToValidate="txtPincode"></asp:RequiredFieldValidator>
@@ -216,7 +152,7 @@
                                                         <td style="width: 25%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtPincode" runat="server" CssClass="cssTextBox" Width="300px" Height="16px"></asp:TextBox>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">
+                                                        <td style="width: 15%" class="ControlLabelproject">
                                                             <asp:RequiredFieldValidator ID="rvState" ForeColor="Red" ValidationGroup="compInfo"
                                                                 ErrorMessage="State is mandatory" Font-Bold="true" runat="server" Text="*" ControlToValidate="txtState"></asp:RequiredFieldValidator>
                                                             State
@@ -243,12 +179,12 @@
                                                         </td>
                                                     </tr>--%>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Phone
+                                                        <td style="width: 25%" class="ControlLabelproject">Phone
                                                         </td>
                                                         <td style="width: 25%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtPhone" runat="server" CssClass="cssTextBox" Width="300px" Height="16px"></asp:TextBox>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">FAX
+                                                        <td style="width: 15%" class="ControlLabelproject">FAX
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtFAX" runat="server" CssClass="cssTextBox" Width="300px" Height="16px"></asp:TextBox>
@@ -272,12 +208,12 @@
                                                         </td>
                                                     </tr>--%>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">CST No.
+                                                        <td style="width: 25%" class="ControlLabelproject">CST No.
                                                         </td>
                                                         <td style="width: 25%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtCST" runat="server" CssClass="cssTextBox" Width="300px" Height="16px"></asp:TextBox>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Logo.
+                                                        <td style="width: 15%" class="ControlLabelproject">Logo.
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:FileUpload ID="fileuploadimages" runat="server" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7;" />
@@ -287,7 +223,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">TIN No.
+                                                        <td style="width: 25%" class="ControlLabelproject">TIN No.
                                                         </td>
                                                         <td style="width: 25%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtTin" runat="server" CssClass="cssTextBox" Width="300px" Height="16px"></asp:TextBox>
@@ -334,7 +270,7 @@
                                                                                 <tr style="height: 5px">
                                                                                 </tr>
                                                                                 <tr style="height: 20px">
-                                                                                    <td style="width: 20%" class="ControlLabel">
+                                                                                    <td style="width: 20%" class="ControlLabelproject">
                                                                                         <asp:RequiredFieldValidator ValidationGroup="Save" ID="rq" runat="server" ErrorMessage="Division is mandatory"
                                                                                             Text="*" ControlToValidate="txtDivision"></asp:RequiredFieldValidator>
                                                                                         Division *
@@ -342,7 +278,7 @@
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivision" MaxLength="50" runat="server" SkinID="skinTxtBox" TabIndex="1"></asp:TextBox>
                                                                                     </td>
-                                                                                    <td style="width: 10%" class="ControlLabel">PIN No.
+                                                                                    <td style="width: 10%" class="ControlLabelproject">PIN No.
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivPinNo" TabIndex="6" MaxLength="10" runat="server" SkinID="skinTxtBox" />
@@ -352,12 +288,12 @@
                                                                                 <tr style="height: 2px">
                                                                                 </tr>
                                                                                 <tr style="vertical-align: bottom">
-                                                                                    <td style="width: 20%" class="ControlLabel">Street
+                                                                                    <td style="width: 20%" class="ControlLabelproject">Street
                                                                                     </td>
                                                                                     <td style="width: 20%; vertical-align: middle" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivAddress" TabIndex="2" MaxLength="255" runat="server" SkinID="skinTxtBox" />
                                                                                     </td>
-                                                                                    <td style="width: 10%" class="ControlLabel">Phone
+                                                                                    <td style="width: 10%" class="ControlLabelproject">Phone
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivPhoneNo" TabIndex="7" runat="server" MaxLength="10" SkinID="skinTxtBox"></asp:TextBox>
@@ -367,7 +303,7 @@
                                                                                 <tr style="height: 2px">
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td style="width: 20%" class="ControlLabel">
+                                                                                    <td style="width: 20%" class="ControlLabelproject">
                                                                                         <asp:RequiredFieldValidator ValidationGroup="Save" ID="RequiredFieldValidator5" runat="server"
                                                                                             Text="*" ErrorMessage="City is mandatory" ControlToValidate="txtDivCity"></asp:RequiredFieldValidator>
                                                                                         City *
@@ -375,7 +311,7 @@
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivCity" TabIndex="3" MaxLength="50" runat="server" SkinID="skinTxtBox" />
                                                                                     </td>
-                                                                                    <td style="width: 10%" class="ControlLabel">Fax
+                                                                                    <td style="width: 10%" class="ControlLabelproject">Fax
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivFax" TabIndex="8" MaxLength="10" runat="server" SkinID="skinTxtBox"> </asp:TextBox>
@@ -385,12 +321,12 @@
                                                                                 <tr style="height: 2px">
                                                                                 </tr>
                                                                                 <tr runat="server" id="rowremarks">
-                                                                                    <td style="width: 20%" class="ControlLabel">State
+                                                                                    <td style="width: 20%" class="ControlLabelproject">State
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivState" TabIndex="4" MaxLength="50" runat="server" SkinID="skinTxtBox" />
                                                                                     </td>
-                                                                                    <td style="width: 10%" class="ControlLabel">Email
+                                                                                    <td style="width: 10%" class="ControlLabelproject">Email
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivEmail" TabIndex="9" MaxLength="50" runat="server" SkinID="skinTxtBox" />
@@ -400,12 +336,12 @@
                                                                                 <tr style="height: 2px">
                                                                                 </tr>
                                                                                 <tr runat="server" id="Tr1">
-                                                                                    <td style="width: 20%" class="ControlLabel">TIN No.
+                                                                                    <td style="width: 20%" class="ControlLabelproject">TIN No.
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivTinNo" TabIndex="5" runat="server" MaxLength="10" SkinID="skinTxtBox" />
                                                                                     </td>
-                                                                                    <td style="width: 10%" class="ControlLabel">GST No.
+                                                                                    <td style="width: 10%" class="ControlLabelproject">GST No.
                                                                                     </td>
                                                                                     <td style="width: 20%" class="ControlTextBox3">
                                                                                         <asp:TextBox ID="txtDivGSTNo" TabIndex="10" MaxLength="10" runat="server" SkinID="skinTxtBox" />
@@ -508,7 +444,7 @@
                                                     <tr style="height: 10px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Auto Date Lock
+                                                        <td style="width: 25%" class="ControlLabelproject">Auto Date Lock
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:RadioButtonList ID="dpautolock" runat="server" RepeatDirection="Horizontal">
@@ -516,7 +452,7 @@
                                                                 <asp:ListItem Text="NO"></asp:ListItem>
                                                             </asp:RadioButtonList>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Purchase Entry Date Enable
+                                                        <td style="width: 25%" class="ControlLabelproject">Purchase Entry Date Enable
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:RadioButtonList ID="rdvoudateenable" runat="server" RepeatDirection="Horizontal">
@@ -528,7 +464,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Enable Vat% in S And P
+                                                        <td style="width: 25%" class="ControlLabelproject">Enable Vat% in S And P
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:RadioButtonList ID="ddenablevat" runat="server" RepeatDirection="Horizontal">
@@ -536,7 +472,7 @@
                                                                 <asp:ListItem Text="NO"></asp:ListItem>
                                                             </asp:RadioButtonList>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Save Log Details
+                                                        <td style="width: 15%" class="ControlLabelproject">Save Log Details
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:RadioButtonList ID="dpsavelog" runat="server" RepeatDirection="Horizontal">
@@ -548,7 +484,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Hide Obsolute Products
+                                                        <td style="width: 25%" class="ControlLabelproject">Hide Obsolute Products
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <asp:DropDownList ID="dpobsolute" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
@@ -557,7 +493,7 @@
                                                                 <asp:ListItem Selected="True" Text="NO"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Billing Method
+                                                        <td style="width: 15%" class="ControlLabelproject">Billing Method
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <%--<div style="border-width: 1px; border-color: #90c9fc; border-style: solid; width: 170px;">--%>
@@ -572,7 +508,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">
+                                                        <td style="width: 25%" class="ControlLabelproject">
                                                             <%--RoundOff With FixedTotal--%>
                                                             Deviation Price List
                                                         </td>
@@ -588,7 +524,7 @@
                                                                 <asp:ListItem Text="Select PriceList" Value="0"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Sales BillNo Series
+                                                        <td style="width: 15%" class="ControlLabelproject">Sales BillNo Series
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <asp:DropDownList ID="dpsalesbillno" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
@@ -601,7 +537,7 @@
                                                     <%--<tr style="height:2px">
                                                                                                </tr>--%>
                                                     <tr id="rowextra" runat="server" style="display: none">
-                                                        <td style="width: 25%" class="ControlLabel">Supplier TinNo mandatory
+                                                        <td style="width: 25%" class="ControlLabelproject">Supplier TinNo mandatory
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -615,7 +551,7 @@
                                                             </asp:RadioButtonList>
                                                             <%--</div>--%>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">BLIT Required
+                                                        <td style="width: 15%" class="ControlLabelproject">BLIT Required
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -629,7 +565,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Update Opening Balance
+                                                        <td style="width: 25%" class="ControlLabelproject">Update Opening Balance
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:RadioButtonList ID="RadioButtonOpening" runat="server" RepeatDirection="Horizontal">
@@ -637,7 +573,7 @@
                                                                 <asp:ListItem Text="NO"></asp:ListItem>
                                                             </asp:RadioButtonList>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Enable Sales Discount
+                                                        <td style="width: 15%" class="ControlLabelproject">Enable Sales Discount
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:RadioButtonList ID="RadioButtonDiscount" runat="server" RepeatDirection="Horizontal">
@@ -649,7 +585,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">MAC Blocking
+                                                        <td style="width: 25%" class="ControlLabelproject">MAC Blocking
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -660,7 +596,7 @@
                                                             </asp:RadioButtonList>
                                                             <%--</div>--%>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Bill Format
+                                                        <td style="width: 15%" class="ControlLabelproject">Bill Format
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <%--<div style="border-width: 1px; border-color: #90c9fc; border-style: solid; width: 170px;">--%>
@@ -675,7 +611,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Currency
+                                                        <td style="width: 25%" class="ControlLabelproject">Currency
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <%--<div style="border-width: 1px; border-color: #90c9fc; border-style: solid; width: 170px;">--%>
@@ -686,7 +622,7 @@
                                                             </asp:DropDownList>
                                                             <%--</div>--%>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Stock Edit
+                                                        <td style="width: 15%" class="ControlLabelproject">Stock Edit
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -700,7 +636,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Barcode
+                                                        <td style="width: 25%" class="ControlLabelproject">Barcode
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -710,7 +646,7 @@
                                                             </asp:RadioButtonList>
                                                             <%--</div>--%>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">SMS Required
+                                                        <td style="width: 15%" class="ControlLabelproject">SMS Required
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -724,7 +660,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Email Required
+                                                        <td style="width: 25%" class="ControlLabelproject">Email Required
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -734,7 +670,7 @@
                                                             </asp:RadioButtonList>
                                                             <%--</div>--%>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Owner Mobile
+                                                        <td style="width: 15%" class="ControlLabelproject">Owner Mobile
                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender45" runat="server" FilterType="Numbers"
                                                                 TargetControlID="txtMobile" />
                                                         </td>
@@ -745,13 +681,13 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">VAT Amount
+                                                        <td style="width: 25%" class="ControlLabelproject">VAT Amount
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtVATAmount" MaxLength="10" runat="server" CssClass="cssTextBox"
                                                                 Width="165px"></asp:TextBox>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">VAT Recon Date
+                                                        <td style="width: 15%" class="ControlLabelproject">VAT Recon Date
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:TextBox ID="txtVATReconDate" Enabled="false" runat="server" CssClass="cssTextBox" Width="125px"
@@ -768,12 +704,12 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Licence
+                                                        <td style="width: 25%" class="ControlLabelproject">Licence
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <asp:Label ID="Label1" ForeColor="Black" runat="server"></asp:Label>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Password Expiry Day
+                                                        <td style="width: 15%" class="ControlLabelproject">Password Expiry Day
                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
                                                                 TargetControlID="txtExpDay" />
                                                         </td>
@@ -784,7 +720,7 @@
                                                     <tr style="height: 5px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Purchase Price List
+                                                        <td style="width: 25%" class="ControlLabelproject">Purchase Price List
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <asp:DropDownList ID="drpPurPriceList" Width="100%" AppendDataBoundItems="True" CssClass="drpDownListMedium"
@@ -818,7 +754,7 @@
                                                     <tr style="height: 10px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Item Tracking
+                                                        <td style="width: 25%" class="ControlLabelproject">Item Tracking
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -827,7 +763,7 @@
                                                                 <asp:ListItem Text="NO"></asp:ListItem>
                                                             </asp:RadioButtonList>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">
+                                                        <td style="width: 25%" class="ControlLabelproject">
                                                             <asp:RequiredFieldValidator ValidationGroup="Save" ID="RequiredFieldValidator1" Font-Bold="True"
                                                                 runat="server" Text="*" ControlToValidate="txtDate"></asp:RequiredFieldValidator>
                                                             Item Tracking Start Date
@@ -846,7 +782,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Item Tracking Itemcode
+                                                        <td style="width: 25%" class="ControlLabelproject">Item Tracking Itemcode
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <div style="border-width: 1px; border-color: #e7e7e7; border-style: solid;">
@@ -857,7 +793,7 @@
                                                                 </asp:DropDownList>
                                                             </div>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Discount Type
+                                                        <td style="width: 15%" class="ControlLabelproject">Discount Type
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                             <div style="border-width: 1px; border-color: #e7e7e7; border-style: solid;">
@@ -872,7 +808,7 @@
                                                     <tr style="height: 2px">
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 25%" class="ControlLabel">Allow Credit Exceed
+                                                        <td style="width: 25%" class="ControlLabelproject">Allow Credit Exceed
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
@@ -882,7 +818,7 @@
                                                             </asp:RadioButtonList>
                                                             <%--</div>--%>
                                                         </td>
-                                                        <td style="width: 15%" class="ControlLabel">Dealer Required
+                                                        <td style="width: 15%" class="ControlLabelproject">Dealer Required
                                                         </td>
                                                         <td style="width: 20%" class="ControlTextBox3">
                                                             <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>

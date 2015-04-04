@@ -10278,6 +10278,40 @@ public partial class BusinessLogic
         }
     }
 
+    public DataSet ListCreditorDebitorJBranch(string connection, string branchcode)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        if (connection.IndexOf("Provider=Microsoft.Jet.OLEDB.4.0;") > -1)
+            manager.ConnectionString = CreateConnectionString(connection);
+        else
+            manager.ConnectionString = CreateConnectionString(connection);
+
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        try
+        {
+            //dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where tblGroups.GroupName IN ('{0}','{1}','{2}','{3}','{4}') OR tblGroups.HeadingID IN (11) Order By LedgerName Asc ", "Sundry Debtors", "Sundry Creditors", "Bank Accounts", "Cash in Hand", "InCome");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblLedger.Unuse = 'YES' and tblLedger.BranchCode='" + branchcode + "' ORDER By LedgerName");
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (manager != null)
+                manager.Dispose();
+        }
+    }
+
     public DataSet ListCreditorDebitorJ(string connection)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -32976,15 +33010,15 @@ public partial class BusinessLogic
             manager.BeginTransaction();
 
 
-            dbQry1 = string.Format("Select * from tblCreditDebitNote Where CDType='" + CDType + "' and  Amount='" + Amount + "' and NoteDate='" + NoteDate.ToString("yyyy-MM-dd") + "' and LedgerID='" + LedgerID + "'");         
-            ds2 = manager.ExecuteDataSet(CommandType.Text, dbQry1);
-            if (ds2 != null)
-            {
-                if (ds2.Tables.Count > 0)
-                {
-                    throw new Exception("Already entered");                   
-                }
-            }
+            //dbQry1 = string.Format("Select * from tblCreditDebitNote Where CDType='" + CDType + "' and  Amount='" + Amount + "' and NoteDate='" + NoteDate.ToString("yyyy-MM-dd") + "' and LedgerID='" + LedgerID + "'");         
+            //ds2 = manager.ExecuteDataSet(CommandType.Text, dbQry1);
+            //if (ds2 != null)
+            //{
+            //    if (ds2.Tables.Count > 0)
+            //    {
+            //        throw new Exception("Already entered");                   
+            //    }
+            //}
 
 
             int CreditorID = 0;
@@ -55153,7 +55187,7 @@ public partial class BusinessLogic
             }
             else if (dropDown == "Date" && txtSearch != null)
             {
-                dbQry.AppendFormat(" AND [tblDayBook.TransDate] = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+                dbQry.AppendFormat(" AND tblDayBook.TransDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
             else if (dropDown == "LedgerName" && txtSearch != null)
             {
