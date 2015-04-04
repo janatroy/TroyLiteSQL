@@ -202,7 +202,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 loadSupplier("Sundry Debtors");
                 loadCategories();
                 LoadProducts(this, null);
-
+                loadManualSalesBooks();
                 rowmanual.Visible = false;
                 txtBillDate.Focus();
                 //BindGrid(0, 0);
@@ -569,6 +569,19 @@ public partial class CustomerSales : System.Web.UI.Page
         cmbCategory.DataValueField = "CategoryID";
         cmbCategory.DataSource = ds;
         cmbCategory.DataBind();
+    }
+
+    private void loadManualSalesBooks()
+    {
+        //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
+        BusinessLogic bl = new BusinessLogic();
+        DataSet ds = new DataSet();
+        
+        ds = bl.GetManualSalesBooks(sDataSource);
+        drpManualSalesBook.DataTextField = "BookName";
+        drpManualSalesBook.DataValueField = "BookId";
+        drpManualSalesBook.DataSource = ds;
+        drpManualSalesBook.DataBind();
     }
 
 
@@ -988,7 +1001,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1274,7 +1287,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1514,7 +1527,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -3144,8 +3157,15 @@ public partial class CustomerSales : System.Web.UI.Page
     protected void txtmanual_TextChanged(object sender, EventArgs e)
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
+        int bookId = int.Parse(drpManualSalesBook.SelectedValue);
 
-        if (!bl.IsManualSalesBillNoValid(sDataSource, txtmanual.Text.Trim()))
+        if(bookId == 0)
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Select Book')", true);
+            return;
+        }
+
+        if (!bl.IsManualSalesBillNoValid(sDataSource, txtmanual.Text.Trim(), bookId))
         {
             txtmanual.Text = string.Empty;
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid BillNo. Please correct and try again')", true);
@@ -3238,7 +3258,7 @@ public partial class CustomerSales : System.Web.UI.Page
             string Series = "";
             DataSet receiptData = null;
             DataSet billData = null;
-
+            int bookId = 0;
 
             if (Page.IsValid)
             {
@@ -3337,7 +3357,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 //Senthil
                 //executivename = drpIncharge.SelectedItem.Text;
-
+                bookId = int.Parse( drpManualSalesBook.SelectedValue);
                 intTrans = drpIntTrans.SelectedValue;
                 deliveryNote = ddDeliveryNote.SelectedValue;
                 sOtherCusName = txtOtherCusName.Text;// krishnavelu 26 June
@@ -4361,7 +4381,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode, connection, deliveryReturn);
+                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode, connection, deliveryReturn, bookId);
                         if (purchaseReturn == "YES" || deliveryReturn == "YES")
                         {
                             iUpdateRtnQty = bl.UpdatePurchaseRtnStatus(iPurID);
@@ -6314,7 +6334,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7393,7 +7413,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7560,7 +7580,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -9265,7 +9285,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                     if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                     {
-                        var receivedBill = bl.IsAmountPaidForBill(sBillNo.ToString());
+                        var receivedBill = bl.IsAmountPaidForBill(connection,sBillNo.ToString());
 
                         if (receivedBill != string.Empty)
                         {

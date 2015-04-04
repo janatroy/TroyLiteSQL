@@ -1224,11 +1224,11 @@ public partial class BusinessLogic
         }
     }
 
-    public string IsAmountPaidForBill(string billNo)
+    public string IsAmountPaidForBill(string connection,string billNo)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
-        manager.ConnectionString = CreateConnectionString(this.ConnectionString);
+        manager.ConnectionString = CreateConnectionString(connection);
         string dbQry = string.Empty;
 
         try
@@ -13875,7 +13875,7 @@ public partial class BusinessLogic
 
     }
 
-    public int InsertSalesNewSeries(string Series, string BillDate, int sCustomerID, string sCustomerName, string sCustomerAddress, string sCustomerContact, int paymode, string sCreditCardno, int BankName, double Amount, string purchasereturn, string prreason, double freight, double dLU, DataSet salesDS, string sOtherCusName, string intTrans, DataSet receiptData, string MultiPayment, string deliveryNote, string sCustomerAddress2, string sCustomerAddress3, string sexecutivename, string despatchedfrom, double fixedtotal, int manualno, double TotalWORndOff, string usernam, string ManualSales, string NormalSales, string Types, string narration2, string DuplicateCopy, string check, string CustomerIdMobile, string cuscategory, string distype, int iPurID, string branchcode, string connection, string deliveryReturn)
+    public int InsertSalesNewSeries(string Series, string BillDate, int sCustomerID, string sCustomerName, string sCustomerAddress, string sCustomerContact, int paymode, string sCreditCardno, int BankName, double Amount, string purchasereturn, string prreason, double freight, double dLU, DataSet salesDS, string sOtherCusName, string intTrans, DataSet receiptData, string MultiPayment, string deliveryNote, string sCustomerAddress2, string sCustomerAddress3, string sexecutivename, string despatchedfrom, double fixedtotal, int manualno, double TotalWORndOff, string usernam, string ManualSales, string NormalSales, string Types, string narration2, string DuplicateCopy, string check, string CustomerIdMobile, string cuscategory, string distype, int iPurID, string branchcode, string connection, string deliveryReturn, int bookId)
     {
 
         DBManager manager = new DBManager(DataProvider.SqlServer);
@@ -14363,8 +14363,8 @@ public partial class BusinessLogic
 
                 int middlePos = 0;
 
-                logdescription = string.Format("INSERT INTO tblSales(Billno,SeriesID,BillDate,JournalID,CustomerID,CustomerName,CustomerAddress,CustomerContacts,Paymode,purchaseReturn,purchaseReturnReason,freight,LoadUnload,OtherCusName,InternalTransfer,MultiPayment,DeliveryNote,CustomerAddress2,CustomerAddress3,executivename,despatchedfrom, manualNo,Total,TotalWORndOff, Manualsales, NormalSales,Types,narration2,Discounttype,InvoiceReturnStatus,BranchCode,DeliveryReturn) VALUES({0},{14},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31})",
-                    salesBillno, sBilldate.ToString("yyyy-MM-dd"), NewTransNo, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, paymode, purchasereturn, prreason, freight, dLU, sOtherCusName, Series, intTrans, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, sexecutivename, despatchedfrom, manualno, Amount, TotalWORndOff, ManualSales, NormalSales, Types, narration2, distype, "NO", branchcode, deliveryReturn);
+                logdescription = string.Format("INSERT INTO tblSales(Billno,SeriesID,BillDate,JournalID,CustomerID,CustomerName,CustomerAddress,CustomerContacts,Paymode,purchaseReturn,purchaseReturnReason,freight,LoadUnload,OtherCusName,InternalTransfer,MultiPayment,DeliveryNote,CustomerAddress2,CustomerAddress3,executivename,despatchedfrom, manualNo,Total,TotalWORndOff, Manualsales, NormalSales,Types,narration2,Discounttype,InvoiceReturnStatus,BranchCode,DeliveryReturn, BookId) VALUES({0},{14},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32})",
+                    salesBillno, sBilldate.ToString("yyyy-MM-dd"), NewTransNo, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, paymode, purchasereturn, prreason, freight, dLU, sOtherCusName, Series, intTrans, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, sexecutivename, despatchedfrom, manualno, Amount, TotalWORndOff, ManualSales, NormalSales, Types, narration2, distype, "NO", branchcode, deliveryReturn, bookId);
                 logdescription = logdescription.Trim();
                 //if (logdescription.Length > 255)
                 //{                   
@@ -33004,9 +33004,10 @@ public partial class BusinessLogic
         DataSet ds = new DataSet();
 
         string dbQry = string.Empty;
+        string dbQry1 = string.Empty;
         string sAuditStr = string.Empty;
         DataSet ds1 = new DataSet();
-
+        DataSet ds2 = new DataSet();
         string dbQ = string.Empty;
         DataSet dsd = new DataSet();
         string logdescription = string.Empty;
@@ -33021,10 +33022,24 @@ public partial class BusinessLogic
                 throw new Exception("Invalid Date");
             }
 
+
+
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
             manager.BeginTransaction();
+
+
+            dbQry1 = string.Format("Select * from tblCreditDebitNote Where CDType='" + CDType + "' and  Amount='" + Amount + "' and NoteDate='" + NoteDate.ToString("yyyy-MM-dd") + "' and LedgerID='" + LedgerID + "'");         
+            ds2 = manager.ExecuteDataSet(CommandType.Text, dbQry1);
+            if (ds2 != null)
+            {
+                if (ds2.Tables.Count > 0)
+                {
+                    throw new Exception("Already entered");                   
+                }
+            }
+
 
             int CreditorID = 0;
             int DebtorID = 0;

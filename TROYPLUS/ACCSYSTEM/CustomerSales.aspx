@@ -1436,8 +1436,14 @@
                                                                                                                         <td class="ControlTextBox3" style="width: 25%;">
                                                                                                                             <asp:TextBox ID="txtmanual" runat="server" BackColor="#e7e7e7" OnTextChanged="txtmanual_TextChanged" CssClass="cssTextBox" Text="" Width="25px" AutoPostBack="True"></asp:TextBox>
                                                                                                                         </td>
-                                                                                                                        <td style="width: 20%"></td>
-                                                                                                                        <td style="width: 25%"></td>
+                                                                                                                        <td style="width: 20%" class="ControlLabelproject">
+                                                                                                                            Manual Sales Book
+                                                                                                                        </td>
+                                                                                                                        <td style="width: 25%">
+                                                                                                                            <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="false" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" AppendDataBoundItems="true">
+                                                                                                                                <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>
+                                                                                                                            </asp:DropDownList>
+                                                                                                                        </td>
                                                                                                                         <td style="width: 15%"></td>
                                                                                                                     </tr>
                                                                                                                     <tr style="height: 3px">
