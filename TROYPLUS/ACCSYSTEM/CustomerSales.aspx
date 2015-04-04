@@ -1094,12 +1094,12 @@
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Disc(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtDisPre" Style="text-align: right" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" ReadOnly="true" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtDisPre" Style="text-align: right" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" ReadOnly="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="VAT(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtVATPre" Style="text-align: right" ReadOnly="true" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtVATPre" Style="text-align: right" ReadOnly="false" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="CST(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
@@ -1430,19 +1430,19 @@
                                                                                     </td>--%>
                                                                                                                     </tr>
                                                                                                                     <tr id="rowmanual" runat="server">
+                                                                                                                       <td style="width: 20%" class="ControlLabelproject">
+                                                                                                                            Manual Sales Book
+                                                                                                                        </td>
+                                                                                                                        <td style="width: 25%">
+                                                                                                                            <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpManualSalesBook_SelectedIndexChanged" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" AppendDataBoundItems="true">
+                                                                                                                                <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>
+                                                                                                                            </asp:DropDownList>
+                                                                                                                        </td>
                                                                                                                         <td class="ControlLabelproject" style="width: 20%;">
                                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtmanual" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please enter Manual Bill No. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                                             Manual Bill No </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 25%;">
                                                                                                                             <asp:TextBox ID="txtmanual" runat="server" BackColor="#e7e7e7" OnTextChanged="txtmanual_TextChanged" CssClass="cssTextBox" Text="" Width="25px" AutoPostBack="True"></asp:TextBox>
-                                                                                                                        </td>
-                                                                                                                        <td style="width: 20%" class="ControlLabelproject">
-                                                                                                                            Manual Sales Book
-                                                                                                                        </td>
-                                                                                                                        <td style="width: 25%">
-                                                                                                                            <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="false" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" AppendDataBoundItems="true">
-                                                                                                                                <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>
-                                                                                                                            </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 15%"></td>
                                                                                                                     </tr>

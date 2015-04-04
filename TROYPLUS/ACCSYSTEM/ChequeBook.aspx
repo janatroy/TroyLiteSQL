@@ -149,6 +149,8 @@
                                                                 <td style="width: 25%" class="ControlLabel">Account No *
                                                                     <asp:RequiredFieldValidator ID="rvAliasNameAdd" runat="server" ControlToValidate="txtAccNoAdd"
                                                                         Display="Dynamic" ErrorMessage="Please Enter Account No. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                      <cc1:FilteredTextBoxExtender ID="fltAccNo" runat="server" FilterType="Numbers"
+                                                                                                        TargetControlID="txtAccNoAdd" />
                                                                 </td>
                                                                 <td style="width: 25%;" class="ControlDrpBorder">
                                                                     <asp:TextBox ID="txtAccNoAdd" runat="server" Text='<%# Bind("AccountNo") %>'
@@ -163,6 +165,8 @@
                                                                 <td style="width: 25%" class="ControlLabel">Cheque No From *
                                                                     <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtFromNoAdd"
                                                                         Display="Dynamic" ErrorMessage="Please enter Cheque From No. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="fltFrmNo" runat="server" FilterType="Numbers"
+                                                                                                        TargetControlID="txtFromNoAdd" />
                                                                 </td>
                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtFromNoAdd" runat="server" Text='<%# Bind("FromChequeNo") %>'
@@ -177,6 +181,8 @@
                                                                 <td style="width: 25%;" class="ControlLabel">Cheque No To *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtToNoAdd"
                                                                         Display="Dynamic" ErrorMessage="Please enter Cheque To No. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                     <cc1:FilteredTextBoxExtender ID="fltToNo" runat="server" FilterType="Numbers"
+                                                                                                        TargetControlID="txtToNoAdd" />
                                                                 </td>
                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtToNoAdd" runat="server" Text='<%# Bind("ToChequeNo") %>'

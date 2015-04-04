@@ -65,6 +65,15 @@ public partial class ChequeBook : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
+            
+            
+                DataSet dsd = bl.GetBranch(connection, usernam);                         
+               
+                if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+                {
+                    lnkBtnAdd.Enabled = false;
+                    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+                }
 
                 if (bl.CheckUserHaveAdd(usernam, "CHQMST"))
                 {
@@ -234,13 +243,13 @@ public partial class ChequeBook : System.Web.UI.Page
                 string ddBankID = ddBankName.SelectedValue;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                if (bl.IsChequeAlreadyEntered(connection, ddBankID, FromNo, ToNo,AccountNo))
-                {
+                //if (bl.IsChequeAlreadyEntered(connection, ddBankID, FromNo, ToNo,AccountNo))
+                //{
 
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given Cheque No already entered for this bank.');", true);
-                    ModalPopupExtender1.Show();
-                    return;
-                }
+                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given Cheque No already entered for this bank.');", true);
+                //    ModalPopupExtender1.Show();
+                //    return;
+                //}
 
                 //if(bl.IsChequeNoNotLess(connection, BankID, FromNo, ToNo))
                 //{
@@ -1213,14 +1222,14 @@ public partial class ChequeBook : System.Web.UI.Page
 
                 if (Convert.ToDouble(txtFromNoAdd.Text) > Convert.ToDouble(txtToNoAdd.Text))
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('ToCheque No Cannot be Less than FromChequeNo');", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('From ChequeNo greater than To ChequeNo');", true);
                     ModalPopupExtender1.Show();
                     return;
                 }
 
                 if (Convert.ToDouble(txtFromNoAdd.Text) == Convert.ToDouble(txtToNoAdd.Text))
                 {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('FromChequeNo Cannot be equal to ToCheque');", true);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('From ChequeNo Cannot be equal to To ChequeNo');", true);
                     ModalPopupExtender1.Show();
                     return;
                 }

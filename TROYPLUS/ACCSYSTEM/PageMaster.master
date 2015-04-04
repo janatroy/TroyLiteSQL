@@ -466,6 +466,7 @@
                                                         <li class="color submenumenu"><a href="./CustReceipt.aspx" runat="server" id="lnkCustomerReceipt">Receipts from Customer</a></li>
                                                         <li class="color submenumenu"><a href="./CustomerPayment.aspx" runat="server" id="lnkCustomerPayment">Payments to Customer</a></li>
                                                         <li class="color submenumenu"><a href="./HirePurchase.aspx" runat="server" id="lnkHirePurchaseNew">Hire Sales</a></li>
+                                                        <li class="color submenumenu"><a href="./ManualSalesBook.aspx" runat="server" id="lnkManualSalesBook">Manual Sales Book</a></li>
                                                         <li class="color submenumenu"><a href="./InternalTransfers.aspx" runat="server" id="lnkInternalTransfers">Internal Transfers</a></li>
                                                         <li class="color submenumenu"><a href="./InternalTransferApproval.aspx" runat="server" id="lnkInternalTransferApprovals">Internal Transfers Approvals</a></li>
                                                     </ul>
@@ -560,8 +561,7 @@
                                                         <li class="color submenumenu"><a href="./BankPayment.aspx" runat="server" id="lnkBankDeposit">Deposits</a></li>
                                                         <li class="color submenumenu"><a href="./BankReceipt.aspx" runat="server" id="lnkBankReceipt">WithDrawals</a></li>
                                                         <li class="color submenumenu"><a href="./BankRecon.aspx" runat="server" id="lnkBankRec">Bank reconciliation</a></li>
-                                                        <li class="color submenumenu"><a href="./ChequeBook.aspx" runat="server" id="lnkChequeBook">Cheque Book</a></li>
-                                                        <li class="color submenumenu"><a href="./ManualSalesBook.aspx" runat="server" id="lnkManualSalesBook">Manual Sales Book</a></li
+                                                        <li class="color submenumenu"><a href="./ChequeBook.aspx" runat="server" id="lnkChequeBook">Cheque Book</a></li>                                                      
                                                     </ul>
                                                 </li>
                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
