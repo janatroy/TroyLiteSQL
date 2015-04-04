@@ -587,7 +587,8 @@ public partial class OpeningStock : System.Web.UI.Page
         txtOpeningStock.Text = "";
         txtCurrentStock.Text = "";
         txtadjusted.Text = "";
-
+        txtremarks.Text = "";
+       
         txtDueDate.Text = "";
         cmbProdAdd.Enabled=true;
         cmbModel.Enabled=true;
@@ -595,20 +596,29 @@ public partial class OpeningStock : System.Web.UI.Page
         cmbCategory.Enabled = true;
         cmbProdName.Enabled = true;
         txtDueDate.Enabled = false;
+       // txtdate.Text =Convert.ToDateTime(DateTime.Now).ToString("dd-MM-yyyy");
 
         cmbCategory.SelectedIndex = 0;
+        // cmbModel.Items.Clear(); 
+        cmbBrand.SelectedIndex = 0;
+        //  cmbBrand.Text = "";
+        // cmbCategory.Text = "";
+        cmbModel.SelectedIndex = 0;
+        cmbProdAdd.SelectedIndex = 0;
+        cmbProdName.SelectedIndex = 0;
+        // cmbModel.SelectedItem.Text = string.Empty;
 
-        if (cmbProdAdd.Items.Count > 0)
-            cmbProdAdd.SelectedIndex = 0;
+        //if (cmbProdAdd.Items.Count > 0)
+        //    cmbProdAdd.SelectedIndex = 0;
 
-        if (cmbModel.Items.Count > 0)
-            cmbModel.SelectedIndex = 0;
+        //if (cmbModel.Items.Count > 0)
+        //    cmbModel.SelectedIndex = 0;
 
-        if (cmbBrand.Items.Count > 0)
-            cmbBrand.SelectedIndex = 0;
+        //if (cmbBrand.Items.Count > 0)
+        //    cmbBrand.SelectedIndex = 0;
 
-        if (cmbProdName.Items.Count > 0)
-            cmbProdName.SelectedIndex = 0;
+        //if (cmbProdName.Items.Count > 0)
+        //    cmbProdName.SelectedIndex = 0;
 
     }
 
@@ -1408,6 +1418,21 @@ public partial class OpeningStock : System.Web.UI.Page
                     ModalPopupExtender1.Show();
                     return;
                 }
+                DateTime date1 = DateTime.Now;
+                DateTime date2 =Convert.ToDateTime(txtDueDate.Text);
+
+                if((date2.Date == date1.Date)|| (date2.Date < date1.Date))
+                {
+
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Due date cannot be Future date.');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+
+                }
+
 
                 try
                 {

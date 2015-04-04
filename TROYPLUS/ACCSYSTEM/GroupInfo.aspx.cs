@@ -49,20 +49,20 @@ public partial class GroupInfo : System.Web.UI.Page
                 grdViewGroup.PageSize = 8;
 
 
-                //string connection = Request.Cookies["Company"].Value;
-                //string usernam = Request.Cookies["LoggedUserName"].Value;
-                //BusinessLogic bl = new BusinessLogic(sDataSource);
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+                BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                //if (bl.CheckUserHaveAdd(usernam, "CUSTRCT"))
-                //{
-                //    lnkBtnAdd.Enabled = false;
-                //    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
-                //}
-                //else
-                //{
-                //    lnkBtnAdd.Enabled = true;
-                //    lnkBtnAdd.ToolTip = "Click to Add New ";
-                //}
+                if (bl.CheckUserHaveAdd(usernam, "GRPMST"))
+                {
+                    lnkBtnAddGroup.Enabled = false;
+                    lnkBtnAddGroup.ToolTip = "You are not allowed to make Add New ";
+                }
+                else
+                {
+                    lnkBtnAddGroup.Enabled = true;
+                    lnkBtnAddGroup.ToolTip = "Click to Add New ";
+                }
 
             }
         }
@@ -152,8 +152,18 @@ public partial class GroupInfo : System.Web.UI.Page
 
                     if (e.Exception.InnerException != null)
                     {
-                        if (e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1)
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+                              (e.Exception.InnerException.Message.IndexOf("Group Exists") > -1))
+                    {
+                        
+                        e.ExceptionHandled = true;
+                        e.KeepInInsertMode = true;
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        ModalPopupExtender1.Show();
+                        return;
+                    }
+                           
+
                     }
                 }
                 lnkBtnAddGroup.Visible = true;
@@ -203,8 +213,16 @@ public partial class GroupInfo : System.Web.UI.Page
 
                     if (e.Exception.InnerException != null)
                     {
-                        if (e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1)
+                        if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+                              (e.Exception.InnerException.Message.IndexOf("Group Exists") > -1))
+                        {
+
+                            e.ExceptionHandled = true;
+                            e.KeepInEditMode = true;
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
                     }
                 }
 
@@ -435,6 +453,16 @@ public partial class GroupInfo : System.Web.UI.Page
         //srcGridView.SelectParameters.Add(new CookieParameter("connection", "Company"));
         grdSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         grdSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
+    }
+
+    protected void BtnClearFilter_Click(object sender, EventArgs e)
+    {
+
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
+
+        Page_Load(sender, e);
+       
     }
 
 }

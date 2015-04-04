@@ -3241,9 +3241,26 @@ public partial class BusinessLogic
 
         try
         {
-            dbQry = string.Format("Update tblGroups Set GroupName = '{0}', HeadingID = {1} Where GroupID = {2}", GroupName, HeadingID, GroupID);
             manager.Open();
+            manager.ProviderType = DataProvider.SqlServer;
+
+            manager.BeginTransaction();
+
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblGroups Where GroupName='" + GroupName + "' And GroupID <> " + GroupID.ToString() + "");
+
+            if (exists.ToString() != string.Empty)
+            {
+                if (int.Parse(exists.ToString()) > 0)
+                {
+                    throw new Exception("Group Exists");
+                }
+            }
+
+            dbQry = string.Format("Update tblGroups Set GroupName = '{0}', HeadingID = {1} Where GroupID = {2}", GroupName, HeadingID, GroupID);
+           // manager.Open();
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            manager.CommitTransaction();
             /*Audit Log */
 
             if (dsAudit != null)
@@ -3276,9 +3293,25 @@ public partial class BusinessLogic
 
         try
         {
-            dbQry = string.Format("Insert Into tblGroups Values ({0},'{1}',{2},{3})", GroupID, GroupName, HeadingID, Order);
             manager.Open();
+            manager.ProviderType = DataProvider.SqlServer;
+
+            manager.BeginTransaction();
+
+            object exists = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblGroups Where GroupName='" + GroupName + "'");
+            if (exists.ToString() != string.Empty)
+            {
+                if (int.Parse(exists.ToString()) > 0)
+                {
+                    throw new Exception("Group Exists");
+                }
+            }
+
+            dbQry = string.Format("Insert Into tblGroups Values ({0},'{1}',{2},{3})", GroupID, GroupName, HeadingID, Order);
+          
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            manager.CommitTransaction();
         }
         catch (Exception ex)
         {
@@ -55644,11 +55677,11 @@ public partial class BusinessLogic
 
         try
         {
-            if (Types == "CUSTOMERS")
+            if (Types == "SALES")
             {
                 dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'SALES' order by orderno";
             }
-            else if (Types == "SUPPLIERS")
+            else if (Types == "PURCHASE")
             {
                 dbQry = "select * from tblUserOptions where username like '" + userId + "' And Area = 'PURCHASE' order by orderno";
             }
@@ -55844,6 +55877,10 @@ public partial class BusinessLogic
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
+            dbQry = string.Format("Delete From tblUserbranch Where UserID = '{0}' ", username);
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
             manager.CommitTransaction();
         }
         catch (Exception ex)
@@ -55908,14 +55945,14 @@ public partial class BusinessLogic
             dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
                                 " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
                                 " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Order By tblStock.ItemCode");
+                                " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode and tblstock.BranchCode = tblProductStock.BranchCode Order By tblStock.ItemCode");
         }
         else
         {
             dbQry = string.Format("select tblStock.ItemCode,tblStock.ProductName,tblStock.Model, tblCategories.CategoryID, tblCategories.CategoryName, " +
                                  " tblStock.ProductDesc,tblStock.OpeningStock,tblProductStock.stock,tblStock.BranchCode " +
                                  " from (tblStock inner join tblCategories on tblStock.CategoryID = tblCategories.CategoryID) " +
-                                 " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode Where tblStock.BranchCode='" + managerid + "' Order By tblStock.ItemCode");
+                                 " inner join tblProductStock on tblStock.itemcode = tblProductStock.itemcode and tblstock.BranchCode = tblProductStock.BranchCode Where tblStock.BranchCode='" + managerid + "' Order By tblStock.ItemCode");
         }
         try
         {
@@ -62735,7 +62772,7 @@ public partial class BusinessLogic
                             }
 
                             dbQry = string.Format("INSERT INTO tblStock(itemCode,ProductName,ProductDesc,model,categoryid,OpeningStock,Remarks,DueDate,entrydate,BranchCode) VALUES('{0}','{1}','{2}','{3}',{4},{5},'{6}','{7}','{8}','{9}')",
-                                Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["Brand"]), Convert.ToString(dr["Model"]), Catname, Convert.ToDouble(dr["opening"]), Convert.ToString(dr["Remarks"]), DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), branch);
+                                Convert.ToString(dr["ItemCode"]), Convert.ToString(dr["ProductName"]), Convert.ToString(dr["Brand"]), Convert.ToString(dr["Model"]), Catname, Convert.ToDouble(dr["opening"]), Convert.ToString(dr["Remarks"]), Convert.ToDateTime(dr["DueDate"]).ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"), branch);
 
                             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -72643,7 +72680,7 @@ public partial class BusinessLogic
             dbQry = string.Format("Update tblPriceList SET PriceName='{0}',Description='{2}' WHERE Id={1}", PriceName, ID, Description);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
-            sAuditStr = "Cheque Book For : " + PriceName + " updated. Record Details :  User :" + Username;
+            sAuditStr = "Price List For : " + PriceName + " updated. Record Details :  User :" + Username;
             dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit And Update", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 

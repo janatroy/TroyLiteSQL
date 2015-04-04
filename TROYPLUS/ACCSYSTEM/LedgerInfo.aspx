@@ -215,6 +215,7 @@
                                                                 <td class="ControlLabel" style="width: 15%">Ledger Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Ledger Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" ."  TargetControlID="txtLdgrName" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
                                                                     <asp:TextBox ID="txtLdgrName" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -321,15 +322,19 @@
                                                             <tr>
                                                                
                                                                 <td class="ControlLabel" style="width: 15%">Email Id
+                                                                    <asp:RegularExpressionValidator ID="remail12" runat="server"
+                                                                                                ControlToValidate="txtEmailId" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 20%">
-                                                                    <asp:TextBox ID="txtEmailId" TabIndex="12" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                    <asp:TextBox ID="txtEmailId" TabIndex="12" MaxLength="20" runat="server" Text='<%# Bind("EmailId") %>'
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                 </td>
                                                                  <td style="width: 5%"></td>
                                                                 <td class="ControlLabel" style="width: 15%">Mobile
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Custom, Numbers"
-                                                                        TargetControlID="txtMobile" ValidChars="+" />
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobile" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 20%">
                                                                     <asp:TextBox ID="txtMobile" MaxLength="10" TabIndex="13" runat="server" Text='<%# Bind("Mobile") %>'
@@ -510,6 +515,7 @@
                                                                 <td class="ControlLabel" style="width: 15%">Ledger Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Ledger Name. It cannot be left blank."></asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" ."  TargetControlID="txtLdgrNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 20%">
                                                                     <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("LedgerName") %>'
@@ -622,16 +628,20 @@
                                                             <tr>
                                                               
                                                                 <td class="ControlLabel" style="width: 15%">Email Id
+                                                                    <asp:RegularExpressionValidator ID="remail1" runat="server"
+                                                                                                ControlToValidate="txtEmailIdAdd" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                     
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 20%">
-                                                                    <asp:TextBox ID="txtEmailIdAdd" MaxLength="10" TabIndex="12" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                    <asp:TextBox ID="txtEmailIdAdd" MaxLength="20" TabIndex="12" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                 </td>
                                                                   <td style="width: 5%"></td>
                                                                 <td class="ControlLabel" style="width: 15%">Mobile
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender123" runat="server" FilterType="Custom, Numbers"
-                                                                        TargetControlID="txtMobileAdd" ValidChars="+" />
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender123" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobileAdd" />
                                                                 </td>
                                                                 <td style="width: 20%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtMobileAdd" MaxLength="10" TabIndex="13" runat="server" Text='<%# Bind("Mobile") %>'
