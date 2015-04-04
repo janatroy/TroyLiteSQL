@@ -160,6 +160,7 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
 
          string Method = string.Empty;
          double val = 0;
+         double tot = 0;
          DataSet ds = new DataSet();
 
          string Branch = string.Empty;
@@ -202,6 +203,9 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
                  dt.Columns.Add(new DataColumn("Purchase Return"));
                  dt.Columns.Add(new DataColumn("Qty"));
 
+                 DataRow dr_export1 = dt.NewRow();
+                 dt.Rows.Add(dr_export1);
+
                  foreach (DataRow dr in ds.Tables[0].Rows)
                  {
                      DataRow dr_final6 = dt.NewRow();
@@ -218,9 +222,31 @@ public partial class ReportXLZeroSales : System.Web.UI.Page
                      dr_final6["Purchase Return"] = dr["PurchaseReturn"];
                      dr_final6["Qty"] = dr["Qty"];
 
-
+                     tot = tot + Convert.ToDouble(dr["Qty"]);
                      dt.Rows.Add(dr_final6);
                  }
+                 DataRow dr_export2 = dt.NewRow();
+                 dr_export2["Brand"] = "Total";
+                 dr_export2["ProductName"] = "";
+                 dr_export2["Model"] = "";
+                 dr_export2["ItemCode"] = "";
+                 dr_export2["BillNo"] = "";
+                 dr_export2["BillDate"] = "";
+                 dr_export2["LedgerName"] = "";
+                 dr_export2["LedgerDetails"] = "";
+                 dr_export2["Internal Transfer"] = "";
+                 dr_export2["Delivery Note"] = "";
+                 dr_export2["Purchase Return"] = "";
+                 dr_export2["Qty"] = tot;
+
+                 dt.Rows.Add(dr_export2);
+
+
+
+                // DataTable dstt = new DataTable();
+
+                 //  ExportToExcel(dt);
+                // dstt.Tables.Add(dt);
                  ExportToExcel(dt);
              }
              else

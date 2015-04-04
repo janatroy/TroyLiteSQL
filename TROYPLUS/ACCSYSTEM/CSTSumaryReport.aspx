@@ -40,7 +40,7 @@
 
             </tr>
             <tr>
-                <td  style="width:30%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                <td  class="ControlLabelmanufacture1" style="width:30%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
                     Start Date
                 </td>
                 <td class="ControlTextBox3" width="20%">
@@ -57,7 +57,7 @@
                 </td>
             </tr>
             <tr>
-                <td  style="width:30%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
+                <td class="ControlLabelmanufacture1"  style="width:30%; font-family:'ARIAL';font-size:11px;font-weight:normal; color: #000000;text-align:right;text-decoration:none;padding-right:5px;padding-left:5px;padding-top:5px;" height="27px">
                     End Date
                 </td>
                 <td class="ControlTextBox3" width="20%">
@@ -75,6 +75,21 @@
                         Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                 </td>
             </tr>
+              <tr class="tblLeft">
+                    <td style="width: 15%" class="ControlLabelmanufacture1">Branch
+                    </td>
+                    <td style="width: 21%;" class="ControlDrpBorder">
+                      <%--  <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>--%>
+                                <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True"  BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                </asp:DropDownList>
+                       <%--     </ContentTemplate>
+                        </asp:UpdatePanel>--%>
+                    </td>
+                    <td style="width: 27%"></td>
+                    <td style="width: 15%"></td>
+                    <td style="width: 10%"></td>
+                </tr>
             <tr style="height:10px">
 
             </tr>
@@ -82,16 +97,19 @@
                 <td colspan="4">
                     <table width="100%">
                         <tr>
-                            <td style="width:40%">
+                            <td style="width:30%">
 
                             </td>
-                            <td style="width:20%">
+                            <td style="width:20%" align="right">
+                             <asp:Button ID="btndetails" CssClass="exportexl6forproject" EnableTheming="false" runat="server" OnClick="btndetails_Click" />
+                            </td>
+                            <td style="width:20%" align="left">
                                 <asp:Button ID="btnReport" runat="server" OnClick="btnReport_Click" CssClass="NewReport6"
                                     EnableTheming="false" />
                             </td>
-                            <td style="width:10%">
+                           <%-- <td style="width:10%">
                                 <input type="button" class="printbutton6" id="Button2" runat="Server" onclick="javascript:CallPrint('divPrint')" visible="False" />
-                            </td>
+                            </td>--%>
                             <td style="width:30%">
 
                             </td>
@@ -144,9 +162,9 @@
                         <br />
                         <b>&nbsp;&nbsp;<u>A. Output Tax</u></b><br />
                         <asp:GridView Style="font-family: 'Trebuchet MS'; font-size: 11px;" RowStyle-BackColor="Azure"
-                            AlternatingRowStyle-BackColor="Azure" ShowHeader="false" EmptyDataText="No CST Found"
-                            HeaderStyle-HorizontalAlign="Left" CellPadding="2" Width="100%" ID="grdSalesCST"
-                            GridLines="None" AutoGenerateColumns="False" runat="server" ForeColor="#333333">
+                                    AlternatingRowStyle-BackColor="Azure" ShowHeader="false" EmptyDataText="No VAT Found"
+                                    HeaderStyle-HorizontalAlign="Left" CellPadding="2" Width="100%" ID="grdSalesCst"
+                                    GridLines="None" AutoGenerateColumns="False" runat="server" ForeColor="#333333">
                             <Columns>
                                 <asp:TemplateField ItemStyle-Width="70%">
                                     <ItemTemplate>

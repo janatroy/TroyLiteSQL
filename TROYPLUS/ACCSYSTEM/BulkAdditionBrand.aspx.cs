@@ -287,6 +287,9 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
 
             String strConnection = "ConnectionString";
             string connectionString = "";
+            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+            char[] specialCharactersArray = specialCharacters.ToCharArray();
+
             if (FileUpload1.HasFile)
             {
                 string datett = DateTime.Now.ToString();
@@ -306,6 +309,11 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
                         fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
 
                     //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Attach Correct Format file Extension.(.xls or .xlsx)');", true);
+                    return;
                 }
                 OleDbConnection con = new OleDbConnection(connectionString);
                 OleDbCommand cmd = new OleDbCommand();
@@ -338,7 +346,7 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
                 {
                     if ((Convert.ToString(dr["brand"]) == null) || (Convert.ToString(dr["brand"]) == ""))
                     {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Missing Datas');", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Branch Name is empty');", true);
                         return;
                     }
                 }
@@ -354,9 +362,93 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
                         }
 
                 }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["BRAND%"]) == null) || (Convert.ToString(dr["BRAND%"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Brand(%) is empty');", true);
+                        return;
+                    }
+                }
 
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Deviation"]) == null) || (Convert.ToString(dr["Deviation"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Deviation(%) is empty');", true);
+                        return;
+                    }
+                }
 
-                //foreach (DataRow dr in ds.Tables[0].Rows)
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["brand"]) != null) || (Convert.ToString(dr["brand"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["brand"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in brand');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["BRAND%"]) != null) || (Convert.ToString(dr["BRAND%"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["BRAND%"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in brand%');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["BRAND%"]) != null) || (Convert.ToString(dr["BRAND%"]) != ""))
+                    {
+                        if (Convert.ToInt32(dr["BRAND%"]) > 100)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Brand% cannot be Greater than 100% and Less than 0%');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Deviation"]) != null) || (Convert.ToString(dr["Deviation"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["Deviation"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Deviation%');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Deviation"]) != null) || (Convert.ToString(dr["Deviation"]) != ""))
+                    {
+                        if (Convert.ToInt32(dr["Deviation"]) > 200)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Deviation% cannot be Greater than 200% and Less than 0%');", true);
+                            return;
+                        }
+                    }
+                }
+
+                //foreach BRAND"));  "BRAND%"   "Deviation
                 //{
                 //    string category = Convert.ToString(dr["category"]);
 

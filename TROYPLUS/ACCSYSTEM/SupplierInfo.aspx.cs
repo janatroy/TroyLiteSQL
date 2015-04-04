@@ -200,21 +200,42 @@ public partial class SupplierInfo : System.Web.UI.Page
                 if (e.Exception != null)
                 {
                     StringBuilder script = new StringBuilder();
-                    script.Append("alert('Supplier with this name already exists, Please try with a different name.');");
+
 
                     if (e.Exception.InnerException != null)
                     {
+                        script.Append("alert('Supplier with this name already exists, Please try with a different name.');");
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Ledger Exists") > -1))
+                        {
+                            e.KeepInInsertMode = true;
+                            e.ExceptionHandled = true;
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
+
+                        else if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+                           (e.Exception.InnerException.Message.IndexOf("Number Exists1") > -1))
+                        {
+                            e.ExceptionHandled = true;
+                            e.KeepInInsertMode = true;
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile with this Number already exists.Please try different Mobile Number');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+
+
+                        }
                     }
                     else
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "Exception: " + e.Exception.Message + e.Exception.StackTrace, true);
                     }
+                  
                 }
                 e.KeepInInsertMode = true;
                 e.ExceptionHandled = true;
+               
             }
         }
         catch (Exception ex)
@@ -252,12 +273,26 @@ public partial class SupplierInfo : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
                         return;
                     }
+                    else if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+                          (e.Exception.InnerException.Message.IndexOf("Number Exists1") > -1))
+                    {
+                        e.ExceptionHandled = true;
+                        e.KeepInEditMode = true;
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile with this Number already exists.Please try different Mobile Number');", true);
+                        ModalPopupExtender1.Show();
+                        return;
+
+
+                    }
 
                 }
+                else
+                {
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "Exception: " + e.Exception.Message + e.Exception.StackTrace, true);
-                e.ExceptionHandled = true;
-                e.KeepInEditMode = true;
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "Exception: " + e.Exception.Message + e.Exception.StackTrace, true);
+                    e.ExceptionHandled = true;
+                    e.KeepInEditMode = true;
+                }
 
             }
         }
@@ -834,6 +869,14 @@ public partial class SupplierInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpModeofContactAdd")) != null)
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpModeofContactAdd")).SelectedValue;
 
+        if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("drpIntTransAdd")) != null)
+            e.InputParameters["ManualClear"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("drpmanualclearAdd")).SelectedValue;
+
+        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtcustomeridautoAdd")).Text != "")
+            e.InputParameters["AutoLedgerid"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtcustomeridautoAdd")).Text;
+        else
+            e.InputParameters["AutoLedgerid"] = "";
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
         e.InputParameters["BranchCode"] = "All";       
     }
@@ -928,6 +971,18 @@ public partial class SupplierInfo : System.Web.UI.Page
 
         if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpModeofContact")) != null)
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpModeofContact")).SelectedValue;
+
+       
+
+        if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditAddTab").FindControl("drpmanualclear")) != null)
+            e.InputParameters["ManualClear"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditAddTab").FindControl("drpmanualclear")).SelectedValue;
+
+        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtcustomeridautoAdd")).Text != "")
+            e.InputParameters["AutoLedgerid"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtcustomeridauto")).Text;
+        else
+            e.InputParameters["AutoLedgerid"] = "";
+
+
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
         e.InputParameters["BranchCode"] = "All";    

@@ -41,7 +41,7 @@ public partial class StockReport1 : System.Web.UI.Page
                         {
                             foreach (DataRow dr in companyInfo.Tables[0].Rows)
                             {
-                               // lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                                // lblTNGST.Text = Convert.ToString(dr["TINno"]);
                                 lblCompany.Text = Convert.ToString(dr["CompanyName"]);
                                 lblPhone.Text = Convert.ToString(dr["Phone"]);
                                 lblGSTno.Text = Convert.ToString(dr["GSTno"]);
@@ -64,13 +64,13 @@ public partial class StockReport1 : System.Web.UI.Page
                             {
                                 Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds.Tables[0].Rows[i]["img_filename"];
                                 Image1.Height = 95;
-                                Image1.Width = 114;
+                                Image1.Width = 95;
                             }
                         }
                         else
                         {
                             Image1.Height = 95;
-                            Image1.Width = 114;
+                            Image1.Width = 95;
                             Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }
@@ -310,7 +310,7 @@ public partial class StockReport1 : System.Web.UI.Page
                 //    lblCategory.Text = "";
                 //}
                 lblTotal.Text = sumDbl.ToString("f2");
-               
+
             }
         }
         catch (Exception ex)
@@ -365,7 +365,7 @@ public partial class StockReport1 : System.Web.UI.Page
                 overallstock = 0;
                 dt.Columns.Add(new DataColumn("ItemCode"));
                 dt.Columns.Add(new DataColumn("ProductName"));
-                dt.Columns.Add(new DataColumn("Brand"));  
+                dt.Columns.Add(new DataColumn("Brand"));
                 dt.Columns.Add(new DataColumn("Model"));
                 //dt.Columns.Add(new DataColumn("Rol"));
 
@@ -393,7 +393,7 @@ public partial class StockReport1 : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Overall Value"));
                 dt.Columns.Remove("Column1");
                 dt.Columns.Remove(" - Value");
-                
+
                 DataRow dr_final123 = dt.NewRow();
                 dt.Rows.Add(dr_final123);
 
@@ -445,7 +445,7 @@ public partial class StockReport1 : System.Web.UI.Page
                                 {
                                     string item11 = str3;
                                     string item1231 = Convert.ToString(drt["BranchCode"]);
-                                    
+
                                     if (item1231 == item11)
                                     {
                                         dr_final6[item11] = drt["Stock"];
@@ -454,7 +454,7 @@ public partial class StockReport1 : System.Web.UI.Page
 
                                         dr_final6[item1231 + " - Value"] = Convert.ToInt32(drt["price"]) * Convert.ToInt32(drt["Stock"]);
                                         overallvalue = overallvalue + Convert.ToInt32(dr_final6[item1231 + " - Value"]);
-                                    }                                    
+                                    }
                                 }
                             }
                         }
@@ -508,4 +508,33 @@ public partial class StockReport1 : System.Web.UI.Page
         }
     }
 
+    protected void ReportGridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            int colCount = e.Row.Cells.Count;
+
+            e.Row.Cells[0].HorizontalAlign = HorizontalAlign.Center;
+            e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Left;
+            e.Row.Cells[2].HorizontalAlign = HorizontalAlign.Left;
+            e.Row.Cells[3].HorizontalAlign = HorizontalAlign.Left;
+
+            for (int i = 4; i <= colCount - 1; i++)
+            {
+                e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Right;
+            }
+        }
+
+        if (e.Row.RowType == DataControlRowType.Footer)
+        {
+            int colCount = e.Row.Cells.Count - 1;
+            int totstock = colCount - 1;
+
+            e.Row.Cells[totstock].HorizontalAlign = HorizontalAlign.Right;
+            e.Row.Cells[colCount].HorizontalAlign = HorizontalAlign.Right;
+
+            e.Row.Cells[totstock].Text = lblGrandStockTotal.Text;
+            e.Row.Cells[colCount].Text = lblGrandValueTotal.Text;
+        }
+    }
 }

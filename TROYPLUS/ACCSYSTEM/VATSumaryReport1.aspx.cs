@@ -96,6 +96,11 @@ public partial class VATSumaryReport1 : System.Web.UI.Page
                     etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
                 }
 
+                if (Request.QueryString["Branch"] != null)
+                {
+                    string branch = Convert.ToString(Request.QueryString["Branch"].ToString());
+                }
+
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
 
@@ -148,6 +153,11 @@ public partial class VATSumaryReport1 : System.Web.UI.Page
 
         if (Request.Cookies["Company"] != null)
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+       
+        
+        string branch = Convert.ToString(Request.QueryString["Branch"].ToString());
+        
         DataSet purchaseDs = new DataSet();
         DataSet salesDs = new DataSet();
         DataSet purchaseReturnDs = new DataSet();
@@ -192,8 +202,8 @@ public partial class VATSumaryReport1 : System.Web.UI.Page
 
                     if (vat > 0)
                     {
-                        purchaseDs = bl.purchaseVatSummary(startDate, endDate, vat, "No");
-                        purchaseReturnDs = bl.salesVatSummary(startDate, endDate, vat, "Yes");
+                        purchaseDs = bl.purchaseVatSummary(startDate, endDate, vat, "No", branch);
+                        purchaseReturnDs = bl.salesVatSummary(startDate, endDate, vat, "Yes",branch);
 
                         if (purchaseDs != null)
                         {
@@ -271,8 +281,8 @@ public partial class VATSumaryReport1 : System.Web.UI.Page
                     if (vat > 0)
                     {
 
-                        SalesReturnDs = bl.purchaseVatSummary(startDate, endDate, vat, "Yes");
-                        salesDs = bl.salesVatSummary(startDate, endDate, vat, "No");
+                        SalesReturnDs = bl.purchaseVatSummary(startDate, endDate, vat, "Yes",branch);
+                        salesDs = bl.salesVatSummary(startDate, endDate, vat, "No",branch);
 
 
 
@@ -458,4 +468,6 @@ public partial class VATSumaryReport1 : System.Web.UI.Page
 
         return dt;
     }
+
+    
 }

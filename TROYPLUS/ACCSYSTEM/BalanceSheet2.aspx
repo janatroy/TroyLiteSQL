@@ -51,7 +51,7 @@
         <table cellpadding="1" cellspacing="2" border="0" width="450px"  style="border: 1px solid blue; background-color:White;">
             <tr>
                 <td colspan="4" class="subHeadFont2">
-                    Balance Sheet Report
+                    Balance Sheet
                 </td>
             </tr>
             <tr style="height:6px">
@@ -148,12 +148,19 @@
             <div id="divPrint" style="font-family: 'Trebuchet MS'; font-size: 11px;">
                 
                 <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                     <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
                     <tr>
-                        <td width="140px" align="left">
-                            TIN#:
-                            <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                        <td width="10px" align="left">
+                          <%--  TIN#:
+                            <asp:Label ID="lblTNGST" runat="server"></asp:Label>--%>
                         </td>
-                        <td align="center" width="320px" style="font-size: 20px;">
+                        <td align="center" width="560px" style="font-size: 20px;">
                             <asp:Label ID="lblCompany" runat="server"></asp:Label>
                         </td>
                         <td width="140px" align="left">
@@ -163,8 +170,8 @@
                     </tr>
                     <tr>
                         <td align="left">
-                            GST#:
-                            <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                            <%--GST#:
+                            <asp:Label ID="lblGSTno" runat="server"></asp:Label>--%>
                         </td>
                         <td align="center">
                             <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -199,19 +206,21 @@
                         </td>
                     </tr>
                 </table>
-                <table width="450px" border="0" cellpadding="1" cellspacing="2" style="font-family: 'Trebuchet MS';
-                    font-size: 11px;">
+                <table>
                     <tr>
-                        <td colspan="2" class="lblFont">
+                        <td></td>
+                        <td>
                             <br />
-                            <h5>
-                                Balance Sheet Report From
+                           <h5 style="font-size:large" >
+                                Balance Sheet From
                                 <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                 To
                                 <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
                         </td>
+                         <td></td>
                     </tr>
                 </table>
+               
 
                 <table width="100%" style="height:80%;border: 1px solid black;" cellpadding="3" cellspacing="3">
                     <tr style="height:5%">
@@ -274,6 +283,7 @@
                                                                         <Columns>
                                                                             <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                                             <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger Name" />
+                                                                             <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                                             <asp:BoundField DataField="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="right"
                                                                                 HeaderText="Debit" />
                                                                             <asp:BoundField DataField="Credit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="right"
@@ -357,6 +367,7 @@
                                                                         <Columns>
                                                                             <asp:BoundField DataField="Folionumber" ItemStyle-HorizontalAlign="Left" HeaderText="L.FNO" />
                                                                             <asp:BoundField DataField="LedgerName" ItemStyle-HorizontalAlign="Left" HeaderText="Ledger Name" />
+                                                                            <asp:BoundField DataField="BranchCode" ItemStyle-HorizontalAlign="Left" HeaderText="Branch Code" />
                                                                             <asp:BoundField DataField="Debit" ItemStyle-HorizontalAlign="right" DataFormatString="{0:F2}"
                                                                                 HeaderText="Debit" />
                                                                             <asp:BoundField DataField="Credit" ItemStyle-HorizontalAlign="right" DataFormatString="{0:F2}"
@@ -394,7 +405,7 @@
                     </tr>
                     <tr>
                         <td class="lblFont" valign="top" align="left">
-                            <a href="ProfitAndLossReport.aspx">Profit & Loss Account</a>
+                            <a href="ProfitAndLossReport.aspx" style="font-size:large">Profit & Loss Account</a>
                         </td>
                         <td>
                         </td>
@@ -415,10 +426,16 @@
                     </tr>
                     <tr>
                         <td align="right">
+                           <hr style="border-style:inset; border-width:1px"/>
+                            <asp:Label ID="Label1" Text="Total :   " runat="server" align="center"></asp:Label>
                             <asp:Label CssClass="tblLeft" ID="lblCreditTotal" runat="server"></asp:Label>
+                            <hr style="border-style:inset; border-width:1px"/>
                         </td>
                         <td align="right">
+                           <hr style="border-style:inset; border-width:1px"/>
+                             <asp:Label ID="Label2" Text="Total :   " runat="server" align="center"></asp:Label>
                             <asp:Label CssClass="tblLeft" ID="lblDebitTotal" runat="server"></asp:Label>
+                             <hr style="border-style:inset; border-width:1px"/>
                         </td>
                     </tr>
                 </table>

@@ -134,10 +134,17 @@
             <br />
         <div id="divPrint" align="center" style="font-family: 'Trebuchet MS'; font-size: 11px;">
             <table width="700px" align="center" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                 <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
                 <tr>
-                    <td width="140px" align="left">
-                        TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                    <td width="3px" align="left">
+                      
+                        <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>
                     </td>
                     <td align="center" width="420px" style="font-size: 20px;">
                         <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -149,8 +156,8 @@
                 </tr>
                 <tr>
                     <td align="left">
-                        GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                       
+                        <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                     </td>
                     <td align="center">
                         <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -185,18 +192,29 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">
-                        <br />
-                        <h5>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td colspan="2" align="center" >
+                       
+                        &nbsp;
+                        <h5 style="font-size:medium">
+
                             DayBook From
                             <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                             To
                             <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="3">
-                        Opening Balance : &nbsp;
+                <tr align="right">
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </td>
+                    <td align="right">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opening Balance : &nbsp;
                         <asp:Label ID="lblOB" runat="server" CssClass="lblFont"></asp:Label>
                     </td>
                 </tr>
@@ -220,19 +238,21 @@
                             <asp:Label ID="lblTranDate" runat="server" Text='<%# Eval("Date","{0:dd/MM/yyyy}") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
+                    <asp:BoundField ItemStyle-VerticalAlign="Top" ItemStyle-Width="15%" ItemStyle-HorizontalAlign="Center"
+                        DataField="Branchcode" HeaderText="Branch" />
                     <asp:TemplateField ItemStyle-Width="65%" HeaderText="Particulars" ItemStyle-VerticalAlign="Top">
                         <ItemTemplate>
                             <asp:Label ID="lblDebtor" runat="server" Text='<%# Eval("Debitor") %>'></asp:Label><br />
-                            <br />
+                            
                             <asp:Label ID="lblCreditor" runat="server" Text='<%# Eval("Creditor") %>'></asp:Label><br />
-                            <br />
+                            
                             <asp:Label ID="lblNarration" runat="server" Text='<%# Eval("Narration") %>'></asp:Label><br />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField ItemStyle-VerticalAlign="Top" ItemStyle-Width="15%" DataFormatString="{0:f2}"
-                        DataField="Debit" HeaderText="Debit" />
+                        DataField="Debit" HeaderText="Debit"  ItemStyle-HorizontalAlign="right"/>
                     <asp:BoundField ItemStyle-Width="15%" DataFormatString="{0:f2}" DataField="Credit"
-                        HeaderText="Credit" />
+                        HeaderText="Credit"   ItemStyle-HorizontalAlign="right"/>
                 </Columns>
                 <PagerTemplate>
                 </PagerTemplate>
@@ -242,13 +262,13 @@
             </wc:ReportGridView>
             <table width="700px" cellpadding="5">
                 <tr>
-                    <td colspan="2" width="500px">
-                        &nbsp;
+                    <td colspan="3" width="550px" align="right">
+                        &nbsp;Total :
                     </td>
-                    <td width="100px">
+                    <td width="75px" align="right">
                         <asp:Label ID="lblSumDebit" runat="server" CssClass="lblFont"></asp:Label>
                     </td>
-                    <td width="100px">
+                    <td width="75px" align="right">
                         <asp:Label ID="lblSumCredit" runat="server" CssClass="lblFont"></asp:Label>
                     </td>
                 </tr>

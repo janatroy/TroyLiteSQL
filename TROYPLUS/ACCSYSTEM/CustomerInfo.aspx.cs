@@ -183,10 +183,12 @@ public partial class CustomerInfo : System.Web.UI.Page
                 if (e.Exception != null)
                 {
                     StringBuilder script = new StringBuilder();
-                    script.Append("alert('Customer with this name already exists, Please try with a different name.');");
+                   
 
                     if (e.Exception.InnerException != null)
                     {
+                        script.Append("alert('Customer with this name already exists, Please try with a different name.');");
+
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Ledger Exists") > -1))
                         {
@@ -195,6 +197,17 @@ public partial class CustomerInfo : System.Web.UI.Page
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
                             ModalPopupExtender1.Show();
                             return;
+                        }
+                        else if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) || 
+                            (e.Exception.InnerException.Message.IndexOf("Number Exists1") > -1))
+                        {
+                            e.ExceptionHandled = true;
+                            e.KeepInInsertMode = true;
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer Mobile Number with this Number already exists.Please try different Mobile Number');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+
+
                         }
                     }
                     else
@@ -241,6 +254,16 @@ public partial class CustomerInfo : System.Web.UI.Page
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
                         ModalPopupExtender1.Show();
                         return;
+                    }
+                    else if ((e.Exception.InnerException.Message.IndexOf("Number Exists1") > -1))
+                    {
+                        e.ExceptionHandled = true;
+                        e.KeepInEditMode = true;
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer Number with this name already exists.');", true);
+                        ModalPopupExtender1.Show();
+                        return;
+                       
+
                     }
 
                 }
@@ -368,7 +391,7 @@ public partial class CustomerInfo : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "DEALER")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DEALER")
                 {
                     dealerRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -1048,6 +1071,14 @@ public partial class CustomerInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")) != null)
             e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpBranchAdd")).SelectedValue;
 
+        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtcustomeridautoAdd")).Text != "")
+            e.InputParameters["AutoLedgerID"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtcustomeridautoAdd")).Text;
+        else
+            e.InputParameters["AutoLedgerID"] = "";
+
+        if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpmanualclearAdd")) != null)
+            e.InputParameters["ManualClearing"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpmanualclearAdd")).SelectedValue;
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
     }
@@ -1155,6 +1186,15 @@ public partial class CustomerInfo : System.Web.UI.Page
 
         if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")) != null)
             e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue;
+
+        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtcustomeridauto")).Text != "")
+            e.InputParameters["AutoLedgerID"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtcustomeridauto")).Text;
+
+        else
+            e.InputParameters["AutoLedgerID"] = "";
+
+        if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpmanualclear")) != null)
+            e.InputParameters["ManualClearing"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpmanualclear")).SelectedValue;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }

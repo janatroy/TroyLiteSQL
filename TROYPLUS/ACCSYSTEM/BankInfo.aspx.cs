@@ -143,13 +143,19 @@ public partial class BankInfo : System.Web.UI.Page
                 if (e.Exception != null)
                 {
                     StringBuilder script = new StringBuilder();
-                    script.Append("alert('Ledger with this name already exists, Please try with a different name.');");
+                    script.Append("alert('Bank with this name already exists, Please try with a different name.');");
 
                     if (e.Exception.InnerException != null)
                     {
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Ledger Exists") > -1))
+                        {
+                            e.KeepInInsertMode = true;
+                            e.ExceptionHandled = true;
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
                     }
                     else
                     {
@@ -389,7 +395,24 @@ public partial class BankInfo : System.Web.UI.Page
                     e.Cancel = true;
                     return;
 
+                }         
+
+            }
+            else if(refDate != null || refDate != "")
+            {
+                string obdate = ((TextBox)this.frmViewAdd.FindControl("txtOpenBalAdd")).Text;
+                if (obdate == null && obdate == "0")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Opening balance or Otherwise set as zero.')", true);
+                    check = true;
+                    ModalPopupExtender1.Show();
+                    frmViewAdd.Visible = true;
+                    frmViewAdd.ChangeMode(FormViewMode.Insert);
+                    e.Cancel = true;
+                    return;
+
                 }
+
 
             }
             else
@@ -461,7 +484,7 @@ public partial class BankInfo : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "DEALER")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DEALER")
                 {
                     dealerRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }

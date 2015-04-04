@@ -11,6 +11,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Text;
 using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class VATReprt : System.Web.UI.Page
 {
@@ -106,27 +108,31 @@ public partial class VATReprt : System.Web.UI.Page
 
             ArrayList dsValidation = rpt.getMissingCommodityCodes(sDataSource, startDate, endDate, "Yes");
 
-            if (dsValidation.Count > 0)
-            {
-                msg.Append("Please enter the commodity code for the following Products: ");
-                msg.Append("\\n");
+            //if (dsValidation.Count > 0)
+            //{
+            //    msg.Append("Please enter the commodity code for the following Products: ");
+            //    msg.Append("\\n");
 
-                int x = 0;
+            //    int x = 0;
 
-                foreach (string item in dsValidation)
-                {
-                    x = x + 1;
-                    msg.Append(x + ". " + item);
-                    msg.Append("\\n");
-                }
+            //    foreach (string item in dsValidation)
+            //    {
+            //        x = x + 1;
+            //        msg.Append(x + ". " + item);
+            //        msg.Append("\\n");
+            //    }
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + msg.ToString() + "');", true);
-                return;
-            }
+            //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + msg.ToString() + "');", true);
+            //    return;
+            //}
 
             DataTable salesTable = rpt.generateSalesVATTable(sDataSource, startDate, endDate, "Yes");
             //ordersTable.TableName = "tea";
             dsPurchase.Tables.Add(salesTable);
+           // DataTable dt = new DataTable("report");
+          //  salesTable.Rows.Add(dsPurchase);
+           // ExportToExcel("Bank Statement.xlsx", salesTable);
+
             ExcelHelper.ToExcel(dsPurchase, "VATReport.xls", Page.Response);
 
             /*StringWriter tw = new StringWriter();
@@ -656,6 +662,31 @@ public partial class VATReprt : System.Web.UI.Page
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    public void ExportToExcel(string filename, DataTable dt)
+    {
+        if (dt.Rows.Count > 0)
+        {
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                // string filename = "Absolete report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+
         }
     }
 }

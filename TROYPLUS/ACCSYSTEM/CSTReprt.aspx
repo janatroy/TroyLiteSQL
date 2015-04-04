@@ -208,6 +208,12 @@
                                 runat="server" Text='<%# Eval("CSTRate") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
+                     <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="CST paid">
                         <ItemTemplate>
                             <asp:Label ID="lblCSTPaid" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
@@ -271,6 +277,12 @@
                         <ItemTemplate>
                             <asp:Label ID="lblCSTRate" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                                 runat="server" Text='<%# Eval("CSTRate") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="CST paid">
@@ -338,6 +350,12 @@
                                 runat="server" Text='<%# Eval("CSTRate") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
+                     <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="CST paid">
                         <ItemTemplate>
                             <asp:Label ID="lblCSTPaid" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
@@ -401,6 +419,12 @@
                         <ItemTemplate>
                             <asp:Label ID="lblCSTRate" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                                 runat="server" Text='<%# Eval("CSTRate") %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="Branch">
+                        <ItemTemplate>
+                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch"
+                                runat="server" Text='<%# Eval("BranchCode") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="CST paid">

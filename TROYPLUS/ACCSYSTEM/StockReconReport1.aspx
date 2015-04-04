@@ -111,12 +111,19 @@
     <div id="divPrint" style="font-family: 'Trebuchet MS'; width: 70%; font-size: 11px;"
         runat="server">
         <table width="600px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
-                        <tr>
-                            <td width="140px" align="left">
-                                <asp:Label runat="server" ID="Label16">TIN#:</asp:Label>
-                                <asp:Label ID="lblTNGST" runat="server" Font-Bold="True"></asp:Label>
+                            <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
                             </td>
-                            <td align="center" width="320px" style="font-size: 20px;">
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td width="10px" align="left">
+                                <asp:Label runat="server" ID="Label16"><%--TIN#:--%></asp:Label>
+                               <%-- <asp:Label ID="lblTNGST" runat="server" Font-Bold="True"></asp:Label>--%>
+                            </td>
+                            <td align="center" width="560px" style="font-size: 20px;">
                                 <asp:Label ID="lblCompany" runat="server" Font-Bold="True"></asp:Label>
                             </td>
                             <td width="140px" align="left">
@@ -126,8 +133,8 @@
                         </tr>
                         <tr>
                             <td align="left">
-                                <asp:Label runat="server" ID="Label18">GST#:</asp:Label>
-                                <asp:Label ID="lblGSTno" runat="server" Font-Bold="True"></asp:Label>
+                                <asp:Label runat="server" ID="Label18"><%--GST#:--%></asp:Label>
+                                <%--<asp:Label ID="lblGSTno" runat="server" Font-Bold="True"></asp:Label>--%>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblAddress" runat="server" ></asp:Label>
@@ -171,21 +178,22 @@
                                 &nbsp;
                             </td>
                         </tr>
-                        <tr>
+                      
+                       
+                    </table>
+        <table>
+              <tr>
                             <td>
                                 &nbsp;
                             </td>
                             <td align="center">
-                                <asp:Label ID="Label1" runat="server"></asp:Label>
+                                <asp:Label ID="Label1" Font-Size="Large" runat="server"></asp:Label>
                             </td>
                             <td>
                                 &nbsp;
                             </td>
-                        </tr>
-             <tr>
-                              <asp:Image ID="Image1" runat="server" />
-                        </tr>
-                    </table>
+                            </tr>
+        </table>
                     <br />
                     <br />
         <br />
@@ -198,20 +206,20 @@
                 <br />
             </PageHeaderTemplate>
             <Columns>
-                <asp:TemplateField HeaderText="Product Name" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
+                <asp:TemplateField HeaderText="Product Name" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Left">
                     <ItemTemplate>
                         <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblItem" runat="server"
                             Text='<%# Eval("ItemCode") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="Actual Stock" HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left">
+                <asp:TemplateField HeaderText="Actual Stock" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right">
                     <ItemTemplate>
                         <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblActual" runat="server"
                             Text='<%# Eval("ActualStock") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="Physical Stock" HeaderStyle-HorizontalAlign="Left"
-                    ItemStyle-HorizontalAlign="Left">
+                <asp:TemplateField HeaderText="Physical Stock" HeaderStyle-HorizontalAlign="Center"
+                    ItemStyle-HorizontalAlign="Right">
                     <ItemTemplate>
                         <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblPhysical"
                             runat="server" Text='<%# Eval("PhysicalStock") %>' />

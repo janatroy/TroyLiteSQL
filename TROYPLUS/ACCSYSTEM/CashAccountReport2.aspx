@@ -27,7 +27,7 @@
     <form id="form1" runat="server">
     <br />
     <div align="center" style="min-height: 300px">
-        <div id="div1" runat="server">
+        <div id="div1" runat="server" visible="false">
         <table cellpadding="2" cellspacing="2" width="450px" border="0" style="border: 1px solid blue; background-color:White;
             text-align: left">
             <tr>
@@ -135,10 +135,17 @@
             <div id="divPrint" style="font-family: 'Trebuchet MS'; font-size: 11px;">
                 <asp:HiddenField ID="hdToDelete" Value="" runat="server" />
                 <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                     <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
                     <tr>
-                        <td width="140px" align="left">
-                            TIN#:
-                            <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                        <td width="3px" align="left">
+                            
+                            <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>
                         </td>
                         <td align="center" width="420px" style="font-size: 20px;">
                             <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -150,8 +157,8 @@
                     </tr>
                     <tr>
                         <td align="left">
-                            GST#:
-                            <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                           
+                            <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                         </td>
                         <td align="center">
                             <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -187,13 +194,22 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <br />
-                            <h5>
+                            <table style="width:100%">
+                     <tr>
+                         <td style="width: 26%;" >
+                             </td>
+                            <td  style="width: 70%;" >
+                            <h5 style="font-size:medium">
                                 Cash Account From
                                 <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                 To
                                 <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
                         </td>
+                         <td style="width: 5%;" >
+                             </td>
+                         </tr>
+                                </table>
+                            </td>
                     </tr>
                 </table>
                 <br />
@@ -212,6 +228,7 @@
                         <asp:BoundField ItemStyle-Width="5%" DataField="Date" HeaderText="Date" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="53%" DataField="Particulars" HeaderText="Particulars" />
                         <asp:BoundField ItemStyle-Width="15%" DataField="VoucherType" HeaderText="Voucher Type" />
+                        <asp:BoundField ItemStyle-Width="5%" DataField="Branchcode" HeaderText="Branch" ItemStyle-HorizontalAlign="Center"  />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Debit" HeaderStyle-HorizontalAlign="Right"
                             HeaderText="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Credit" HeaderStyle-HorizontalAlign="Right"
@@ -235,11 +252,11 @@
                         </td>
                         <td width="80px" align="right">
                             <hr />
-                            <asp:Label ID="lblOBDR" runat="server"></asp:Label><hr />
+                            <asp:Label ID="lblOBDR" runat="server" Font-Bold="true"></asp:Label>
                         </td>
                         <td width="80px" align="right">
-                            <hr />
-                            <asp:Label ID="lblOBCR" runat="server"></asp:Label><hr />
+                           <hr />
+                            <asp:Label ID="lblOBCR" runat="server" Font-Bold="true"></asp:Label>
                         </td>
                     </tr>
                     <tr>
@@ -250,12 +267,12 @@
                             &nbsp;
                         </td>
                         <td align="right">
-                            <hr />
-                            <asp:Label ID="lblDebitSum" runat="server"></asp:Label><hr />
+                           
+                            <asp:Label ID="lblDebitSum" runat="server" Font-Bold="true"></asp:Label>
                         </td>
                         <td align="right">
-                            <hr />
-                            <asp:Label ID="lblCreditSum" runat="server"></asp:Label><hr />
+                            
+                            <asp:Label ID="lblCreditSum" runat="server" Font-Bold="true"></asp:Label>
                         </td>
                     </tr>
                     <tr>
@@ -267,12 +284,12 @@
                             &nbsp;
                         </td>
                         <td align="right">
-                            <hr />
-                            <asp:Label ID="lblDebitDiff" runat="server"></asp:Label><hr />
+                            
+                            <asp:Label ID="lblDebitDiff" runat="server" Font-Bold="true"></asp:Label><hr />
                         </td>
                         <td align="right">
-                            <hr />
-                            <asp:Label ID="lblCreditDiff" runat="server"></asp:Label><hr />
+                            
+                            <asp:Label ID="lblCreditDiff" runat="server" Font-Bold="true"></asp:Label><hr />
                         </td>
                     </tr>
                 </table>

@@ -150,7 +150,7 @@
 
     </script>
     <style id="Style1" runat="server">
-        .fancy-green .ajax__tab_header {
+        /*.fancy-green .ajax__tab_header {
             background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
             cursor: pointer;
         }
@@ -177,7 +177,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            }
+            /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -194,7 +194,7 @@
             border: 1px solid #999999;
             padding: 8px;
             background-color: #ffffff;
-        }
+        }*/
     </style>
 
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
@@ -373,6 +373,8 @@
                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTin"
                                                                                                 Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter TIN No. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                             TIN No. *
+                                                                                              <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender21" runat="server" FilterType="Numbers"
+                                                                                                TargetControlID="txtTin" />
                                                                     
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
@@ -411,6 +413,10 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%">EmailId
+                                                                                             <asp:RegularExpressionValidator ID="remail123" runat="server"
+                                                                                                ControlToValidate="txtEmailId" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtEmailId" TabIndex="8" runat="server" Text='<%# Bind("EmailId") %>'
@@ -429,6 +435,13 @@
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
                                                                                     <tr>
+                                                                                          <td style="width: 20%;" align="left" class="ControlLabel">Supplier ID
+                                                                                        </td>
+                                                                                        <td style="width: 28%" class="ControlDrpBorder">
+
+                                                                                        <asp:TextBox ID="txtcustomeridauto" Enabled="false" MaxLength="10" TabIndex="13"  runat="server" Text='<%# Bind("AutoLedgerID") %>'
+                                                                                            SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            </td>
                                                                                         <td class="ControlLabel" style="width: 20%">OB Due Date    
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
@@ -440,8 +453,7 @@
                                                                                         <td style="width: 14%;" align="left">
                                                                                             <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                                         </td>
-                                                                                        <td style="width: 28%"></td>
-                                                                                        <td style="width: 10%;"></td>
+                                                                                      
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
                                                                                         <td>
@@ -459,15 +471,16 @@
                                                                             <ContentTemplate>
                                                                                 <table align="center" cellpadding="3" cellspacing="1" style="border: 0px solid #5078B3; width: 770px;">
                                                                                     <tr style="height: 5px">
-                                                                                        <td class="ControlLabel" style="width: 20%">Internal Transfer
+                                                                                        <td style="width: 20%" class="ControlLabel" align="left">manual clearing
                                                                                         </td>
                                                                                         <td style="width: 25%" class="ControlDrpBorder">
-                                                                                            <asp:DropDownList ID="drpIntTrans" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpIntTrans_DataBound" CssClass="drpDownListMedium"
-                                                                                                Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Inttrans") %>'>
+                                                                                            <asp:DropDownList ID="drpmanualclear" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium"
+                                                                                                Width="100%" Style="border: 1px solid #e7e7e7" Enabled="false" Height="26px" SelectedValue='<%# Bind("ManualClearing") %>'>
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                         </td>
+                                                                                      
                                                                                         <td class="ControlLabel" style="width: 14%">
                                                                                             <%--Payment Source--%>
                                                                                 Is Active
@@ -486,6 +499,7 @@
                                                                                         </td>
 
                                                                                     </tr>
+                                                                                    
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
                                                                                     <tr>
@@ -507,6 +521,17 @@
                                                                                         <td style="width: 10%;"></td>
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                    <tr  runat="server" visible="false"> 
+                                                                                          <td  style="width: 20%; visibility:hidden">Internal Transfer
+                                                                                        </td>
+                                                                                        <td style="width: 25%; visibility:hidden"  >
+                                                                                            <asp:DropDownList ID="drpIntTrans" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpIntTrans_DataBound" CssClass="drpDownListMedium"
+                                                                                                Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Inttrans") %>'>
+                                                                                                <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
+                                                                                                <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
+                                                                                            </asp:DropDownList>
+                                                                                        </td>
                                                                                     </tr>
                                                                                     <tr runat="server" visible="false">
                                                                                         <td class="ControlLabel" style="width: 20%">
@@ -659,7 +684,9 @@
                                                                                         <td class="ControlLabel" style="width: 14%">
                                                                                             <asp:RequiredFieldValidator ID="hRequiredFieldValidator1" runat="server" ControlToValidate="txtTinAdd"
                                                                                                 Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter TIN No.It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                                            TIN No.
+                                                                                            TIN No.*
+                                                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="Numbers"
+                                                                                                TargetControlID="txtTinAdd" />
                                                                     
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
@@ -696,6 +723,10 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%">Email Id
+                                                                                             <asp:RegularExpressionValidator ID="remail1234" runat="server"
+                                                                                                ControlToValidate="txtEmailIdAdd" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtEmailIdAdd" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
@@ -716,6 +747,13 @@
 
 
                                                                                     <tr>
+                                                                                         <td style="width: 20%;"  class="ControlLabel">Supplier ID
+                                                                                        </td>
+                                                                                        <td style="width: 28%" class="ControlDrpBorder">
+
+                                                                                        <asp:TextBox ID="txtcustomeridautoAdd" Enabled="false" MaxLength="10" TabIndex="13"  runat="server" Text='<%# Bind("AutoLedgerID") %>'
+                                                                                            SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            </td>
                                                                                         <td class="ControlLabel" style="width: 20%">OB Due Date    
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
@@ -727,8 +765,7 @@
                                                                                         <td style="width: 14%;" align="left">
                                                                                             <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                                         </td>
-                                                                                        <td style="width: 28%"></td>
-                                                                                        <td style="width: 10%;"></td>
+                                                                                      
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
                                                                                         <td>
@@ -745,15 +782,16 @@
                                                                             <ContentTemplate>
                                                                                 <table align="center" cellpadding="3" cellspacing="5" style="border: 0px solid #5078B3; width: 770px;">
                                                                                     <tr style="height: 5px">
-                                                                                        <td class="ControlLabel" style="width: 20%">Internal Transfer
+                                                                                        <td style="width: 20%" class="ControlLabel" align="left">manual clearing
                                                                                         </td>
                                                                                         <td style="width: 25%" class="ControlDrpBorder">
-                                                                                            <asp:DropDownList ID="drpIntTransAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpIntTransAdd_DataBound" CssClass="drpDownListMedium"
-                                                                                                Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Inttrans") %>'>
+                                                                                            <asp:DropDownList ID="drpmanualclearAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium"
+                                                                                                Width="100%" Style="border: 1px solid #e7e7e7" Enabled="false" Height="26px" SelectedValue='<%# Bind("ManualClearing") %>'>
                                                                                                 <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                         </td>
+                                                                                       
                                                                                         <td class="ControlLabel" style="width: 14%">
                                                                                             <%--Payment Source--%>
                                                                                 Is Active
@@ -772,6 +810,7 @@
                                                                                         </td>
 
                                                                                     </tr>
+                                                                                  
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
                                                                                     <tr>
@@ -793,6 +832,17 @@
                                                                                         <td style="width: 10%;"></td>
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                      <tr  runat="server" visible="false">
+                                                                                         <td  style="width: 20%; visibility:hidden">Internal Transfer
+                                                                                        </td>
+                                                                                        <td style="width: 25%; visibility:hidden" >
+                                                                                            <asp:DropDownList ID="drpIntTransAdd" TabIndex="10" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpIntTransAdd_DataBound" CssClass="drpDownListMedium"
+                                                                                                Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("Inttrans") %>'>
+                                                                                                <asp:ListItem Text="NO" Value="NO" Selected="True"></asp:ListItem>
+                                                                                                <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
+                                                                                            </asp:DropDownList>
+                                                                                        </td>
                                                                                     </tr>
                                                                                     <tr runat="server" visible="false">
                                                                                         <td class="ControlLabel" style="width: 20%">
@@ -999,6 +1049,8 @@
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="string" />
                                 <asp:Parameter Name="BranchCode" Type="string" />
+                                 <asp:Parameter Name="AutoLedgerid" Type="string" />
+                                 <asp:Parameter Name="Manualclear" Type="string" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -1033,6 +1085,8 @@
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="string" />
                                  <asp:Parameter Name="BranchCode" Type="string" />
+                                 <asp:Parameter Name="AutoLedgerid" Type="string" />
+                                 <asp:Parameter Name="Manualclear" Type="string" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

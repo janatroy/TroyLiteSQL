@@ -41,7 +41,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
 
                 DateTime startDate;
                 DateTime endDate;
-               
+                string sBranch = string.Empty;
 
                 DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
                 string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
@@ -54,13 +54,16 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                 if (Request.QueryString["startDate"] != null)
                     stdt = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
                 if (Request.QueryString["endDate"] != null)
-                    etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());              
+                    etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());      
+                if (Request.QueryString["sBranch"] != null)                  
+                        sBranch = Request.QueryString["sBranch"].ToString();
+                   
 
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
                 lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
                 lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
-
+                lblBranchcode.Text ="BranchCode : " + sBranch.ToString();
                 if (Request.Cookies["Company"] != null)
                 {
                     companyInfo = bl.getCompanyInfo(Request.Cookies["Company"].Value);
@@ -71,10 +74,10 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                         {
                             foreach (DataRow dr in companyInfo.Tables[0].Rows)
                             {
-                                lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                                //lblTNGST.Text = Convert.ToString(dr["TINno"]);
                                 lblCompany.Text = Convert.ToString(dr["CompanyName"]);
                                 lblPhone.Text = Convert.ToString(dr["Phone"]);
-                                lblGSTno.Text = Convert.ToString(dr["GSTno"]);
+                                //lblGSTno.Text = Convert.ToString(dr["GSTno"]);
 
                                 lblAddress.Text = Convert.ToString(dr["Address"]);
                                 lblCity.Text = Convert.ToString(dr["city"]);
@@ -82,6 +85,26 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                                 lblState.Text = Convert.ToString(dr["state"]);
 
                             }
+                        }
+                    }
+
+                    DataSet ds1 = bl.getImageInfo();
+                    if (ds1 != null)
+                    {
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                            {
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                                Image1.Height = 95;
+                                Image1.Width = 114;
+                            }
+                        }
+                        else
+                        {
+                            Image1.Height = 95;
+                            Image1.Width = 114;
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }
                 }
@@ -95,6 +118,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     int iGroupID = 0;
 
                     string sGroupName = string.Empty;
+                    //string sBranch = string.Empty;
                     string sFilename = string.Empty;
                     ReportsBL.ReportClass rptOutstandingReport;
                     DataSet ds = new DataSet();
@@ -109,6 +133,10 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     {
                         sGroupName = Request.QueryString["sGroupName"].ToString();
                     }
+                    if (Request.QueryString["sBranch"] != null)
+                    {
+                        sBranch = Request.QueryString["sBranch"].ToString();
+                    }
 
                     lblSundry.Text = sGroupName;
                     rptOutstandingReport = new ReportsBL.ReportClass();
@@ -121,7 +149,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     int iGroupID = 0;
                     string sGroupName = string.Empty;
                     string sFilename = string.Empty;
-
+                    //string sBranch = string.Empty;
 
                     DataSet ds = new DataSet();
                     //iGroupID = Convert.ToInt32(drpLedgerName.SelectedItem.Value);
@@ -136,6 +164,10 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     {
                         sGroupName = Request.QueryString["sGroupName"].ToString();
                     }
+                    if (Request.QueryString["sBranch"] != null)
+                    {
+                        sBranch = Request.QueryString["sBranch"].ToString();
+                    }
                     //if (Request.QueryString["startDate"] != null)
                     //{
                     //    startDate = Request.QueryString["startDate"].ToString();
@@ -145,7 +177,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     //    endDate = Request.QueryString["endDate"].ToString();
                     //}
                     lblSundry.Text = sGroupName;
-                    ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate, endDate);
+                    ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource, startDate, endDate, sBranch);
 
                     gvLedger.DataSource = ds;
                     gvLedger.DataBind();
@@ -228,7 +260,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                 lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
                 lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
 
-                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate,"");
 
                 gvLedger.DataSource = ds;
                 gvLedger.DataBind();
@@ -266,7 +298,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
             lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
             lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
             //rptOutstandingReport = new ReportsBL.ReportClass();
-            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate,"");
 
             double debit = 0;
             double credit = 0;
@@ -470,7 +502,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet debitData = bl.GetCustDebitData();
+        DataSet debitData = bl.GetCustDebitData("");
 
         return debitData;
     }
@@ -479,7 +511,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet creditData = bl.GetAllReceivedAmount();
+        DataSet creditData = bl.GetAllReceivedAmount("");
 
         
         if (creditData != null)
@@ -1370,8 +1402,8 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                 //lblDebitSum.Text = String.Format("{0:f2}", lblDebitSum.Text);
                 dDiffamt = damt - camt;
                 cDiffamt = camt - damt;
-                e.Row.Cells[1].Text = debit.ToString("f2");
-                e.Row.Cells[2].Text = credit.ToString("f2");
+                e.Row.Cells[2].Text = debit.ToString("f2");
+                e.Row.Cells[3].Text = credit.ToString("f2");
                 /*Start Outstanding Report*/
                 Label lblBal = (Label)e.Row.FindControl("lblBalance");
                 /*End Outstanding Report*/

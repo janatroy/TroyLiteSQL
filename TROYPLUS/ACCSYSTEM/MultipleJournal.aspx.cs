@@ -28,7 +28,7 @@ public partial class MultipleJournal : System.Web.UI.Page
     public double disTotal = 0;
     public double cstTotal = 0;
     string BarCodeRequired = string.Empty;
-    
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -58,7 +58,7 @@ public partial class MultipleJournal : System.Web.UI.Page
 
                 BindGrid();
                 //GenerateRoleDs();
-                
+
                 loadSupplier();
                 //loadProducts();
                 //loadBilts("0");
@@ -262,7 +262,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                 }
             }
         }
-       
+
 
     }
 
@@ -1983,7 +1983,7 @@ public partial class MultipleJournal : System.Web.UI.Page
         //                }
         //                /*End March 15 Modification */
         //                Reset();
-                        
+
 
         //                //purchasePanel.Visible = false;
         //                lnkBtnAdd.Visible = true;
@@ -2112,7 +2112,7 @@ public partial class MultipleJournal : System.Web.UI.Page
             string salestype = string.Empty;
             int ScreenNo = 0;
             string ScreenName = string.Empty;
-            
+
             string usernam = Request.Cookies["LoggedUserName"].Value;
 
             salestype = "Journal";
@@ -2123,7 +2123,7 @@ public partial class MultipleJournal : System.Web.UI.Page
             string Narration = string.Empty;
             int CreditorID = 0;
 
-            DataSet ds = bl.GetJournalForId((int)(GrdViewJournal.DataKeys[e.RowIndex].Value),sDataSource);
+            DataSet ds = bl.GetJournalForId((int)(GrdViewJournal.DataKeys[e.RowIndex].Value), sDataSource);
             if (ds != null)
             {
                 TransDate = Convert.ToString(ds.Tables[0].Rows[0]["TransDate"].ToString());
@@ -2230,7 +2230,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                                     emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
                                 }
 
-                                
+
                                 //int index = emailcontent.IndexOf("@Supplier");
                                 //body = Convert.ToString(drd["Debtor1"]);
                                 //if (index >= 0)
@@ -2357,14 +2357,14 @@ public partial class MultipleJournal : System.Web.UI.Page
                                     smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
                                 }
 
-                               
+
                                 int index1 = smscontent.IndexOf("@Amount");
                                 body = Convert.ToString(Amount);
                                 if (index1 >= 0)
                                 {
                                     smscontent = smscontent.Remove(index1, 7).Insert(index1, body);
                                 }
-                                
+
                                 if (Session["Provider"] != null)
                                 {
                                     utilSMS.SendSMS(Session["Provider"].ToString(), Session["Priority"].ToString(), Session["SenderID"].ToString(), Session["UserName"].ToString(), Session["Password"].ToString(), toAddress, smscontent, true, UserID);
@@ -2526,7 +2526,7 @@ public partial class MultipleJournal : System.Web.UI.Page
 
                 //dc = new DataColumn("Amount");
                 //dt.Columns.Add(dc);
-                
+
                 //dc = new DataColumn("Narration");
                 //dt.Columns.Add(dc);
 
@@ -2651,16 +2651,16 @@ public partial class MultipleJournal : System.Web.UI.Page
                       (TextBox)gdm.Rows[rowIndex].Cells[4].FindControl("txtAmountM");
                     TextBox TextBoxNarration =
                      (TextBox)gdm.Rows[rowIndex].Cells[5].FindControl("txtNarrationM");
-                   Label label =
-                  (Label)gdm.Rows[rowIndex].Cells[6].FindControl("unitmultiplecre");
-                //  Label label1 =
-                //   (Label)gdm.Rows[rowIndex].Cells[7].FindControl("unitmultiple");
-                  //  UpdatePanel upt = (UpdatePanel)gdm.Rows[rowIndex].Cells[7].FindControl("UpdatePanel123");   
+                    Label label =
+                   (Label)gdm.Rows[rowIndex].Cells[6].FindControl("unitmultiplecre");
+                    //  Label label1 =
+                    //   (Label)gdm.Rows[rowIndex].Cells[7].FindControl("unitmultiple");
+                    //  UpdatePanel upt = (UpdatePanel)gdm.Rows[rowIndex].Cells[7].FindControl("UpdatePanel123");   
 
                     drCurrentRow = dtCurrentTable.NewRow();
                     drCurrentRow["RowNumber"] = i + 1;
 
-                    
+
                     dtCurrentTable.Rows[i - 1]["Col1"] = TextBoxRefNo.Text;
                     dtCurrentTable.Rows[i - 1]["Col2"] = TextBoxDate.Text;
                     dtCurrentTable.Rows[i - 1]["Col3"] = DrpDebtor.SelectedValue;
@@ -2668,9 +2668,9 @@ public partial class MultipleJournal : System.Web.UI.Page
                     dtCurrentTable.Rows[i - 1]["Col5"] = TextBoxAmount.Text;
                     dtCurrentTable.Rows[i - 1]["Col6"] = TextBoxNarration.Text;
                     dtCurrentTable.Rows[i - 1]["Col7"] = label.Text;
-                  //  dtCurrentTable.Rows[i - 1]["Col7"] = label1.Text;
-                    
-                    
+                    //  dtCurrentTable.Rows[i - 1]["Col7"] = label1.Text;
+
+
                     rowIndex++;
                 }
                 dtCurrentTable.Rows.Add(drCurrentRow);
@@ -2818,8 +2818,8 @@ public partial class MultipleJournal : System.Web.UI.Page
                      (TextBox)gdm.Rows[rowIndex].Cells[5].FindControl("txtNarrationM");
                     Label label =
                 (Label)gdm.Rows[rowIndex].Cells[6].FindControl("unitmultiplecre");
-             //      Label label1 =
-            //   (Label)gdm.Rows[rowIndex].Cells[7].FindControl("unitmultiple");
+                    //      Label label1 =
+                    //   (Label)gdm.Rows[rowIndex].Cells[7].FindControl("unitmultiple");
 
 
                     TextBoxRefNo.Text = dt.Rows[i]["Col1"].ToString();
@@ -2829,7 +2829,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                     TextBoxAmount.Text = dt.Rows[i]["Col5"].ToString();
                     TextBoxNarration.Text = dt.Rows[i]["Col6"].ToString();
                     label.Text = dt.Rows[i]["Col7"].ToString();
-                   // label1.Text = dt.Rows[i]["Col7"].ToString();
+                    // label1.Text = dt.Rows[i]["Col7"].ToString();
                     rowIndex++;
 
                 }
@@ -3013,7 +3013,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                       (TextBox)gdm.Rows[rowIndex].Cells[4].FindControl("txtAmountM");
                     TextBox TextBoxNarration =
                      (TextBox)gdm.Rows[rowIndex].Cells[5].FindControl("txtNarrationM");
-                 
+
 
                     drCurrentRow = dtCurrentTable.NewRow();
                     drCurrentRow["RowNumber"] = i + 1;
@@ -3024,7 +3024,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                     dtCurrentTable.Rows[i - 1]["Col4"] = DrpCreditor.SelectedValue;
                     dtCurrentTable.Rows[i - 1]["Col5"] = TextBoxAmount.Text;
                     dtCurrentTable.Rows[i - 1]["Col6"] = TextBoxNarration.Text;
-                    
+
                     rowIndex++;
 
                 }
@@ -3103,7 +3103,7 @@ public partial class MultipleJournal : System.Web.UI.Page
             {
                 for (int i = 1; i <= dtCurrentTable.Rows.Count; i++)
                 {
-                    
+
                     DropDownList DrpCreditor =
                      (DropDownList)GrdViewItems.Rows[rowIndex].Cells[1].FindControl("drpCreditor");
                     TextBox TextBoxRefNo =
@@ -3288,8 +3288,8 @@ public partial class MultipleJournal : System.Web.UI.Page
         cmbCreditorAdd4.SelectedIndex = 0;
         cmbCreditorAdd5.SelectedIndex = 0;
         cmbCreditorAdd6.SelectedIndex = 0;
-        txtnum.Text ="";
-        txtTransDateAdd1.Text ="";
+        txtnum.Text = "";
+        txtTransDateAdd1.Text = "";
         txtTransDateAdd2.Text = "";
         txtTransDateAdd3.Text = "";
         txtTransDateAdd4.Text = "";
@@ -3302,7 +3302,21 @@ public partial class MultipleJournal : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
 
-        ds = bl.ListCreditorDebitorJ(sDataSource);
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        string sDefaultBranch = string.Empty;
+
+        DataSet dsd = bl.GetBranch(connection, usernam);
+        sDefaultBranch = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            ds = bl.ListCreditorDebitorJ(sDataSource);
+        }
+        else
+        {
+            ds = bl.ListCreditorDebitorJBranch(sDataSource, sDefaultBranch);
+        }
 
         cmbDebtorAdd1.Items.Clear();
         ListItem li = new ListItem("Select Ledger", "0");
@@ -3436,7 +3450,7 @@ public partial class MultipleJournal : System.Web.UI.Page
         cmbCreditorAdd6.DataTextField = "LedgerName";
         cmbCreditorAdd6.DataValueField = "LedgerID";
 
-        
+
 
         drpDebtor.Items.Clear();
         ListItem lifzhzz = new ListItem("Select Ledger", "0");
@@ -3945,10 +3959,10 @@ public partial class MultipleJournal : System.Web.UI.Page
     {
         string connection = string.Empty;
         connection = Request.Cookies["Company"].Value;
-        
+
         string[] sDate;
         DateTime sBilldate;
-        
+
         string delim = "/";
         char[] delimA = delim.ToCharArray();
         CultureInfo culture = new CultureInfo("pt-BR");
@@ -3972,7 +3986,7 @@ public partial class MultipleJournal : System.Web.UI.Page
 
             int col = vLoop + 1;
 
-            if(txttt.Text == "")
+            if (txttt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill RefNo in row " + col + " ')", true);
                 return;
@@ -3996,7 +4010,7 @@ public partial class MultipleJournal : System.Web.UI.Page
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill date in row " + col + " ')", true);
                 return;
-                
+
             }
 
             if (!bl.IsValidDate(connection, Convert.ToDateTime(txttdd.Text)))
@@ -4012,7 +4026,7 @@ public partial class MultipleJournal : System.Web.UI.Page
             }
         }
 
-        
+
 
         DataSet ds;
         DataTable dt;
@@ -4880,131 +4894,131 @@ public partial class MultipleJournal : System.Web.UI.Page
                 string emailcontent = string.Empty;
                 if (hdEmailRequired.Value == "YES")
                 {
-                    
-                                DataSet dsd = bl.GetLedgerInfoForId(connection, idebtor);
-                                var toAddress = "";
-                                var toAdd = "";
-                                Int32 ModeofContact = 0;
-                                int ScreenType = 0;
 
-                                if (dsd != null)
+                    DataSet dsd = bl.GetLedgerInfoForId(connection, idebtor);
+                    var toAddress = "";
+                    var toAdd = "";
+                    Int32 ModeofContact = 0;
+                    int ScreenType = 0;
+
+                    if (dsd != null)
+                    {
+                        if (dsd.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dsd.Tables[0].Rows)
+                            {
+                                toAdd = dr["EmailId"].ToString();
+                                ModeofContact = Convert.ToInt32(dr["ModeofContact"]);
+                            }
+                        }
+                    }
+
+
+                    DataSet dsdd = bl.GetDetailsForScreenNo(connection, ScreenName, "");
+                    if (dsdd != null)
+                    {
+                        if (dsdd.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dsdd.Tables[0].Rows)
+                            {
+                                ScreenType = Convert.ToInt32(dr["ScreenType"]);
+                                mobile = Convert.ToBoolean(dr["mobile"]);
+                                Email = Convert.ToBoolean(dr["Email"]);
+                                emailsubject = Convert.ToString(dr["emailsubject"]);
+                                emailcontent = Convert.ToString(dr["emailcontent"]);
+
+                                if (ScreenType == 1)
                                 {
-                                    if (dsd.Tables[0].Rows.Count > 0)
+                                    if (dr["Name1"].ToString() == "Sales Executive")
                                     {
-                                        foreach (DataRow dr in dsd.Tables[0].Rows)
+                                        toAddress = toAdd;
+                                    }
+                                    else if ((dr["Name1"].ToString() == "Supplier") || (dr["Name1"].ToString() == "Ledger") || (dr["Name1"].ToString() == "Customer") || (dr["Name1"].ToString() == "Expense") || (dr["Name1"].ToString() == "Bank"))
+                                    {
+                                        if (ModeofContact == 2)
                                         {
-                                            toAdd = dr["EmailId"].ToString();
-                                            ModeofContact = Convert.ToInt32(dr["ModeofContact"]);
+                                            toAddress = toAdd;
+                                        }
+                                        else
+                                        {
+                                            continue;
                                         }
                                     }
-                                }
-
-
-                                DataSet dsdd = bl.GetDetailsForScreenNo(connection, ScreenName, "");
-                                if (dsdd != null)
-                                {
-                                    if (dsdd.Tables[0].Rows.Count > 0)
+                                    else
                                     {
-                                        foreach (DataRow dr in dsdd.Tables[0].Rows)
-                                        {
-                                            ScreenType = Convert.ToInt32(dr["ScreenType"]);
-                                            mobile = Convert.ToBoolean(dr["mobile"]);
-                                            Email = Convert.ToBoolean(dr["Email"]);
-                                            emailsubject = Convert.ToString(dr["emailsubject"]);
-                                            emailcontent = Convert.ToString(dr["emailcontent"]);
-
-                                            if (ScreenType == 1)
-                                            {
-                                                if (dr["Name1"].ToString() == "Sales Executive")
-                                                {
-                                                    toAddress = toAdd;
-                                                }
-                                                else if ((dr["Name1"].ToString() == "Supplier") || (dr["Name1"].ToString() == "Ledger") || (dr["Name1"].ToString() == "Customer") || (dr["Name1"].ToString() == "Expense") || (dr["Name1"].ToString() == "Bank"))
-                                                {
-                                                    if (ModeofContact == 2)
-                                                    {
-                                                        toAddress = toAdd;
-                                                    }
-                                                    else
-                                                    {
-                                                        continue;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    toAddress = toAdd;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                toAddress = dr["EmailId"].ToString();
-                                            }
-                                            if (Email == true)
-                                            {
-                                                string body = "\n";
-
-                                                int index123 = emailcontent.IndexOf("@Branch");
-                                                body = Request.Cookies["Company"].Value;
-                                                if (index123 >= 0)
-                                                {
-                                                    emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
-                                                }
-
-                                                int index132 = emailcontent.IndexOf("@Narration");
-                                                body = sNarration;
-                                                if (index132 >= 0)
-                                                {
-                                                    emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
-                                                }
-
-                                                int index312 = emailcontent.IndexOf("@User");
-                                                body = usernam;
-                                                if (index312 >= 0)
-                                                {
-                                                    emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
-                                                }
-
-                                                int index2 = emailcontent.IndexOf("@Date");
-                                                body = sBilldate1.ToString();
-                                                if (index2 >= 0)
-                                                {
-                                                    emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
-                                                }
-
-                                                //int index221 = emailcontent.IndexOf("@Paymode");
-                                                //body = Convert.ToString(drd["Paymode"]);
-                                                //if (index221 >= 0)
-                                                //{
-                                                //    emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
-                                                //}
-                                                int index = emailcontent.IndexOf("@Supplier");
-                                                body = cmbDebtor.SelectedItem.Text;
-                                                if (index >= 0)
-                                                {
-                                                    emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
-                                                }
-                                                int index1 = emailcontent.IndexOf("@Amount");
-                                                body = Convert.ToString(dTotalAmt1);
-                                                if (index1 >= 0)
-                                                {
-                                                    emailcontent = emailcontent.Remove(index1, 7).Insert(index1, body);
-                                                }
-                                                string smtphostname = ConfigurationManager.AppSettings["SmtpHostName"].ToString();
-                                                int smtpport = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPortNumber"]);
-                                                var fromAddress = ConfigurationManager.AppSettings["FromAddress"].ToString();
-
-                                                string fromPassword = ConfigurationManager.AppSettings["FromPassword"].ToString();
-
-                                                EmailLogic.SendEmail(smtphostname, smtpport, fromAddress, toAddress, emailsubject, emailcontent, fromPassword);
-
-                                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email sent successfully')", true);
-
-                                            }
-
-                                        }
+                                        toAddress = toAdd;
                                     }
                                 }
-                         
+                                else
+                                {
+                                    toAddress = dr["EmailId"].ToString();
+                                }
+                                if (Email == true)
+                                {
+                                    string body = "\n";
+
+                                    int index123 = emailcontent.IndexOf("@Branch");
+                                    body = Request.Cookies["Company"].Value;
+                                    if (index123 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                    }
+
+                                    int index132 = emailcontent.IndexOf("@Narration");
+                                    body = sNarration;
+                                    if (index132 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index132, 10).Insert(index132, body);
+                                    }
+
+                                    int index312 = emailcontent.IndexOf("@User");
+                                    body = usernam;
+                                    if (index312 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index312, 5).Insert(index312, body);
+                                    }
+
+                                    int index2 = emailcontent.IndexOf("@Date");
+                                    body = sBilldate1.ToString();
+                                    if (index2 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
+                                    }
+
+                                    //int index221 = emailcontent.IndexOf("@Paymode");
+                                    //body = Convert.ToString(drd["Paymode"]);
+                                    //if (index221 >= 0)
+                                    //{
+                                    //    emailcontent = emailcontent.Remove(index221, 8).Insert(index221, body);
+                                    //}
+                                    int index = emailcontent.IndexOf("@Supplier");
+                                    body = cmbDebtor.SelectedItem.Text;
+                                    if (index >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                    }
+                                    int index1 = emailcontent.IndexOf("@Amount");
+                                    body = Convert.ToString(dTotalAmt1);
+                                    if (index1 >= 0)
+                                    {
+                                        emailcontent = emailcontent.Remove(index1, 7).Insert(index1, body);
+                                    }
+                                    string smtphostname = ConfigurationManager.AppSettings["SmtpHostName"].ToString();
+                                    int smtpport = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPortNumber"]);
+                                    var fromAddress = ConfigurationManager.AppSettings["FromAddress"].ToString();
+
+                                    string fromPassword = ConfigurationManager.AppSettings["FromPassword"].ToString();
+
+                                    EmailLogic.SendEmail(smtphostname, smtpport, fromAddress, toAddress, emailsubject, emailcontent, fromPassword);
+
+                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email sent successfully')", true);
+
+                                }
+
+                            }
+                        }
+                    }
+
                 }
 
 
@@ -5015,129 +5029,129 @@ public partial class MultipleJournal : System.Web.UI.Page
                 string smscontent = string.Empty;
                 if (hdSMSRequired.Value == "YES")
                 {
-                    
-                                DataSet dsd = bl.GetLedgerInfoForId(connection, idebtor);
-                                var toAddress = "";
-                                var toAdd = "";
-                                Int32 ModeofContact = 0;
-                                int ScreenType = 0;
 
-                                if (dsd != null)
+                    DataSet dsd = bl.GetLedgerInfoForId(connection, idebtor);
+                    var toAddress = "";
+                    var toAdd = "";
+                    Int32 ModeofContact = 0;
+                    int ScreenType = 0;
+
+                    if (dsd != null)
+                    {
+                        if (dsd.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dsd.Tables[0].Rows)
+                            {
+                                toAdd = dr["Mobile"].ToString();
+                                ModeofContact = Convert.ToInt32(dr["ModeofContact"]);
+                            }
+                        }
+                    }
+
+
+                    DataSet dsdd = bl.GetDetailsForScreenNo(connection, ScreenName, "");
+                    if (dsdd != null)
+                    {
+                        if (dsdd.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dsdd.Tables[0].Rows)
+                            {
+                                ScreenType = Convert.ToInt32(dr["ScreenType"]);
+                                mobile = Convert.ToBoolean(dr["mobile"]);
+                                smscontent = Convert.ToString(dr["smscontent"]);
+
+                                if (ScreenType == 1)
                                 {
-                                    if (dsd.Tables[0].Rows.Count > 0)
+                                    if (dr["Name1"].ToString() == "Sales Executive")
                                     {
-                                        foreach (DataRow dr in dsd.Tables[0].Rows)
+                                        toAddress = toAdd;
+                                    }
+                                    else if ((dr["Name1"].ToString() == "Supplier") || (dr["Name1"].ToString() == "Ledger") || (dr["Name1"].ToString() == "Customer") || (dr["Name1"].ToString() == "Expense") || (dr["Name1"].ToString() == "Bank"))
+                                    {
+                                        if (ModeofContact == 1)
                                         {
-                                            toAdd = dr["Mobile"].ToString();
-                                            ModeofContact = Convert.ToInt32(dr["ModeofContact"]);
+                                            toAddress = toAdd;
+                                        }
+                                        else
+                                        {
+                                            continue;
                                         }
                                     }
-                                }
-
-
-                                DataSet dsdd = bl.GetDetailsForScreenNo(connection, ScreenName, "");
-                                if (dsdd != null)
-                                {
-                                    if (dsdd.Tables[0].Rows.Count > 0)
+                                    else
                                     {
-                                        foreach (DataRow dr in dsdd.Tables[0].Rows)
-                                        {
-                                            ScreenType = Convert.ToInt32(dr["ScreenType"]);
-                                            mobile = Convert.ToBoolean(dr["mobile"]);
-                                            smscontent = Convert.ToString(dr["smscontent"]);
-
-                                            if (ScreenType == 1)
-                                            {
-                                                if (dr["Name1"].ToString() == "Sales Executive")
-                                                {
-                                                    toAddress = toAdd;
-                                                }
-                                                else if ((dr["Name1"].ToString() == "Supplier") || (dr["Name1"].ToString() == "Ledger") || (dr["Name1"].ToString() == "Customer") || (dr["Name1"].ToString() == "Expense") || (dr["Name1"].ToString() == "Bank"))
-                                                {
-                                                    if (ModeofContact == 1)
-                                                    {
-                                                        toAddress = toAdd;
-                                                    }
-                                                    else
-                                                    {
-                                                        continue;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    toAddress = toAdd;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                toAddress = dr["mobile"].ToString();
-                                            }
-                                            if (mobile == true)
-                                            {
-
-                                                string body = "\n";
-
-                                                int index123 = smscontent.IndexOf("@Branch");
-                                                body = Request.Cookies["Company"].Value;
-                                                if (index123 >= 0)
-                                                {
-                                                    smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
-                                                }
-
-                                                int index132 = smscontent.IndexOf("@Narration");
-                                                body = sNarration;
-                                                if (index132 >= 0)
-                                                {
-                                                    smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
-                                                }
-
-                                                int index312 = smscontent.IndexOf("@User");
-                                                body = usernam;
-                                                if (index312 >= 0)
-                                                {
-                                                    smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
-                                                }
-
-                                                int index2 = smscontent.IndexOf("@Date");
-                                                body = Convert.ToString(sBilldate1);
-                                                if (index2 >= 0)
-                                                {
-                                                    smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
-                                                }
-
-                                                //int index221 = smscontent.IndexOf("@Paymode");
-                                                //body = Convert.ToString(drd["Paymode"]);
-                                                //if (index221 >= 0)
-                                                //{
-                                                //    smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
-                                                //}
-                                                int index = smscontent.IndexOf("@Supplier");
-                                                body = cmbDebtor.SelectedItem.Text;
-                                                if (index >= 0)
-                                                {
-                                                    smscontent = smscontent.Remove(index, 9).Insert(index, body);
-                                                }
-                                                int index1 = smscontent.IndexOf("@Amount");
-                                                body = Convert.ToString(dTotalAmt1);
-                                                if (index1 >= 0)
-                                                {
-                                                    smscontent = smscontent.Remove(index1, 7).Insert(index1, body);
-                                                }
-
-
-
-                                                if (Session["Provider"] != null)
-                                                {
-                                                    utilSMS.SendSMS(Session["Provider"].ToString(), Session["Priority"].ToString(), Session["SenderID"].ToString(), Session["UserName"].ToString(), Session["Password"].ToString(), toAddress, smscontent, true, UserID);
-                                                }
-
-
-                                            }
-
-                                        }
+                                        toAddress = toAdd;
                                     }
                                 }
-                          
+                                else
+                                {
+                                    toAddress = dr["mobile"].ToString();
+                                }
+                                if (mobile == true)
+                                {
+
+                                    string body = "\n";
+
+                                    int index123 = smscontent.IndexOf("@Branch");
+                                    body = Request.Cookies["Company"].Value;
+                                    if (index123 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index123, 7).Insert(index123, body);
+                                    }
+
+                                    int index132 = smscontent.IndexOf("@Narration");
+                                    body = sNarration;
+                                    if (index132 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index132, 10).Insert(index132, body);
+                                    }
+
+                                    int index312 = smscontent.IndexOf("@User");
+                                    body = usernam;
+                                    if (index312 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index312, 5).Insert(index312, body);
+                                    }
+
+                                    int index2 = smscontent.IndexOf("@Date");
+                                    body = Convert.ToString(sBilldate1);
+                                    if (index2 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index2, 5).Insert(index2, body);
+                                    }
+
+                                    //int index221 = smscontent.IndexOf("@Paymode");
+                                    //body = Convert.ToString(drd["Paymode"]);
+                                    //if (index221 >= 0)
+                                    //{
+                                    //    smscontent = smscontent.Remove(index221, 8).Insert(index221, body);
+                                    //}
+                                    int index = smscontent.IndexOf("@Supplier");
+                                    body = cmbDebtor.SelectedItem.Text;
+                                    if (index >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index, 9).Insert(index, body);
+                                    }
+                                    int index1 = smscontent.IndexOf("@Amount");
+                                    body = Convert.ToString(dTotalAmt1);
+                                    if (index1 >= 0)
+                                    {
+                                        smscontent = smscontent.Remove(index1, 7).Insert(index1, body);
+                                    }
+
+
+
+                                    if (Session["Provider"] != null)
+                                    {
+                                        utilSMS.SendSMS(Session["Provider"].ToString(), Session["Priority"].ToString(), Session["SenderID"].ToString(), Session["UserName"].ToString(), Session["Password"].ToString(), toAddress, smscontent, true, UserID);
+                                    }
+
+
+                                }
+
+                            }
+                        }
+                    }
+
                 }
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Journal Updated Successfully.')", true);
@@ -5196,7 +5210,7 @@ public partial class MultipleJournal : System.Web.UI.Page
                 bl.InsertJournal(out Newtrsns, sBillno1, sBilldate1, idebtor1, iCreditor1, dTotalAmt1, sNarration1, VoucherType, sPath, usernam);
 
 
-               
+
 
                 string salestype = string.Empty;
                 int ScreenNo = 0;
@@ -6012,139 +6026,139 @@ public partial class MultipleJournal : System.Web.UI.Page
     protected void LoadProducts(object sender, EventArgs e)
     {
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
-    //    string CategoryID = cmbCategory.SelectedValue;
-    //    BusinessLogic bl = new BusinessLogic(sDataSource);
-    //    DataSet ds = new DataSet();
-    //    ds = bl.ListProductsForCategoryID(CategoryID);
-    //    cmbProdAdd.Items.Clear();
-    //    cmbProdAdd.DataSource = ds;
-    //    cmbProdAdd.Items.Insert(0, new ListItem("Select Product", "0"));
-    //    cmbProdAdd.DataTextField = "ItemCode";
-    //    cmbProdAdd.DataValueField = "ItemCode";
+        //    string CategoryID = cmbCategory.SelectedValue;
+        //    BusinessLogic bl = new BusinessLogic(sDataSource);
+        //    DataSet ds = new DataSet();
+        //    ds = bl.ListProductsForCategoryID(CategoryID);
+        //    cmbProdAdd.Items.Clear();
+        //    cmbProdAdd.DataSource = ds;
+        //    cmbProdAdd.Items.Insert(0, new ListItem("Select Product", "0"));
+        //    cmbProdAdd.DataTextField = "ItemCode";
+        //    cmbProdAdd.DataValueField = "ItemCode";
 
-    //    cmbProdAdd.DataBind();
+        //    cmbProdAdd.DataBind();
 
-    //    ds = bl.ListModelsForCategoryID(CategoryID);
-    //    cmbModel.Items.Clear();
-    //    cmbModel.DataSource = ds;
-    //    cmbModel.Items.Insert(0, new ListItem("Select Model", "0"));
-    //    cmbModel.DataTextField = "Model";
-    //    cmbModel.DataValueField = "Model";
-    //    cmbModel.DataBind();
+        //    ds = bl.ListModelsForCategoryID(CategoryID);
+        //    cmbModel.Items.Clear();
+        //    cmbModel.DataSource = ds;
+        //    cmbModel.Items.Insert(0, new ListItem("Select Model", "0"));
+        //    cmbModel.DataTextField = "Model";
+        //    cmbModel.DataValueField = "Model";
+        //    cmbModel.DataBind();
 
-    //    ds = bl.ListBrandsForCategoryID(CategoryID);
-    //    cmbBrand.Items.Clear();
-    //    cmbBrand.DataSource = ds;
-    //    cmbBrand.Items.Insert(0, new ListItem("Select Brand", "0"));
-    //    cmbBrand.DataTextField = "ProductDesc";
-    //    cmbBrand.DataValueField = "ProductDesc";
-    //    cmbBrand.DataBind();
+        //    ds = bl.ListBrandsForCategoryID(CategoryID);
+        //    cmbBrand.Items.Clear();
+        //    cmbBrand.DataSource = ds;
+        //    cmbBrand.Items.Insert(0, new ListItem("Select Brand", "0"));
+        //    cmbBrand.DataTextField = "ProductDesc";
+        //    cmbBrand.DataValueField = "ProductDesc";
+        //    cmbBrand.DataBind();
 
-    //    ds = bl.ListProdNameForCategoryID(CategoryID);
-    //    cmbProdName.Items.Clear();
-    //    cmbProdName.DataSource = ds;
-    //    cmbProdName.Items.Insert(0, new ListItem("Select ItemName", "0"));
-    //    cmbProdName.DataTextField = "ProductName";
-    //    cmbProdName.DataValueField = "ProductName";
-    //    cmbProdName.DataBind();
+        //    ds = bl.ListProdNameForCategoryID(CategoryID);
+        //    cmbProdName.Items.Clear();
+        //    cmbProdName.DataSource = ds;
+        //    cmbProdName.Items.Insert(0, new ListItem("Select ItemName", "0"));
+        //    cmbProdName.DataTextField = "ProductName";
+        //    cmbProdName.DataValueField = "ProductName";
+        //    cmbProdName.DataBind();
 
-    //    LoadForProduct(this, null);
-    //}
+        //    LoadForProduct(this, null);
+        //}
 
-    //protected void LoadForProductName(object sender, EventArgs e)
-    //{
-    //    BusinessLogic bl = new BusinessLogic(sDataSource);
-    //    string prodName = cmbProdName.SelectedValue;
-    //    string CategoryID = cmbCategory.SelectedValue;
-    //    DataSet ds = new DataSet();
+        //protected void LoadForProductName(object sender, EventArgs e)
+        //{
+        //    BusinessLogic bl = new BusinessLogic(sDataSource);
+        //    string prodName = cmbProdName.SelectedValue;
+        //    string CategoryID = cmbCategory.SelectedValue;
+        //    DataSet ds = new DataSet();
 
-    //    ds = bl.ListProdcutsForProductName(prodName, CategoryID);
-    //    cmbProdAdd.Items.Clear();
-    //    cmbProdAdd.DataSource = ds;
-    //    cmbProdAdd.DataTextField = "ItemCode";
-    //    cmbProdAdd.DataValueField = "ItemCode";
-    //    cmbProdAdd.DataBind();
+        //    ds = bl.ListProdcutsForProductName(prodName, CategoryID);
+        //    cmbProdAdd.Items.Clear();
+        //    cmbProdAdd.DataSource = ds;
+        //    cmbProdAdd.DataTextField = "ItemCode";
+        //    cmbProdAdd.DataValueField = "ItemCode";
+        //    cmbProdAdd.DataBind();
 
-    //    ds = bl.ListBrandsForProductName(prodName, CategoryID);
-    //    cmbBrand.Items.Clear();
-    //    cmbBrand.DataSource = ds;
-    //    cmbBrand.DataTextField = "ProductDesc";
-    //    cmbBrand.DataValueField = "ProductDesc";
-    //    cmbBrand.DataBind();
+        //    ds = bl.ListBrandsForProductName(prodName, CategoryID);
+        //    cmbBrand.Items.Clear();
+        //    cmbBrand.DataSource = ds;
+        //    cmbBrand.DataTextField = "ProductDesc";
+        //    cmbBrand.DataValueField = "ProductDesc";
+        //    cmbBrand.DataBind();
 
-    //    ds = bl.ListModelsForProductName(prodName, CategoryID);
-    //    cmbModel.Items.Clear();
-    //    cmbModel.DataSource = ds;
-    //    cmbModel.DataTextField = "Model";
-    //    cmbModel.DataValueField = "Model";
-    //    cmbModel.DataBind();
+        //    ds = bl.ListModelsForProductName(prodName, CategoryID);
+        //    cmbModel.Items.Clear();
+        //    cmbModel.DataSource = ds;
+        //    cmbModel.DataTextField = "Model";
+        //    cmbModel.DataValueField = "Model";
+        //    cmbModel.DataBind();
 
-    //    cmbProdAdd_SelectedIndexChanged(this, null);
+        //    cmbProdAdd_SelectedIndexChanged(this, null);
     }
 
     protected void LoadForBrand(object sender, EventArgs e)
     {
-    //    BusinessLogic bl = new BusinessLogic(sDataSource);
-    //    string brand = cmbBrand.SelectedValue;
-    //    string CategoryID = cmbCategory.SelectedValue;
-    //    //DataSet catData = bl.GetProductForId(sDataSource, itemCode);
-    //    //cmbProdAdd.SelectedValue = itemCode;
-    //    //cmbModel.SelectedValue = itemCode;
-    //    DataSet ds = new DataSet();
-    //    ds = bl.ListModelsForBrand(brand, CategoryID);
-    //    cmbModel.Items.Clear();
-    //    cmbModel.DataSource = ds;
-    //    cmbModel.DataTextField = "Model";
-    //    cmbModel.DataValueField = "Model";
-    //    cmbModel.DataBind();
+        //    BusinessLogic bl = new BusinessLogic(sDataSource);
+        //    string brand = cmbBrand.SelectedValue;
+        //    string CategoryID = cmbCategory.SelectedValue;
+        //    //DataSet catData = bl.GetProductForId(sDataSource, itemCode);
+        //    //cmbProdAdd.SelectedValue = itemCode;
+        //    //cmbModel.SelectedValue = itemCode;
+        //    DataSet ds = new DataSet();
+        //    ds = bl.ListModelsForBrand(brand, CategoryID);
+        //    cmbModel.Items.Clear();
+        //    cmbModel.DataSource = ds;
+        //    cmbModel.DataTextField = "Model";
+        //    cmbModel.DataValueField = "Model";
+        //    cmbModel.DataBind();
 
-    //    ds = bl.ListProdcutsForBrand(brand, CategoryID);
-    //    cmbProdAdd.Items.Clear();
-    //    cmbProdAdd.DataSource = ds;
-    //    cmbProdAdd.DataTextField = "ItemCode";
-    //    cmbProdAdd.DataValueField = "ItemCode";
-    //    cmbProdAdd.DataBind();
+        //    ds = bl.ListProdcutsForBrand(brand, CategoryID);
+        //    cmbProdAdd.Items.Clear();
+        //    cmbProdAdd.DataSource = ds;
+        //    cmbProdAdd.DataTextField = "ItemCode";
+        //    cmbProdAdd.DataValueField = "ItemCode";
+        //    cmbProdAdd.DataBind();
 
-    //    ds = bl.ListProdcutNameForBrand(brand, CategoryID);
-    //    cmbProdName.Items.Clear();
-    //    cmbProdName.DataSource = ds;
-    //    cmbProdName.DataTextField = "ProductName";
-    //    cmbProdName.DataValueField = "ProductName";
-    //    cmbProdName.DataBind();
+        //    ds = bl.ListProdcutNameForBrand(brand, CategoryID);
+        //    cmbProdName.Items.Clear();
+        //    cmbProdName.DataSource = ds;
+        //    cmbProdName.DataTextField = "ProductName";
+        //    cmbProdName.DataValueField = "ProductName";
+        //    cmbProdName.DataBind();
 
-    //    cmbProdAdd_SelectedIndexChanged(this, null);
+        //    cmbProdAdd_SelectedIndexChanged(this, null);
 
-    //}
+        //}
 
-    //protected void LoadForModel(object sender, EventArgs e)
-    //{
-    //    BusinessLogic bl = new BusinessLogic(sDataSource);
-    //    string model = cmbModel.SelectedValue;
-    //    string CategoryID = cmbCategory.SelectedValue;
-    //    DataSet ds = new DataSet();
+        //protected void LoadForModel(object sender, EventArgs e)
+        //{
+        //    BusinessLogic bl = new BusinessLogic(sDataSource);
+        //    string model = cmbModel.SelectedValue;
+        //    string CategoryID = cmbCategory.SelectedValue;
+        //    DataSet ds = new DataSet();
 
-    //    ds = bl.ListProdcutsForModel(model, CategoryID);
-    //    cmbProdAdd.Items.Clear();
-    //    cmbProdAdd.DataSource = ds;
-    //    cmbProdAdd.DataTextField = "ItemCode";
-    //    cmbProdAdd.DataValueField = "ItemCode";
-    //    cmbProdAdd.DataBind();
+        //    ds = bl.ListProdcutsForModel(model, CategoryID);
+        //    cmbProdAdd.Items.Clear();
+        //    cmbProdAdd.DataSource = ds;
+        //    cmbProdAdd.DataTextField = "ItemCode";
+        //    cmbProdAdd.DataValueField = "ItemCode";
+        //    cmbProdAdd.DataBind();
 
-    //    ds = bl.ListBrandsForModel(model, CategoryID);
-    //    cmbBrand.Items.Clear();
-    //    cmbBrand.DataSource = ds;
-    //    cmbBrand.DataTextField = "ProductDesc";
-    //    cmbBrand.DataValueField = "ProductDesc";
-    //    cmbBrand.DataBind();
+        //    ds = bl.ListBrandsForModel(model, CategoryID);
+        //    cmbBrand.Items.Clear();
+        //    cmbBrand.DataSource = ds;
+        //    cmbBrand.DataTextField = "ProductDesc";
+        //    cmbBrand.DataValueField = "ProductDesc";
+        //    cmbBrand.DataBind();
 
-    //    ds = bl.ListProductNameForModel(model, CategoryID);
-    //    cmbProdName.Items.Clear();
-    //    cmbProdName.DataSource = ds;
-    //    cmbProdName.DataTextField = "ProductName";
-    //    cmbProdName.DataValueField = "ProductName";
-    //    cmbProdName.DataBind();
+        //    ds = bl.ListProductNameForModel(model, CategoryID);
+        //    cmbProdName.Items.Clear();
+        //    cmbProdName.DataSource = ds;
+        //    cmbProdName.DataTextField = "ProductName";
+        //    cmbProdName.DataValueField = "ProductName";
+        //    cmbProdName.DataBind();
 
-    //    cmbProdAdd_SelectedIndexChanged(this, null);
+        //    cmbProdAdd_SelectedIndexChanged(this, null);
     }
 
     protected void LoadForProduct(object sender, EventArgs e)
@@ -6157,176 +6171,176 @@ public partial class MultipleJournal : System.Web.UI.Page
 
     //private DataSet formXml()
     //{
-        //int purchaseID = 0;
-        ////string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
-        //BusinessLogic bl = new BusinessLogic(sDataSource);
-        ////DataSet ds = new DataSet();
-        ////purchaseID = Convert.ToInt32(hdPurchase.Value);
-        ///*March18*/
-        //DataSet itemDs = null;
-        ///*March18*/
-        //DataTable dt;
-        //DataRow dr;
-        //DataColumn dc;
-        //DataSet ds = new DataSet();
+    //int purchaseID = 0;
+    ////string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
+    //BusinessLogic bl = new BusinessLogic(sDataSource);
+    ////DataSet ds = new DataSet();
+    ////purchaseID = Convert.ToInt32(hdPurchase.Value);
+    ///*March18*/
+    //DataSet itemDs = null;
+    ///*March18*/
+    //DataTable dt;
+    //DataRow dr;
+    //DataColumn dc;
+    //DataSet ds = new DataSet();
 
-        //double dTotal = 0;
-        //double dQty = 0;
-        //double dRate = 0;
-        //double dNLP = 0;
-        //string strRole = string.Empty;
-        //string roleFlag = string.Empty;
-        //string strBundles = string.Empty;
-
-
-        //double stock = 0;
-
-        //string strItemCode = string.Empty;
-        //DataSet dsRole;
-        //ds = bl.GetPurchaseItemsForId(purchaseID);
-        //if (ds != null)
-        //{
-
-        //    dt = new DataTable();
-
-        //    dc = new DataColumn("PurchaseID");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("itemCode");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("ProductName");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("ProductDesc");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("PurchaseRate");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("NLP");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("Qty");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("Measure_Unit");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("Discount");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("VAT");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("CST");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("Discountamt");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("Roles");
-        //    dt.Columns.Add(dc);
-
-        //    dc = new DataColumn("IsRole");
-        //    dt.Columns.Add(dc);
+    //double dTotal = 0;
+    //double dQty = 0;
+    //double dRate = 0;
+    //double dNLP = 0;
+    //string strRole = string.Empty;
+    //string roleFlag = string.Empty;
+    //string strBundles = string.Empty;
 
 
-        //    dc = new DataColumn("Total");
-        //    dt.Columns.Add(dc);
-        //    /*March18*/
-        //    itemDs = new DataSet();
-        //    /*March18*/
+    //double stock = 0;
+
+    //string strItemCode = string.Empty;
+    //DataSet dsRole;
+    //ds = bl.GetPurchaseItemsForId(purchaseID);
+    //if (ds != null)
+    //{
+
+    //    dt = new DataTable();
+
+    //    dc = new DataColumn("PurchaseID");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("itemCode");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("ProductName");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("ProductDesc");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("PurchaseRate");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("NLP");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("Qty");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("Measure_Unit");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("Discount");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("VAT");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("CST");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("Discountamt");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("Roles");
+    //    dt.Columns.Add(dc);
+
+    //    dc = new DataColumn("IsRole");
+    //    dt.Columns.Add(dc);
 
 
-        //    itemDs.Tables.Add(dt);
-        //    if (ds.Tables[0].Rows.Count > 0)
-        //    {
-        //        foreach (DataRow dR in ds.Tables[0].Rows)
-        //        {
-        //            dr = itemDs.Tables[0].NewRow();
-
-        //            if (dR["Qty"] != null)
-        //                dQty = Convert.ToDouble(dR["Qty"]);
-        //            if (dR["PurchaseRate"] != null)
-        //                dRate = Convert.ToDouble(dR["PurchaseRate"]);
-
-        //            if (dR["NLP"] != null)
-        //            {
-        //                if (dR["NLP"].ToString() != "")
-        //                    dNLP = Convert.ToDouble(dR["NLP"]);
-        //                else
-        //                    dNLP = 0.0;
-        //            }
+    //    dc = new DataColumn("Total");
+    //    dt.Columns.Add(dc);
+    //    /*March18*/
+    //    itemDs = new DataSet();
+    //    /*March18*/
 
 
-        //            dTotal = dQty * dRate;
-        //            if (dR["ItemCode"] != null)
-        //            {
-        //                strItemCode = Convert.ToString(dR["ItemCode"]);
-        //                dr["itemCode"] = strItemCode;
-        //            }
-        //            if (dR["PurchaseID"] != null)
-        //            {
-        //                purchaseID = Convert.ToInt32(dR["PurchaseID"]);
-        //                dr["PurchaseID"] = Convert.ToString(purchaseID);
-        //            }
+    //    itemDs.Tables.Add(dt);
+    //    if (ds.Tables[0].Rows.Count > 0)
+    //    {
+    //        foreach (DataRow dR in ds.Tables[0].Rows)
+    //        {
+    //            dr = itemDs.Tables[0].NewRow();
 
-        //            if (dR["ProductName"] != null)
-        //                dr["ProductName"] = Convert.ToString(dR["ProductName"]);
+    //            if (dR["Qty"] != null)
+    //                dQty = Convert.ToDouble(dR["Qty"]);
+    //            if (dR["PurchaseRate"] != null)
+    //                dRate = Convert.ToDouble(dR["PurchaseRate"]);
 
-        //            if (dR["ProductDesc"] != null)
-        //                dr["ProductDesc"] = Convert.ToString(dR["ProductDesc"]);
-
-        //            if (dR["Measure_Unit"] != null)
-        //                dr["Measure_Unit"] = Convert.ToString(dR["Measure_Unit"]);
-
-        //            dr["Qty"] = dQty.ToString();
-
-        //            dr["PurchaseRate"] = dRate.ToString();
-
-        //            dr["NLP"] = dNLP.ToString();
-
-        //            if (dR["Discount"] != null)
-        //                dr["Discount"] = Convert.ToString(dR["Discount"]);
-
-        //            if (dR["VAT"] != null)
-        //                dr["VAT"] = Convert.ToString(dR["VAT"]);
-
-        //            if (dR["CST"] != null)
-        //                dr["CST"] = Convert.ToString(dR["CST"]);
-
-        //            if (dR["discamt"] != null)
-        //                dr["Discountamt"] = Convert.ToString(dR["discamt"]);
-
-        //            if (dR["isrole"] != null)
-        //            {
-        //                roleFlag = Convert.ToString(dR["isrole"]);
-        //                dr["IsRole"] = roleFlag;
-
-        //            }
-
-        //            if (roleFlag == "Y")
-        //            {
-        //                strRole = Convert.ToString(dR["RoleID"]);
-        //            }
-        //            else
-        //            {
-        //                strRole = "NO ROLE";
-        //            }
-
-        //            if (hdStock.Value != "")
-        //                stock = Convert.ToDouble(hdStock.Value);
-        //            dr["Roles"] = strRole;
-        //            dr["Total"] = Convert.ToString(dTotal);
-        //            itemDs.Tables[0].Rows.Add(dr);
-        //            strRole = "";
-        //        }
-        //    }
+    //            if (dR["NLP"] != null)
+    //            {
+    //                if (dR["NLP"].ToString() != "")
+    //                    dNLP = Convert.ToDouble(dR["NLP"]);
+    //                else
+    //                    dNLP = 0.0;
+    //            }
 
 
-        //}
-        //return itemDs;
+    //            dTotal = dQty * dRate;
+    //            if (dR["ItemCode"] != null)
+    //            {
+    //                strItemCode = Convert.ToString(dR["ItemCode"]);
+    //                dr["itemCode"] = strItemCode;
+    //            }
+    //            if (dR["PurchaseID"] != null)
+    //            {
+    //                purchaseID = Convert.ToInt32(dR["PurchaseID"]);
+    //                dr["PurchaseID"] = Convert.ToString(purchaseID);
+    //            }
+
+    //            if (dR["ProductName"] != null)
+    //                dr["ProductName"] = Convert.ToString(dR["ProductName"]);
+
+    //            if (dR["ProductDesc"] != null)
+    //                dr["ProductDesc"] = Convert.ToString(dR["ProductDesc"]);
+
+    //            if (dR["Measure_Unit"] != null)
+    //                dr["Measure_Unit"] = Convert.ToString(dR["Measure_Unit"]);
+
+    //            dr["Qty"] = dQty.ToString();
+
+    //            dr["PurchaseRate"] = dRate.ToString();
+
+    //            dr["NLP"] = dNLP.ToString();
+
+    //            if (dR["Discount"] != null)
+    //                dr["Discount"] = Convert.ToString(dR["Discount"]);
+
+    //            if (dR["VAT"] != null)
+    //                dr["VAT"] = Convert.ToString(dR["VAT"]);
+
+    //            if (dR["CST"] != null)
+    //                dr["CST"] = Convert.ToString(dR["CST"]);
+
+    //            if (dR["discamt"] != null)
+    //                dr["Discountamt"] = Convert.ToString(dR["discamt"]);
+
+    //            if (dR["isrole"] != null)
+    //            {
+    //                roleFlag = Convert.ToString(dR["isrole"]);
+    //                dr["IsRole"] = roleFlag;
+
+    //            }
+
+    //            if (roleFlag == "Y")
+    //            {
+    //                strRole = Convert.ToString(dR["RoleID"]);
+    //            }
+    //            else
+    //            {
+    //                strRole = "NO ROLE";
+    //            }
+
+    //            if (hdStock.Value != "")
+    //                stock = Convert.ToDouble(hdStock.Value);
+    //            dr["Roles"] = strRole;
+    //            dr["Total"] = Convert.ToString(dTotal);
+    //            itemDs.Tables[0].Rows.Add(dr);
+    //            strRole = "";
+    //        }
+    //    }
+
+
+    //}
+    //return itemDs;
     //}
     private void BindProduct()
     {
@@ -6378,7 +6392,7 @@ public partial class MultipleJournal : System.Web.UI.Page
     {
 
     }
- 
+
 
     public string GetTotal(double qty, double rate, double discount, double VAT, double CST, double discamt)
     {
@@ -6709,7 +6723,7 @@ public partial class MultipleJournal : System.Web.UI.Page
         //dc = new DataColumn("Total");
         //dt.Columns.Add(dc);
 
-        
+
 
         //dc = new DataColumn("Bundles");
         //dt.Columns.Add(dc);
@@ -6717,11 +6731,11 @@ public partial class MultipleJournal : System.Web.UI.Page
         //dc = new DataColumn("Rods");
         //dt.Columns.Add(dc);
 
-        
+
 
         //ds.Tables.Add(dt);
         //drNew = dt.NewRow();
-        
+
         //string textvalue = null;
 
         //drNew["itemCode"] = string.Empty;
@@ -6739,10 +6753,10 @@ public partial class MultipleJournal : System.Web.UI.Page
         //drNew["Roles"] = "";
         //drNew["IsRole"] = "N";
         //drNew["Total"] = string.Empty;
-        
+
         //drNew["Bundles"] = "";
         //drNew["Rods"] = "";
-        
+
 
         //ds.Tables[0].Rows.Add(drNew);
 
@@ -6821,7 +6835,7 @@ public partial class MultipleJournal : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
 
-      
+
 
             ledgerid = Convert.ToInt32(cmbDebtor.SelectedValue);
 
@@ -6874,7 +6888,7 @@ public partial class MultipleJournal : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
-       
+
     }
     protected void drpDebtorM_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -6882,8 +6896,8 @@ public partial class MultipleJournal : System.Web.UI.Page
         try
         {
             int ledgerid = 0;
-            
-           
+
+
             string connection = Request.Cookies["Company"].Value;
 
             BusinessLogic bl = new BusinessLogic(sDataSource);

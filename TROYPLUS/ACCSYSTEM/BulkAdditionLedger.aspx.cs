@@ -19,6 +19,10 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
     public string sDataSource = string.Empty;
     Double SumCashSales = 0.0d;
     BusinessLogic objBL;
+   // private string sDataSource = string.Empty;
+    private string connection = string.Empty;
+    string brncode;
+    string usernam;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -35,6 +39,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                 //SalesPanel.Visible = false;
 
                 loadBranch();
+                BranchEnable_Disable();
 
                 //NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
                 //Label1.Text = nics[0].GetPhysicalAddress().ToString();
@@ -70,6 +75,29 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+       // UpdatePanel123456.Update();
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
+
     }
 
     protected void btnFormat_Click(object sender, EventArgs e)
@@ -135,6 +163,9 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Mobile"));
         dt.Columns.Add(new DataColumn("CreditLimit"));
         dt.Columns.Add(new DataColumn("CreditDays"));
+       // dt.Columns.Add(new DataColumn("Emailid"));
+      //  dt.Columns.Add(new DataColumn("OpDueDate"));
+      //  dt.Columns.Add(new DataColumn("TinNumber"));
         //dt.Columns.Add(new DataColumn("Inttrans"));
         //dt.Columns.Add(new DataColumn("Paymentmade"));
         //dt.Columns.Add(new DataColumn("dc"));
@@ -147,9 +178,12 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         dr_final12["Add1"] = "";
         dr_final12["Add2"] = "";
         dr_final12["Add3"] = "";
-        dr_final12["Mobile"] = "0";
+        dr_final12["Mobile"] = "";
         dr_final12["CreditLimit"] = "0";
         dr_final12["CreditDays"] = "0";
+       // dr_final12["Emailid"] = "";
+      //  dr_final12["OpDueDate"] = "";
+      //  dr_final12["TinNumber"] = "";
         //dr_final12["Inttrans"] = "NO";
         //dr_final12["Paymentmade"] = "NO";
         //dr_final12["dc"] = "NO";
@@ -305,6 +339,13 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
             //    Label2.Text = "Please Select An Excel File";
             //}
 
+            if(drpBranch.SelectedValue=="0")
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Branch. It cannot be left Blank.');", true);
+                return;
+            }
+            
+
 
             String strConnection = "ConnectionString";
             string connectionString = "";
@@ -327,6 +368,12 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                         fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
 
                     //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select correct Format File Extension.(.xls or .xlsx)');", true);
+                    return;
+
                 }
                 OleDbConnection con = new OleDbConnection(connectionString);
                 OleDbCommand cmd = new OleDbCommand();
@@ -355,10 +402,104 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                     return;
                 }
 
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["LedgerName"]) == null) || (Convert.ToString(dr["LedgerName"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Ledger name is empty');", true);
+                        return;
+                    }
+                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Mobile"]) == ""))
+                //    {
+
+                //    }
+                //    else if ((Convert.ToString(dr["Mobile"])) !=null)
+                //    {
+                //        //int mobile = Convert.ToString(dr["Mobile"]));
+                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Ledger name is empty');", true);
+                //        return;
+                //    }
+                //}
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["OpenBalanceDR"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter OpenBalanceDR. It cannot be blank or otherwise put Zero.');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["OpenBalanceCR"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter OpenBalanceCR. It cannot be blank or otherwise put Zero.');", true);
+                        return;
+                    }
+                }
 
                 //foreach (DataRow dr in ds.Tables[0].Rows)
                 //{
-                //    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
+                //    if ((Convert.ToString(dr["OpenBalanceDR"]) == null) || (Convert.ToString(dr["OpenBalanceDR"]) == "0"))
+                //    {
+                //        //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Ledger name is empty');", true);
+                //        //return;
+                //    }
+                //         else
+                //    {
+                //        if (Convert.ToString(dr["OpDueDate"]) == "" || (Convert.ToString(dr["OpDueDate"]) == null))
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter OP DUEDATE.');", true);
+                //            return;
+
+                //        }
+                //    }
+                //    if((Convert.ToString(dr["OpenBalanceCR"]) == null) || (Convert.ToString(dr["OpenBalanceCR"]) == "0"))
+                //    {
+
+                //    }
+                //    else
+                //    {
+                //        if(Convert.ToString(dr["OpDueDate"])== null)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter OP DUEDATE.');", true);
+                //            return;
+
+                //        }
+                //    }
+                //}
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string customer = Convert.ToString(dr["LedgerName"]);
+
+                    if (objBL.CheckIfcustomerIsThere(customer))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer with - " + customer + " - already exists.');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string Mobile = Convert.ToString(dr["Mobile"]);
+
+                    if (objBL.CheckIfcustomernumberIsThere(Mobile))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer  with this - " + Mobile + " - number already exists.');", true);
+                        return;
+                    }
+                }
+
+
+
+                //foreach CheckIfcustomerIsThere(DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if CheckIfcustomernumberIsThere ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
                 //    {
                 //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Missing Datas');", true);
                 //        return;
@@ -453,6 +594,36 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                     i = i + 1;
                     ii = 1;
                 }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    itemc = Convert.ToString(dr["Mobile"]);
+
+                    if ((itemc == null) || (itemc == ""))
+                    {
+                    }
+                    else
+                    {
+                        foreach (DataRow drd in ds.Tables[0].Rows)
+                        {
+
+                            if (ii == i)
+                            {
+                            }
+                            else
+                            {
+                                if (itemc == Convert.ToString(drd["Mobile"]))
+                                {
+                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile - " + itemc + " - already exists in the excel.');", true);
+                                    return;
+                                }
+                            }
+                            ii = ii + 1;
+                        }
+                    }
+                    i = i + 1;
+                    ii = 1;
+                }
                 if (drpBranch.Text.Trim() != string.Empty)
                     brncode = Convert.ToString(drpBranch.SelectedValue);
 
@@ -478,7 +649,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         drpBranch.Items.Clear();
-        drpBranch.Items.Add(new ListItem("All Branch", "All"));
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
         ds = bl.ListBranch();
         drpBranch.DataSource = ds;
         drpBranch.DataBind();

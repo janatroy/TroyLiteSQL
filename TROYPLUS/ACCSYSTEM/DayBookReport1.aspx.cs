@@ -61,7 +61,28 @@ public partial class DayBookReport1 : System.Web.UI.Page
                             }
                         }
                     }
+                    DataSet ds1 = bl.getImageInfo();
+                    if (ds1 != null)
+                    {
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                            {
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                                Image1.Height = 95;
+                                Image1.Width = 95;
+                            }
+                        }
+                        else
+                        {
+                            Image1.Height = 95;
+                            Image1.Width = 95;
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                        }
+                    }
                 }
+
+                string Branch = string.Empty;
 
                 DateTime startDate, endDate;
 
@@ -81,15 +102,21 @@ public partial class DayBookReport1 : System.Web.UI.Page
                     etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
                 }
 
+                if (Request.QueryString["Branch"] != null)
+                {
+                    Branch = Request.QueryString["Branch"].ToString();
+                }
+
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
 
-                lblStartDate.Text = startDate.ToString();
-                lblEndDate.Text = endDate.ToString();
+
+                lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
+                lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
                 rptDayBook = new ReportsBL.ReportClass();
                 DayBookPanel.Visible = true;
                 DataSet ds = new DataSet();
-                ds = rptDayBook.generateDayBookDS(startDate, endDate, sDataSource);
+                ds = bl.generateDayBookDS(startDate, endDate, sDataSource, Branch);
                 gvLedger.DataSource = ds;
                 gvLedger.DataBind();
                 CalculateDebitCredit();
@@ -297,12 +324,18 @@ public partial class DayBookReport1 : System.Web.UI.Page
             etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
         }
 
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
         stDate = Convert.ToDateTime(stdt);
+        string Branch = string.Empty;
+
+        if (Request.QueryString["Branch"] != null)
+        {
+            Branch = Request.QueryString["Branch"].ToString();
+        }
 
 
-
-
-        lblOB.Text = rpt.GetDayBookOB(stDate, sDataSource).ToString("N2");
+        lblOB.Text = bl.GetDayBookOB(stDate, sDataSource, Branch).ToString("N2");
     }
     protected void gvLedger_RowDataBound(object sender, GridViewRowEventArgs e)
     {
@@ -317,8 +350,8 @@ public partial class DayBookReport1 : System.Web.UI.Page
 
                 dDebit = dDebit + debit;
                 dCredit = dCredit + credit;
-                e.Row.Cells[2].Text = debit.ToString("f2");
-                e.Row.Cells[3].Text = credit.ToString("f2");
+                e.Row.Cells[3].Text = debit.ToString("f2");
+                e.Row.Cells[4].Text = credit.ToString("f2");
 
             }
             else if (e.Row.RowType == DataControlRowType.Footer)

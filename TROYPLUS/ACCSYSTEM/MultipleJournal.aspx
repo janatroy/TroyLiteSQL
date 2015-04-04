@@ -285,7 +285,7 @@
                                                                                                                         <td style="width: 1%"></td>
                                                                                                                         <td align="center" style="width: 5%">Date *
                                                                                                                         </td>
-                                                                                                                        <td style="width: 4%"></td>
+                                                                                                                        <td style="width: 1%"></td>
                                                                                                                         <td align="center" style="width: 20%">Debtor *
                                                                                                                         </td>
                                                                                                                         <td style="width: 1%"></td>
@@ -295,7 +295,7 @@
                                                                                                                         <td align="center" style="width: 6%">Amount *
                                                                                                                         </td>
                                                                                                                         <td style="width: 1%"></td>
-                                                                                                                        <td align="center" style="width: 34%">Narration *
+                                                                                                                        <td align="center" style="width: 30%">Narration *
                                                                                                                         </td>
 
                                                                                                                     </tr>
@@ -317,15 +317,15 @@
                                                                                                                             <asp:ImageButton ID="btnDate3" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
                                                                                                                                 Width="20px" runat="server" />
                                                                                                                         </td>
-                                                                                                                        <td class="ControlDrpBorder" style="width: 15%">
+                                                                                                                        <td class="ControlDrpBorder" style="width: 20%">
                                                                                                                             <asp:DropDownList ID="cmbDebtorAdd1" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Width="100%" AutoPostBack="False"
                                                                                                                                 DataValueField="LedgerID" DataTextField="LedgerName" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                                 AppendDataBoundItems="true" ValidationGroup="addVal">
-                                                                                                                                <asp:ListItem Text="Select Debtor" style="background-color: #90c9fc" Value="0"></asp:ListItem>
+                                                                                                                                <asp:ListItem Text="Select Debtor" style="background-color: #e7e7e7" Value="0"></asp:ListItem>
                                                                                                                             </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 1%"></td>
-                                                                                                                        <td class="ControlDrpBorder" style="width: 15%">
+                                                                                                                        <td class="ControlDrpBorder" style="width: 20%">
                                                                                                                             <asp:DropDownList ID="cmbCreditorAdd1" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Width="100%" AutoPostBack="False"
                                                                                                                                 DataValueField="LedgerID" DataTextField="LedgerName" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                                 AppendDataBoundItems="true" ValidationGroup="addVal">
@@ -338,7 +338,7 @@
                                                                                                                                 CssClass="cssTextBoxReport2"></asp:TextBox>
                                                                                                                         </td>
                                                                                                                         <td style="width: 1%"></td>
-                                                                                                                        <td class="ControlTextBox3" style="width: 34%">
+                                                                                                                        <td class="ControlTextBox3" style="width: 30%">
                                                                                                                             <asp:TextBox ID="txtNarrAdd1" ValidationGroup="addVal" runat="server" MaxLength="200"
                                                                                                                                 CssClass="cssTextBox"></asp:TextBox>
                                                                                                                         </td>
@@ -410,7 +410,7 @@
                                                                                                                             <asp:ImageButton ID="ImageButton3" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
                                                                                                                                 Width="20px" runat="server" />
                                                                                                                         </td>
-                                                                                                                        <td class="ControlDrpBorder" style="width: 15%">
+                                                                                                                        <td class="ControlDrpBorder" style="width: 20%">
                                                                                                                             <asp:DropDownList ID="cmbDebtorAdd3" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Width="100%" AutoPostBack="False"
                                                                                                                                 DataValueField="LedgerID" DataTextField="LedgerName" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                                 AppendDataBoundItems="true" ValidationGroup="addVal">
@@ -418,7 +418,7 @@
                                                                                                                             </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 1%"></td>
-                                                                                                                        <td class="ControlDrpBorder" style="width: 15%">
+                                                                                                                        <td class="ControlDrpBorder" style="width: 20%">
                                                                                                                             <asp:DropDownList ID="cmbCreditorAdd3" runat="server" BackColor="#90c9fc" CssClass="drpDownListMedium" Width="100%" AutoPostBack="False"
                                                                                                                                 DataValueField="LedgerID" DataTextField="LedgerName" Style="border: 1px solid #90c9fc" Height="26px"
                                                                                                                                 AppendDataBoundItems="true" ValidationGroup="addVal">
@@ -431,7 +431,7 @@
                                                                                                                                 CssClass="cssTextBoxReport2"></asp:TextBox>
                                                                                                                         </td>
                                                                                                                         <td style="width: 1%"></td>
-                                                                                                                        <td class="ControlTextBox3" style="width: 34%">
+                                                                                                                        <td class="ControlTextBox3" style="width: 30%">
                                                                                                                             <asp:TextBox ID="txtNarrAdd3" ValidationGroup="addVal" runat="server" MaxLength="200"
                                                                                                                                 CssClass="cssTextBox"></asp:TextBox>
                                                                                                                         </td>
@@ -666,7 +666,7 @@
                                                                                                                 <tr style="height: 5px">
                                                                                                                 </tr>
                                                                                                                 <tr>
-                                                                                                                    <td class="ControlLabel" style="width: 20%">Ref. No. *
+                                                                                                                    <td class="ControlLabelproject" style="width: 20%">Ref. No. *
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtRefnum"
                                                                                             ValidationGroup="editVal" Display="Dynamic" EnableClientScript="true" ErrorMessage="Please enter Ref. No. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                     </td>
@@ -675,7 +675,7 @@
                                                                                                                             Width="95%" CssClass="cssTextBox"></asp:TextBox>
                                                                                                                     </td>
                                                                                                                     <td></td>
-                                                                                                                    <td class="ControlLabel" style="width: 15%">Date *
+                                                                                                                    <td class="ControlLabelproject" style="width: 15%">Date *
                                                                                         <asp:RequiredFieldValidator ID="rvStock" runat="server" ValidationGroup="editVal"
                                                                                             ControlToValidate="txtTransDate" Display="Dynamic" EnableClientScript="true"
                                                                                             ErrorMessage="Please select Date. It cannot be left blank.">*</asp:RequiredFieldValidator>
@@ -707,7 +707,7 @@
                                                                                                                 <tr style="height: 1px">
                                                                                                                 </tr>
                                                                                                                 <tr>
-                                                                                                                    <td class="ControlLabel" style="width: 20%">Debtor *
+                                                                                                                    <td class="ControlLabelproject" style="width: 20%">Debtor *
                                                                                         <asp:RequiredFieldValidator ID="reqDebtor" ErrorMessage="Please select Debtor. It cannot be left blank." InitialValue="0"
                                                                                             EnableClientScript="true" Text="*" ControlToValidate="cmbDebtor" runat="server"
                                                                                             ValidationGroup="editVal" Display="Dynamic" />
@@ -730,7 +730,7 @@
                                                                                                                             </ContentTemplate>
                                                                                                                         </asp:UpdatePanel>
                                                                                                                     </td>
-                                                                                                                    <td class="ControlLabel" style="width: 15%">Creditor *
+                                                                                                                    <td class="ControlLabelproject" style="width: 15%">Creditor *
                                                                                         <asp:RequiredFieldValidator ID="reqCreditor" ErrorMessage="Please select Creditor. It cannot be left blank."
                                                                                             EnableClientScript="true" InitialValue="0" ControlToValidate="cmbCreditor" runat="server"
                                                                                             ValidationGroup="editVal" Text="*" Display="Dynamic" />
@@ -757,7 +757,7 @@
                                                                                                                 <tr style="height: 1px">
                                                                                                                 </tr>
                                                                                                                 <tr>
-                                                                                                                    <td class="ControlLabel" style="width: 20%">Amount *
+                                                                                                                    <td class="ControlLabelproject" style="width: 20%">Amount *
                                                                                         <asp:RequiredFieldValidator ID="rvModel" runat="server" ControlToValidate="txtAmount"
                                                                                             Display="Dynamic" EnableClientScript="true" ValidationGroup="editVal" ErrorMessage="Please enter Amount. it cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                         <cc1:FilteredTextBoxExtender ID="fltAmt" runat="server" TargetControlID="txtAmount"
@@ -768,7 +768,7 @@
                                                                                                                             Width="95%" CssClass="cssTextBox"></asp:TextBox>
                                                                                                                     </td>
                                                                                                                     <td></td>
-                                                                                                                    <td class="ControlLabel" style="width: 15%">Narration *
+                                                                                                                    <td class="ControlLabelproject" style="width: 15%">Narration *
                                                                                         <asp:RequiredFieldValidator ID="rvNarration" runat="server" ControlToValidate="txtNarr"
                                                                                             ValidationGroup="editVal" Display="Dynamic" EnableClientScript="true" ErrorMessage="Please enter Narration. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                     </td>
@@ -868,10 +868,10 @@
                                                                                                                                                 <asp:BoundField DataField="RowNumber" HeaderText="SNo" ItemStyle-Width="5px" />
                                                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="RefNo" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="10px">
                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                        <asp:TextBox ID="txtRefNoM" runat="server" Width="90%" Height="26px"></asp:TextBox>
+                                                                                                                                                        <asp:TextBox ID="txtRefNoM" runat="server" Width="95%" Height="26px"></asp:TextBox>
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Date" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="35px">
+                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Date" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="70px">
                                                                                                                                                     <ItemTemplate>
                                                                                                                                                         <asp:TextBox ID="txtDateM" Enabled="false" runat="server" Width="70%" Height="26px"></asp:TextBox>
                                                                                                                                                         <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"
@@ -881,11 +881,11 @@
                                                                                                                                                             CausesValidation="False" Width="20px" runat="server" />
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Debtor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="50px">
+                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Debtor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="80px">
                                                                                                                                                     <ItemTemplate>
                                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
                                                                                                                                                             <ContentTemplate>
-                                                                                                                                                                <asp:DropDownList ID="drpDebtorM" OnSelectedIndexChanged="drpDebtorM_SelectedIndexChanged" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Width="70%" AutoPostBack="true"
+                                                                                                                                                                <asp:DropDownList ID="drpDebtorM" OnSelectedIndexChanged="drpDebtorM_SelectedIndexChanged" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Width="100%" AutoPostBack="true"
                                                                                                                                                                     DataValueField="LedgerID" DataTextField="LedgerName" Style="border: 1px solid Gray" Height="28px"
                                                                                                                                                                     AppendDataBoundItems="true">
                                                                                                                                                                     <asp:ListItem Text="Select Debtor" style="background-color: #e7e7e7" Value="0"></asp:ListItem>
@@ -899,7 +899,7 @@
                                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="50px">
+                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="80px">
                                                                                                                                                     <ItemTemplate>
                                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional">
                                                                                                                                                             <ContentTemplate>
@@ -1113,10 +1113,10 @@
                                                                                                                     <td align="left" class="ControlDrpBorder" style="width: 25%">
                                                                                                                          <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional">
                                                                                                                                                             <ContentTemplate>
-                                                                                                                        <asp:DropDownList ID="drpDebtor" OnSelectedIndexChanged="drpDebtor_SelectedIndexChanged" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Width="100%" AutoPostBack="true"
+                                                                                                                        <asp:DropDownList ID="drpDebtor" OnSelectedIndexChanged="drpDebtor_SelectedIndexChanged" runat="server"  BackColor="White" CssClass="drpDownListMedium" Width="100%" AutoPostBack="true"
                                                                                                                             DataValueField="LedgerID" DataTextField="LedgerName" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                             AppendDataBoundItems="true" ValidationGroup="ValidationSummary3">
-                                                                                                                            <asp:ListItem Text="Select Debtor" style="background-color: #e7e7e7" Value="0"></asp:ListItem>
+                                                                                                                            <asp:ListItem Text="Select Debtor"  style="background-color: White"  Value="0"></asp:ListItem>
                                                                                                                         </asp:DropDownList>
                                                                                                                                                                  </ContentTemplate>
                                                                                                                                                         </asp:UpdatePanel>
@@ -1163,10 +1163,10 @@
                                                                                                                                                 <asp:BoundField DataField="RowNumber" HeaderText="SNo" ItemStyle-Width="5px" />
                                                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="RefNo" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="10px">
                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                        <asp:TextBox ID="txtRefNo" runat="server" Width="90%" Height="26px"></asp:TextBox>
+                                                                                                                                                        <asp:TextBox ID="txtRefNo" runat="server" Width="95%" Height="26px"></asp:TextBox>
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Date" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="35px">
+                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Date" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="50px">
                                                                                                                                                     <ItemTemplate>
                                                                                                                                                         <asp:TextBox ID="txtDate" runat="server" Width="70%" Height="26px"></asp:TextBox>
                                                                                                                                                         <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"
@@ -1176,7 +1176,7 @@
                                                                                                                                                             CausesValidation="False" Width="20px" runat="server" />
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="50px">
+                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="80px">
                                                                                                                                                     <ItemTemplate>
                                                                                                                                                           <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional">
                                                                                                                                                             <ContentTemplate>
@@ -1196,14 +1196,14 @@
                                                                                                                                                 </asp:TemplateField>
                                                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Amount" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20px">
                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                        <asp:TextBox ID="txtAmount" runat="server" Width="90%" Height="26px"></asp:TextBox>
+                                                                                                                                                        <asp:TextBox ID="txtAmount" runat="server" Width="95%" Height="26px"></asp:TextBox>
                                                                                                                                                         <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender312" runat="server" TargetControlID="txtAmount"
                                                                                                                                                             ValidChars="." FilterType="Numbers, Custom" />
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
                                                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Narration" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20px">
                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                        <asp:TextBox ID="txtNarration" runat="server" Width="90%" Height="26px"></asp:TextBox>
+                                                                                                                                                        <asp:TextBox ID="txtNarration" runat="server" Width="95%" Height="26px"></asp:TextBox>
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                     <FooterStyle HorizontalAlign="Right" />
                                                                                                                                                     <FooterTemplate>
@@ -1286,10 +1286,10 @@
                                                                                                                     <td align="left" class="ControlDrpBorder" style="width: 25%">
                                                                                                                         <asp:UpdatePanel ID="UpdatePanel9" runat="server" UpdateMode="Conditional">
                                                                                                                                                             <ContentTemplate>
-                                                                                                                        <asp:DropDownList ID="drpCreditor1" OnSelectedIndexChanged="drpCreditor1_SelectedIndexChanged" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Width="100%" AutoPostBack="true"
+                                                                                                                        <asp:DropDownList ID="drpCreditor1" OnSelectedIndexChanged="drpCreditor1_SelectedIndexChanged" runat="server" BackColor="White"  CssClass="drpDownListMedium" Width="100%" AutoPostBack="true"
                                                                                                                             DataValueField="LedgerID" DataTextField="LedgerName" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                             AppendDataBoundItems="true" ValidationGroup="ValidationSummary4">
-                                                                                                                            <asp:ListItem Text="Select Creditor" style="background-color: #e7e7e7" Value="0"></asp:ListItem>
+                                                                                                                            <asp:ListItem Text="Select Creditor" style="background-color: White"  Value="0"></asp:ListItem>
                                                                                                                         </asp:DropDownList>
                                                                                                                      </ContentTemplate>
                                                                                                                                                         </asp:UpdatePanel>
@@ -1335,10 +1335,10 @@
                                                                                                                                                 <asp:BoundField DataField="RowNumber" HeaderText="SNo" ItemStyle-Width="5px" />
                                                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="RefNo" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20px">
                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                        <asp:TextBox ID="txtRefNo" runat="server" Width="90%" Height="26px"></asp:TextBox>
+                                                                                                                                                        <asp:TextBox ID="txtRefNo" runat="server" Width="95%" Height="26px"></asp:TextBox>
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Date" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="35px">
+                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Date" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="50px">
                                                                                                                                                     <ItemTemplate>
                                                                                                                                                         <asp:TextBox ID="txtDate" runat="server" Height="26px" Width="70%"></asp:TextBox>
                                                                                                                                                         <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"
@@ -1348,7 +1348,7 @@
                                                                                                                                                             CausesValidation="False" Width="20px" runat="server" />
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
-                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Debtor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="50px">
+                                                                                                                                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Debtor" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="80px">
                                                                                                                                                     <ItemTemplate>
                                                                                                                                                             <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional">
                                                                                                                                                             <ContentTemplate>
@@ -1368,14 +1368,14 @@
                                                                                                                                                 </asp:TemplateField>
                                                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Amount" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20px">
                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                        <asp:TextBox ID="txtAmount" runat="server" Width="90%" Height="26px"></asp:TextBox>
+                                                                                                                                                        <asp:TextBox ID="txtAmount" runat="server" Width="97%" Height="26px"></asp:TextBox>
                                                                                                                                                         <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender123" runat="server" TargetControlID="txtAmount"
                                                                                                                                                             ValidChars="." FilterType="Numbers, Custom" />
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                 </asp:TemplateField>
                                                                                                                                                 <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Narration" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20px">
                                                                                                                                                     <ItemTemplate>
-                                                                                                                                                        <asp:TextBox ID="txtNarration" runat="server" Width="90%" Height="26px"></asp:TextBox>
+                                                                                                                                                        <asp:TextBox ID="txtNarration" runat="server" Width="99%" Height="26px"></asp:TextBox>
                                                                                                                                                     </ItemTemplate>
                                                                                                                                                     <FooterStyle HorizontalAlign="Right" />
                                                                                                                                                     <FooterTemplate>

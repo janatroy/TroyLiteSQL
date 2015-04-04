@@ -75,9 +75,16 @@
 
 
                     <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                         <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
                         <tr>
-                            <td width="140px" align="left">TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                            <td width="3px" align="left">
+                        <asp:Label ID="lblTNGST" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center" width="320px" style="font-size: 20px;">
                                 <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -87,8 +94,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="left">GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                            <td align="left">
+                        <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
                             </td>
                             <td align="center">
                                 <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -125,17 +132,20 @@
                             <td>&nbsp;
                             </td>
                         </tr>
-                        <tr>
+                       
+                    </table>
+                    <table>
+                         <tr>
                             <td colspan="3" align="center">
                                 <br />
                                 <h5>
-                            <asp:Label ID="lblHeading" runat="server"> </asp:Label></h5>
+                            <asp:Label ID="lblHeading" Font-Size="Large" runat="server"> </asp:Label></h5>
                             </td>
                         </tr>
                     </table>
                   <div style="width: 700px" runat="server"  align="center">
                 <wc:ReportGridView runat="server"  BorderWidth="1" ID="Grdreport" GridLines="Both"
-                    AutoGenerateColumns="true"
+                    AutoGenerateColumns="true" OnRowDataBound="GridView1_RowDataBound"
                     AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;"
                      >
                     <HeaderStyle CssClass="ReportHeadataRow" />

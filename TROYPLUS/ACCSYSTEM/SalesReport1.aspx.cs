@@ -62,10 +62,10 @@ public partial class SalesReport1 : System.Web.UI.Page
                         {
                             foreach (DataRow dr in companyInfo.Tables[0].Rows)
                             {
-                                lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                                //lblTNGST.Text = Convert.ToString(dr["TINno"]);
                                 lblCompany.Text = Convert.ToString(dr["CompanyName"]);
                                 lblPhone.Text = Convert.ToString(dr["Phone"]);
-                                lblGSTno.Text = Convert.ToString(dr["GSTno"]);
+                                //lblGSTno.Text = Convert.ToString(dr["GSTno"]);
 
                                 lblAddress.Text = Convert.ToString(dr["Address"]);
                                 lblCity.Text = Convert.ToString(dr["city"]);
@@ -84,13 +84,14 @@ public partial class SalesReport1 : System.Web.UI.Page
                             for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
                             {
                                 Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
-                                Image1.Height = 35;
+                                Image1.Height = 95;
+                                Image1.Width = 95;
                             }
                         }
                         else
                         {
-                            Image1.Height = 35;
-                            Image1.Width = 220;
+                            Image1.Height = 95;
+                            Image1.Width = 95;
                             Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }

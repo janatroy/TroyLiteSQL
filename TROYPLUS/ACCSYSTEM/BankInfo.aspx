@@ -296,7 +296,7 @@
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtdueDate" Enabled="false" MaxLength="10" TabIndex="5" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("OpDueDate") %>'
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                    <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDate">
+                                                                    <cc1:CalendarExtender ID="calBillDate1" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDate">
                                                                     </cc1:CalendarExtender>
                                                                 </td>
                                                                 <td style="width: 7%;" align="left">
@@ -323,6 +323,10 @@
                                                                 </td>
                                                                 <td style="width: 7%"></td>
                                                                 <td class="ControlLabel" style="width: 13%">Email Id
+                                                                    <asp:RegularExpressionValidator ID="remail1234" runat="server"
+                                                                                                ControlToValidate="txtEmailId" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                 </td>
                                                                 <td style="width: 26%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtEmailId" TabIndex="13" runat="server" Text='<%# Bind("EmailId") %>'
@@ -618,6 +622,10 @@
 
 
                                                                 <td class="ControlLabel" style="width: 13%">Email Id
+                                                                    <asp:RegularExpressionValidator ID="remail12345" runat="server"
+                                                                                                ControlToValidate="txtEmailIdAdd" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                 </td>
 
                                                                 <td style="width: 26%" class="ControlTextBox3">

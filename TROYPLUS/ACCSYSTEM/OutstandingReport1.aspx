@@ -26,14 +26,14 @@
 </head>
 <body style="font-family: 'Trebuchet MS'; font-size: 11px;">
     <form id="form1" runat="server">
-    <br />
+        <br />
 
-    <div align="center" id="div1" runat="server">
+        <div align="center" id="div1" runat="server">
             <table cellpadding="1" cellspacing="2" border="0" style="border: 1px solid blue; background-color: White; text-align: left; width: 450px">
-            <tr>
+                <tr>
                     <td colspan="4" class="subHeadFont2">Outstanding Report
-                </td>
-            </tr>
+                    </td>
+                </tr>
                 <tr style="height: 6px">
                 </tr>
                 <tr>
@@ -47,157 +47,147 @@
 
                 </tr>
                 <tr style="height: 2px" />
-            <tr>
+                <tr>
                     <td style="width: 10%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
-                </td>
+                    </td>
                     <td class="ControlTextBox3" style="width: 24%;">
                         <asp:TextBox ID="txtEndDate" runat="server" AutoPostBack="True" BackColor="#e7e7e7" CssClass="cssTextBox" Height="23px" MaxLength="10" TabIndex="1" ValidationGroup="salesval"></asp:TextBox>
 
-                </td>
+                    </td>
 
                 </tr>
                 <tr>
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Ledger Name
-                </td>
+                    </td>
                     <td align="left" style="width: 35%" class="ControlDrpBorder">
                         <asp:DropDownList ID="drpLedgerName" runat="server" Width="100%" DataTextField="GroupName" CssClass="drpDownListMedium" BackColor="#90c9fc"
                             DataValueField="GroupID" Style="border: 1px solid #90c9fc" Height="26px">
                         </asp:DropDownList>
                     </td>
                     <td style="width: 15%"></td>
-            </tr>
-            <tr runat="server" id="hmg" visible="false">
+                </tr>
+                <tr runat="server" id="hmg" visible="false">
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Option
-                </td>
+                    </td>
                     <td align="left" style="width: 35%" class="ControlDrpBorder">
-                    <asp:RadioButtonList ID="opttype" align="left" runat="server"
+                        <asp:RadioButtonList ID="opttype" align="left" runat="server"
                             Width="100%">
-                        <asp:ListItem Text="All"></asp:ListItem>
+                            <asp:ListItem Text="All"></asp:ListItem>
                             <asp:ListItem Selected="True" Text="Without DC/INT TRANS"></asp:ListItem>
-                    </asp:RadioButtonList>
-                </td>
+                        </asp:RadioButtonList>
+                    </td>
                     <td style="width: 15%"></td>
-            </tr>
+                </tr>
                 <tr style="height: 6px">
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <table width="100%">
-                        <tr>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <table width="100%">
+                            <tr>
                                 <td style="width: 30%"></td>
                                 <td style="width: 20%">
-                                <asp:Button ID="btnReport" CssClass="NewReport6" EnableTheming="false" runat="server"
-                                    OnClick="btnReport_Click" />
-                            </td>
-                            
+                                    <asp:Button ID="btnReport" CssClass="NewReport6" EnableTheming="false" runat="server"
+                                        OnClick="btnReport_Click" />
+                                </td>
+
                                 <td style="width: 20%">
-                                <asp:Button ID="btndetails" CssClass="exportexl6" EnableTheming="false" runat="server"
-                                    OnClick="btndetails_Click" />
+                                    <asp:Button ID="btndetails" CssClass="exportexl6" EnableTheming="false" runat="server"
+                                        OnClick="btndetails_Click" />
                                     <asp:ValidationSummary ID="valSummary" runat="server" ShowMessageBox="true" ShowSummary="false" />
-                            </td>
+                                </td>
                                 <td style="width: 30%"></td>
-                         </tr>
-                    </table>
-                </td>
-             </tr>
-             <tr>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
                     <td style="width: 30%"></td>
                     <td style="width: 35%"></td>
-             </tr>
-             
-        </table>
-    </div>
-    <div id="OutPanel" runat="server" visible="false" align="center">
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true" />
-        <asp:ScriptManagerProxy runat="server" ID="ScriptManagerProxy1" />
-        &nbsp;
-        <table width="600px">
-            <tr>
-                <td colspan="4">
-                    <table width="100%">
-                        <tr>
-                            <td style="width: 40%"></td>
-                            <td style="width: 20%">
-                                <input type="button" id="Button1" runat="Server" onclick="javascript: CallPrint('divPrint')"
-                                    class="printbutton6" />
-                            </td>
-                            <td style="width: 10%">
-                                <asp:Button ID="btndet" CssClass="GoBack" EnableTheming="false" runat="server"
-                                    OnClick="btndet_Click" Visible="False" />
-                            </td>
-                            <td style="width: 30%"></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <div id="divPrint" style="font-family: 'Trebuchet MS'; font-size: 11px;">
-            <br />
-            
-            <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                </tr>
+
+            </table>
+        </div>
+        <div id="OutPanel" runat="server" visible="false" align="center">
+            <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true" />
+            <asp:ScriptManagerProxy runat="server" ID="ScriptManagerProxy1" />
+            &nbsp;
+       
+            <table width="600px">
                 <tr>
-                        <td width="140px" align="left">TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                    <td colspan="4">
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 40%"></td>
+                                <td style="width: 20%">
+                                    <input type="button" id="Button1" runat="Server" onclick="javascript: CallPrint('divPrint')"
+                                        class="printbutton6" />
+                                </td>
+                                <td style="width: 10%">
+                                    <asp:Button ID="btndet" CssClass="GoBack" EnableTheming="false" runat="server"
+                                        OnClick="btndet_Click" Visible="False" />
+                                </td>
+                                <td style="width: 30%"></td>
+                            </tr>
+                        </table>
                     </td>
-                    <td align="center" width="420px" style="font-size: 20px;">
-                        <asp:Label ID="lblCompany" runat="server"></asp:Label>
+                </tr>
+            </table>
+            <div id="divPrint" style="font-family: 'Trebuchet MS'; font-size: 11px;">
+                <br />
+
+                <table width="700px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                     <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
+                    <tr>
+                        <td width="100px" align="left">
+                            <%--  TIN#:
+                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>--%>
                     </td>
+                        <td align="center" width="560px" style="font-size: 20px;">
+                            <asp:Label ID="lblCompany" runat="server"></asp:Label>
+                        </td>
                         <td width="140px" align="left">Ph:
                         <asp:Label ID="lblPhone" runat="server"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            <%--   GST#:
+                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>--%>
                     </td>
-                </tr>
-                <tr>
-                        <td align="left">GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
-                    </td>
-                    <td align="center">
-                        <asp:Label ID="lblAddress" runat="server"></asp:Label>
-                    </td>
+                        <td align="center">
+                            <asp:Label ID="lblAddress" runat="server"></asp:Label>
+                        </td>
                         <td align="left">Date:
                         <asp:Label ID="lblBillDate" runat="server"></asp:Label>
-                    </td>
-                </tr>
-                <tr>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>&nbsp;
-                    </td>
-                    <td align="center">
-                        <asp:Label ID="lblCity" runat="server" />
-                        -
-                        <asp:Label ID="lblPincode" runat="server"></asp:Label>
-                    </td>
+                        </td>
+                        <td align="center">
+                            <asp:Label ID="lblCity" runat="server" />
+                            -
+                       
+                            <asp:Label ID="lblPincode" runat="server"></asp:Label>
+                        </td>
                         <td>&nbsp;
-                    </td>
-                </tr>
-                <tr>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>&nbsp;
-                    </td>
-                    <td align="center">
-                        <asp:Label ID="lblState" runat="server"> </asp:Label>
-                    </td>
+                        </td>
+                        <td align="center">
+                            <asp:Label ID="lblState" runat="server"> </asp:Label>
+                        </td>
                         <td>&nbsp;
-                    </td>
-                </tr>
-                <tr>
-                        <td>&nbsp;
-                    </td>
-                        <td align="center">&nbsp;
-                    </td>
-                        <td>&nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <br />
-                            <center>
-                                <h5>Outstanding Report For
-                            <asp:Label ID="lblSundry" runat="server" />
-                                    From
-                            <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
-                                    To
-                            <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
-                            </center>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                     <%--  <tr>
                         <td colspan="3">
                             <br />
@@ -207,86 +197,108 @@
                             <asp:Label ID="lblEndDate1" runat="server"> </asp:Label></h5>
                         </td>
                     </tr>--%>
-            </table>
-            <br />
-            <wc:ReportGridView runat="server" BorderWidth="1" ID="gvLedger" CssClass="gridview"
-                GridLines="Both" AlternatingRowStyle-CssClass="even" HeaderStyle-HorizontalAlign="Left"
-                AutoGenerateColumns="false" AllowPrintPaging="true" Width="700px"
-                OnRowDataBound="gvLedger_RowDataBound">
-                <HeaderStyle CssClass="ReportHeadataRow" />
-                <RowStyle CssClass="ReportdataRow" />
-                <AlternatingRowStyle CssClass="ReportAltdataRow" />
-                <FooterStyle CssClass="ReportFooterRow" />
-                <PageHeaderTemplate>
-                    <br />
-                    <br />
-                </PageHeaderTemplate>
-                <Columns>                    
-                    <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Ledgername" HeaderText="Particulars" />                    
-                    <asp:TemplateField HeaderText="Debit" HeaderStyle-HorizontalAlign="Right" ItemStyle-HorizontalAlign="Right">
-                        <ItemTemplate>
-                            <asp:Label ID="lblDebit" Text='<%# Eval("Debit","{0:f2}") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Credit" HeaderStyle-HorizontalAlign="Right" ItemStyle-HorizontalAlign="Right">
-                        <ItemTemplate>
-                            <asp:Label ID="lblCredit" Text='<%# Eval("Credit","{0:f2}") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Balance" HeaderStyle-HorizontalAlign="Right" ItemStyle-HorizontalAlign="Right">
-                        <ItemTemplate>
-                            <asp:Label ID="lblBalance" runat="server" CssClass="lblFont" Font-Bold="true" ForeColor="Blue"
-                                Text="0.00"> </asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-                <PagerTemplate>
-                </PagerTemplate>
-                <PageFooterTemplate>
-                </PageFooterTemplate>
-            </wc:ReportGridView>
-            <br />
-            <br />
-            <!-- Start Outstanding Report March 16 -->
+                </table>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <br />
+                          
+                                <h5 style="font-size:large" >Outstanding Report For
+                            <asp:Label ID="lblSundry" runat="server" />
+                                    From
+                            <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
+                                    To
+                            <asp:Label ID="lblEndDate" runat="server"> </asp:Label>
+                                    For
+                            <asp:Label ID="lblBranchcode" runat="server"> </asp:Label>
+                                   
+                                </h5>
+                           
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <br />
+                <wc:ReportGridView runat="server" BorderWidth="1" ID="gvLedger" CssClass="gridview"
+                    GridLines="Both" AlternatingRowStyle-CssClass="even" HeaderStyle-HorizontalAlign="Left"
+                    AutoGenerateColumns="false" AllowPrintPaging="true" Width="700px"
+                    OnRowDataBound="gvLedger_RowDataBound">
+                    <HeaderStyle CssClass="ReportHeadataRow" />
+                    <RowStyle CssClass="ReportdataRow" />
+                    <AlternatingRowStyle CssClass="ReportAltdataRow" />
+                    <FooterStyle CssClass="ReportFooterRow" />
+                    <PageHeaderTemplate>
+                        <br />
+                        <br />
+                    </PageHeaderTemplate>
+                    <Columns>
+                        <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="Ledgername" HeaderText="Particulars" />
+                        <asp:BoundField ItemStyle-HorizontalAlign="Left" DataField="BranchCode" HeaderText="BranchCode" />
+                        <asp:TemplateField HeaderText="Debit" HeaderStyle-HorizontalAlign="Right" ItemStyle-HorizontalAlign="Right">
+                            <ItemTemplate>
+                                <asp:Label ID="lblDebit" Text='<%# Eval("Debit","{0:f2}") %>' runat="server"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Credit" HeaderStyle-HorizontalAlign="Right" ItemStyle-HorizontalAlign="Right">
+                            <ItemTemplate>
+                                <asp:Label ID="lblCredit" Text='<%# Eval("Credit","{0:f2}") %>' runat="server"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Balance" HeaderStyle-HorizontalAlign="Right" ItemStyle-HorizontalAlign="Right">
+                            <ItemTemplate>
+                                <asp:Label ID="lblBalance" runat="server" CssClass="lblFont" Font-Bold="true" ForeColor="Blue"
+                                    Text="0.00"> </asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                    <PagerTemplate>
+                    </PagerTemplate>
+                    <PageFooterTemplate>
+                    </PageFooterTemplate>
+                </wc:ReportGridView>
+                <br />
+                <br />
+                <!-- Start Outstanding Report March 16 -->
                 <table width="600px" border="0" cellpadding="0" cellspacing="2" style="font-family: 'Trebuchet MS'; font-size: 11px;">
-                <tr>
-                    <td width="220px" align="right">
-                        <b></b>
-                    </td>
-                    <td width="100px" align="right">
-                        <hr />
-                        <asp:Label ID="lblDebitSum" runat="server"></asp:Label><hr />
-                    </td>
-                    <td width="100px" align="right">
-                        <hr />
-                        <asp:Label ID="lblCreditSum" runat="server"></asp:Label><hr />
-                    </td>
-                    <td width="80px" align="right">
-                        <b></b>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="220px" align="right">
-                        <b></b>
-                    </td>
-                    <td align="right" width="100px">
-                        <hr />
-                        <asp:Label ID="lblDebitDiff" runat="server"></asp:Label><hr />
-                    </td>
-                    <td align="right" width="100px">
-                        <hr />
-                        <asp:Label ID="lblCreditDiff" runat="server"></asp:Label><hr />
-                    </td>
-                    <td align="right" width="80px">
-                        <b></b>
-                    </td>
-                </tr>
-            </table>
-            <!-- End Outstanding Report March 16 -->
-            <br />
-            <br />
+                    <tr>
+                        <td width="220px" align="right">
+                            <b></b>
+                        </td>
+                        <td width="100px" align="right">
+                            <hr />
+                            <asp:Label ID="lblDebitSum" runat="server"></asp:Label><hr />
+                        </td>
+                        <td width="100px" align="right">
+                            <hr />
+                            <asp:Label ID="lblCreditSum" runat="server"></asp:Label><hr />
+                        </td>
+                        <td width="80px" align="right">
+                            <b></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="220px" align="right">
+                            <b></b>
+                        </td>
+                        <td align="right" width="100px">
+                            <hr />
+                            <asp:Label ID="lblDebitDiff" runat="server"></asp:Label><hr />
+                        </td>
+                        <td align="right" width="100px">
+                            <hr />
+                            <asp:Label ID="lblCreditDiff" runat="server"></asp:Label><hr />
+                        </td>
+                        <td align="right" width="80px">
+                            <b></b>
+                        </td>
+                    </tr>
+                </table>
+                <!-- End Outstanding Report March 16 -->
+                <br />
+                <br />
+            </div>
         </div>
-    </div>
     </form>
 </body>
 </html>

@@ -113,11 +113,11 @@ public partial class BulkAddition : System.Web.UI.Page
         }
     }
 
-    
+
 
     protected void btnExl_Click(object sender, EventArgs e)
     {
-       
+
     }
 
     public void bindData()
@@ -130,9 +130,15 @@ public partial class BulkAddition : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("PRODUCTNAME"));
         dt.Columns.Add(new DataColumn("MODEL"));
         dt.Columns.Add(new DataColumn("CATEGORY"));
-       
+
         dt.Columns.Add(new DataColumn("VAT"));
+        dt.Columns.Add(new DataColumn("CST"));
+        dt.Columns.Add(new DataColumn("ExecutiveCommision"));
         dt.Columns.Add(new DataColumn("Deviation"));
+        dt.Columns.Add(new DataColumn("ReorderLevel"));
+        //dt.Columns.Add(new DataColumn("Discount"));
+        // dt.Columns.Add(new DataColumn("Price"));
+        // dt.Columns.Add(new DataColumn("EffectiveDate"));
         double vat = 0;
 
         DataRow dr_final12 = dt.NewRow();
@@ -140,9 +146,30 @@ public partial class BulkAddition : System.Web.UI.Page
         dr_final12["BRAND"] = "";
         dr_final12["PRODUCTNAME"] = "";
         dr_final12["MODEL"] = "";
-      
+
         dr_final12["VAT"] = vat;
+        dr_final12["CST"] = vat;
+        dr_final12["ExecutiveCommision"] = vat;
         dr_final12["Deviation"] = vat;
+        dr_final12["ReorderLevel"] = vat;
+        // dr_final12["Discount"] = vat;
+        // dr_final12["Price"] = vat;
+
+
+        // dr_final12["EffectiveDate"] = DateTime.Now.ToString("dd/MM/yyyy");
+
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds1 = bl.GetPriceListName(sDataSource);
+
+        for (int i = 0; i <= ds1.Tables[0].Rows.Count - 1; i++)
+        {
+            string s = ds1.Tables[0].Rows[i]["PriceName"].ToString();
+            dt.Columns.Add(new DataColumn(s));
+            dt.Columns.Add(new DataColumn(s + " - EffectiveDate"));
+            dt.Columns.Add(new DataColumn(s + " - Discount"));
+        }
+
         dt.Rows.Add(dr_final12);
 
         ExportToExcel(dt);
@@ -297,6 +324,11 @@ public partial class BulkAddition : System.Web.UI.Page
 
             String strConnection = "ConnectionString";
             string connectionString = "";
+
+            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+            char[] specialCharactersArray = specialCharacters.ToCharArray();
+
+
             if (FileUpload1.HasFile)
             {
                 string datett = DateTime.Now.ToString();
@@ -316,6 +348,11 @@ public partial class BulkAddition : System.Web.UI.Page
                         fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
 
                     //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Attach Correct Format file Extension.(.xls or .xlsx)');", true);
+                    return;
                 }
                 OleDbConnection con = new OleDbConnection(connectionString);
                 OleDbCommand cmd = new OleDbCommand();
@@ -344,14 +381,320 @@ public partial class BulkAddition : System.Web.UI.Page
                 }
 
 
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Item code is empty');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["PRODUCTNAME"]) == null) || (Convert.ToString(dr["PRODUCTNAME"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Name is empty');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Deviation"]) == null) || (Convert.ToString(dr["Deviation"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Deviation(%) is empty');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Model"]) == null) || (Convert.ToString(dr["Model"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Model is empty');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Vat"]) == null) || (Convert.ToString(dr["Vat"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Vat(%) is empty');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["ReorderLevel"]) == null) || (Convert.ToString(dr["ReorderLevel"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Reorder Level is empty');", true);
+                        return;
+                    }
+                }
+
                 //foreach (DataRow dr in ds.Tables[0].Rows)
                 //{
-                //    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
+                //    if ((Convert.ToString(dr["EffectiveDate"]) == null) || (Convert.ToString(dr["EffectiveDate"]) == ""))
                 //    {
-                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Missing Datas');", true);
+                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Effective Date is empty');", true);
                 //        return;
                 //    }
                 //}
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["ItemCode"]) != null) || (Convert.ToString(dr["ItemCode"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["ItemCode"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Item code');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["PRODUCTNAME"]) != null) || (Convert.ToString(dr["PRODUCTNAME"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["PRODUCTNAME"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Product Name');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Model"]) != null) || (Convert.ToString(dr["Model"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["Model"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Model');", true);
+                            return;
+                        }
+                    }
+                }
+
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Vat"]) != null) || (Convert.ToString(dr["Vat"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["Vat"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Vat');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Vat"]) != null) || (Convert.ToString(dr["Vat"]) != ""))
+                    {
+                        if (Convert.ToInt32(dr["Vat"]) > 100)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Vat cannot be Greater than 100% and Less than 0%');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["ReorderLevel"]) != null) || (Convert.ToString(dr["ReorderLevel"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["ReorderLevel"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Reorder Level');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Price"]) != null) || (Convert.ToString(dr["Price"]) != ""))
+                //    {
+                //        foreach (char c in Convert.ToString(dr["Price"]))
+                //        {
+                //            if (!Char.IsDigit(c))
+                //            {
+                //                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Price');", true);
+                //                return;
+                //            }
+                //        }
+                //    }
+                //}
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Price"]) != null) || (Convert.ToString(dr["Price"]) != ""))
+                //    {
+                //        if (Convert.ToInt32(dr["Price"]) > 200)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Price cannot be Greater than 200% and Less than 0%');", true);
+                //            return;
+                //        }
+                //    }
+                //}
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Discount"]) != null) || (Convert.ToString(dr["Discount"]) != ""))
+                //    {
+                //        foreach (char c in Convert.ToString(dr["Discount"]))
+                //        {
+                //            if (!Char.IsDigit(c))
+                //            {
+                //                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Discount');", true);
+                //                return;
+                //            }
+                //        }
+                //    }
+                //}
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Discount"]) != null) || (Convert.ToString(dr["Discount"]) != ""))
+                //    {
+                //        if (Convert.ToInt32(dr["Discount"]) > 100)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Discount cannot be Greater than 100% and Less than 0%');", true);
+                //            return;
+                //        }
+                //    }
+                //}
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["CST"]) != null) || (Convert.ToString(dr["CST"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["CST"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in CST');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["CST"]) != null) || (Convert.ToString(dr["CST"]) != ""))
+                    {
+                        if (Convert.ToInt32(dr["CST"]) > 100)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('CST cannot be Greater than 100% and Less than 0%');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["ExecutiveCommision"]) != null) || (Convert.ToString(dr["ExecutiveCommision"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["ExecutiveCommision"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Executive Commision');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["ExecutiveCommision"]) != null) || (Convert.ToString(dr["ExecutiveCommision"]) != ""))
+                    {
+                        if (Convert.ToInt32(dr["ExecutiveCommision"]) > 100)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Executive Commision cannot be Greater than 100% and Less than 0%');", true);
+                            return;
+                        }
+                    }
+                }
+
+
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                DataSet ds1 = bl.GetPriceListName(sDataSource);
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    string privalue = ds1.Tables[0].Rows[0]["PriceName"].ToString();
+                //    string prieffdte = privalue + " - EffectiveDate";
+                //    string pridisc = privalue + " - Discount";
+                //    if (privalue == Convert.ToString(dr["" + privalue + ""]))
+                //    {
+                //        if ((Convert.ToString(dr["" + privalue + ""]) == null) || (Convert.ToString(dr["" + privalue + ""]) == ""))
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + privalue + " cannot be Greater than 100% and Less than 0%');", true);
+                //            return;
+                //        }
+                //    }
+                //}
+
+                for (int iw = 0; iw <= ds1.Tables[0].Rows.Count - 1; iw++)
+                {
+                    string privalue = ds1.Tables[0].Rows[iw]["PriceName"].ToString();
+                    string prieffdte = privalue + " - EffectiveDate";
+                    string pridisc = privalue + " - Discount";
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        if (Convert.ToString(dr["" + privalue + " - Discount"]) != null || Convert.ToString(dr["" + privalue + " - Discount"]) != "")
+                        {
+                            if (Convert.ToInt32(dr["" + privalue + " - Discount"]) > 100)
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + privalue + " - Discount" + " cannot be Greater than 100% and Less than 0%');", true);
+                                return;
+                            }
+                        }
+                        if (Convert.ToString(dr["" + privalue + " - EffectiveDate"]) != null || Convert.ToString(dr["" + privalue + " - EffectiveDate"]) != "")
+                        {
+                            string[] format = new string[] { "dd-MM-yyyy" };
+                            string value = Convert.ToString(dr["" + privalue + " - EffectiveDate"]);
+                            DateTime datetime;
+
+                            if (DateTime.TryParseExact(value, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out datetime))
+                            {
+
+                            }
+                            else
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + privalue + " - EffectiveDate" + " is invalid format');", true);
+                                return;
+                            }
+
+                        }
+                    }
+                }
+
+
+
+
+
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
@@ -453,5 +796,5 @@ public partial class BulkAddition : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
-    } 
+    }
 }

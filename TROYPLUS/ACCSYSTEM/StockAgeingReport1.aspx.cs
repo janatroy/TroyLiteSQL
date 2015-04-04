@@ -49,10 +49,10 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
                         {
                             foreach (DataRow dr in companyInfo.Tables[0].Rows)
                             {
-                                lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                                //lblTNGST.Text = Convert.ToString(dr["TINno"]);
                                 lblCompany.Text = Convert.ToString(dr["CompanyName"]);
                                 lblPhone.Text = Convert.ToString(dr["Phone"]);
-                                lblGSTno.Text = Convert.ToString(dr["GSTno"]);
+                                //lblGSTno.Text = Convert.ToString(dr["GSTno"]);
 
                                 lblAddress.Text = Convert.ToString(dr["Address"]);
                                 lblCity.Text = Convert.ToString(dr["city"]);
@@ -72,18 +72,20 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
                             for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
                             {
                                 Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
-                                Image1.Height = 35;
+                                Image1.Height = 95;
+                                Image1.Width = 95;
                             }
                         }
                         else
                         {
-                            Image1.Height = 35;
-                            Image1.Width = 220;
+                            Image1.Height = 95;
+                            Image1.Width = 95;
                             Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
                         }
                     }
 
                 }
+                lblBillDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 txtStartDate.Text = DateTime.Now.AddMonths(-1).ToShortDateString();
                 //txtEndDate.Text = DateTime.Now.ToShortDateString();
 
@@ -451,11 +453,18 @@ public partial class StockAgeingReport1 : System.Web.UI.Page
             {
                 e.Row.Cells[0].Attributes["align"] = "Left";
                 e.Row.Cells[1].Attributes["align"] = "Left";
-                int noofCols = int.Parse(txtColumns.Text) + 2;
-                //for (int i = 2; i <= noofCols; i++)
-                //{
-                //    e.Row.Cells[i].Attributes["align"] = "Right";
-                //}
+                int noofCols = int.Parse(txtColumns.Text) + 2;               
+
+                int colCount = e.Row.Cells.Count;
+
+                e.Row.Cells[0].HorizontalAlign = HorizontalAlign.Left;
+                e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Left;
+                e.Row.Cells[2].HorizontalAlign = HorizontalAlign.Left;
+                e.Row.Cells[3].HorizontalAlign = HorizontalAlign.Center;               
+                for (int i = 4; i <= colCount - 1; i++)
+                {
+                    e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Right;
+                }
             }
         }
         catch (Exception ex)

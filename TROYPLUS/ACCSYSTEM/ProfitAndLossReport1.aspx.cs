@@ -19,9 +19,61 @@ public partial class ProfitAndLossReport1 : System.Web.UI.Page
     {
         try
         {
-            sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+            //sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
             if (!IsPostBack)
             {
+
+                if (Request.Cookies["Company"] != null)
+                    sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+                DataSet companyInfo = new DataSet();
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                if (Request.Cookies["Company"] != null)
+                {
+                    companyInfo = bl.getCompanyInfo(Request.Cookies["Company"].Value);
+
+                    if (companyInfo != null)
+                    {
+                        if (companyInfo.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in companyInfo.Tables[0].Rows)
+                            {
+                                //lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                                lblCompany.Text = Convert.ToString(dr["CompanyName"]);
+                                lblPhone.Text = Convert.ToString(dr["Phone"]);
+                                //lblGSTno.Text = Convert.ToString(dr["GSTno"]);
+
+                                lblAddress.Text = Convert.ToString(dr["Address"]);
+                                lblCity.Text = Convert.ToString(dr["city"]);
+                                lblPincode.Text = Convert.ToString(dr["Pincode"]);
+                                lblState.Text = Convert.ToString(dr["state"]);
+                                lblBillDate.Text = DateTime.Now.ToShortDateString();
+                            }
+                        }
+                    }
+
+                    DataSet ds1 = bl.getImageInfo();
+                    if (ds1 != null)
+                    {
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                            {
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                                Image1.Height = 95;
+                                Image1.Width = 95;
+                            }
+                        }
+                        else
+                        {
+                            Image1.Height = 95;
+                            Image1.Width = 95;
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                        }
+                    }
+                }
+
+
                 txtStartDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
 
                 DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
@@ -47,6 +99,9 @@ public partial class ProfitAndLossReport1 : System.Web.UI.Page
 
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
+
+                lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
+                lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
 
                 GeneratePL();
                 divPrint.Visible = true;

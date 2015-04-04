@@ -9,7 +9,7 @@
     <title>TROY-PLUS</title>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
     <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
-    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />
+    <link href="App_Themes/NewTheme/base.css" rel="stylesheet" type="text/css" />    
     <link href="App_Themes/NewTheme/navmenu.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/ComboBox.css" rel="Stylesheet" type="text/css" />
@@ -466,7 +466,9 @@
                                                         <li class="color submenumenu"><a href="./CustReceipt.aspx" runat="server" id="lnkCustomerReceipt">Receipts from Customer</a></li>
                                                         <li class="color submenumenu"><a href="./CustomerPayment.aspx" runat="server" id="lnkCustomerPayment">Payments to Customer</a></li>
                                                         <li class="color submenumenu"><a href="./HirePurchase.aspx" runat="server" id="lnkHirePurchaseNew">Hire Sales</a></li>
+                                                        <li class="color submenumenu"><a href="./ManualSalesBook.aspx" runat="server" id="lnkManualSalesBook">Manual Sales Book</a></li>
                                                         <li class="color submenumenu"><a href="./InternalTransfers.aspx" runat="server" id="lnkInternalTransfers">Internal Transfers</a></li>
+                                                        <li class="color submenumenu"><a href="./InternalTransferApproval.aspx" runat="server" id="lnkInternalTransferApprovals">Internal Transfers Approvals</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
@@ -559,8 +561,7 @@
                                                         <li class="color submenumenu"><a href="./BankPayment.aspx" runat="server" id="lnkBankDeposit">Deposits</a></li>
                                                         <li class="color submenumenu"><a href="./BankReceipt.aspx" runat="server" id="lnkBankReceipt">WithDrawals</a></li>
                                                         <li class="color submenumenu"><a href="./BankRecon.aspx" runat="server" id="lnkBankRec">Bank reconciliation</a></li>
-                                                        <li class="color submenumenu"><a href="./ChequeBook.aspx" runat="server" id="lnkChequeBook">Cheque Book</a></li>
-                                                        <li class="color submenumenu"><a href="./ManualSalesBook.aspx" runat="server" id="lnkManualSalesBook">Manual Sales Book</a></li
+                                                        <li class="color submenumenu"><a href="./ChequeBook.aspx" runat="server" id="lnkChequeBook">Cheque Book</a></li>                                                      
                                                     </ul>
                                                 </li>
                                                <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
@@ -586,11 +587,12 @@
                                                         <li class="color submenumenu"><a href="./CreditDebitNote.aspx" runat="server" id="lnkCreditDebitNote">Credit / Debit Note</a></li>
                                                         <li class="color submenumenu"><a href="./MultipleJournal.aspx" runat="server" id="lnkMultipleInfo">Journals</a></li>
                                                         <li class="color submenumenu"><a href="./ExpPayment.aspx" runat="server" id="lnkExpensePayment">Expense payments</a></li>
+                                                          <li class="color submenumenu"><a href="./ManualClearance.aspx" runat="server">Manual Clearance</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Trialbalance.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=220,width=500,left=425,top=220, scrollbars=yes');">Trial Balance</a></li>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('Trialbalance.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=260,width=500,left=425,top=220, scrollbars=yes');">Trial Balance</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('BalanceSheet.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,height=230,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Balance Sheet</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ProfitAndLossReport.aspx ','trialBalance', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=230,width=500,left=425,top=220, scrollbars=yes');">Profit and Loss</a></li>
                                                         <li class="color submenumenu"><a href="#" onclick="Popup=window.open('CashAccountReport.aspx ','Summary', 'toolbar=no,status=no,menu=no,location=no,height=210,width=500,left=425,top=220,resizable=yes, scrollbars=yes');">Cash Account</a></li>
@@ -623,7 +625,7 @@
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>
                                                     <ul>
-                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExcelLeadManagement.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,height=380,width=480,left=405,top=220 ,resizable=yes, scrollbars=no');">Lead Management</a>
+                                                        <li class="color submenumenu"><a href="#" onclick="Popup=window.open('ReportExcelLeadManagement.aspx','Summary', 'toolbar=no,status=no,menu=no,location=no,height=380,width=830,left=250,top=200 ,resizable=yes, scrollbars=no');">Lead Management</a>
                                                         </li>
                                                     </ul>
                                                 </li>

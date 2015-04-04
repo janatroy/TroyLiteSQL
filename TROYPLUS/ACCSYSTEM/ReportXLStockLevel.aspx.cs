@@ -12,6 +12,8 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Text;
 using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 using System.Net.NetworkInformation;
 using System.Management;
 
@@ -164,18 +166,24 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
         try
         {
             int ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
-
-            if (ttoption == 1)
+            if (drpBranchAdd.SelectedValue == "0")
             {
-                bindDataCategory(sDataSource);
+                ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select Branch. It cannot be left Blank');", true);
             }
-            else if (ttoption == 2)
+            else
             {
-                bindDatabrand(sDataSource);
-            }
-            else if (ttoption == 3)
-            {
-                bindData(sDataSource);
+                if (ttoption == 1)
+                {
+                    bindDataCategory(sDataSource);
+                }
+                else if (ttoption == 2)
+                {
+                    bindDatabrand(sDataSource);
+                }
+                else if (ttoption == 3)
+                {
+                    bindData(sDataSource);
+                }
             }
         }
         catch (Exception ex)
@@ -606,7 +614,7 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
 
          string itemcode = string.Empty;
 
-         DataTable dt = new DataTable();
+         DataTable dt = new DataTable("Srock report");
 
          if (ds != null)
          {
@@ -806,24 +814,24 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
 
          if (dt.Rows.Count > 0)
          {
-             string filename = "Stock Level.xls";
-             System.IO.StringWriter tw = new System.IO.StringWriter();
-             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-             DataGrid dgGrid = new DataGrid();
-             dgGrid.DataSource = dt;
-             dgGrid.DataBind();
-             dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-             dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-             dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-             dgGrid.HeaderStyle.Font.Bold = true;
-             //Get the HTML for the control.
-             dgGrid.RenderControl(hw);
-             //Write the HTML back to the browser.
-             Response.ContentType = "application/vnd.ms-excel";
-             Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-             this.EnableViewState = false;
-             Response.Write(tw.ToString());
-             Response.End();
+             using (XLWorkbook wb = new XLWorkbook())
+             {
+                 string filename = "Stock report.xlsx";
+                 wb.Worksheets.Add(dt);
+                 Response.Clear();
+                 Response.Buffer = true;
+                 Response.Charset = "";
+                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                 Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                 using (MemoryStream MyMemoryStream = new MemoryStream())
+                 {
+                     wb.SaveAs(MyMemoryStream);
+                     MyMemoryStream.WriteTo(Response.OutputStream);
+                     Response.Flush();
+                     Response.End();
+                 }
+             }
+
          }
      }
 
@@ -853,39 +861,46 @@ public partial class ReportXLStockLevel : System.Web.UI.Page
      {
          try
          {
-             int ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
+             if (drpBranchAdd.SelectedValue == "0")
+             {
+                 ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('Please select Branch. It cannot be left Blank');", true);
+             }
+             else
+             {
+                 int ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
 
-             //if (ttoption == 1)
-             //{
-             //    bindDataCategory(sDataSource);
-             //}
-             //else if (ttoption == 2)
-             //{
-             //    bindDatabrand(sDataSource);
-             //}
-             //else if (ttoption == 3)
-             //{
-             //    bindData(sDataSource);
-             //}
+                 //if (ttoption == 1)
+                 //{
+                 //    bindDataCategory(sDataSource);
+                 //}
+                 //else if (ttoption == 2)
+                 //{
+                 //    bindDatabrand(sDataSource);
+                 //}
+                 //else if (ttoption == 3)
+                 //{
+                 //    bindData(sDataSource);
+                 //}
 
-             string trange = string.Empty;
-             string toption = string.Empty;
-             string Branch = drpBranchAdd.SelectedValue;
+                 string trange = string.Empty;
+                 string toption = string.Empty;
+                 string Branch = drpBranchAdd.SelectedValue;
 
-           
 
-             DateTime refDate = DateTime.Parse(txtStartDate.Text);
 
-             int ttrange = Convert.ToInt32(cmbtrange.SelectedItem.Value);
-              ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
+                 DateTime refDate = DateTime.Parse(txtStartDate.Text);
 
-              string cond1 = "";
-              cond1 = getCond1();
-             //int tstock = 0;
-             //int trol = 0;
-             //string itemcode = string.Empty;
+                 int ttrange = Convert.ToInt32(cmbtrange.SelectedItem.Value);
+                 ttoption = Convert.ToInt32(cmbtoption.SelectedItem.Value);
 
-              Response.Write("<script language='javascript'> window.open('ReportXLStockLevel1.aspx?Branch=" + Branch + "&refdate=" + refDate + "&range=" + ttrange + "&option=" + ttoption + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                 string cond1 = "";
+                 cond1 = getCond1();
+                 //int tstock = 0;
+                 //int trol = 0;
+                 //string itemcode = string.Empty;
+
+                 Response.Write("<script language='javascript'> window.open('ReportXLStockLevel1.aspx?Branch=" + Branch + "&refdate=" + refDate + "&range=" + ttrange + "&option=" + ttoption + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+             }
          }
          catch (Exception ex)
          {

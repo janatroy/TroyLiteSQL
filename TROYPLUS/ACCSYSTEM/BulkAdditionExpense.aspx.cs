@@ -124,25 +124,15 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
         DataSet ds = new DataSet();
         DataTable dt = new DataTable();
 
-        dt.Columns.Add(new DataColumn("LedgerName"));
-        dt.Columns.Add(new DataColumn("OpenBalanceDR"));
-        dt.Columns.Add(new DataColumn("OpenBalanceCR"));
-        dt.Columns.Add(new DataColumn("ContactName"));
-        dt.Columns.Add(new DataColumn("Add1"));
-        dt.Columns.Add(new DataColumn("Add2"));
-        dt.Columns.Add(new DataColumn("Add3"));
+        dt.Columns.Add(new DataColumn("ExpenseName"));
+       
         //dt.Columns.Add(new DataColumn("Inttrans"));
         //dt.Columns.Add(new DataColumn("Paymentmade"));
         //dt.Columns.Add(new DataColumn("dc"));
         
         DataRow dr_final12 = dt.NewRow();
-        dr_final12["LedgerName"] = "";
-        dr_final12["OpenBalanceDR"] = "0";
-        dr_final12["OpenBalanceCR"] = "0";
-        dr_final12["ContactName"] = "";
-        dr_final12["Add1"] = "";
-        dr_final12["Add2"] = "";
-        dr_final12["Add3"] = "";
+        dr_final12["ExpenseName"] = "";
+    
         //dr_final12["Inttrans"] = "NO";
         //dr_final12["Paymentmade"] = "NO";
         //dr_final12["dc"] = "NO";
@@ -394,10 +384,33 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
                 //}
             //    string item = Convert.ToString(dr["LedgerName"]);
 
+
+
+                string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+                char[] specialCharactersArray = specialCharacters.ToCharArray();
+
+
+
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    string item = Convert.ToString(dr["LedgerName"]);
-                    if ((Convert.ToString(dr["LedgerName"]) == null) || (Convert.ToString(dr["LedgerName"]) == ""))
+                    if ((Convert.ToString(dr["ExpenseName"]) != null) || (Convert.ToString(dr["ExpenseName"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["ExpenseName"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Expense Name');", true);
+                            return;
+                        }
+                    }
+                }
+
+
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string item = Convert.ToString(dr["ExpenseName"]);
+                    if ((Convert.ToString(dr["ExpenseName"]) == null) || (Convert.ToString(dr["ExpenseName"]) == ""))
                     {
 
                     }
@@ -417,7 +430,7 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
                 string itemc = string.Empty;
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    itemc = Convert.ToString(dr["LedgerName"]);
+                    itemc = Convert.ToString(dr["ExpenseName"]);
 
                     if ((itemc == null) || (itemc == ""))
                     {
@@ -431,7 +444,7 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
                             }
                             else
                             {
-                                if (itemc == Convert.ToString(drd["LedgerName"]))
+                                if (itemc == Convert.ToString(drd["ExpenseName"]))
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Expense - " + itemc + " - already exists in the excel.');", true);
                                     return;

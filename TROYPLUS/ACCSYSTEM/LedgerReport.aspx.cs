@@ -11,6 +11,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 public partial class LedgerReport : System.Web.UI.Page
 {
@@ -346,6 +348,9 @@ public partial class LedgerReport : System.Web.UI.Page
         dc = new DataColumn("VoucherType");
         dt.Columns.Add(dc);
 
+        dc = new DataColumn("BranchCode");
+        dt.Columns.Add(dc);
+
         ds.Tables.Add(dt);
 
         ArrayList lsLedger = new ArrayList();
@@ -363,6 +368,7 @@ public partial class LedgerReport : System.Web.UI.Page
             drNew["Debit"] = "0.00";
             drNew["Credit"] = "0.00";
             drNew["VoucherType"] = string.Empty;
+            drNew["BranchCode"] = string.Empty;
             ds.Tables[0].Rows.Add(drNew);
 
         }
@@ -1072,13 +1078,14 @@ public partial class LedgerReport : System.Web.UI.Page
                 #region Export To Excel
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = new DataTable("Ledger Report");
                     dt.Columns.Add(new DataColumn("Date"));
                     dt.Columns.Add(new DataColumn("TransNo"));
                     dt.Columns.Add(new DataColumn("Particulars"));
                     dt.Columns.Add(new DataColumn("Ledger Name"));
                     dt.Columns.Add(new DataColumn("Ledger"));
                     dt.Columns.Add(new DataColumn("Voucher Type"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                     dt.Columns.Add(new DataColumn("Debit"));
                     dt.Columns.Add(new DataColumn("Credit"));
                     dt.Columns.Add(new DataColumn("Balance"));
@@ -1093,6 +1100,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export213["Particulars"] = "Ledger Name : " + drpLedgerName.SelectedItem.Text;
                     dr_export213["Ledger"] = "";
                     dr_export213["Voucher Type"] = "";
+                    dr_export213["BranchCode"] = "";
                     dr_export213["Debit"] = "";
                     dr_export213["Credit"] = "";
                     dt.Rows.Add(dr_export213);
@@ -1105,6 +1113,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export21312["Particulars"] = " Date From " + Convert.ToDateTime(startDate).ToString("dd/MM/yyyy") + " To " + Convert.ToDateTime(endDate).ToString("dd/MM/yyyy");
                     dr_export21312["Ledger"] = "";
                     dr_export21312["Voucher Type"] = "";
+                    dr_export21312["BranchCode"] = "";
                     dr_export21312["Debit"] = "";
                     dr_export21312["Credit"] = "";
                     dt.Rows.Add(dr_export21312);
@@ -1121,6 +1130,7 @@ public partial class LedgerReport : System.Web.UI.Page
                         dr_export["Ledger Name"] = dr["Ledger"];
                         dr_export["Ledger"] = dr["ParticularsI"];
                         dr_export["Voucher Type"] = dr["VoucherType"];
+                        dr_export["BranchCode"] = dr["BranchCode"];
                         dr_export["Debit"] = dr["Debit"];
                         dr_export["Credit"] = dr["Credit"];
 
@@ -1166,6 +1176,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export231["Particulars"] = "";
                     dr_export231["Ledger"] = "";
                     dr_export231["Voucher Type"] = "";
+                    dr_export231["BranchCode"] = "";
                     dr_export231["Debit"] = "";
                     dr_export231["Credit"] = "";
                     dt.Rows.Add(dr_export231);
@@ -1178,6 +1189,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport21["Balance"] = "";
                     dr_lastexport21["Ledger"] = "";
                     dr_lastexport21["Voucher Type"] = "";
+                    dr_lastexport21["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport21);
 
                     DataRow dr_export2 = dt.NewRow();
@@ -1185,6 +1197,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export2["Particulars"] = "";
                     dr_export2["Ledger"] = "";
                     dr_export2["Voucher Type"] = "";
+                    dr_export2["BranchCode"] = "";
                     dr_export2["Debit"] = "";
                     dr_export2["Credit"] = "";
                     dt.Rows.Add(dr_export2);
@@ -1196,6 +1209,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport2["Balance"] = "";
                     dr_lastexport2["Ledger"] = "";
                     dr_lastexport2["Voucher Type"] = "";
+                    dr_lastexport2["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport2);
 
                     DataRow dr_lastexport322 = dt.NewRow();
@@ -1205,6 +1219,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport322["Balance"] = "";
                     dr_lastexport322["Ledger"] = "";
                     dr_lastexport322["Voucher Type"] = "";
+                    dr_lastexport322["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport322);
 
                     DataRow dr_de1 = dt.NewRow();
@@ -1222,6 +1237,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de1["Balance"] = "";
                     dr_de1["Ledger"] = "";
                     dr_de1["Voucher Type"] = "";
+                    dr_de1["BranchCode"] = "";
                     dt.Rows.Add(dr_de1);
 
                     DataRow dr_lastexport3 = dt.NewRow();
@@ -1231,6 +1247,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport3["Balance"] = "";
                     dr_lastexport3["Ledger"] = "";
                     dr_lastexport3["Voucher Type"] = "";
+                    dr_lastexport3["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport3);
 
                     DataRow dr_de = dt.NewRow();
@@ -1258,6 +1275,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de["Balance"] = "";
                     dr_de["Ledger"] = "";
                     dr_de["Voucher Type"] = "";
+                    dr_de["BranchCode"] = "";
                     dt.Rows.Add(dr_de);
 
                     ExportToExcel(dt);
@@ -1299,13 +1317,14 @@ public partial class LedgerReport : System.Web.UI.Page
                 #region Export To Excel
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = new DataTable("Ledger Report");
                     dt.Columns.Add(new DataColumn("Date"));
                     dt.Columns.Add(new DataColumn("TransNo"));
                     dt.Columns.Add(new DataColumn("Particulars"));
                     dt.Columns.Add(new DataColumn("Ledger Name"));
                     dt.Columns.Add(new DataColumn("Ledger"));
                     dt.Columns.Add(new DataColumn("Voucher Type"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                     dt.Columns.Add(new DataColumn("Debit"));
                     dt.Columns.Add(new DataColumn("Credit"));
                     dt.Columns.Add(new DataColumn("Balance"));
@@ -1320,6 +1339,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export213["Particulars"] = "Ledger Name : " + drpLedgerName.SelectedItem.Text;
                     dr_export213["Ledger"] = "";
                     dr_export213["Voucher Type"] = "";
+                    dr_export213["BranchCode"] = "";
                     dr_export213["Debit"] = "";
                     dr_export213["Credit"] = "";
                     dt.Rows.Add(dr_export213);
@@ -1332,6 +1352,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export21312["Particulars"] = " Date From " + Convert.ToDateTime(startDate).ToString("dd/MM/yyyy") + " To " + Convert.ToDateTime(endDate).ToString("dd/MM/yyyy");
                     dr_export21312["Ledger"] = "";
                     dr_export21312["Voucher Type"] = "";
+                    dr_export21312["BranchCode"] = "";
                     dr_export21312["Debit"] = "";
                     dr_export21312["Credit"] = "";
                     dt.Rows.Add(dr_export21312);
@@ -1348,6 +1369,7 @@ public partial class LedgerReport : System.Web.UI.Page
                         dr_export["Ledger Name"] = dr["Ledger"];
                         dr_export["Ledger"] = dr["ParticularsI"];
                         dr_export["Voucher Type"] = dr["VoucherType"];
+                        dr_export["BranchCode"] = dr["BranchCode"];
                         dr_export["Debit"] = dr["Debit"];
                         dr_export["Credit"] = dr["Credit"];
 
@@ -1394,6 +1416,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export231["Particulars"] = "";
                     dr_export231["Ledger"] = "";
                     dr_export231["Voucher Type"] = "";
+                    dr_export231["BranchCode"] = "";
                     dr_export231["Debit"] = "";
                     dr_export231["Credit"] = "";
                     dt.Rows.Add(dr_export231);
@@ -1406,6 +1429,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport21["Balance"] = "";
                     dr_lastexport21["Ledger"] = "";
                     dr_lastexport21["Voucher Type"] = "";
+                    dr_lastexport21["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport21);
 
                     DataRow dr_export2 = dt.NewRow();
@@ -1413,6 +1437,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export2["Particulars"] = "";
                     dr_export2["Ledger"] = "";
                     dr_export2["Voucher Type"] = "";
+                    dr_export2["BranchCode"] = "";
                     dr_export2["Debit"] = "";
                     dr_export2["Credit"] = "";
                     dt.Rows.Add(dr_export2);
@@ -1424,6 +1449,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport2["Balance"] = "";
                     dr_lastexport2["Ledger"] = "";
                     dr_lastexport2["Voucher Type"] = "";
+                    dr_lastexport2["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport2);
 
                     DataRow dr_lastexport322 = dt.NewRow();
@@ -1433,6 +1459,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport322["Balance"] = "";
                     dr_lastexport322["Ledger"] = "";
                     dr_lastexport322["Voucher Type"] = "";
+                    dr_lastexport322["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport322);
 
                     DataRow dr_de1 = dt.NewRow();
@@ -1450,6 +1477,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de1["Balance"] = "";
                     dr_de1["Ledger"] = "";
                     dr_de1["Voucher Type"] = "";
+                    dr_de1["BranchCode"] = "";
                     dt.Rows.Add(dr_de1);
 
                     DataRow dr_lastexport3 = dt.NewRow();
@@ -1459,6 +1487,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport3["Balance"] = "";
                     dr_lastexport3["Ledger"] = "";
                     dr_lastexport3["Voucher Type"] = "";
+                    dr_lastexport3["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport3);
 
                     DataRow dr_de = dt.NewRow();
@@ -1486,6 +1515,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de["Balance"] = "";
                     dr_de["Ledger"] = "";
                     dr_de["Voucher Type"] = "";
+                    dr_de["BranchCode"] = "";
                     dt.Rows.Add(dr_de);
 
                     ExportToExcel(dt);
@@ -1523,13 +1553,14 @@ public partial class LedgerReport : System.Web.UI.Page
                 #region Export To Excel
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = new DataTable("Ledger Report");
                     dt.Columns.Add(new DataColumn("Date"));
                     dt.Columns.Add(new DataColumn("TransNo"));
                     dt.Columns.Add(new DataColumn("Particulars"));
                     dt.Columns.Add(new DataColumn("Ledger Name"));
                     dt.Columns.Add(new DataColumn("Ledger"));
                     dt.Columns.Add(new DataColumn("Voucher Type"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                     dt.Columns.Add(new DataColumn("Debit"));
                     dt.Columns.Add(new DataColumn("Credit"));
                     dt.Columns.Add(new DataColumn("Balance"));
@@ -1544,6 +1575,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export213["Particulars"] = "Ledger Name : " + drpLedgerName.SelectedItem.Text;
                     dr_export213["Ledger"] = "";
                     dr_export213["Voucher Type"] = "";
+                    dr_export213["BranchCode"] = "";
                     dr_export213["Debit"] = "";
                     dr_export213["Credit"] = "";
                     dt.Rows.Add(dr_export213);
@@ -1556,6 +1588,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export21312["Particulars"] = " Date From " + Convert.ToDateTime(startDate).ToString("dd/MM/yyyy") + " To " + Convert.ToDateTime(endDate).ToString("dd/MM/yyyy");
                     dr_export21312["Ledger"] = "";
                     dr_export21312["Voucher Type"] = "";
+                    dr_export21312["BranchCode"] = "";
                     dr_export21312["Debit"] = "";
                     dr_export21312["Credit"] = "";
                     dt.Rows.Add(dr_export21312);
@@ -1572,6 +1605,7 @@ public partial class LedgerReport : System.Web.UI.Page
                         dr_export["Ledger Name"] = dr["Ledger"];
                         dr_export["Ledger"] = dr["ParticularsI"];
                         dr_export["Voucher Type"] = dr["VoucherType"];
+                        dr_export["BranchCode"] = dr["BranchCode"];
                         dr_export["Debit"] = dr["Debit"];
                         dr_export["Credit"] = dr["Credit"];
 
@@ -1618,6 +1652,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export231["Particulars"] = "";
                     dr_export231["Ledger"] = "";
                     dr_export231["Voucher Type"] = "";
+                    dr_export231["BranchCode"] = "";
                     dr_export231["Debit"] = "";
                     dr_export231["Credit"] = "";
                     dt.Rows.Add(dr_export231);
@@ -1630,6 +1665,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport21["Balance"] = "";
                     dr_lastexport21["Ledger"] = "";
                     dr_lastexport21["Voucher Type"] = "";
+                    dr_lastexport21["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport21);
 
                     DataRow dr_export2 = dt.NewRow();
@@ -1637,6 +1673,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export2["Particulars"] = "";
                     dr_export2["Ledger"] = "";
                     dr_export2["Voucher Type"] = "";
+                    dr_export2["BranchCode"] = "";
                     dr_export2["Debit"] = "";
                     dr_export2["Credit"] = "";
                     dt.Rows.Add(dr_export2);
@@ -1648,6 +1685,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport2["Balance"] = "";
                     dr_lastexport2["Ledger"] = "";
                     dr_lastexport2["Voucher Type"] = "";
+                    dr_lastexport2["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport2);
 
                     DataRow dr_lastexport322 = dt.NewRow();
@@ -1657,6 +1695,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport322["Balance"] = "";
                     dr_lastexport322["Ledger"] = "";
                     dr_lastexport322["Voucher Type"] = "";
+                    dr_lastexport322["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport322);
 
                     DataRow dr_de1 = dt.NewRow();
@@ -1674,6 +1713,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de1["Balance"] = "";
                     dr_de1["Ledger"] = "";
                     dr_de1["Voucher Type"] = "";
+                    dr_de1["BranchCode"] = "";
                     dt.Rows.Add(dr_de1);
 
                     DataRow dr_lastexport3 = dt.NewRow();
@@ -1683,6 +1723,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport3["Balance"] = "";
                     dr_lastexport3["Ledger"] = "";
                     dr_lastexport3["Voucher Type"] = "";
+                    dr_lastexport3["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport3);
 
                     DataRow dr_de = dt.NewRow();
@@ -1710,6 +1751,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de["Balance"] = "";
                     dr_de["Ledger"] = "";
                     dr_de["Voucher Type"] = "";
+                    dr_de["BranchCode"] = "";
                     dt.Rows.Add(dr_de);
 
                     ExportToExcel(dt);
@@ -1748,13 +1790,14 @@ public partial class LedgerReport : System.Web.UI.Page
                 #region Export To Excel
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = new DataTable("Ledger Report");
                     dt.Columns.Add(new DataColumn("Date"));
                     dt.Columns.Add(new DataColumn("TransNo"));
                     dt.Columns.Add(new DataColumn("Particulars"));
                     dt.Columns.Add(new DataColumn("Ledger Name"));
                     dt.Columns.Add(new DataColumn("Ledger"));
                     dt.Columns.Add(new DataColumn("Voucher Type"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                     dt.Columns.Add(new DataColumn("Debit"));
                     dt.Columns.Add(new DataColumn("Credit"));
                     dt.Columns.Add(new DataColumn("Balance"));
@@ -1769,6 +1812,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export213["Particulars"] = "Ledger Name : " + drpLedgerName.SelectedItem.Text;
                     dr_export213["Ledger"] = "";
                     dr_export213["Voucher Type"] = "";
+                    dr_export213["BranchCode"] = "";
                     dr_export213["Debit"] = "";
                     dr_export213["Credit"] = "";
                     dt.Rows.Add(dr_export213);
@@ -1781,6 +1825,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export21312["Particulars"] = " Date From " + Convert.ToDateTime(startDate).ToString("dd/MM/yyyy") + " To " + Convert.ToDateTime(endDate).ToString("dd/MM/yyyy");
                     dr_export21312["Ledger"] = "";
                     dr_export21312["Voucher Type"] = "";
+                    dr_export21312["BranchCode"] = "";
                     dr_export21312["Debit"] = "";
                     dr_export21312["Credit"] = "";
                     dt.Rows.Add(dr_export21312);
@@ -1797,6 +1842,7 @@ public partial class LedgerReport : System.Web.UI.Page
                         dr_export["Ledger Name"] = dr["Ledger"];
                         dr_export["Ledger"] = dr["ParticularsI"];
                         dr_export["Voucher Type"] = dr["VoucherType"];
+                        dr_export["BranchCode"] = dr["BranchCode"];
                         dr_export["Debit"] = dr["Debit"];
                         dr_export["Credit"] = dr["Credit"];
 
@@ -1843,6 +1889,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export231["Particulars"] = "";
                     dr_export231["Ledger"] = "";
                     dr_export231["Voucher Type"] = "";
+                    dr_export231["BranchCode"] = "";
                     dr_export231["Debit"] = "";
                     dr_export231["Credit"] = "";
                     dt.Rows.Add(dr_export231);
@@ -1855,6 +1902,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport21["Balance"] = "";
                     dr_lastexport21["Ledger"] = "";
                     dr_lastexport21["Voucher Type"] = "";
+                    dr_lastexport21["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport21);
 
                     DataRow dr_export2 = dt.NewRow();
@@ -1862,6 +1910,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export2["Particulars"] = "";
                     dr_export2["Ledger"] = "";
                     dr_export2["Voucher Type"] = "";
+                    dr_export2["BranchCode"] = "";
                     dr_export2["Debit"] = "";
                     dr_export2["Credit"] = "";
                     dt.Rows.Add(dr_export2);
@@ -1873,6 +1922,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport2["Balance"] = "";
                     dr_lastexport2["Ledger"] = "";
                     dr_lastexport2["Voucher Type"] = "";
+                    dr_lastexport2["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport2);
 
                     DataRow dr_lastexport322 = dt.NewRow();
@@ -1882,6 +1932,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport322["Balance"] = "";
                     dr_lastexport322["Ledger"] = "";
                     dr_lastexport322["Voucher Type"] = "";
+                    dr_lastexport322["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport322);
 
                     DataRow dr_de1 = dt.NewRow();
@@ -1899,6 +1950,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de1["Balance"] = "";
                     dr_de1["Ledger"] = "";
                     dr_de1["Voucher Type"] = "";
+                    dr_de1["BranchCode"] = "";
                     dt.Rows.Add(dr_de1);
 
                     DataRow dr_lastexport3 = dt.NewRow();
@@ -1908,6 +1960,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport3["Balance"] = "";
                     dr_lastexport3["Ledger"] = "";
                     dr_lastexport3["Voucher Type"] = "";
+                    dr_lastexport3["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport3);
 
                     DataRow dr_de = dt.NewRow();
@@ -1935,6 +1988,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de["Balance"] = "";
                     dr_de["Ledger"] = "";
                     dr_de["Voucher Type"] = "";
+                    dr_de["BranchCode"] = "";
                     dt.Rows.Add(dr_de);
 
                     ExportToExcel(dt);
@@ -1971,13 +2025,14 @@ public partial class LedgerReport : System.Web.UI.Page
                 #region Export To Excel
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
+                    DataTable dt = new DataTable("Ledger Report");
                     dt.Columns.Add(new DataColumn("Date"));
                     dt.Columns.Add(new DataColumn("TransNo"));
                     dt.Columns.Add(new DataColumn("Particulars"));
                     dt.Columns.Add(new DataColumn("Ledger Name"));
                     dt.Columns.Add(new DataColumn("Ledger"));
                     dt.Columns.Add(new DataColumn("Voucher Type"));
+                    dt.Columns.Add(new DataColumn("BranchCode"));
                     dt.Columns.Add(new DataColumn("Debit"));
                     dt.Columns.Add(new DataColumn("Credit"));
                     dt.Columns.Add(new DataColumn("Balance"));
@@ -1997,6 +2052,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export213["Particulars"] = "Ledger Name : " + drpLedgerName.SelectedItem.Text;
                     dr_export213["Ledger"] = "";
                     dr_export213["Voucher Type"] = "";
+                    dr_export213["BranchCode"] = "";
                     dr_export213["Debit"] = "";
                     dr_export213["Credit"] = "";
                     dt.Rows.Add(dr_export213);
@@ -2011,6 +2067,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export21312["Particulars"] = " Date From " + Convert.ToDateTime(startDate).ToString("dd/MM/yyyy") + " To " + Convert.ToDateTime(endDate).ToString("dd/MM/yyyy");
                     dr_export21312["Ledger"] = "";
                     dr_export21312["Voucher Type"] = "";
+                    dr_export21312["BranchCode"] = "";
                     dr_export21312["Debit"] = "";
                     dr_export21312["Credit"] = "";
                     dt.Rows.Add(dr_export21312);
@@ -2027,6 +2084,7 @@ public partial class LedgerReport : System.Web.UI.Page
                         dr_export["TransNo"] = dr["TransNo"];
                         dr_export["Ledger"] = dr["ParticularsI"];
                         dr_export["Voucher Type"] = dr["VoucherType"];
+                        dr_export["BranchCode"] = dr["BranchCode"];
                         dr_export["Debit"] = dr["Debit"];
                         dr_export["Credit"] = dr["Credit"];
 
@@ -2073,6 +2131,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export231["Particulars"] = "";
                     dr_export231["Ledger"] = "";
                     dr_export231["Voucher Type"] = "";
+                    dr_export231["BranchCode"] = "";
                     dr_export231["Debit"] = "";
                     dr_export231["Credit"] = "";
                     dt.Rows.Add(dr_export231);
@@ -2085,6 +2144,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport21["Balance"] = "";
                     dr_lastexport21["Ledger"] = "";
                     dr_lastexport21["Voucher Type"] = "";
+                    dr_lastexport21["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport21);
 
                     DataRow dr_export2 = dt.NewRow();
@@ -2092,6 +2152,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_export2["Particulars"] = "";
                     dr_export2["Ledger"] = "";
                     dr_export2["Voucher Type"] = "";
+                    dr_export2["BranchCode"] = "";
                     dr_export2["Debit"] = "";
                     dr_export2["Credit"] = "";
                     dt.Rows.Add(dr_export2);
@@ -2103,6 +2164,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport2["Balance"] = "";
                     dr_lastexport2["Ledger"] = "";
                     dr_lastexport2["Voucher Type"] = "";
+                    dr_lastexport2["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport2);
 
                     DataRow dr_lastexport322 = dt.NewRow();
@@ -2112,6 +2174,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport322["Balance"] = "";
                     dr_lastexport322["Ledger"] = "";
                     dr_lastexport322["Voucher Type"] = "";
+                    dr_lastexport322["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport322);
 
                     DataRow dr_de1 = dt.NewRow();
@@ -2129,6 +2192,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de1["Balance"] = "";
                     dr_de1["Ledger"] = "";
                     dr_de1["Voucher Type"] = "";
+                    dr_de1["BranchCode"] = "";
                     dt.Rows.Add(dr_de1);
 
                     DataRow dr_lastexport3 = dt.NewRow();
@@ -2138,6 +2202,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_lastexport3["Balance"] = "";
                     dr_lastexport3["Ledger"] = "";
                     dr_lastexport3["Voucher Type"] = "";
+                    dr_lastexport3["BranchCode"] = "";
                     dt.Rows.Add(dr_lastexport3);
 
                     DataRow dr_de = dt.NewRow();
@@ -2172,6 +2237,7 @@ public partial class LedgerReport : System.Web.UI.Page
                     dr_de["Balance"] = "";
                     dr_de["Ledger"] = "";
                     dr_de["Voucher Type"] = "";
+                    dr_de["BranchCode"] = "";
                     dt.Rows.Add(dr_de);
 
                     ExportToExcel(dt);
@@ -2395,24 +2461,24 @@ public partial class LedgerReport : System.Web.UI.Page
     {
         if (dt.Rows.Count > 0)
         {
-            string file = "Ledger Report_" + DateTime.Now.ToString() + ".xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + file + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                 string filename = "Ledger Report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+
         }
     }
 

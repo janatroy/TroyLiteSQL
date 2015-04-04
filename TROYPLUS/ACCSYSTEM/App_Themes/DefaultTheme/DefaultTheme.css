@@ -843,12 +843,17 @@ text-align:left;
 vertical-align:middle;
 }
 
+.GrdItemForecolor
+{
+    color:#414141;
+}
+
 .GrdContent
 {
 color:Black;
 font: normal 10px 'Trebuchet MS';
 text-decoration:none;
-background-color:#E9F1F6;
+background-color:#414141;
 padding-left:5px;
 }
 .GrdContentDrpDown

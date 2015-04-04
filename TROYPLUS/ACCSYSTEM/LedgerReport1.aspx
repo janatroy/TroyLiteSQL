@@ -236,9 +236,16 @@
             
             <table width="600px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
                 <tr>
+                            <td rowspan="5" width="140px">
+                                <asp:Image ID="Image1" runat="server" />
+                            </td>
+                            <td />
+                            <td />
+                        </tr>
+                <tr>
                     <td width="140px" align="left">
-                        TIN#:
-                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                        <%--TIN#:--%>
+                        <asp:Label ID="lblTNGST" Visible="false" runat="server"></asp:Label>
                     </td>
                     <td align="center" width="320px" style="font-size: 20px;">
                         <asp:Label ID="lblCompany" runat="server"></asp:Label>
@@ -250,8 +257,8 @@
                 </tr>
                 <tr>
                     <td align="left">
-                        GST#:
-                        <asp:Label ID="lblGSTno" runat="server"></asp:Label>
+                       <%-- GST#:--%>
+                        <asp:Label ID="lblGSTno" Visible="false" runat="server"></asp:Label>
                     </td>
                     <td align="center">
                         <asp:Label ID="lblAddress" runat="server"></asp:Label>
@@ -285,17 +292,20 @@
                         &nbsp;
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="3">
+               
+            </table>
+            <table>
+                 <tr>
+                    <td colspan="3" align="center">
                         <br />
-                        <h5>
+                        <h5 style="font-size:large">
                             Ledger Of
-                            <asp:Label ID="lblLedger" runat="server"></asp:Label>
+                            <asp:Label ID="lblLedger" Font-Size="Large" runat="server"></asp:Label>
                             <br />
                             Date From
-                            <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
+                            <asp:Label ID="lblStartDate" Font-Size="Large" runat="server"> </asp:Label>
                             To
-                            <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
+                            <asp:Label ID="lblEndDate" Font-Size="Large" runat="server"> </asp:Label></h5>
                     </td>
                 </tr>
             </table>
@@ -315,7 +325,9 @@
                     <Columns>
                         <asp:BoundField ItemStyle-Width="5%" DataField="Date" HeaderText="Date" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="35%" DataField="Particulars" HeaderText="Particulars" />
+                        <asp:BoundField ItemStyle-Width="15%" DataField="BranchCode" HeaderText="Branch" ItemStyle-HorizontalAlign="Center" />
                         <asp:BoundField ItemStyle-Width="15%" DataField="VoucherType" HeaderText="Voucher Type" />
+                        
                         <asp:BoundField ItemStyle-Width="12%" DataField="Debit" HeaderStyle-HorizontalAlign="Right"
                             HeaderText="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Credit" HeaderStyle-HorizontalAlign="Right"
@@ -363,7 +375,8 @@
                         <br />
                     </PageHeaderTemplate>
                     <Columns>
-                        <asp:BoundField ItemStyle-Width="15%" DataField="Ledger" HeaderText="Ledger" ItemStyle-HorizontalAlign="Center" />
+                        <asp:BoundField ItemStyle-Width="15%" DataField="Ledger" HeaderText="Ledger" ItemStyle-HorizontalAlign="Left" />
+                        <asp:BoundField ItemStyle-Width="15%" DataField="BranchCode" HeaderText="Branch" ItemStyle-HorizontalAlign="Center" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Debit" HeaderStyle-HorizontalAlign="Right"
                             HeaderText="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Credit" HeaderStyle-HorizontalAlign="Right"
@@ -375,6 +388,7 @@
                                     Text="0.00"> </asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
+                      
                         <asp:BoundField ItemStyle-Width="10%" DataField="LedgerID" Visible="false" />
                     </Columns>
                     <PagerTemplate>
@@ -387,7 +401,10 @@
             <table width="600px" border="0" cellspacing="0" cellpadding="1" style="font-family: 'Trebuchet MS';
                 font-size: 11px;">
                 <tr>
-                    <td width="280px" align="right">
+                    <td width="210px">
+                        &nbsp;
+                    </td>
+                    <td width="260px" align="right">
                         <b>Opening Balance :</b>
                     </td>
                     <td width="80px">
@@ -400,12 +417,12 @@
                     <td width="80px" align="right">
                         <hr />
                         <asp:Label ID="lblOBCR" runat="server"></asp:Label><hr />
-                    </td>
-                    <td width="80px">
-                        &nbsp;
-                    </td>
+                    </td>                   
                 </tr>
                 <tr>
+                    <td width="210px">
+                        &nbsp;
+                    </td>
                     <td align="right">
                         <b>Total :</b>
                     </td>
@@ -420,11 +437,11 @@
                         <hr />
                         <asp:Label ID="lblCreditSum" runat="server"></asp:Label><hr />
                     </td>
-                    <td>
-                        &nbsp;
-                    </td>
                 </tr>
                 <tr>
+                    <td width="210px">
+                        &nbsp;
+                    </td>
                     <td align="right">
                         <b>Current Balance :</b>
                     </td>
@@ -439,11 +456,11 @@
                         <hr />
                         <asp:Label ID="lblCreditDiff" runat="server"></asp:Label><hr />
                     </td>
-                    <td>
-                        &nbsp;
-                    </td>
                 </tr>
                 <tr>
+                    <td width="210px">
+                        &nbsp;
+                    </td>
                     <td align="right">
                         <b>Closing Balance :</b>
                     </td>
@@ -457,9 +474,6 @@
                     <td align="right">
                         <hr />
                         <asp:Label ID="lblClosCr" runat="server"></asp:Label><hr />
-                    </td>
-                    <td>
-                        &nbsp;
                     </td>
                 </tr>
             </table>

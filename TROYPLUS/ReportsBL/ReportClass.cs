@@ -1265,7 +1265,7 @@ namespace ReportsBL
             oleConn = new OleDbConnection(CreateConnectionString(sConStr));
             oleCmd = new OleDbCommand();
             oleCmd.Connection = oleConn;
-            sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.AliasName, (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID=" + iGroupID + " and (IIF(ISNULL(tblLedger.OpenBalanceDR),0,tblLedger.OpenBalanceDR)+ IIF(ISNULL(debittable.debitamount),0,debittable.debitamount)) - (IIF(ISNULL(tblLedger.OpenBalanceCR),0,tblLedger.OpenBalanceCR)+ IIF(ISNULL(credittable.creditamount),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
+            sQry = "SELECT tblLedger.LedgerID,tblLedger.LedgerName,tblLedger.AliasName, (IIF((tblLedger.OpenBalanceDR is null),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount is null),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR is null),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount is null),0,credittable.creditamount)) as balance FROM (tblLedger   left  join (SELECT DebtorID,sum(Amount) as debitamount FROM tblDayBook WHERE DebtorID > 0 group by DebtorID) debittable  on tblLedger.LedgerID=debittable.DebtorID) left join (SELECT CreditorID,sum(Amount) as creditamount FROM tblDayBook WHERE CreditorID > 0 group by CreditorID) credittable on tblLedger.LedgerID= credittable.CreditorID where GroupID=" + iGroupID + " and (IIF((tblLedger.OpenBalanceDR is null),0,tblLedger.OpenBalanceDR)+ IIF((debittable.debitamount is null),0,debittable.debitamount)) - (IIF((tblLedger.OpenBalanceCR is null),0,tblLedger.OpenBalanceCR)+ IIF((credittable.creditamount is null),0,credittable.creditamount)) <> 0 ORDER BY tblLedger.LedgerName";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
             oleAdp = new OleDbDataAdapter(oleCmd);
@@ -2501,15 +2501,16 @@ namespace ReportsBL
             string iQry = "";
             string sParticulars = "";
             string sVoucherType = string.Empty;
+            string sbranch = string.Empty;
             string sLedgerID = "0";
             string sLedger = string.Empty;
             string sQry = string.Empty;
             string pQry = string.Empty;
             string sConStr = string.Empty;
-            OleDbConnection oleConn, oleSubConn;
+            SqlConnection oleConn, oleSubConn;
 
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             DataSet dsChildQry;
             string sOrder;
@@ -2522,17 +2523,17 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
 
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             //sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " +sOrder;
-            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+            sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
             if (iLedgerID != 0)
                 sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
@@ -2545,10 +2546,10 @@ namespace ReportsBL
 
             sQry = sQry + " Union All ";
 
-            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+            sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
             sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
             sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-            sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+            sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
             if (iLedgerID != 0)
                 sQry = sQry + " AND ( DebtorID=" + iLedgerID + ") ";
@@ -2563,7 +2564,7 @@ namespace ReportsBL
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
@@ -2598,6 +2599,9 @@ namespace ReportsBL
             dc = new DataColumn("VoucherType");
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("BranchCode");
+            dt.Columns.Add(dc);
+
             ds.Tables.Add(dt);
 
             if (dsParentQry.Tables[0].Rows.Count == 0)
@@ -2610,6 +2614,7 @@ namespace ReportsBL
                 drNew["Debit"] = "0.00";
                 drNew["Credit"] = "0.00";
                 drNew["VoucherType"] = string.Empty;
+                drNew["BranchCode"] = string.Empty;
                 ds.Tables[0].Rows.Add(drNew);
             }
             else
@@ -2629,6 +2634,10 @@ namespace ReportsBL
                     if (drParentQry["VoucherType"] != null)
                     {
                         sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                    }
+                    if (drParentQry["BranchCode"] != null)
+                    {
+                        sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                     }
 
                     /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
@@ -2660,11 +2669,11 @@ namespace ReportsBL
 
                     if (pQry != "")
                     {
-                        oleCmd = new OleDbCommand();
+                        oleCmd = new SqlCommand();
                         oleCmd.CommandText = pQry;
-                        oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
+                        oleSubConn = new SqlConnection(CreateConnectionString(sConStr));
                         oleCmd.Connection = oleSubConn;
-                        oleAdp = new OleDbDataAdapter(oleCmd);
+                        oleAdp = new SqlDataAdapter(oleCmd);
                         dsChildQry = new DataSet();
                         oleAdp.Fill(dsChildQry);
                         if (dsChildQry != null)
@@ -2687,6 +2696,7 @@ namespace ReportsBL
                     drNew["Debit"] = dDebitAmt.ToString();
                     drNew["Credit"] = dCreditAmt.ToString();
                     drNew["VoucherType"] = sVoucherType;
+                    drNew["BranchCode"] = sbranch;
 
                     ds.Tables[0].Rows.Add(drNew);
                 }
@@ -2715,6 +2725,7 @@ namespace ReportsBL
             string iQry = "";
             string sParticulars = "";
             string sVoucherType = string.Empty;
+            string sbranch = string.Empty;
             string sQry = string.Empty;
             string pQry = string.Empty;
             string sLedger = string.Empty;
@@ -2722,10 +2733,10 @@ namespace ReportsBL
             string rQry = string.Empty;
             string sConStr = string.Empty;
             int retValue = 0;
-            OleDbConnection oleConn, oleSubConn, oleSubConn2;
+            SqlConnection oleConn, oleSubConn, oleSubConn2;
             int transno = 0;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             DataSet dsChildQry;
             string sOrder;
@@ -2738,8 +2749,8 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
 
@@ -2749,10 +2760,10 @@ namespace ReportsBL
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             if (sType == "Sales" && retFlag == "Yes") /* Only Sales Return */
             {
-                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + "AND VoucherType='Purchase Return' ";
 
                 if (iLedgerID != 0)
@@ -2766,10 +2777,10 @@ namespace ReportsBL
 
                 sQry = sQry + " Union All ";
 
-                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + "AND VoucherType='Purchase Return' ";
 
                 if (iLedgerID != 0)
@@ -2785,10 +2796,10 @@ namespace ReportsBL
             else if (sType == "Purchase" && retFlag == "Yes")/* Only Purchase Return */
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
-                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + "AND VoucherType='Sales Return' ";
 
                 if (iLedgerID != 0)
@@ -2802,10 +2813,10 @@ namespace ReportsBL
 
                 sQry = sQry + " Union All ";
 
-                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + "AND VoucherType='Sales Return' ";
 
                 if (iLedgerID != 0)
@@ -2821,10 +2832,10 @@ namespace ReportsBL
             else if (sType == "Purchase" && retFlag == "Both")/* Only Purchase Return */
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE VoucherType='Purchase Return'  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate "+sOrder ;
-                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
                 if (iLedgerID != 0)
@@ -2838,10 +2849,10 @@ namespace ReportsBL
 
                 sQry = sQry + " Union All ";
 
-                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + "AND ( VoucherType='Sales Return' OR VoucherType='Purchase' ) ";
 
                 if (iLedgerID != 0)
@@ -2857,10 +2868,10 @@ namespace ReportsBL
             else if (sType == "Sales" && retFlag == "Both") /* Both Sales and Sales Return */
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
 
                 if (iLedgerID != 0)
@@ -2874,10 +2885,10 @@ namespace ReportsBL
 
                 sQry = sQry + " Union All ";
 
-                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + " AND ( VoucherType='Sales' OR VoucherType='Purchase Return') ";
 
                 if (iLedgerID != 0)
@@ -2892,10 +2903,10 @@ namespace ReportsBL
             else if (sType == "Sales" && retFlag == "No") /* Both Sales and Sales Return */
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Sales Return' OR VoucherType='Sales') AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + " AND VoucherType='Sales' ";
 
                 if (iLedgerID != 0)
@@ -2909,10 +2920,10 @@ namespace ReportsBL
 
                 sQry = sQry + " Union All ";
 
-                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + " AND (VoucherType='Sales') ";
 
                 if (iLedgerID != 0)
@@ -2927,10 +2938,10 @@ namespace ReportsBL
             else if (sType == "Purchase" && retFlag == "No")/* Both Purchase and Purchase Return */
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,VoucherType FROM tblDayBook WHERE (VoucherType='Purchase Return' OR VoucherType='Purchase')  AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#)  Order by TransDate " + sOrder;
-                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + " AND (VoucherType='Purchase') ";
 
                 if (iLedgerID != 0)
@@ -2944,10 +2955,10 @@ namespace ReportsBL
 
                 sQry = sQry + " Union All ";
 
-                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
                 sQry = sQry + " AND ( VoucherType='Purchase') ";
 
                 if (iLedgerID != 0)
@@ -2962,10 +2973,10 @@ namespace ReportsBL
             else
             {
                 //sQry = "SELECT TransNo,TransDate,DebtorID,CreditorID,Amount,Narration,,VoucherType FROM tblDayBook WHERE (DebtorID=" + iLedgerID + " OR CreditorID=" + iLedgerID + ") AND (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) Order by TransDate " + sOrder;
-                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,L.LedgerName ";
+                sQry = "SELECT TransDate,NULL as DebtorID,CreditorID,Amount,Narration,VoucherType,B.BranchCode,L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.CreditorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + "WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + "WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
                 if (iLedgerID != 0)
                     sQry = sQry + " AND ( CreditorID=" + iLedgerID + ") ";
@@ -2978,10 +2989,10 @@ namespace ReportsBL
 
                 sQry = sQry + " Union All ";
 
-                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType, L.LedgerName ";
+                sQry = sQry + "SELECT TransDate,DebtorID,Null as CreditorID,Amount,Narration,VoucherType,B.BranchCode, L.LedgerName ";
                 sQry = sQry + "FROM (((tblDayBook B INNER JOIN tblLedger L ON L.LedgerID = B.DebtorID ) ";
                 sQry = sQry + "INNER JOIN tblGroups G ON G.GroupID = L.GroupID) INNER JOIN tblAccHeading H ON H.HeadingID = G.HeadingID ) ";
-                sQry = sQry + " WHERE (TransDate >=#" + dtSdate.ToString("MM/dd/yyyy") + "# AND TransDate <=#" + dtEdate.ToString("MM/dd/yyyy") + "#) ";
+                sQry = sQry + " WHERE (TransDate >='" + dtSdate.ToString("MM/dd/yyyy") + "' AND TransDate <='" + dtEdate.ToString("MM/dd/yyyy") + "') ";
 
                 if (iLedgerID != 0)
                     sQry = sQry + " AND (DebtorID=" + iLedgerID + ") ";
@@ -2998,7 +3009,7 @@ namespace ReportsBL
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             /* End DB Query Processing - Getting the Details of the Ledger int the Daybook */
@@ -3032,6 +3043,8 @@ namespace ReportsBL
             dc = new DataColumn("VoucherType");
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("BranchCode");
+            dt.Columns.Add(dc);
 
             ds.Tables.Add(dt);
 
@@ -3045,6 +3058,7 @@ namespace ReportsBL
                 drNew["Debit"] = "0.00";
                 drNew["Credit"] = "0.00";
                 drNew["VoucherType"] = string.Empty;
+                drNew["BranchCode"] = string.Empty;
                 ds.Tables[0].Rows.Add(drNew);
             }
             else
@@ -3081,6 +3095,10 @@ namespace ReportsBL
                     if (drParentQry["VoucherType"] != null)
                     {
                         sVoucherType = Convert.ToString(drParentQry["VoucherType"].ToString());
+                    }
+                    if (drParentQry["BranchCode"] != null)
+                    {
+                        sbranch = Convert.ToString(drParentQry["BranchCode"].ToString());
                     }
                     /* Start Sum up the Debit and Credit Transaction of the given ledgerID , Getting the Correcponding Debtor or creditor for the particulars section*/
                     if (drParentQry["DebtorID"] != null)
@@ -3122,11 +3140,11 @@ namespace ReportsBL
 
                     if (pQry != "")
                     {
-                        oleCmd = new OleDbCommand();
+                        oleCmd = new SqlCommand();
                         oleCmd.CommandText = pQry;
-                        oleSubConn = new OleDbConnection(CreateConnectionString(sConStr));
+                        oleSubConn = new SqlConnection(CreateConnectionString(sConStr));
                         oleCmd.Connection = oleSubConn;
-                        oleAdp = new OleDbDataAdapter(oleCmd);
+                        oleAdp = new SqlDataAdapter(oleCmd);
                         dsChildQry = new DataSet();
                         oleAdp.Fill(dsChildQry);
                         if (dsChildQry != null)
@@ -3152,6 +3170,7 @@ namespace ReportsBL
                     drNew["Debit"] = dDebitAmt.ToString();
                     drNew["Credit"] = dCreditAmt.ToString();
                     drNew["VoucherType"] = sVoucherType;
+                    drNew["BranchCode"] = sbranch;
                     ds.Tables[0].Rows.Add(drNew);
                     //    }
                     //}
@@ -3191,11 +3210,11 @@ namespace ReportsBL
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
             /* End Ms Access Database Connection Information */
@@ -3224,11 +3243,11 @@ namespace ReportsBL
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
             double oBal = 0;
@@ -3237,7 +3256,7 @@ namespace ReportsBL
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             if (type == "debit")
             {
-                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.DebtorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("yyyy-MM-dd") + "'";
 
                 if (ledgerID > 0)
                     sQry = sQry + " AND B.DebtorID = " + ledgerID.ToString();
@@ -3251,7 +3270,7 @@ namespace ReportsBL
             else
             {
                 //sQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where CreditorID = " + ledgerID + "  AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
-                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
+                sQry = "SELECT SUM(Amount)  As OpeningBal  FROM (((tblDayBook B Inner Join tblLedger L On L.LedgerID = B.CreditorID) Inner Join tblGroups G On G.GroupID = L.GroupID) Inner Join tblAccHeading H On H.HeadingID = G.HeadingID) Where TransDate <'" + oDate.ToString("MM/dd/yyyy") + "'";
 
                 if (ledgerID > 0)
                     sQry = sQry + " AND B.CreditorID = " + ledgerID.ToString();
@@ -3280,11 +3299,11 @@ namespace ReportsBL
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
             string type = string.Empty;
@@ -3293,7 +3312,7 @@ namespace ReportsBL
 
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
 
-            sQry = "SELECT SUM(Amount) As OpeningBal  FROM tblDayBook Where vouchertype='" + stype + "' AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
+            sQry = "SELECT SUM(Amount) As OpeningBal  FROM tblDayBook Where vouchertype='" + stype + "' AND TransDate <'" + oDate.ToString("MM/dd/yyyy") + "'";
 
 
             oleCmd.CommandText = sQry;
@@ -3351,11 +3370,11 @@ namespace ReportsBL
         {
             string sConStr = string.Empty;
             string sQry = string.Empty;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleConn.Open();
             oleCmd.Connection = oleConn;
             string type = string.Empty;
@@ -3364,7 +3383,7 @@ namespace ReportsBL
 
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
 
-            sQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where vouchertype='" + returntype + "' AND TransDate <#" + oDate.ToString("MM/dd/yyyy") + "#";
+            sQry = "SELECT SUM(Amount)  As OpeningBal  FROM tblDayBook Where vouchertype='" + returntype + "' AND TransDate <'" + oDate.ToString("MM/dd/yyyy") + "'";
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
@@ -5326,26 +5345,26 @@ namespace ReportsBL
 
         public DataSet GetAllVATPayment(string connection, DateTime sDate)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet ds = new DataSet();
             StringBuilder dbQry = new StringBuilder();
-            oleConn = new OleDbConnection(CreateConnectionString(connection));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(connection));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
 
             try
             {
-                dbQry.Append("SELECT  tblDayBook.TransNo, tblDayBook.TransDate, Creditor.LedgerName,tblDayBook.CreditorID,tblDayBook.DebtorID, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
+                dbQry.Append("SELECT  tblDayBook.TransNo,tblDayBook.BranchCode, tblDayBook.TransDate, Creditor.LedgerName,tblDayBook.CreditorID,tblDayBook.DebtorID, Debitor.LedgerName AS Debi, tblDayBook.Amount, tblDayBook.Narration, ");
                 dbQry.Append("tblDayBook.VoucherType, tblDayBook.RefNo, tblDayBook.ChequeNo, Payment.Paymode,Payment.Billno  FROM  (((tblDayBook INNER JOIN ");
                 dbQry.Append("tblLedger Debitor ON tblDayBook.DebtorID = Debitor.LedgerID) INNER JOIN  tblLedger Creditor ON tblDayBook.CreditorID = Creditor.LedgerID) LEFT JOIN ");
                 dbQry.Append(" tblPayMent Payment ON tblDayBook.TransNo = Payment.JournalID)");
-                dbQry.AppendFormat("Where Debitor.LedgerName = 'VAT A/c' AND (tblDayBook.TransDate > #" + sDate.ToString("MM/dd/yyyy") + "# ) Order By tblDayBook.RefNo, tblDayBook.TransDate");
+                dbQry.AppendFormat("Where Debitor.LedgerName = 'VAT A/c' AND (tblDayBook.TransDate > '" + sDate.ToString("MM/dd/yyyy") + "' ) Order By tblDayBook.RefNo, tblDayBook.TransDate");
 
                 oleCmd.CommandText = dbQry.ToString();
                 oleCmd.CommandType = CommandType.Text;
-                oleAdp = new OleDbDataAdapter(oleCmd);
+                oleAdp = new SqlDataAdapter(oleCmd);
                 oleAdp.Fill(ds);
 
                 return ds;
@@ -5359,23 +5378,23 @@ namespace ReportsBL
 
         public DataSet generatePurchaseVATReconReport(string sDataSource, DateTime sDate, string sType)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
-                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE (tblPurchase.BillDate > #" + sDate.ToString("MM/dd/yyyy") + "#) AND  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.Salesreturn is null OR tblPurchase.SalesReturn='No') GROUP By tblPurchase.BillNo,tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber Order By tblPurchase.BillNo,tblPurchase.BillDate ";
+                sQry = "SELECT tblPurchase.BillNo,tblPurchase.BranchCode,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE (tblPurchase.BillDate > '" + sDate.ToString("MM/dd/yyyy") + "') AND  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.Salesreturn is null OR tblPurchase.SalesReturn='No') GROUP By tblPurchase.BillNo,tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.BranchCode,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber Order By tblPurchase.BillNo,tblPurchase.BillDate ";
             else
-                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE (tblPurchase.BillDate > #" + sDate.ToString("MM/dd/yyyy") + "#) AND  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.SalesReturn='Yes') GROUP By tblPurchase.BillNo,tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber Order By tblPurchase.BillNo,tblPurchase.BillDate";
+                sQry = "SELECT tblPurchase.BillNo,tblPurchase.BranchCode,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE (tblPurchase.BillDate > '" + sDate.ToString("MM/dd/yyyy") + "') AND  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.SalesReturn='Yes') GROUP By tblPurchase.BillNo,tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.BranchCode,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber Order By tblPurchase.BillNo,tblPurchase.BillDate";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
 
@@ -5385,28 +5404,28 @@ namespace ReportsBL
 
         public System.Collections.ArrayList getMissingCommodityCodes(string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS VatRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.Salesreturn is null OR tblPurchase.SalesReturn='No') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblPurchase.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.Salesreturn is null OR tblPurchase.SalesReturn='No') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
             else
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS VatRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.SalesReturn='Yes') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblPurchase.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.SalesReturn='Yes') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
 
@@ -5428,16 +5447,16 @@ namespace ReportsBL
 
             if (sType == "Yes")
             {
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE   tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSAles.purchasereturn is null OR tblSales.PurchaseReturn='No') and tblSales.cancelled<>true GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE   tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblSales.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSAles.purchasereturn is null OR tblSales.PurchaseReturn='No') and tblSales.cancelled<>'true' GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
             }
             else
             {
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE  tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSales.PurchaseReturn='Yes') and tblSales.cancelled<>true GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE  tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblSales.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSales.PurchaseReturn='Yes') and tblSales.cancelled<>'true' GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
             }
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
 
@@ -5460,27 +5479,27 @@ namespace ReportsBL
 
         public DataTable generatePurchaseVATTable(string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS VatRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.Salesreturn is null OR tblPurchase.SalesReturn='No') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblPurchase.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.Salesreturn is null OR tblPurchase.SalesReturn='No') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
             else
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS VatRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.SalesReturn='Yes') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblPurchase.BillNo,tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.VAT,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.VAT/100) ) AS VATRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblPurchase.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND (tblPurchase.SalesReturn='Yes') GROUP By tblPurchaseItems.VAT,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchase.BillNo,tblProductMaster.CommodityCode";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
 
@@ -5589,29 +5608,29 @@ namespace ReportsBL
 
         public DataSet generateSalesVATReconReport(string sDataSource, DateTime sDate, string sType)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
             {
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster WHERE   tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate > #" + sDate.ToString("MM/dd/yyyy") + "# ) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSAles.purchasereturn is null OR tblSales.PurchaseReturn='No') and tblSales.cancelled<>true GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName Order By tblSales.Billno,tblSales.BillDate ";
+                sQry = "SELECT tblSales.Billno,tblSales.BranchCode,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster WHERE   tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate > '" + sDate.ToString("MM/dd/yyyy") + "' ) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSAles.purchasereturn is null OR tblSales.PurchaseReturn='No') and tblSales.cancelled<>'true' GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.BranchCode,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName Order By tblSales.Billno,tblSales.BillDate ";
             }
             else
             {
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster WHERE  tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate > #" + sDate.ToString("MM/dd/yyyy") + "# ) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSales.PurchaseReturn='Yes') and tblSales.cancelled<>true GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName Order By tblSales.Billno,tblSales.BillDate";
+                sQry = "SELECT tblSales.Billno,tblSales.BranchCode,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster WHERE  tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate > '" + sDate.ToString("MM/dd/yyyy") + "' ) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSales.PurchaseReturn='Yes') and tblSales.cancelled<>'true' GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblSales.BranchCode,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName Order By tblSales.Billno,tblSales.BillDate";
 
             }
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             DataTable dt = new DataTable("ANNEX II");
             dsParentQry.Tables.Add(dt);
@@ -5621,15 +5640,15 @@ namespace ReportsBL
 
         public DataTable generateSalesVATTable(string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
             {
@@ -5637,20 +5656,20 @@ namespace ReportsBL
                 //sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+' ' +  tblProductMaster.productname+' '+tblProductmaster.ProductDesc+' '+tblProductMaster.Model AS ProductName, tblLedger.LedgerName,tblLedger.TinNumber, tblSalesItems.VAT, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) AS VatRate FROM tblSales, tblSalesItems, tblLedger, tblProductMaster WHERE tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales') GROUP BY tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno, tblProductMaster.ItemCode, tblProductMaster.productname, tblProductmaster.ProductDesc, tblProductMaster.Model, tblLedger.LedgerName, tblLedger.TinNumber";
                 //sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales') GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
                 //sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSAles.purchasereturn is null OR tblSales.PurchaseReturn='No') GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE   tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSAles.purchasereturn is null OR tblSales.PurchaseReturn='No') and tblSales.cancelled<>true GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE   tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblSales.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSAles.purchasereturn is null OR tblSales.PurchaseReturn='No') and tblSales.cancelled<>'true' GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
             }
             else
             {
                 //sQry = "SELECT tblSales.Billno,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) AS  Rate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase Return') GROUP By tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblSalesItems.VAT";
                 //sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+' ' +  tblProductMaster.productname+' '+tblProductmaster.ProductDesc+' '+tblProductMaster.Model AS ProductName, tblLedger.LedgerName,tblLedger.TinNumber, tblSalesItems.VAT, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) AS VatRate FROM tblSales, tblSalesItems, tblLedger, tblProductMaster WHERE tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase Return') GROUP BY tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno, tblProductMaster.ItemCode, tblProductMaster.productname, tblProductmaster.ProductDesc, tblProductMaster.Model, tblLedger.LedgerName, tblLedger.TinNumber";
                 //sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSales.PurchaseReturn='Yes') GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE  tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSales.PurchaseReturn='Yes') and tblSales.cancelled<>true GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
+                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblLedger.TINnumber,,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblProductMaster.CommodityCode,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.VAT/100) ) AS VatRate FROM tblSales,tblSalesItems,tblProductMaster,tblLedger WHERE  tblSales.Billno = tblSalesItems.Billno AND tblSales.CustomerID = tblLedger.LedgerID AND (tblSales.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblSales.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblSalesItems.itemcode AND (tblSales.PurchaseReturn='Yes') and tblSales.cancelled<>'true' GROUP By tblSalesItems.VAT,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblLedger.TINnumber,tblProductMaster.CommodityCode";
 
             }
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
 
@@ -6039,9 +6058,9 @@ namespace ReportsBL
 
         public DataSet getLedgerTransaction(int groupID, string sDataSource, DateTime sDate, DateTime eDate)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
@@ -6052,17 +6071,17 @@ namespace ReportsBL
             /* Start Ms Access Database Connection Information */
             sConStr = sDataSource;
 
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (groupID != 0)
-                sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
+                sQry = "SELECT  LedgerID,folionumber, LedgerName,BranchCode FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID AND tblGroups.GroupID=" + groupID + "  ORDER by LedgerName,LedgerID";
             else
-                sQry = "SELECT  LedgerID,folionumber, LedgerName FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID   ORDER by LedgerName,LedgerID";
+                sQry = "SELECT  LedgerID,folionumber, LedgerName,BranchCode FROM tblLedger,tblGroups Where tblLedger.GroupID=tblGroups.GroupID   ORDER by LedgerName,LedgerID";
             //sQry = "SELECT TransDate,DebtorID,CreditorID,Amount,Narration FROM tblDayBook WHERE (DebtorID=" + iLedgerID + "OR CreditorID=" + iLedgerID + ") ";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
 
@@ -6077,7 +6096,8 @@ namespace ReportsBL
             dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Folionumber");
             dtNew.Columns.Add(dcNew);
-
+            dcNew = new DataColumn("BranchCode");
+            dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Debit");
             dtNew.Columns.Add(dcNew);
             dcNew = new DataColumn("Credit");
@@ -6095,6 +6115,7 @@ namespace ReportsBL
                         drNew = dtNew.NewRow();
                         drNew["LedgerID"] = "";
                         drNew["LedgerName"] = "";
+                        drNew["BranchCode"] = "";
                         drNew["Debit"] = "";
                         drNew["Credit"] = "";
                         drNew["Folionumber"] = "";
@@ -6109,6 +6130,7 @@ namespace ReportsBL
                             drNew = dtNew.NewRow();
                             drNew["LedgerID"] = Convert.ToString(dr["LedgerID"]);
                             drNew["LedgerName"] = Convert.ToString(dr["LedgerName"]);
+                            drNew["BranchCode"] = Convert.ToString(dr["BranchCode"]);
                             drNew["Folionumber"] = Convert.ToString(dr["Folionumber"]);
                             db = GetTotalDebit(sDataSource, Convert.ToInt32(dr["LedgerID"]), sDate, eDate);
                             cr = GetTotalCredit(sDataSource, Convert.ToInt32(dr["LedgerID"]), sDate, eDate);
@@ -6139,9 +6161,9 @@ namespace ReportsBL
         public double GetTotalCredit(string sDataSource, int iLedgerID, DateTime sDate, DateTime eDate)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
@@ -6151,12 +6173,12 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
             oleConn.Open();
-            oleCmd = new OleDbCommand();
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#)  AND  tblDaybook.CreditorID=" + iLedgerID;
+            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate <='" + eDate.ToString("yyyy-MM-dd") + "')  AND  tblDaybook.CreditorID=" + iLedgerID;
 
 
             oleCmd.CommandText = sQry;
@@ -6190,9 +6212,9 @@ namespace ReportsBL
         public double GetTotalDebit(string sDataSource, int iLedgerID, DateTime sDate, DateTime eDate)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
@@ -6202,12 +6224,12 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
             oleConn.Open();
-            oleCmd = new OleDbCommand();
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
 
-            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblDayBook.TransDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblDaybook.DebtorID=" + iLedgerID;
+            sQry = "SELECT SUM(Amount) FROM tblDayBook Where  (tblDayBook.TransDate>='" + sDate.ToString("yyyy-MM-dd") + "' AND tblDayBook.TransDate <='" + eDate.ToString("yyyy-MM-dd") + "') AND tblDaybook.DebtorID=" + iLedgerID;
 
 
             oleCmd.CommandText = sQry;
@@ -6470,9 +6492,9 @@ namespace ReportsBL
         public DataSet plGetExpenseIncomeSplit(string sDataSource, string expType)
         {
             //SELECT SUM(Amount) FROM tblDayBook Where  tblDaybook.CreditorID=734 Group By  tblDayBook.CreditorID;
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry; string sQry = string.Empty;
             DataSet dsChildQry;
             string sConStr = string.Empty;
@@ -6482,31 +6504,31 @@ namespace ReportsBL
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Jet OLEDB:Database Password=moonmoon"; ;
             sConStr = sDataSource;
             //sConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + sDataSource + ";User Id=admin;Password=moonmoon;Jet OLEDB:System Database=C:\\Program Files\\Microsoft Office\\Office\\SYSTEM.MDW;";
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
             oleConn.Open();
-            oleCmd = new OleDbCommand();
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (expType == "IDX")
             {
-                sQry = "SELECT folionumber,LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) ) Group By LedgerName,folionumber";
+                sQry = "SELECT folionumber,LedgerName, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
                 //sQry = "SELECT SUM(Amount) As Expenses FROM tblDayBook WHERE debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =11 ) )";
-                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=11))";
             }
 
             else if (expType == "DX")
             {
-                sQry = "SELECT folionumber, LedgerName, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName,folionumber";
-                oQry = "SELECT LedgerName,folionumber,  (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
+                sQry = "SELECT folionumber, LedgerName, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =13 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
+                oQry = "SELECT LedgerName,folionumber,  (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=13))";
             }
             else if (expType == "IDI")
             {
-                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) ) Group By LedgerName,folionumber";
-                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
+                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =12 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=12))";
             }
             else
             {
-                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) ) Group By LedgerName,folionumber";
-                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
+                sQry = "SELECT LedgerName,folionumber, SUM(Amount) As Expenses,tblDayBook.BranchCode FROM tblDayBook,tblLedger WHERE debtorid=ledgerid AND debtorID IN (SELECT LedgerID FROM tblLedger WHERE GroupID in(SELECT  GroupID From tblGroups Where HeadingID =14 ) ) Group By LedgerName,folionumber,tblDayBook.BranchCode";
+                oQry = "SELECT LedgerName,folionumber, (OpenBalanceCR-OpenBalanceDR) AS OB,BranchCode FROM tblLedger Where GroupID IN (Select GroupID from tblGroups where headingID in( Select headingID from tblAccHeading where headingID=14))";
             }
             //sQry = "SELECT Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) As SoldRate FROM tblSalesItems,tblSales WHERE tblSales.billno = tblSalesItems.Billno AND tblSales.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
             //sQry = "SELECT Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.VAT/100))) AS PurchaseRate FROM tblPurchaseITems,tblPurchase WHERE tblPurchase.purchaseID = tblPurchaseitems.purchaseID AND tblPurchase.BillDate >=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate<=#" + eDate.ToString("MM/dd/yyyy") + "#";
@@ -6514,7 +6536,7 @@ namespace ReportsBL
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             //return dsParentQry;
@@ -6670,25 +6692,25 @@ namespace ReportsBL
 
         public DataSet generatePurchaseCSTReport(string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100)) ) *(tblPurchaseItems.CST/100))) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+                sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BranchCode,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblPurchase.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase') GROUP By tblPurchaseItems.CST,tblPurchase.BranchCode,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
             else
                 //sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))+(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.CST/100))) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
-                sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblPurchase.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+                sQry = "SELECT tblPurchase.PurchaseID,tblPurchase.BranchCode,tblPurchase.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblPurchaseItems.CST,Sum(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty-(tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty*(tblPurchaseItems.Discount/100))) AS Rate,Sum( (tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)- ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty)*(tblPurchaseItems.Discount/100))+((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) - ((tblPurchaseItems.PurchaseRate*tblPurchaseItems.qty) *(tblPurchaseItems.Discount/100))) *(tblPurchaseItems.CST/100) ) AS CSTRate FROM tblPurchase,tblPurchaseItems,tblLedger,tblProductMaster WHERE  tblPurchase.SupplierID= tblLedger.LedgerID  AND tblPurchase.PurchaseID = tblPurchaseItems.PurchaseID AND (tblPurchase.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblPurchase.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblPurchaseItems.itemcode AND tblPurchase.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales Return') GROUP By tblPurchaseItems.CST,tblPurchase.BillDate,tblPurchase.BranchCode,tblPurchase.PurchaseID,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             return dsParentQry;
@@ -6722,33 +6744,33 @@ namespace ReportsBL
 
         public DataSet generateSalesCSTReport(string sDataSource, DateTime sDate, DateTime eDate, string sType)
         {
-            OleDbConnection oleConn;
-            OleDbCommand oleCmd;
-            OleDbDataAdapter oleAdp;
+            SqlConnection oleConn;
+            SqlCommand oleCmd;
+            SqlDataAdapter oleAdp;
             DataSet dsParentQry;
             string sQry = string.Empty;
             string sConStr = string.Empty;
             sConStr = sDataSource;
-            oleConn = new OleDbConnection(CreateConnectionString(sConStr));
-            oleCmd = new OleDbCommand();
+            oleConn = new SqlConnection(CreateConnectionString(sConStr));
+            oleCmd = new SqlCommand();
             oleCmd.Connection = oleConn;
             if (sType == "Yes")
             {
                 //sQry = "SELECT tblSales.Billno,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) AS  Rate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales') GROUP By tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblSalesItems.VAT";
                 // sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+' ' +  tblProductMaster.productname+' '+tblProductmaster.ProductDesc+' '+tblProductMaster.Model AS ProductName, tblLedger.LedgerName,tblLedger.TinNumber, tblSalesItems.CST, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.CST/100))) AS CSTRate FROM tblSales, tblSalesItems, tblLedger, tblProductMaster WHERE tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales') GROUP BY tblSalesItems.CST,tblSales.BillDate,tblSales.Billno, tblProductMaster.ItemCode, tblProductMaster.productname, tblProductmaster.ProductDesc, tblProductMaster.Model, tblLedger.LedgerName, tblLedger.TinNumber";
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblSalesItems.CST,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.CST/100) ) AS CSTRate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales') GROUP By tblSalesItems.CST,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+                sQry = "SELECT tblSales.Billno,tblSales.BranchCode,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblSalesItems.CST,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.CST/100) ) AS CSTRate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblSales.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Sales') GROUP By tblSalesItems.CST,tblSales.BranchCode,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
             }
             else
             {
                 //sQry = "SELECT tblSales.Billno,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblSales.CustomerName,tblSalesItems.VAT,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.VAT/100))) AS  Rate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase Return') GROUP By tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblSales.CustomerName,tblSalesItems.VAT";
                 //sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+' ' +  tblProductMaster.productname+' '+tblProductmaster.ProductDesc+' '+tblProductMaster.Model AS ProductName, tblLedger.LedgerName,tblLedger.TinNumber, tblSalesItems.CST, Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))+(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.CST/100))) AS CSTRate FROM tblSales, tblSalesItems, tblLedger, tblProductMaster WHERE tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "# AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase Return') GROUP BY tblSalesItems.CST,tblSales.BillDate,tblSales.Billno, tblProductMaster.ItemCode, tblProductMaster.productname, tblProductmaster.ProductDesc, tblProductMaster.Model, tblLedger.LedgerName, tblLedger.TinNumber";
-                sQry = "SELECT tblSales.Billno,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblSalesItems.CST,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.CST/100) ) AS CSTRate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>=#" + sDate.ToString("MM/dd/yyyy") + "#  AND tblSales.BillDate <=#" + eDate.ToString("MM/dd/yyyy") + "#) AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase Return') GROUP By tblSalesItems.CST,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
+                sQry = "SELECT tblSales.Billno,tblSales.BranchCode,tblSales.BillDate,tblProductMaster.ItemCode+ ' '+  tblProductMaster.productname + ' ' + tblProductmaster.ProductDesc  + ' ' + tblProductMaster.Model As ProductName,tblLedger.LedgerName,tblLedger.TinNumber,tblSalesItems.CST,Sum(tblSalesItems.Rate*tblSalesItems.qty-(tblSalesItems.Rate*tblSalesItems.qty*(tblSalesItems.Discount/100))) AS Rate,Sum( (tblSalesItems.Rate*tblSalesItems.qty)- ((tblSalesItems.Rate*tblSalesItems.qty)*(tblSalesItems.Discount/100))+((tblSalesItems.Rate*tblSalesItems.qty) - ((tblSalesItems.Rate*tblSalesItems.qty) *(tblSalesItems.Discount/100))) *(tblSalesItems.CST/100) ) AS CSTRate FROM tblSales,tblSalesItems,tblLedger,tblProductMaster WHERE  tblSales.CustomerID= tblLedger.LedgerID  AND tblSales.Billno = tblSalesItems.Billno AND (tblSales.BillDate>='" + sDate.ToString("MM/dd/yyyy") + "'  AND tblSales.BillDate <='" + eDate.ToString("MM/dd/yyyy") + "') AND tblProductMaster.itemcode = tblSalesItems.itemcode AND tblSales.JournalID IN (Select Transno FROM tblDayBook Where VoucherType = 'Purchase Return') GROUP By tblSalesItems.CST,tblSales.BranchCode,tblSales.BillDate,tblSales.Billno,tblProductMaster.ItemCode,tblProductMaster.productname,tblProductmaster.ProductDesc,tblProductMaster.Model,tblLedger.LedgerName,tblLedger.TinNumber";
 
             }
 
             oleCmd.CommandText = sQry;
             oleCmd.CommandType = CommandType.Text;
-            oleAdp = new OleDbDataAdapter(oleCmd);
+            oleAdp = new SqlDataAdapter(oleCmd);
             dsParentQry = new DataSet();
             oleAdp.Fill(dsParentQry);
             return dsParentQry;

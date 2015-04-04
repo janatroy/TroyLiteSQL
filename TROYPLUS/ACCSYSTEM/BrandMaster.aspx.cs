@@ -137,15 +137,18 @@ public partial class BrandMaster : System.Web.UI.Page
                     {
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Brand Exists") > -1))
+                            e.KeepInInsertMode = true;
+                        e.ExceptionHandled = true;
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        ModalPopupExtender1.Show();
+                        return;
                     }
                     else
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "Exception: " + e.Exception.Message + e.Exception.StackTrace, true);
                     }
                 }
-                e.KeepInInsertMode = true;
-                e.ExceptionHandled = true;
+               
             }
         }
         catch (Exception ex)
@@ -291,6 +294,7 @@ public partial class BrandMaster : System.Web.UI.Page
                         e.ExceptionHandled = true;
                         e.KeepInEditMode = true;
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        ModalPopupExtender1.Show();
                         return;
                     }
 
@@ -365,7 +369,7 @@ public partial class BrandMaster : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "DEALER")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DEALER")
                 {
                     dealerRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -468,6 +472,8 @@ public partial class BrandMaster : System.Web.UI.Page
                 {
                     ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
                     ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                    //((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    //((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
                 }
 
                 string connection = Request.Cookies["Company"].Value;

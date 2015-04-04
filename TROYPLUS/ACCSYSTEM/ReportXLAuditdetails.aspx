@@ -57,11 +57,11 @@
                             <table style="width:460px; height: 100%">
                                 
                                 <tr>
-                                    <td class="ControlLabel2" style="width:35%;">
+                                    <td class="ControlLabelproject" style="width:35%;">
                                         Start Date
                                     </td>
                                     <td style="width:35%;" class="ControlTextBox3">
-                                            <asp:TextBox ID="txtSrtDate" runat="server"  AutoPostBack="True" BackColor = "#90c9fc" SkinID="skinTxtBoxGrid"
+                                            <asp:TextBox ID="txtSrtDate" runat="server"  AutoPostBack="True" SkinID="skinTxtBoxGrid"
                                                 Width="100px"
                                                 MaxLength="10" TabIndex="1"></asp:TextBox>
                                             <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy"
@@ -76,11 +76,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="ControlLabel2" style="width:35%;">
+                                    <td class="ControlLabelproject" style="width:35%;">
                                         End Date
                                     </td>
                                     <td style="width:35%;" class="ControlTextBox3">
-                                            <asp:TextBox ID="txtEdDate" runat="server"  AutoPostBack="True" BackColor = "#90c9fc" SkinID="skinTxtBoxGrid"
+                                            <asp:TextBox ID="txtEdDate" runat="server"  AutoPostBack="True" SkinID="skinTxtBoxGrid"
                                                 Width="100px"
                                                 MaxLength="10" TabIndex="1"></asp:TextBox>
                                             <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Format="dd/MM/yyyy"

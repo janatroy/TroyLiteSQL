@@ -95,7 +95,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label runat="server" Text="Purchase Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label runat="server" Text="Purchase Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -108,7 +108,7 @@
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtStartDate" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                                        <asp:TextBox ID="txtStartDate" CssClass="cssTextBox" MaxLength="10"
                                             runat="server" />
                                         <cc1:CalendarExtender ID="calStartDate" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
@@ -132,7 +132,7 @@
                                             CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" />
+                                        <asp:TextBox ID="txtEndDate" CssClass="cssTextBox" MaxLength="10" runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
                                             PopupButtonID="ImageButton1" TargetControlID="txtEndDate">
@@ -142,6 +142,20 @@
                                         <asp:ImageButton ID="ImageButton1" runat="server" CausesValidation="False" 
                                                 ImageUrl="App_Themes/NewTheme/images/cal.gif" 
                                                 Width="20px" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 2px;"/>
+                                <tr>
+                                    <td class="ControlLabel2" style="width: 20%;">
+                                        Branch
+                                    </td>
+                                    <td class="ControlDrpBorder" style="width: 25%;">
+                                        <asp:DropDownList ID="drpBranchAdd" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                    </td>
+                                    <td style="width: 13%;">
+                                        
                                     </td>
                                 </tr>
                                 <tr style="height: 2px;"/>
@@ -163,13 +177,18 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
-                                                <asp:Button ID="btnReport" runat="server" OnClick="btnReport_Click" CssClass="exportexl6"
+                                                <td align="center" style="width: 20%;">
+                                                    <asp:Button ID="Button4" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnReport1_Click" />
+                                                    </td>
+                                                    <td style="width: 20%;">
+                                                
+                                                <asp:Button ID="btnReport" runat="server" OnClick="btnReport2_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
-                                                <td>
+                                                <td style="width:30%;">
                                                 </td>
                                             </tr>
                                         </table>
@@ -188,7 +207,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label ID="Label1" runat="server" Text="Sales Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label ID="Label1" runat="server" Text="Sales Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -201,7 +220,7 @@
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtStartDt" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                                        <asp:TextBox ID="txtStartDt" CssClass="cssTextBox" MaxLength="10"
                                             runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
@@ -225,7 +244,7 @@
                                             CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtEndDt" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" />
+                                        <asp:TextBox ID="txtEndDt" CssClass="cssTextBox" MaxLength="10" runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender3" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
                                             PopupButtonID="ImageButton3" TargetControlID="txtEndDt">
@@ -235,6 +254,20 @@
                                         <asp:ImageButton ID="ImageButton3" runat="server" CausesValidation="False" 
                                                 ImageUrl="App_Themes/NewTheme/images/cal.gif" 
                                                 Width="20px" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 2px;"/>
+                                <tr>
+                                    <td class="ControlLabel2" style="width: 20%;">
+                                        Branch
+                                    </td>
+                                    <td class="ControlDrpBorder" style="width: 25%;">
+                                        <asp:DropDownList ID="DropDownList1" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                    </td>
+                                    <td style="width: 13%;">
+                                        
                                     </td>
                                 </tr>
                                 <tr style="height: 2px;"/>
@@ -256,13 +289,17 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
+                                                <td align="center" style="width: 20%;">
+                                                    <asp:Button ID="Button3" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnReport22_Click" />
+                                                    </td>
+                                                    <td align="center" style="width: 20%;">
                                                 <asp:Button ID="btnExcel" runat="server" OnClick="btnExcel_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
-                                                <td>
+                                                <td style="width:30%;">
                                                 </td>
                                             </tr>
                                         </table>
@@ -281,7 +318,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label ID="Label2" runat="server" Text="Purchase Return Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label ID="Label2" runat="server" Text="Purchase Return Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -294,7 +331,7 @@
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtStrtDt" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                                        <asp:TextBox ID="txtStrtDt"  CssClass="cssTextBox" MaxLength="10"
                                             runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender4" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
@@ -318,7 +355,7 @@
                                             CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtEdDt" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" />
+                                        <asp:TextBox ID="txtEdDt" CssClass="cssTextBox" MaxLength="10" runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender5" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
                                             PopupButtonID="ImageButton5" TargetControlID="txtEdDt">
@@ -328,6 +365,20 @@
                                         <asp:ImageButton ID="ImageButton5" runat="server" CausesValidation="False" 
                                                 ImageUrl="App_Themes/NewTheme/images/cal.gif" 
                                                 Width="20px" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 2px;"/>
+                                <tr>
+                                    <td class="ControlLabel2" style="width: 20%;">
+                                        Branch
+                                    </td>
+                                    <td class="ControlDrpBorder" style="width: 25%;">
+                                        <asp:DropDownList ID="DropDownList2" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                    </td>
+                                    <td style="width: 13%;">
+                                        
                                     </td>
                                 </tr>
                                 <tr style="height: 2px;"/>
@@ -349,13 +400,17 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
+                                                <td align="center" style="width: 20%;">
+                                                    <asp:Button ID="Button1" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                                        Width="120px" OnClick="btnReport3_Click" />
+                                                    </td>
+                                                    <td align="center" style="width: 20%;">
                                                 <asp:Button ID="btnRep" runat="server" OnClick="btnRep_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>
-                                                <td>
+                                                <td style="width:30%;">
                                                 </td>
                                             </tr>
                                         </table>
@@ -374,7 +429,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3">
-                                        <asp:label ID="Label3" runat="server" Text="Sales Return Annuxere" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
+                                        <asp:label ID="Label3" runat="server" Text="Sales Return Annexure" Font-Bold="True" Font-Size="Medium" ForeColor="Blue">
                                         </asp:label>
                                     </td>
                                 </tr>
@@ -387,7 +442,7 @@
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtStDate" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                                        <asp:TextBox ID="txtStDate" CssClass="cssTextBox" MaxLength="10"
                                             runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender6" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
@@ -411,7 +466,7 @@
                                             CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                     </td>
                                     <td class="ControlTextBox3" style="width: 25%;">
-                                        <asp:TextBox ID="txtEdDate" Enabled="false" CssClass="cssTextBox" MaxLength="10" runat="server" />
+                                        <asp:TextBox ID="txtEdDate" CssClass="cssTextBox" MaxLength="10" runat="server" />
                                         <cc1:CalendarExtender ID="CalendarExtender7" runat="server" Enabled="True" 
                                             Format="dd/MM/yyyy"
                                             PopupButtonID="ImageButton7" TargetControlID="txtEdDate">
@@ -421,6 +476,20 @@
                                         <asp:ImageButton ID="ImageButton7" runat="server" CausesValidation="False" 
                                                 ImageUrl="App_Themes/NewTheme/images/cal.gif" 
                                                 Width="20px" />
+                                    </td>
+                                </tr>
+                                <tr style="height: 2px;"/>
+                                <tr>
+                                    <td class="ControlLabel2" style="width: 20%;">
+                                        Branch
+                                    </td>
+                                    <td class="ControlDrpBorder" style="width: 25%;">
+                                        <asp:DropDownList ID="DropDownList3" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                                    </td>
+                                    <td style="width: 13%;">
+                                        
                                     </td>
                                 </tr>
                                 <tr style="height: 2px;"/>
@@ -442,9 +511,13 @@
                                     <td colspan="3">
                                         <table width="100%">
                                             <tr>
-                                                <td style="width: 40%;">
+                                                <td style="width: 30%;">
                                                 </td>
-                                                <td align="center" style="width: 32%;">
+                                                <td align="center" style="width: 20%;">
+                                                    <asp:Button ID="Button2" EnableTheming="false" runat="server" CssClass="NewReport6"
+                                            Width="120px" OnClick="btnReport4_Click" />
+                                                    </td>
+                                                    <td align="center" style="width: 20%;">
                                                 <asp:Button ID="btnt" runat="server" OnClick="btnt_Click" CssClass="exportexl6"
                                                     EnableTheming="false" />
                                                 </td>

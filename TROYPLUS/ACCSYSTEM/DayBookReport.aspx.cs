@@ -12,6 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 
 using System.IO;
+using ClosedXML.Excel;
 
 public partial class DayBookReport : System.Web.UI.Page
 {
@@ -62,12 +63,54 @@ public partial class DayBookReport : System.Web.UI.Page
                         }
                     }
                 }
+
+                loadBranch();
+                BranchEnable_Disable();
+
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        string connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranchAdd.Enabled = true;
+        }
+        else
+        {
+            drpBranchAdd.Enabled = false;
+        }
+    }
+
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        drpBranchAdd.Items.Clear();
+        drpBranchAdd.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListBranch();
+        drpBranchAdd.DataSource = ds;
+        drpBranchAdd.DataBind();
+        drpBranchAdd.DataTextField = "BranchName";
+        drpBranchAdd.DataValueField = "Branchcode";
     }
 
     protected void btndet_Click(object sender, EventArgs e)
@@ -88,6 +131,7 @@ public partial class DayBookReport : System.Web.UI.Page
         try
         {
             DateTime startDate, endDate;
+            BusinessLogic bl = new BusinessLogic(sDataSource);
 
             if (Request.Cookies["Company"] != null)
                 sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -99,7 +143,10 @@ public partial class DayBookReport : System.Web.UI.Page
             rptDayBook = new ReportsBL.ReportClass();
             DayBookPanel.Visible = true;
             DataSet ds = new DataSet();
-            ds = rptDayBook.generateDayBookDS(startDate, endDate, sDataSource);
+
+            string Branch = drpBranchAdd.SelectedValue;
+
+            ds = bl.generateDayBookDS(startDate, endDate, sDataSource, Branch);
 
             int i = 1;
             double debit = 0;
@@ -108,12 +155,13 @@ public partial class DayBookReport : System.Web.UI.Page
             #region Export To Excel
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("DayBook");
                 dt.Columns.Add(new DataColumn("Date"));
+                dt.Columns.Add(new DataColumn("Branchcode"));
                 dt.Columns.Add(new DataColumn("Particulars"));
                 dt.Columns.Add(new DataColumn("Debit"));
                 dt.Columns.Add(new DataColumn("Credit"));
-                dt.Columns.Add(new DataColumn("Balance"));
+                
 
                 DataRow dr_export1 = dt.NewRow();
                 dt.Rows.Add(dr_export1);
@@ -127,6 +175,8 @@ public partial class DayBookReport : System.Web.UI.Page
                     dr_export["Particulars"] = dr["Debitor"];
                     dr_export["Debit"] = dr["Debit"];
                     debit = debit + Convert.ToDouble(dr["Debit"]);
+                    dr_export["Branchcode"] = dr["Branchcode"];
+                    
                     dr_export["Credit"] = "";
                     dt.Rows.Add(dr_export);
                     //    i = 2;
@@ -154,12 +204,12 @@ public partial class DayBookReport : System.Web.UI.Page
                     //}
                     //else if (i == 4)
                     //{
-                    DataRow dr_export123123 = dt.NewRow();
-                    dr_export123123["Date"] = "";
-                    dr_export123123["Particulars"] = "";
-                    dr_export123123["Debit"] = "";
-                    dr_export123123["Credit"] = "";
-                    dt.Rows.Add(dr_export123123);
+                    //DataRow dr_export123123 = dt.NewRow();
+                    //dr_export123123["Date"] = "";
+                    //dr_export123123["Particulars"] = "";
+                    //dr_export123123["Debit"] = "";
+                    //dr_export123123["Credit"] = "";
+                    //dt.Rows.Add(dr_export123123);
                     i = 1;
                     //}
                 }
@@ -178,7 +228,7 @@ public partial class DayBookReport : System.Web.UI.Page
                 dr_export312["Credit"] = Credit;
                 dt.Rows.Add(dr_export312);
 
-                ExportToExcel("Day Book.xls", dt);
+                ExportToExcel("", dt);
             }
             #endregion
         }
@@ -189,27 +239,45 @@ public partial class DayBookReport : System.Web.UI.Page
 
     }
 
-    public void ExportToExcel(string filename, DataTable dt)
+    public void ExportToExcel(string filenam, DataTable dt)
     {
         if (dt.Rows.Count > 0)
         {
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename = "Cash Account Report.xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 
@@ -229,6 +297,9 @@ public partial class DayBookReport : System.Web.UI.Page
             rptDayBook = new ReportsBL.ReportClass();
             DayBookPanel.Visible = true;
             DataSet ds = new DataSet();
+
+            string Branch = drpBranchAdd.SelectedValue;
+
             //ds = rptDayBook.generateDayBookDS(startDate, endDate, sDataSource);
             //gvLedger.DataSource = ds;
             //gvLedger.DataBind();
@@ -236,7 +307,7 @@ public partial class DayBookReport : System.Web.UI.Page
             DayBookPanel.Visible = false;
             div1.Visible = true;
 
-            Response.Write("<script language='javascript'> window.open('DayBookReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('DayBookReport1.aspx?startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + "&Branch=" + Branch + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {

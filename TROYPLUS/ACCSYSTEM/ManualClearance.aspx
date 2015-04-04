@@ -224,34 +224,34 @@
                                         class="searchbg" style="margin: -1px 0px 0px 1px;">
                                         <tr style="height: 25px">
                                             <td style="width: 2%;"></td>
-                                            <td style="width: 22%; font-size: 22px; color: #000000;" >
+                                            <td style="width: 22%; font-size: 22px; color: white;" >
                                                 Manual Clearance
                                             </td>
-                                            <td style="width: 12%; color: #000000;" align="right">
-                                                Option
+                                            <td style="width: 12%; color: white;" align="right">
+                                               
                                             </td>
                                             
-                                            <td style="width: 22%" class="Box1">
+                                            <td style="width: 22%">
                                                 <div style="width: 160px; font-family: 'Trebuchet MS';">
-                                                <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="#BBCAFB" Height="23px" AutoPostBack="True" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" style="text-align:center;border:1px solid #BBCAFB ">
+                                                <asp:DropDownList ID="ddCriteria" Visible="false" runat="server" Width="154px" BackColor="white" Height="23px" AutoPostBack="True" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" style="text-align:center;border:1px solid white ">
                                                     <asp:ListItem Value="Cleared">Cleared</asp:ListItem>
                                                     <asp:ListItem Value="NotCleared">Not Cleared</asp:ListItem>
                                                 </asp:DropDownList>
                                                 </div>
                                             </td>
-                                            <td style="width: 21%" class="Box1">
+                                            <td style="width: 21%" class="NewBox">
                                             <div style="width: 160px; font-family: 'Trebuchet MS';">
-                                                <asp:DropDownList ID="ddoption" runat="server" Width="154px" Height="23px" BackColor="#BBCAFB" AutoPostBack="True" OnSelectedIndexChanged="ddoption_SelectedIndexChanged" style="text-align:center;border:1px solid #BBCAFB ">
+                                                <asp:DropDownList ID="ddoption" runat="server" Width="154px" Height="23px" BackColor="white" AutoPostBack="True" OnSelectedIndexChanged="ddoption_SelectedIndexChanged" style="text-align:center;border:1px solid white ">
                                                     <asp:ListItem Value="Customer" Selected="True">Customer</asp:ListItem>
                                                     <asp:ListItem Value="Supplier">Supplier</asp:ListItem>
                                                 </asp:DropDownList>
                                                 </div>
                                             </td>
-                                            <td style="width: 22%" class="Box1">
+                                            <td style="width: 22%" class="NewBox">
                                             <div style="width: 160px; font-family: 'Trebuchet MS';">
-                                               <asp:DropDownList ID="ddReceivedFrom" runat="server" AutoPostBack="True" BackColor="#BBCAFB" Width="154px" CssClass="drpDownListMedium" style="text-align:center;border:1px solid #BBCAFB "
-                                                    DataValueField="customerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" height="23px" 
-                                                    DataTextField="customerName" AppendDataBoundItems="True">
+                                               <asp:DropDownList ID="ddReceivedFrom" runat="server" AutoPostBack="True" BackColor="white" Width="154px" CssClass="drpDownListMedium" style="text-align:center;border:1px solid white "
+                                                    DataValueField="ledgerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" height="23px" 
+                                                    DataTextField="ledgerName" AppendDataBoundItems="True">
                                                 </asp:DropDownList>
                                                 </div>
                                             </td>
@@ -331,8 +331,8 @@
                                                                                                         <asp:BoundField DataField="Billno" HeaderText="Bill No."  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
                                                                                                         <asp:BoundField DataField="BillDate" HeaderText="Bill Date" DataFormatString="{0:dd/MM/yyyy}" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
                                                                                                         <asp:BoundField DataField="CustomerName" HeaderText="CustomerName"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
-                                                                                                        <asp:BoundField DataField="Amount" HeaderText="Amount" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
-                                                                                                        <asp:BoundField DataField="pay" HeaderText="To Be Paid" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
+                                                                                                        <asp:BoundField DataField="BillAmount" HeaderText="Amount" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
+                                                                                                        <asp:BoundField DataField="PendingAmount" HeaderText="To Be Paid" DataFormatString="{0:F2}"  HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false"/>
                                                                                                         <%--<asp:TemplateField ItemStyle-CssClass="command" ItemStyle-Width="50px" HeaderText="Show" HeaderStyle-BorderColor="blue">
                                                                                                             <ItemTemplate>
                                                                                                                 <asp:ImageButton ID="btnSelect" runat="server" SkinID="GridForward" ToolTip="Click To Get Bill Details"
@@ -809,11 +809,11 @@
                                                                             Bill No *
                                                                         </td>
                                                                         <td style="width: 20%" class="ControlDrpBorder">
-                                                                            <asp:DropDownList ID="txtBillNo1" runat="server" DataTextField="BillNo" Width="100%" BackColor = "#90c9fc" CssClass="drpDownListMedium"
-                                                                                DataValueField="BillNo" style="border: 1px solid #90c9fc" height="26px" AutoPostBack="True" OnSelectedIndexChanged="txtBillNo1_SelectedIndexChanged"
+                                                                            <asp:DropDownList ID="txtBillNo1" runat="server" DataTextField="BillNo" Width="100%" BackColor = "#e7e7e7" CssClass="drpDownListMedium"
+                                                                                DataValueField="BillNo" style="border: 1px solid #e7e7e7" height="26px" AutoPostBack="True" OnSelectedIndexChanged="txtBillNo1_SelectedIndexChanged"
                                                                                 EnableTheming="false"
                                                                                 AppendDataBoundItems="True">
-                                                                                <asp:ListItem Selected="True" Value="0" style="background-color: #90c9fc">Select BillNo</asp:ListItem>
+                                                                                <asp:ListItem Selected="True" Value="0" >Select BillNo</asp:ListItem>
                                                                             </asp:DropDownList>
                                                                         </td>
                                                                         <%--<td style="width: 10%" class="ControlLabel">

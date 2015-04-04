@@ -68,6 +68,25 @@ public partial class CashAccountReport2 : System.Web.UI.Page
                             }
                         }
                     }
+                    DataSet ds1 = bl.getImageInfo();
+                    if (ds1 != null)
+                    {
+                        if (ds1.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
+                            {
+                                Image1.ImageUrl = "App_Themes/NewTheme/images/" + ds1.Tables[0].Rows[i]["img_filename"];
+                                Image1.Height = 95;
+                                Image1.Width = 95;
+                            }
+                        }
+                        else
+                        {
+                            Image1.Height = 95;
+                            Image1.Width = 95;
+                            Image1.ImageUrl = "App_Themes/NewTheme/images/TESTLogo.png";
+                        }
+                    }
                 }
 
                 DateTime startDate, endDate;
@@ -78,6 +97,7 @@ public partial class CashAccountReport2 : System.Web.UI.Page
 
                 CashPanel.Visible = true;
 
+                string Branch = string.Empty;
 
                 DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
                 DateTime etdt = Convert.ToDateTime(txtEndDate.Text);
@@ -90,17 +110,49 @@ public partial class CashAccountReport2 : System.Web.UI.Page
                 {
                     etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
                 }
+                if (Request.QueryString["Branch"] != null)
+                {
+                    Branch = Request.QueryString["Branch"].ToString();
+                }
+
+                string connection = Request.Cookies["Company"].Value;
+
+                DataSet ds = new DataSet();
+                string LedgerID=string.Empty;
+
+                if (Branch == "0")
+                {
+                    ds = bl.ListBranchInfo(connection, "", "");
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            iLedgerID = bl.getCashACLedgerId(connection, dr["Branchcode"].ToString());
+
+                            LedgerID = LedgerID + iLedgerID;
+                            LedgerID = LedgerID + ",";
+                        }
+                        LedgerID = LedgerID.TrimEnd(',');
+                        //LedgerID = LedgerID.Replace(",", "");
+                    }
+                }
+                else
+                {
+                    iLedgerID = bl.getCashACLedgerId(connection, Branch);
+                    LedgerID = iLedgerID.ToString();
+                }
 
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
 
 
-                lblStartDate.Text = startDate.ToString();
-                lblEndDate.Text = endDate.ToString();
+                lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
+                lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
 
-                DataSet ds = rptCashReport.generateReportDS(iLedgerID, startDate, endDate, sDataSource, 0);
+                DataSet dst = bl.generateReportDSCash(LedgerID, startDate, endDate, sDataSource, 0, Branch, connection);
 
-                gvCash.DataSource = ds;
+                gvCash.DataSource = dst;
                 gvCash.DataBind();
                 CalculateDebitCredit();
                 CashPanel.Visible = true;
@@ -318,8 +370,8 @@ public partial class CashAccountReport2 : System.Web.UI.Page
                 camt = camt + credit;
                 lblDebitSum.Text = damt.ToString("f2");  //Convert.ToString(damt);
                 lblCreditSum.Text = camt.ToString("f2");// Convert.ToString(camt);
-                e.Row.Cells[3].Text = debit.ToString("f2");
-                e.Row.Cells[4].Text = credit.ToString("f2");
+                e.Row.Cells[4].Text = debit.ToString("f2");
+                e.Row.Cells[5].Text = credit.ToString("f2");
             }
         }
         catch (Exception ex)
@@ -358,15 +410,22 @@ public partial class CashAccountReport2 : System.Web.UI.Page
             etdt = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
         }
 
+        string Branch = string.Empty;
+
+        if (Request.QueryString["Branch"] != null)
+        {
+            Branch = Request.QueryString["Branch"].ToString();
+        }
+
         startDate = Convert.ToDateTime(stdt);
         endDate = Convert.ToDateTime(etdt);
 
-
+        BusinessLogic bl = new BusinessLogic(sDataSource);
 
         //opCr = rpt.getLedgerOpeningBalance(1, "credit", sDataSource) + rpt.getOpeningBalance(1, "credit", Convert.ToDateTime(Session["startDate"]), sDataSource);
-        opCr = rpt.getOpeningBalance(0, 0, 1, "credit", startDate, sDataSource);
+        opCr = bl.getOpeningBalanceCash(0, 0, 1, "credit", startDate, sDataSource, Branch);
         //opDr = rpt.getLedgerOpeningBalance(1, "debit", sDataSource) + rpt.getOpeningBalance(1, "debit", Convert.ToDateTime(Session["startDate"]), sDataSource);
-        opDr = rpt.getOpeningBalance(0, 0, 1, "debit", startDate, sDataSource);
+        opDr = bl.getOpeningBalanceCash(0, 0, 1, "debit", startDate, sDataSource, Branch);
 
         if (opDr > opCr)
         {

@@ -181,19 +181,19 @@
                         <tr>
                             <td></td>
                             <td width="560px" align="center">
-                                <h5>Stock List As On
-                                <asp:Label ID="lblHeadDate" runat="server"> </asp:Label></h5>
+                                <h5 style="font-size:large" >Stock List As On
+                                <asp:Label ID="lblHeadDate" Font-Size="Large" runat="server"> </asp:Label></h5>
                             </td>
                             <td></td>
                         </tr>
                     </table>
                     <div>
                         <wc:ReportGridView runat="server" BorderWidth="1" ID="ReportGridView1" GridLines="Both"
-                            AlternatingRowStyle-CssClass="even"
+                            AlternatingRowStyle-CssClass="even" OnRowDataBound="ReportGridView1_RowDataBound" ShowFooter="true"
                             AllowPrintPaging="true" Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;">
                             <HeaderStyle CssClass="ReportHeadataRow" />
                             <RowStyle CssClass="ReportdataRow" />
-                            <AlternatingRowStyle CssClass="ReportAltdataRow" />
+                            <AlternatingRowStyle CssClass="ReportAltdataRow"  />
                         </wc:ReportGridView>
                     </div>
                     <div style="width: 700px" align="center">
@@ -223,27 +223,27 @@
                                                 <AlternatingRowStyle CssClass="ReportAltdataRow" />
                                                 <FooterStyle HorizontalAlign="Right" />
                                                 <Columns>
-                                                    <asp:TemplateField HeaderText="Item Code" ItemStyle-Width="20px">
+                                                    <asp:TemplateField HeaderText="Item Code" ItemStyle-Width="20px" ItemStyle-HorizontalAlign="Center">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblItemCode" runat="server" Text='<%# Eval("ItemCode") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Product Name" ItemStyle-Width="70px">
+                                                    <asp:TemplateField HeaderText="Product Name" ItemStyle-Width="70px" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblProductName" runat="server" Text='<%# Eval("ProductName") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Model" ItemStyle-Width="80px">
+                                                    <asp:TemplateField HeaderText="Model" ItemStyle-Width="80px" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblModel" runat="server" Text='<%# Eval("Model") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Brand" ItemStyle-Width="120px">
+                                                    <asp:TemplateField HeaderText="Brand" ItemStyle-Width="120px" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblDesc" runat="server" Text='<%# Eval("ProductDesc") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Qty" ItemStyle-Width="30px">
+                                                    <asp:TemplateField HeaderText="Qty" ItemStyle-Width="30px" ItemStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblStock" Style="text-align: center" runat="server" Text='<%# Eval("Stock") %>' />
                                                         </ItemTemplate>
@@ -253,24 +253,24 @@
      <asp:Label ID="lblUnit" runat="server" Text = '<%# Eval("Unit") %>' />       
     </ItemTemplate>
       </asp:TemplateField> --%>
-                                                    <asp:TemplateField HeaderText="Rate" ItemStyle-Width="30px">
+                                                    <asp:TemplateField HeaderText="Rate" ItemStyle-Width="30px" ItemStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblRate" runat="server" Text='<%# Eval("Price") %>' />
+                                                            <asp:Label ID="lblRate" runat="server" Text='<%# Eval("Price") %>'  />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Branch" ItemStyle-Width="30px">
+                                                    <asp:TemplateField HeaderText="Branch" ItemStyle-Width="30px" ItemStyle-HorizontalAlign="Left">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblBranch" runat="server" Text='<%# Eval("BranchCode") %>' />
+                                                            <asp:Label ID="lblBranch" runat="server" Text='<%# Eval("BranchCode") %>'  />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="PriceList" ItemStyle-Width="30px">
+                                                    <asp:TemplateField HeaderText="PriceList" ItemStyle-Width="30px" ItemStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblPrice" Style="text-align: right" runat="server" Text='<%# Eval("PriceName") %>' />
+                                                            <asp:Label ID="lblPrice" Style="text-align: right" runat="server" Text='<%# Eval("PriceName") %>'  />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Amount" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Right">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblAmount" runat="server" ItemStyle-Width="40px" />
+                                                            <asp:Label ID="lblAmount" runat="server" ItemStyle-Width="40px" ItemStyle-HorizontalAlign="Right" />
                                                         </ItemTemplate>
                                                         <FooterTemplate>
                                                             <asp:Label ID="lblTotal" runat="server" Font-Bold="true" />
@@ -298,11 +298,11 @@
                                 <td style="width: 50%; text-align: left" />
                                 <td style="width: 35%; text-align: left" />
                                 <td style="width: 25%; text-align: left">
-                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left">Grand Stock Total : </span>
+                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left"></span>
                                     </b>
                                 </td>
                                 <td style="width: 15%; text-align: right">
-                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandStockTotal" Text="0"
+                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandStockTotal" Text="0" Visible="false"
                                         runat="server" Font-Bold="true" />
                                 </td>
                             </tr>
@@ -310,11 +310,11 @@
                                 <td style="width: 50%; text-align: left" />
                                 <td style="width: 35%; text-align: left" />
                                 <td style="width: 25%; text-align: left">
-                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left">Grand Value Total : </span>
+                                    <b><span style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: left"></span>
                                     </b>
                                 </td>
                                 <td style="width: 15%; text-align: right">
-                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandValueTotal" Text="0"
+                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px; text-align: right" ID="lblGrandValueTotal" Text="0" Visible="false"
                                         runat="server" Font-Bold="true" />
                                 </td>
                             </tr>

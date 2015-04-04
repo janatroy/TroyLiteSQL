@@ -511,15 +511,16 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select iCustomerID, iSupplierID from tblBranch Where BranchCode = '{0}'", BranchCode.ToUpper());
+            //dbQry = string.Format("select iCustomerID, iSupplierID from tblBranch Where BranchCode = '{0}'", BranchCode.ToUpper());
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID  Where tblGroups.GroupName='Sundry Debtors'");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {
-                if (ds.Tables[0].Rows[0]["iCustomerID"].ToString() != "")
-                    return int.Parse(ds.Tables[0].Rows[0]["iCustomerID"].ToString());
+                if (ds.Tables[0].Rows[0]["LedgerId"].ToString() != "")
+                    return int.Parse(ds.Tables[0].Rows[0]["LedgerId"].ToString());
                 else
                     return 0;
             }
@@ -550,15 +551,16 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select iCustomerID, iSupplierID from tblBranch Where BranchCode = '{0}'", BranchCode.ToUpper());
+            //dbQry = string.Format("select iCustomerID, iSupplierID from tblBranch Where BranchCode = '{0}'", BranchCode.ToUpper());
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID  Where tblGroups.GroupName='Sundry Creditors'");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
 
             if (ds != null && ds.Tables[0].Rows.Count > 0)
             {
-                if (ds.Tables[0].Rows[0]["iSupplierID"].ToString() != "")
-                    return int.Parse(ds.Tables[0].Rows[0]["iSupplierID"].ToString());
+                if (ds.Tables[0].Rows[0]["LedgerId"].ToString() != "")
+                    return int.Parse(ds.Tables[0].Rows[0]["LedgerId"].ToString());
                 else
                     return 0;
             }

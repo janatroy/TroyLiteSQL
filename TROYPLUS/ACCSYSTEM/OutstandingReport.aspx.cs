@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.IO;
-
+using ClosedXML.Excel;
 
 public partial class OutstandingReport : System.Web.UI.Page
 {
@@ -24,6 +24,9 @@ public partial class OutstandingReport : System.Web.UI.Page
     double OpBalance = 0.0;
     double dLedger = 0;
     double cLedger = 0;
+    string brncode;
+    string usernam;
+    private string connection = string.Empty;
     /*End Outstanding Report March 16 */
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -70,14 +73,52 @@ public partial class OutstandingReport : System.Web.UI.Page
                     }
                 }
                 loadSundrys();
+                loadBranch();
+                BranchEnable_Disable();
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
+        lstBranch.Items.Clear();
+
+        brncode = Request.Cookies["Branch"].Value;
+        if (brncode == "All")
+        {
+            ds = bl.ListBranch();
+            lstBranch.Items.Add(new ListItem("All", "0"));
+        }
+        else
+        {
+            ds = bl.ListDefaultBranch(brncode);
+        }
+        lstBranch.DataSource = ds;
+        lstBranch.DataTextField = "BranchName";
+        lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataBind();
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        lstBranch.ClearSelection();
+        ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
 
     }
 
@@ -112,7 +153,7 @@ public partial class OutstandingReport : System.Web.UI.Page
         try
         {
             int iGroupID = 0;
-           
+            string branch = "";
             string sGroupName = string.Empty;
             if (opttype.SelectedItem.Text == "All")
             {
@@ -120,6 +161,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 ReportsBL.ReportClass rptOutstandingReport;
                 DataSet ds = new DataSet();
                 iGroupID = Convert.ToInt32(drpLedgerName.SelectedItem.Value);
+                branch = lstBranch.SelectedItem.Value;
                 sGroupName = drpLedgerName.SelectedItem.Text;
                 startDate = Convert.ToDateTime(txtStartDate.Text);
                 endDate = Convert.ToDateTime(txtEndDate.Text);
@@ -139,12 +181,13 @@ public partial class OutstandingReport : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic();
                 DataSet ds = new DataSet();
                 iGroupID = Convert.ToInt32(drpLedgerName.SelectedItem.Value);
+                branch = lstBranch.SelectedItem.Value;
                 sGroupName = drpLedgerName.SelectedItem.Text;
                 lblSundry.Text = drpLedgerName.SelectedItem.Text;
                 startDate = Convert.ToDateTime(txtStartDate.Text);
                 endDate = Convert.ToDateTime(txtEndDate.Text);
 
-                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+                ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate,branch);
                 
                 //gvLedger.DataSource = ds;
                 //gvLedger.DataBind();
@@ -153,7 +196,7 @@ public partial class OutstandingReport : System.Web.UI.Page
             OutPanel.Visible = false;
             div1.Visible = true;
 
-            Response.Write("<script language='javascript'> window.open('OutstandingReport1.aspx?iGroupID=" + iGroupID + "&sGroupName=" + sGroupName + "&startDate=" + startDate + "&endDate=" + endDate + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('OutstandingReport1.aspx?iGroupID=" + iGroupID + "&sBranch=" + branch + "&sGroupName=" + sGroupName + "&startDate=" + startDate + "&endDate=" + endDate + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
         catch (Exception ex)
         {
@@ -170,7 +213,7 @@ public partial class OutstandingReport : System.Web.UI.Page
             string sGroupName = string.Empty;
             string sFilename = string.Empty;
             string balan = string.Empty;
-
+            string sBranchcode = string.Empty;
             BusinessLogic bl = new BusinessLogic();
 
             //ReportsBL.ReportClass rptOutstandingReport;
@@ -178,11 +221,12 @@ public partial class OutstandingReport : System.Web.UI.Page
             OutPanel.Visible = true;
             iGroupID = Convert.ToInt32(drpLedgerName.SelectedItem.Value);
             sGroupName = drpLedgerName.SelectedItem.Text;
+            sBranchcode = lstBranch.SelectedItem.Value;
             lblSundry.Text = drpLedgerName.SelectedItem.Text;
             startDate = Convert.ToDateTime(txtStartDate.Text);
             endDate = Convert.ToDateTime(txtEndDate.Text);
             //rptOutstandingReport = new ReportsBL.ReportClass();
-            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource,startDate,endDate);
+            ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource, startDate, endDate, sBranchcode);
 
             double debit = 0;
             double credit = 0;
@@ -199,11 +243,12 @@ public partial class OutstandingReport : System.Web.UI.Page
             #region Export To Excel
             if (ds.Tables[0].Rows.Count > 0)
             {
-                DataTable dt = new DataTable();
+                DataTable dt = new DataTable("Outstanding List Report");
                 dt.Columns.Add(new DataColumn("Ledgername"));
                 dt.Columns.Add(new DataColumn("Bill No"));
                 dt.Columns.Add(new DataColumn("Bill Date"));
                 dt.Columns.Add(new DataColumn("Mobile"));
+                dt.Columns.Add(new DataColumn("BranchCode"));
                 dt.Columns.Add(new DataColumn("Debit"));
                 dt.Columns.Add(new DataColumn("Credit"));
                 dt.Columns.Add(new DataColumn("Balance"));
@@ -218,7 +263,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                     dr_export["Debit"] = dr["Debit"];
                     dr_export["Credit"] = dr["Credit"];
                     dr_export["Mobile"] = dr["phone"];
-
+                    dr_export["BranchCode"] = dr["BranchCode"];
                     debit = Convert.ToDouble(dr["Debit"]);
                     credit = Convert.ToDouble(dr["Credit"]);
                     damt = damt + debit;
@@ -306,6 +351,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 }
                 DataRow dr_lastexport1 = dt.NewRow();
                 dr_lastexport1["Ledgername"] = "";
+                dr_lastexport1["BranchCode"] = "";
                 dr_lastexport1["Debit"] = "";
                 dr_lastexport1["Credit"] = "";
                 dr_lastexport1["Balance"] = "";
@@ -316,6 +362,7 @@ public partial class OutstandingReport : System.Web.UI.Page
 
                 DataRow dr_lastexport2 = dt.NewRow();
                 dr_lastexport2["Ledgername"] = "Total";
+                dr_lastexport2["BranchCode"] = "";
                 dr_lastexport2["Debit"] = damt;
                 dr_lastexport2["Credit"] = camt;
                 dr_lastexport2["Balance"] = "";
@@ -326,6 +373,7 @@ public partial class OutstandingReport : System.Web.UI.Page
 
                 DataRow dr_lastexport3 = dt.NewRow();
                 dr_lastexport3["Ledgername"] = "";
+                dr_lastexport3["BranchCode"] = "";
                 dr_lastexport3["Debit"] = "";
                 dr_lastexport3["Credit"] = "";
                 dr_lastexport3["Balance"] = "";
@@ -350,6 +398,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 dr_de["Bill No"] = "";
                 dr_de["Bill Date"] = "";
                 dr_de["Mobile"] = "";
+                dr_de["BranchCode"] = "";
                 dt.Rows.Add(dr_de);
 
                 ExportToExcel(dt);
@@ -386,7 +435,7 @@ public partial class OutstandingReport : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet debitData = bl.GetCustDebitData();
+        DataSet debitData = bl.GetCustDebitData("");
 
         return debitData;
     }
@@ -395,7 +444,7 @@ public partial class OutstandingReport : System.Web.UI.Page
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        DataSet creditData = bl.GetAllReceivedAmount();
+        DataSet creditData = bl.GetAllReceivedAmount("");
 
         
         if (creditData != null)
@@ -1242,24 +1291,43 @@ public partial class OutstandingReport : System.Web.UI.Page
 
         if (dt.Rows.Count > 0)
         {
-            string file = "Outstanding List Report_" + DateTime.Now.ToString() + ".xls";
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-            DataGrid dgGrid = new DataGrid();
-            dgGrid.DataSource = dt;
-            dgGrid.DataBind();
-            dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
-            dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
-            dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
-            dgGrid.HeaderStyle.Font.Bold = true;
-            //Get the HTML for the control.
-            dgGrid.RenderControl(hw);
-            //Write the HTML back to the browser.
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + file + "");
-            this.EnableViewState = false;
-            Response.Write(tw.ToString());
-            Response.End();
+            //string file = "Outstanding List Report_" + DateTime.Now.ToString() + ".xls";
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+            //DataGrid dgGrid = new DataGrid();
+            //dgGrid.DataSource = dt;
+            //dgGrid.DataBind();
+            //dgGrid.HeaderStyle.ForeColor = System.Drawing.Color.Black;
+            //dgGrid.HeaderStyle.BackColor = System.Drawing.Color.LightSkyBlue;
+            //dgGrid.HeaderStyle.BorderColor = System.Drawing.Color.RoyalBlue;
+            //dgGrid.HeaderStyle.Font.Bold = true;
+            ////Get the HTML for the control.
+            //dgGrid.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            //Response.ContentType = "application/vnd.ms-excel";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + file + "");
+            //this.EnableViewState = false;
+            //Response.Write(tw.ToString());
+            //Response.End();
+
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                string filename1 = "Outstanding List Report_" + DateTime.Now.ToString() + ".xlsx";
+                wb.Worksheets.Add(dt);
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=" + filename1 + "");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
         }
     }
 

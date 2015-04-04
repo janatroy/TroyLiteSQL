@@ -112,11 +112,11 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         }
     }
 
-    
+
 
     protected void btnExl_Click(object sender, EventArgs e)
     {
-       
+
     }
 
     public void bindData()
@@ -125,6 +125,7 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         DataTable dt = new DataTable();
 
         dt.Columns.Add(new DataColumn("LedgerName"));
+        dt.Columns.Add(new DataColumn("AliasName"));
         dt.Columns.Add(new DataColumn("OpenBalanceDR"));
         dt.Columns.Add(new DataColumn("OpenBalanceCR"));
         dt.Columns.Add(new DataColumn("ContactName"));
@@ -136,21 +137,30 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("CreditLimit"));
         dt.Columns.Add(new DataColumn("CreditDays"));
         dt.Columns.Add(new DataColumn("TinNumber"));
+        // dt.Columns.Add(new DataColumn("Emailid"));
+      //  dt.Columns.Add(new DataColumn("Opduedate"));
+        // dt.Columns.Add(new DataColumn("IsActive"));
+        // dt.Columns.Add(new DataColumn("DC"));
         //dt.Columns.Add(new DataColumn("Paymentmade"));
         //dt.Columns.Add(new DataColumn("dc"));
-        
+
         DataRow dr_final12 = dt.NewRow();
         dr_final12["LedgerName"] = "";
+        dr_final12["AliasName"] = "";
         dr_final12["OpenBalanceDR"] = "0";
         dr_final12["OpenBalanceCR"] = "0";
         dr_final12["ContactName"] = "";
         dr_final12["Add1"] = "";
         dr_final12["Add2"] = "";
         dr_final12["Add3"] = "";
-        dr_final12["Mobile"] = "0";
+        dr_final12["Mobile"] = "";
         dr_final12["CreditLimit"] = "0";
         dr_final12["CreditDays"] = "0";
         dr_final12["TinNumber"] = "0";
+        //  dr_final12["Emailid"] = "";
+       // dr_final12["Opduedate"] = "";
+        // dr_final12["IsActive"] = "YES";
+        //  dr_final12["DC"] = "NO";
         //dr_final12["Inttrans"] = "NO";
         //dr_final12["Paymentmade"] = "NO";
         //dr_final12["dc"] = "NO";
@@ -309,6 +319,10 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
 
             String strConnection = "ConnectionString";
             string connectionString = "";
+
+            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+            char[] specialCharactersArray = specialCharacters.ToCharArray();
+
             if (FileUpload1.HasFile)
             {
                 string datett = DateTime.Now.ToString();
@@ -328,6 +342,12 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
                         fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
 
                     //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Upload Correct File Extension(.xls or .xlsx).');", true);
+                    return;
+
                 }
                 OleDbConnection con = new OleDbConnection(connectionString);
                 OleDbCommand cmd = new OleDbCommand();
@@ -354,6 +374,126 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Uploading Excel is Empty');", true);
                     return;
                 }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["LedgerName"]) == null) || (Convert.ToString(dr["LedgerName"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Ledger name is empty');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["TinNumber"]) == null) || (Convert.ToString(dr["TinNumber"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('TinNumber is empty');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["OpenBalanceDR"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter OpenBalanceDR. It cannot be blank or otherwise put Zero.');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["OpenBalanceCR"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter OpenBalanceCR. It cannot be blank or otherwise put Zero.');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string customer = Convert.ToString(dr["LedgerName"]);
+
+                    if (objBL.CheckIfcustomerIsThere(customer))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Supplier with - " + customer + " - already exists.');", true);
+                        return;
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    string Mobile = Convert.ToString(dr["Mobile"]);
+
+                    if (Convert.ToString(dr["Mobile"]) == null || Convert.ToString(dr["Mobile"]) == "" || Convert.ToString(dr["Mobile"]) == "0")
+                    {
+
+                    }
+                    else
+                    {
+                        if (objBL.CheckIfcustomernumberIsThere(Mobile))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Supplier  with this - " + Mobile + " - number already exists.');", true);
+                            return;
+                        }
+                    }
+                }
+
+                //DataTable Dt;
+
+                ////  for (int i1 = 0; i1 < ds.Tables[0].Rows.Count; i1++)
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+
+                //    string date = Convert.ToString((dr["Opduedate"]).ToString());
+
+                //    if (!ValidateDate(date))
+                //    {
+
+                //        // int RowNo = i1 + 2;
+
+                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "InvalidArgs", "alert('Please Enter Correct Date format ');", true);
+
+
+
+                //        return;
+
+                //    }
+
+                //}
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Opduedate"]) != null) || (Convert.ToString(dr["Opduedate"]) != ""))
+                //    {
+                //        int index = Convert.ToString(dr["Opduedate"]).IndexOfAny(specialCharactersArray);
+                //        //index == -1 no special characters
+                //        if (index != -1)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in category');", true);
+                //            return;
+                //        }
+                //    }
+                //}
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Opduedate"]) != null) || (Convert.ToString(dr["Opduedate"]) != ""))
+                //    {
+                //        foreach (char c in Convert.ToString(dr["Opduedate"]))
+                //        {
+                //            if (!Char.IsDigit(c))
+                //            {
+                //                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter Valid Date format');", true);
+                //                return;
+                //            }
+                //        }
+                //    }
+                //}
+
+
+
+
 
 
                 //foreach (DataRow dr in ds.Tables[0].Rows)
@@ -452,6 +592,45 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
                     ii = 1;
                 }
 
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    itemc = Convert.ToString(dr["Mobile"]);
+
+                    if ((itemc == null) || (itemc == ""))
+                    {
+                    }
+                    else
+                    {
+                        foreach (DataRow drd in ds.Tables[0].Rows)
+                        {
+
+                            if (ii == i)
+                            {
+                            }
+                            else
+                            {
+                                if (itemc == "" || itemc=="0")
+                                {
+
+                                }
+                                else
+                                {
+
+                                    if (itemc == Convert.ToString(drd["Mobile"]))
+                                    {
+                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile - " + itemc + " - already exists in the excel.');", true);
+                                        return;
+                                    }
+                                }
+                            }
+                            ii = ii + 1;
+                        }
+                    }
+                    i = i + 1;
+                    ii = 1;
+                }
+
+
                 objBL.InsertBulkLedgerSupplier(connection, ds, usernam);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Suppliers Uploaded Successfully');", true);
 
@@ -465,5 +644,28 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
-    } 
+    }
+
+    private bool ValidateDate(string date)
+    {
+
+        try
+        {
+
+            string[] dateParts = date.Split('/');
+
+            DateTime testDate = new DateTime(Convert.ToInt32(dateParts[2]), Convert.ToInt32(dateParts[1]), Convert.ToInt32(dateParts[0]));
+
+            return true;
+
+        }
+
+        catch
+        {
+
+            return false;
+
+        }
+
+    }
 }

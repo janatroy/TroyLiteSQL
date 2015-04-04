@@ -39,35 +39,38 @@
 
             </tr>
             <tr>
-                <td class="ControlLabel2" width="35%">
+                <td colspan="4">
+                    <table width="100%">
+                        <tr>
+                <td class="ControlLabel2" style="width:20%">
                     Start Date
                 </td>
-                <td class="ControlTextBox3" width="25%">
-                    <asp:TextBox ID="txtStartDate" Enabled="false" runat="server" CssClass="cssTextBox" Width="100px"
+                <td class="ControlTextBox3" style="width:40%">
+                    <asp:TextBox ID="txtStartDate" runat="server" CssClass="cssTextBox" Width="100px"
                         MaxLength="10" />
                 </td>
-                <td width="15%">
+                <td style="width:15%">
                     <script type="text/javascript" language="JavaScript">
                         new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                 </td>
-                <td align="left" width="15%">
+                <td align="left" style="width:20%">
                     <asp:RequiredFieldValidator class="lblFont" CssClass="lblFont" ID="RequiredFieldValidator1"
                         runat="server" ControlToValidate="txtStartDate" Display="None" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                 </td>
             </tr>
             <tr style="height: 2px;"/>
             <tr>
-                <td class="ControlLabel2" width="35%">
+                <td class="ControlLabel2"  style="width:30%">
                     End Date
                 </td>
-                <td class="ControlTextBox3" width="25%">
-                    <asp:TextBox ID="txtEndDate" Enabled="false" CssClass="cssTextBox" runat="server" Width="100px" MaxLength="10" />
+                <td class="ControlTextBox3"  style="width:20%">
+                    <asp:TextBox ID="txtEndDate" CssClass="cssTextBox" runat="server" Width="100px" MaxLength="10" />
                 </td>
-                <td width="15%">
+                <td  style="width:15%">
                     <script type="text/javascript" language="JavaScript">
                         new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
                 </td>
-                <td align="left" width="15%">
+                <td align="left"  style="width:20%">
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
                         Display="None" CssClass="lblFont" ErrorMessage="Please Enter The End Date"></asp:RequiredFieldValidator>
                     <asp:CompareValidator ID="CompareValidator1" runat="server" CssClass="lblFont" ControlToCompare="txtStartDate"
@@ -75,10 +78,30 @@
                         Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                 </td>
             </tr>
+            <tr style="height: 2px;"/>
+            <tr>
+                <td class="ControlLabel2"  style="width:30%">
+                   Branch
+                </td>
+                <td class="ControlDrpBorder"  style="width:20%">
+                    <asp:DropDownList ID="drpBranchAdd" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                        runat="server">
+                                                                                                    </asp:DropDownList>
+                </td>
+                <td  style="width:15%">
+                    
+                </td>
+                <td align="left"  style="width:20%">
+                    
+                </td>
+            </tr>
+            
             <tr style="height:6px">
 
             </tr>
-            
+            </table>
+                    </td>
+                </tr>
              <tr>
                 <td colspan="4">
                     <table width="100%">
@@ -213,6 +236,7 @@
                         <asp:BoundField ItemStyle-Width="5%" DataField="Date" HeaderText="Date" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="53%" DataField="Particulars" HeaderText="Particulars" />
                         <asp:BoundField ItemStyle-Width="15%" DataField="VoucherType" HeaderText="Voucher Type" />
+                        <asp:BoundField ItemStyle-Width="5%" DataField="Branchcode" HeaderText="Branch" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Debit" HeaderStyle-HorizontalAlign="Right"
                             HeaderText="Debit" DataFormatString="{0:f2}" ItemStyle-HorizontalAlign="Right" />
                         <asp:BoundField ItemStyle-Width="12%" DataField="Credit" HeaderStyle-HorizontalAlign="Right"
