@@ -4650,6 +4650,8 @@ public partial class BusinessLogic
             manager.Open();
             dbQry = "SELECT Count(*) FROM tblProductMaster Where productdesc ='" + Brand + "' ";
 
+         //   dbQry = "select count(*) from tblBrand inner join tblProductMaster on tblBrand.BrandName=tblProductMaster.ProductDesc where tblProductMaster.ProductDesc='" + Brand + "'";
+          //  dbQry = " group by tblProductMaster.ProductDesc,tblBrand.BrandName,tblBrand.BrandID";
             object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
 
             if (qtyObj != null && qtyObj != DBNull.Value)
@@ -6637,6 +6639,24 @@ public partial class BusinessLogic
                 }
             }
 
+            if (Mobile == "")
+            {
+
+            }
+            else
+            {
+                object exists1 = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where Mobile='" + Mobile + "'");
+
+                if (exists1.ToString() != string.Empty)
+                {
+                    if (int.Parse(exists1.ToString()) > 0)
+                    {
+                        throw new Exception("Number Exists1");
+                    }
+                }
+            }
+
+
 
             //sDate = OpDueDate.Trim().Split(delimA);
 
@@ -6672,9 +6692,17 @@ public partial class BusinessLogic
 
                 int middlePos = 0;
 
+                if (Mobile == "")
+                {
+                    logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode,ExpenseID,AutoLedgerID,ManualClearing,MobAuto,unuse) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},'{23}','{24}','{25}','{26}')",
+                    LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, BranchCode, 0, MobileID + 1, manualclear, "False",unuse);
+                }
+                else
+                {
+                    logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode,ExpenseID,AutoLedgerID,ManualClearing,MobAuto,unuse) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},'{23}','{24}','{25}','{26}')",
+                    LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, BranchCode, 0, Mobile, manualclear, "True",unuse);
 
-                logdescription = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,Inttrans,Paymentmade,dc,BranchCode,ExpenseID) VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22})",
-                LedgerID + 1, LedgerName, AliasName, GroupID, OpenBalanceDR, OpenBalanceCR, 0, 0, ContactName, Add1, Add2, Add3, Phone, 0, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, BranchCode, 0);
+                }
                 logdescription = logdescription.Trim();
                 if (logdescription.Length > 255)
                 {
@@ -8746,6 +8774,22 @@ public partial class BusinessLogic
                     throw new Exception("Ledger Exists");
                 }
             }
+            if (Mobile == "")
+            {
+
+            }
+            else
+            {
+                object exists1 = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where  LedgerID <> " + LedgerID.ToString() + " and Mobile='" + Mobile + "'");
+
+                if (exists1.ToString() != string.Empty)
+                {
+                    if (int.Parse(exists1.ToString()) > 0)
+                    {
+                        throw new Exception("Number Exists1");
+                    }
+                }
+            }
 
             //sDate = OpDueDate.Trim().Split(delimA);
 
@@ -8780,7 +8824,14 @@ public partial class BusinessLogic
                 string value3 = string.Empty;
 
                 int middlePos = 0;
-                logdescription = string.Format("Update tblLedger SET LedgerName={0}, AliasName={1}, GroupID={2},OpenBalanceDR={3},ContactName={4},Add1={5}, Add2={6}, Add3={7}, Phone={8}, OpenBalanceCR= {9},LedgerCategory={11},ExecutiveInCharge = {12},TinNumber={13},Mobile={14}, Inttrans={15}, Paymentmade={16}, dc={17},BranchCode={18} WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, BranchCode);
+                if (Mobile == "")
+                {
+                    logdescription = string.Format("Update tblLedger SET LedgerName={0}, AliasName={1}, GroupID={2},OpenBalanceDR={3},ContactName={4},Add1={5}, Add2={6}, Add3={7}, Phone={8}, OpenBalanceCR= {9},LedgerCategory={11},ExecutiveInCharge = {12},TinNumber={13},Mobile={14}, Inttrans={15}, Paymentmade={16}, dc={17},BranchCode={18},AutoLedgerID={19},ManualClearing={20},MobAuto={21},unuse={22} WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, BranchCode, MobileID + 1, manualclear, "False", unuse);
+                }
+                else
+                {
+                    logdescription = string.Format("Update tblLedger SET LedgerName={0}, AliasName={1}, GroupID={2},OpenBalanceDR={3},ContactName={4},Add1={5}, Add2={6}, Add3={7}, Phone={8}, OpenBalanceCR= {9},LedgerCategory={11},ExecutiveInCharge = {12},TinNumber={13},Mobile={14}, Inttrans={15}, Paymentmade={16}, dc={17},BranchCode={18},AutoLedgerID={19},ManualClearing={20},MobAuto={21},unuse={22} WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, BranchCode, Mobile, manualclear, "True", unuse);
+                }
                 logdescription = logdescription.Trim();
 
                 if (logdescription.Length > 255)
@@ -8814,7 +8865,7 @@ public partial class BusinessLogic
 
             if (Mobile == "")
             {
-                dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}', Inttrans='{15}', Paymentmade='{16}', dc='{17}',ChequeName='{18}', unuse='{19}',EmailId='{20}',ModeofContact={21},OpDueDate='{22}',BranchCode='{23}',AutoLedgerId='{24}',Manualclearing='{25}',MobAuto='{26}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, MobileID + 1, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, BranchCode,MobileID + 1,manualclear,"False");
+                dbQry = string.Format("Update tblLedger SET LedgerName='{0}', AliasName='{1}', GroupID={2},OpenBalanceDR={3},ContactName='{4}',Add1='{5}', Add2='{6}', Add3='{7}', Phone='{8}', OpenBalanceCR= {9},LedgerCategory='{11}',ExecutiveInCharge = {12},TinNumber='{13}',Mobile='{14}', Inttrans='{15}', Paymentmade='{16}', dc='{17}',ChequeName='{18}', unuse='{19}',EmailId='{20}',ModeofContact={21},OpDueDate='{22}',BranchCode='{23}',AutoLedgerId='{24}',Manualclearing='{25}',MobAuto='{26}' WHERE LedgerID={10}", LedgerName, AliasName, GroupID, OpenBalanceDR, ContactName, Add1, Add2, Add3, Phone, OpenBalanceCR, LedgerID, LedgerCategory, ExecutiveIncharge, TinNumber, Mobile, Inttrans, Paymentmade, dc, ChequeName, unuse, EmailId, ModeofContact, OpDueDate, BranchCode,MobileID + 1,manualclear,"False");
 
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
@@ -8885,13 +8936,16 @@ public partial class BusinessLogic
                     throw new Exception("Ledger Exists");
                 }
             }
+
+            int ledg = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT Count(*)  FROM tblLedger where LedgerID='" + LedgerID.ToString() + "'"));
+
             if (Mobile == "")
             {
 
             }
             else
             {
-                object exists1 = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where  Mobile='" + Mobile + "'");
+                object exists1 = manager.ExecuteScalar(CommandType.Text, "SELECT Count(*) FROM tblLedger Where  LedgerID <> " + LedgerID.ToString() + " and Mobile='" + Mobile + "'");
 
                 if (exists1.ToString() != string.Empty)
                 {
@@ -62301,6 +62355,85 @@ public partial class BusinessLogic
     }
 
 
+    public bool CheckIfcustomerIsThere(string customer)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        int Totalqty = 0;
+        int qty = 0;
+        string dbQry = string.Empty;
+
+        try
+        {
+            manager.Open();
+            dbQry = "SELECT Count(*) FROM tblledger Where LedgerName ='" + customer + "'";
+
+            object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if (qtyObj != null && qtyObj != DBNull.Value)
+            {
+                qty = (int)qtyObj;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+    public bool CheckIfcustomernumberIsThere(string mobile)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(this.ConnectionString); // +sPath; //System.Configuration.ConfigurationManager.ConnectionStrings["ACCSYS"].ToString();
+        int Totalqty = 0;
+        int qty = 0;
+        string dbQry = string.Empty;
+
+        try
+        {
+            manager.Open();
+            dbQry = "SELECT Count(*) FROM tblledger Where Mobile ='" + mobile + "'";
+
+            object qtyObj = manager.ExecuteScalar(CommandType.Text, dbQry);
+
+            if (qtyObj != null && qtyObj != DBNull.Value)
+            {
+                qty = (int)qtyObj;
+
+                if (qty > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
+
+
     public DataSet generateOutStandingReport(int iGroupID, string sXmlNodeName, string connection, string sXmlPath)
     {
         Decimal temp_balance;
@@ -63191,7 +63324,7 @@ public partial class BusinessLogic
                             if (Convert.ToString(dr["Mobile"]) == "")
                             {
                                 dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,BranchCode,AutoLedgerID,ManualClearing,MobAuto,EmailId,OpDueDate,ModeofContact,Unuse) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}','{25}','{26}','{27}','{28}','{29}',{30},'{31}')",
-                                    LedgerID + 1, Convert.ToString(dr["LedgerName"]), Convert.ToString(dr["LedgerName"]), 1, Convert.ToDouble(dr["OpenBalanceDR"]), Convert.ToDouble(dr["OpenBalanceCR"]), 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, "Customer", 0, 0, MobileID + 1, Convert.ToDouble(dr["CreditLimit"]), Convert.ToDouble(dr["CreditDays"]), "NO", "NO", "NO", Convert.ToString(dr["LedgerName"]), branchCode, MobileID + 1, "NO", "False", Convert.ToString(dr["Emailid"]), Convert.ToDateTime(dr["OpDueDate"]).ToString("yyyy-MM-dd"),3,"YES");
+                                    LedgerID + 1, Convert.ToString(dr["LedgerName"]), Convert.ToString(dr["LedgerName"]), 1, Convert.ToDouble(dr["OpenBalanceDR"]), Convert.ToDouble(dr["OpenBalanceCR"]), 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, "Customer", 0, 0, Convert.ToString(dr["Mobile"]), Convert.ToDouble(dr["CreditLimit"]), Convert.ToDouble(dr["CreditDays"]), "NO", "NO", "NO", Convert.ToString(dr["LedgerName"]), branchCode, MobileID + 1, "NO", "False", Convert.ToString(dr["Emailid"]), Convert.ToDateTime(dr["OpDueDate"]).ToString("yyyy-MM-dd"), 3, "YES");
                                 manager.ExecuteDataSet(CommandType.Text, dbQry);
                             }
                             else
@@ -63405,14 +63538,14 @@ public partial class BusinessLogic
                             if (Convert.ToString(dr["Mobile"]) == "")
                             {
                                 dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,BranchCode,ExpenseID,Emailid,OpDueDate,AutoLedgerid,Manualclearing,ModeofContact,Unuse) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}',{25},'{26}','{27}','{28}','{29}',{30},'{31}')",
-                                   LedgerID + 1, Convert.ToString(dr["LedgerName"]), Convert.ToString(dr["LedgerName"]), 2, Convert.ToDouble(dr["OpenBalanceDR"]), Convert.ToDouble(dr["OpenBalanceCR"]), 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, "", 0, Convert.ToString(dr["TinNumber"]), Convert.ToString(dr["Mobile"]), Convert.ToDouble(dr["CreditLimit"]), Convert.ToDouble(dr["CreditDays"]), "NO", "NO", "NO", Convert.ToString(dr["LedgerName"]), "All", 0, Convert.ToString(dr["Emailid"]), Convert.ToDateTime(dr["OpDueDate"]).ToString("yyyy-MM-dd"), MobileID + 1, "NO", 3, "YES");
+                                   LedgerID + 1, Convert.ToString(dr["LedgerName"]), Convert.ToString(dr["LedgerName"]), 2, Convert.ToDouble(dr["OpenBalanceDR"]), Convert.ToDouble(dr["OpenBalanceCR"]), 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, "", 0, Convert.ToString(dr["TinNumber"]), Convert.ToString(dr["Mobile"]), Convert.ToDouble(dr["CreditLimit"]), Convert.ToDouble(dr["CreditDays"]), "NO", "NO", "NO", Convert.ToString(dr["LedgerName"]), "All", 0, "", "", MobileID + 1, "NO", 3, "YES");
 
                             }
                             else
                             {
 
                                 dbQry = string.Format("INSERT INTO tblLedger(LedgerID,LedgerName, AliasName,GroupID,OpenBalanceDR,OpenBalanceCR,Debit,Credit,ContactName,Add1,Add2,Add3,Phone,BelongsTo,LedgerCategory,ExecutiveIncharge,TinNumber,Mobile,CreditLimit, CreditDays,Inttrans,Paymentmade,dc,ChequeName,BranchCode,ExpenseID,Emailid,OpDueDate,AutoLedgerid,Manualclearing,ModeofContact,unuse) VALUES({0},'{1}','{2}',{3},{4},{5},{6},{7},'{8}','{9}','{10}','{11}','{12}',{13},'{14}',{15},'{16}','{17}',{18},{19},'{20}','{21}','{22}','{23}','{24}',{25},'{26}','{27}','{28}','{29}',{30},'{31}')",
-                                    LedgerID + 1, Convert.ToString(dr["LedgerName"]), Convert.ToString(dr["LedgerName"]), 2, Convert.ToDouble(dr["OpenBalanceDR"]), Convert.ToDouble(dr["OpenBalanceCR"]), 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, "", 0, Convert.ToString(dr["TinNumber"]), Convert.ToString(dr["Mobile"]), Convert.ToDouble(dr["CreditLimit"]), Convert.ToDouble(dr["CreditDays"]), "NO", "NO", "NO", Convert.ToString(dr["LedgerName"]), "All", 0, Convert.ToString(dr["Emailid"]), Convert.ToDateTime(dr["OpDueDate"]).ToString("yyyy-MM-dd"),Convert.ToString(dr["Mobile"]),"NO",3,"YES");
+                                    LedgerID + 1, Convert.ToString(dr["LedgerName"]), Convert.ToString(dr["LedgerName"]), 2, Convert.ToDouble(dr["OpenBalanceDR"]), Convert.ToDouble(dr["OpenBalanceCR"]), 0, 0, Convert.ToString(dr["ContactName"]), Convert.ToString(dr["Add1"]), Convert.ToString(dr["Add2"]), Convert.ToString(dr["Add3"]), Convert.ToString(dr["Phone"]), 0, "", 0, Convert.ToString(dr["TinNumber"]), Convert.ToString(dr["Mobile"]), Convert.ToDouble(dr["CreditLimit"]), Convert.ToDouble(dr["CreditDays"]), "NO", "NO", "NO", Convert.ToString(dr["LedgerName"]), "All", 0, "", "", Convert.ToString(dr["Mobile"]), "NO", 3, "YES");
 
                             }
                             //dbQry = string.Format("INSERT INTO tblProductMaster VALUES('{0}','{1}', '{2}',{3},'{4}',{5},{6},{7},'{8}',{9},{10},'{11}',{12},{13},{14},'{15}',{16},{17},{18},'{19}','{20}','{21}',{22},'{23}',{24},'{25}',{26},'{27}',{28},Format('{29}', 'dd/mm/yyyy'),Format('{30}', 'dd/mm/yyyy'),Format('{31}', 'dd/mm/yyyy'),Format('{32}', 'dd/mm/yyyy'),Format('{33}', 'dd/mm/yyyy'),Format('{34}', 'dd/mm/yyyy'),Format('{35}', 'dd/mm/yyyy'),Format('{36}', 'dd/mm/yyyy'),Format('{37}', 'dd/mm/yyyy'))",//Jolo Barcode
@@ -63427,7 +63560,7 @@ public partial class BusinessLogic
             }
 
             sAuditStr = "Ledgers added. Record Details :  User :" + Username + " DateTime: " + DateTime.Now.ToString();
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',Format('{2}', 'dd/mm/yyyy'))", sAuditStr, "Add New", DateTime.Now.ToString());
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
         }

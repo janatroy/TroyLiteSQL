@@ -255,7 +255,7 @@ public partial class CustomerInfo : System.Web.UI.Page
                         ModalPopupExtender1.Show();
                         return;
                     }
-                    else if ((e.Exception.InnerException.Message.IndexOf("Ledger Exists1") > -1))
+                    else if ((e.Exception.InnerException.Message.IndexOf("Number Exists1") > -1))
                     {
                         e.ExceptionHandled = true;
                         e.KeepInEditMode = true;
@@ -391,7 +391,7 @@ public partial class CustomerInfo : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "DEALER")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DEALER")
                 {
                     dealerRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }

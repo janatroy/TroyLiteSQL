@@ -150,7 +150,7 @@
 
     </script>
     <style id="Style1" runat="server">
-        .fancy-green .ajax__tab_header {
+        /*.fancy-green .ajax__tab_header {
             background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
             cursor: pointer;
         }
@@ -177,7 +177,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            }
+            /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -194,7 +194,7 @@
             border: 1px solid #999999;
             padding: 8px;
             background-color: #ffffff;
-        }
+        }*/
     </style>
 
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
@@ -373,6 +373,8 @@
                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtTin"
                                                                                                 Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter TIN No. It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                             TIN No. *
+                                                                                              <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender21" runat="server" FilterType="Numbers"
+                                                                                                TargetControlID="txtTin" />
                                                                     
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
@@ -411,6 +413,10 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%">EmailId
+                                                                                             <asp:RegularExpressionValidator ID="remail123" runat="server"
+                                                                                                ControlToValidate="txtEmailId" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtEmailId" TabIndex="8" runat="server" Text='<%# Bind("EmailId") %>'
@@ -679,6 +685,8 @@
                                                                                             <asp:RequiredFieldValidator ID="hRequiredFieldValidator1" runat="server" ControlToValidate="txtTinAdd"
                                                                                                 Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter TIN No.It cannot be left blank."></asp:RequiredFieldValidator>
                                                                                             TIN No.*
+                                                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="Numbers"
+                                                                                                TargetControlID="txtTinAdd" />
                                                                     
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
@@ -715,6 +723,10 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 20%">Email Id
+                                                                                             <asp:RegularExpressionValidator ID="remail1234" runat="server"
+                                                                                                ControlToValidate="txtEmailIdAdd" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtEmailIdAdd" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'

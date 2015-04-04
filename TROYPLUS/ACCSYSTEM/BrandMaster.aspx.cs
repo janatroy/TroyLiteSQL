@@ -369,7 +369,7 @@ public partial class BrandMaster : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "DEALER")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DEALER")
                 {
                     dealerRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -472,6 +472,8 @@ public partial class BrandMaster : System.Web.UI.Page
                 {
                     ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
                     ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                    //((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    //((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
                 }
 
                 string connection = Request.Cookies["Company"].Value;
