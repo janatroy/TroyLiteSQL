@@ -73,16 +73,20 @@ public partial class PriceList : System.Web.UI.Page
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                //if (bl.CheckUserHaveAdd(usernam, "CHQMST"))
-                //{
-                //    lnkBtnAdd.Enabled = false;
-                //    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
-                //}
-                //else
-                //{
-                //    lnkBtnAdd.Enabled = true;
-                //    lnkBtnAdd.ToolTip = "Click to Add New ";
-                //}
+                if (bl.CheckUserHaveAdd(usernam, "PRICELST"))
+                {
+                    lnkBtnAdd.Enabled = false;
+                    BlkAdd.Enabled = false;
+                    BlkAdd.ToolTip = "You are not allowed to make Add New ";
+                    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+                }
+                else
+                {
+                    lnkBtnAdd.Enabled = true;
+                    lnkBtnAdd.ToolTip = "Click to Add New ";
+                    BlkAdd.Enabled = false;
+                    BlkAdd.ToolTip= "Click to Add New ";
+                }
                 ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
                 scriptManager.RegisterPostBackControl(this.Button6);
             }
@@ -208,6 +212,13 @@ public partial class PriceList : System.Web.UI.Page
 
                             //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
                         }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Upload correct File Format Extension(.xls or .xlsx)');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+
+                        }
                         OleDbConnection con = new OleDbConnection(connectionString);
                         OleDbCommand cmd = new OleDbCommand();
                         cmd.CommandType = System.Data.CommandType.Text;
@@ -232,6 +243,49 @@ public partial class PriceList : System.Web.UI.Page
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Uploading Excel is Empty');", true);
                             ModalPopupExtender1.Show();
                             return;
+                        }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter ItemCode. It cannot be left Blank. ');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                        }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            if ((Convert.ToString(dr["Price"]) == null) || (Convert.ToString(dr["Price"]) == ""))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Price. It cannot be left Blank. ');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                        }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            if ((Convert.ToString(dr["EFFECTIVEDATE"]) == null) || (Convert.ToString(dr["EFFECTIVEDATE"]) == ""))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter EFFECTIVEDATE. It cannot be left Blank. ');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                        }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            if ((Convert.ToString(dr["DISCOUNT"]) == null) || (Convert.ToString(dr["DISCOUNT"]) == ""))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter DISCOUNT. It cannot be left Blank. ');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                            else if (Convert.ToInt32(dr["DISCOUNT"]) > 100)
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' DISCOUNT % not greater than 100%.');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+
+                            }
                         }
 
 
@@ -680,6 +734,19 @@ public partial class PriceList : System.Web.UI.Page
 
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
+                if (bl.CheckUserHaveEdit(usernam, "PRICELST"))
+                {
+
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
+
+                if (bl.CheckUserHaveDelete(usernam, "PRICELST"))
+                {
+                    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                }
+
                 if (bl.CheckPriceListUsed(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "PriceName"))))
                 {
                     ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
@@ -984,6 +1051,13 @@ public partial class PriceList : System.Web.UI.Page
 
                             //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
                         }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Upload correct File Format Extension(.xls or .xlsx)');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+
+                        }
                         OleDbConnection con = new OleDbConnection(connectionString);
                         OleDbCommand cmd = new OleDbCommand();
                         cmd.CommandType = System.Data.CommandType.Text;
@@ -1022,9 +1096,43 @@ public partial class PriceList : System.Web.UI.Page
                         {
                             if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
                             {
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('ItemCode Missing');", true);
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter ItemCode. It cannot be left Blank. ');", true);
                                 ModalPopupExtender1.Show();
                                 return;
+                            }
+                        }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            if ((Convert.ToString(dr["Price"]) == null) || (Convert.ToString(dr["Price"]) == ""))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Price. It cannot be left Blank. ');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                        }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            if ((Convert.ToString(dr["EFFECTIVEDATE"]) == null) || (Convert.ToString(dr["EFFECTIVEDATE"]) == ""))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter EFFECTIVEDATE. It cannot be left Blank. ');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                        }
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            if ((Convert.ToString(dr["DISCOUNT"]) == null) || (Convert.ToString(dr["DISCOUNT"]) == ""))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter DISCOUNT. It cannot be left Blank. ');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+                            }
+                            else if(Convert.ToInt32(dr["DISCOUNT"]) >100)
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' DISCOUNT % not greater than 100%.');", true);
+                                ModalPopupExtender1.Show();
+                                return;
+
                             }
                         }
 

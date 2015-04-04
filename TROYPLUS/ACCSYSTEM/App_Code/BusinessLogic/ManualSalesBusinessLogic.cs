@@ -484,7 +484,7 @@ public partial class BusinessLogic
 
         try
         {
-            object objBillNo = manager.ExecuteScalar(CommandType.Text, string.Format("Select BillNo from tblSales Where ManualSales='YES' and BillNo={0} and BookId={1}", billNo, bookId));
+            object objBillNo = manager.ExecuteScalar(CommandType.Text, string.Format("Select ManualNo from tblSales Where ManualSales='YES' and ManualNo={0} and BookId={1}", billNo, bookId));
             object damangedLeafNo = manager.ExecuteScalar(CommandType.Text, string.Format("select LeafNo From tblManualSalesBookLeaf Where LeafNo={0} and LeafID={1}", billNo, bookId));
             object isBillNoWithInBookRange = manager.ExecuteScalar(CommandType.Text, string.Format("select BookId From tblManualSalesBook Where {0} >= BookFrom and {0} <= BookTo and BookId={1}", billNo, bookId));
 

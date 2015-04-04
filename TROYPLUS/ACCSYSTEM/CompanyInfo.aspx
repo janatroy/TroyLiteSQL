@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/PageMaster.master" AutoEventWireup="true"
     CodeFile="CompanyInfo.aspx.cs" Inherits="CompanyInfo" Title="Administration > General Settings" %>
 
+<%@ Register Assembly="RealWorld.Grids" Namespace="RealWorld.Grids" TagPrefix="rwg" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cplhTab" runat="Server">
 </asp:Content>
@@ -1143,6 +1144,109 @@
                                                                 <td align="center">
                                                                     <asp:Button ID="lnkBtnAddTransporter" runat="server" OnClick="lnkBtnAddTransporter_Click"
                                                                         EnableTheming="false" CssClass="ButtonAdd66" Text=""></asp:Button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </ContentTemplate>
+                                    </cc1:TabPanel>
+                                    <cc1:TabPanel ID="tblSalesBillNo" runat="server" HeaderText="Sales BillNo">
+                                        <ContentTemplate>
+                                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Always">
+                                                <ContentTemplate>
+                                                    <div style="width: 100%" align="center">
+                                                        <table style="width: 977px; border: 0px solid #5078B3;" align="center" cellpadding="3"
+                                                            cellspacing="3">
+                                                            <tr>
+                                                                <td>
+                                                                    <div style="width: 100%" align="center">
+                                                                        <rwg:BulkEditGridView ID="EditableGrid" AutoGenerateColumns="False" BorderWidth="1px"
+                                                                            BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server"
+                                                                            Width="100%" CssClass="someClass">
+                                                                            <RowStyle CssClass="dataRow" />
+                                                                            <SelectedRowStyle CssClass="SelectdataRow" />
+                                                                            <AlternatingRowStyle CssClass="altRow" />
+                                                                            <EmptyDataRowStyle CssClass="HeadataRow" Font-Bold="true" />
+                                                                            <HeaderStyle Wrap="false" />
+                                                                            <FooterStyle />
+                                                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
+                                                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                                                            <Columns>
+                                                                                <asp:BoundField HeaderText="BranchCode" ReadOnly="true" DataField="Branchcode" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+
+                                                                                <asp:TemplateField HeaderText="Normal Sales" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="80px">
+                                                                                    <ItemStyle Width="12%" HorizontalAlign="Center" />
+                                                                                    <ItemTemplate>
+                                                                                        <asp:TextBox ID="txtNorSal" Width="80px" runat="server" Style="text-align: center" Text="<%#Bind('NormalSales')%>" CssClass="cssTextBox"></asp:TextBox>
+                                                                                        <asp:RequiredFieldValidator ValidationGroup="salesval1" ID="RequiredFieldValidator1" runat="server" Display="Dynamic"
+                                                                                            ControlToValidate="txtNorSal" ErrorMessage="Empty"></asp:RequiredFieldValidator>
+                                                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="txtNorSal"
+                                                                                            FilterType="Custom, Numbers" ValidChars="." />
+                                                                                    </ItemTemplate>
+                                                                                </asp:TemplateField>
+                                                                                <asp:TemplateField HeaderText="Manual Sales" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="80px">
+                                                                                    <ItemStyle Width="10%" HorizontalAlign="Center" />
+                                                                                    <ItemTemplate>
+                                                                                        <asp:TextBox ID="txtManSal" Width="80px" runat="server" Style="text-align: center" Text="<%#Bind('ManualSales')%>" CssClass="cssTextBox"></asp:TextBox>
+                                                                                        <asp:RequiredFieldValidator ValidationGroup="salesval1" ID="RequiredFieldValidator2" runat="server" Display="Dynamic"
+                                                                                            ControlToValidate="txtManSal" ErrorMessage="Empty"></asp:RequiredFieldValidator>
+                                                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" TargetControlID="txtManSal"
+                                                                                            FilterType="Custom, Numbers" ValidChars="." />
+                                                                                    </ItemTemplate>
+                                                                                </asp:TemplateField>
+                                                                                <asp:TemplateField HeaderText="Purchase Return" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="80px">
+                                                                                    <ItemStyle Width="10%" HorizontalAlign="Center" />
+                                                                                    <ItemTemplate>
+                                                                                        <asp:TextBox ID="txtPurRtn" Width="80px" runat="server" Style="text-align: center" Text="<%#Bind('PurchaseReturn')%>" CssClass="cssTextBox"></asp:TextBox>
+                                                                                        <asp:RequiredFieldValidator ValidationGroup="salesval1" ID="RequiredFieldValidator3" runat="server" Display="Dynamic"
+                                                                                            ControlToValidate="txtManSal" ErrorMessage="Empty"></asp:RequiredFieldValidator>
+                                                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" TargetControlID="txtPurRtn"
+                                                                                            FilterType="Custom, Numbers" ValidChars="." />
+                                                                                    </ItemTemplate>
+                                                                                </asp:TemplateField>
+                                                                                <asp:TemplateField HeaderText="Internal Transfer" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="80px">
+                                                                                    <ItemStyle Width="10%" HorizontalAlign="Center" />
+                                                                                    <ItemTemplate>
+                                                                                        <asp:TextBox ID="txtIntTfn" Width="80px" runat="server" Style="text-align: center" Text="<%#Bind('InternalTransfer')%>" CssClass="cssTextBox"></asp:TextBox>
+                                                                                        <asp:RequiredFieldValidator ValidationGroup="salesval1" ID="RequiredFieldValidator4" runat="server" Display="Dynamic"
+                                                                                            ControlToValidate="txtManSal" ErrorMessage="Empty"></asp:RequiredFieldValidator>
+                                                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" runat="server" TargetControlID="txtIntTfn"
+                                                                                            FilterType="Custom, Numbers" ValidChars="." />
+                                                                                    </ItemTemplate>
+                                                                                </asp:TemplateField>
+                                                                                <asp:TemplateField HeaderText="Delivery Note" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="80px">
+                                                                                    <ItemStyle Width="10%" HorizontalAlign="Center" />
+                                                                                    <ItemTemplate>
+                                                                                        <asp:TextBox ID="txtDlNte" Width="80px" runat="server" Style="text-align: center" Text="<%#Bind('DeliveryNote')%>" CssClass="cssTextBox"></asp:TextBox>
+                                                                                        <asp:RequiredFieldValidator ValidationGroup="salesval1" ID="RequiredFieldValidator5" runat="server" Display="Dynamic"
+                                                                                            ControlToValidate="txtManSal" ErrorMessage="Empty"></asp:RequiredFieldValidator>
+                                                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" TargetControlID="txtDlNte"
+                                                                                            FilterType="Custom, Numbers" ValidChars="." />
+                                                                                    </ItemTemplate>
+                                                                                </asp:TemplateField>
+                                                                                <asp:TemplateField HeaderText="Delivery Return" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="80px">
+                                                                                    <ItemStyle Width="10%" HorizontalAlign="Center" />
+                                                                                    <ItemTemplate>
+                                                                                        <asp:TextBox ID="txtDlRtn" Width="80px" runat="server" Style="text-align: center" Text="<%#Bind('DeliveryReturn')%>" CssClass="cssTextBox"></asp:TextBox>
+                                                                                        <asp:RequiredFieldValidator ValidationGroup="salesval1" ID="RequiredFieldValidator6" runat="server" Display="Dynamic"
+                                                                                            ControlToValidate="txtManSal" ErrorMessage="Empty"></asp:RequiredFieldValidator>
+                                                                                        <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender6" runat="server" TargetControlID="txtDlRtn"
+                                                                                            FilterType="Custom, Numbers" ValidChars="." />
+                                                                                    </ItemTemplate>
+                                                                                </asp:TemplateField>
+                                                                            </Columns>
+                                                                        </rwg:BulkEditGridView>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                         <table width="100%">
+                                                            <tr>
+                                                                <td align="center">
+                                                                    <asp:Button ID="btnSalebill" runat="server" ValidationGroup="salesval1" OnClick="btnSalebill_Click"
+                                                                        EnableTheming="false" CssClass="savebutton1231" Text=""></asp:Button>
                                                                 </td>
                                                             </tr>
                                                         </table>
