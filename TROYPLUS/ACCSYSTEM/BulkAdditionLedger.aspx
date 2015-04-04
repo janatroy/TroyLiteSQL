@@ -92,11 +92,15 @@
                                                       Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
                                             </td>
                                             <td class="ControlDrpBorder" style="width: 24%">
-                                               <asp:DropDownList ID="drpBranch" TabIndex="4" EnableTheming="False" AppendDataBoundItems="True" CssClass="drpDownListMedium"
+                                               <%--  <asp:UpdatePanel ID="UpdatePanel123456" runat="server"  UpdateMode="Conditional">
+                                                                                                <ContentTemplate>--%>
+                                               <asp:DropDownList ID="drpBranch" TabIndex="4" EnableTheming="False" AppendDataBoundItems="True" CssClass="drpDownListMedium" AutoPostBack="true"
                                                                                                 runat="server" Width="100%" DataTextField="BranchName" BackColor="#E7E7E7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                 DataValueField="Branchcode">
-                                                                                                <asp:ListItem Text="All Branch" Value="All"></asp:ListItem>
+                                                                                                <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
                                                                                             </asp:DropDownList>
+                                                                                           <%--         </ContentTemplate>
+                                                                                            </asp:UpdatePanel>--%>
                                             </td>
                                             <td style="width: 35%" align="center">
                                                 <asp:Button ID="btnUpload" runat="server" Height="21px" SkinID="skinButtonCol2" Text="Upload" Width="100px" OnClick="btnUpload_Click" />
