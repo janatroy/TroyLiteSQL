@@ -50,15 +50,16 @@
 
             if (sender.value.length >= 1 && first.value.length >= 1) {
                 document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "visible";
-
             }
 
             if (sender.value.length < 1 && first.value.length < 1) {
-
                 document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
             }
         }
 
+        function PrintItem(ID, BID) {
+            window.showModalDialog('./ProductSalesBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+        }
 
     </script>
 
@@ -1707,7 +1708,9 @@
                                                         <asp:TemplateField HeaderStyle-Width="45px" HeaderText="Print" HeaderStyle-BorderColor="Gray">
                                                             <ItemStyle HorizontalAlign="Center" />
                                                             <ItemTemplate>
-                                                                <a href='<%# DataBinder.Eval(Container, "DataItem.Billno", "javascript:PrintItem({0});") %>'>
+                                                                <%--<a href='<%# DataBinder.Eval(Container, "DataItem.Billno", "javascript:PrintItem({0});") %>'>--%>       
+                                                                                                                                                                                      
+                                                                <a href='<%#String.Format("javascript:PrintItem({0}, &#39;{1}&#39;)", Eval("Billno"),  Eval("BranchCode")) %>'>                                                                                                                                                                                                  
                                                                     <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/PrintIcon_btn.png" />
                                                                 </a>
                                                                 <asp:ImageButton ID="btnViewDisabled" Enabled="false" SkinID="search" runat="Server"></asp:ImageButton>

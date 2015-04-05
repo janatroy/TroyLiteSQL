@@ -568,7 +568,7 @@
                                                                     <asp:BoundField DataField="ChequeNo" HeaderText="CHEQUE" HeaderStyle-Wrap="false" HeaderStyle-HorizontalAlign="left"
                                                                         ItemStyle-BorderColor="#666666" HeaderStyle-ForeColor="Black" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
                                                                     <asp:BoundField DataField="AMOUNT" HeaderStyle-HorizontalAlign="right" ItemStyle-HorizontalAlign="right"
-                                                                        HeaderText="Amount" HeaderStyle-Wrap="false"
+                                                                        HeaderText="Amount" HeaderStyle-Wrap="false" DataFormatString="{0:f2}"
                                                                         ItemStyle-BorderColor="#666666" HeaderStyle-ForeColor="Black" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
 
 
