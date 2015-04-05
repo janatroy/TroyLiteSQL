@@ -622,7 +622,7 @@ public partial class UserOptions : System.Web.UI.Page
     {
         try
         {
-            bool isEmail = Regex.IsMatch(txtEmail.Text.Trim(), @"\A(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)\Z");
+           
 
 
             if (lbloption.Text == "New")
@@ -632,10 +632,19 @@ public partial class UserOptions : System.Web.UI.Page
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter Password And Confirm Password.');", true);
                     return;
                 }
+                if (txtEmail.Text=="")
+                {
+
+                }
+                else
+                {
+                    bool isEmail = Regex.IsMatch(txtEmail.Text.Trim(), @"\A(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)\Z");
                 if (!isEmail)
                 {
+                   
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email Id is invalid ')", true);
                     return;
+                }
                 }
 
                 if (txtpassword.Text == "")
