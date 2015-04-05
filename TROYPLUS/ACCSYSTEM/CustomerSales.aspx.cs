@@ -3546,7 +3546,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                     receiptData.Tables[0].AcceptChanges();
 
-                    iPaymode = 3;
+                    iPaymode = 4;
                     MultiPayment = "YES";
                 }
                 else
@@ -4833,7 +4833,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             Session["productDs"] = null;
                             //MyAccordion.Visible = true;
                             //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Sales Details Saved Successfully. Your Bill No. is " + billNo.ToString() + "')", true);
-                            Response.Redirect("PrintProductSalesBill.aspx?SID=" + billNo.ToString() + "&RT=" + purchaseReturn);
+                            Response.Redirect("ProductSalesBill.aspx?SID=" + billNo.ToString() + "&BID=" + branchcode);
 
 
                         }

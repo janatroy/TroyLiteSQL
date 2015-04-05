@@ -61,7 +61,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
         if (ds.Tables[0].Rows.Count > 0)
         {
-            EditableGrid.DataSource = ds;
+            EditableGrid.DataSource = ds;          
             EditableGrid.DataBind();
         }
 

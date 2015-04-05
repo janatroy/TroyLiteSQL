@@ -45,6 +45,10 @@
 
         }
 
+        function PrintItem(ID) {
+            window.showModalDialog('./ProductSalesBill.aspx?SID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+        }
+
         function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtSearch.ClientID %>');
 
@@ -138,6 +142,31 @@
                                         </td>
                                     </tr>
                                 </table>
+                                <table cellspacing="0px" cellpadding="0px" border="0" width="100%" class="searchbg">
+                                    <tr style="vertical-align: middle">
+                                        <td style="width: 10%; font-size: 14px; color: White;">
+                                            <asp:Label ID="lblView" runat="server" Text="Filter :"></asp:Label>
+                                        </td>
+                                        <td style="width: 7%; font-size: 14px; color: White;">
+                                            <asp:CheckBox ID="chkAll" Text="All" Checked="true" AutoPostBack="true" runat="server" OnCheckedChanged="chkAll_CheckedChanged" />
+                                        </td>
+                                        <td style="width: 13%; font-size: 14px; color: White;">
+                                            <asp:CheckBox ID="chkNorSa" Text="Normal Sales" runat="server" AutoPostBack="true" OnCheckedChanged="chkNorSa_CheckedChanged" />
+                                        </td>
+                                        <td style="width: 13%; font-size: 14px; color: White;">
+                                            <asp:CheckBox ID="chkManSa" Text="Manual Sales" runat="server" AutoPostBack="true" OnCheckedChanged="chkManSa_CheckedChanged" />
+                                        </td>
+                                        <td style="width: 15%; font-size: 14px; color: White;">
+                                            <asp:CheckBox ID="chkPurRtn" Text="Purchase Return" runat="server" AutoPostBack="true" OnCheckedChanged="chkPurRtn_CheckedChanged" />
+                                        </td>
+                                        <td style="width: 13%; font-size: 14px; color: White;">
+                                            <asp:CheckBox ID="chkDelNote" Text="Delivery Note" runat="server" AutoPostBack="true" OnCheckedChanged="chkDelNote_CheckedChanged" />
+                                        </td>
+                                        <td style="width: 13%; font-size: 14px; color: White;">
+                                            <asp:CheckBox ID="chkDelRtn" Text="Delivery Return" runat="server" AutoPostBack="true" OnCheckedChanged="chkDelRtn_CheckedChanged" />
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                         <%-- <div>
@@ -189,7 +218,7 @@
                                                                                     RepeatDirection="Horizontal" BackColor="#e7e7e7" Height="35px">
                                                                                     <asp:ListItem Selected="True" Value="NormalSales">Normal Sales&nbsp;&nbsp;</asp:ListItem>
                                                                                     <asp:ListItem Value="DeliveryNote">Delivery Note&nbsp;&nbsp;</asp:ListItem>
-                                                                                  <%--  <asp:ListItem Value="DeliveryReturn">Delivery Return&nbsp;&nbsp;</asp:ListItem>--%>
+                                                                                    <%--  <asp:ListItem Value="DeliveryReturn">Delivery Return&nbsp;&nbsp;</asp:ListItem>--%>
                                                                                     <asp:ListItem Value="PurchaseReturn">Purchase Return&nbsp;&nbsp;</asp:ListItem>
                                                                                     <asp:ListItem Value="ManualSales">Manual Sales&nbsp;&nbsp;</asp:ListItem>
                                                                                 </asp:RadioButtonList>
@@ -270,11 +299,11 @@
                                                                                                     </table>
                                                                                                 </td>
                                                                                             </tr>
-                                                                                            <tr style="height:6px"></tr>
+                                                                                            <tr style="height: 6px"></tr>
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <cc1:TabContainer ID="tabs2" runat="server" ActiveTabIndex="0" CssClass="fancy fancy-green" Width="1280px">
-                                                                                                        <cc1:TabPanel ID="tabMaster" runat="server" HeaderText="Sales Details" Width="1260px" >
+                                                                                                        <cc1:TabPanel ID="tabMaster" runat="server" HeaderText="Sales Details" Width="1260px">
                                                                                                             <HeaderTemplate>
                                                                                                                 <div>
                                                                                                                     <table>
@@ -300,20 +329,20 @@
                                                                                                             Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
                                                                                                             Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                                     </td>
-                                                                                                                                    <td class="ControlDrpBorder" style="width: 20%" >
+                                                                                                                                    <td class="ControlDrpBorder" style="width: 20%">
                                                                                                                                         <asp:DropDownList ID="drpBranch" runat="server" AutoPostBack="true" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="chzn-select" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="15" Width="300px" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranch_SelectedIndexChanged">
                                                                                                                                         </asp:DropDownList>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 7%;"></td>
                                                                                                                                     <td class="ControlLabelproject" style="width: 14%;" id="tdpurno" runat="server">
-                                                                                                                                         <asp:Label ID="lblPurRtn" runat="server" Text="Select Purchase Invoice No"> 
+                                                                                                                                        <asp:Label ID="lblPurRtn" runat="server" Text="Purchase Invoice No"> 
                                                                                                                                         </asp:Label>
                                                                                                                                         <%--  <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Purchase InvoiceNo. It cannot be left blank. " Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>--%>
-                                                                                                                                       
-                                                                                                                                        <asp:Label ID="PurInNo" runat="server">                                                                                                                                      
-                                                                                                                                             <asp:CheckBox runat="server" ID="chkPurInNo" Text="Delivery Return" AutoPostBack="true" OnCheckedChanged="chkPurInNo_CheckedChanged" />
+
+                                                                                                                                        <asp:Label ID="PurInNo" runat="server">
+                                                                                                                                            <asp:CheckBox runat="server" ID="chkPurInNo" Text="Delivery Return" AutoPostBack="true" OnCheckedChanged="chkPurInNo_CheckedChanged" />
                                                                                                                                         </asp:Label>
-                                                                                                                                       
+
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlDrpBorder" style="width: 24%;" id="tdpurin" runat="server">
 
@@ -353,7 +382,7 @@
                                                                                                                                         </cc1:CalendarExtender>
                                                                                                                                     </td>
                                                                                                                                     <td align="left" style="width: 23%;">
-                                                                                                                                        <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" CssClass="datepicker"  Width="20px" />
+                                                                                                                                        <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" CssClass="datepicker" Width="20px" />
                                                                                                                                     </td>
                                                                                                                                 </tr>
                                                                                                                                 <tr style="height: 2px;">
@@ -362,7 +391,7 @@
                                                                                                                                     <td class="ControlLabelproject" style="width: 15%;"><%--Mobile No(Without International Code)--%>
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlDrpBorder" style="width: 24%">
-                                                                                                                                    <%--  <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
+                                                                                                                                        <%--  <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
                                                                                                                                                 <asp:DropDownList ID="drpMobile" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="Mobile" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="drpMobile_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%">
                                                                                                                                                     <asp:ListItem style="background-color: #e7e7e7" Text="Select Mobile" Value="0"></asp:ListItem>
@@ -380,7 +409,7 @@
                                                                                                                                     <td style="width: 15%;" align="left">
                                                                                                                                         <%--<asp:UpdatePanel ID="UpdatePanel10" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>--%>
-                                                                                                                                     
+
                                                                                                                                         <%--</ContentTemplate>
                                                                                                                                 </asp:UpdatePanel>--%>
                                                                                                                                     </td>
@@ -401,9 +430,7 @@
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                     </td>
-                                                                                                                                    <td align="left" style="width: 23%;">
-                                                                                                                                          
-                                                                                                                                    </td>
+                                                                                                                                    <td align="left" style="width: 23%;"></td>
                                                                                                                                 </tr>
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
@@ -414,7 +441,7 @@
                                                                                                                                     <td class="ControlDrpBorder" style="width: 24%;">
                                                                                                                                         <%--   <asp:TextBox ID="TextBox4" AutoPostBack="false" runat="server" Width="500px" onchange="OnChangetxt()"></asp:TextBox>--%>
 
-                                                                                                                                        <asp:DropDownList Visible="false" ID="cmbCustomer" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="LedgerName" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="cmbCustomer_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="300px" >
+                                                                                                                                        <asp:DropDownList Visible="false" ID="cmbCustomer" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="LedgerName" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="cmbCustomer_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="300px">
                                                                                                                                             <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer" Value="0"></asp:ListItem>
                                                                                                                                         </asp:DropDownList>
                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel21" runat="server" UpdateMode="Conditional">
@@ -428,7 +455,7 @@
                                                                                                                                             <Triggers>
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="tabs2$TabPanel1$drpPurchaseReturn" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="chk" EventName="CheckedChanged" />
-                                                                                                                                               <%-- <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />--%>
+                                                                                                                                                <%-- <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />--%>
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="TextBox4" EventName="TextChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
@@ -444,7 +471,7 @@
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 15%;">
-                                                                                                                                         <asp:CheckBox runat="server" ID="chk" Text="Existing Customer" OnCheckedChanged="chk_CheckedChanged" AutoPostBack="true" />
+                                                                                                                                        <asp:CheckBox runat="server" ID="chk" Text="Existing Customer" OnCheckedChanged="chk_CheckedChanged" AutoPostBack="true" />
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlLabelproject" style="width: 10%;">Address1</td>
                                                                                                                                     <td class="ControlTextBox3" style="width: 24%;">
@@ -540,8 +567,49 @@
                                                                                                                                         Rounded off Total *
                                                                                                                             <td class="ControlTextBox3" style="width: 24%;">
                                                                                                                                 <asp:TextBox ID="txtfixedtotal" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" TabIndex="9" Width="500px"></asp:TextBox>
+                                                                                                                                <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender8" runat="server" FilterType="Custom, Numbers" TargetControlID="txtfixedtotal" ValidChars="." />
                                                                                                                             </td>
                                                                                                                                         <td style="width: 23%;"></td>
+                                                                                                                                </tr>
+                                                                                                                                <tr style="height: 2px;">
+                                                                                                                                </tr>
+                                                                                                                                <tr>
+                                                                                                                                    <td colspan="6">
+                                                                                                                                        <asp:UpdatePanel ID="bankPanel" runat="server" UpdateMode="Conditional">
+                                                                                                                                            <ContentTemplate>
+                                                                                                                                                <asp:Panel ID="pnlBank" runat="Server" Visible="false">
+                                                                                                                                                    <table  width="100%">
+                                                                                                                                                        <tr style="height: 2px;">
+                                                                                                                                                        </tr>
+                                                                                                                                                        <tr>
+                                                                                                                                                            <td class="ControlLabelproject" style="width: 15%;" valign="middle">
+                                                                                                                                                                <asp:RequiredFieldValidator ID="rvbank" runat="server" ControlToValidate="drpBankName" Enabled="false" ErrorMessage="Please select Bankname. It cannot be left blank." InitialValue="0" Text="*" ValidationGroup="salesval" />
+                                                                                                                                                                Bank Name* </td>
+
+                                                                                                                                                            <td class="ControlDrpBorder" style="width: 24%;">
+                                                                                                                                                                <asp:DropDownList ID="drpBankName" runat="server" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="LedgerName" DataValueField="LedgerID" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="11" ValidationGroup="salesval" Width="313px">
+                                                                                                                                                                    <asp:ListItem style="background-color: #e7e7e7" Text="Select Bank" Value="0"></asp:ListItem>
+                                                                                                                                                                </asp:DropDownList>
+                                                                                                                                                            </td>
+                                                                                                                                                            <td style="width: 7%;"></td>
+                                                                                                                                                            <td class="ControlLabelproject" style="width: 10%;" valign="middle">
+                                                                                                                                                                <asp:RequiredFieldValidator ID="rvCredit" runat="server" ControlToValidate="txtCreditCardNo" Enabled="false" ErrorMessage="Please enter Cheque\Card number. It cannot be left blank. " Text="*" ValidationGroup="salesval" />
+                                                                                                                                                                Cheque / Credit Card No.* </td>
+                                                                                                                                                            <td class="ControlTextBox3" style="width: 24%;">
+                                                                                                                                                                <asp:TextBox ID="txtCreditCardNo" runat="server" CssClass="cssTextBox" Height="20px" TabIndex="10" ValidationGroup="salesval" Width="500px"></asp:TextBox>
+                                                                                                                                                            </td>
+
+                                                                                                                                                            <td style="width: 23%;"></td>
+                                                                                                                                                        </tr>
+                                                                                                                                                    </table>
+                                                                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender11" runat="server" FilterType="Numbers" TargetControlID="txtCreditCardNo" />
+                                                                                                                                                </asp:Panel>
+                                                                                                                                            </ContentTemplate>
+                                                                                                                                            <Triggers>
+                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpPaymode" EventName="SelectedIndexChanged" />
+                                                                                                                                            </Triggers>
+                                                                                                                                        </asp:UpdatePanel>
+                                                                                                                                    </td>
                                                                                                                                 </tr>
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
@@ -566,44 +634,7 @@
                                                                                                                                 <%--<tr style="height: 2px;">
                                                                                                                             
                                                                                                                         </tr>--%>
-                                                                                                                                <tr>
-                                                                                                                                    <td colspan="6">
-                                                                                                                                        <asp:UpdatePanel ID="bankPanel" runat="server" UpdateMode="Conditional">
-                                                                                                                                            <ContentTemplate>
-                                                                                                                                                <asp:Panel ID="pnlBank" runat="Server" Visible="false">
-                                                                                                                                                    <table cellpadding="2" cellspacing="2" width="100%">
-                                                                                                                                                        <tr style="height: 2px;">
-                                                                                                                                                        </tr>
-                                                                                                                                                        <tr>
-                                                                                                                                                            <td class="ControlLabelproject" style="width: 25%;">
-                                                                                                                                                                <asp:RequiredFieldValidator ID="rvbank" runat="server" ControlToValidate="drpBankName" Enabled="false" ErrorMessage="Please select Bankname. It cannot be left blank." InitialValue="0" Text="*" ValidationGroup="salesval" />
-                                                                                                                                                                Bank Name* </td>
 
-                                                                                                                                                            <td class="ControlDrpBorder" style="width: 24%;">
-                                                                                                                                                                <asp:DropDownList ID="drpBankName" runat="server" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="LedgerName" DataValueField="LedgerID" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="11" ValidationGroup="salesval" Width="313px">
-                                                                                                                                                                    <asp:ListItem style="background-color: #e7e7e7" Text="Select Bank" Value="0"></asp:ListItem>
-                                                                                                                                                                </asp:DropDownList>
-                                                                                                                                                            </td>
-                                                                                                                                                            <td style="width: 7%;"></td>
-                                                                                                                                                            <td class="ControlLabelproject" style="width: 10%;" valign="middle">
-                                                                                                                                                                <asp:RequiredFieldValidator ID="rvCredit" runat="server" ControlToValidate="txtCreditCardNo" Enabled="false" ErrorMessage="Please enter Cheque\Card number. It cannot be left blank. " Text="*" ValidationGroup="salesval" />
-                                                                                                                                                                Cheque / Credit Card No.* </td>
-                                                                                                                                                            <td class="ControlTextBox3" style="width: 24%;">
-                                                                                                                                                                <asp:TextBox ID="txtCreditCardNo" runat="server" CssClass="cssTextBox" Height="20px" TabIndex="10" ValidationGroup="salesval" Width="500px"></asp:TextBox>
-                                                                                                                                                            </td>
-
-                                                                                                                                                            <td style="width: 13%;"></td>
-                                                                                                                                                        </tr>
-                                                                                                                                                    </table>
-                                                                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender11" runat="server" FilterType="Numbers" TargetControlID="txtCreditCardNo" />
-                                                                                                                                                </asp:Panel>
-                                                                                                                                            </ContentTemplate>
-                                                                                                                                            <Triggers>
-                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpPaymode" EventName="SelectedIndexChanged" />
-                                                                                                                                            </Triggers>
-                                                                                                                                        </asp:UpdatePanel>
-                                                                                                                                    </td>
-                                                                                                                                </tr>
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
                                                                                                                                 <%--<tr>
@@ -1038,7 +1069,7 @@
                                                                                                                                                                     <asp:BoundField DataField="RowNumber" HeaderText="#" ItemStyle-Width="45px" ItemStyle-Font-Size="15px" HeaderStyle-ForeColor="Black" />
                                                                                                                                                                     <asp:TemplateField HeaderText="Product Code-Name-Model" ItemStyle-Width="1px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:DropDownList ID="drpPrd" Width="230px"  runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged">
+                                                                                                                                                                            <asp:DropDownList ID="drpPrd" Width="230px" runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged">
                                                                                                                                                                             </asp:DropDownList>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
@@ -1094,16 +1125,19 @@
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Disc(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
+                                                                                                                                                                            <cc1:FilteredTextBoxExtender ID="Disc" runat="server" FilterType="Numbers" TargetControlID="txtDisPre" />
                                                                                                                                                                             <asp:TextBox ID="txtDisPre" Style="text-align: right" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" ReadOnly="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="VAT(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
+                                                                                                                                                                            <cc1:FilteredTextBoxExtender ID="VAT" runat="server" FilterType="Numbers" TargetControlID="txtVATPre" />
                                                                                                                                                                             <asp:TextBox ID="txtVATPre" Style="text-align: right" ReadOnly="false" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="CST(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
+                                                                                                                                                                            <cc1:FilteredTextBoxExtender ID="CST" runat="server" FilterType="Numbers" TargetControlID="txtCSTPre" />
                                                                                                                                                                             <asp:TextBox ID="txtCSTPre" Style="text-align: right" runat="server" ReadOnly="true" Width="35px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
@@ -1430,19 +1464,18 @@
                                                                                     </td>--%>
                                                                                                                     </tr>
                                                                                                                     <tr id="rowmanual" runat="server">
-                                                                                                                       <td style="width: 20%" class="ControlLabelproject">
-                                                                                                                            Manual Sales Book
-                                                                                                                        </td>
-                                                                                                                        <td style="width: 25%">
-                                                                                                                            <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpManualSalesBook_SelectedIndexChanged" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" AppendDataBoundItems="true">
-                                                                                                                                <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>
-                                                                                                                            </asp:DropDownList>
-                                                                                                                        </td>
                                                                                                                         <td class="ControlLabelproject" style="width: 20%;">
                                                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtmanual" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please enter Manual Bill No. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                                             Manual Bill No </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 25%;">
                                                                                                                             <asp:TextBox ID="txtmanual" runat="server" BackColor="#e7e7e7" OnTextChanged="txtmanual_TextChanged" CssClass="cssTextBox" Text="" Width="25px" AutoPostBack="True"></asp:TextBox>
+                                                                                                                        </td>
+                                                                                                                        <td style="width: 20%" class="ControlLabelproject">Manual Sales Book
+                                                                                                                        </td>
+                                                                                                                        <td style="width: 25%">
+                                                                                                                            <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="false" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" AppendDataBoundItems="true">
+                                                                                                                                <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>
+                                                                                                                            </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 15%"></td>
                                                                                                                     </tr>
@@ -1611,7 +1644,7 @@
                                                                                                                 <asp:Button ID="cmdUpdate" runat="server" Enabled="false" OnClick="cmdUpdate_Click"
                                                                                                                     OnClientClick="javascript:Mobile_Validator();ConfirmSMSUpdate();" SkinID="Updatebutton1231"
                                                                                                                     CssClass="Updatebutton1231" EnableTheming="false" Text="" ValidationGroup="salesval" />
-                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click" 
+                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click"
                                                                                                                     SkinID="skinBtnSave" Text="" ValidationGroup="salesval" CssClass="savebutton1231"
                                                                                                                     EnableTheming="false" />
                                                                                                             </td>
