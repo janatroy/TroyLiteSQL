@@ -576,7 +576,7 @@ public partial class CustomerSales : System.Web.UI.Page
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic();
         DataSet ds = new DataSet();
-        
+
         ds = bl.GetManualSalesBooks(sDataSource);
         drpManualSalesBook.DataTextField = "BookName";
         drpManualSalesBook.DataValueField = "BookId";
@@ -712,6 +712,38 @@ public partial class CustomerSales : System.Web.UI.Page
     //    GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
     //    GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
     //}
+
+    private void BindGridWay(string textSearch)
+    {
+        string connection = Request.Cookies["Company"].Value;
+        string branch = Request.Cookies["Branch"].Value;
+        DataSet ds = new DataSet();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        object usernam = Session["LoggedUserName"];
+
+        //if (textSearch == "")
+        //ds = bl.GetSales();
+        ds = bl.GetSalesListWay(connection, textSearch, branch);
+        //else
+        //    ds = bl.GetSalesForId(textSearch, dropDown);
+
+        if (ds != null)
+        {
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                GrdViewSales.DataSource = ds.Tables[0].DefaultView;
+                GrdViewSales.DataBind();
+                //PanelBill.Visible = true;
+            }
+        }
+        else
+        {
+            GrdViewSales.DataSource = null;
+            GrdViewSales.DataBind();
+            //PanelBill.Visible = true;
+        }
+    }
 
     private void BindGrid(string textSearch, string dropDown)
     {
@@ -1001,7 +1033,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1287,7 +1319,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1459,11 +1491,11 @@ public partial class CustomerSales : System.Web.UI.Page
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>Confirm();</script>", false);
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>Confirm();</script>", false);
                     string confirmValue = Request.Form["confirm_value"];
 
                     //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Selected Customer category is different from previous.Do you want to continue?')", true);
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alertMessage", "confirm('Selected Customer category is different from previous.Do you want to continue?')", true);
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "alertMessage", "confirm('Selected Customer category is different from previous.Do you want to continue?')", true);
                     if (confirmValue == "Yes")
                     {
                         FirstGridViewRow();
@@ -1527,7 +1559,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -3159,7 +3191,7 @@ public partial class CustomerSales : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         int bookId = int.Parse(drpManualSalesBook.SelectedValue);
 
-        if(bookId == 0)
+        if (bookId == 0)
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Select Book')", true);
             return;
@@ -3391,7 +3423,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 //Senthil
                 //executivename = drpIncharge.SelectedItem.Text;
-                bookId = int.Parse( drpManualSalesBook.SelectedValue);
+                bookId = int.Parse(drpManualSalesBook.SelectedValue);
                 intTrans = drpIntTrans.SelectedValue;
                 deliveryNote = ddDeliveryNote.SelectedValue;
                 sOtherCusName = txtOtherCusName.Text;// krishnavelu 26 June
@@ -3763,11 +3795,14 @@ public partial class CustomerSales : System.Web.UI.Page
                             }
                             else if (optionmethod.SelectedValue == "NormalSales" || optionmethod.SelectedValue == "ManualSales" || optionmethod.SelectedValue == "DeliveryNote")
                             {
-                                if (drpIncharge.SelectedValue == "0")
+                                if (chkPurInNo.Checked == false)
                                 {
-                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Employee in row " + col + " ')", true);
-                                    checkflag = true;
-                                    return;
+                                    if (drpIncharge.SelectedValue == "0")
+                                    {
+                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Employee in row " + col + " ')", true);
+                                        checkflag = true;
+                                        return;
+                                    }
                                 }
                             }
                             else if (optionmethod.SelectedValue == "NormalSales" && optionmethod.SelectedValue == "ManualSales" && optionmethod.SelectedValue == "DeliveryNote")
@@ -3830,7 +3865,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             }
                             else if (optionmethod.SelectedValue == "PurchaseReturn" || optionmethod.SelectedValue == "DeliveryReturn")
                             {
-                                if (txtRtnQty.Text == "" || txtRtnQty.Text == "0")
+                                if (txtRtnQty.Text == "")
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Return Quantity in row " + col + " ')", true);
                                     txtQty.Focus();
@@ -6335,6 +6370,13 @@ public partial class CustomerSales : System.Web.UI.Page
         lblDisAdd.Text = "";
         lblVATAdd.Text = "";
         lblCSTAdd.Text = "";
+
+        chkAll.Checked = true;
+        chkNorSa.Checked = false;
+        chkManSa.Checked = false;
+        chkPurRtn.Checked = false;
+        chkDelNote.Checked = false;
+        chkDelRtn.Checked = false;
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)
@@ -6368,7 +6410,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7447,7 +7489,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7614,7 +7656,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection,lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7984,6 +8026,10 @@ public partial class CustomerSales : System.Web.UI.Page
             ddSeriesType.Visible = false;
             lblBillNo.Visible = true;
 
+            lblPurRtn.Visible = false;
+            PurInNo.Visible = false;
+            drpPurID.Visible = false;
+            tdpurin.Visible = false;
 
 
             if (Page.User.IsInRole("DELSALES"))
@@ -9319,7 +9365,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                     if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                     {
-                        var receivedBill = bl.IsAmountPaidForBill(connection,sBillNo.ToString());
+                        var receivedBill = bl.IsAmountPaidForBill(connection, sBillNo.ToString());
 
                         if (receivedBill != string.Empty)
                         {
@@ -10993,7 +11039,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             txtRtVAT.ReadOnly = true;
                             txtTotal.ReadOnly = true;
                         }
-                        else if(drpPurchaseReturn.SelectedValue == "YES")
+                        else if (drpPurchaseReturn.SelectedValue == "YES")
                         {
                             drpProduct.Enabled = false;
                             txtQty.ReadOnly = true;
@@ -12411,12 +12457,83 @@ public partial class CustomerSales : System.Web.UI.Page
             drpPaymode.SelectedValue = "3";
             drpPurID.Items.Clear();
             FirstGridViewRow();
-            chkPurInNo.Visible = true;
-            lblPurRtn.Visible = false;
-            PurInNo.Visible = false;
-            drpPurID.Visible = false;
-            tdpurin.Visible = false;
-            tdpurno.Visible = true;
+            // chkPurInNo.Visible = true;
+            // lblPurRtn.Visible = false;
+            // PurInNo.Visible = false;
+            //  drpPurID.Visible = false;
+            //tdpurin.Visible = false;
+            //tdpurno.Visible = true;
+        }
+    }
+    protected void chkAll_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkAll.Checked == true)
+        {
+            chkNorSa.Checked = false;
+            chkManSa.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelNote.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGrid("", "");
+        }
+    }
+    protected void chkNorSa_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkNorSa.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkManSa.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelNote.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGridWay(chkNorSa.Text);
+        }
+    }
+    protected void chkManSa_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkManSa.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkNorSa.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelNote.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGridWay(chkManSa.Text);
+        }
+    }
+    protected void chkPurRtn_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkPurRtn.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkNorSa.Checked = false;
+            chkManSa.Checked = false;
+            chkDelNote.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGridWay(chkPurRtn.Text);
+        }
+    }
+    protected void chkDelNote_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkDelNote.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkNorSa.Checked = false;
+            chkManSa.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGridWay(chkDelNote.Text);
+        }
+    }
+    protected void chkDelRtn_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkDelRtn.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkNorSa.Checked = false;
+            chkManSa.Checked = false;
+            chkPurRtn.Checked = false;         
+            BindGridWay(chkDelRtn.Text);
         }
     }
 }

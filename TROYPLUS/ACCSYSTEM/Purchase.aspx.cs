@@ -2199,8 +2199,10 @@ public partial class Purchase : System.Web.UI.Page
                     return;
                 }
                 iSupplier = Convert.ToInt32(cmbSupplier.SelectedItem.Value);
-
-                dTotalAmt = Convert.ToDouble(lblTotalSum.Text);
+                if (lblTotalSum.Text != "")
+                {
+                    dTotalAmt = Convert.ToDouble(lblTotalSum.Text);
+                }
 
                 /*Start Purchase Loading / Unloading Freight Change - March 16*/
                 double dFreight = 0;
@@ -3768,7 +3770,12 @@ public partial class Purchase : System.Web.UI.Page
                 drpSalesID.Enabled = false;
                 drpSalesID.Items.Clear();
                 salinvno.Visible = false;
-                SaInNo.Visible = false;
+                lblSalRtn.Visible = false;               
+                SalInNo.Visible = false;
+                drpSalesID.Visible = false;
+                tdsalno.Visible = false;
+
+
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
             }
             else if (optionmethod.SelectedValue == "DeliveryNote")
@@ -3802,8 +3809,15 @@ public partial class Purchase : System.Web.UI.Page
                 cmdPaymode.SelectedValue = "3";
                 drpSalesID.Enabled = false;
                 drpSalesID.Items.Clear();
-                salinvno.Visible = false;
-                SaInNo.Visible = false;
+                salinvno.Visible = true;
+              
+
+                lblSalRtn.Visible = false;
+                SalInNo.Visible = true;
+                drpSalesID.Visible = true;
+                tdsalno.Visible = true;
+
+
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
             }
             else if (optionmethod.SelectedValue == "InternalTransfer")
@@ -3836,7 +3850,7 @@ public partial class Purchase : System.Web.UI.Page
                 drpSalesID.Enabled = false;
                 drpSalesID.Items.Clear();
                 salinvno.Visible = false;
-                SaInNo.Visible = false;
+                lblSalRtn.Visible = false;
             }
             else if (optionmethod.SelectedValue == "DeliveryReturn")
             {
@@ -3881,7 +3895,13 @@ public partial class Purchase : System.Web.UI.Page
                 drpSalesID.DataTextField = "BillNo";
                 drpSalesID.DataValueField = "BillNo";
                 salinvno.Visible = true;
-                SaInNo.Visible = true;
+                lblSalRtn.Visible = true;
+
+
+                lblSalRtn.Visible = false;
+                SalInNo.Visible = true;
+                drpSalesID.Visible = true;
+                tdsalno.Visible = true;
             }
             else if (optionmethod.SelectedValue == "SalesReturn")
             {
@@ -3910,8 +3930,14 @@ public partial class Purchase : System.Web.UI.Page
                 drpIntTrans.Enabled = false;
                 drpSalesReturn.Enabled = false;
                 ddDeliveryReturn.Enabled = false;
-                SaInNo.Visible = true;
+               
                 salinvno.Visible = true;
+
+                lblSalRtn.Visible = true;
+                SalInNo.Visible = false;
+                drpSalesID.Visible = true;
+                tdsalno.Visible = true;
+
 
                 DataSet dsa = new DataSet();
                 dsa = bl.ListSalesreturn(sDataSource, drpBranch.SelectedValue);
@@ -4270,6 +4296,34 @@ public partial class Purchase : System.Web.UI.Page
         }
     }
 
+    private void BindGridWay(string textSearch)
+    {
+        DataSet ds = new DataSet();
+        //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        object usernam = Session["LoggedUserName"];
+        string branch = Request.Cookies["Branch"].Value;
+        //if (strBillno == "0" && strTransNo == "0")
+        ds = bl.GetPurchaseListWay(textSearch,branch);
+        //else
+        //    ds = bl.GetPurchaseForId(strBillno, strTransNo);
+
+        if (ds != null)
+        {
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                GrdViewPurchase.DataSource = ds.Tables[0].DefaultView;
+                GrdViewPurchase.DataBind();
+            }
+        }
+        else
+        {
+            GrdViewPurchase.DataSource = null;
+            GrdViewPurchase.DataBind();
+        }
+    }
+
     private void BindGrid(string textSearch, string dropDown)
     {
         DataSet ds = new DataSet();
@@ -4366,6 +4420,12 @@ public partial class Purchase : System.Web.UI.Page
 
             //valdate.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
             //valdate.MaximumValue = System.DateTime.Now.ToShortDateString();
+            salinvno.Visible = false;
+            lblSalRtn.Visible = false;
+            SalInNo.Visible = false;
+            drpSalesID.Visible = false;
+            tdsalno.Visible = false;
+
             cmdSave.Visible = false;
             FirstGridViewRow();
             string enabledate = string.Empty;
@@ -7278,7 +7338,7 @@ public partial class Purchase : System.Web.UI.Page
 
                     if (cmdSave.Visible == true)
                     {
-                        if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
+                        if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                         {
                             drpProduct.Enabled = false;
                             txtQty.ReadOnly = true;
@@ -7992,5 +8052,151 @@ public partial class Purchase : System.Web.UI.Page
             loadSupplier("Sundry Debtors");
         }
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+    }
+    protected void chkSalInNo_CheckedChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic();
+        if (chkSalInNo.Checked == true)
+        {
+            lblHeading.Text = "Delivery Return";
+
+            ddDeliveryReturn.ClearSelection();
+            ListItem cl = ddDeliveryReturn.Items.FindByValue(Convert.ToString("YES"));
+            if (cl != null) cl.Selected = true;
+
+            drpIntTrans.ClearSelection();
+            ListItem cli = drpIntTrans.Items.FindByValue(Convert.ToString("NO"));
+            if (cli != null) cli.Selected = true;
+
+            drpSalesReturn.ClearSelection();
+            ListItem c = drpSalesReturn.Items.FindByValue(Convert.ToString("NO"));
+            if (c != null) c.Selected = true;
+
+            ddDeliveryNote.ClearSelection();
+            ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
+            if (clii != null) clii.Selected = true;
+
+            RequiredFieldValidator2.Enabled = true;
+            rqSalesReturn.Enabled = false;
+            rowdcnum.Visible = true;
+            rowSalesRet.Visible = false;
+            drpIntTrans.Enabled = false;
+            drpSalesReturn.Enabled = false;
+            ddDeliveryReturn.Enabled = false;
+
+            cmdPaymode.SelectedValue = "3";
+
+            DataSet dsa = new DataSet();
+            dsa = bl.ListDeliveryreturn(sDataSource, drpBranch.SelectedValue);
+            drpSalesID.Items.Clear();
+            ListItem lii = new ListItem("Select Sales Invoice Number", "0");
+            lii.Attributes.Add("style", "color:Black");
+            drpSalesID.Enabled = true;
+            drpSalesID.Items.Add(lii);
+            drpSalesID.DataSource = dsa;
+            drpSalesID.Items[0].Attributes.Add("background-color", "color:#bce1fe");
+            drpSalesID.DataBind();
+            drpSalesID.DataTextField = "BillNo";
+            drpSalesID.DataValueField = "BillNo";
+            //salinvno.Visible = true;
+            //lblSalRtn.Visible = true;                     
+            FirstGridViewRow();
+            lblSalRtn.Visible = false;
+            SalInNo.Visible = true;
+            drpSalesID.Visible = true;
+            salinvno.Visible = true;
+            chkSalInNo.Visible = true;
+            tdsalno.Visible = true;
+        }
+        else
+        {
+            lblHeading.Text = "Delivery Note Details";
+
+            drpIntTrans.ClearSelection();
+            ListItem cli = drpIntTrans.Items.FindByValue(Convert.ToString("NO"));
+            if (cli != null) cli.Selected = true;
+
+            drpSalesReturn.ClearSelection();
+            ListItem c = drpSalesReturn.Items.FindByValue(Convert.ToString("NO"));
+            if (c != null) c.Selected = true;
+
+            ddDeliveryReturn.ClearSelection();
+            ListItem cl = ddDeliveryReturn.Items.FindByValue(Convert.ToString("NO"));
+            if (cl != null) cl.Selected = true;
+
+            ddDeliveryNote.ClearSelection();
+            ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("YES"));
+            if (clii != null) clii.Selected = true;
+
+            rqSalesReturn.Enabled = false;
+            rowdcnum.Visible = false;
+            rowSalesRet.Visible = false;
+
+            RequiredFieldValidator2.Enabled = false;
+            drpIntTrans.Enabled = false;
+            drpSalesReturn.Enabled = false;
+            ddDeliveryReturn.Enabled = false;
+            FirstGridViewRow();
+            cmdPaymode.SelectedValue = "3";
+            drpSalesID.Enabled = false;
+            drpSalesID.Items.Clear();
+            //salinvno.Visible = false;
+            //lblSalRtn.Visible = false;
+        }
+    }
+    protected void chkAll_CheckedChanged(object sender, EventArgs e)
+    {
+        if(chkAll.Checked==true)
+        {
+            chkNorSa.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelNote.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGrid("", "");
+        }
+    }
+    protected void chkNorSa_CheckedChanged(object sender, EventArgs e)
+    {
+        if(chkNorSa.Checked==true)
+        {
+            chkAll.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelNote.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGrid("", "");
+        }
+    }
+    protected void chkPurRtn_CheckedChanged(object sender, EventArgs e)
+    {
+        if(chkPurRtn.Checked==true)
+        {
+            chkAll.Checked = false;
+            chkNorSa.Checked = false;
+            chkDelNote.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGridWay(chkPurRtn.Text);
+        }
+    }
+    protected void chkDelNote_CheckedChanged(object sender, EventArgs e)
+    {
+        if(chkDelNote.Checked==true)
+        {
+            chkAll.Checked = false;
+            chkNorSa.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelRtn.Checked = false;
+            BindGridWay(chkDelNote.Text);
+        }
+    }
+    protected void chkDelRtn_CheckedChanged(object sender, EventArgs e)
+    {
+        if(chkDelRtn.Checked==true)
+        {
+            chkAll.Checked = false;
+            chkNorSa.Checked = false;
+            chkPurRtn.Checked = false;
+            chkDelNote.Checked = false;
+            BindGridWay(chkDelRtn.Text);
+        }
     }
 }

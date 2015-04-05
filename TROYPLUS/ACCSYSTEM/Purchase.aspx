@@ -74,7 +74,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            /*}
+        /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -159,6 +159,28 @@
                                             </td>
                                         </tr>
                                     </table>
+                                    <table cellspacing="0px" cellpadding="0px" border="0" width="100%" class="searchbg">
+                                        <tr style="vertical-align: middle">
+                                            <td style="width: 15%; font-size: 14px; color: White;">
+                                                <asp:Label ID="lblView" runat="server" Text="Show :"></asp:Label>
+                                            </td>
+                                            <td style="width: 7%; font-size: 14px; color: White;">
+                                                <asp:CheckBox ID="chkAll" Text="All" Checked="true" runat="server" AutoPostBack="true" OnCheckedChanged="chkAll_CheckedChanged" />
+                                            </td>
+                                            <td style="width: 15%; font-size: 14px; color: White;">
+                                                <asp:CheckBox ID="chkNorSa" Text="Normal Purchase" runat="server" AutoPostBack="true" OnCheckedChanged="chkNorSa_CheckedChanged" />
+                                            </td>
+                                            <td style="width: 15%; font-size: 14px; color: White;">
+                                                <asp:CheckBox ID="chkPurRtn" Text="Sales Return" runat="server" AutoPostBack="true" OnCheckedChanged="chkPurRtn_CheckedChanged"/>
+                                            </td>
+                                            <td style="width: 15%; font-size: 14px; color: White;">
+                                                <asp:CheckBox ID="chkDelNote" Text="Delivery Note" runat="server" AutoPostBack="true" OnCheckedChanged="chkDelNote_CheckedChanged"/>
+                                            </td>
+                                            <td style="width: 15%; font-size: 14px; color: White;">
+                                                <asp:CheckBox ID="chkDelRtn" Text="Delivery Return" runat="server" AutoPostBack="true" OnCheckedChanged="chkDelRtn_CheckedChanged"/>
+                                            </td>                                          
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                             <cc1:ModalPopupExtender ID="ModalPopupMethod" runat="server" BackgroundCssClass="modalBackground"
@@ -209,7 +231,7 @@
                                                                                         <asp:ListItem Selected="True" Value="Purchase">Purchase&nbsp;&nbsp;</asp:ListItem>
                                                                                         <asp:ListItem Value="DeliveryNote">Delivery Note&nbsp;&nbsp;</asp:ListItem>
                                                                                         <%-- <asp:ListItem Value="InternalTransfer">Internal Transfer&nbsp;&nbsp;</asp:ListItem>--%>
-                                                                                        <asp:ListItem Value="DeliveryReturn">Delivery Return&nbsp;&nbsp;</asp:ListItem>
+                                                                                        <%-- <asp:ListItem Value="DeliveryReturn">Delivery Return&nbsp;&nbsp;</asp:ListItem>--%>
                                                                                         <asp:ListItem Value="SalesReturn">Sales Return</asp:ListItem>
                                                                                     </asp:RadioButtonList>
                                                                                 </td>
@@ -292,7 +314,7 @@
                                                                                                     </table>
                                                                                                 </td>
                                                                                             </tr>
-                                                                                            <tr style="height:6px"></tr>
+                                                                                            <tr style="height: 6px"></tr>
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <cc1:TabContainer ID="tabs2" runat="server" Width="1225px" CssClass="fancy fancy-green">
@@ -319,9 +341,11 @@
                                                                                                                             </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 14%;"></td>
-                                                                                                                        <td class="ControlLabelproject" style="width: 14%;">
-                                                                                                                            <asp:Label ID="SaInNo" runat="server">   
-                                                                                                                                  Sales Invoice No 
+                                                                                                                        <td class="ControlLabelproject" style="width: 14%;" id="tdsalno" runat="server">
+                                                                                                                            <asp:Label ID="lblSalRtn" runat="server" Text="Sales Invoice No">                                                                                                                                      
+                                                                                                                            </asp:Label>
+                                                                                                                            <asp:Label ID="SalInNo" runat="server">
+                                                                                                                                <asp:CheckBox runat="server" ID="chkSalInNo" Text="Delivery Return" AutoPostBack="true" OnCheckedChanged="chkSalInNo_CheckedChanged" />
                                                                                                                             </asp:Label>
                                                                                                                         </td>
                                                                                                                         <td class="ControlDrpBorder" style="width: 19%;" id="salinvno" runat="server">
@@ -1356,7 +1380,7 @@
                                                                                                                         </td>
                                                                                                                         <td style="width: 35%"></td>
                                                                                                                     </tr>
-                                                                                                                      <tr style="height: 2px">
+                                                                                                                    <tr style="height: 2px">
                                                                                                                     </tr>
                                                                                                                     <tr>
                                                                                                                         <td class="ControlLabelproject" style="width: 20%">Delivery Note
@@ -1372,7 +1396,7 @@
                                                                                                                         <td style="width: 23%"></td>
                                                                                                                         <td style="width: 35%"></td>
                                                                                                                     </tr>
-                                                                                                                      <tr style="height: 2px">
+                                                                                                                    <tr style="height: 2px">
                                                                                                                     </tr>
                                                                                                                     <tr>
                                                                                                                         <td colspan="5">
@@ -1518,20 +1542,20 @@
                                                 <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                                 <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                                 <Columns>
-                                                    <asp:BoundField DataField="PurchaseID" HeaderText="Voucher No" HeaderStyle-Width="50px" HeaderStyle-Wrap="false"  HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="TransNo" HeaderText="Trans. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" 
+                                                    <asp:BoundField DataField="PurchaseID" HeaderText="Voucher No" HeaderStyle-Width="50px" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="TransNo" HeaderText="Trans. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray"
                                                         HeaderStyle-Width="50px" />
-                                                    <asp:BoundField DataField="Billno" HeaderText="Bill No." HeaderStyle-Width="60px" HeaderStyle-BorderColor="Gray" 
+                                                    <asp:BoundField DataField="Billno" HeaderText="Bill No." HeaderStyle-Width="60px" HeaderStyle-BorderColor="Gray"
                                                         HeaderStyle-Wrap="false" />
-                                                    <asp:BoundField DataField="InvoiceDate" HeaderText="Voucher Date" HeaderStyle-Width="65px" HeaderStyle-BorderColor="Gray"  />
-                                                    <asp:TemplateField HeaderText="Payment Mode" HeaderStyle-BorderColor="Gray" >
+                                                    <asp:BoundField DataField="InvoiceDate" HeaderText="Voucher Date" HeaderStyle-Width="65px" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:TemplateField HeaderText="Payment Mode" HeaderStyle-BorderColor="Gray">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblPaymode" runat="server"></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:BoundField DataField="Supplier" HeaderStyle-Width="130px" HeaderText="Supplier"  HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="Chequeno" Visible="false" HeaderText="Chequeno"  HeaderStyle-BorderColor="Gray" />
-                                                    <asp:BoundField DataField="Creditor" HeaderStyle-Width="130px" HeaderText="Creditor"  HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="Supplier" HeaderStyle-Width="130px" HeaderText="Supplier" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="Chequeno" Visible="false" HeaderText="Chequeno" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="Creditor" HeaderStyle-Width="130px" HeaderText="Creditor" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-Width="60px" DataFormatString="{0:F2}" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="SalesReturn" HeaderText="Sales Return" HeaderStyle-Wrap="true" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-Wrap="true" HeaderStyle-BorderColor="Gray" />

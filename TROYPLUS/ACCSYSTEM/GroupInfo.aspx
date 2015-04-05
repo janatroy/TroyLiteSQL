@@ -343,8 +343,8 @@
                                             AutoGenerateColumns="False" AllowPaging="True" GridLines="Horizontal" Width="100%"
                                             OnRowCreated="grdGroup_RowCreated" HeaderStyle-HorizontalAlign="Center" DataSourceID="grdSource"
                                             OnRowCommand="grdViewGroup_RowCommand" OnRowDataBound="grdViewGroup_RowDataBound" CssClass="someClass">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                         <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
                                                 <asp:BoundField DataField="GroupName" HeaderText="Group Name" HeaderStyle-BorderColor="Gray">
                                                     <ItemStyle Width="50%" Wrap="False" />
