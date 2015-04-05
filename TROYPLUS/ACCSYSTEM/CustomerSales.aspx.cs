@@ -3197,6 +3197,12 @@ public partial class CustomerSales : System.Web.UI.Page
             return;
         }
 
+        if (string.IsNullOrEmpty(txtmanual.Text))
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Manual Bill No')", true);
+            return;
+        }
+
         if (!bl.IsManualSalesBillNoValid(sDataSource, txtmanual.Text.Trim(), bookId))
         {
             txtmanual.Text = string.Empty;
@@ -3205,6 +3211,34 @@ public partial class CustomerSales : System.Web.UI.Page
         }
 
     }
+
+    protected void drpManualSalesBook_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        int bookId = int.Parse(drpManualSalesBook.SelectedValue);
+
+        if (bookId == 0)
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Select Book')", true);
+            return;
+        }
+
+        if (string.IsNullOrEmpty( txtmanual.Text))
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Manual Bill No')", true);
+            return;
+        }
+
+        if (!bl.IsManualSalesBillNoValid(sDataSource, txtmanual.Text.Trim(), bookId))
+        {
+            txtmanual.Text = string.Empty;
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid BillNo. Please correct and try again')", true);
+            return;
+        }
+
+    }
+
 
     protected void cmdSave_Click(object sender, EventArgs e)
     {

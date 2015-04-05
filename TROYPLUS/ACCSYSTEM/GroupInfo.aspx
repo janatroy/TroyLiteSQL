@@ -9,29 +9,53 @@
 
          window.onload = function Showalert() {
 
-             var txt = document.getElementById("<%= txtSearch.ClientID %>")
-              <%--  var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");--%>
-                if (txt.value == "") {
-                    // alert(txt.value);
-                    btn.style.visibility = "hidden";
-                    // when the window is loaded, hide the button if the textbox is empty
-                }
+             var txt = document.getElementById("<%= txtSearch.ClientID %>");
+             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+             // alert('test');
+             if (txt.value == "") {
+                 // alert(txt.value);
+                 btn.style.visibility = "hidden";
+                 // when the window is loaded, hide the button if the textbox is empty
+             }
 
-            }
+         }
 
-            function EnableDisableButton(sender, target) {
-                var first = document.getElementById('<%=txtSearch.ClientID %>');
+         function clearfilterclick() {
+             var button = document.getElementById('<%=BtnClearFilter.ClientID %>');
+             // alert('clicent');
+             button.style.visibility = "hidden";
+             //button.click();
 
-                if (sender.value.length >= 1 && first.value.length >= 1) {
-                   <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";--%>
+         }
 
-                }
 
-                if (sender.value.length < 1 && first.value.length < 1) {
+         function EnableDisableButton(sender, target) {
+             var first = document.getElementById('<%=txtSearch.ClientID %>');
+             //alert('test');
+             <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
 
-                  <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";--%>
-                }
-            }
+
+             if (sender.value.length >= 1 && first.value.length >= 1) {
+                 // alert(sender.value.length);
+                 // alert(first.value.length);
+                 //BtnClearFilter.disabled = false;
+                 <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+                 // window.onload = function ();
+             }
+
+             if (sender.value.length < 1 && first.value.length < 1) {
+                 //alert(sender.value.length);
+                 // alert(first.value.length);
+                 //BtnClearFilter.disabled = true;
+                 <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+             }
+             //else {
+
+             //    document.getElementById(target).disabled = false;
+             //}
+         }
         </script>
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
 
@@ -97,6 +121,12 @@
                                                     OnClick="btnSearch_Click" />
                                             </asp:Panel>
                                         </div>
+                                    </td>
+                                     <td style="width: 16%" class="tblLeftNoPad">
+                                        <%--     <asp:Button ID="btnReset" runat="server" OnClick="BtnClearFilter_Click" Text="Reset" Font-Bold="true"
+            Enabled="false" onclick="btnReset_Click" />--%>
+
+                                        <asp:Button ID="BtnClearFilter"  runat="server"  OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                     </td>
                                 </tr>
                             </table>

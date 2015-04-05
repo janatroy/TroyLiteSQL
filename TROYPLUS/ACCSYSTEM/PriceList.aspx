@@ -394,7 +394,7 @@
                     </td>
                     <td  style="width:5%">
                         <asp:Button ID="Button2" runat="server"  OnClientClick="window.open('BulkPriceAddition.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');" 
-                                    EnableTheming="false" Text="Import New Prices using Excel" Visible="false"></asp:Button>
+                                    EnableTheming="false" Text="Import New Prices using Excel"></asp:Button>
                     </td>
                     <td style="width:26%">
                         <div style="text-align: right;">

@@ -212,6 +212,8 @@
                                                                 <td class="ControlLabel" style="width: 20%">Bank Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Bank Name. It cannot be left bank.">*</asp:RequiredFieldValidator>
+                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom"
+                                                                        TargetControlID="txtLdgrName" ValidChars=" ."  />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtLdgrName" TabIndex="1" runat="server" Text='<%# Bind("LedgerName") %>'
@@ -303,6 +305,8 @@
                                                                     <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                 </td>
                                                                 <td class="ControlLabel" style="width: 13%">Mobile
+                                                                      <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobile"  />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtMobile" MaxLength="12" TabIndex="12" runat="server" Text='<%# Bind("Mobile") %>'
@@ -503,6 +507,8 @@
                                                                 <td class="ControlLabel" style="width: 20%">Bank Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Bank Name. It cannot be left blank."></asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom"
+                                                                        TargetControlID="txtLdgrNameAdd" ValidChars=" ."  />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtLdgrNameAdd" TabIndex="1" runat="server" Height="26px" Text='<%# Bind("LedgerName") %>'
@@ -557,7 +563,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
                                                                         Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
                                                                     <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtOpenBalAdd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalidAdd" runat="server" FilterType="Numbers"
                                                                         TargetControlID="txtOpenBalAdd" />
                                                                 </td>
@@ -598,6 +604,8 @@
                                                                 </td>
 
                                                                 <td class="ControlLabel" style="width: 13%">Mobile
+                                                                      <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobileAdd"/>
                                                                 </td>
 
                                                                 <td class="ControlTextBox3" style="width: 26%">
@@ -652,7 +660,7 @@
                                                                 <td class="ControlDrpBorder" style="width: 26%">
                                                                     <asp:DropDownList ID="drpunuseAdd" TabIndex="14" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpunuseAdd_DataBound" CssClass="drpDownListMedium"
                                                                         Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("unuse") %>'>
-                                                                        <asp:ListItem Text="NO" Value="NO"></asp:ListItem>
+                                                                        <asp:ListItem Text="NO" Value="NO" Enabled="false"></asp:ListItem>
                                                                         <asp:ListItem Text="YES" Value="YES" Selected="True"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
