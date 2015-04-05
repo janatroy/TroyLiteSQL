@@ -26,10 +26,10 @@
                                 </tr>
                             </table>--%>
                             <div class="mainConBody">
-                    <table style="width: 100.3%; margin: -3px 0px 0px 2px;" cellpadding="3" cellspacing="2" class="searchbg">
+                    <table style="width: 99.8%; margin: 0px 0px 0px 2px;" cellpadding="3" cellspacing="2" class="searchbg">
                         <tr style="vertical-align: middle">
                             <td style="width: 2%;"></td>
-                            <td style="width: 23%; font-size: 22px; color: #000000;" >
+                            <td style="width: 23%; font-size: 22px; color: White;" >
                                 Last Verified Date
                             </td>
                             <td style="width: 16%">
@@ -57,7 +57,7 @@
                         </tr>
                         <tr style="width: 100%">
                             
-                                <td class="ControlLabel" style="width: 30%">
+                                <td class="ControlLabel" style="width: 23%">
                                     
                                     <asp:RequiredFieldValidator ID="rvStock" runat="server" ControlToValidate="txtReconDate"
                                         Display="Dynamic" EnableClientScript="True">Date is mandatory</asp:RequiredFieldValidator>
@@ -67,7 +67,7 @@
                                         ErrorMessage="Recon date cannot be future date." Text="*" Type="Date"></asp:RangeValidator>
                                     Date *
                                 </td>
-                                <td style="width: 15%" class="ControlTextBox3">
+                                <td style="width: 23%" class="ControlTextBox3">
                                     <asp:TextBox ID="txtReconDate" runat="server" Width="100px" CssClass="cssTextBox"></asp:TextBox>
                                     
                                 </td>
@@ -80,10 +80,10 @@
                             <tr style="height:3px">
                             </tr>
                             <tr>
-                                <td style="width: 30%" class="ControlLabel">
+                                <td style="width: 20%" class="ControlLabel">
                                     Purchase Entry Date Enable
                                 </td>
-                                <td style="width: 15%" class="ControlTextBox3">
+                                <td style="width: 20%" class="ControlTextBox3">
                                     <asp:RadioButtonList ID="rdvoudateenable" runat="server" RepeatDirection="Horizontal">
                                         <asp:ListItem Selected="True" Text="YES"></asp:ListItem>
                                         <asp:ListItem Text="NO"></asp:ListItem>
@@ -100,7 +100,7 @@
                             <tr>
                                 <td>
                                 </td>
-                                <td style="width: 15%" align="center">
+                                <td style="width: 20%" align="center">
                                     <asp:Button ID="lnkBtnUpdate" runat="server" CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="lnkBtnUpdate_Click" />
                                 </td>
                                 <td>

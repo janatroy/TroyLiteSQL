@@ -321,6 +321,9 @@
                                                                     <tr style="vertical-align: bottom">
                                                                         <td style="width: 25%" class="ControlLabelproject">
                                                                             Select Branch 
+                                                                            <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpBranch" ValidationGroup="Save"
+                                                                        Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Select Branch. It cannot be left blank "
+                                                                        Operator="GreaterThan" ValueToCompare="0" />
                                                                           <%-- <asp:CompareValidator ID="CompareValidator6" runat="server" ControlToValidate="drpBranch"
                                                                              ValidationGroup="Save" ErrorMessage="Please Select Branch" Operator="GreaterThan"
                                                                              Text="*" ValueToCompare="0"></asp:CompareValidator>--%>

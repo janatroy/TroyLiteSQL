@@ -45,7 +45,7 @@ public partial class BankRecon : System.Web.UI.Page
                 lnkBtnAdd.Visible = false;
                 pnlSearch.Visible = false;
             }
-            GrdViewPurchase.PageSize = 8;
+            GrdViewPurchase.PageSize = 11;
 
             string connection = Request.Cookies["Company"].Value;
             string usernam = Request.Cookies["LoggedUserName"].Value;
@@ -228,17 +228,22 @@ public partial class BankRecon : System.Web.UI.Page
         DataSet dst = new DataSet();
         dst = bl.ListBanks();
 
+        ddlCustomer.Items.Clear();
+        ddlCustomer.Items.Add(new ListItem("All", "0"));
         ddlCustomer.DataSource = ds;
         ddlCustomer.DataTextField = "LedgerName";
         ddlCustomer.DataValueField = "LedgerID";
         ddlCustomer.DataBind();
         //ddlCustomer.Items.Insert(0, "All");
 
+        ddlbank.Items.Clear();
+        ddlbank.Items.Add(new ListItem("All", "0"));
         ddlbank.DataSource = dst;
         ddlbank.DataTextField = "LedgerName";
         ddlbank.DataValueField = "LedgerID";
         ddlbank.DataBind();
         //ddlbank.Items.Insert(0, "All");
+        
     }
 
     protected void txtDate_TextChanged(object sender, EventArgs e)
@@ -325,7 +330,7 @@ public partial class BankRecon : System.Web.UI.Page
         try
         {
             var strBillno = txtBillnoSrc.Text.Trim();
-            var strTransno = txtTransNo.Text.Trim();
+            var strTransno = ddCriteria.SelectedValue;
 
             //Accordion1.SelectedIndex = 0;
             BindGrid(strBillno, strTransno);
@@ -1022,7 +1027,11 @@ public partial class BankRecon : System.Web.UI.Page
 
             DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
             string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
-            txtStartDate.Text = dtaa;
+            txtEndDate.Text = dtaa;
+
+            txtStartDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+
+            
         }
         catch (Exception ex)
         {
@@ -1039,15 +1048,11 @@ public partial class BankRecon : System.Web.UI.Page
             String strBillno = string.Empty;
             string strTransNo = string.Empty;
 
-            if (txtBillnoSrc.Text.Trim() != "")
-                strBillno = txtBillnoSrc.Text.Trim();
-            else
-                strBillno = "0";
+            
+                strBillno = txtBillnoSrc.Text;
 
-            if (txtTransNo.Text.Trim() != "")
-                strTransNo = txtTransNo.Text.Trim();
-            else
-                strTransNo = "0";
+                strTransNo = ddCriteria.SelectedValue;
+           
 
 
             BindGrid(strBillno, strTransNo);
@@ -1064,14 +1069,17 @@ public partial class BankRecon : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);     
         object usernam = Session["LoggedUserName"];
 
-        if (strBillno == "0" && strTransNo == "0")
-        {
-            ds = bl.GetBankRec();   
-        }
-        else
-        {
-            ds = bl.GetBankRecID(strBillno, strTransNo);
-        }
+        //if (strBillno == "0" && strTransNo == "0")
+        //{
+        //    ds = bl.GetBankRec();   
+        //}
+        //else
+        //{
+
+        string connection = Request.Cookies["Company"].Value;
+
+        ds = bl.GetBankRecID(strBillno, strTransNo, connection);
+        //}
            
 
         if (ds != null)
@@ -1093,39 +1101,100 @@ public partial class BankRecon : System.Web.UI.Page
     private void BindBankStatement()
     {
         //GrdViewItems.PageSize = 6;
-        int iLedgerID = 0;
+        string iLedgerID = string.Empty;
         DateTime startDate;
+        DateTime EndDate;
 
         DataSet ds = new DataSet();
         DataSet dsttt = new DataSet();
         BusinessLogic objBL = new BusinessLogic();
 
+        string connection = Request.Cookies["Company"].Value;
+
         string Types = string.Empty;
         if (opnbank.SelectedItem.Text == "Bank")
         {
-            iLedgerID = Convert.ToInt32(ddlbank.SelectedItem.Value);
-            Types = "Bank";
+            if (ddlbank.SelectedValue == "0")
+            {
+                DataSet dst = new DataSet();
+                dst = objBL.ListBanks(connection);
+
+                foreach (DataRow drdd in dst.Tables[0].Rows)
+                {
+                    iLedgerID = iLedgerID + drdd["ledgerid"] + ",";
+                }
+                iLedgerID = iLedgerID.TrimEnd(',');
+
+               
+                Types = "Bank";
+            }
+            else
+            {
+                iLedgerID = ddlbank.SelectedItem.Value;
+                Types = "Bank";
+            }
         }
         else if (opnbank.SelectedItem.Text == "Customer")
         {
-            iLedgerID = Convert.ToInt32(ddlCustomer.SelectedItem.Value);
-            Types = "Customer";
+            if (ddlCustomer.SelectedValue == "0")
+            {
+                DataSet dst = new DataSet();
+                ds = objBL.ListSundryDebtorsPaymentMade(sDataSource);
+
+                foreach (DataRow drdd in dst.Tables[0].Rows)
+                {
+                    iLedgerID = iLedgerID + drdd["ledgerid"] + ",";
+                }
+                iLedgerID = iLedgerID.TrimEnd(',');
+
+
+                Types = "Customer";
+            }
+            else
+            {
+                iLedgerID = ddlCustomer.SelectedItem.Value;
+                Types = "Customer";
+            }
+
+           
         }
-
-        objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-
-        startDate = Convert.ToDateTime(txtStartDate.Text);
 
         string usernam = Request.Cookies["LoggedUserName"].Value;
 
-        dsttt = objBL.checkbankreconciliation(iLedgerID, startDate, sDataSource, usernam, Types);
+        objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
+
+        if (objBL.CheckUserHaveAdd(usernam, "BNKREC"))
+        {
+            GrdViewItems.Enabled = false;
+        }
+        else
+        {
+            GrdViewItems.Enabled = true;
+        }
+
+        if (objBL.CheckUserHaveEdit(usernam, "BNKREC"))
+        {
+            BulkEditGridView1.Enabled = false;
+        }
+        else
+        {
+            BulkEditGridView1.Enabled = true;
+        }
+
+
+        startDate = Convert.ToDateTime(txtStartDate.Text);
+        EndDate = Convert.ToDateTime(txtEndDate.Text);
+
+        
+
+        dsttt = objBL.checkbankreconciliation(iLedgerID, startDate, sDataSource, usernam, Types, EndDate);
 
         if (dsttt != null)
         {
             if (dsttt.Tables[0].Rows.Count > 0)
             {
-                dsttt = objBL.getbankreconciliation1(iLedgerID, startDate, sDataSource, usernam);
-                ds = objBL.getbankrecon(iLedgerID, startDate, sDataSource, usernam, Types);
+                dsttt = objBL.getbankreconciliation1(iLedgerID, startDate, sDataSource, usernam, EndDate);
+                ds = objBL.getbankrecon(iLedgerID, startDate, sDataSource, usernam, Types, EndDate);
 
                 //if (dsttt != null)
                 //{
@@ -1149,40 +1218,119 @@ public partial class BankRecon : System.Web.UI.Page
                 if (dsttt != null)
                 {
                     if (dsttt.Tables[0].Rows.Count > 0)
-                        ds.Tables[0].Merge(dsttt.Tables[0]);
+                    {
+                        GrdViewItems.DataSource = dsttt;
+                        
+                        GrdViewItems.DataBind();
+                        ModalPopupProduct.Show();
+                        updatePnlProduct.Update();
+                        //GrdViewItems.Visible = true;
+                    }
+                }
+                else
+                {
+                    GrdViewItems.DataSource = null;
+                    GrdViewItems.EmptyDataText = "No Entries Found";
+                    GrdViewItems.DataBind();
+                    updatePnlProduct.Update();
+                    //ModalPopupProduct.Show();
+
+                   
+                }
+
+                //if (dsttt != null)
+                //{
+                //    if (dsttt.Tables[0].Rows.Count > 0)
+                //        ds.Tables[0].Merge(dsttt.Tables[0]);
+                //}
+
+                if (ds != null)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        BulkEditGridView1.DataSource = ds;
+                        BulkEditGridView1.DataBind();
+                        ModalPopupProduct.Show();
+                        updatePnlProduct.Update();
+                        //GrdViewItems.Visible = true;
+                    }
+                }
+                else
+                {
+                    BulkEditGridView1.DataSource = null;
+                    BulkEditGridView1.EmptyDataText = "No Entries Found";
+                    BulkEditGridView1.DataBind();
+                    updatePnlProduct.Update();
+                    //ModalPopupProduct.Show();
+
+
                 }
             }
             else
             {
-                ds = objBL.getbankreconciliation(iLedgerID, startDate, sDataSource, usernam);
+                ds = objBL.getbankreconciliation(iLedgerID, startDate, sDataSource, usernam, EndDate);
+
+                if (ds != null)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        GrdViewItems.DataSource = ds;
+                        GrdViewItems.DataBind();
+                        ModalPopupProduct.Show();
+                        updatePnlProduct.Update();
+                        //GrdViewItems.Visible = true;
+                    }
+                }
+                else
+                {
+                    GrdViewItems.DataSource = null;
+                    GrdViewItems.EmptyDataText = "No Entries Found";
+                    GrdViewItems.DataBind();
+                    updatePnlProduct.Update();
+                    //ModalPopupProduct.Show();
+
+                    ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
+                    ModalPopupProduct.Hide();
+                    return;
+                }
+                BulkEditGridView1.DataSource = null;
+                BulkEditGridView1.EmptyDataText = "No Entries Found";
+                BulkEditGridView1.DataBind();
             }
         }
         else
         {
-            ds = objBL.getbankreconciliation(iLedgerID, startDate, sDataSource, usernam);
+            ds = objBL.getbankreconciliation(iLedgerID, startDate, sDataSource, usernam, EndDate);
+
+            if (ds != null)
+            {
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    GrdViewItems.DataSource = ds;
+                    GrdViewItems.DataBind();
+                    ModalPopupProduct.Show();
+                    updatePnlProduct.Update();
+                    //GrdViewItems.Visible = true;
+                }
+            }
+            else
+            {
+                GrdViewItems.DataSource = null;
+                GrdViewItems.EmptyDataText = "No Entries Found";
+                GrdViewItems.DataBind();
+                updatePnlProduct.Update();
+                //ModalPopupProduct.Show();
+
+                ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
+                ModalPopupProduct.Hide();
+                return;
+            }
+            BulkEditGridView1.DataSource = null;
+            BulkEditGridView1.EmptyDataText = "No Entries Found";
+            BulkEditGridView1.DataBind();
         }
 
-        if (ds != null)
-        {
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                GrdViewItems.DataSource = ds;
-                GrdViewItems.DataBind();
-                ModalPopupProduct.Show();
-                updatePnlProduct.Update();
-                //GrdViewItems.Visible = true;
-            }
-        }
-        else
-        {
-            GrdViewItems.DataSource = null;
-            GrdViewItems.DataBind();
-            updatePnlProduct.Update();
-            //ModalPopupProduct.Show();
-            ModalPopupProduct.Hide();
-            ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found');", true);
-            return;
-        }
+        
 
 
         //GrdViewItems.PageSize = 6;
@@ -1924,6 +2072,31 @@ public partial class BankRecon : System.Web.UI.Page
         }
     }
 
+    protected void BulkEditGridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //e.Row.Cells[3].Visible = false;
+                TextBox txt = (TextBox)e.Row.FindControl("txtDate");
+                TextBox txtet = (TextBox)e.Row.FindControl("txtResult");
+                if ((txt.Text != "") || (txtet.Text != ""))
+                {
+                    e.Row.ForeColor = System.Drawing.Color.Blue;
+                }
+                else
+                {
+                    e.Row.ForeColor = System.Drawing.Color.SteelBlue;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
     protected void GrdViewItems_PreRender(object sender, EventArgs e)
     {
         try
@@ -2001,6 +2174,14 @@ public partial class BankRecon : System.Web.UI.Page
         try
         {
 
+            BusinessLogic objBL = new BusinessLogic();
+            objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
+
+            string Userna = Request.Cookies["LoggedUserName"].Value;
+
+            string usernam = Request.Cookies["LoggedUserName"].Value;
+
+
             DataSet ds;
             DataTable dt;
             DataRow drNew;
@@ -2056,73 +2237,160 @@ public partial class BankRecon : System.Web.UI.Page
             ds.Tables.Add(dt);
 
             DateTime textdate;
+            DateTime EndDate;
             Label lblDebtorID = null;
             Label lblCreditorID = null;
             //Label lblDebtorID = null;
 
-            for (int vLoop = 0; vLoop < GrdViewItems.Rows.Count; vLoop++)
+
+            if (objBL.CheckUserHaveAdd(usernam, "BNKREC"))
             {
-                TextBox txt = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDate");
-                string text = txt.Text;
-
-                TextBox tx = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtResult");
-                string text2 = tx.Text;
-
-                if (text == "" && text2 == "")
+                
+            }
+            else
+            {
+                for (int vLoop = 0; vLoop < GrdViewItems.Rows.Count; vLoop++)
                 {
+                    TextBox txt = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtDate");
+                    string text = txt.Text;
 
-                }
-                else
-                {
-                    textdate = DateTime.Parse(text);
-                    if (text != "")
+                    TextBox tx = (TextBox)GrdViewItems.Rows[vLoop].FindControl("txtResult");
+                    string text2 = tx.Text;
+
+                    if (text == "" && text2 == "")
                     {
-                        drNew = dt.NewRow();
-                        drNew["TransNo"] = GrdViewItems.Rows[vLoop].Cells[0].Text;
-                        drNew["Date"] = GrdViewItems.Rows[vLoop].Cells[1].Text;
-                        drNew["Debtor"] = GrdViewItems.Rows[vLoop].Cells[2].Text;
 
-                        lblDebtorID = (Label)GrdViewItems.Rows[vLoop].FindControl("lblDebtorID");
-                        drNew["DebtorID"] = lblDebtorID.Text;
-
-                        drNew["Creditor"] = GrdViewItems.Rows[vLoop].Cells[4].Text;
-
-                        lblCreditorID = (Label)GrdViewItems.Rows[vLoop].FindControl("lblCreditorID");
-                        drNew["CreditorID"] = lblCreditorID.Text;
-
-                        drNew["Amount"] = GrdViewItems.Rows[vLoop].Cells[6].Text;
-                        drNew["Narration"] = GrdViewItems.Rows[vLoop].Cells[7].Text;
-                        drNew["VoucherType"] = GrdViewItems.Rows[vLoop].Cells[8].Text;
-
-                        string logdescription = GrdViewItems.Rows[vLoop].Cells[9].Text;
-                        string value1 = string.Empty;
-
-
-                        if (logdescription == "&nbsp;")
+                    }
+                    else
+                    {
+                        textdate = DateTime.Parse(text);
+                        if (text != "")
                         {
-                            drNew["ChequeNo"] = "";
-                        }
-                        else
-                        {
-                            if (logdescription.Length > 20)
+                            drNew = dt.NewRow();
+                            drNew["TransNo"] = GrdViewItems.Rows[vLoop].Cells[0].Text;
+                            drNew["Date"] = GrdViewItems.Rows[vLoop].Cells[1].Text;
+                            drNew["Debtor"] = GrdViewItems.Rows[vLoop].Cells[2].Text;
+
+                            lblDebtorID = (Label)GrdViewItems.Rows[vLoop].FindControl("lblDebtorID");
+                            drNew["DebtorID"] = lblDebtorID.Text;
+
+                            drNew["Creditor"] = GrdViewItems.Rows[vLoop].Cells[4].Text;
+
+                            lblCreditorID = (Label)GrdViewItems.Rows[vLoop].FindControl("lblCreditorID");
+                            drNew["CreditorID"] = lblCreditorID.Text;
+
+                            drNew["Amount"] = GrdViewItems.Rows[vLoop].Cells[6].Text;
+                            drNew["Narration"] = GrdViewItems.Rows[vLoop].Cells[7].Text;
+                            drNew["VoucherType"] = GrdViewItems.Rows[vLoop].Cells[8].Text;
+
+                            string logdescription = GrdViewItems.Rows[vLoop].Cells[9].Text;
+                            string value1 = string.Empty;
+
+
+                            if (logdescription == "&nbsp;")
                             {
-                                value1 = logdescription.Substring(0, 19);
-                                drNew["ChequeNo"] = value1;
+                                drNew["ChequeNo"] = "";
                             }
                             else
                             {
-                                drNew["ChequeNo"] = GrdViewItems.Rows[vLoop].Cells[9].Text;
+                                if (logdescription.Length > 20)
+                                {
+                                    value1 = logdescription.Substring(0, 19);
+                                    drNew["ChequeNo"] = value1;
+                                }
+                                else
+                                {
+                                    drNew["ChequeNo"] = GrdViewItems.Rows[vLoop].Cells[9].Text;
+                                }
                             }
-                        }
 
-                        drNew["ReconcilatedBy"] = GrdViewItems.Rows[vLoop].Cells[10].Text;
-                        drNew["Reconcilateddate"] = textdate;
-                        drNew["Result"] = text2;
-                        drNew["BranchCode"] = GrdViewItems.Rows[vLoop].Cells[14].Text;
-                        ds.Tables[0].Rows.Add(drNew);
+                            drNew["ReconcilatedBy"] = GrdViewItems.Rows[vLoop].Cells[10].Text;
+                            drNew["Reconcilateddate"] = textdate;
+                            drNew["Result"] = text2;
+                            drNew["BranchCode"] = GrdViewItems.Rows[vLoop].Cells[14].Text;
+                            ds.Tables[0].Rows.Add(drNew);
+                        }
                     }
                 }
             }
+
+            if (objBL.CheckUserHaveEdit(usernam, "BNKREC"))
+            {
+                
+            }
+            else
+            {
+
+
+                for (int vLoop = 0; vLoop < BulkEditGridView1.Rows.Count; vLoop++)
+                {
+                    TextBox txt = (TextBox)BulkEditGridView1.Rows[vLoop].FindControl("txtDate");
+                    string text = txt.Text;
+
+                    TextBox tx = (TextBox)BulkEditGridView1.Rows[vLoop].FindControl("txtResult");
+                    string text2 = tx.Text;
+
+                    if (text == "" && text2 == "")
+                    {
+
+                    }
+                    else
+                    {
+                        textdate = DateTime.Parse(text);
+                        if (text != "")
+                        {
+                            drNew = dt.NewRow();
+                            drNew["TransNo"] = BulkEditGridView1.Rows[vLoop].Cells[0].Text;
+                            drNew["Date"] = BulkEditGridView1.Rows[vLoop].Cells[1].Text;
+                            drNew["Debtor"] = BulkEditGridView1.Rows[vLoop].Cells[2].Text;
+
+                            lblDebtorID = (Label)BulkEditGridView1.Rows[vLoop].FindControl("lblDebtorID");
+                            drNew["DebtorID"] = lblDebtorID.Text;
+
+                            drNew["Creditor"] = BulkEditGridView1.Rows[vLoop].Cells[4].Text;
+
+                            lblCreditorID = (Label)BulkEditGridView1.Rows[vLoop].FindControl("lblCreditorID");
+                            drNew["CreditorID"] = lblCreditorID.Text;
+
+                            drNew["Amount"] = BulkEditGridView1.Rows[vLoop].Cells[6].Text;
+                            drNew["Narration"] = BulkEditGridView1.Rows[vLoop].Cells[7].Text;
+                            drNew["VoucherType"] = BulkEditGridView1.Rows[vLoop].Cells[8].Text;
+
+                            string logdescription = BulkEditGridView1.Rows[vLoop].Cells[9].Text;
+                            string value1 = string.Empty;
+
+
+                            if (logdescription == "&nbsp;")
+                            {
+                                drNew["ChequeNo"] = "";
+                            }
+                            else
+                            {
+                                if (logdescription.Length > 20)
+                                {
+                                    value1 = logdescription.Substring(0, 19);
+                                    drNew["ChequeNo"] = value1;
+                                }
+                                else
+                                {
+                                    drNew["ChequeNo"] = BulkEditGridView1.Rows[vLoop].Cells[9].Text;
+                                }
+                            }
+
+                            drNew["ReconcilatedBy"] = BulkEditGridView1.Rows[vLoop].Cells[10].Text;
+                            drNew["Reconcilateddate"] = textdate;
+                            drNew["Result"] = text2;
+                            drNew["BranchCode"] = BulkEditGridView1.Rows[vLoop].Cells[14].Text;
+                            ds.Tables[0].Rows.Add(drNew);
+                        }
+                    }
+                }
+            }
+
+
+            
+
+          
 
             //foreach (GridViewRow gridRow in GrdViewItems.Rows)
             //{
@@ -2144,35 +2412,80 @@ public partial class BankRecon : System.Web.UI.Page
             //    ds.Tables[0].Rows.Add(drNew);
             //}
 
-            string Userna = Request.Cookies["LoggedUserName"].Value;
+            
+
+            string connection = Request.Cookies["Company"].Value;
 
             string iLedgerName = string.Empty;
             string Types = string.Empty;
-            int iLedgerID = 0;
+            string iLedgerID = string.Empty;
             DateTime startDate;
             if (opnbank.SelectedItem.Text == "Bank")
             {
-                iLedgerID = Convert.ToInt32(ddlbank.SelectedItem.Value);
-                Types = "Bank";
-                iLedgerName = ddlbank.SelectedItem.Text;
+                //iLedgerID = Convert.ToInt32(ddlbank.SelectedItem.Value);
+                //Types = "Bank";
+                
+
+                if (ddlbank.SelectedValue == "0")
+                {
+                    DataSet dst = new DataSet();
+                    dst = objBL.ListBanks(connection);
+
+                    foreach (DataRow drdd in dst.Tables[0].Rows)
+                    {
+                        iLedgerID = iLedgerID + drdd["ledgerid"] + ",";
+                    }
+                    iLedgerID = iLedgerID.TrimEnd(',');
+
+
+                    Types = "Bank";
+                    iLedgerName = ddlbank.SelectedItem.Text;
+                }
+                else
+                {
+                    iLedgerID = ddlbank.SelectedValue;
+                    Types = "Bank";
+                    iLedgerName = ddlbank.SelectedItem.Text;
+                }
+
             }
             else if (opnbank.SelectedItem.Text == "Customer")
             {
-                iLedgerID = Convert.ToInt32(ddlCustomer.SelectedItem.Value);
-                Types = "Customer";
-                iLedgerName = ddlCustomer.SelectedItem.Text;
+                if (ddlCustomer.SelectedValue == "0")
+                {
+                    DataSet dst = new DataSet();
+                    dst = objBL.ListSundryDebtorsPaymentMade(sDataSource);
+
+                    foreach (DataRow drdd in dst.Tables[0].Rows)
+                    {
+                        iLedgerID = iLedgerID + drdd["ledgerid"] + ",";
+                    }
+                    iLedgerID = iLedgerID.TrimEnd(',');
+
+
+                    Types = "Customer";
+                }
+                else
+                {
+                    iLedgerID = ddlCustomer.SelectedItem.Value;
+                    iLedgerName = ddlCustomer.SelectedItem.Text;
+                    Types = "Customer";
+                }
+
+              
             }
 
             startDate = Convert.ToDateTime(txtStartDate.Text);
+            EndDate = Convert.ToDateTime(txtEndDate.Text);
 
             if (ds != null)
             {
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    BusinessLogic objBL = new BusinessLogic();
-                    objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
-                    objBL.InsertBankReconciliation(ds, Userna, iLedgerID, startDate, iLedgerName, Types);
+
+
+                    objBL.InsertBankReconciliation(ds, Userna, iLedgerID, startDate, iLedgerName, Types, EndDate);
 
 
                     //string salestype = string.Empty;
@@ -2315,9 +2628,27 @@ public partial class BankRecon : System.Web.UI.Page
                         {
                             if ((ds.Tables[0].Rows.Count < 0) || (ds.Tables[0].Rows.Count == 0))
                             {
-                                BusinessLogic objBL = new BusinessLogic();
+                                //BusinessLogic objBL = new BusinessLogic();
                                 objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-                                objBL.DelBankReconciliation(ds, Userna, iLedgerID, startDate, iLedgerName, Types);
+                                objBL.DelBankReconciliation(ds, Userna, iLedgerID, startDate, iLedgerName, Types, EndDate);
+
+
+                                //BindGrid("0", "0");
+
+                                //UpdatePnlMaster.Update();
+                                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Reconciliated Successfully');", true);
+                            }
+                        }
+                    }
+                    for (int vLoop = 0; vLoop < BulkEditGridView1.Rows.Count; vLoop++)
+                    {
+                        if (ds != null)
+                        {
+                            if ((ds.Tables[0].Rows.Count < 0) || (ds.Tables[0].Rows.Count == 0))
+                            {
+                                //BusinessLogic objBL = new BusinessLogic();
+                                objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
+                                objBL.DelBankReconciliation(ds, Userna, iLedgerID, startDate, iLedgerName, Types, EndDate);
 
 
                                 //BindGrid("0", "0");
@@ -2423,15 +2754,12 @@ public partial class BankRecon : System.Web.UI.Page
             String strBillno = string.Empty;
             string strTransNo = string.Empty;
 
-            if (txtBillnoSrc.Text.Trim() != "")
-                strBillno = txtBillnoSrc.Text.Trim();
-            else
-                strBillno = "0";
+            
+                strBillno = txtBillnoSrc.Text;
+            
 
-            if (txtTransNo.Text.Trim() != "")
-                strTransNo = txtTransNo.Text.Trim();
-            else
-                strTransNo = "0";
+            strTransNo = ddCriteria.SelectedValue;
+           
 
             BindGrid(strBillno, strTransNo);
         }

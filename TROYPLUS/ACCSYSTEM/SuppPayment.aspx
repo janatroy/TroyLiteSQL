@@ -274,7 +274,7 @@
     </script>
 
     <style id="Style1" runat="server">
-        .someClass td {
+        /*.someClass td {
             font-size: 12px;
             border: 1px solid Gray;
         }
@@ -306,7 +306,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            }
+            /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -323,7 +323,7 @@
             border: 1px solid #999999;
             padding: 8px;
             background-color: #ffffff;
-        }
+        }*/
     </style>
 
     <asp:UpdatePanel ID="UpdatePanelPage" runat="server" UpdateMode="Conditional">
@@ -366,10 +366,13 @@
                                     </td>
                                     <td style="width: 18%" class="NewBox">
                                         <asp:TextBox ID="txtSearch" runat="server" CssClass="cssTextBox" Width="92%"></asp:TextBox>
+                                         <cc1:CalendarExtender ID="txtdatet" runat="server"
+                                            Enabled="false" TargetControlID="txtSearch" Format="dd/MM/yyyy">
+                                        </cc1:CalendarExtender>
                                     </td>
                                     <td style="width: 18%" class="NewBox">
                                         <div style="width: 160px; font-family: 'Trebuchet MS';">
-                                            <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="White" Height="23px" Style="text-align: center; border: 1px solid White">
+                                            <asp:DropDownList ID="ddCriteria" runat="server" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" AutoPostBack="true" Width="154px" BackColor="White" Height="23px" Style="text-align: center; border: 1px solid White">
                                                 <%--<asp:ListItem Value="0" style="background-color: #bce1fe">All</asp:ListItem>--%>
                                                 <asp:ListItem Value="TransNo">Trans. No.</asp:ListItem>
                                                 <asp:ListItem Value="RefNo">Ref. No.</asp:ListItem>
@@ -579,7 +582,7 @@
                                                                                                                         <td id="Td1" class="ControlLabel" runat="server" style="width: 24%">Bank Name *
                                                                                                                         </td>
                                                                                                                         <td id="Td2" runat="server" style="width: 25%" class="ControlDrpBorder">
-                                                                                                                            <asp:DropDownList ID="ddBanks" runat="server" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium" BackColor="#e7e7e7" Width="100%" AutoPostBack="true" OnSelectedIndexChanged="ddBanks_SelectedIndexChanged"
+                                                                                                                            <asp:DropDownList ID="ddBanks" runat="server" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium" BackColor="#e7e7e7" Width="100%" AutoPostBack="true" 
                                                                                                                                 DataTextField="LedgerName" DataValueField="LedgerID" AppendDataBoundItems="True">
                                                                                                                                 <asp:ListItem Selected="True" style="background-color: #e7e7e7" Value="0">Select Bank</asp:ListItem>
                                                                                                                             </asp:DropDownList>
@@ -1240,7 +1243,7 @@
                                                                                                                                                         <asp:BoundField DataField="RowNumber" HeaderText="#" ItemStyle-Width="5px" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="#0567AE"  HeaderStyle-Width="6%"/>
                                                                                                                                                         <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Mode of Payment" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="15%">
                                                                                                                                                             <ItemTemplate>
-                                                                                                                                                                <asp:DropDownList ID="txtType" runat="server" CssClass="drpDownListMedium" Width="98%" BackColor="White" SelectedValue='<%# Eval("Type")%>' 
+                                                                                                                                                                <asp:DropDownList ID="txtType" runat="server" CssClass="drpDownListMedium" Width="98%" BackColor="White"
                                                                                                                                                                     style="border:1px solid #cccccc" ForeColor="#006699" Height="22px" OnSelectedIndexChanged="txtType_SelectedIndexChanged" AutoPostBack="True"
                                                                                                                                                                     AppendDataBoundItems="true"  Font-Bold="true">
                                                                                                                                                                     <asp:ListItem Text="Select Type" Value="0"></asp:ListItem>
@@ -1253,7 +1256,7 @@
                                                                                                                                                         
                                                                                                                                                         <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Reference Number" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="24%">
                                                                                                                                                             <ItemTemplate>
-                                                                                                                                                                <asp:TextBox ID="txtRefNo" Text='<%# Eval("RefNo")%>' runat="server" Width="98%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699"  Font-Bold="true"
+                                                                                                                                                                <asp:TextBox ID="txtRefNo" runat="server" Width="98%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699"  Font-Bold="true"
                                                                                                                                                                     ></asp:TextBox>
 
                                                                                                                                                                 
@@ -1271,7 +1274,7 @@
                                                                                                                                                         
                                                                                                                                                         <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Amount" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="11%">
                                                                                                                                                             <ItemTemplate>
-                                                                                                                                                                <asp:TextBox ID="txtAmount" Text='<%# Eval("Amount")%>' Font-Bold="true" runat="server" Width="96%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" AutoPostBack="true" OnTextChanged="txtAmount_TextChanged"
+                                                                                                                                                                <asp:TextBox ID="txtAmount" Font-Bold="true" runat="server" Width="96%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" AutoPostBack="true" OnTextChanged="txtAmount_TextChanged"
                                                                                                                                                                     ></asp:TextBox>
                                                                                                                                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender312" runat="server" TargetControlID="txtAmount"
                                                                                                                                     ValidChars="." FilterType="Numbers, Custom" />
@@ -1284,8 +1287,8 @@
                                                                                                                                                         </asp:TemplateField>
                                                                                                                                                         <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Name of Bank" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="13%">
                                                                                                                                                             <ItemTemplate>
-                                                                                                                                                                <asp:DropDownList ID="drpBank" runat="server" BackColor="White" CssClass="drpDownListMedium" Width="98%" AutoPostBack="False"  Font-Bold="true"
-                                                                                                                                                                    DataValueField="LedgerID" DataTextField="LedgerName" SelectedValue='<%# Eval("DebtorID")%>'  Style="border: 1px solid #cccccc" ForeColor="#006699"
+                                                                                                                                                                <asp:DropDownList ID="drpBank" runat="server" BackColor="White" CssClass="drpDownListMedium" Width="98%" AutoPostBack="True"  Font-Bold="true"
+                                                                                                                                                                    DataValueField="LedgerID" DataTextField="LedgerName" OnSelectedIndexChanged="drpBank_SelectedIndexChanged"  Style="border: 1px solid #cccccc" ForeColor="#006699"
                                                                                                                                                                     AppendDataBoundItems="true" ValidationGroup="editVal">
                                                                                                                                                                     <%--<asp:ListItem Text="Select Creditor" style="background-color: White; color:#006699" Value="0"></asp:ListItem>--%>
                                                                                                                                                                 </asp:DropDownList>
@@ -1294,12 +1297,17 @@
                                                                                                                                                         </asp:TemplateField>
                                                                                                                                                          <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Cheque/Card Number" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="12%">
                                                                                                                                                             <ItemTemplate>
-                                                                                                                                                                <asp:TextBox ID="txtChequeNo" Text='<%# Eval("ChequeNo")%>' runat="server" Width="96%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" Font-Bold="true" ForeColor="#006699"></asp:TextBox>
+                                                                                                                                                                <asp:DropDownList ID="txtChequeNo" runat="server" BackColor="White" CssClass="drpDownListMedium" Width="98%" AutoPostBack="False"  Font-Bold="true"
+                                                                                                                                                                    DataValueField="ChequeNo" DataTextField="ChequeNo"  Style="border: 1px solid #cccccc" ForeColor="#006699"
+                                                                                                                                                                    AppendDataBoundItems="true" ValidationGroup="editVal">
+                                                                                                                                                                    <%--<asp:ListItem Text="Select Creditor" style="background-color: White; color:#006699" Value="0"></asp:ListItem>--%>
+                                                                                                                                                                </asp:DropDownList>
+                                                                                                                                                                <asp:TextBox ID="txtChequeNo1" Visible="false" runat="server" Width="96%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" Font-Bold="true" ForeColor="#006699"></asp:TextBox>
                                                                                                                                                             </ItemTemplate>
                                                                                                                                                         </asp:TemplateField>
                                                                                                                                                         <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Remarks" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="19%">
                                                                                                                                                             <ItemTemplate>
-                                                                                                                                                                <asp:TextBox ID="txtNarration" Text='<%# Eval("Narration")%>' runat="server" Width="96%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" Font-Bold="true" ForeColor="#006699"></asp:TextBox>
+                                                                                                                                                                <asp:TextBox ID="txtNarration" runat="server" Width="96%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" Font-Bold="true" ForeColor="#006699"></asp:TextBox>
                                                                                                                                                             </ItemTemplate>
                                                                                                                                                              <FooterStyle HorizontalAlign="Right" />
                                                                                                                                                                                                         <FooterTemplate>
@@ -1542,6 +1550,9 @@
                                                                                                                                             <asp:Button ID="UpdButton" runat="server" CausesValidation="true"
                                                                                                                                                 CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                                                                                 OnClick="UpdButton_Click"></asp:Button>
+                                                                                                                                            <asp:Button ID="Button4" runat="server" CausesValidation="true"
+                                                                                                                                                CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
+                                                                                                                                                OnClick="Button4_Click"></asp:Button>
                                                                                                                                         </td>
                                                                                                                                         <td style="width: 18%;">
 
@@ -1632,7 +1643,7 @@
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Print" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <a href='<%# DataBinder.Eval(Container, "DataItem.TransNo", "javascript:PrintItem({0});") %>'>
-                                                            <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/Print1.png" />
+                                                            <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/PrintIcon_btn.png" />
                                                         </a>
                                                         <asp:ImageButton ID="btnViewDisabled" Enabled="false" SkinID="search" runat="Server"></asp:ImageButton>
                                                     </ItemTemplate>

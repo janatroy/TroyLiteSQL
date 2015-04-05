@@ -196,12 +196,12 @@
                                 </tr>
                             </table>--%>
                         <div class="mainConBody">
-                            <table style="width: 99.8%; margin: -2px 0px 0px 1px;" cellpadding="3" cellspacing="0" class="searchbg">
+                            <table style="width: 99.8%; margin: 0px 0px 0px 1px;" cellpadding="3" cellspacing="0" class="searchbg">
                                 <tr style="height: 25px; vertical-align: middle">
                                     <td style="width: 2%"></td>
                                     <td style="width: 30%; font-size: 22px; color: White;">Suppliers Receipts
                                     </td>
-                                    <td style="width: 10%">
+                                    <td style="width: 5%">
                                         <div style="text-align: right;">
                                         
                                         </div>
@@ -210,13 +210,13 @@
                                             <asp:RequiredFieldValidator ID="rvSearch" runat="server" ControlToValidate="txtSearch"
                                                 Display="Dynamic" EnableClientScript="False" Enabled="false">Search is mandatory</asp:RequiredFieldValidator>
                                     </td>
-                                    <td style="width: 18%" class="NewBox">
+                                    <td style="width: 20%" class="NewBox">
                                         <asp:TextBox ID="txtSearch" runat="server" SkinID="skinTxtBoxSearch"></asp:TextBox>
                                          <cc1:CalendarExtender ID="txtdate" runat="server"
                                             Enabled="false" TargetControlID="txtSearch" Format="dd/MM/yyyy">
                                         </cc1:CalendarExtender>
                                     </td>
-                                    <td style="width: 18%" class="NewBox">
+                                    <td style="width: 20%" class="NewBox">
                                         <div style="width: 160px; font-family: 'Trebuchet MS';">
                                             <asp:DropDownList ID="ddCriteria" runat="server" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" AutoPostBack="true"  Width="154px" Height="23px" BackColor="White" Style="text-align: center; border: 1px solid White">
                                                 <asp:ListItem Value="TransNo">Trans. No.</asp:ListItem>
@@ -246,7 +246,7 @@
                         </cc1:ModalPopupExtender>
                         <asp:Panel runat="server" ID="popUp" Style="width: 60%">
                             <div id="contentPopUp">
-                                <table class="tblLeft" cellpadding="0" cellspacing="0" style="border: 0px solid #5078B3; background-color: #fff; color: #000;"
+                                <table class="tblLeft" cellpadding="0" cellspacing="0"
                                     width="100%">
                                     <tr>
                                         <td>
@@ -263,7 +263,7 @@
                                                     Height="25px" BorderColor="#cccccc" VerticalAlign="Middle" />
                                                 <EditItemTemplate>
                                                     <div class="divArea">
-                                                        <table cellpadding="1" cellspacing="3" style="border: 1px solid #86b2d1; width: 800px;">
+                                                        <table cellpadding="1" cellspacing="1" style="border: 0px solid Black; width: 800px;">
                                                             <tr>
                                                                 <td colspan="5" class="headerPopUp">Supplier Receipt
                                                                 </td>
@@ -271,7 +271,7 @@
                                                             <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">
+                                                                <td class="ControlLabelproject" style="width: 20%">
                                                                     Branch *
                                                                     <asp:CompareValidator ID="CompareValidator123" runat="server" ControlToValidate="drpBranch"
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
@@ -283,7 +283,7 @@
                                                                                                 <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
                                                                                              </asp:DropDownList>
                                                                 </td>
-                                                                <td class="ControlLabel" style="width: 15%">
+                                                                <td class="ControlLabelproject" style="width: 18%">
                                                                     <asp:RequiredFieldValidator ID="rvStock" runat="server" ControlToValidate="txtTransDate"
                                                                         ErrorMessage="Trasaction Date is mandatory" Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                     <asp:CompareValidator ControlToValidate="txtTransDate" Operator="DataTypeCheck" Type="Date"
@@ -293,7 +293,7 @@
                                                                     Received Date *
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtTransDate" Enabled="false" runat="server" Text='<%# Bind("TransDate","{0:dd/MM/yyyy}") %>'
+                                                                    <asp:TextBox ID="txtTransDate" runat="server" Text='<%# Bind("TransDate","{0:dd/MM/yyyy}") %>'
                                                                         CssClass="cssTextBox" Width="100px"></asp:TextBox>
                                                                     <cc1:CalendarExtender ID="calExt3" runat="server" Animated="true" Format="dd/MM/yyyy"
                                                                         PopupButtonID="btnD3" PopupPosition="BottomLeft" TargetControlID="txtTransDate">
@@ -307,15 +307,17 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">Ref. No. *
+                                                                <td class="ControlLabelproject" style="width: 20%">Ref. No. *
                                                                     <asp:RequiredFieldValidator ID="rvRefNo" runat="server" ErrorMessage="Please enter Ref. No. It cannot be left blank."
                                                                         ControlToValidate="txtRefNo" Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtRefNo" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
                                                                     <asp:TextBox ID="txtRefNo" runat="server" Text='<%# Bind("RefNo") %>' Width="100%"
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                 </td>
-                                                                 <td class="ControlLabel" style="width: 15%">
+                                                                 <td class="ControlLabelproject" style="width: 15%">
                                                                     <asp:RequiredFieldValidator ID="rvModel" runat="server" ControlToValidate="txtAmount"
                                                                         ErrorMessage="Please enter Amount. It cannot be left blank." Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="fltAmt" runat="server" TargetControlID="txtAmount"
@@ -332,7 +334,7 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">
+                                                                <td class="ControlLabelproject" style="width: 20%">
 
                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ComboBox2"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Received From. It cannot be left blank."
@@ -346,7 +348,7 @@
                                                                         <asp:ListItem style="background-color: #e7e7e7" Text="Select Supplier" Value="0"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
-                                                                  <td class="ControlLabel" style="width: 15%">Narration *
+                                                                  <td class="ControlLabelproject" style="width: 15%">Narration *
                                                                     <asp:RequiredFieldValidator ID="rvNarration" runat="server" ErrorMessage="Please enter Narration. It cannot be left blank."
                                                                         ControlToValidate="txtNarration" Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                 </td>
@@ -360,7 +362,7 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">
+                                                                <td class="ControlLabelproject" style="width: 20%">
                                                                     <asp:RequiredFieldValidator ID="rvBDate" runat="server" ControlToValidate="chkPayTo"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Item Name is mandatory.">*</asp:RequiredFieldValidator>
                                                                     Payment Made By *
@@ -372,45 +374,31 @@
                                                                         <asp:ListItem Text="Cheque"></asp:ListItem>
                                                                     </asp:RadioButtonList>
                                                                 </td>
-                                                                <td class="ControlLabel" style="width: 15%">Phone No
+                                                                <td class="ControlLabelproject" style="width: 15%">Mobile
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxEx" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobile" />
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
                                                                         TargetControlID="txtPhone" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtPhone" runat="server" Width="100%"
+                                                                    <asp:TextBox ID="txtMobile" runat="server" Text='<%# Bind("Mobile") %>' Width="100%"
+                                                                        MaxLength="10" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtPhone" runat="server" Width="100%" Visible="false"
                                                                         MaxLength="10" CssClass="cssTextBox"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 10%"></td>
                                                               
                                                             </tr>
-                                                            <tr style="height: 3px">
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="ControlLabel" style="width: 24%">Mobile
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxEx" runat="server" FilterType="Numbers"
-                                                                        TargetControlID="txtMobile" />
-                                                                </td>
-                                                                <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtMobile" runat="server" Text='<%# Bind("Mobile") %>' Width="100%"
-                                                                        MaxLength="10" SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                </td>
-                                                                <td class="ControlLabel" style="width: 15%">
-                                                                    
-                                                                </td>
-                                                                <td style="width: 25%">
-                                                                    
-                                                                </td>
-                                                                <td align="left" style="width: 10%">
-                                                                
-                                                            </tr>
-                                                            <tr style="height: 2px">
-                                                            </tr>
+                                                            
+                                                            
                                                             <tr>
                                                                 <td colspan="5">
-                                                                    <asp:Panel ID="PanelBank" runat="server">
-                                                                        <table width="100%" id="tblBank" cellpadding="1" cellspacing="1" class="" runat="server">
+                                                                    <asp:Panel ID="PanelBank" runat="server" width="100%">
+                                                                        <table style="width:100%" id="tblBank" cellpadding="0" cellspacing="1" runat="server">
+                                                                            <tr style="height: 2px">
+                                                            </tr>
                                                                             <tr>
-                                                                                <td style="width: 24%;" class="ControlLabel">
+                                                                                <td style="width: 24%;" class="ControlLabelproject">
 
                                                                                     <asp:CompareValidator ID="cvBank" runat="server" ControlToValidate="ddBanks" Display="Dynamic"
                                                                                         EnableClientScript="false" ErrorMessage="Bank Name is Mandatory" Operator="GreaterThan"
@@ -424,9 +412,11 @@
                                                                                         <asp:ListItem Selected="True" style="background-color: #e7e7e7" Value="0">Select Bank</asp:ListItem>
                                                                                     </asp:DropDownList>
                                                                                 </td>
-                                                                                <td style="width: 15%" class="ControlLabel">
+                                                                                <td style="width: 18%" class="ControlLabelproject">
                                                                                     <asp:RequiredFieldValidator ID="rvChequeNo" runat="server" ControlToValidate="txtChequeNo"
                                                                                         ErrorMessage="Cheque No. is mandatory" Display="Dynamic" EnableClientScript="False">*</asp:RequiredFieldValidator>
+                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtChequeNo" />
                                                                                     Cheque No. *
                                                                                 </td>
                                                                                 <td style="width: 25%;" class="ControlTextBox3">
@@ -439,11 +429,28 @@
                                                                     </asp:Panel>
                                                                 </td>
                                                             </tr>
+                                                         <%--   <tr style="height: 2px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabelproject" style="width: 24%">
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 25%">
+                                                                    
+                                                                </td>
+                                                                <td class="ControlLabelproject" style="width: 15%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 25%">
+                                                                    
+                                                                </td>
+                                                                <td align="left" style="width: 10%">
+                                                                
+                                                            </tr>--%>
                                                             <tr style="height: 5px">
                                                                 <td colspan="4"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="4">
+                                                                <td colspan="5">
                                                                     <table width="100%">
                                                                         <tr>
                                                                             <td align="right" style="width: 36%;"></td>
@@ -508,18 +515,18 @@
                                                             <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">
+                                                                <td class="ControlLabelproject" style="width: 20%">
                                                                     Branch *
                                                                                             <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="drpBranchAdd"
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
-                                                                <td class="ControlTextBox3" style="width: 25%">
+                                                                <td class="ControlDrpBorder" style="width: 25%">
                                                                     <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                  runat="server">
                                                                                              </asp:DropDownList>
                                                                 </td>
- <td class="ControlLabel" style="width: 15%">
+ <td class="ControlLabelproject" style="width: 18%">
                                                                     <%--<asp:Label ID="Label1" runat="server"
                                                                                                         Width="120px" Text="Received Date *" ></asp:Label>--%>
                                                                     <asp:RequiredFieldValidator ID="rvStockAdd" runat="server" ControlToValidate="txtTransDateAdd"
@@ -531,7 +538,7 @@
                                                                     Received Date *
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtTransDateAdd" Enabled="false" runat="server" Text='<%# Bind("TransDate","{0:dd/MM/yyyy}") %>'
+                                                                    <asp:TextBox ID="txtTransDateAdd" runat="server" Text='<%# Bind("TransDate","{0:dd/MM/yyyy}") %>'
                                                                         CssClass="cssTextBox" Width="100px"></asp:TextBox>
                                                                     <cc1:CalendarExtender ID="calExtender3" runat="server" Animated="true" Format="dd/MM/yyyy"
                                                                         PopupButtonID="btnDate3" PopupPosition="BottomLeft" TargetControlID="txtTransDateAdd">
@@ -545,15 +552,17 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">Ref. No. *
+                                                                <td class="ControlLabelproject" style="width: 20%">Ref. No. *
                                                                     <asp:RequiredFieldValidator ID="rvRefNoAdd" runat="server" ErrorMessage="Please enter Ref. No. It cannot be left blank."
                                                                         ControlToValidate="txtRefNoAdd" Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtRefNoAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
                                                                     <asp:TextBox ID="txtRefNoAdd" runat="server" Text='<%# Bind("RefNo") %>' Width="100%"
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                 </td>
-                                                                  <td class="ControlLabel" style="width: 15%">Amount *
+                                                                  <td class="ControlLabelproject" style="width: 18%">Amount *
                                                                     <asp:RequiredFieldValidator ID="rvModelAdd" runat="server" ControlToValidate="txtAmountAdd"
                                                                         ErrorMessage="Please enter Amount. It cannot be left blank." Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="fltAmtAdd" runat="server" TargetControlID="txtAmountAdd"
@@ -569,7 +578,7 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">Received From *
+                                                                <td class="ControlLabelproject" style="width: 20%">Received From *
                                                                     <asp:CompareValidator ID="CV1Add" runat="server" ControlToValidate="ComboBox2Add"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Received From. It cannot be left blank."
                                                                         Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
@@ -582,7 +591,7 @@
                                                                         <asp:ListItem style="background-color: #e7e7e7" Text="Select Supplier" Value="0"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
-                                                                 <td class="ControlLabel" style="width: 15%">Narration *
+                                                                 <td class="ControlLabelproject" style="width: 15%">Narration *
                                                                     <asp:RequiredFieldValidator ID="rvNarrationAdd" runat="server" ErrorMessage="Please enter Narration. It cannot be left blank. "
                                                                         ControlToValidate="txtNarrationAdd" Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                 </td>
@@ -596,7 +605,7 @@
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
-                                                                <td class="ControlLabel" style="width: 24%">Payment Made By *
+                                                                <td class="ControlLabelproject" style="width: 20%">Payment Made By *
                                                                     <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="chkPayToAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Item Name is mandatory."></asp:RequiredFieldValidator>
                                                                 </td>
@@ -608,45 +617,30 @@
                                                                         <asp:ListItem Text="Cheque"></asp:ListItem>
                                                                     </asp:RadioButtonList>
                                                                 </td>
-                                                                 <td style="width: 15%" class="ControlLabel">Phone No
+                                                                 <td style="width: 15%" class="ControlLabelproject">Mobile
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender41" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobileAdd" />
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
                                                                         TargetControlID="txtPhoneAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 24%">
-                                                                    <asp:TextBox ID="txtPhoneAdd" runat="server" Width="100%"
+                                                                    <asp:TextBox ID="txtMobileAdd" runat="server" Text='<%# Bind("Mobile") %>' Width="100%"
+                                                                        MaxLength="10" CssClass="cssTextBox"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtPhoneAdd" runat="server" Width="100%" Visible="false"
                                                                         MaxLength="10" CssClass="cssTextBox"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 10%"></td>
                                                                
                                                             </tr>
-                                                            <tr style="height: 3px">
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="ControlLabel" style="width: 24%">Mobile
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender41" runat="server" FilterType="Numbers"
-                                                                        TargetControlID="txtMobileAdd" />
-                                                                </td>
-                                                                <td class="ControlTextBox3" style="width: 24.8%">
-                                                                    <asp:TextBox ID="txtMobileAdd" runat="server" Text='<%# Bind("Mobile") %>' Width="100%"
-                                                                        MaxLength="10" CssClass="cssTextBox"></asp:TextBox>
-                                                                </td>
-                                                                <td class="ControlLabel" style="width: 15%">
-                                                                    
-                                                                </td>
-                                                                <td style="width: 25%">
-                                                                    
-                                                                </td>
-                                                                <td align="left" style="width: 10%">
-                                                               
-                                                            </tr>
-                                                            <tr style="height: 2px">
-                                                            </tr>
+                                                           
                                                             <tr>
                                                                 <td colspan="5">
                                                                     <asp:Panel ID="PanelBankAdd" runat="server" Width="100%">
                                                                         <table style="width: 100%" id="tblBankAdd" cellpadding="0" cellspacing="1" runat="server">
+                                                                            <tr style="height: 2px">
+                                                            </tr>
                                                                             <tr>
-                                                                                <td style="width: 24%;" class="ControlLabel">
+                                                                                <td style="width: 20%;" class="ControlLabelproject">
                                                                                     <asp:CompareValidator ID="cvBankAdd" runat="server" ControlToValidate="ddBanksAdd"
                                                                                         Display="Dynamic" EnableClientScript="False" ErrorMessage="Bank Name is Mandatory"
                                                                                         Text="*" Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
@@ -659,9 +653,11 @@
                                                                                         <asp:ListItem Selected="True" Value="0">Select Bank</asp:ListItem>
                                                                                     </asp:DropDownList>
                                                                                 </td>
-                                                                                <td style="width: 15%" class="ControlLabel">
+                                                                                <td style="width: 18%" class="ControlLabelproject">
                                                                                     <asp:RequiredFieldValidator ID="rvChequeNoAdd" runat="server" ControlToValidate="txtChequeNoAdd"
                                                                                         ErrorMessage="Cheque No. is mandatory" Display="Dynamic" EnableClientScript="false">*</asp:RequiredFieldValidator>
+                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender123" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtChequeNoAdd" />
                                                                                     Cheque No. *
                                                                                 </td>
                                                                                 <td style="width: 25%;" class="ControlTextBox3">
@@ -673,6 +669,24 @@
                                                                     </asp:Panel>
                                                                 </td>
                                                             </tr>
+                                                             <%--<tr style="height: 2px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabelproject" style="width: 20%">
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 24.8%">
+                                                                    
+                                                                </td>
+                                                                <td class="ControlLabel" style="width: 15%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 25%">
+                                                                    
+                                                                </td>
+                                                                <td align="left" style="width: 10%">
+                                                               
+                                                            </tr>--%>
+                                                            
                                                             <tr style="height: 5px">
                                                             </tr>
                                                             <tr>
@@ -774,7 +788,7 @@
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Print" HeaderStyle-Width="50px" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <a href='<%# DataBinder.Eval(Container, "DataItem.TransNo", "javascript:PrintItem({0});") %>'>
-                                                            <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/Print1.png" />
+                                                            <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/PrintIcon_btn.png" />
                                                         </a>
                                                         <asp:ImageButton ID="btnViewDisabled" Enabled="false" SkinID="search" runat="Server"></asp:ImageButton>
                                                     </ItemTemplate>

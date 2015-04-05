@@ -35,7 +35,7 @@ public partial class ExpPayment : System.Web.UI.Page
 
                 ddReceivedFrom.DataBind();
 
-                GrdViewPayment.PageSize = 8;
+                GrdViewPayment.PageSize = 11;
 
                 string dbfileName = connStr.Remove(0, connStr.LastIndexOf(@"App_Data\") + 9);
                 dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
@@ -176,6 +176,7 @@ public partial class ExpPayment : System.Web.UI.Page
     private void loadChequeNo(int bnkId)
     {
         cmbChequeNo.Items.Clear();
+        cmbChequeNo.Items.Add(new ListItem("Select ChequeNo", "0"));
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();       
@@ -684,19 +685,21 @@ public partial class ExpPayment : System.Web.UI.Page
                     }
 
                     loadChequeNo(Convert.ToInt32(ddBanks.SelectedItem.Value));
-                    hid1.Value = ds.Tables[0].Rows[0]["ChequeNo"].ToString();                  
-                   
-                    if (ds.Tables[0].Rows[0]["ChequeNo"] != null)
+                    hid1.Value = ds.Tables[0].Rows[0]["ChequeNo"].ToString();
+
+                    if (chkPayTo.SelectedItem.Text == "Cheque")
                     {
-                        // txtChequeNo.Text = ds.Tables[0].Rows[0]["Chequeno"].ToString();
-                        cmbChequeNo.ClearSelection();
-                        ListItem clie = new ListItem(ds.Tables[0].Rows[0]["ChequeNo"].ToString(), "0");
-                        cmbChequeNo.Items.Insert(cmbChequeNo.Items.Count - 1, clie);
-                        clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
+                        if (ds.Tables[0].Rows[0]["ChequeNo"] != null)
+                        {
+                            // txtChequeNo.Text = ds.Tables[0].Rows[0]["Chequeno"].ToString();
+                            cmbChequeNo.ClearSelection();
+                            ListItem clie = new ListItem(ds.Tables[0].Rows[0]["ChequeNo"].ToString(), "0");
+                            cmbChequeNo.Items.Insert(cmbChequeNo.Items.Count - 1, clie);
+                            clie = cmbChequeNo.Items.FindByText(ds.Tables[0].Rows[0]["ChequeNo"].ToString());
 
-                        if (clie != null) clie.Selected = true;
+                            if (clie != null) clie.Selected = true;
+                        }
                     }
-
 
 
                     //loacheque(Convert.ToString(ds.Tables[0].Rows[0]["CreditorID"]));
@@ -915,6 +918,9 @@ public partial class ExpPayment : System.Web.UI.Page
             //GrdViewReceipt.Visible = false;
             UpdateButton.Visible = false;
             SaveButton.Visible = true;
+
+            loadChequeNo(0);
+
             ClearPanel();
             ShowPendingBills();
             //txtTransDate.Text = DateTime.Now.ToShortDateString();
@@ -1537,18 +1543,31 @@ public partial class ExpPayment : System.Web.UI.Page
                 return;
             }
 
-
             if (chkPayTo.SelectedValue == "Cheque")
             {
-                cvBank.Enabled = true;
-                rvChequeNo.Enabled = true;
+                if (ddBanks.SelectedValue == "0")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name is Mandatory')", true);
+                    return;
+                }
+                if (cmbChequeNo.SelectedValue == "0")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No  is Mandatory')", true);
+                    return;
+                }
             }
-            else
-            {
-                cvBank.Enabled = false;
-                rvChequeNo.Enabled = false;
 
-            }
+            //if (chkPayTo.SelectedValue == "Cheque")
+            //{
+            //    cvBank.Enabled = true;
+            //    rvChequeNo.Enabled = true;
+            //}
+            //else
+            //{
+            //    cvBank.Enabled = false;
+            //    rvChequeNo.Enabled = false;
+
+            //}
 
             Page.Validate();
 
@@ -1577,17 +1596,19 @@ public partial class ExpPayment : System.Web.UI.Page
                 {
                     CreditorID = 1;
                     Paymode = "Cash";
+                    ChequeNo = "";
                 }
                 else if (chkPayTo.SelectedValue == "Cheque")
                 {
                     CreditorID = int.Parse(ddBanks.SelectedValue);
                     Paymode = "Cheque";
+                    ChequeNo = cmbChequeNo.SelectedItem.Text;
                 }
 
                 Amount = double.Parse(txtAmount.Text);
                 Narration = txtNarration.Text;
                 VoucherType = "Payment";
-                ChequeNo = cmbChequeNo.SelectedItem.Text;
+                
                 BillNo = txtBillAdd.Text;
                 BusinessLogic bl = new BusinessLogic();
 
@@ -1987,15 +2008,29 @@ public partial class ExpPayment : System.Web.UI.Page
             }
 
 
+            //if (chkPayTo.SelectedValue == "Cheque")
+            //{
+            //    cvBank.Enabled = true;
+            //    rvChequeNo.Enabled = true;
+            //}
+            //else
+            //{
+            //    cvBank.Enabled = false;
+            //    rvChequeNo.Enabled = false;
+            //}
+
             if (chkPayTo.SelectedValue == "Cheque")
             {
-                cvBank.Enabled = true;
-                rvChequeNo.Enabled = true;
-            }
-            else
-            {
-                cvBank.Enabled = false;
-                rvChequeNo.Enabled = false;
+                if (ddBanks.SelectedValue == "0")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name is Mandatory')", true);
+                    return;
+                }
+                if (cmbChequeNo.SelectedValue == "0")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No  is Mandatory')", true);
+                    return;
+                }
             }
 
             Page.Validate();

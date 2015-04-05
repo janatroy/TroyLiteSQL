@@ -67,7 +67,7 @@ public partial class BankReceipt : System.Web.UI.Page
                     hdEmailRequired.Value = "NO";
                 }
 
-                GrdViewReceipt.PageSize = 9;
+                GrdViewReceipt.PageSize = 11;
 
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
@@ -99,6 +99,16 @@ public partial class BankReceipt : System.Web.UI.Page
         {
             txtSearch.Text = "";
             ddCriteria.SelectedIndex = 0;
+
+            if (ddCriteria.SelectedItem.Text == "Transaction Date")
+            {
+                //txtdate.EnableViewState = 1;
+                txtdatet.Enabled = true;
+            }
+            else
+            {
+                txtdatet.Enabled = false;
+            }
         }
         catch (Exception ex)
         {
@@ -716,6 +726,33 @@ public partial class BankReceipt : System.Web.UI.Page
     {
         try
         {
+
+            //if (((RadioButtonList)this.frmViewAdd.FindControl("chkPayToAdd")).SelectedValue == "Cheque")
+            //{
+            //    string ChequeNo = string.Empty;
+            //    ChequeNo = ((TextBox)this.frmViewAdd.FindControl("txtChequeNoAdd")).Text;
+            //    int bankname = 0;
+            //    bankname = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("ddBanksAdd")).SelectedValue);
+
+            //    if ((ChequeNo == "") && (bankname == 0))
+            //    {
+            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name And Cheque No Mandatory');", true);
+            //        ModalPopupExtender1.Show();
+            //        return;
+            //    }
+            //    else if (ChequeNo == "")
+            //    {
+            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Mandatory');", true);
+            //        ModalPopupExtender1.Show();
+            //        return;
+            //    }
+            //    else if (bankname == 0)
+            //    {
+            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name Mandatory');", true);
+            //        ModalPopupExtender1.Show();
+            //        return;
+            //    }
+            //}
 
             this.setInsertParameters(e);
 
@@ -1652,6 +1689,35 @@ public partial class BankReceipt : System.Web.UI.Page
             //        return;
             //    }
             //}
+
+            if (((RadioButtonList)this.frmViewAdd.FindControl("chkPayToAdd")).SelectedValue == "Cheque")
+            {
+                string ChequeNo = string.Empty;
+                ChequeNo = ((TextBox)this.frmViewAdd.FindControl("txtChequeNoAdd")).Text;
+                int bankname = 0;
+                bankname = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("ddBanksAdd")).SelectedValue);
+
+                if ((ChequeNo == "") && (bankname == 0))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name And Cheque No Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+                else if (ChequeNo == "")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+                else if (bankname == 0)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+            }
+
+
             if (((RadioButtonList)this.frmViewAdd.FindControl("chkPayToAdd")).SelectedValue == "Cheque")
             {
                 ((CompareValidator)this.frmViewAdd.FindControl("cvBankAdd")).Enabled = true;
@@ -1684,6 +1750,16 @@ public partial class BankReceipt : System.Web.UI.Page
             rvSearch.Enabled = true;
             Page.Validate();
 
+            if (ddCriteria.SelectedItem.Text == "Transaction Date")
+            {
+                //txtdate.EnableViewState = 1;
+                txtdatet.Enabled = true;
+            }
+            else
+            {
+                txtdatet.Enabled = false;
+            }
+
             if (Page.IsValid)
             {
                 GrdViewReceipt.DataBind();
@@ -1694,6 +1770,20 @@ public partial class BankReceipt : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    protected void ddCriteria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddCriteria.SelectedItem.Text == "Transaction Date")
+        {
+            //txtdate.EnableViewState = 1;
+            txtdatet.Enabled = true;
+        }
+        else
+        {
+            txtdatet.Enabled = false;
+        }
+    }
+
     protected void GrdViewReceipt_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
         try

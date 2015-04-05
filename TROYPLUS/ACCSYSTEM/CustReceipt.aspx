@@ -281,7 +281,7 @@
     </script>
 
     <style id="Style1" runat="server">
-        .someClass td {
+        /*.someClass td {
             font-size: 12px;
             border: 1px solid Gray;
         }
@@ -313,7 +313,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            }
+            /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -330,7 +330,7 @@
             border: 1px solid #999999;
             padding: 8px;
             background-color: #ffffff;
-        }
+        }*/
     </style>
 
     <asp:UpdatePanel ID="UpdatePanelPage" runat="server" UpdateMode="Conditional">
@@ -362,7 +362,7 @@
                                 class="searchbg" style="margin: -2px 0px 0px 1px;">
                                 <tr>
                                     <td style="width: 2%"></td>
-                                    <td style="width: 40%; font-size: 22px; color: White;">Receipts from Customer
+                                    <td style="width: 30%; font-size: 22px; color: White;">Receipts from Customer
                                     </td>
                                     <td style="width: 2%">
                                         <div style="text-align: right;">
@@ -371,10 +371,10 @@
                                     </td>
                                     <td style="width: 10%; color: White;" align="right">Search
                                     </td>
-                                    <td style="width: 18%" class="NewBox">
+                                    <td style="width: 21%" class="NewBox">
                                         <asp:TextBox ID="txtSearch" runat="server" CssClass="cssTextBox" Width="92%"></asp:TextBox>
                                     </td>
-                                    <td style="width: 18%" class="NewBox">
+                                    <td style="width: 21%" class="NewBox">
                                         <div style="width: 160px; font-family: 'Trebuchet MS';">
                                             <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="White" Height="23px" Style="text-align: center; border: 1px solid White">
                                                 <%--<asp:ListItem Value="0" style="background-color: #bce1fe">All</asp:ListItem>--%>
@@ -1649,6 +1649,9 @@
                                                                                                                                             <asp:Button ID="UpdButton" runat="server" CausesValidation="true"
                                                                                                                                                 CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                                                                                 OnClick="UpdButton_Click"></asp:Button>
+                                                                                                                                            <asp:Button ID="Button4" runat="server" CausesValidation="true"
+                                                                                                                                                CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
+                                                                                                                                                OnClick="Button4_Click"></asp:Button>
                                                                                                                                         </td>
                                                                                                                                         <td style="width: 18%;">
 

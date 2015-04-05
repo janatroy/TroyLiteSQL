@@ -24,6 +24,8 @@ public partial class BranchMaster : System.Web.UI.Page
     {
         try
         {
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+
             //if (hdCustomerID.Value != "0")
             //    drpCustomer.SelectedValue = hdCustomerID.Value;
             //if (hdRefNumber.Value != "")
@@ -61,23 +63,23 @@ public partial class BranchMaster : System.Web.UI.Page
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
-                GrdViewSerVisit.PageSize = 10;
+                GrdViewSerVisit.PageSize = 11;
 
 
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                //if (bl.CheckUserHaveAdd(usernam, "CHQMST"))
-                //{
-                //    lnkBtnAdd.Enabled = false;
-                //    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
-                //}
-                //else
-                //{
-                //    lnkBtnAdd.Enabled = true;
-                //    lnkBtnAdd.ToolTip = "Click to Add New ";
-                //}
+                if (bl.CheckUserHaveAdd(usernam, "BRNCHMAS"))
+                {
+                    lnkBtnAdd.Enabled = false;
+                    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+                }
+                else
+                {
+                    lnkBtnAdd.Enabled = true;
+                    lnkBtnAdd.ToolTip = "Click to Add New ";
+                }
 
                 
 
@@ -441,6 +443,7 @@ public partial class BranchMaster : System.Web.UI.Page
             {
                 BusinessLogic bl = new BusinessLogic(GetConnectionString());
                 string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
 
                 //if (bl.ChequeLeafUsed(int.Parse(((HiddenField)e.Row.FindControl("ldgID")).Value)))
                 //{
@@ -450,8 +453,13 @@ public partial class BranchMaster : System.Web.UI.Page
                 //    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
                 //    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
                 //}
+                if (bl.CheckUserHaveEdit(usernam, "BRNCHMAS"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
 
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+              //  string usernam = Request.Cookies["LoggedUserName"].Value;
 
                 if (bl.CheckPriceListUsed(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "PriceName"))))
                 {
@@ -681,14 +689,19 @@ public partial class BranchMaster : System.Web.UI.Page
                     BusinessLogic bl = new BusinessLogic(sDataSource);
                     string connection = Request.Cookies["Company"].Value;
 
-                    if (bl.CheckIfBranchDuplicate(connection, BranchName))
+                    if (bl.CheckIfBranchDuplicate(connection, BranchName,"BranchName"))
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Branch - " + BranchName + " - already exists.');", true);
                         ModalPopupExtender1.Show();
                         return;
                     }
 
-
+                    if (bl.CheckIfBranchDuplicate(connection, Branchcode, "Branchcode"))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Branch - " + Branchcode + " - already exists.');", true);
+                        ModalPopupExtender1.Show();
+                        return;
+                    }
 
                     DataSet dstest = new DataSet();
                    
@@ -795,6 +808,72 @@ public partial class BranchMaster : System.Web.UI.Page
                         dstest.Tables[0].Rows.Add(drNewt);
                     }
 
+
+
+
+                    DataSet dstesttt = new DataSet();
+
+                    DataTable dtttt;
+                    DataRow drNewttt;
+                    DataColumn dcttt;
+
+                    dtttt = new DataTable();
+
+                    dcttt = new DataColumn("LedgerName");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("AliasName");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("GroupID");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("ContactName");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("Inttrans");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("Branchcode");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("Add1");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("Add2");
+                    dtttt.Columns.Add(dcttt);
+
+                    dcttt = new DataColumn("Add3");
+                    dtttt.Columns.Add(dcttt);
+
+                    dstesttt.Tables.Add(dtttt);
+
+                    DataSet dste = bl.ListExpenseInfo(connection, "", "", "");
+
+                    if (dste != null)
+                    {
+                        foreach (DataRow dr in dste.Tables[0].Rows)
+                        {
+                            drNewttt = dtttt.NewRow();
+                            drNewttt["GroupID"] = 8;
+                            drNewttt["LedgerName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
+                            drNewttt["AliasName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
+                            drNewttt["ContactName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
+                            drNewttt["Inttrans"] = "NO";
+                            drNewttt["Branchcode"] = Branchcode;
+                            drNewttt["Add1"] = "";
+                            drNewttt["Add2"] = "";
+                            drNewttt["Add3"] = "";
+
+                            dstesttt.Tables[0].Rows.Add(drNewttt);
+                        }
+                    }
+
+
+
+
+
+
                     DataSet dstestt = new DataSet();
 
                     DataSet dst = bl.ListProducts(connection, "", "");
@@ -852,7 +931,7 @@ public partial class BranchMaster : System.Web.UI.Page
                         }
                     }
 
-                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive, Username, dstest, dstestt);
+                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive, Username, dstest, dstestt, dstesttt);
                        
                     //MyAccordion.Visible = true;
                     pnlVisitDetails.Visible = false;
