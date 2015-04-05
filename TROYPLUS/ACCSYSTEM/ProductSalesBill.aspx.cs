@@ -36,6 +36,10 @@ public partial class ProductSalesBill : System.Web.UI.Page
     private string currencyType = string.Empty;
     string BillingMethod = string.Empty;
 
+    private bool isvalid = false;
+
+
+
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -81,7 +85,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
 
                 //if (ddDivsions.SelectedIndex != 0)
                 //{
-                    FillDivision();
+                    FillDivision();                    
                 //}
 
                 GetHeaderInfo();
@@ -187,8 +191,8 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 lblBillDate.Text = Convert.ToString(dr["BillDate"]);
                 lblBillDateEx.Text = Convert.ToString(dr["BillDate"]);
 
-                lblInvoice.Text = Convert.ToString(dr["BillNo"]) + "-" + branchCode;
-                lblInvoiceEx.Text = Convert.ToString(dr["BillNo"]) + "-" + branchCode;
+                lblInvoice.Text = branchCode +  "-" + Convert.ToString(dr["BillNo"]);
+                lblInvoiceEx.Text = branchCode + "-" + Convert.ToString(dr["BillNo"]);
 
                 lblCustomerID.Text = Convert.ToString(dr["CustomerID"]);
                 lblCustomerIDEx.Text = Convert.ToString(dr["CustomerID"]);
@@ -683,17 +687,17 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 }
                 //if (DataBinder.Eval(e.Row.DataItem, "CST") != DBNull.Value)
                 //    cst = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CST"));
+
+                
                 if (DataBinder.Eval(e.Row.DataItem, "Discount") == "" || Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Discount")) == 0)
                 {
                     //discount = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Discount"));
-
-                    gvItem.Columns[7].Visible = false;
-                    discountLbl.Visible = false;
+                    //gvItem.Columns[7].Visible = false;
+                    //discountLbl.Visible = false;
                 }
                 else
                 {
-                    gvItem.Columns[7].Visible = true;
-                    discountLbl.Visible = true;
+                    isvalid = true;
                 }
 
                 if (DataBinder.Eval(e.Row.DataItem, "Rate") != DBNull.Value && DataBinder.Eval(e.Row.DataItem, "Rate") != "")
@@ -709,6 +713,12 @@ public partial class ProductSalesBill : System.Web.UI.Page
             else if (e.Row.RowType == DataControlRowType.Footer)
             {
                 //dFr = Convert.ToDouble(lblFg.Text);
+
+                if (isvalid == false)
+                {
+                    gvItem.Columns[7].Visible = false;
+                    discountLbl.Visible = false;
+                }
 
                 sumNet = dDis + vatTotal + dFr + dCST;
 
