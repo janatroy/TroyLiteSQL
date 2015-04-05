@@ -535,7 +535,7 @@
                                                                 DataField="VAT" HeaderText="VAT %" HeaderStyle-ForeColor="Black" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
                                                             <asp:BoundField Visible="true" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="90px" DataFormatString="{0:f2}" ItemStyle-BorderColor="#666666"
                                                                 DataField="VATAmount" HeaderText="VAT Amount" HeaderStyle-ForeColor="Black" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
-                                                            <asp:BoundField Visible="true" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="70px" DataFormatString="{0:f2}" ItemStyle-BorderColor="#666666"
+                                                            <asp:BoundField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="70px" DataFormatString="{0:f2}" ItemStyle-BorderColor="#666666"
                                                                 DataField="Discount" HeaderText="Discount" HeaderStyle-ForeColor="Black" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
 
                                                             <asp:BoundField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="125px" DataFormatString="{0:f2}" ItemStyle-BorderColor="#666666"
