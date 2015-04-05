@@ -448,7 +448,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                                 </td>
                                                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" DataTextField="BranchName" DataValueField="Branchcode" CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" Width="260px"
                                                                                                         runat="server">
                                                                                                     </asp:DropDownList>
                                                                                                 </td>
@@ -505,8 +505,8 @@
                                                                                                         ValueToCompare="0">*</asp:CompareValidator>
                                                                                                 </td>
                                                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                                                    <asp:DropDownList ID="ddReceivedFrom" runat="server" AutoPostBack="True" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
-                                                                                                        DataValueField="LedgerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                    <asp:DropDownList ID="ddReceivedFrom" runat="server" AutoPostBack="True" Width="100%" BackColor="#e7e7e7"
+                                                                                                        DataValueField="LedgerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged" CssClass="chzn-select" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                         DataTextField="LedgerName" AppendDataBoundItems="True">
                                                                                                         <asp:ListItem Text="Select Supplier" Value="0"></asp:ListItem>
                                                                                                     </asp:DropDownList>
@@ -1022,11 +1022,11 @@
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>--%>
                                                                                                                             </td>
-                                                                                                                                    </td>
+                                                                                                                                    
                                                                                                                                     <td class="ControlDrpBorder" style="width: 22%">
                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel10" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
-                                                                                                                                                <asp:DropDownList ID="drpCustomerCategoryAdd" Visible="false" runat="server" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" Width="100%">
+                                                                                                                                                <asp:DropDownList ID="drpCustomerCategoryAdd" Visible="false" runat="server" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" Width="260px">
                                                                                                                                                     <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer Supplier" Value="0"></asp:ListItem>
                                                                                                                                                 </asp:DropDownList>
                                                                                                                                             </ContentTemplate>
@@ -1087,12 +1087,12 @@
                                                                                                                         <tr style="height: 2px">
                                                                                                                         </tr>
                                                                                                                         <tr>
-                                                                                                                            <td class="ControlLabelNew" style="width: 17%;">Mobile Number
+                                                                                                                            <td class="ControlLabelNew" style="width: 17%;">Supplier ID
                                                                                                                             </td>
                                                                                                                             <td class="ControlDrpBorder" style="width: 22%">
                                                                                                                                 <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
-                                                                                                                                        <asp:DropDownList ID="drpMobile" runat="server" AppendDataBoundItems="true" DataSourceID="srcCreditorDebitorIsActive" AutoPostBack="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="Mobile" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="drpMobile_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" Width="100%">
+                                                                                                                                        <asp:DropDownList ID="drpMobile" runat="server" AppendDataBoundItems="true" DataSourceID="srcCreditorDebitorIsActive" Width="260px" AutoPostBack="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="Mobile" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="drpMobile_SelectedIndexChanged" Style="border: 1px solid #e7e7e7">
                                                                                                                                             <asp:ListItem style="background-color: #e7e7e7" Text="Select Mobile" Value="0"></asp:ListItem>
                                                                                                                                         </asp:DropDownList>
                                                                                                                                         <asp:TextBox ID="txtCustomerId" runat="server" BackColor="#e7e7e7" SkinID="skinTxtBoxGrid" Visible="false"></asp:TextBox>
@@ -1132,7 +1132,7 @@
                                                                                                                             <td class="ControlDrpBorder" style="width: 22%">
                                                                                                                                 <asp:UpdatePanel ID="UpdatePanel9" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
-                                                                                                                                        <asp:DropDownList ID="drpLedger" runat="server" OnSelectedIndexChanged="drpLedger_SelectedIndexChanged" AutoPostBack="True" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
+                                                                                                                                        <asp:DropDownList ID="drpLedger" runat="server" OnSelectedIndexChanged="drpLedger_SelectedIndexChanged" AutoPostBack="True" Width="260px" CssClass="chzn-select" BackColor="#e7e7e7"
                                                                                                                                             Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                                             AppendDataBoundItems="True">
                                                                                                                                             <asp:ListItem Text="Select Customer" Value="0"></asp:ListItem>
@@ -1551,7 +1551,7 @@
                                                                                                                                                 CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                                                                                 OnClick="UpdButton_Click"></asp:Button>
                                                                                                                                             <asp:Button ID="Button4" runat="server" CausesValidation="true"
-                                                                                                                                                CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
+                                                                                                                                                CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                                                                                 OnClick="Button4_Click"></asp:Button>
                                                                                                                                         </td>
                                                                                                                                         <td style="width: 18%;">
