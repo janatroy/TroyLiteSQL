@@ -162,6 +162,15 @@ public partial class SupplierReceipt : System.Web.UI.Page
         {
             txtSearch.Text = "";
             ddCriteria.SelectedIndex = 0;
+            if (ddCriteria.SelectedItem.Text == "Transaction Date")
+            {
+                //txtdate.EnableViewState = 1;
+                txtdate.Enabled = true;
+            }
+            else
+            {
+                txtdate.Enabled = false;
+            }
         }
         catch (Exception ex)
         {

@@ -14,19 +14,17 @@
     </style>
     <script language="javascript" type="text/javascript">
         
-         window.onload = function Showalert() {
-       
+        window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtBillnoSrc.ClientID %>");
-          var txt1 = document.getElementById("<%= txtTransNo.ClientID %>");
-            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
-            if (txt.value == "" && txt1.value=="") {
-               // alert(txt.value);
-                btn.style.visibility = "hidden";
-                // when the window is loaded, hide the button if the textbox is empty
-            }
+                var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+                if (txt.value == "") {
+                    // alert(txt.value);
+                    btn.style.visibility = "hidden";
+                    // when the window is loaded, hide the button if the textbox is empty
+                }
 
-        }
+            }
 
         function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtBillnoSrc.ClientID %>');
@@ -66,13 +64,10 @@
                                             </td>
                                             <td style="width: 0%">
                                                 <div style="text-align: right;">
-                                                    <asp:Panel ID="pnlSearch" runat="server">
-                                                        <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonDoreconciliation"
-                                                            EnableTheming="false" Text=""></asp:Button>
-                                                    </asp:Panel>
+                                                    
                                                 </div>
                                             </td>
-                                            <td style="width: 5%; color: White;" align="right">Ref No.
+                                            <td style="width: 5%; color: White;" align="right">Search
                                             </td>
                                             <td style="width: 15%; text-align: center" class="NewBox">
                                                 <asp:TextBox ValidationGroup="search" ID="txtBillnoSrc" runat="server" MaxLength="8"
@@ -80,19 +75,26 @@
                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="txtBillnoSrc"
                                                     FilterType="Numbers" />
                                             </td>
-                                            <td style="width: 5%; color: White;" align="right">Trans No.
+                                            <td style="width: 1%; color: White;" align="right">
                                             </td>
                                             <td style="width: 15%" class="NewBox">
-                                                <asp:TextBox ValidationGroup="search" ID="txtTransNo" runat="server" MaxLength="8"
+                                                <div style="width: 160px; font-family: 'Trebuchet MS';">
+                                            <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="White" Height="23px" Style="text-align: center; border: 1px solid White">
+                                                <%--<asp:ListItem Value="0" style="background-color: #bce1fe">All</asp:ListItem>--%>
+                                                <asp:ListItem Value="TransNo">Trans. No.</asp:ListItem>
+                                                <asp:ListItem Value="RefNo">Ref. No.</asp:ListItem>
+                                              
+                                            </asp:DropDownList>
+                                                <asp:TextBox ValidationGroup="search" ID="txtTransNo" runat="server" MaxLength="8" Visible="false"
                                                     CssClass="cssTextBox" Width="75%"></asp:TextBox>
                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender10" runat="server" TargetControlID="txtTransNo"
                                                     FilterType="Numbers" />
                                             </td>
                                             <td style="width: 15%; text-align: left">
-                                                <asp:Button ID="btnSearch" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false" OnClick="btnSearch_Click" />
+                                                <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false" OnClick="btnSearch_Click" />
                                             </td>
                                             <td style="width: 15%" class="tblLeftNoPad">
-                                                <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                                <asp:Button ID="BtnClearFilter" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                             </td>
                                         </tr>
                                     </table>
@@ -157,7 +159,7 @@
                                                                                         </td>
                                                                                         <td style="width: 22%"></td>
                                                                                     </tr>
-                                                                                    <%--<tr>
+                                                                                    <tr>
                                                                                         <td class="ControlLabel" style="width:30%">
                                                                                             End Date
                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtEndDate"
@@ -178,7 +180,7 @@
                                                                                         <td style="width:22%">
                                                                                                         
                                                                                         </td>
-                                                                                    </tr>--%>
+                                                                                    </tr>
                                                                                     <tr>
                                                                                         <td class="ControlLabel" style="width: 39%">Option
                                                                                         </td>
@@ -262,12 +264,12 @@
                                                         <input id="ShowPopUp" runat="server" style="display: none" type="button" />
                                                         &nbsp;
                                             <input id="CancelPopUp" runat="server" style="display: none" type="button"></input>
-                                                        <asp:Panel ID="pnlItems" runat="server" CssClass="pnlPopUp" Width="1000px">
+                                                        <asp:Panel ID="pnlItems" runat="server" CssClass="pnlPopUp" style="width: 85%">
                                                             <asp:UpdatePanel ID="updatePnlProduct" runat="server" UpdateMode="Conditional">
                                                                 <ContentTemplate>
                                                                     <div id="contentPopUp">
                                                                         <table cellpadding="0" cellspacing="1"
-                                                                            width="100%">
+                                                                            style="width: 100%">
                                                                             <tr>
                                                                                 <td colspan="4">
                                                                                     <table class="headerPopUp" width="100%">
@@ -280,11 +282,21 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td colspan="4">
+                                                                                    <table  width="100%">
+                                                                                        <tr>
+                                                                                            <td align="left" style="font-size:medium">Pending
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="4">
                                                                                     <table cellpadding="0" cellspacing="1"
-                                                                                        width="100%">
+                                                                                        style="width: 100%">
                                                                                         <tr>
                                                                                             <td style="width: 100%">
-                                                                                                <div id="div" runat="server" style="height: 330px; overflow: scroll">
+                                                                                                <div id="div" runat="server" style="height: 200px; overflow: scroll">
                                                                                                     <%--<asp:GridView ID="GrdViewItems" runat="server" BorderWidth="1px" DataKeyNames="TransNo"
                                                                                     EmptyDataText="No Entries Found." OnPageIndexChanging="GrdViewItems_PageIndexChanging"
                                                                                     OnRowCancelingEdit="GrdViewItems_RowCancelingEdit" OnRowCreated="GrdViewItems_RowCreated" OnPreRender="GrdViewItems_PreRender"  
@@ -296,14 +308,98 @@
                                                                                     <RowStyle Font-Bold="false" />
                                                                                     <FooterStyle CssClass="HeadataRow" Font-Bold="true" Height="27px" />--%>
                                                                                                     <rwg:BulkEditGridView ID="GrdViewItems" AutoGenerateColumns="False" BorderWidth="1px"
-                                                                                                        BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass" OnRowDataBound="GrdViewItems_RowDataBound"
+                                                                                                        BorderStyle="Solid" GridLines="Both" EmptyDataText="No Entries Found." SaveButtonID="SaveButton" runat="server" CssClass="someClass" OnRowDataBound="GrdViewItems_RowDataBound"
                                                                                                         Width="100%">
-                                                                                                        <RowStyle CssClass="dataRow" />
-                                                                                                        <SelectedRowStyle CssClass="SelectdataRow" />
-                                                                                                        <AlternatingRowStyle CssClass="altRow" />
-                                                                                                        <EmptyDataRowStyle CssClass="HeadataRow" Font-Bold="true" />
-                                                                                                        <HeaderStyle CssClass="HeadataRow" Wrap="false" />
-                                                                                                        <FooterStyle CssClass="dataRow" />
+                                                                                                        <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
+                                                <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                                                                                        <Columns>
+                                                                                                            
+                                                                                                            <asp:BoundField DataField="TransNo" HeaderText="TransNo" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="60px" />
+                                                                                                            <asp:BoundField DataField="TransDate" HeaderText="Trans Date" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="60px" />
+                                                                                                            <asp:BoundField DataField="Debtor" HeaderText="Name" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="80px" />
+                                                                                                            <asp:TemplateField Visible="false">
+                                                                                                                <ItemTemplate>
+                                                                                                                    <%--<asp:HiddenField ID="HiddenField1" runat="server" Value='<%# Eval("DebtorID") %>' />--%>
+                                                                                                                    <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("DebtorID")%>' />
+                                                                                                                </ItemTemplate>
+                                                                                                            </asp:TemplateField>
+                                                                                                            <%--<asp:BoundField DataField="DebtorID" HeaderText="DebtorID" ItemStyle-HorizontalAlign="Center" ShowHeader="false"><ItemStyle CssClass="hide"/><HeaderStyle CssClass="hide"/></asp:BoundField>--%>
+
+                                                                                                            <asp:BoundField DataField="Creditor" HeaderText="Ledger Name" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="80px" />
+                                                                                                            <%--<asp:BoundField DataField="CreditorID" HeaderText="CreditorID" HeaderStyle-BorderColor="blue" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="30px" />--%>
+                                                                                                            <asp:TemplateField Visible="false">
+                                                                                                                <ItemTemplate>
+                                                                                                                    <asp:Label ID="lblCreditorID" runat="server" Text='<%# Eval("CreditorID")%>' />
+                                                                                                                </ItemTemplate>
+                                                                                                            </asp:TemplateField>
+                                                                                                            <asp:BoundField DataField="Amount" HeaderText="Amount" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="80px" />
+                                                                                                            <asp:BoundField DataField="Narration" HeaderText="Narration" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="80px" />
+                                                                                                            <asp:BoundField DataField="VoucherType" HeaderText="Voucher Type" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="50px" />
+                                                                                                            <asp:BoundField DataField="ChequeNo" HeaderText="ChequeNo" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="50px" />
+                                                                                                            <asp:BoundField DataField="ReconcilatedBy" HeaderText="Reconcilated By" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="50px" />
+                                                                                                            <asp:BoundField DataField="Status" HeaderText="Status" HeaderStyle-BorderColor="blue" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="50px" Visible="False" />
+                                                                                                            <%--<asp:TemplateField  Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label id="lblStatus" runat ="server" Text='<%# Eval("Status")%>'/>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>--%>
+                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Reconciled Date" HeaderStyle-BorderColor="Gray"  HeaderStyle-Width="30px">
+                                                                                                                <ItemTemplate>
+                                                                                                                    <asp:TextBox ID="txtDate" Enabled="false" runat="server" Width="70px" Text='<%# Bind("Reconcilateddate") %>'></asp:TextBox>
+                                                                                                                    <cc1:CalendarExtender ID="calBillDate" runat="server" Format="dd/MM/yyyy"
+                                                                                                                        PopupButtonID="btnBillDate" TargetControlID="txtDate" Enabled="True">
+                                                                                                                    </cc1:CalendarExtender>
+                                                                                                                    <asp:ImageButton ID="btnBillDate" ImageUrl="App_Themes/NewTheme/images/cal.gif"
+                                                                                                                        CausesValidation="False" Width="20px" runat="server" />
+                                                                                                                </ItemTemplate>
+                                                                                                            </asp:TemplateField>
+                                                                                                            <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Remarks" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="10px">
+                                                                                                                <ItemTemplate>
+                                                                                                                    <asp:TextBox ID="txtResult" runat="server" Width="100px" Text='<%# Bind("Result") %>'></asp:TextBox>
+                                                                                                                </ItemTemplate>
+                                                                                                            </asp:TemplateField>
+                                                                                                            <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="60px" />
+                                                                                                        </Columns>
+                                                                                                    </rwg:BulkEditGridView>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="4">
+                                                                                    <table width="100%">
+                                                                                        <tr>
+                                                                                            <td align="left" style="font-size:medium">
+                                                                                                Reconciliated
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="4">
+                                                                                    <table cellpadding="0" cellspacing="1"
+                                                                                        style="width: 100%">
+                                                                                        <tr>
+                                                                                            <td style="width: 100%">
+                                                                                                <div id="div2" runat="server" style="height: 200px; overflow: scroll">
+                                                                                                    <%--<asp:GridView ID="GrdViewItems" runat="server" BorderWidth="1px" DataKeyNames="TransNo"
+                                                                                    EmptyDataText="No Entries Found." OnPageIndexChanging="GrdViewItems_PageIndexChanging"
+                                                                                    OnRowCancelingEdit="GrdViewItems_RowCancelingEdit" OnRowCreated="GrdViewItems_RowCreated" OnPreRender="GrdViewItems_PreRender"  
+                                                                                    OnRowDeleting="GrdViewItems_RowDeleting" OnRowDataBound="GrdViewItems_RowDataBound" 
+                                                                                    OnRowEditing="GrdViewItems_RowEditing" OnRowUpdating="GrdViewItems_RowUpdating"
+                                                                                    OnSelectedIndexChanged="GrdViewItems_SelectedIndexChanged" ShowFooter="false" CssClass="someClass"
+                                                                                    Width="100%" AllowPaging="True" PageSize="6">
+                                                                                    <EditRowStyle VerticalAlign="Middle" />
+                                                                                    <RowStyle Font-Bold="false" />
+                                                                                    <FooterStyle CssClass="HeadataRow" Font-Bold="true" Height="27px" />--%>
+                                                                                                    <rwg:BulkEditGridView ID="BulkEditGridView1" AutoGenerateColumns="False" BorderWidth="1px"
+                                                                                                        BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass" OnRowDataBound="BulkEditGridView1_RowDataBound"
+                                                                                                        Width="100%" EmptyDataText="No Entries Found.">
+                                                                                                        <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
+                                                <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                                                                                         <Columns>
                                                                                                             
                                                                                                             <asp:BoundField DataField="TransNo" HeaderText="TransNo" HeaderStyle-BorderColor="Gray" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-Width="60px" />
@@ -488,18 +584,24 @@
     </asp:UpdatePanel>
     <table align="center" style="width: 100%">
         <tr>
-            <td style="width: 33%"></td>
-            <td style="width: 17%">
-                <asp:Button ID="btnSale" runat="server"
-                    CssClass="exportexl6" EnableTheming="false" CausesValidation="false"
-                    OnClientClick="window.open('ReportXlBankRecon.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');" Font-Bold="True" ForeColor="White"></asp:Button>
+            <td style="width: 35%"></td>
+            <td style="width: 15%">
+                <asp:Panel ID="pnlSearch" runat="server">
+                                                        <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonDoreconciliation"
+                                                            EnableTheming="false" Text=""></asp:Button>
+                                                    </asp:Panel>
             </td>
-            <td style="width: 17%">
+            <td style="width: 0%">
+                <%--<asp:Button ID="btnSale" runat="server"
+                    CssClass="exportexl6" EnableTheming="false" CausesValidation="false"
+                    OnClientClick="window.open('ReportXlBankRecon.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=310,width=500,left=425,top=220, scrollbars=yes');" Font-Bold="True" ForeColor="White"></asp:Button>--%>
+            </td>
+            <td style="width: 15%">
                 <asp:Button ID="Button1" runat="server"
                     CssClass="NewReport6" EnableTheming="false" CausesValidation="false"
                     OnClientClick="window.open('ReportXlBankRec.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');" Font-Bold="True" ForeColor="White"></asp:Button>
             </td>
-            <td style="width: 33%"></td>
+            <td style="width: 35%"></td>
         </tr>
     </table>
 </asp:Content>

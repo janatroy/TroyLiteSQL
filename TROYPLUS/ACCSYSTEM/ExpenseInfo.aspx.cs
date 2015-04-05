@@ -41,7 +41,7 @@ public partial class ExpenseInfo : System.Web.UI.Page
                     GrdViewLedger.Columns[8].Visible = false;
                 }
 
-                GrdViewLedger.PageSize = 8;
+                GrdViewLedger.PageSize = 11;
 
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;

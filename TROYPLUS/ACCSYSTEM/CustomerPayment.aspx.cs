@@ -45,7 +45,7 @@ public partial class CustomerPayment : System.Web.UI.Page
                     GrdViewPayment.Columns[7].Visible = false;
                 }
 
-                GrdViewPayment.PageSize = 8;
+                GrdViewPayment.PageSize = 11;
 
                 GrdViewPayment.Attributes.Add("bordercolor", "Black");
 
@@ -104,6 +104,16 @@ public partial class CustomerPayment : System.Web.UI.Page
         {
             txtSearch.Text = "";
             ddCriteria.SelectedIndex = 0;
+
+            //if (ddCriteria.SelectedItem.Text == "Transaction Date")
+            //{
+            //    //txtdate.EnableViewState = 1;
+            //    txtdatet.Enabled = true;
+            //}
+            //else
+            //{
+            //    txtdatet.Enabled = false;
+            //}
         }
         catch (Exception ex)
         {
@@ -111,6 +121,11 @@ public partial class CustomerPayment : System.Web.UI.Page
         }
     }
 
+    protected void ddBanks_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        loadChequeNoEdit(Convert.ToInt32(ddBanks.SelectedItem.Value));
+        //ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "AdvancedAdd('" + ((HtmlTable)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("tblBankAdd")) + "');", true);
+    }
 
     protected void ddBanksAdd_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -141,6 +156,7 @@ public partial class CustomerPayment : System.Web.UI.Page
     {
 
         ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).Items.Clear();
+        ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).Items.Add(new ListItem("Select ChequeNo", "0"));
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
@@ -157,6 +173,7 @@ public partial class CustomerPayment : System.Web.UI.Page
     {
 
         ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Clear();
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).Items.Add(new ListItem("Select ChequeNo", "0"));
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
@@ -184,6 +201,28 @@ public partial class CustomerPayment : System.Web.UI.Page
 
     }
 
+
+    private void loadBranchEdit()
+    {
+
+       
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+
+        string connection = Request.Cookies["Company"].Value;
+
+        ds = bl.ListSundryDebitors(connection, ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue);
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Clear();
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).Items.Add(new ListItem("Select Customer", "0"));
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataSource = ds;
+
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataTextField = "LedgerName";
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataValueField = "LedgerID";
+        ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ComboBox2")).DataBind();
+   
+
+    }
 
     private void CheckSMSRequired()
     {
@@ -1057,32 +1096,32 @@ public partial class CustomerPayment : System.Web.UI.Page
     {
         try
         {
-            //if (((RadioButtonList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("chkPayToAdd")).SelectedValue == "Cheque")
-            //{
-            //    string ChequeNo = string.Empty;
-            //    ChequeNo = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtChequeNoAdd")).Text;
-            //    int bankname = 0;
-            //    bankname = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ddBanksAdd")).SelectedValue);
+            if (((RadioButtonList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("chkPayToAdd")).SelectedValue == "Cheque")
+            {
+                int ChequeNo =0;
+                ChequeNo = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("cmbChequeNo1")).SelectedValue);
+                int bankname = 0;
+                bankname = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ddBanksAdd")).SelectedValue);
 
-            //    if ((ChequeNo == "") && (bankname == 0))
-            //    {
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name And Cheque No Mandatory');", true);
-            //        ModalPopupExtender1.Show();
-            //        return;
-            //    }
-            //    else if (ChequeNo == "")
-            //    {
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Mandatory');", true);
-            //        ModalPopupExtender1.Show();
-            //        return;
-            //    }
-            //    else if (bankname == 0)
-            //    {
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name Mandatory');", true);
-            //        ModalPopupExtender1.Show();
-            //        return;
-            //    }
-            //}
+                if ((ChequeNo == 0) && (bankname == 0))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name And Cheque No Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+                else if (ChequeNo == 0)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+                else if (bankname == 0)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+            }
 
             this.setInsertParameters(e);
 
@@ -1449,32 +1488,32 @@ public partial class CustomerPayment : System.Web.UI.Page
     {
         try
         {
-            //if (((RadioButtonList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("chkPayTo")).SelectedValue == "Cheque")
-            //{
-            //    string ChequeNo = string.Empty;
-            //    ChequeNo = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtChequeNo")).Text;
-            //    int bankname = 0;
-            //    bankname = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue);
+            if (((RadioButtonList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("chkPayTo")).SelectedValue == "Cheque")
+            {
+                int ChequeNo = 0;
+                ChequeNo = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("cmbChequeNo")).SelectedValue);
+                int bankname = 0;
+                bankname = Convert.ToInt32(((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue);
 
-            //    if ((ChequeNo == "") && (bankname == 0))
-            //    {
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name And Cheque No Mandatory');", true);
-            //        ModalPopupExtender1.Show();
-            //        return;
-            //    }
-            //    else if (ChequeNo == "")
-            //    {
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Mandatory');", true);
-            //        ModalPopupExtender1.Show();
-            //        return;
-            //    }
-            //    else if (bankname == 0)
-            //    {
-            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name Mandatory');", true);
-            //        ModalPopupExtender1.Show();
-            //        return;
-            //    }
-            //}
+                if ((ChequeNo == 0) && (bankname == 0))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name And Cheque No Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+                else if (ChequeNo == 0)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+                else if (bankname == 0)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name Mandatory');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+            }
 
             if (((RadioButtonList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("chkPayTo")).SelectedValue == "Cheque")
             {
@@ -1671,7 +1710,7 @@ public partial class CustomerPayment : System.Web.UI.Page
                 if (li != null) li.Selected = true;
 
                 string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("ddBanks")).SelectedValue;
-               // loadChequeNoEdit(Convert.ToInt32(dfg)); 
+                loadChequeNoEdit(Convert.ToInt32(dfg)); 
 
             }
 
@@ -2302,7 +2341,7 @@ public partial class CustomerPayment : System.Web.UI.Page
             ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("UpdatePanel1")).Update();
 
             string dfg = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("ddBanksAdd")).SelectedValue;
-            loadChequeNoEdit(Convert.ToInt32(dfg));
+            loadChequeNo(Convert.ToInt32(dfg));
 
         }
         if (frmViewAdd.CurrentMode == FormViewMode.Edit)
@@ -2563,7 +2602,7 @@ public partial class CustomerPayment : System.Web.UI.Page
         {
             DropDownList ddl = (DropDownList)sender;
 
-            FormView frmV = (FormView)ddl.NamingContainer;
+            FormView frmV = (FormView)((AjaxControlToolkit.TabContainer)((AjaxControlToolkit.TabPanel)ddl.NamingContainer).NamingContainer).NamingContainer;
 
             if (frmV.DataItem != null)
             {
@@ -2573,6 +2612,9 @@ public partial class CustomerPayment : System.Web.UI.Page
 
                 ListItem li = ddl.Items.FindByValue(creditorID);
                 if (li != null) li.Selected = true;
+
+                string dfg = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpBranch")).SelectedValue;
+                loadBranchEdit(); 
 
             }
         }
@@ -2631,15 +2673,15 @@ public partial class CustomerPayment : System.Web.UI.Page
     }
     protected void ddCriteria_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (ddCriteria.SelectedItem.Text == "Transaction Date")
-        {
-            //txtdate.EnableViewState = 1;
-            txtdate.Enabled = true;
-        }
-        else
-        {
-           txtdate.Enabled = false;
-        }
+        //if (ddCriteria.SelectedItem.Text == "Transaction Date")
+        //{
+        //    //txtdate.EnableViewState = 1;
+        //    txtdatet.Enabled = true;
+        //}
+        //else
+        //{
+        //    txtdatet.Enabled = false;
+        //}
     }
   
 }

@@ -456,7 +456,7 @@
                                                                         TargetControlID="txtLdgrNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("LedgerName") %>'
+                                                                    <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("Expensehead") %>'
                                                                         SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                 </td>
 
@@ -633,7 +633,7 @@
                                                                             <td align="right" style="width: 15%"></td>
                                                                             <td align="right" style="width: 30%">
                                                                                 <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
-                                                                                    CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClientClick="Mobile_Validator();"
+                                                                                    CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                                     OnClick="InsertButton_Click"></asp:Button>
                                                                             </td>
                                                                             <td align="center" style="width: 30%">

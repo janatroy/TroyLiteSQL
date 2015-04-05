@@ -1691,7 +1691,7 @@ public partial class ManualClearance : System.Web.UI.Page
                                     dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                                     dsSales.Tables[0].Rows[i].EndEdit();
 
-                                    if (val != 0.0)
+                                    if (val == 0.0)
                                         dsSales.Tables[0].Rows[i].Delete();
                                 }
                             }
@@ -1799,16 +1799,16 @@ public partial class ManualClearance : System.Web.UI.Page
 
                 int ledgerID = Convert.ToInt32(ddReceivedFrom.SelectedValue);
 
-                if (ddCriteria.SelectedValue == "Cleared")
-                {
-                    ShowFullPurBills();
-                }
+                //if (ddCriteria.SelectedValue == "Cleared")
+                //{
+                //    ShowFullPurBills();
+                //}
                 //else if (ddCriteria.SelectedValue == "PartiallyCleared")
                 //{
                 //    ShowPendingPurBills();
                 //}
-                else if (ddCriteria.SelectedValue == "NotCleared")
-                {
+                //else if (ddCriteria.SelectedValue == "NotCleared")
+                //{
 
                     if (Request.Cookies["Company"] != null)
                         connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -1817,7 +1817,7 @@ public partial class ManualClearance : System.Web.UI.Page
 
                     var customerIDD = ddReceivedFrom.SelectedValue.Trim();
 
-                    var dsSales = bl.ListCreditPurchaseCleared(connStr.Trim(), customerIDD);
+                    var dsSales = bl.ListCreditPurchase(connStr.Trim(), customerIDD);
 
                     var receivedData = bl.GetSupplierReceivedAmount(connStr);
 
@@ -1834,9 +1834,9 @@ public partial class ManualClearance : System.Web.UI.Page
                                 if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
                                 {
                                     dsSales.Tables[0].Rows[i].BeginEdit();
-                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                    dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                    dsSales.Tables[0].Rows[i]["pay"] = val;
+                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString()) - double.Parse(billAmount));
+                                    dsSales.Tables[0].Rows[i]["PendingAmount"] = double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString());
+                                    dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                                     dsSales.Tables[0].Rows[i].EndEdit();
 
                                     if (val == 0.0)
@@ -1845,18 +1845,8 @@ public partial class ManualClearance : System.Web.UI.Page
                             }
                             dsSales.Tables[0].AcceptChanges();
                         }
-                    }
-
-                    var dsSalesd = bl.ListCreditPurchaseNotCleared(connStr.Trim(), SupplierID);
-
-                    if (dsSales != null)
-                    {
                         if (dsSales.Tables[0].Rows.Count > 0)
                         {
-                            if (dsSalesd != null)
-                            {
-                                dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
-                            }
                             txtBillNo1.DataSource = dsSales;
                             txtBillNo1.DataBind();
                         }
@@ -1866,21 +1856,42 @@ public partial class ManualClearance : System.Web.UI.Page
                             txtBillNo1.DataBind();
                         }
                     }
-                    else
-                    {
-                        if (dsSalesd.Tables[0].Rows.Count > 0)
-                        {
-                            txtBillNo1.DataSource = dsSalesd;
-                            txtBillNo1.DataBind();
-                        }
-                        else
-                        {
-                            txtBillNo1.DataSource = null;
-                            txtBillNo1.DataBind();
-                        }
-                    }
+
+
+                    ////var dsSalesd = bl.ListCreditPurchaseNotCleared(connStr.Trim(), SupplierID);
+
+                    ////if (dsSales != null)
+                    ////{
+                    ////    if (dsSales.Tables[0].Rows.Count > 0)
+                    ////    {
+                    ////        if (dsSalesd != null)
+                    ////        {
+                    ////            dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
+                    ////        }
+                    ////        txtBillNo1.DataSource = dsSales;
+                    ////        txtBillNo1.DataBind();
+                    ////    }
+                    ////    else
+                    ////    {
+                    ////        txtBillNo1.DataSource = null;
+                    ////        txtBillNo1.DataBind();
+                    ////    }
+                    ////}
+                    ////else
+                    ////{
+                    //    if (dsSalesd.Tables[0].Rows.Count > 0)
+                    //    {
+                    //        txtBillNo1.DataSource = dsSalesd;
+                    //        txtBillNo1.DataBind();
+                    //    }
+                    //    else
+                    //    {
+                    //        txtBillNo1.DataSource = null;
+                    //        txtBillNo1.DataBind();
+                    //    }
+                    //}
                 }
-            }
+            
             //else if (ddCriteria.SelectedValue == "NotCleared")
             //{
             //    var dsSales = bl.ListCreditSalesNotCleared(connStr.Trim(), customerID);
@@ -2105,6 +2116,13 @@ public partial class ManualClearance : System.Web.UI.Page
             int BillNo = Convert.ToInt32(txtBillNo1.SelectedValue);
             double Amount = Convert.ToDouble(txtamount.Text);
 
+
+            if (Amount > Convert.ToDouble(TextBox2.Text))
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' " + Amount + " cannot be greater than " + Convert.ToDouble(TextBox2.Text) + "');", true);
+                return;
+            }
+
             if (ddoption.SelectedValue == "Customer")
             {
                 bl.InsertReceivedAmt(con, Transno, BillNo, Amount, username);
@@ -2271,7 +2289,30 @@ public partial class ManualClearance : System.Web.UI.Page
         //Panel1.Visible = false;
         //Div1.Visible = false;
 
+        BusinessLogic bll = new BusinessLogic(sDataSource);
+        
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+
+        if (bll.CheckUserHaveEdit(usernam, "MNLCL"))
+        {
+            GrdBills.Enabled = false;
+        }
+        else
+        {
+            GrdBills.Enabled = true;
+        }
+
+        if (bll.CheckUserHaveAdd(usernam, "MNLCL"))
+        {
+            GrdViewSales.Enabled = false;
+        }
+        else
+        {
+            GrdViewSales.Enabled = true;
+        }
+
         BusinessLogic bl = new BusinessLogic();
+
         string connStr = string.Empty;
 
         Session["BillData"] = null;
@@ -2334,18 +2375,19 @@ public partial class ManualClearance : System.Web.UI.Page
                         }
                         dsSales.Tables[0].AcceptChanges();
                     }
+                    if (dsSales.Tables[0].Rows.Count > 0)
+                    {
+                        GrdCreditSales.DataSource = dsSales;
+                        GrdCreditSales.DataBind();
+                    }
+                    else
+                    {
+                        GrdCreditSales.DataSource = null;
+                        GrdCreditSales.DataBind();
+                    }
                 }
 
-                if (dsSales.Tables[0].Rows.Count > 0)
-            {
-                GrdCreditSales.DataSource = dsSales;
-                GrdCreditSales.DataBind();
-            }
-            else
-            {
-                GrdCreditSales.DataSource = null;
-                GrdCreditSales.DataBind();
-            }
+                
 
                 //var dsSalesd = bl.ListCreditSalesNotCleared(connStr.Trim(), customerID);
 
@@ -2471,16 +2513,16 @@ public partial class ManualClearance : System.Web.UI.Page
 
             int ledgerID = Convert.ToInt32(ddReceivedFrom.SelectedValue);
 
-            if (ddCriteria.SelectedValue == "Cleared")
-            {
-                ShowFullPurBills();
-            }
-            //else if (ddCriteria.SelectedValue == "PartiallyCleared")
+            //if (ddCriteria.SelectedValue == "Cleared")
             //{
-            //    ShowPendingPurBills();
+            //    ShowFullPurBills();
             //}
-            else if (ddCriteria.SelectedValue == "NotCleared")
-            {
+            ////else if (ddCriteria.SelectedValue == "PartiallyCleared")
+            ////{
+            ////    ShowPendingPurBills();
+            ////}
+            //else if (ddCriteria.SelectedValue == "NotCleared")
+            //{
  
                 if (Request.Cookies["Company"] != null)
                     connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -2489,7 +2531,7 @@ public partial class ManualClearance : System.Web.UI.Page
 
                 var customerID = ddReceivedFrom.SelectedValue.Trim();
 
-                var dsSales = bl.ListCreditPurchaseCleared(connStr.Trim(), customerID);
+                var dsSales = bl.ListCreditPurchase(connStr.Trim(), customerID);
 
                 var receivedData = bl.GetSupplierReceivedAmount(connStr);
 
@@ -2506,9 +2548,9 @@ public partial class ManualClearance : System.Web.UI.Page
                             if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
                             {
                                 dsSales.Tables[0].Rows[i].BeginEdit();
-                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                dsSales.Tables[0].Rows[i]["Amount"] = double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString());
-                                dsSales.Tables[0].Rows[i]["pay"] = val;
+                                double val = (double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString()) - double.Parse(billAmount));
+                                dsSales.Tables[0].Rows[i]["PendingAmount"] = double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString());
+                                dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                                 dsSales.Tables[0].Rows[i].EndEdit();
 
                                 if (val == 0.0)
@@ -2519,16 +2561,8 @@ public partial class ManualClearance : System.Web.UI.Page
                     }
                 }
 
-                var dsSalesd = bl.ListCreditPurchaseNotCleared(connStr.Trim(), SupplierID);
-
-                if (dsSales != null)
-                {
                     if (dsSales.Tables[0].Rows.Count > 0)
                     {
-                        if (dsSalesd != null)
-                        {
-                            dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
-                        }
                         GrdCreditSales.DataSource = dsSales;
                         GrdCreditSales.DataBind();
                     }
@@ -2537,20 +2571,39 @@ public partial class ManualClearance : System.Web.UI.Page
                         GrdCreditSales.DataSource = null;
                         GrdCreditSales.DataBind();
                     }
-                }
-                else
-                {
-                    if (dsSalesd.Tables[0].Rows.Count > 0)
-                    {
-                        GrdCreditSales.DataSource = dsSalesd;
-                        GrdCreditSales.DataBind();
-                    }
-                    else
-                    {
-                        GrdCreditSales.DataSource = null;
-                        GrdCreditSales.DataBind();
-                    }
-                }
+
+                //var dsSalesd = bl.ListCreditPurchaseNotCleared(connStr.Trim(), SupplierID);
+
+                //if (dsSales != null)
+                //{
+                //    if (dsSales.Tables[0].Rows.Count > 0)
+                //    {
+                //        if (dsSalesd != null)
+                //        {
+                //            dsSales.Tables[0].Merge(dsSalesd.Tables[0]);
+                //        }
+                //        GrdCreditSales.DataSource = dsSales;
+                //        GrdCreditSales.DataBind();
+                //    }
+                //    else
+                //    {
+                //        GrdCreditSales.DataSource = null;
+                //        GrdCreditSales.DataBind();
+                //    }
+                //}
+                //else
+                //{
+                //    if (dsSalesd.Tables[0].Rows.Count > 0)
+                //    {
+                //        GrdCreditSales.DataSource = dsSalesd;
+                //        GrdCreditSales.DataBind();
+                //    }
+                //    else
+                //    {
+                //        GrdCreditSales.DataSource = null;
+                //        GrdCreditSales.DataBind();
+                //    }
+                //}
 
                 var receivedDatad = bl.GetPaymentForLedger(connStr, ledgerID);
                 if (receivedDatad != null)
@@ -2572,7 +2625,7 @@ public partial class ManualClearance : System.Web.UI.Page
                     GrdViewSales.DataBind();
                 }
 
-            }
+            
 
 
                 
