@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using SMSLibrary;
+using System.Text.RegularExpressions;
 
 public partial class UserOptions : System.Web.UI.Page
 {
@@ -621,11 +622,19 @@ public partial class UserOptions : System.Web.UI.Page
     {
         try
         {
+            bool isEmail = Regex.IsMatch(txtEmail.Text.Trim(), @"\A(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)\Z");
+
+
             if (lbloption.Text == "New")
             {
                 if ((txtpassword.Text == "") && (txtconfirmpassword.Text == ""))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter Password And Confirm Password.');", true);
+                    return;
+                }
+                if (!isEmail)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email Id is invalid ')", true);
                     return;
                 }
 

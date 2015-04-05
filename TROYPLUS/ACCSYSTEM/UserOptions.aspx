@@ -226,6 +226,10 @@
                                                                                         <asp:TextBox ID="txtUser" runat="server" SkinID="skinTxtBoxGrid" ValidationGroup="product"></asp:TextBox>
                                                                                     </td>
                                                                                     <td class="ControlLabelproject" style="width: 20%">Email
+                                                                                        <asp:RegularExpressionValidator ID="remail1" runat="server"
+                                                                                                ControlToValidate="txtEmail" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                                     </td>
                                                                                     <td class="ControlTextBox3" style="width: 20%">
                                                                                         <asp:TextBox ID="txtEmail" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -503,7 +507,7 @@
                                                                                             </rwg:BulkEditGridView>
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
-                                                                                    <cc1:TabPanel ID="TabEXPENSES" runat="server" HeaderText="Finacial">
+                                                                                    <cc1:TabPanel ID="TabEXPENSES" runat="server" HeaderText="Financial">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridEXPENSES" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
