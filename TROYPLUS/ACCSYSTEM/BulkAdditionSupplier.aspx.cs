@@ -592,11 +592,15 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
                     ii = 1;
                 }
 
+
+                int j = 1;
+                int jj = 1;
+                string itemcj = string.Empty;
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    itemc = Convert.ToString(dr["Mobile"]);
+                    itemcj = Convert.ToString(dr["Mobile"]);
 
-                    if ((itemc == null) || (itemc == ""))
+                    if ((itemcj == null) || (itemcj == ""))
                     {
                     }
                     else
@@ -604,30 +608,30 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
                         foreach (DataRow drd in ds.Tables[0].Rows)
                         {
 
-                            if (ii == i)
+                            if (jj == j)
                             {
                             }
                             else
                             {
-                                if (itemc == "" || itemc=="0")
+                                if (itemcj == "" || itemcj=="0")
                                 {
 
                                 }
                                 else
                                 {
 
-                                    if (itemc == Convert.ToString(drd["Mobile"]))
+                                    if (itemcj == Convert.ToString(drd["Mobile"]))
                                     {
                                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile - " + itemc + " - already exists in the excel.');", true);
                                         return;
                                     }
                                 }
                             }
-                            ii = ii + 1;
+                            jj = jj + 1;
                         }
                     }
-                    i = i + 1;
-                    ii = 1;
+                    j = j + 1;
+                    jj = 1;
                 }
 
 

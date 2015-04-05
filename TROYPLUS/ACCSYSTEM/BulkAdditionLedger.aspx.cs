@@ -595,11 +595,16 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                     ii = 1;
                 }
 
+                int ij = 1;
+                int iii = 1;
+                string itemci = string.Empty;
+               
+
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    itemc = Convert.ToString(dr["Mobile"]);
+                    itemci = Convert.ToString(dr["Mobile"]);
 
-                    if ((itemc == null) || (itemc == ""))
+                    if ((itemci == null) || (itemci == ""))
                     {
                     }
                     else
@@ -607,22 +612,22 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                         foreach (DataRow drd in ds.Tables[0].Rows)
                         {
 
-                            if (ii == i)
+                            if (iii == ij)
                             {
                             }
                             else
                             {
-                                if (itemc == Convert.ToString(drd["Mobile"]))
+                                if (itemci == Convert.ToString(drd["Mobile"]))
                                 {
-                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile - " + itemc + " - already exists in the excel.');", true);
+                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile - " + itemci + " - already exists in the excel.');", true);
                                     return;
                                 }
                             }
-                            ii = ii + 1;
+                            iii = iii + 1;
                         }
                     }
-                    i = i + 1;
-                    ii = 1;
+                    ij = ij + 1;
+                    iii = 1;
                 }
                 if (drpBranch.Text.Trim() != string.Empty)
                     brncode = Convert.ToString(drpBranch.SelectedValue);

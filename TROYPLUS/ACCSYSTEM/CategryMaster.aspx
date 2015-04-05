@@ -171,7 +171,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Level. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtCategoryLevel" />
                                                                        <asp:RangeValidator ID="rangeValidator1" runat="server" ControlToValidate="txtCategoryLevel" MaximumValue="100" MinimumValue="0"
-     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Out of Range" Text="*" Type="Integer" />
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Category % Out of Range" Text="*" Type="Integer" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtCategoryLevel" MaxLength="3" runat="server" Text='<%# Bind("Categorylevel") %>' SkinID="skinTxtBoxGrid"
@@ -274,7 +274,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Category Level. It cannot be left blank. ">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtCategoryLevelAdd" />
                                                                     <asp:RangeValidator ID="rvAliasNameAddrangeValidator1" runat="server" ControlToValidate="txtCategoryLevelAdd" MaximumValue="100" MinimumValue="0"
-     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Out of Range" Text="*" Type="Integer" />
+     Display="Dynamic" EnableClientScript="true"  ErrorMessage="Category % Out of Range" Text="*" Type="Integer" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtCategoryLevelAdd" MaxLength="3" runat="server" Text="0"
@@ -363,8 +363,8 @@
                                             AllowPaging="True" DataKeyNames="CategoryID" EmptyDataText="No Brand Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                          <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
                                                 <asp:BoundField DataField="CategoryName" HeaderText="Category Name" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="690px" />
                                                 <asp:BoundField DataField="CategoryLevel" HeaderText="Category %" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="200px" />

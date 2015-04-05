@@ -222,25 +222,25 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     divBankPaymodeEx.Visible = false;
                 }
 
-                //if (dr["MultiPayment"].ToString() == "YES")
-                //{
-                //    lblPayMode.Text = "Multipayment";
-                //    divMultiPayment.Visible = true;
-                //    GrdViewReceipt.DataSource = bl.ListReceiptsForBillNoOrder(dr["billno"].ToString());
-                //    //GrdViewReceipt.DataSource = bl.ListReceiptsForBillNo(dr["billno"].ToString());
-                //    GrdViewReceipt.DataBind();
+                if (dr["MultiPayment"].ToString() == "YES")
+                {
+                    lblPayMode.Text = "Multipayment";
+                    divMultiPayment.Visible = true;
+                    GrdViewReceipt.DataSource = bl.ListReceiptsForBillNoOrder(dr["billno"].ToString(), dr["Branchcode"].ToString());
+                    //GrdViewReceipt.DataSource = bl.ListReceiptsForBillNo(dr["billno"].ToString());
+                    GrdViewReceipt.DataBind();
 
-                //    lblPayModeEx.Text = "Multipayment";
-                //    divMultiPaymentEx.Visible = true;
-                //    GrdViewReceiptEx.DataSource = bl.ListReceiptsForBillNoOrder(dr["billno"].ToString());
-                //    //GrdViewReceipt.DataSource = bl.ListReceiptsForBillNo(dr["billno"].ToString());
-                //    GrdViewReceiptEx.DataBind();
-                //}
-                //else
-                //{
-                //    divMultiPayment.Visible = false;
-                //    divMultiPaymentEx.Visible = false;
-                //}
+                    lblPayModeEx.Text = "Multipayment";
+                    divMultiPaymentEx.Visible = true;
+                    GrdViewReceiptEx.DataSource = bl.ListReceiptsForBillNoOrder(dr["billno"].ToString(), dr["Branchcode"].ToString());
+                    //GrdViewReceipt.DataSource = bl.ListReceiptsForBillNo(dr["billno"].ToString());
+                    GrdViewReceiptEx.DataBind();
+                }
+                else
+                {
+                    divMultiPayment.Visible = false;
+                    divMultiPaymentEx.Visible = false;
+                }
             }
 
             if ((dsBill != null) && (dsBill.Tables[0].Rows.Count > 0))

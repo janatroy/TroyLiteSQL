@@ -344,6 +344,8 @@
                                                                                         <td class="ControlLabel" style="width: 20%;">Customer / Dealer Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Customer / Dealer Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom,Numbers"
+                                                                        TargetControlID="txtLdgrName" ValidChars=" .,-"  />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtLdgrName" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"
@@ -757,6 +759,8 @@
                                                                                         <td class="ControlLabel" style="width: 20%">Customer / Dealer Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Customer / Dealer Name. It cannot be left blank. " />
+                                                                                               <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender21" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom,Numbers"
+                                                                        TargetControlID="txtLdgrNameAdd" ValidChars=" .,-"  />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtLdgrNameAdd" TabIndex="1" runat="server" BackColor="#e7e7e7" Text='<%# Bind("LedgerName") %>'
@@ -1205,8 +1209,8 @@
                                             AllowPaging="True" DataKeyNames="LedgerID" EmptyDataText="No Customer Data Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted" CssClass="someClass">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                           <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
                                                 <asp:BoundField DataField="LedgerName" HeaderText="Customer / Dealer Name" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" />
