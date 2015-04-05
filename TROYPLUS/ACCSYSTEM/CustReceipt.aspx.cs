@@ -19,6 +19,7 @@ public partial class CustReceipt : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -158,6 +159,7 @@ public partial class CustReceipt : System.Web.UI.Page
 
 
                 pnlEdit.Visible = false;
+              
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
@@ -4426,83 +4428,83 @@ public partial class CustReceipt : System.Web.UI.Page
         TextBox1.Text = Convert.ToString(tota);
 
 
-        DataSet dsd;
-        DataTable dtd;
-        DataRow drNewd;
+        //DataSet dsd;
+        //DataTable dtd;
+        //DataRow drNewd;
 
-        DataColumn dcd;
+        //DataColumn dcd;
 
-        dsd = new DataSet();
+        //dsd = new DataSet();
 
-        dtd = new DataTable();
+        //dtd = new DataTable();
 
-        dcd = new DataColumn("RefNo");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("RefNo");
+        //dtd.Columns.Add(dcd);
 
-        dcd = new DataColumn("Date");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("Date");
+        //dtd.Columns.Add(dcd);
 
-        dcd = new DataColumn("DebitorID");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("DebitorID");
+        //dtd.Columns.Add(dcd);
 
-        dcd = new DataColumn("Paymode");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("Paymode");
+        //dtd.Columns.Add(dcd);
 
-        dcd = new DataColumn("Amount");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("Amount");
+        //dtd.Columns.Add(dcd);
 
-        dcd = new DataColumn("Narration");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("Narration");
+        //dtd.Columns.Add(dcd);
 
-        dcd = new DataColumn("VoucherType");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("VoucherType");
+        //dtd.Columns.Add(dcd);
 
-        dcd = new DataColumn("ChequeNo");
-        dtd.Columns.Add(dcd);
+        //dcd = new DataColumn("ChequeNo");
+        //dtd.Columns.Add(dcd);
 
-        dsd.Tables.Add(dtd);
+        //dsd.Tables.Add(dtd);
 
-        for (int vLoop = 0; vLoop < GridView2.Rows.Count; vLoop++)
-        {
-            TextBox txttt = (TextBox)GridView2.Rows[vLoop].FindControl("txtRefNo");
-            DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop].FindControl("txtType");
-            TextBox txt = (TextBox)GridView2.Rows[vLoop].FindControl("txtAmount");
-            TextBox txtt = (TextBox)GridView2.Rows[vLoop].FindControl("txtNarration");
-            DropDownList txttd = (DropDownList)GridView2.Rows[vLoop].FindControl("drpBank");
-            TextBox txttdd = (TextBox)GridView2.Rows[vLoop].FindControl("txtChequeNo");
+        //for (int vLoop = 0; vLoop < GridView2.Rows.Count; vLoop++)
+        //{
+        //    TextBox txttt = (TextBox)GridView2.Rows[vLoop].FindControl("txtRefNo");
+        //    DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop].FindControl("txtType");
+        //    TextBox txt = (TextBox)GridView2.Rows[vLoop].FindControl("txtAmount");
+        //    TextBox txtt = (TextBox)GridView2.Rows[vLoop].FindControl("txtNarration");
+        //    DropDownList txttd = (DropDownList)GridView2.Rows[vLoop].FindControl("drpBank");
+        //    TextBox txttdd = (TextBox)GridView2.Rows[vLoop].FindControl("txtChequeNo");
 
        
 
-            drNewd = dtd.NewRow();
-            drNewd["RefNo"] = txttt.Text;
-            drNewd["Date"] = "";
+        //    drNewd = dtd.NewRow();
+        //    drNewd["RefNo"] = txttt.Text;
+        //    drNewd["Date"] = "";
 
 
-            if (txtttd.SelectedItem.Text == "Cash")
-            {
-                drNewd["DebitorID"] = 1;
-                drNewd["Paymode"] = "Cash";
-                drNewd["ChequeNo"] = 0;
-            }
-            else if (txtttd.SelectedItem.Text == "Cheque")
-            {
-                drNewd["DebitorID"] = int.Parse(txttd.SelectedValue);
-                drNewd["Paymode"] = "Cheque";
-                drNewd["ChequeNo"] = txttdd.Text;
-            }
-            else if (txtttd.SelectedItem.Text == "Card")
-            {
-                drNewd["DebitorID"] = int.Parse(txttd.SelectedValue);
-                drNewd["Paymode"] = "Card";
-                drNewd["ChequeNo"] = txttdd.Text;
-            }
+        //    if (txtttd.SelectedItem.Text == "Cash")
+        //    {
+        //        drNewd["DebitorID"] = 1;
+        //        drNewd["Paymode"] = "Cash";
+        //        drNewd["ChequeNo"] = 0;
+        //    }
+        //    else if (txtttd.SelectedItem.Text == "Cheque")
+        //    {
+        //        drNewd["DebitorID"] = int.Parse(txttd.SelectedValue);
+        //        drNewd["Paymode"] = "Cheque";
+        //        drNewd["ChequeNo"] = txttdd.Text;
+        //    }
+        //    else if (txtttd.SelectedItem.Text == "Card")
+        //    {
+        //        drNewd["DebitorID"] = int.Parse(txttd.SelectedValue);
+        //        drNewd["Paymode"] = "Card";
+        //        drNewd["ChequeNo"] = txttdd.Text;
+        //    }
 
-            //drNew["Creditor"] = Convert.ToInt32(txttd.SelectedItem.Value);
-            drNewd["Amount"] = txt.Text;
-            drNewd["Narration"] = txtt.Text;
-            drNewd["VoucherType"] = "Receipt";
-            dsd.Tables[0].Rows.Add(drNewd);
-        }
+        //    //drNew["Creditor"] = Convert.ToInt32(txttd.SelectedItem.Value);
+        //    drNewd["Amount"] = txt.Text;
+        //    drNewd["Narration"] = txtt.Text;
+        //    drNewd["VoucherType"] = "Receipt";
+        //    dsd.Tables[0].Rows.Add(drNewd);
+        //}
 
      
 
@@ -4552,29 +4554,15 @@ public partial class CustReceipt : System.Web.UI.Page
 
                 double adtotal1 = 0;
 
-                    for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
-                    {
-                        Label txttt = (Label)GridView1.Rows[vLoop].FindControl("txtBillno");
-                        Label txt = (Label)GridView1.Rows[vLoop].FindControl("txtBillDate");
-                        Label txtt = (Label)GridView1.Rows[vLoop].FindControl("txtCustomerName");
-                        Label txttd = (Label)GridView1.Rows[vLoop].FindControl("txtAmount");
-                        Label txttd123 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount123");
-                        TextBox txttdd = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
-                        Label txttdtt = (Label)GridView1.Rows[vLoop].FindControl("txtAmount1");
-
-                        
-
-                        for (int itt = 0; itt < dsd.Tables[0].Rows.Count; itt++)
-                        {
-                            //int txttt = Convert.ToInt32(dsd.Tables[0].Rows[itt]["BillNo"]);
-                            //string txtttdd = Convert.ToString(dsd.Tables[0].Rows[itt]["BillDate"]);
-                            //string txtd = Convert.ToString(dsd.Tables[0].Rows[itt]["CustomerName"]);
-                            double txtamt = Convert.ToDouble(dsd.Tables[0].Rows[itt]["Amount"]);
-                            //TextBox txtamt = (TextBox)GridView2.Rows[vLoop1].FindControl("txtAmount");
-                            //DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtType");
-                            //TextBox txtChequeNo = (TextBox)GridView2.Rows[vLoop1].FindControl("txtChequeNo");
-
-                            adtotal1 = Convert.ToDouble(txtamt);
+                for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
+                {
+                    Label txttt = (Label)GridView1.Rows[vLoop].FindControl("txtBillno");
+                    Label txt = (Label)GridView1.Rows[vLoop].FindControl("txtBillDate");
+                    Label txtt = (Label)GridView1.Rows[vLoop].FindControl("txtCustomerName");
+                    Label txttd = (Label)GridView1.Rows[vLoop].FindControl("txtAmount");
+                    Label txttd123 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount123");
+                    TextBox txttdd = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
+                    Label txttdtt = (Label)GridView1.Rows[vLoop].FindControl("txtAmount1");
 
                     drNew = dttt.NewRow();
                     drNew["Row"] = sno;
@@ -4584,84 +4572,30 @@ public partial class CustReceipt : System.Web.UI.Page
                     drNew["Amount"] = txttd123.Text;
 
                     drNew["BillDate"] = txt.Text;
-
-                    
-
-                    if (adtotal > 0)
+                    if (adtotal > Convert.ToDouble(txttd.Text))
                     {
-                        if (adtotal1 > Convert.ToDouble(txttd.Text))
-                        {
-                            drNew["AdjustAmount"] = Convert.ToDouble(txttd.Text);
-                            drNew["Amount1"] = Convert.ToDouble(txttd.Text);
-                            adtotal = adtotal - Convert.ToDouble(txtamt);
-
-                            adtotal1 = adtotal1 - Convert.ToDouble(txtamt);
-
-                            drNew["Completed"] = "N";
-                            dstd.Tables[0].Rows.Add(drNew);
-                            sno = sno + 1;
-
-                            //for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
-                            //{
-                            //    if (txttt == Convert.ToInt32(dstt.Tables[0].Rows[i]["BillNo"]))
-                            //    {
-                            //        dstt.Tables[0].Rows[i].BeginEdit();
-                            //        dstt.Tables[0].Rows[i]["Completed"] = "N";
-                            //        dstt.Tables[0].Rows[i]["Amount1"] = adtotalt;
-                            //        dstt.Tables[0].Rows[i].EndEdit();
-                            //    }
-                            //}
-                            //dstt.Tables[0].AcceptChanges();
-
-                        }
-                        else if (adtotal1 < Convert.ToDouble(txttd.Text))
-                        {
-                            drNew["AdjustAmount"] = adtotal1;
-                            drNew["Amount1"] = adtotal1;
-                            adtotal = adtotal - Convert.ToDouble(txtamt);
-
-                            adtotal1 = 0;
-
-                            drNew["Completed"] = "N";
-                            dstd.Tables[0].Rows.Add(drNew);
-                            sno = sno + 1;
-
-                        }
-                        else if (adtotal1 == Convert.ToDouble(txttd.Text))
-                        {
-                            drNew["AdjustAmount"] = adtotal1;
-                            drNew["Amount1"] = adtotal1;
-                            adtotal = adtotal - Convert.ToDouble(txtamt);
-
-                            adtotal1 = 0;
-
-                            drNew["Completed"] = "N";
-                            dstd.Tables[0].Rows.Add(drNew);
-                            sno = sno + 1;
-
-                            break;
-                        }
+                        drNew["AdjustAmount"] = Convert.ToDouble(txttd.Text);
+                        drNew["Amount1"] = Convert.ToDouble(txttd.Text);
+                        adtotal = adtotal - Convert.ToDouble(txttd.Text);
                     }
-                    else
+                    else if (adtotal < Convert.ToDouble(txttd.Text))
                     {
-                       
-                            drNew["AdjustAmount"] = 0;
-                            drNew["Amount1"] = 0;
-                            adtotal = adtotal - Convert.ToDouble(txtamt);
-
-                            adtotal1 = 0;
-
-                            drNew["Completed"] = "N";
-                            dstd.Tables[0].Rows.Add(drNew);
-                            sno = sno + 1;
-
-                            break;
+                        drNew["AdjustAmount"] = adtotal;
+                        drNew["Amount1"] = adtotal;
+                        adtotal = 0;
                     }
-
+                    else if (adtotal == Convert.ToDouble(txttd.Text))
+                    {
+                        drNew["AdjustAmount"] = adtotal;
+                        drNew["Amount1"] = adtotal;
+                        adtotal = 0;
+                    }
+                    drNew["Completed"] = "N";
+                    dstd.Tables[0].Rows.Add(drNew);
+                    sno = sno + 1;
                 }
-            }
-            GridView1.DataSource = dstd;
-            GridView1.DataBind();
+                GridView1.DataSource = dstd;
+                GridView1.DataBind();
         }
         else
         {
@@ -4744,71 +4678,71 @@ public partial class CustReceipt : System.Web.UI.Page
 
 
 
-        DataSet dstt;
-        DataTable dtt;
-        DataRow drNewt;
+        //DataSet dstt;
+        //DataTable dtt;
+        //DataRow drNewt;
 
-        DataColumn dctd;
+        //DataColumn dctd;
 
-        dstt = new DataSet();
+        //dstt = new DataSet();
 
-        dtt = new DataTable();
+        //dtt = new DataTable();
 
-        dctd = new DataColumn("Billno");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("Billno");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("Row");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("Row");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("CustomerName");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("CustomerName");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("Amount");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("Amount");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("BillDate");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("BillDate");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("PendingAmount");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("PendingAmount");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("AdjustAmount");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("AdjustAmount");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("Completed");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("Completed");
+        //dtt.Columns.Add(dctd);
 
-        dctd = new DataColumn("Amount1");
-        dtt.Columns.Add(dctd);
+        //dctd = new DataColumn("Amount1");
+        //dtt.Columns.Add(dctd);
 
-        dstt.Tables.Add(dtt);
+        //dstt.Tables.Add(dtt);
 
-        int snot = 1;
+        //int snot = 1;
 
-        for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
-        {
-            Label txttt = (Label)GridView1.Rows[vLoop].FindControl("txtBillno");
-            Label txt = (Label)GridView1.Rows[vLoop].FindControl("txtBillDate");
-            Label txtt = (Label)GridView1.Rows[vLoop].FindControl("txtCustomerName");
-            Label txttd = (Label)GridView1.Rows[vLoop].FindControl("txtAmount");
-            TextBox txttdd = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
-            Label txttddd = (Label)GridView1.Rows[vLoop].FindControl("txtCompleted");
-            Label txttdddd = (Label)GridView1.Rows[vLoop].FindControl("txtAmount1");
-            Label txttd123 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount123");
+        //for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
+        //{
+        //    Label txttt = (Label)GridView1.Rows[vLoop].FindControl("txtBillno");
+        //    Label txt = (Label)GridView1.Rows[vLoop].FindControl("txtBillDate");
+        //    Label txtt = (Label)GridView1.Rows[vLoop].FindControl("txtCustomerName");
+        //    Label txttd = (Label)GridView1.Rows[vLoop].FindControl("txtAmount");
+        //    TextBox txttdd = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
+        //    Label txttddd = (Label)GridView1.Rows[vLoop].FindControl("txtCompleted");
+        //    Label txttdddd = (Label)GridView1.Rows[vLoop].FindControl("txtAmount1");
+        //    Label txttd123 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount123");
 
-            drNewt = dtt.NewRow();
-            drNewt["Row"] = snot;
-            drNewt["Billno"] = txttt.Text;
-            drNewt["CustomerName"] = txtt.Text;
-            drNewt["PendingAmount"] = txttd.Text;
-            drNewt["Amount"] = txttd123.Text;
-            drNewt["BillDate"] = txt.Text;
-            drNewt["AdjustAmount"] = Convert.ToDouble(txttdd.Text);
-            drNewt["Amount1"] = Convert.ToDouble(txttdd.Text);
-            drNewt["Completed"] = txttddd.Text;
-            dstt.Tables[0].Rows.Add(drNewt);
-            snot = snot + 1;
-        }
+        //    drNewt = dtt.NewRow();
+        //    drNewt["Row"] = snot;
+        //    drNewt["Billno"] = txttt.Text;
+        //    drNewt["CustomerName"] = txtt.Text;
+        //    drNewt["PendingAmount"] = txttd.Text;
+        //    drNewt["Amount"] = txttd123.Text;
+        //    drNewt["BillDate"] = txt.Text;
+        //    drNewt["AdjustAmount"] = Convert.ToDouble(txttdd.Text);
+        //    drNewt["Amount1"] = Convert.ToDouble(txttdd.Text);
+        //    drNewt["Completed"] = txttddd.Text;
+        //    dstt.Tables[0].Rows.Add(drNewt);
+        //    snot = snot + 1;
+        //}
 
 
 
@@ -6491,20 +6425,20 @@ public partial class CustReceipt : System.Web.UI.Page
         DataTable dtt = new DataTable();
         DataRow dr = null;
         dtt.Columns.Add(new DataColumn("RowNumber", typeof(string)));
-        dtt.Columns.Add(new DataColumn("Col1", typeof(string)));
-        dtt.Columns.Add(new DataColumn("Col2", typeof(string)));
-        dtt.Columns.Add(new DataColumn("Col3", typeof(string)));
-        dtt.Columns.Add(new DataColumn("Col4", typeof(string)));
-        dtt.Columns.Add(new DataColumn("Col5", typeof(string)));
-        dtt.Columns.Add(new DataColumn("Col6", typeof(string)));
+        dtt.Columns.Add(new DataColumn("type", typeof(string)));
+        dtt.Columns.Add(new DataColumn("refno", typeof(string)));
+        dtt.Columns.Add(new DataColumn("debtorid", typeof(string)));
+        dtt.Columns.Add(new DataColumn("amount", typeof(string)));
+        dtt.Columns.Add(new DataColumn("chequeno", typeof(string)));
+        dtt.Columns.Add(new DataColumn("narration", typeof(string)));
         dr = dtt.NewRow();
         dr["RowNumber"] = 1;
-        dr["Col1"] = string.Empty;
-        dr["Col2"] = string.Empty;
-        dr["Col3"] = string.Empty;
-        dr["Col4"] = string.Empty;
-        dr["Col5"] = string.Empty;
-        dr["Col6"] = string.Empty;
+        dr["type"] = string.Empty;
+        dr["refno"] = string.Empty;
+        dr["debtorid"] = string.Empty;
+        dr["amount"] = string.Empty;
+        dr["chequeno"] = string.Empty;
+        dr["narration"] = string.Empty;
         dtt.Rows.Add(dr);
 
         ViewState["CurrentTable1"] = dtt;
