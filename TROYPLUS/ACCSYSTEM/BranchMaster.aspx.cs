@@ -68,16 +68,16 @@ public partial class BranchMaster : System.Web.UI.Page
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                //if (bl.CheckUserHaveAdd(usernam, "CHQMST"))
-                //{
-                //    lnkBtnAdd.Enabled = false;
-                //    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
-                //}
-                //else
-                //{
-                //    lnkBtnAdd.Enabled = true;
-                //    lnkBtnAdd.ToolTip = "Click to Add New ";
-                //}
+                if (bl.CheckUserHaveAdd(usernam, "BRNCHMAS"))
+                {
+                    lnkBtnAdd.Enabled = false;
+                    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+                }
+                else
+                {
+                    lnkBtnAdd.Enabled = true;
+                    lnkBtnAdd.ToolTip = "Click to Add New ";
+                }
 
                 
 
@@ -441,6 +441,7 @@ public partial class BranchMaster : System.Web.UI.Page
             {
                 BusinessLogic bl = new BusinessLogic(GetConnectionString());
                 string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
 
                 //if (bl.ChequeLeafUsed(int.Parse(((HiddenField)e.Row.FindControl("ldgID")).Value)))
                 //{
@@ -450,8 +451,13 @@ public partial class BranchMaster : System.Web.UI.Page
                 //    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
                 //    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
                 //}
+                if (bl.CheckUserHaveEdit(usernam, "BRNCHMAS"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
 
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+              //  string usernam = Request.Cookies["LoggedUserName"].Value;
 
                 if (bl.CheckPriceListUsed(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "PriceName"))))
                 {

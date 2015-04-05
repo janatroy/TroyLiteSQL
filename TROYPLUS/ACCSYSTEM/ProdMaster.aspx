@@ -749,7 +749,7 @@
 
                                                                                     </ContentTemplate>
                                                                                 </cc1:TabPanel>
-                                                                                <cc1:TabPanel ID="tabSalesIncentive" runat="server" HeaderText="Sales Incentive">
+                                                                                <cc1:TabPanel ID="tabSalesIncentive" Visible="false" runat="server" HeaderText="Sales Incentive">
                                                                                     <ContentTemplate>
                                                                                         <table width="800px" cellpadding="3" cellspacing="1" align="center">
                                                                                             <tr style="height: 30px" class="tblLeft">
@@ -770,7 +770,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab1" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab1" Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -781,7 +781,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab2" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab2"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -792,7 +792,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab3" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab3"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -803,7 +803,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab4" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab4"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -814,7 +814,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab5" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab5"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>

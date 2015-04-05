@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Data.OleDb;
+using System.Text.RegularExpressions;
 
 public partial class BulkAdditionLedger : System.Web.UI.Page
 {
@@ -163,7 +164,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Mobile"));
         dt.Columns.Add(new DataColumn("CreditLimit"));
         dt.Columns.Add(new DataColumn("CreditDays"));
-       // dt.Columns.Add(new DataColumn("Emailid"));
+        dt.Columns.Add(new DataColumn("Emailid"));
       //  dt.Columns.Add(new DataColumn("OpDueDate"));
       //  dt.Columns.Add(new DataColumn("TinNumber"));
         //dt.Columns.Add(new DataColumn("Inttrans"));
@@ -181,7 +182,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
         dr_final12["Mobile"] = "";
         dr_final12["CreditLimit"] = "0";
         dr_final12["CreditDays"] = "0";
-       // dr_final12["Emailid"] = "";
+        dr_final12["Emailid"] = "";
       //  dr_final12["OpDueDate"] = "";
       //  dr_final12["TinNumber"] = "";
         //dr_final12["Inttrans"] = "NO";
@@ -349,6 +350,8 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
 
             String strConnection = "ConnectionString";
             string connectionString = "";
+           
+
             if (FileUpload1.HasFile)
             {
                 string datett = DateTime.Now.ToString();
@@ -410,6 +413,23 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                         return;
                     }
                 }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    bool isEmail = Regex.IsMatch(Convert.ToString(dr["Emailid"]), @"\A(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)\Z");
+                    string Email = Convert.ToString(dr["Emailid"]);
+                    if ((Convert.ToString(dr["Emailid"]) == null) || (Convert.ToString(dr["Emailid"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Ledger name is empty');", true);
+                        return;
+                    }
+                    if (!isEmail)
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email Id is invalid " + Email + "')", true);
+                        return;
+                    }
+                }
+              
                 //foreach (DataRow dr in ds.Tables[0].Rows)
                 //{
                 //    if ((Convert.ToString(dr["Mobile"]) == ""))
@@ -441,6 +461,7 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                         return;
                     }
                 }
+
 
                 //foreach (DataRow dr in ds.Tables[0].Rows)
                 //{
@@ -488,10 +509,18 @@ public partial class BulkAdditionLedger : System.Web.UI.Page
                 {
                     string Mobile = Convert.ToString(dr["Mobile"]);
 
-                    if (objBL.CheckIfcustomernumberIsThere(Mobile))
+                    if ((Mobile == "")|| (Mobile=="0"))
                     {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer  with this - " + Mobile + " - number already exists.');", true);
-                        return;
+
+                    }
+                    else
+                    {
+
+                        if (objBL.CheckIfcustomernumberIsThere(Mobile))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer  with this - " + Mobile + " - number already exists.');", true);
+                            return;
+                        }
                     }
                 }
 

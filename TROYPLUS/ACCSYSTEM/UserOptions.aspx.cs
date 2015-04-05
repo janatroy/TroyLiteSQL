@@ -354,7 +354,7 @@ public partial class UserOptions : System.Web.UI.Page
             GridPROJECT.DataSource = dstdfddpro;
             GridPROJECT.DataBind();
 
-            DataSet dastdfdd = bl.GetUserOptionsForId(username, connection, "CONFIG");
+            DataSet dastdfdd = bl.GetUserOptionsForId(username, connection, "ADMINISTRATION");
             GridConfig.DataSource = dastdfdd;
             GridConfig.DataBind();
 
@@ -591,7 +591,7 @@ public partial class UserOptions : System.Web.UI.Page
 
 
             DataSet datast = new DataSet();
-            datast = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "CONFIG");
+            datast = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "ADMINISTRATION");
             GridConfig.DataSource = datast;
 
             GridConfig.DataBind();
