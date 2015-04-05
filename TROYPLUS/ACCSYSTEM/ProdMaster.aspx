@@ -181,16 +181,19 @@
                                                                                                     <asp:TextBox ID="txtItemCodeAdd" runat="server"
                                                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
-                                                                                                <td style="width: 28%" class="ControlLabelNew">Quantity in Stock
-                                                                                                            <cc1:FilteredTextBoxExtender ID="FTBStockAdd" runat="server" FilterType="Custom, Numbers"
-                                                                                                                TargetControlID="txtStockAdd" ValidChars="." Enabled="True" />
-                                                                                                    <asp:CompareValidator ID="rvStockAdd" runat="server" ControlToValidate="txtStockAdd"
-                                                                                                        Display="Dynamic" Type="Integer" Operator="DataTypeCheck"
-                                                                                                        Text="*" ErrorMessage="Stock should be a Number"></asp:CompareValidator>
+                                                                                                <td style="width: 28%" class="ControlLabelNew">Outdated? *
+                                                                                                            <asp:CompareValidator ID="CompareValidator4" runat="server" ControlToValidate="drpOutdatedAdd"
+                                                                                                                Display="Dynamic" ErrorMessage="Outdated is Mandatory" Operator="GreaterThan"
+                                                                                                                Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                 </td>
-                                                                                                <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtStockAdd" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                <td style="width: 25%" class="ControlDrpBorder">
+                                                                                                    <asp:DropDownList ID="drpOutdatedAdd" runat="server" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7" SelectedValue='<%# Bind("Outdated") %>'
+                                                                                                        AppendDataBoundItems="True" EnableTheming="False" Style="border: 1px solid #e7e7e7" Height="26px">
+                                                                                                        <asp:ListItem Value="N" Selected="True">NO</asp:ListItem>
+                                                                                                        <asp:ListItem Value="Y">YES</asp:ListItem>
+                                                                                                    </asp:DropDownList>
                                                                                                 </td>
+                                                                                                
                                                                                                 <td style="width: 2%"></td>
                                                                                             </tr>
                                                                                             <tr style="height: 30px" class="tblLeft">
@@ -375,15 +378,7 @@
                                                                                                     </asp:DropDownList>
 
                                                                                                 </td>
-                                                                                                <td style="width: 28%" runat="server">Outdated? *
-                                                                                                    <asp:ObjectDataSource ID="srcCategoryAdd" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ListCategory" TypeName="BusinessLogic">
-                                                                                                        <SelectParameters>
-                                                                                                            <asp:CookieParameter CookieName="Company" Name="connection" Type="String" />
-                                                                                                            <asp:CookieParameter Name="method" Type="String" />
-                                                                                                        </SelectParameters>
-                                                                                                    </asp:ObjectDataSource>
-
-                                                                                                </td>
+                                                                                               
 
                                                                                                 <td style="width: 2%" runat="server"></td>
                                                                                                 <td style="width: 2%" runat="server"></td>
@@ -463,18 +458,7 @@
                                                                                                         <asp:ListItem Text="YES" Value="YES" Selected="True"></asp:ListItem>
                                                                                                     </asp:DropDownList>
                                                                                                 </td>
-                                                                                                <td style="width: 28%" class="ControlLabelNew">Outdated? *
-                                                                                                            <asp:CompareValidator ID="CompareValidator4" runat="server" ControlToValidate="drpOutdatedAdd"
-                                                                                                                Display="Dynamic" ErrorMessage="Outdated is Mandatory" Operator="GreaterThan"
-                                                                                                                Text="*" ValueToCompare="0"></asp:CompareValidator>
-                                                                                                </td>
-                                                                                                <td style="width: 25%" class="ControlDrpBorder">
-                                                                                                    <asp:DropDownList ID="drpOutdatedAdd" runat="server" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7" SelectedValue='<%# Bind("Outdated") %>'
-                                                                                                        AppendDataBoundItems="True" EnableTheming="False" Style="border: 1px solid #e7e7e7" Height="26px">
-                                                                                                        <asp:ListItem Value="N" Selected="True">NO</asp:ListItem>
-                                                                                                        <asp:ListItem Value="Y">YES</asp:ListItem>
-                                                                                                    </asp:DropDownList>
-                                                                                                </td>
+                                                                                                
                                                                                                 <td style="width: 2%"></td>
                                                                                             </tr>
                                                                                         </table>

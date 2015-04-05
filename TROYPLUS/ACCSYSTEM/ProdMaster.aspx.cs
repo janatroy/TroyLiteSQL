@@ -506,11 +506,11 @@ public partial class ProdMaster : System.Web.UI.Page
 
             if (AllowStockEdit())
             {
-                txtStockAdd.Enabled = true;
+               //txtStockAdd.Enabled = true;
             }
             else
             {
-                txtStockAdd.Enabled = false;
+               // txtStockAdd.Enabled = false;
             }
 
             string connection = Request.Cookies["Company"].Value;
@@ -774,7 +774,7 @@ public partial class ProdMaster : System.Web.UI.Page
         txtproductlevel.Text = "0";
         drpRoleTypeAdd.SelectedIndex = 0;
         txtROLAdd.Text = "1";
-        txtStockAdd.Text = "0";
+       // txtStockAdd.Text = "0";
         txtUnitAdd.Text = "0";
         txtUnitRateAdd.Text = "0";
         txtVATAdd.Text = "0";
@@ -1332,8 +1332,8 @@ public partial class ProdMaster : System.Web.UI.Page
 
                     txtItemCodeAdd.Enabled = false;
 
-                    if (ds.Tables[0].Rows[0]["Stock"] != null)
-                        txtStockAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["Stock"]);
+                    //if (ds.Tables[0].Rows[0]["Stock"] != null)
+                    //    txtStockAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["Stock"]);
 
                     if (ds.Tables[0].Rows[0]["ProductName"] != null)
                         txtItemNameAdd.Text = Convert.ToString(ds.Tables[0].Rows[0]["ProductName"]);
@@ -1857,7 +1857,7 @@ public partial class ProdMaster : System.Web.UI.Page
 
                 CategoryID = Convert.ToInt32(ddCategoryAdd.SelectedValue);
                 ItemCode = txtItemCodeAdd.Text.Trim();
-                Stock = Convert.ToDouble(txtStockAdd.Text);
+               // Stock = Convert.ToDouble(txtStockAdd.Text);
                 ProductName = txtItemNameAdd.Text.Trim();
                 ROL = Convert.ToInt32(txtROLAdd.Text);
                 Model = txtModelAdd.Text.Trim();
