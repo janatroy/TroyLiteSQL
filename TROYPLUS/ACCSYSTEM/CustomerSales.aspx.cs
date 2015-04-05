@@ -6256,7 +6256,8 @@ public partial class CustomerSales : System.Web.UI.Page
                 string purchaseReturn = drpPurchaseReturn.SelectedValue;
                 Session["salesID"] = hdsales.Value;
                 Session["roleDs"] = null;
-                Response.Redirect("PrintProductSalesBill.aspx?SID=" + hdsales.Value + "&RT=" + purchaseReturn);
+               // Response.Redirect("PrintProductSalesBill.aspx?SID=" + hdsales.Value + "&RT=" + purchaseReturn);
+                Response.Redirect("ProductSalesBill.aspx?SID=" + hdsales.Value + "&BID=" + drpBranch.SelectedValue);
             }
             errPanel.Visible = false;
             ErrMsg.Text = "";
