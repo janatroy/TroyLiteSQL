@@ -389,9 +389,10 @@
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
                                                                                                                                 <tr>
-                                                                                                                                    <td class="ControlLabelproject" style="width: 15%;"><%--Mobile No(Without International Code)--%>
+                                                                                                                                    <td class="ControlLabelproject" style="width: 15%;">Customer ID
                                                                                                                                     </td>
-                                                                                                                                    <td class="ControlDrpBorder" style="width: 24%">
+                                                                                                                                    <td class="ControlTextBox3" style="width: 24%">
+                                                                                                                                         <asp:TextBox ID="txtCusID" Enabled="false" runat="server" AutoPostBack="True" BackColor="#e7e7e7" CssClass="cssTextBox" Height="23px" MaxLength="10" TabIndex="1"></asp:TextBox>
                                                                                                                                         <%--  <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
                                                                                                                                                 <asp:DropDownList ID="drpMobile" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="Mobile" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="drpMobile_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%">
