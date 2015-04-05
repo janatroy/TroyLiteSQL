@@ -19,6 +19,7 @@ public partial class SuppPayment : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         try
         {
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -90,6 +91,9 @@ public partial class SuppPayment : System.Web.UI.Page
 
                 loadBanks();
                 loadLedgers();
+
+               
+
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
@@ -3397,6 +3401,8 @@ public partial class SuppPayment : System.Web.UI.Page
         DropDownList1.DataTextField = "BranchName";
         DropDownList1.DataValueField = "Branchcode";
 
+       // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+
     }
 
     protected void BtnClearFilter_Click(object sender, EventArgs e)
@@ -3816,10 +3822,10 @@ public partial class SuppPayment : System.Web.UI.Page
 
                         drNew["RefNo"] = Convert.ToInt32(ds.Tables[0].Rows[i]["RefNo"]);
 
-                        
 
-                        drpBranchAdd.SelectedValue = ds.Tables[0].Rows[i]["BranchCode"].ToString();
-                        drpBranchAdd.Enabled = false;
+
+                        DropDownList1.SelectedValue = ds.Tables[0].Rows[0]["BranchCode"].ToString();
+                        DropDownList1.Enabled = false;
 
                         loadLedgersEdit();
 
