@@ -189,7 +189,7 @@
     </script>
 
     <style id="Style1" runat="server">
-        .fancy-green .ajax__tab_header {
+        /*.fancy-green .ajax__tab_header {
             background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
             cursor: pointer;
         }
@@ -216,7 +216,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            }
+            /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -233,7 +233,7 @@
             border: 1px solid #999999;
             padding: 8px;
             background-color: #ffffff;
-        }
+        }*/
     </style>
 
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
@@ -344,11 +344,14 @@
                                                                                         <td class="ControlLabel" style="width: 20%;">Customer / Dealer Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Customer / Dealer Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom,Numbers"
+                                                                        TargetControlID="txtLdgrName" ValidChars=" .,-"  />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtLdgrName" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"
                                                                                                 TabIndex="1"></asp:TextBox>
                                                                                         </td>
+                                                                                         <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Alias Name
                                                                     <%--<asp:RequiredFieldValidator ID="rvAliasName" runat="server" ControlToValidate="txtAliasName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Alias is mandatory">*</asp:RequiredFieldValidator>--%>
@@ -368,6 +371,7 @@
                                                                                             <asp:TextBox ID="txtContName" TabIndex="3" runat="server" Text='<%# Bind("ContactName") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                         <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Opening Balance *
                                                                     <asp:CompareValidator ID="cvOpenBal" runat="server" ControlToValidate="txtOpenBal"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
@@ -396,6 +400,7 @@
                                                                                             <asp:TextBox ID="txtAdd1" TabIndex="6" runat="server" Text='<%# Bind("Add1") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                         <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Phone No.
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" FilterType="Custom, Numbers"
                                                                         TargetControlID="txtPhone" ValidChars="+" />
@@ -415,6 +420,7 @@
                                                                                             <asp:TextBox ID="txtAdd2" TabIndex="7" runat="server" Text='<%# Bind("Add2") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                         <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Category *
                                                                     <asp:CompareValidator ID="cmpLedCat" runat="server" ControlToValidate="drpLedgerCat"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Select Category. It annot be Left blank. "
@@ -440,6 +446,7 @@
                                                                                             <asp:TextBox ID="txtAdd3" TabIndex="8" runat="server" Text='<%# Bind("Add3") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                         <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mode of Contact *
                                                                     <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="drpModeofContact"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Mode of Contact. It cannot be left blank."
@@ -471,6 +478,7 @@
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                           
                                                                                         </td>
+                                                                                         <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mobile
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Custom, Numbers"
                                                                         TargetControlID="txtMobile" ValidChars="+" />
@@ -492,8 +500,11 @@
                                                                                             <cc1:CalendarExtender ID="calBillDate1" runat="server" Format="dd/MM/yyyy" PopupButtonID="btnBillDate1" TargetControlID="txtdueDate">
                                                                                             </cc1:CalendarExtender>
                                                                                         </td>
+                                                                                         <td style="width: 3%">
+                                                                                              <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                         </td>
                                                                                         <td style="width: 14%;" align="left" class="ControlLabel">
-                                                                                            <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                           
                                                                                             Branch
                                                                                         </td>
 
@@ -531,6 +542,7 @@
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                         </td>
+                                                                                         <td style="width: 3%"></td>
                                                                                         <td style="width: 20%;" align="left" class="ControlLabel">Customer ID
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
@@ -747,11 +759,14 @@
                                                                                         <td class="ControlLabel" style="width: 20%">Customer / Dealer Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Customer / Dealer Name. It cannot be left blank. " />
+                                                                                               <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender21" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom,Numbers"
+                                                                        TargetControlID="txtLdgrNameAdd" ValidChars=" .,-"  />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtLdgrNameAdd" TabIndex="1" runat="server" BackColor="#e7e7e7" Text='<%# Bind("LedgerName") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                        <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">
                                                                                             <%--<asp:UpdatePanel ID="UpdatePanel22" runat="server" UpdateMode="Conditional">
                                                                         <ContentTemplate>
@@ -780,6 +795,7 @@
                                                                                             <asp:TextBox ID="txtContNameAdd" TabIndex="3" runat="server" BackColor="#e7e7e7" Text='<%# Bind("ContactName") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                        <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Opening Balance *
                                                                     <asp:CompareValidator ID="cvOpenBalAdd" runat="server" ControlToValidate="txtOpenBalAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Opening Balance should be numeric"
@@ -792,7 +808,7 @@
                                                                                         <td class="ControlNumberBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtOpenBalAdd" TabIndex="4" runat="server" BackColor="#e7e7e7" Text="0"
                                                                                                 CssClass="cssTextBox" Width="100%"></asp:TextBox>
-                                                                                            <asp:DropDownList ID="ddCRDRAdd" EnableTheming="false" TabIndex="5" runat="server" Style="border: 1px solid Gray" Height="26px" CssClass="drpDownListMedium" BackColor="#e7e7e7"
+                                                                                            <asp:DropDownList ID="ddCRDRAdd" EnableTheming="false" TabIndex="5"  runat="server" Style="border: 1px solid Gray" Height="26px" CssClass="drpDownListMedium" BackColor="#e7e7e7"
                                                                                                 Width="68px" SelectedValue='<%# Bind("DRORCR") %>'>
                                                                                                 <asp:ListItem Text="CR" Value="CR"></asp:ListItem>
                                                                                                 <asp:ListItem Text="DR" Value="DR"></asp:ListItem>
@@ -809,6 +825,7 @@
                                                                                             <asp:TextBox ID="txtAdd1Add" TabIndex="6" runat="server" BackColor="#e7e7e7" Text='<%# Bind("Add1") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                        <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Phone No.
                                                                     <cc1:FilteredTextBoxExtender ID="FTBoxE5Add" runat="server" FilterType="Custom,Numbers"
                                                                         TargetControlID="txtPhoneAdd" ValidChars="+" />
@@ -828,6 +845,7 @@
                                                                                             <asp:TextBox ID="txtAdd2Add" TabIndex="7" runat="server" BackColor="#e7e7e7" Text='<%# Bind("Add2") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                        <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Category *
                                                                     <asp:CompareValidator ID="cvLedgerAdd" runat="server" ControlToValidate="drpLedgerCatAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Category. It cannot be left blank. "
@@ -857,6 +875,7 @@
                                                                                             <asp:TextBox ID="txtAdd3Add" TabIndex="8" runat="server" Width="150%" BackColor="#e7e7e7" Text='<%# Bind("Add3") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
+                                                                                        <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mode of Contact *
                                                                     <asp:CompareValidator ID="CompareValidator213" runat="server" ControlToValidate="drpModeofContactAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Mode of Contact. It Cannot be left blank. "
@@ -889,6 +908,7 @@
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                              
                                                                                         </td>
+                                                                                        <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mobile
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender123" runat="server" FilterType="Custom, Numbers"
                                                                         TargetControlID="txtMobileAdd" ValidChars="+" />
@@ -910,9 +930,12 @@
                                                                                             <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDateadd">
                                                                                             </cc1:CalendarExtender>
                                                                                         </td>
+                                                                                        <td style="width: 3%">
+                                                                                              <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                        </td>
 
                                                                                         <td style="width: 14%;" class="ControlLabel" align="left">
-                                                                                            <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
+                                                                                          
                                                                                             Branch
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
@@ -945,6 +968,7 @@
                                                                                                 <asp:ListItem Text="YES" Value="YES"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                         </td>
+                                                                                        <td style="width: 3%"></td>
                                                                                         <td style="width: 20%;" align="left" class="ControlLabel">Customer ID
                                                                                         </td>
                                                                                         <td style="width: 28%" class="ControlDrpBorder">
@@ -1185,8 +1209,8 @@
                                             AllowPaging="True" DataKeyNames="LedgerID" EmptyDataText="No Customer Data Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted" CssClass="someClass">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                           <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
                                                 <asp:BoundField DataField="LedgerName" HeaderText="Customer / Dealer Name" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" />

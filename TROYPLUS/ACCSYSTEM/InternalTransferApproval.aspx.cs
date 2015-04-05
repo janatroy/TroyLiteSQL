@@ -15,7 +15,19 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         {
             BindGridData();
             BindDropdowns();
+           
         }
+    }
+    private string GetConnectionString()
+    {
+        string connStr = string.Empty;
+
+        if (Request.Cookies["Company"] != null)
+            connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        else
+            Response.Redirect("~/Login.aspx");
+
+        return connStr;
     }
 
     private void BindGridData()
@@ -228,6 +240,18 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                     ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
                     ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
 
+                }
+                BusinessLogic bl1 = new BusinessLogic(GetConnectionString());
+
+
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+
+                if (bl1.CheckUserHaveEdit(usernam, "INTTRNSAPRL"))
+                {
+
+                    ((ImageButton)e.Row.FindControl("btnApprove")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnApproveDisabled")).Visible = true;
                 }
             }
         }
@@ -711,7 +735,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                     int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iCustomer,
                         customer.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
-                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO");
+                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
 
                     iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.BranchHasStock);
 

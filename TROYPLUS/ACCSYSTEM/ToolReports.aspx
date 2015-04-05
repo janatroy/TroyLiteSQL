@@ -36,7 +36,7 @@
                                     <tr>
                                         <td style="width: 1%">
                                         </td>
-                                        <td style="width: 15%; font-size: 20px; color: #000000;" >
+                                        <td style="width: 15%; font-size: 20px; color: white;" >
                                              TOOLS
                                          </td>
                                         <td style="width: 24%">
@@ -211,7 +211,7 @@
                         <tr align="left" id="Tr16" runat="server">
                             <td>
                                 <asp:Button ID="Button19" runat="server" Text="Audit Details" Width="100%"
-                                    Font-Bold="false" SkinID="skinButtonCol2" OnClientClick="window.open('ReportXlAuditdetails.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=220,width=500,left=425,top=220 ,resizable=yes, scrollbars=yes');" />
+                                    Font-Bold="false" SkinID="skinButtonCol2" OnClientClick="window.open('ReportXlAuditdetails.aspx','CSTSummary', 'toolbar=no,status=no,menu=no,location=no,height=310,width=500,left=425,top=220 ,resizable=yes, scrollbars=yes');" />
                             </td>
                         </tr>
                         

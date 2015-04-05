@@ -476,7 +476,7 @@ public partial class BusinessLogic
         }
     }
 
-    public bool IsManualSalesBillNoValid(string connection, string billNo)
+    public bool IsManualSalesBillNoValid(string connection, string billNo, int bookId)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -484,10 +484,11 @@ public partial class BusinessLogic
 
         try
         {
-            object objBillNo = manager.ExecuteScalar(CommandType.Text, "Select BillNo from tblSales Where ManualSales='YES' and BillNo=" + billNo);
-            object damangedLeafNo = manager.ExecuteScalar(CommandType.Text, string.Format("select LeafNo From tblManualSalesBookLeaf Where LeafNo={0}", billNo));
+            object objBillNo = manager.ExecuteScalar(CommandType.Text, string.Format("Select ManualNo from tblSales Where ManualSales='YES' and ManualNo={0} and BookId={1}", billNo, bookId));
+            object damangedLeafNo = manager.ExecuteScalar(CommandType.Text, string.Format("select LeafNo From tblManualSalesBookLeaf Where LeafNo={0} and LeafID={1}", billNo, bookId));
+            object isBillNoWithInBookRange = manager.ExecuteScalar(CommandType.Text, string.Format("select BookId From tblManualSalesBook Where {0} >= BookFrom and {0} <= BookTo and BookId={1}", billNo, bookId));
 
-            if (objBillNo == null && damangedLeafNo == null)
+            if (isBillNoWithInBookRange != null && objBillNo == null && damangedLeafNo == null)
             {
                 return true;
             }
@@ -504,5 +505,33 @@ public partial class BusinessLogic
         }
     }
 
+    public DataSet GetManualSalesBooks(string connection)
+    {
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = CreateConnectionString(connection);
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        dbQry = "select BookId, BookFrom, BookTo, BookName, CreatedBy, CreatedDate From tblManualSalesBook Order By BookName";
+
+        try
+        {
+            manager.Open();
+            ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
+
+            if (ds.Tables[0].Rows.Count > 0)
+                return ds;
+            else
+                return null;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+    }
 
 }

@@ -34,7 +34,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 loadPriceListPurchase();
                 Label1.Text = Helper.GenerateUniqueIDForThisPC();
                 DisableForOffline();
-
+                BindGrid();
                 loadBanks();
                 //GrdTransporter.PageSize = 5;
                 //GrdUnitMnt.PageSize = 5;
@@ -47,6 +47,32 @@ public partial class CompanyInfo : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+
+    private void BindGrid()
+    {
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        DataSet ds = new DataSet();
+        DataSet ds1 = new DataSet();
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        ds = bl.ListBranchCodeConfigsales();
+        ds1 = bl.ListBranchCode();
+
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            EditableGrid.DataSource = ds;          
+            EditableGrid.DataBind();
+        }
+
+        if (ds1.Tables[0].Rows.Count > 0)
+        {
+            ds.Merge(ds1);
+            EditableGrid.DataSource = ds;
+            EditableGrid.DataBind();
+        }
+    }
+
 
     private void DisableForOffline()
     {
@@ -192,7 +218,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
     public void GetSettingsInfo()
     {
-        if (Request.Cookies["Company"]  != null)
+        if (Request.Cookies["Company"] != null)
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = bl.GetSettings();
@@ -385,7 +411,7 @@ public partial class CompanyInfo : System.Web.UI.Page
     }
     public void GetCompanyInfo()
     {
-        if (Request.Cookies["Company"]  != null)
+        if (Request.Cookies["Company"] != null)
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = bl.getCompanyDetails();
@@ -515,7 +541,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 string purchasepricelist = string.Empty;
 
                 salesdiscount = RadioButtonDiscount.SelectedValue;
-                openingbalance  = RadioButtonOpening.SelectedValue;
+                openingbalance = RadioButtonOpening.SelectedValue;
 
                 emailRequired = rdoemailrequired.SelectedValue;
                 macaddress = rdomacaddress.SelectedValue;
@@ -854,7 +880,7 @@ public partial class CompanyInfo : System.Web.UI.Page
     {
         string connStr = string.Empty;
 
-        if (Request.Cookies["Company"]  != null)
+        if (Request.Cookies["Company"] != null)
             connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         else
             Response.Redirect("~/Login.aspx");
@@ -1361,6 +1387,49 @@ public partial class CompanyInfo : System.Web.UI.Page
     }
 
 
+    protected void btnSalebill_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (Page.IsValid)
+            {
+                if (Request.Cookies["Company"] != null)
+                    sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+                string strCompany = string.Empty;
 
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                string branchcode = string.Empty;
+                try
+                {
+                    if (EditableGrid.Rows.Count > 0)
+                    {
+                        foreach (GridViewRow gr in EditableGrid.Rows)
+                        {
+                            TextBox txtNorSal = (TextBox)gr.Cells[1].FindControl("txtNorSal");
+                            TextBox txtManSal = (TextBox)gr.Cells[2].FindControl("txtManSal");
+                            TextBox txtPurRtn = (TextBox)gr.Cells[3].FindControl("txtPurRtn");
+                            TextBox txtIntTfn = (TextBox)gr.Cells[4].FindControl("txtIntTfn");
+                            TextBox txtDlNte = (TextBox)gr.Cells[5].FindControl("txtDlNte");
+                            TextBox txtDlRtn = (TextBox)gr.Cells[6].FindControl("txtDlRtn");
+                            branchcode = gr.Cells[0].Text.Replace("&quot;", "\"");
 
+                            if (txtNorSal.Text != "")
+                            {
+                                bl.InsertSalesBillNo(Convert.ToInt32(txtNorSal.Text),Convert.ToInt32(txtManSal.Text),Convert.ToInt32(txtPurRtn.Text),Convert.ToInt32(txtIntTfn.Text),Convert.ToInt32(txtDlNte.Text),Convert.ToInt32(txtDlRtn.Text), branchcode);                               
+                            }
+                        }
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Sales Bill No Information Successfully Stored. Please Logout and Login again to refelect the Changes. Thank You.');", true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Error Occured: '" + ex.Message + ");", true);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
 }

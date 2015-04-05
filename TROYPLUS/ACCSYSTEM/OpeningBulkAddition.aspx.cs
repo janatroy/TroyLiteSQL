@@ -19,6 +19,9 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
     public string sDataSource = string.Empty;
     Double SumCashSales = 0.0d;
     BusinessLogic objBL;
+    string connection;
+    string usernam;
+    string barncode;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -35,6 +38,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                 //SalesPanel.Visible = false;
 
                 loadBranch();
+                BranchEnable_Disable();
 
                 //NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
                 //Label1.Text = nics[0].GetPhysicalAddress().ToString();
@@ -131,6 +135,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("CATEGORY"));
         dt.Columns.Add(new DataColumn("Opening"));
         dt.Columns.Add(new DataColumn("Remarks"));
+        dt.Columns.Add(new DataColumn("DueDate"));
         
         DataRow dr_final12 = dt.NewRow();
         dr_final12["ITEMCODE"] = "";
@@ -139,6 +144,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
         dr_final12["MODEL"] = "";
         dr_final12["Opening"] = "";
         dr_final12["Remarks"] = "";
+        dr_final12["DueDate"] = "dd-MM-yyyy";
         dt.Rows.Add(dr_final12);
 
         ExportToExcel(dt);
@@ -175,124 +181,15 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
     {
         try
         {
-            //    if (FileUpload1.HasFile)
-            //    {
-            //        string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-            //        string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-            //        string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
-
-            //        string FilePath = Server.MapPath(FolderPath + FileName);
-            //        FileUpload1.SaveAs(FilePath);
-            //        Import_To_Grid(FilePath, Extension, rbHDR.SelectedItem.Text);
-            //    }
-            //}
-            //private void Import_To_Grid(string FilePath, string Extension, string isHDR)
-            //{
-            //    string conStr = "";
-            //    switch (Extension)
-            //    {
-            //        case ".xls": //Excel 97-03
-            //            conStr = ConfigurationManager.ConnectionStrings["Excel03ConString"].ConnectionString;
-            //            break;
-            //        case ".xlsx": //Excel 07
-            //            conStr = ConfigurationManager.ConnectionStrings["Excel07ConString"].ConnectionString;
-            //            break;
-            //    }
-
-            //    //if (FileExt == ".xls")
-            //    //{
-            //    //    con = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + filePath + ";Extended Properties=Excel 8.0;");
-
-            //    //}
-            //    //else if (FileExt == ".xlsx")
-            //    //{
-            //    //    con = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + filePath + ";Extended Properties=Excel 12.0;");
-            //    //}
-            //    conStr = String.Format(conStr, FilePath, isHDR);
-            //    OleDbConnection connExcel = new OleDbConnection(conStr);
-            //    OleDbCommand cmdExcel = new OleDbCommand();
-            //    OleDbDataAdapter oda = new OleDbDataAdapter();
-            //    DataTable dt = new DataTable();
-            //    cmdExcel.Connection = connExcel;
-
-            //    //Get the name of First Sheet
-            //    connExcel.Open();
-            //    //DataTable dtExcelSchema;
-            //    DataTable dtExcelSchema = connExcel.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-            //    string SheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();
-            //    connExcel.Close();
-
-            //    //Read Data from First Sheet
-            //    connExcel.Open();
-            //    cmdExcel.CommandText = "SELECT * From [" + SheetName + "]";
-            //    oda.SelectCommand = cmdExcel;
-            //    oda.Fill(dt);
-            //    connExcel.Close();
-
-            //    //Bind Data to GridView
-            //    GridView1.Caption = Path.GetFileName(FilePath);
-            //    GridView1.DataSource = dt;
-            //    GridView1.DataBind();
-            //}
-            //protected void PageIndexChanging(object sender, GridViewPageEventArgs e)
-            //{
-            //    string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
-            //    string FileName = GridView1.Caption;
-            //    string Extension = Path.GetExtension(FileName);
-            //    string FilePath = Server.MapPath(FolderPath + FileName);
-
-            //    Import_To_Grid(FilePath, Extension, rbHDR.SelectedItem.Text);
-            //    GridView1.PageIndex = e.NewPageIndex;
-            //    GridView1.DataBind();
-            //}
-
-            //string connectionString ="";
-            //if (FileUpload1.HasFile)
-            //{
-            //    string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-            //    string fileExtension = Path.GetExtension(FileUpload1.PostedFile.FileName);
-            //    string fileLocation = Server.MapPath("~/App_Data/" + fileName);
-            //    FileUpload1.SaveAs(fileLocation);
-
-            //    //Check whether file extension is xls or xslx
-
-            //    if (fileExtension == ".xls")
-            //    {
-            //        connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
-            //    }
-            //    else if (fileExtension == ".xlsx")
-            //    {
-            //        connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
-            //    }
-
-            //    //Create OleDB Connection and OleDb Command
-
-            //    OleDbConnection con = new OleDbConnection(connectionString);
-            //    OleDbCommand cmd = new OleDbCommand();
-            //    cmd.CommandType = System.Data.CommandType.Text;
-            //    cmd.Connection = con;
-            //    OleDbDataAdapter dAdapter = new OleDbDataAdapter(cmd);
-            //    DataTable dtExcelRecords = new DataTable();
-            //    con.Open();
-            //    DataTable dtExcelSheetName = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-            //    string getExcelSheetName = dtExcelSheetName.Rows[0]["Table_Name"].ToString();
-            //    cmd.CommandText = "SELECT * FROM [" + getExcelSheetName + "]";
-            //    dAdapter.SelectCommand = cmd;
-            //    dAdapter.Fill(dtExcelRecords);
-            //    //con.Close();
-            //    GridView1.DataSource = dtExcelRecords;
-            //    GridView1.DataBind();
-            //    Label2.Visible = false;
-
-            //}
-            //else
-            //{
-            //    Label2.Text = "Please Select An Excel File";
-            //}
+            
 
 
             String strConnection = "ConnectionString";
             string connectionString = "";
+
+            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+            char[] specialCharactersArray = specialCharacters.ToCharArray();
+
             if (FileUpload1.HasFile)
             {
                 string datett = DateTime.Now.ToString();
@@ -312,6 +209,11 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                         fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
 
                     //OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\";");
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Attach Correct Format file Extension.(.xls or .xlsx)');", true);
+                    return;
                 }
                 OleDbConnection con = new OleDbConnection(connectionString);
                 OleDbCommand cmd = new OleDbCommand();
@@ -340,15 +242,233 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                 }
 
 
+
+                //for empty validation
+
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == "") || (Convert.ToString(dr["Opening"]) == null) || (Convert.ToString(dr["Opening"]) == "") || (Convert.ToString(dr["brand"]) == null) || (Convert.ToString(dr["brand"]) == "") || (Convert.ToString(dr["category"]) == null) || (Convert.ToString(dr["category"]) == "") || (Convert.ToString(dr["PRODUCTNAME"]) == null) || (Convert.ToString(dr["PRODUCTNAME"]) == "") || (Convert.ToString(dr["Remarks"]) == null) || (Convert.ToString(dr["Remarks"]) == ""))
+                    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
                     {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Missing Datas');", true);
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('ItemCode is empty');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["brand"]) == null) || (Convert.ToString(dr["brand"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('brand is empty');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["category"]) == null) || (Convert.ToString(dr["category"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('category is empty');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["PRODUCTNAME"]) == null) || (Convert.ToString(dr["PRODUCTNAME"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Productname is empty');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Remarks"]) == null) || (Convert.ToString(dr["Remarks"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Remarks is empty');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["DueDate"]) == null) || (Convert.ToString(dr["DueDate"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Due Date is empty');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Opening"]) == null) || (Convert.ToString(dr["Opening"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Opening Stock  is empty');", true);
+                        return;
+                    }
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["MODEL"]) == null) || (Convert.ToString(dr["MODEL"]) == ""))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Model is empty');", true);
                         return;
                     }
                 }
 
+                //Check character validation:-
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["ItemCode"]) != null) || (Convert.ToString(dr["ItemCode"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["ItemCode"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Item code');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["PRODUCTNAME"]) != null) || (Convert.ToString(dr["PRODUCTNAME"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["PRODUCTNAME"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Product Name');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Model"]) != null) || (Convert.ToString(dr["Model"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["Model"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Model');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Brand"]) != null) || (Convert.ToString(dr["Brand"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["Brand"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Brand');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Category"]) != null) || (Convert.ToString(dr["Category"]) != ""))
+                    {
+                        int index = Convert.ToString(dr["Category"]).IndexOfAny(specialCharactersArray);
+                        //index == -1 no special characters
+                        if (index != -1)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Category');", true);
+                            return;
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Opening"]) != null) || (Convert.ToString(dr["Opening"]) != ""))
+                    {
+                        foreach (char c in Convert.ToString(dr["Opening"]))
+                        {
+                            if (!Char.IsDigit(c))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Opening Stock');", true);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    if ((Convert.ToString(dr["Opening"]) != null) || (Convert.ToString(dr["Opening"]) != ""))
+                    {
+                        int openingstock = Convert.ToInt32(dr["Opening"]);
+
+                        if (openingstock <= 0)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Opening Stock cannot Less than 0');", true);
+                            return;
+                        }
+                    }
+                }
+                 foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                   // DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
+                  //  DateTime date = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
+
+                     DateTime date1= DateTime.Now;
+
+                    if ((Convert.ToString(dr["DueDate"]) != null) || (Convert.ToString(dr["DueDate"]) != ""))
+                    {
+                        DateTime prieffdte = (Convert.ToDateTime(dr["DueDate"]));
+
+                        if (prieffdte.Date >= date1.Date)
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Due date may not be furture date');", true);
+                            return;
+                        }
+                    }
+                }
+
+                 //else if (dt > DateTime.Now)
+                 //   {
+                 //       ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Effective date not greater then Current date in row " + col + " ');", true);
+                 //       return;
+                 //   }
+
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+               // DataSet ds1 = bl.GetPriceListName(sDataSource);
+
+               // for (int iw = 0; iw <= ds1.Tables[0].Rows.Count - 1; iw++)
+             //   foreach (DataRow dr in ds.Tables[0].Rows)
+               // {
+
+                   
+                   
+                    //foreach (DataRow dr in ds.Tables[0].Rows)
+                    //{
+                    //     string prieffdte = (Convert.ToString(dr["DueDate"]));
+                    //    if ((Convert.ToString(dr["DueDate"]) != null) || (Convert.ToString(dr["DueDate"]) != ""))
+                    //    {
+                    //        //string[] format = new string[] { "dd-MM-yyyy" };
+                    //        //string value = Convert.ToString(dr["DueDate"]);
+                    //        //DateTime datetime;
+
+                    //        //if (DateTime.TryParseExact(value, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out datetime))
+                    //        //{
+
+                    //        //}
+                    //        //else
+                    //        {
+                    //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + prieffdte + " - DueDate" + " is invalid format');", true);
+                    //            return;
+                    //        }
+
+                    //    }
+                    //}
+              //  }
+
+
+
+               
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     string brand = Convert.ToString(dr["brand"]);
@@ -362,6 +482,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Brand with - " + brand + " - does not exists in the Brand Master');", true);
                             return;
+
                         }
                     }
                 }
@@ -412,9 +533,12 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                     }
                     else
                     {
-                        if (objBL.IsItemAlreadyInOpening(connection, item,""))
+                        if (drpBranch.Text.Trim() != string.Empty)
+                           barncode = Convert.ToString(drpBranch.SelectedValue);
+
+                        if (objBL.IsItemAlreadyInOpening(connection, item, barncode))
                         {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product code " + item + " already added in opening stock');", true);
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product code " + item + " already added in opening stock. For same branch "+barncode+"');", true);
                             return;
                         }
                     }
@@ -484,5 +608,27 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
         drpBranch.DataBind();
         drpBranch.DataTextField = "BranchName";
         drpBranch.DataValueField = "Branchcode";
+    }
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
     }
 }

@@ -785,11 +785,11 @@ public partial class ProdMaster : System.Web.UI.Page
         drpIsActiveAdd.SelectedValue = "YES";
         drpOutdatedAdd.SelectedValue = "N";
 
-        txtSlab1.Text = string.Empty;
-        txtSlab2.Text = string.Empty;
-        txtSlab3.Text = string.Empty;
-        txtSlab4.Text = string.Empty;
-        txtSlab5.Text = string.Empty;
+        txtSlab1.Text = "0";
+        txtSlab2.Text = "0";
+        txtSlab3.Text = "0";
+        txtSlab4.Text = "0";
+        txtSlab5.Text = "0";
     }
 
     private void ShowLeadContactInfo()
@@ -2323,11 +2323,16 @@ public partial class ProdMaster : System.Web.UI.Page
         DataRow dr = dtSalesIncentive.NewRow();
         dr["Id"] = (id == 0) ? string.Empty : id.ToString();
         dr["ItemCode"] = itemCode;
-        dr["Slab1"] = txtSlab1.Text.Trim();
-        dr["Slab2"] = txtSlab2.Text.Trim();
-        dr["Slab3"] = txtSlab3.Text.Trim();
-        dr["Slab4"] = txtSlab4.Text.Trim();
-        dr["Slab5"] = txtSlab5.Text.Trim();
+        //dr["Slab1"] = txtSlab1.Text.Trim();
+        //dr["Slab2"] = txtSlab2.Text.Trim();
+        //dr["Slab3"] = txtSlab3.Text.Trim();
+        //dr["Slab4"] = txtSlab4.Text.Trim();
+        //dr["Slab5"] = txtSlab5.Text.Trim();
+        dr["Slab1"] =0;
+        dr["Slab2"] = 0;
+        dr["Slab3"] = 0;
+        dr["Slab4"] = 0;
+        dr["Slab5"] = 0;
         dr["EffectiveDate"] = DateTime.Now.ToString("yyyy-MM-dd");
         dr["LastUpdatedDate"] = DateTime.Now.ToString("yyyy-MM-dd");
 

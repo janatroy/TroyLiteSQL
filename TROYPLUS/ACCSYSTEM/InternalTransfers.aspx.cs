@@ -15,6 +15,22 @@ public partial class InternalTransfers : System.Web.UI.Page
         {
             BindGridData();
             BindDropdowns();
+
+              string sDataSource = string.Empty;
+            string connection = Request.Cookies["Company"].Value;
+            string usernam = Request.Cookies["LoggedUserName"].Value;
+            BusinessLogic bl1 = new BusinessLogic(sDataSource);
+
+            if (bl1.CheckUserHaveAdd(connection,usernam, "INTTRNS"))
+            {
+                lnkBtnAdd.Enabled = false;
+                lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+            }
+            else
+            {
+                lnkBtnAdd.Enabled = true;
+                lnkBtnAdd.ToolTip = "Click to Add New ";
+            }
         }
     }
 
@@ -229,12 +245,39 @@ public partial class InternalTransfers : System.Web.UI.Page
                     ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
 
                 }
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+                BusinessLogic bl1 = new BusinessLogic(connection);
+
+                if (bl1.CheckUserHaveEdit(usernam, "INTTRNS"))
+                {
+
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
+
+                if (bl1.CheckUserHaveDelete(usernam, "INTTRNS"))
+                {
+                    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                }
             }
         }
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+    private string GetConnectionString()
+    {
+        string connStr = string.Empty;
+
+        if (Request.Cookies["Company"] != null)
+            connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        else
+            Response.Redirect("~/Login.aspx");
+
+        return connStr;
     }
 
     protected void lnkBtnAdd_Click(object sender, EventArgs e)
@@ -711,7 +754,7 @@ public partial class InternalTransfers : System.Web.UI.Page
                     int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iCustomer,
                         customer.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "",0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
-                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE",0,request.BranchHasStock,connection,"NO");
+                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE",0,request.BranchHasStock,connection,"NO", 0);
 
                     iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.BranchHasStock);
                    

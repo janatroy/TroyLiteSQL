@@ -142,7 +142,13 @@ public partial class LedgerInfo : System.Web.UI.Page
                     {
                         if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
                             (e.Exception.InnerException.Message.IndexOf("Ledger Exists") > -1))
+                        {
+                            e.KeepInInsertMode = true;
+                            e.ExceptionHandled = true;
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
                     }
                     else
                     {
@@ -186,6 +192,7 @@ public partial class LedgerInfo : System.Web.UI.Page
                         e.ExceptionHandled = true;
                         e.KeepInEditMode = true;
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), script.ToString(), true);
+                        ModalPopupExtender1.Show();
                         return;
                     }
 
@@ -332,7 +339,7 @@ public partial class LedgerInfo : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "DEALER")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "DEALER")
                 {
                     dealerRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -369,6 +376,7 @@ public partial class LedgerInfo : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
             //ds = bl.ListBranchInfo(connection, "", "");
+            
             ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).Items.Clear();
             ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).Items.Add(new ListItem("All", "All"));
             //((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).DataSource = ds;
@@ -907,7 +915,7 @@ public partial class LedgerInfo : System.Web.UI.Page
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeofContactAdd")).SelectedValue;
 
         if (((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")) != null)
-            e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")).SelectedValue;
+            e.InputParameters["BranchCode"] = "All";
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
@@ -1003,7 +1011,7 @@ public partial class LedgerInfo : System.Web.UI.Page
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeofContact")).SelectedValue;
 
         if (((DropDownList)this.frmViewAdd.FindControl("drpBranch")) != null)
-            e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedValue;
+            e.InputParameters["BranchCode"] = "All";
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }

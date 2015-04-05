@@ -46,16 +46,16 @@ public partial class PriceListCategoryMap : System.Web.UI.Page
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                //if (bl.CheckUserHaveAdd(usernam, "CATMST"))
-                //{
-                //    lnkBtnAdd.Enabled = false;
-                //    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
-                //}
-                //else
-                //{
-                //    lnkBtnAdd.Enabled = true;
-                //    lnkBtnAdd.ToolTip = "Click to Add New ";
-                //}
+                if (bl.CheckUserHaveAdd(usernam, "PRLSTCATMST"))
+                {
+                    lnkBtnAdd.Enabled = false;
+                    lnkBtnAdd.ToolTip = "You are not allowed to make Add New ";
+                }
+                else
+                {
+                    lnkBtnAdd.Enabled = true;
+                    lnkBtnAdd.ToolTip = "Click to Add New ";
+                }
 
             }
         }
@@ -474,17 +474,17 @@ public partial class PriceListCategoryMap : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
-                //if (bl.CheckUserHaveEdit(usernam, "CATMST"))
-                //{
-                //    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
-                //    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
-                //}
+                if (bl.CheckUserHaveEdit(usernam, "PRLSTCATMST"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
 
-                //if (bl.CheckUserHaveDelete(usernam, "CATMST"))
-                //{
-                //    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
-                //    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
-                //}
+                if (bl.CheckUserHaveDelete(usernam, "PRLSTCATMST"))
+                {
+                    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                }
             }
         }
         catch (Exception ex)

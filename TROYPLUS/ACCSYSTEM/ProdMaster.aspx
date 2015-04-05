@@ -36,7 +36,7 @@
 
                     $addHandler(
                     tab.get_headerTab(),
-                    'mouseover',
+                    'click',
                     Function.createDelegate(tab, function () {
                         tabContainer.set_activeTab(this);
                     }
@@ -87,56 +87,7 @@
     </script>
 
     <style id="Style1" runat="server">
-        .someClass td {
-            font-size: 12px;
-            border: 1px solid Gray;
-        }
 
-        .fancy-green .ajax__tab_header {
-            background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
-            cursor: pointer;
-        }
-
-        .fancy-green .ajax__tab_hover .ajax__tab_outer, .fancy-green .ajax__tab_active .ajax__tab_outer {
-            background: url(App_Themes/NewTheme/Images/green_left_Tab.gif) no-repeat left top;
-        }
-
-        .fancy-green .ajax__tab_hover .ajax__tab_inner, .fancy-green .ajax__tab_active .ajax__tab_inner {
-            background: url(App_Themes/NewTheme/Images/green_right_Tab.gif) no-repeat right top;
-        }
-
-        .fancy .ajax__tab_header {
-            font-size: 13px;
-            font-weight: bold;
-            color: #000;
-            font-family: sans-serif;
-        }
-
-            .fancy .ajax__tab_active .ajax__tab_outer, .fancy .ajax__tab_header .ajax__tab_outer, .fancy .ajax__tab_hover .ajax__tab_outer {
-                height: 46px;
-            }
-
-            .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
-                height: 46px;
-                margin-left: 16px; /* offset the width of the left image */
-            }
-
-            .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
-                margin: 16px 16px 0px 0px;
-            }
-
-        .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_active .ajax__tab_tab {
-            color: #fff;
-        }
-
-        .fancy .ajax__tab_body {
-            font-family: Arial;
-            font-size: 10pt;
-            border-top: 0;
-            border: 1px solid #999999;
-            padding: 8px;
-            background-color: #ffffff;
-        }
     </style>
 
 
@@ -798,7 +749,7 @@
 
                                                                                     </ContentTemplate>
                                                                                 </cc1:TabPanel>
-                                                                                <cc1:TabPanel ID="tabSalesIncentive" runat="server" HeaderText="Sales Incentive">
+                                                                                <cc1:TabPanel ID="tabSalesIncentive" Visible="false" runat="server" HeaderText="Sales Incentive">
                                                                                     <ContentTemplate>
                                                                                         <table width="800px" cellpadding="3" cellspacing="1" align="center">
                                                                                             <tr style="height: 30px" class="tblLeft">
@@ -819,7 +770,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab1" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab1" Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -830,7 +781,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab2" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab2"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -841,7 +792,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab3" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab3"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -852,7 +803,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab4" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab4"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>
@@ -863,7 +814,7 @@
                                                                                                         MinimumValue="1" Text="Incentive amount percentage cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
-                                                                                                    <asp:TextBox ID="txtSlab5" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="txtSlab5"  Text="0" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                                 </td>
                                                                                                 <td style="width: 25%"></td>
                                                                                             </tr>

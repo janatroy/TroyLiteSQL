@@ -684,7 +684,7 @@
                                                                                             </rwg:BulkEditGridView>
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
-                                                                                    <cc1:TabPanel ID="TabOTHER" runat="server" HeaderText="Other">
+                                                                                    <cc1:TabPanel ID="TabOTHER" Visible="false" runat="server" HeaderText="Other">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridOTHER" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
@@ -729,7 +729,7 @@
                                                                                             </rwg:BulkEditGridView>
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
-                                                                                    <cc1:TabPanel ID="TabREPORT" runat="server" HeaderText="Report">
+                                                                                    <cc1:TabPanel ID="TabREPORT" Visible="false" runat="server" HeaderText="Report">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridREPORT" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
@@ -774,7 +774,7 @@
                                                                                             </rwg:BulkEditGridView>
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
-                                                                                    <cc1:TabPanel ID="TabSECURITY" runat="server" HeaderText="Security">
+                                                                                    <cc1:TabPanel ID="TabSECURITY" Visible="false" runat="server" HeaderText="Security">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridSECURITY" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
@@ -961,7 +961,7 @@
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
 
-                                                                                    <cc1:TabPanel ID="TabConfif" runat="server" HeaderText="Config">
+                                                                                    <cc1:TabPanel ID="TabConfif" runat="server" HeaderText="Administration">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridConfig" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
@@ -989,17 +989,17 @@
                                                                                                     </asp:TemplateField>
                                                                                                     <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                                                                         <ItemTemplate>
-                                                                                                            <asp:CheckBox ID="chkboxEdit" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Edit") %>' Enabled="False"></asp:CheckBox>
+                                                                                                            <asp:CheckBox ID="chkboxEdit" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Edit") %>' ></asp:CheckBox>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
                                                                                                     <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Delete" HeaderStyle-BorderColor="Gray">
                                                                                                         <ItemTemplate>
-                                                                                                            <asp:CheckBox ID="chkboxDel" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Delete") %>' Enabled="False"></asp:CheckBox>
+                                                                                                            <asp:CheckBox ID="chkboxDel" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Delete") %>' ></asp:CheckBox>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
                                                                                                     <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="View" HeaderStyle-BorderColor="Gray">
                                                                                                         <ItemTemplate>
-                                                                                                            <asp:CheckBox ID="chkboxView" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Views") %>' Enabled="False"></asp:CheckBox>
+                                                                                                            <asp:CheckBox ID="chkboxView" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Views") %>' ></asp:CheckBox>
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
                                                                                                 </Columns>

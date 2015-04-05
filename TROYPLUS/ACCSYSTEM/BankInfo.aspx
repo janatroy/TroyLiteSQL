@@ -212,6 +212,8 @@
                                                                 <td class="ControlLabel" style="width: 20%">Bank Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Bank Name. It cannot be left bank.">*</asp:RequiredFieldValidator>
+                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom"
+                                                                        TargetControlID="txtLdgrName" ValidChars=" ."  />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtLdgrName" TabIndex="1" runat="server" Text='<%# Bind("LedgerName") %>'
@@ -296,13 +298,15 @@
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtdueDate" Enabled="false" MaxLength="10" TabIndex="5" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("OpDueDate") %>'
                                                                         SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                    <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDate">
+                                                                    <cc1:CalendarExtender ID="calBillDate1" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtdueDate">
                                                                     </cc1:CalendarExtender>
                                                                 </td>
                                                                 <td style="width: 7%;" align="left">
                                                                     <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                 </td>
                                                                 <td class="ControlLabel" style="width: 13%">Mobile
+                                                                      <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobile"  />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtMobile" MaxLength="12" TabIndex="12" runat="server" Text='<%# Bind("Mobile") %>'
@@ -323,6 +327,10 @@
                                                                 </td>
                                                                 <td style="width: 7%"></td>
                                                                 <td class="ControlLabel" style="width: 13%">Email Id
+                                                                    <asp:RegularExpressionValidator ID="remail1234" runat="server"
+                                                                                                ControlToValidate="txtEmailId" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                 </td>
                                                                 <td style="width: 26%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtEmailId" TabIndex="13" runat="server" Text='<%# Bind("EmailId") %>'
@@ -499,6 +507,8 @@
                                                                 <td class="ControlLabel" style="width: 20%">Bank Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Bank Name. It cannot be left blank."></asp:RequiredFieldValidator>
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="UppercaseLetters,LowercaseLetters,custom"
+                                                                        TargetControlID="txtLdgrNameAdd" ValidChars=" ."  />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 26%">
                                                                     <asp:TextBox ID="txtLdgrNameAdd" TabIndex="1" runat="server" Height="26px" Text='<%# Bind("LedgerName") %>'
@@ -553,7 +563,7 @@
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
                                                                         Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
                                                                     <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtOpenBalAdd"
-                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance is mandatory">*</asp:RequiredFieldValidator>
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                     <cc1:FilteredTextBoxExtender ID="OBvalidAdd" runat="server" FilterType="Numbers"
                                                                         TargetControlID="txtOpenBalAdd" />
                                                                 </td>
@@ -594,6 +604,8 @@
                                                                 </td>
 
                                                                 <td class="ControlLabel" style="width: 13%">Mobile
+                                                                      <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="Numbers"
+                                                                        TargetControlID="txtMobileAdd"/>
                                                                 </td>
 
                                                                 <td class="ControlTextBox3" style="width: 26%">
@@ -618,6 +630,10 @@
 
 
                                                                 <td class="ControlLabel" style="width: 13%">Email Id
+                                                                    <asp:RegularExpressionValidator ID="remail12345" runat="server"
+                                                                                                ControlToValidate="txtEmailIdAdd" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
                                                                 </td>
 
                                                                 <td style="width: 26%" class="ControlTextBox3">
@@ -644,7 +660,7 @@
                                                                 <td class="ControlDrpBorder" style="width: 26%">
                                                                     <asp:DropDownList ID="drpunuseAdd" TabIndex="14" AutoPostBack="false" runat="server" BackColor="#e7e7e7" OnDataBound="drpunuseAdd_DataBound" CssClass="drpDownListMedium"
                                                                         Width="100%" Style="border: 1px solid #e7e7e7" Height="26px" SelectedValue='<%# Bind("unuse") %>'>
-                                                                        <asp:ListItem Text="NO" Value="NO"></asp:ListItem>
+                                                                        <asp:ListItem Text="NO" Value="NO" Enabled="false"></asp:ListItem>
                                                                         <asp:ListItem Text="YES" Value="YES" Selected="True"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
@@ -800,8 +816,8 @@
                                             AllowPaging="True" DataKeyNames="LedgerID" EmptyDataText="No Bank Data Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                           <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
                                                 <asp:BoundField DataField="LedgerName" HeaderText="Bank Name" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" />

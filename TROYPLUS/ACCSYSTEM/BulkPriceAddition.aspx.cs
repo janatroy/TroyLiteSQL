@@ -63,6 +63,7 @@ public partial class BulkPriceAddition : System.Web.UI.Page
                             }
                         }
                     }
+                    bindData();
                 }
             }
         }
@@ -134,7 +135,7 @@ public partial class BulkPriceAddition : System.Web.UI.Page
         DataRow dr_final12 = dt.NewRow();
         dr_final12["ITEMCODE"] = "";
         dr_final12["PRICE"] = "";
-        dr_final12["EFFECTIVEDATE"] = "";
+        dr_final12["EFFECTIVEDATE"] = "dd/mm/yyyy";
         dr_final12["DISCOUNT"] = DISCOUNT;
         dt.Rows.Add(dr_final12);
 
