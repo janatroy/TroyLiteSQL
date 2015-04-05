@@ -567,7 +567,7 @@ public partial class EmployeeMaster : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         drpBranch.Items.Clear();
-        drpBranch.Items.Add(new ListItem("All", "All"));
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
         ds = bl.ListBranch();
         drpBranch.DataSource = ds;
         drpBranch.DataBind();

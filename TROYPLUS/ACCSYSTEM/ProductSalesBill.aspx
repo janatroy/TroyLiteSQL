@@ -174,7 +174,7 @@
                                         </td>
                                         <td style="width: 30%">
                                             <div id="divDiv" runat="server" style="width: 158px; font-family: 'Trebuchet MS';">
-                                                <asp:DropDownList ID="ddDivsions" runat="server" DataTextField="DivisionName" BackColor="#90c9fc" DataValueField="DivisionID" Style="border: 1px solid Blue" Height="24px"
+                                                <asp:DropDownList ID="ddDivsions" runat="server" DataTextField="BranchName" BackColor="#90c9fc" DataValueField="BranchID" Style="border: 1px solid Blue" Height="24px"
                                                     Width="100%" AppendDataBoundItems="True" AutoPostBack="True"
                                                     OnSelectedIndexChanged="ddDivsions_SelectedIndexChanged">
                                                     <asp:ListItem Selected="True" Value="0" style="background-color: #90c9fc">Select Division</asp:ListItem>
@@ -257,7 +257,7 @@
 
                                                             <asp:Panel BackColor="#c0c0c0" Height="95px" 
                                                                 runat="server" ID="MainPanel" Width="100%" HorizontalAlign="Center" Style="margin-left: 0px">
-                                                                <table style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: bold; text-align: left; font-size: 12px;">
+                                                                <table style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: bold; text-align: left; font-size: 14px;">
                                                                     <tr>
                                                                         <td class="auto-style20">
                                                                             <asp:Label ID="lblCompany" runat="server"></asp:Label>,
@@ -265,25 +265,23 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="auto-style20">
-                                                                            <asp:Label ID="lblAddress" runat="server"></asp:Label>,
+                                                                            <asp:Label ID="lblAddress1" runat="server"></asp:Label>,
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="auto-style20">
-                                                                            <asp:Label ID="lblCity" runat="server" />
-                                                                            -
-                                                                    <asp:Label ID="lblPincode" runat="server"></asp:Label>,
+                                                                            <asp:Label ID="lblAddress2" runat="server" />,
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    <tr id="address3" runat="server">
                                                                         <td class="auto-style20">
-                                                                            <asp:Label ID="lblState" runat="server"> </asp:Label>,
+                                                                            <asp:Label ID="lblAddress3" runat="server"> </asp:Label>,
                                                                         </td>
                                                                     </tr>
 
                                                                     <tr>
-                                                                        <td class="auto-style20">Mobile:
-                                                                            <asp:Label ID="lblPhn" runat="server"> </asp:Label>
+                                                                        <td class="auto-style20">
+                                                                            <asp:Label ID="lblLocation" runat="server"> </asp:Label>,
                                                                         </td>
                                                                     </tr>
 
@@ -419,35 +417,35 @@
                                                 <table border="0" cellpadding="2" cellspacing="0" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; width: 228px; height: 121px;">
 
                                                     <tr>
-                                                        <td class="auto-style26">Date: </td>
+                                                        <td class="auto-style26" style="text-align: right;">Date: </td>
                                                         <td class="auto-style33" style="font-weight: bold; border: 2px solid #999999">
                                                             <asp:Label ID="lblBillDate" runat="server"></asp:Label>
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="auto-style26">Invoice #: </td>
+                                                        <td class="auto-style26" style="text-align: right;">Invoice #: </td>
                                                         <td class="auto-style33" style="font-weight: bold; border-bottom: 2px solid #999999; border-left: 2px solid #999999; border-right: 2px solid #999999;">
                                                             <asp:Label ID="lblInvoice" runat="server"></asp:Label>
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="auto-style26">Customer ID:&nbsp; </td>
+                                                        <td class="auto-style26" style="text-align: right;">Customer ID:&nbsp; </td>
                                                         <td class="auto-style33" style="font-weight: bold; border-bottom: 2px solid #999999; border-left: 2px solid #999999; border-right: 2px solid #999999;">
                                                             <asp:Label ID="lblCustomerID" runat="server"></asp:Label>
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="auto-style26">Purchase Order #: </td>
+                                                        <td class="auto-style26" style="text-align: right;">Purchase Order #: </td>
                                                         <td class="auto-style33" style="font-weight: bold; border-bottom: 2px solid #999999; border-left: 2px solid #999999; border-right: 2px solid #999999;">
                                                             <asp:Label ID="lblPurchaseOrder" runat="server"></asp:Label>
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="auto-style26">Payment Due Date: </td>
+                                                        <td class="auto-style26" style="text-align: right;">Payment Due Date: </td>
                                                         <td class="auto-style33" style="font-weight: bold; border-bottom: 2px solid #999999; border-left: 2px solid #999999; border-right: 2px solid #999999;">
                                                             <asp:Label ID="lblPaymentDue" runat="server"></asp:Label>
                                                         </td>
@@ -508,7 +506,7 @@
                                                     <%--KRISHNAVELU 12 - JULY - 2010 --%>
 
                                                     <wc:ReportGridView runat="server" ID="gvItem" CssClass="left" AlternatingRowStyle-BackColor="#cccccc"
-                                                        GridLines="Both" AlternatingRowStyle-CssClass="even" AutoGenerateColumns="false"
+                                                        GridLines="Both" AlternatingRowStyle-CssClass="even" AutoGenerateColumns="false" 
                                                         PrintPageSize="45" AllowPrintPaging="true" Visible="false" Width="100%" OnRowDataBound="gvItem_RowDataBound"
                                                         Style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; font-size: 12px; border: 2px solid #999999">
                                                         <PageHeaderTemplate>
@@ -525,6 +523,8 @@
 
                                                             <asp:BoundField ItemStyle-HorizontalAlign="Left" ItemStyle-BorderColor="#666666" ItemStyle-Width="290px" DataField="ProductItem"
                                                                 HeaderText="Item" HeaderStyle-ForeColor="Black" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
+                                                            <asp:BoundField ItemStyle-HorizontalAlign="Center" ItemStyle-BorderColor="#666666" ItemStyle-Width="50px" DataField="SalesPerson"
+                                                                HeaderText="Sales Person" HeaderStyle-ForeColor="Black" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
                                                             <%-- <asp:BoundField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="240px" DataFormatString="{0:f2}" ItemStyle-BorderColor="#666666"
                                                                 DataField="ProductDesc" HeaderText="Description" HeaderStyle-BackColor="#003366" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />--%>
                                                             <asp:BoundField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px" DataField="Qty" ItemStyle-BorderColor="#666666"
@@ -693,7 +693,7 @@
                                                                                         </td>
                                                                                     </tr>
 
-                                                                                    <tr>
+                                                                                    <tr id="discountLbl" runat="server">
                                                                                         <td class="auto-style23">Discount</td>
                                                                                         <td class="auto-style6" style="font-weight: bold; text-align: right;">
                                                                                             <asp:Label ID="lblDiscount" runat="server"></asp:Label>
@@ -793,7 +793,7 @@
 
                                                             <asp:Panel Height="95px" ForeColor="Black"
                                                                 runat="server" ID="MainPanelEx" Width="100%" HorizontalAlign="Center" Style="margin-left: 0px">
-                                                                <table style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: bold; text-align: left; font-size: 12px;">
+                                                                <table style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: bold; text-align: left; font-size: 14px;">
                                                                     <tr>
                                                                         <td class="auto-style20">
                                                                             <asp:Label ID="lblCompanyEx" runat="server"></asp:Label>,
