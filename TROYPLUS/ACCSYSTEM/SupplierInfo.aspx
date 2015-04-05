@@ -921,8 +921,8 @@
                                             AllowPaging="True" DataKeyNames="LedgerID" EmptyDataText="No Supplier Data Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted" Font-Names="Trebuchet MS" CssClass="someClass">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
                                                 <asp:BoundField DataField="LedgerName" HeaderText="Supplier" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" />

@@ -283,8 +283,8 @@
                                 OnSelectedIndexChanged="GrdViewSerVisit_SelectedIndexChanged" OnRowDeleting="GrdViewSerVisit_RowDeleting"
                                 OnRowDeleted="GrdViewSerVisit_RowDeleted">
                                 <EmptyDataRowStyle CssClass="GrdContent" />
-                                <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small"/>
-                                <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE"/>
+                              <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                   <%--ItemStyle-HorizontalAlign="Center" ItemStyle-Height="30px" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="Small" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"  HeaderStyle-Font-Size="Medium" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="75px"--%>
                                 <Columns>
                                     <asp:BoundField DataField="Row" HeaderText="#" HeaderStyle-Width="60px"/>
