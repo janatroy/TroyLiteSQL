@@ -236,14 +236,7 @@
                                                                                     </td>
                                                                                    
                                                                                     <td style="width: 20%">
-                                                                                        <asp:UpdatePanel runat="server" ID="UpdatePanel1">
-                                                                                            <ContentTemplate>
-                                                                                                <asp:CheckBox ID="chkboxdatelock" runat="server" Text="Date Lock" Font-Size="15px" AutoPostBack="true" Visible="False" />
-                                                                                                <asp:CheckBox runat="server" ID="chkAccLocked" Visible="False" />
-                                                                                                <asp:CheckBox ID="chkhidedeviation" runat="server" Text="Allow Deviation Checks" Font-Size="15px" AutoPostBack="true" />
-                                                                                            </ContentTemplate>
-
-                                                                                        </asp:UpdatePanel>
+                                                                                       
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr style="height: 2px">
@@ -283,13 +276,29 @@
                                                                                             <asp:ListItem Text="Select Executive" Value="0"></asp:ListItem>
                                                                                         </asp:DropDownList>
                                                                                     </td>
-                                                                                    <td class="ControlLabelproject" style="width: 20%">User Group
+                                                                                    <td  style="width: 20%">
                                                                                     </td>
-                                                                                    <td style="width: 20%" class="ControlTextBox3">
-                                                                                        <asp:TextBox ID="txtUserGroup" runat="server" SkinID="skinTxtBoxGrid" ValidationGroup="product"></asp:TextBox>
+                                                                                    <td style="width: 20%">
+                                                                                        <asp:UpdatePanel runat="server" ID="UpdatePanel2">
+                                                                                            <ContentTemplate>
+                                                                                                <asp:CheckBox ID="Chkreceipt" runat="server" Text="Allow Check Recipt" Font-Size="15px" AutoPostBack="true" Visible="false" />
+                                                                                                   <asp:CheckBox runat="server" ID="Chkreceiptid" Visible="False" />
+                                                                                                <asp:CheckBox ID="Chkreceipt1" runat="server" Text="Allow Check Recipt" Font-Size="15px" AutoPostBack="true" />
+                                                                                            </ContentTemplate>
+                                                                                        </asp:UpdatePanel>
+                                                                                       
                                                                                     </td>
                                                                                     
-                                                                                    <td style="width: 20%"></td>
+                                                                                    <td style="width: 20%">
+                                                                                         <asp:UpdatePanel runat="server" ID="UpdatePanel1">
+                                                                                            <ContentTemplate>
+                                                                                                <asp:CheckBox ID="chkboxdatelock" runat="server" Text="Date Lock" Font-Size="15px" AutoPostBack="true" Visible="False" />
+                                                                                                <asp:CheckBox runat="server" ID="chkAccLocked" Visible="False" />
+                                                                                                <asp:CheckBox ID="chkhidedeviation" runat="server" Text="Allow Deviation Checks" Font-Size="15px" AutoPostBack="true" />
+                                                                                            </ContentTemplate>
+
+                                                                                        </asp:UpdatePanel>
+                                                                                    </td>
                                                                                 </tr>
                                                                                 <tr style="height: 2px">
                                                                                 </tr>
@@ -339,7 +348,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -384,7 +393,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray"  Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -430,7 +439,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -477,7 +486,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -522,7 +531,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -568,7 +577,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -613,7 +622,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -658,7 +667,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray"  Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -703,7 +712,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -748,7 +757,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -778,7 +787,7 @@
                                                                                             </rwg:BulkEditGridView>
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
-                                                                                    <cc1:TabPanel ID="TabSECURITY" Visible="false" runat="server" HeaderText="Security">
+                                                                                    <cc1:TabPanel ID="TabSECURITY"  runat="server" HeaderText="Human Resources">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridSECURITY" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
@@ -793,7 +802,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -840,7 +849,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -886,7 +895,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -934,7 +943,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
@@ -980,7 +989,7 @@
                                                                                                     <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
                                                                                                     <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
-                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" Visible="false" />
                                                                                                     <asp:TemplateField Visible="false">
                                                                                                         <ItemTemplate>
                                                                                                             <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />

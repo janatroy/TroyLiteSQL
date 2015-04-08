@@ -46,7 +46,7 @@ public partial class GroupInfo : System.Web.UI.Page
                 }
 
 
-                grdViewGroup.PageSize = 8;
+                grdViewGroup.PageSize = 11;
 
 
                 string connection = Request.Cookies["Company"].Value;

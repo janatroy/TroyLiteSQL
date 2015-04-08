@@ -278,7 +278,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                    <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                    <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%" CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                  runat="server">
                                                                                                 <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
                                                                                              </asp:DropDownList>
@@ -342,9 +342,9 @@
                                                                     Received From *
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                    <asp:DropDownList ID="ComboBox2" runat="server" AutoPostBack="True" Width="100%" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium"
+                                                                    <asp:DropDownList ID="ComboBox2" runat="server" AutoPostBack="True" Width="100%" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                         DataSourceID="srcCreditorDebitor" DataValueField="LedgerID" OnSelectedIndexChanged="ComboBox2_SelectedIndexChanged"
-                                                                        DataTextField="LedgerName" AppendDataBoundItems="true" OnDataBound="ComboBox2_DataBound">
+                                                                        DataTextField="LedgerName" AppendDataBoundItems="true" OnDataBound="ComboBox2_DataBound" CssClass="chzn-select">
                                                                         <asp:ListItem style="background-color: #e7e7e7" Text="Select Supplier" Value="0"></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </td>
@@ -353,7 +353,7 @@
                                                                         ControlToValidate="txtNarration" Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtNarration" runat="server" Height="30px" TextMode="MultiLine"
+                                                                    <asp:TextBox ID="txtNarration" runat="server" Height="26px" TextMode="MultiLine"
                                                                         Text='<%# Bind("Narration") %>' Width="100%" SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 10%"></td>
@@ -398,7 +398,7 @@
                                                                             <tr style="height: 2px">
                                                             </tr>
                                                                             <tr>
-                                                                                <td style="width: 24%;" class="ControlLabelproject">
+                                                                                <td style="width: 20%;" class="ControlLabelproject">
 
                                                                                     <asp:CompareValidator ID="cvBank" runat="server" ControlToValidate="ddBanks" Display="Dynamic"
                                                                                         EnableClientScript="false" ErrorMessage="Bank Name is Mandatory" Operator="GreaterThan"
@@ -406,7 +406,7 @@
                                                                                     Bank Name *
                                                                                 </td>
                                                                                 <td style="width: 25%;" class="ControlDrpBorder">
-                                                                                    <asp:DropDownList ID="ddBanks" Enabled="true" runat="server" OnDataBound="ddBanks_DataBound" Width="100%" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="drpDownListMedium"
+                                                                                    <asp:DropDownList ID="ddBanks" Enabled="true" runat="server" OnDataBound="ddBanks_DataBound" Width="200px" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"  CssClass="chzn-select"
                                                                                         DataSourceID="srcBanks" DataTextField="LedgerName" DataValueField="LedgerID"
                                                                                         AppendDataBoundItems="True">
                                                                                         <asp:ListItem Selected="True" style="background-color: #e7e7e7" Value="0">Select Bank</asp:ListItem>
@@ -522,7 +522,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                  runat="server">
                                                                                              </asp:DropDownList>
                                                                 </td>
@@ -584,7 +584,7 @@
                                                                         Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                    <asp:DropDownList ID="ComboBox2Add" runat="server" Width="100%" BackColor="#e7e7e7" CssClass="drpDownListMedium" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                    <asp:DropDownList ID="ComboBox2Add" runat="server" Width="100%" BackColor="#e7e7e7" CssClass="chzn-select" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                         AutoPostBack="True" OnSelectedIndexChanged="ComboBox2Add_SelectedIndexChanged"
                                                                         DataSourceID="srcCreditorDebitorAdd" DataValueField="LedgerID" DataTextField="LedgerName"
                                                                         AppendDataBoundItems="true">
@@ -647,7 +647,7 @@
                                                                                     Bank Name *
                                                                                 </td>
                                                                                 <td style="width: 25%;" class="ControlDrpBorder">
-                                                                                    <asp:DropDownList ID="ddBanksAdd" runat="server" BackColor="#e7e7e7" CssClass="drpDownListMedium" Style="border: 0px solid #e7e7e7" Height="26px" Width="100%" SelectedValue='<%# Bind("CreditorID") %>'
+                                                                                    <asp:DropDownList ID="ddBanksAdd" runat="server" BackColor="#e7e7e7"  CssClass="chzn-select" Style="border: 0px solid #e7e7e7" Height="26px" Width="200px" SelectedValue='<%# Bind("CreditorID") %>'
                                                                                         DataSourceID="srcBanksAdd" DataTextField="LedgerName" DataValueField="LedgerID"
                                                                                         AppendDataBoundItems="True">
                                                                                         <asp:ListItem Selected="True" Value="0">Select Bank</asp:ListItem>

@@ -448,7 +448,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                                 </td>
                                                                                                 <td class="ControlDrpBorder" style="width: 25%">
-                                                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" DataTextField="BranchName" DataValueField="Branchcode" CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" Width="260px"
+                                                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" DataTextField="BranchName" DataValueField="Branchcode" CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" Width="320px"
                                                                                                         runat="server">
                                                                                                     </asp:DropDownList>
                                                                                                 </td>
@@ -1035,7 +1035,7 @@
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
-                                                                                                                                        <asp:DropDownList ID="DropDownList1" TabIndex="10" Width="100%" DataTextField="BranchName" DataValueField="Branchcode" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                                                        <asp:DropDownList ID="DropDownList1" TabIndex="10" Width="260px" DataTextField="BranchName" DataValueField="Branchcode"  CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                         runat="server">
                                                                                                     </asp:DropDownList>
                                                                                                                                     </td>
@@ -1388,7 +1388,7 @@
                                                                                                                                                 <asp:UpdatePanel ID="UpdatePanel112" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
                                                                                                                                                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
-                                                                                                                                                    Width="100%" DataKeyNames="Billno" EmptyDataText="No Credit Sales found." GridLines="None">
+                                                                                                                                                    Width="100%" DataKeyNames="Billno" EmptyDataText="No Datas found." GridLines="None">
                                                                                                                                                     <EmptyDataRowStyle CssClass="GrdContent" />
                                                                                                                                                     <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" Font-Size="Small" />
                                                                                                                                                     <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="25px" Font-Size="Small" ForeColor="#0567AE" />

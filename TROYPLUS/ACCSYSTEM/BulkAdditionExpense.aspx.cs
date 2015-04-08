@@ -386,7 +386,7 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
 
 
 
-                string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+                string specialCharacters = @"%!@#$%^*()?/>.<,:;'\|}]{[_~`+=" + "\"";
                 char[] specialCharactersArray = specialCharacters.ToCharArray();
 
 

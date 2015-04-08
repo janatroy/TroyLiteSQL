@@ -62,7 +62,7 @@ public partial class OpeningStock : System.Web.UI.Page
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
-                GrdViewSerVisit.PageSize = 8;
+                GrdViewSerVisit.PageSize = 11;
 
                  connection = Request.Cookies["Company"].Value;
                  usernam = Request.Cookies["LoggedUserName"].Value;

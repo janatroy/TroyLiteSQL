@@ -64,16 +64,16 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
                 {
                     BindAttendanceSummaryGrid(ddlSearchCriteria.SelectedValue);
                 }
-                //if (bl.CheckUserHaveAdd(usernam, "SUPPINFO"))
-                //{
-                //    lnkBtnAddAttendance.Enabled = false;
-                //    lnkBtnAddAttendance.ToolTip = "You are not allowed to make Add New ";
-                //}
-                //else
-                //{
-                //    lnkBtnAddAttendance.Enabled = true;
-                //    lnkBtnAddAttendance.ToolTip = "Click to Add New ";
-                //}
+                if (bl.CheckUserHaveAdd(usernam, "ATT"))
+                {
+                    lnkBtnAddAttendance.Enabled = false;
+                    lnkBtnAddAttendance.ToolTip = "You are not allowed to make Add New ";
+                }
+                else
+                {
+                    lnkBtnAddAttendance.Enabled = true;
+                    lnkBtnAddAttendance.ToolTip = "Click to Add New ";
+                }
 
 
 
@@ -154,6 +154,15 @@ public partial class Attendance_EmployeeAttendance : System.Web.UI.Page
                             }
                         }
                     }
+                }
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+
+                if (bl.CheckUserHaveEdit(usernam, "ATT"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
                 }
             }
         }

@@ -142,6 +142,8 @@ public partial class Suppliers : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("LedgerName"));
                 dt.Columns.Add(new DataColumn("AliasName"));
                 dt.Columns.Add(new DataColumn("Address"));
+                dt.Columns.Add(new DataColumn("Address2"));
+                dt.Columns.Add(new DataColumn("Address3"));
                 dt.Columns.Add(new DataColumn("TINnumber"));
                 dt.Columns.Add(new DataColumn("CreditLimit"));
                 //dt.Columns.Add(new DataColumn("OpenBalanceDR"));
@@ -158,6 +160,8 @@ public partial class Suppliers : System.Web.UI.Page
                     dr_final1["LedgerName"] = dr["LedgerName"];
                     dr_final1["AliasName"] = dr["AliasName"];
                     dr_final1["Address"] = dr["Address"];
+                    dr_final1["Address2"] = dr["Address2"];
+                    dr_final1["Address3"] = dr["Address3"];
                     dr_final1["TINnumber"] = dr["TINnumber"];
                     dr_final1["CreditLimit"] = dr["CreditLimit"];
                     //dr_final1["OpenBalanceDR"] = dr["OpenBalanceDR"];
@@ -186,6 +190,8 @@ public partial class Suppliers : System.Web.UI.Page
                 dr_final2["LedgerName"] = "";
                 dr_final2["AliasName"] = "";
                 dr_final2["Address"] = "";
+                dr_final2["Address2"] = "";
+                dr_final2["Address3"] = "";
                 dr_final2["TINnumber"] = "Grand Total:";
                 dr_final2["CreditLimit"] = Convert.ToDecimal(GtotalCreditlimit);
                 //dr_final2["OpenBalanceDR"] = Convert.ToDecimal(GtotalOpenDR);

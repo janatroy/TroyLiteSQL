@@ -155,8 +155,8 @@
                                                                 <td class="ControlLabel" style="width: 40%">Brand Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtBrandName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                      <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
-                                                                        TargetControlID="txtBrandName" />
+                                                                      <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
+                                                                       ValidChars=" .,-/\"  TargetControlID="txtBrandName" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtBrandName" runat="server" Text='<%# Bind("BrandName") %>' SkinID="skinTxtBoxGrid"
@@ -277,8 +277,8 @@
                                                                 <td class="ControlLabel" style="width: 40%">Brand Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtBrandNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Brand Name. It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                        <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
-                                                                        TargetControlID="txtBrandNameAdd" />
+                                                                        <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
+                                                                          ValidChars=" .,-/\" TargetControlID="txtBrandNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 30%">
                                                                     <asp:TextBox ID="txtBrandNameAdd" runat="server" Text='<%# Bind("BrandName") %>'

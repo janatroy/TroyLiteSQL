@@ -20,6 +20,8 @@ public partial class CustomerPayment : System.Web.UI.Page
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
 
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+
         try
         {
             if (!Page.IsPostBack)

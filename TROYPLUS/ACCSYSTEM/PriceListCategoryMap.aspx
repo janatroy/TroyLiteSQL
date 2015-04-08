@@ -152,7 +152,7 @@
                                                                         Operator="GreaterThan" ValueToCompare="0" />--%>
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="drpCustomerCategory"
                                                                         Display="Dynamic" ErrorMessage="Please enter Customer Category. It Cannot be left blank ">*</asp:RequiredFieldValidator>
-                                                                      <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" " TargetControlID="drpCustomerCategory" />
+                                                                      <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .,-/\" TargetControlID="drpCustomerCategory" />
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
                                                                     <%--<asp:DropDownList ID="drpCustomerCategory" runat="server" OnDataBound="drpCustomerCategory_DataBound" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" DataSourceID="srccuscat" height="26px" style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%">
@@ -261,7 +261,7 @@
                                                                         Operator="GreaterThan" ValueToCompare="0" />--%>
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="drpCustomerCategoryAdd"
                                                                         Display="Dynamic" ErrorMessage="Please enter Customer Category. It cannot be left blank">*</asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" " TargetControlID="drpCustomerCategoryAdd" />
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .,-/\" TargetControlID="drpCustomerCategoryAdd" />
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 30%">
                                                                     <%--<asp:DropDownList ID="drpCustomerCategoryAdd" runat="server" AppendDataBoundItems="true" OnDataBound="drpCustomerCategoryAdd_DataBound" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" height="26px" DataSourceID="srccuscatadd" style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%">
@@ -367,8 +367,8 @@
                                             AllowPaging="True" DataKeyNames="Id" EmptyDataText="No Mapping Found."
                                             OnRowCommand="GrdViewLedger_RowCommand" OnRowDataBound="GrdViewLedger_RowDataBound" OnRowDeleting="GrdViewLedger_RowDeleting"
                                             OnRowDeleted="GrdViewLedger_RowDeleted">
-                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
+                                                    <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
                                                 <asp:BoundField DataField="CustomerCategory_Name" HeaderText="Customer Category Name" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="200px" />
                                                 <asp:BoundField DataField="PriceList_Name" HeaderText="Price List Name" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="200px" />

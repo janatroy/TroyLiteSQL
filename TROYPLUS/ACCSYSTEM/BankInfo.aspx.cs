@@ -42,7 +42,7 @@ public partial class BankInfo : System.Web.UI.Page
                     GrdViewLedger.Columns[8].Visible = false;
                 }
 
-                GrdViewLedger.PageSize = 9;
+                GrdViewLedger.PageSize = 11;
 
 
                 string connection = Request.Cookies["Company"].Value;

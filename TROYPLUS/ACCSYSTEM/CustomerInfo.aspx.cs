@@ -52,7 +52,7 @@ public partial class CustomerInfo : System.Web.UI.Page
                 }
 
 
-                GrdViewLedger.PageSize = 8;
+                GrdViewLedger.PageSize = 11;
 
                 string branch = Request.Cookies["Branch"].Value;
 
