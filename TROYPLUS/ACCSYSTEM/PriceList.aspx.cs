@@ -66,7 +66,7 @@ public partial class PriceList : System.Web.UI.Page
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
-                GrdViewSerVisit.PageSize = 10;
+                GrdViewSerVisit.PageSize = 11;
 
 
                 string connection = Request.Cookies["Company"].Value;

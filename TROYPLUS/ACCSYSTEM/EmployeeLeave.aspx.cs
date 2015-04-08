@@ -41,16 +41,16 @@ public partial class EmployeeLeave : System.Web.UI.Page
             string usernam = Request.Cookies["LoggedUserName"].Value;
             BusinessLogic bl = new BusinessLogic(sDataSource);
             BindLeaveSummaryGrid();
-            //if (bl.CheckUserHaveAdd(usernam, "SUPPINFO"))
-            //{
-            //    lnkBtnAddAttendance.Enabled = false;
-            //    lnkBtnAddAttendance.ToolTip = "You are not allowed to make Add New ";
-            //}
-            //else
-            //{
-            //    lnkBtnAddAttendance.Enabled = true;
-            //    lnkBtnAddAttendance.ToolTip = "Click to Add New ";
-            //}
+            if (bl.CheckUserHaveAdd(usernam, "LEV"))
+            {
+                lnkBtnApplyLeave.Enabled = false;
+                lnkBtnApplyLeave.ToolTip = "You are not allowed to make Add New ";
+            }
+            else
+            {
+                lnkBtnApplyLeave.Enabled = true;
+                lnkBtnApplyLeave.ToolTip = "Click to Add New ";
+            }
 
 
 
@@ -132,6 +132,21 @@ public partial class EmployeeLeave : System.Web.UI.Page
                     }
                 }
             }
+            //BusinessLogic bl = new BusinessLogic(sDataSource);
+            //string connection = Request.Cookies["Company"].Value;
+            //string usernam = Request.Cookies["LoggedUserName"].Value;
+
+            //if (bl.CheckUserHaveEdit(usernam, "LEV"))
+            //{
+            //    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+            //    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+            //}
+            //if (bl.CheckUserHaveDelete(usernam, "LEV"))
+            //{
+            //    ((ImageButton)e.Row.FindControl("btnCancelLeave")).Visible = false;
+            //    ((ImageButton)e.Row.FindControl("btnCancelLeaveDisabled")).Visible = true;
+            //}
+
         }
         catch (Exception ex)
         {

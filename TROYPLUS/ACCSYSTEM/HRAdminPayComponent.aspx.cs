@@ -58,16 +58,16 @@ public partial class PayComponent_HRAdminPay : System.Web.UI.Page
             string usernam = Request.Cookies["LoggedUserName"].Value;
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
-            //if (bl.CheckUserHaveAdd(usernam, "SUPPINFO"))
-            //{
-            //    lnkBtnAddAttendance.Enabled = false;
-            //    lnkBtnAddAttendance.ToolTip = "You are not allowed to make Add New ";
-            //}
-            //else
-            //{
-            //    lnkBtnAddAttendance.Enabled = true;
-            //    lnkBtnAddAttendance.ToolTip = "Click to Add New ";
-            //}
+            if (bl.CheckUserHaveAdd(usernam, "PYIX"))
+            {
+                lnkBtnAddPayComp.Enabled = false;
+                lnkBtnAddPayComp.ToolTip = "You are not allowed to make Add New ";
+            }
+            else
+            {
+                lnkBtnAddPayComp.Enabled = true;
+                lnkBtnAddPayComp.ToolTip = "Click to Add New ";
+            }
 
             if (Request.QueryString["myname"] != null)
             {
@@ -122,6 +122,31 @@ public partial class PayComponent_HRAdminPay : System.Web.UI.Page
     }
     protected void grdViewPayCompSummary_RowDataBound(object sender, GridViewRowEventArgs e)
     {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+
+                if (bl.CheckUserHaveEdit(usernam, "PYIX"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
+
+                if (bl.CheckUserHaveDelete(usernam, "PYIX"))
+                {
+                    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
 
     }
     protected void grdViewPayCompSummary_RowDeleted(object sender, GridViewDeletedEventArgs e)

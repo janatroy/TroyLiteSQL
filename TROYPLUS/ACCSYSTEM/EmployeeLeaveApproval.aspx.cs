@@ -44,16 +44,20 @@ public partial class EmployeeLeaveApproval : System.Web.UI.Page
             string usernam = Request.Cookies["LoggedUserName"].Value;
             BusinessLogic bl = new BusinessLogic(sDataSource);
             BindLeaveSummaryGrid();
-            //if (bl.CheckUserHaveAdd(usernam, "SUPPINFO"))
-            //{
-            //    lnkBtnAddAttendance.Enabled = false;
-            //    lnkBtnAddAttendance.ToolTip = "You are not allowed to make Add New ";
-            //}
-            //else
-            //{
-            //    lnkBtnAddAttendance.Enabled = true;
-            //    lnkBtnAddAttendance.ToolTip = "Click to Add New ";
-            //}
+            if (bl.CheckUserHaveAdd(usernam, "SUPPINFO"))
+            {
+                btnSearchAttendance.Enabled = false;
+                btnSearchAttendance.ToolTip = "You are not allowed to make Add New ";
+               // btnRejectLeave.Enabled = false;
+               // btnRejectLeave.ToolTip = "You are not allowed to make Add New ";
+            }
+            else
+            {
+                btnSearchAttendance.Enabled = true;
+                btnSearchAttendance.ToolTip = "Click to Add New ";
+              //  btnRejectLeave.Enabled = true;
+               // btnRejectLeave.ToolTip = "Click to Add New ";
+            }
 
 
 

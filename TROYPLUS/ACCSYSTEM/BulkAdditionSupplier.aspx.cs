@@ -134,10 +134,10 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Add3"));
         dt.Columns.Add(new DataColumn("Phone"));
         dt.Columns.Add(new DataColumn("Mobile"));
-        dt.Columns.Add(new DataColumn("CreditLimit"));
-        dt.Columns.Add(new DataColumn("CreditDays"));
+      //  dt.Columns.Add(new DataColumn("CreditLimit"));
+      //  dt.Columns.Add(new DataColumn("CreditDays"));
         dt.Columns.Add(new DataColumn("TinNumber"));
-        // dt.Columns.Add(new DataColumn("Emailid"));
+         dt.Columns.Add(new DataColumn("Emailid"));
       //  dt.Columns.Add(new DataColumn("Opduedate"));
         // dt.Columns.Add(new DataColumn("IsActive"));
         // dt.Columns.Add(new DataColumn("DC"));
@@ -154,10 +154,10 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
         dr_final12["Add2"] = "";
         dr_final12["Add3"] = "";
         dr_final12["Mobile"] = "";
-        dr_final12["CreditLimit"] = "0";
-        dr_final12["CreditDays"] = "0";
+       // dr_final12["CreditLimit"] = "0";
+       // dr_final12["CreditDays"] = "0";
         dr_final12["TinNumber"] = "0";
-        //  dr_final12["Emailid"] = "";
+        dr_final12["Emailid"] = "";
        // dr_final12["Opduedate"] = "";
         // dr_final12["IsActive"] = "YES";
         //  dr_final12["DC"] = "NO";
@@ -622,7 +622,7 @@ public partial class BulkAdditionSupplier : System.Web.UI.Page
 
                                     if (itemcj == Convert.ToString(drd["Mobile"]))
                                     {
-                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile - " + itemc + " - already exists in the excel.');", true);
+                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Mobile - " + itemcj + " - already exists in the excel.');", true);
                                         return;
                                     }
                                 }
