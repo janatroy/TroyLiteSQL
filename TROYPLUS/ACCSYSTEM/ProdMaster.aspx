@@ -237,7 +237,7 @@
                                                                                                     <asp:RangeValidator ID="cvVATAdd" runat="server" ControlToValidate="txtVATAdd" Display="Dynamic"
                                                                                                         Text="*" MaximumValue="100" Type="Double" MinimumValue="0" ValidationGroup="salesval"
                                                                                                         ErrorMessage="VAT cannot be Greater than 100% and Less than 0%"></asp:RangeValidator>
-                                                                                                    <cc1:FilteredTextBoxExtender ID="fltReorderAd" runat="server" FilterType="Numbers"
+                                                                                                    <cc1:FilteredTextBoxExtender ID="fltReorderAd" runat="server" FilterType="Custom,Numbers" ValidChars="."
                                                                                                         TargetControlID="txtVATAdd" />
 
                                                                                                 </td>

@@ -159,16 +159,16 @@ public partial class BulkAddition : System.Web.UI.Page
         // dr_final12["EffectiveDate"] = DateTime.Now.ToString("dd/MM/yyyy");
 
 
-        BusinessLogic bl = new BusinessLogic(sDataSource);
-        DataSet ds1 = bl.GetPriceListName(sDataSource);
+        //BusinessLogic bl = new BusinessLogic(sDataSource);
+        //DataSet ds1 = bl.GetPriceListName(sDataSource);
 
-        for (int i = 0; i <= ds1.Tables[0].Rows.Count - 1; i++)
-        {
-            string s = ds1.Tables[0].Rows[i]["PriceName"].ToString();
-            dt.Columns.Add(new DataColumn(s));
-            dt.Columns.Add(new DataColumn(s + " - EffectiveDate"));
-            dt.Columns.Add(new DataColumn(s + " - Discount"));
-        }
+        //for (int i = 0; i <= ds1.Tables[0].Rows.Count - 1; i++)
+        //{
+        //    string s = ds1.Tables[0].Rows[i]["PriceName"].ToString();
+        //    dt.Columns.Add(new DataColumn(s));
+        //    dt.Columns.Add(new DataColumn(s + " - EffectiveDate"));
+        //    dt.Columns.Add(new DataColumn(s + " - Discount"));
+        //}
 
         dt.Rows.Add(dr_final12);
 
@@ -325,7 +325,8 @@ public partial class BulkAddition : System.Web.UI.Page
             String strConnection = "ConnectionString";
             string connectionString = "";
 
-            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+           //string specialCharacters = @"%!@#$%^&?><,:;'\|}]{[_~`=" + "\"";
+string specialCharacters ="";
             char[] specialCharactersArray = specialCharacters.ToCharArray();
 
 
@@ -487,20 +488,20 @@ public partial class BulkAddition : System.Web.UI.Page
                 }
 
 
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["Vat"]) != null) || (Convert.ToString(dr["Vat"]) != ""))
-                    {
-                        foreach (char c in Convert.ToString(dr["Vat"]))
-                        {
-                            if (!Char.IsDigit(c))
-                            {
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Vat');", true);
-                                return;
-                            }
-                        }
-                    }
-                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+               // {
+                   // if ((Convert.ToString(dr["Vat"]) != null) || (Convert.ToString(dr["Vat"]) != ""))
+                    //{
+                       // foreach (char c in Convert.ToString(dr["Vat"]))
+                       // {
+                            //if (!Char.IsDigit(c))
+                            //{
+                               // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Vat');", true);
+                               // return;
+                           // }
+                       // }
+                   // }
+               // }
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
@@ -514,20 +515,20 @@ public partial class BulkAddition : System.Web.UI.Page
                     }
                 }
 
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["ReorderLevel"]) != null) || (Convert.ToString(dr["ReorderLevel"]) != ""))
-                    {
-                        foreach (char c in Convert.ToString(dr["ReorderLevel"]))
-                        {
-                            if (!Char.IsDigit(c))
-                            {
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Reorder Level');", true);
-                                return;
-                            }
-                        }
-                    }
-                }
+              //  foreach (DataRow dr in ds.Tables[0].Rows)
+               // {
+                    //if ((Convert.ToString(dr["ReorderLevel"]) != null) || (Convert.ToString(dr["ReorderLevel"]) != ""))
+                    //{
+                       // foreach (char c in Convert.ToString(dr["ReorderLevel"]))
+                       // {
+                          //  if (!Char.IsDigit(c))
+                          //  {
+                            //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter only Numberic values in Reorder Level');", true);
+                             //   return;
+                           // }
+                      //  }
+                  //  }
+               // }
 
                 //foreach (DataRow dr in ds.Tables[0].Rows)
                 //{
@@ -656,40 +657,40 @@ public partial class BulkAddition : System.Web.UI.Page
                 //    }
                 //}
 
-                for (int iw = 0; iw <= ds1.Tables[0].Rows.Count - 1; iw++)
-                {
-                    string privalue = ds1.Tables[0].Rows[iw]["PriceName"].ToString();
-                    string prieffdte = privalue + " - EffectiveDate";
-                    string pridisc = privalue + " - Discount";
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        if (Convert.ToString(dr["" + privalue + " - Discount"]) != null || Convert.ToString(dr["" + privalue + " - Discount"]) != "")
-                        {
-                            if (Convert.ToInt32(dr["" + privalue + " - Discount"]) > 100)
-                            {
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + privalue + " - Discount" + " cannot be Greater than 100% and Less than 0%');", true);
-                                return;
-                            }
-                        }
-                        if (Convert.ToString(dr["" + privalue + " - EffectiveDate"]) != null || Convert.ToString(dr["" + privalue + " - EffectiveDate"]) != "")
-                        {
-                            string[] format = new string[] { "dd-MM-yyyy" };
-                            string value = Convert.ToString(dr["" + privalue + " - EffectiveDate"]);
-                            DateTime datetime;
+                //for (int iw = 0; iw <= ds1.Tables[0].Rows.Count - 1; iw++)
+                //{
+                //    string privalue = ds1.Tables[0].Rows[iw]["PriceName"].ToString();
+                //    string prieffdte = privalue + " - EffectiveDate";
+                //    string pridisc = privalue + " - Discount";
+                //    foreach (DataRow dr in ds.Tables[0].Rows)
+                //    {
+                //        if (Convert.ToString(dr["" + privalue + " - Discount"]) != null || Convert.ToString(dr["" + privalue + " - Discount"]) != "")
+                //        {
+                //            if (Convert.ToInt32(dr["" + privalue + " - Discount"]) > 100)
+                //            {
+                //                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + privalue + " - Discount" + " cannot be Greater than 100% and Less than 0%');", true);
+                //                return;
+                //            }
+                //        }
+                //        if (Convert.ToString(dr["" + privalue + " - EffectiveDate"]) != null || Convert.ToString(dr["" + privalue + " - EffectiveDate"]) != "")
+                //        {
+                //            string[] format = new string[] { "dd-MM-yyyy" };
+                //            string value = Convert.ToString(dr["" + privalue + " - EffectiveDate"]);
+                //            DateTime datetime;
 
-                            if (DateTime.TryParseExact(value, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out datetime))
-                            {
+                //            if (DateTime.TryParseExact(value, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out datetime))
+                //            {
 
-                            }
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + privalue + " - EffectiveDate" + " is invalid format');", true);
-                                return;
-                            }
+                //            }
+                //            else
+                //            {
+                //                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('" + privalue + " - EffectiveDate" + " is invalid format');", true);
+                //                return;
+                //            }
 
-                        }
-                    }
-                }
+                //        }
+                //    }
+                //}
 
 
 
