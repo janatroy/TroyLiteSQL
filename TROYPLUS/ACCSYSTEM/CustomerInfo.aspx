@@ -78,24 +78,24 @@
             if (tabContainer == null)
                 tabContainer = $find('ctl00_cplhControlPanel_frmViewAdd_tabEdit');
 
-            if (tabContainer != null) {
-                //  get all of the tabs from the container
-                var tabs = tabContainer.get_tabs();
+            //if (tabContainer != null) {
+            //    //  get all of the tabs from the container
+            //    var tabs = tabContainer.get_tabs();
 
-                //  loop through each of the tabs and attach a handler to
-                //  the tab header's mouseover event
-                for (var i = 0; i < tabs.length; i++) {
-                    var tab = tabs[i];
+            //    //  loop through each of the tabs and attach a handler to
+            //    //  the tab header's mouseover event
+            //    for (var i = 0; i < tabs.length; i++) {
+            //        var tab = tabs[i];
 
-                    $addHandler(
-                tab.get_headerTab(),
-                'mouseover',
-                Function.createDelegate(tab, function () {
-                    tabContainer.set_activeTab(this);
-                }
-            ));
-                }
-            }
+            //        $addHandler(
+            //    tab.get_headerTab(),
+            //    'mouseover',
+            //    Function.createDelegate(tab, function () {
+            //        tabContainer.set_activeTab(this);
+            //    }
+            //));
+            //    }
+            //}
         }
 
         function Mobile_Validator() {
