@@ -868,7 +868,7 @@
                                                     <ul style="left: -170px !important">
                                                         <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: left">◄</span>&nbsp; Password Administration &nbsp;&nbsp;</a>                                                            
                                                             <ul>
-                                                                <li class="color submenumenu"><a href="./ResetPassword.aspx">Reset Password</a></li>
+                                                                <li class="color submenumenu"><a href="./ResetPassword.aspx" runat="server" id="lnkResetPassword">Reset Password</a></li>
                                                                 <li class="color submenumenu"><a href="./ChangePassword.aspx" runat="server" id="lnkChangePassword">Change Password</a></li>
                                                             </ul>
                                                         </li>

@@ -5176,6 +5176,25 @@ public partial class CustReceipt : System.Web.UI.Page
     protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
     {
         loadLedgers(drpBranchAdd.SelectedValue);
+
+        GridView1.DataSource = null;
+        GridView1.DataBind();
+        totalrow.Visible = false;
+        totalrow1.Visible = false;
+        totalrow123.Visible = false;
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        string connection = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        DataSet dsd = new DataSet();
+        dsd = bl.ListCusCategory(connection);
+        drpCustomerCategoryAdd.Items.Clear();
+        drpCustomerCategoryAdd.Items.Add(new ListItem("Select Customer Category", "0"));
+
+        drpCustomerCategoryAdd.DataTextField = "CusCategory_Name";
+        drpCustomerCategoryAdd.DataValueField = "CusCategory_Value";
+        drpCustomerCategoryAdd.DataSource = dsd;
+        drpCustomerCategoryAdd.DataBind();
     }
 
     private void loadLedgers(string Branch)
@@ -5187,7 +5206,10 @@ public partial class CustReceipt : System.Web.UI.Page
         
         drpLedger.Items.Clear();
         drpLedger.Items.Add(new ListItem("Select Customer", "0"));
-        ds = bl.ListSundryDebitorsIsActive(connection, Branch);
+
+        ds = bl.ListSundryDebtorswithMobNoExceptIsActive(connection, Branch);
+
+        //ds = bl.ListSundryDebitorsIsActive(connection, Branch);
         drpLedger.DataSource = ds;
         
         drpLedger.DataTextField = "LedgerName";
@@ -5300,7 +5322,7 @@ public partial class CustReceipt : System.Web.UI.Page
             txtCustomerName.Visible = true;
             drpLedger.Visible = false;
 
-            txtCustomerId.Visible = true;
+            txtCustomerId.Visible = false;
             drpMobile.Visible = false;
 
             txtAddress.ReadOnly = false;
@@ -5320,7 +5342,7 @@ public partial class CustReceipt : System.Web.UI.Page
             drpLedger.Visible = true;
             txtCustomerName.Visible = false;
 
-            drpMobile.Visible = true;
+            drpMobile.Visible = false;
             txtCustomerId.Visible = false;
 
             txtAddress.ReadOnly = true;
@@ -5694,7 +5716,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 drpCustomerCategoryAdd.Enabled = false;
 
                 drpLedger.Visible = true;
-                drpMobile.Visible = true;
+                drpMobile.Visible = false;
                 txtCustomerId.Enabled = false;
                 txtCustomerName.Enabled = false;
                 chk.Checked = true;

@@ -215,7 +215,7 @@
                                                                 <td class="ControlLabel" style="width: 15%">Ledger Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Ledger Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" ."  TargetControlID="txtLdgrName" />
+                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .-/\"  TargetControlID="txtLdgrName" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
                                                                     <asp:TextBox ID="txtLdgrName" runat="server" Text='<%# Bind("LedgerName") %>' SkinID="skinTxtBoxGrid"></asp:TextBox>

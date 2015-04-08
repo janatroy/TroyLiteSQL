@@ -651,6 +651,9 @@ public partial class PageMaster : System.Web.UI.MasterPage
         {
             lnkBrandMast.Visible = false;
         }
+
+        lnkResetPassword.Visible = false;
+
         if (!this.Page.User.IsInRole("PRDMST"))
         {
             lnkProductMast.Visible = false;

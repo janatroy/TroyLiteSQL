@@ -383,7 +383,7 @@
                                             OnRowCreated="GrdViewRequestes_RowCreated" Width="100.3%" CssClass="someClass"
                                             AllowPaging="True" DataKeyNames="RequestID" EmptyDataText="No Internal Transfer Requests found!" OnRowDataBound="GrdViewRequestes_RowDataBound"
                                             OnRowCommand="GrdViewRequestes_RowCommand" OnSelectedIndexChanged="GrdViewRequestes_SelectedIndexChanged"
-                                            OnRowDeleting="GrdViewRequestes_RowDeleting">
+                                            OnRowDeleting="GrdViewRequestes_RowDeleting" OnPageIndexChanging="GrdViewRequestes_PageIndexChanging">
                                             <EmptyDataRowStyle CssClass="GrdContent" />
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
@@ -445,7 +445,7 @@
                                                         </td>
                                                         <td style="border-color: white">
                                                             <asp:DropDownList ID="ddlPageSelector" runat="server" AutoPostBack="true" Width="65px"
-                                                                Height="23px" Style="border: 1px solid blue" BackColor="#BBCAFB">
+                                                                Height="23px" Style="border: 1px solid blue" OnSelectedIndexChanged="ddlPageSelector_SelectedIndexChanged" BackColor="#BBCAFB">
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td style="border-color: white; width: 5px">

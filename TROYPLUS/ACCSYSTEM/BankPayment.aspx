@@ -291,7 +291,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 25%;">
-                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="200px"  CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                 runat="server">
                                                                                                 <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
                                                                                             </asp:DropDownList>
@@ -339,9 +339,9 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0"></asp:CompareValidator>
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 25%;">
-                                                                                            <asp:DropDownList ID="ComboBox2" runat="server" CssClass="drpDownListMedium" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" AutoPostBack="False"
+                                                                                            <asp:DropDownList ID="ComboBox2" runat="server" Width="200px"  CssClass="chzn-select" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px" AutoPostBack="False"
                                                                                                 DataSourceID="srcCreditorDebitor" DataValueField="LedgerID" DataTextField="LedgerName"
-                                                                                                AppendDataBoundItems="true" OnDataBound="ComboBox2_DataBound" Width="100%">
+                                                                                                AppendDataBoundItems="true" OnDataBound="ComboBox2_DataBound" >
                                                                                                 <asp:ListItem style="background-color: #e7e7e7" Text="Select Bank" Value="0"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                             
@@ -392,7 +392,7 @@
                                                                                                                 <td class="ControlDrpBorder" style="width: 25%;">
                                                                                                                     <asp:DropDownList ID="ddBanks" runat="server" OnDataBound="ddBanks_DataBound" AutoPostBack="true" DataSourceID="srcBanks" Style="border: 1px solid #e7e7e7" Height="26px" OnSelectedIndexChanged="ddBanks_SelectedIndexChanged"
                                                                                                                         DataTextField="LedgerName" DataValueField="LedgerID" AppendDataBoundItems="True"
-                                                                                                                        CssClass="drpDownListMedium" Width="100%" BackColor="#e7e7e7">
+                                                                                                                        Width="200px"  CssClass="chzn-select" BackColor="#e7e7e7">
                                                                                                                         <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select Bank</asp:ListItem>
                                                                                                                     </asp:DropDownList>
                                                                                                                 </td>
@@ -403,7 +403,7 @@
                                                                                                                 <td class="ControlDrpBorder" style="width: 25%;">
                                                                                                                     <asp:TextBox ID="txtChequeNo" runat="server" Text='<%# Bind("ChequeNo") %>' CssClass="cssTextBox" Visible="false"
                                                                                                                         Width="100%" MaxLength="10"></asp:TextBox>
-                                                                                                                    <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%" OnDataBound="cmbChequeNo_DataBound">
+                                                                                                                    <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" Width="200px"  CssClass="chzn-select" Height="26px" Style="border: 1px solid #e7e7e7"  OnDataBound="cmbChequeNo_DataBound">
                                                                                                                         <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                                     </asp:DropDownList>
                                                                                                                 </td>
@@ -533,7 +533,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 25%;">
-                                                                                            <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                            <asp:DropDownList ID="drpBranchAdd" TabIndex="10" Width="200px"  CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                 runat="server">
                                                                                             </asp:DropDownList>
                                                                                         </td>
@@ -579,7 +579,7 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 25%;">
-                                                                                           <asp:DropDownList ID="ComboBox2Add" runat="server" CssClass="drpDownListMedium" BackColor="#e7e7e7" AutoPostBack="False" Width="100%"
+                                                                                           <asp:DropDownList ID="ComboBox2Add" runat="server" Width="200px"  CssClass="chzn-select" BackColor="#e7e7e7" AutoPostBack="False" 
                                                                                                 DataSourceID="srcCreditorDebitorAdd" DataValueField="LedgerID" DataTextField="LedgerName"
                                                                                                 AppendDataBoundItems="true" Style="border: 1px solid #e7e7e7" Height="26px">
                                                                                                 <asp:ListItem style="background-color: #e7e7e7" Text="Select Bank" Value="0"></asp:ListItem>
@@ -634,7 +634,7 @@
                                                                                                             <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                                                                                 <ContentTemplate>
                                                                                                                     <asp:DropDownList ID="ddBanksAdd" runat="server" SelectedValue='<%# Bind("CreditorID") %>'
-                                                                                                                        BackColor="#e7e7e7" AutoPostBack="true" CssClass="drpDownListMedium" Width="99%" DataSourceID="srcBanksAdd" DataTextField="LedgerName" DataValueField="LedgerID" OnSelectedIndexChanged="ddBanksAdd_SelectedIndexChanged"
+                                                                                                                        BackColor="#e7e7e7" AutoPostBack="true" Width="200px"  CssClass="chzn-select" DataSourceID="srcBanksAdd" DataTextField="LedgerName" DataValueField="LedgerID" OnSelectedIndexChanged="ddBanksAdd_SelectedIndexChanged"
                                                                                                                         AppendDataBoundItems="True" Style="border: 1px solid #e7e7e7" Height="26px">
                                                                                                                         <asp:ListItem Selected="True" Value="0" style="background-color: #e7e7e7">Select Bank</asp:ListItem>
                                                                                                                     </asp:DropDownList>
@@ -650,7 +650,7 @@
                                                                                                                 <ContentTemplate>
                                                                                                                     <asp:TextBox ID="txtChequeNoAdd" Visible="false" runat="server" Text='<%# Bind("ChequeNo") %>' CssClass="cssTextBox"
                                                                                                                         Width="100%" MaxLength="10"></asp:TextBox>
-                                                                                                                    <asp:DropDownList ID="cmbChequeNo1" runat="server" AppendDataBoundItems="True" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%">
+                                                                                                                    <asp:DropDownList ID="cmbChequeNo1" runat="server" AppendDataBoundItems="True" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" Width="200px"  CssClass="chzn-select" Height="26px" Style="border: 1px solid #e7e7e7">
                                                                                                                         <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                                     </asp:DropDownList>
                                                                                                                 </ContentTemplate>

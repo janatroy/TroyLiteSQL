@@ -98,7 +98,7 @@
                                     <td style="width: 2%">
                                     </td>
                                     <td style="width: 40%; font-size: 22px; color: white;">
-                                        Internal Transfer Requests
+                                        Internal Transfer Approval
                                     </td>
                                     
                                     <td style="width: 15%; color: white;" align="center">
@@ -378,10 +378,10 @@
                             <tr style="width: 100%">
                                 <td>
                                     <div class="mainGridRequestes" id="searchGrid">
-                                        <asp:GridView ID="GrdViewRequestes" runat="server" AllowSorting="True" AutoGenerateColumns="False"
+                                        <asp:GridView ID="GrdViewRequestes" runat="server" AllowSorting="True" AutoGenerateColumns="False" OnPageIndexChanging="GrdViewRequestes_PageIndexChanging"
                                             OnRowCreated="GrdViewRequestes_RowCreated" Width="100.3%" CssClass="someClass"
                                             AllowPaging="True" DataKeyNames="RequestID" EmptyDataText="No Internal Transfer Requests found!" OnRowDataBound="GrdViewRequestes_RowDataBound"
-                                            OnRowCommand="GrdViewRequestes_RowCommand" OnSelectedIndexChanged="GrdViewRequestes_SelectedIndexChanged"
+                                            OnRowCommand="GrdViewRequestes_RowCommand"  OnSelectedIndexChanged="GrdViewRequestes_SelectedIndexChanged"
                                             OnRowDeleting="GrdViewRequestes_RowDeleting">
                                             <EmptyDataRowStyle CssClass="GrdContent" />
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
@@ -444,25 +444,25 @@
                                                         </td>
                                                         <td style="border-color: white">
                                                             <asp:DropDownList ID="ddlPageSelector" runat="server" AutoPostBack="true" Width="65px"
-                                                                Height="23px" Style="border: 1px solid blue" BackColor="#BBCAFB">
+                                                                Height="23px" Style="border: 1px solid blue" OnSelectedIndexChanged="ddlPageSelector_SelectedIndexChanged" BackColor="#BBCAFB">
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td style="border-color: white; width: 5px">
                                                         </td>
                                                         <td style="border-color: white">
-                                                            <asp:Button Text="" CommandName="Page" CommandArgument="First" runat="server" CssClass="NewFirst"
+                                                            <asp:Button Text="" CommandName="Page" CommandArgument="First" CausesValidation="false" runat="server" CssClass="NewFirst"
                                                                 EnableTheming="false" Width="22px" Height="18px" ID="btnFirst" />
                                                         </td>
                                                         <td style="border-color: white">
-                                                            <asp:Button Text="" CommandName="Page" CommandArgument="Prev" runat="server" CssClass="NewPrev"
+                                                            <asp:Button Text="" CommandName="Page" CommandArgument="Prev" CausesValidation="false" runat="server" CssClass="NewPrev"
                                                                 EnableTheming="false" Width="22px" Height="18px" ID="btnPrevious" />
                                                         </td>
                                                         <td style="border-color: white">
-                                                            <asp:Button Text="" CommandName="Page" CommandArgument="Next" runat="server" CssClass="NewNext"
+                                                            <asp:Button Text="" CommandName="Page" CommandArgument="Next" CausesValidation="false" runat="server" CssClass="NewNext"
                                                                 EnableTheming="false" Width="22px" Height="18px" ID="btnNext" />
                                                         </td>
                                                         <td style="border-color: white">
-                                                            <asp:Button Text="" CommandName="Page" CommandArgument="Last" runat="server" CssClass="NewLast"
+                                                            <asp:Button Text="" CommandName="Page" CommandArgument="Last" CausesValidation="false" runat="server" CssClass="NewLast"
                                                                 EnableTheming="false" Width="22px" Height="18px" ID="btnLast" />
                                                         </td>
                                                     </tr>
