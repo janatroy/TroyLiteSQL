@@ -1041,7 +1041,7 @@
                 </td>
                 <td style="width: 15%">
                     <asp:Button ID="BlkAdd" runat="server" CausesValidation="false" OnClientClick="window.open('BulkAddition.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');"
-                        EnableTheming="false" Text="Import products from Excel file"></asp:Button>
+                        EnableTheming="false" CssClass="bulkaddition"></asp:Button>
                 </td>
                 <td style="width: 2%">
                     <asp:Button ID="BlkUpd" runat="server" OnClick="BlkUpd_Click" SkinID="skinButtonCol2" Width="80%" CausesValidation="false"
