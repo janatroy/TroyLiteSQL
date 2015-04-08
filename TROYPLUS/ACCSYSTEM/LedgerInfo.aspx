@@ -515,7 +515,7 @@
                                                                 <td class="ControlLabel" style="width: 15%">Ledger Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Ledger Name. It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" ."  TargetControlID="txtLdgrNameAdd" />
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .-/\"  TargetControlID="txtLdgrNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 20%">
                                                                     <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("LedgerName") %>'
@@ -919,7 +919,7 @@
                         </asp:ObjectDataSource>
                         <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetLedgerInfoForId"
                             TypeName="BusinessLogic" OnUpdating="frmSource_Updating" OnInserting="frmSource_Inserting"
-                            InsertMethod="InsertLedgerInfo" UpdateMethod="UpdateLedgerInfo">
+                            InsertMethod="InsertLedgerInfo" UpdateMethod="UpdateLedgerInfo1">
                             <UpdateParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="LedgerID" Type="Int32" />

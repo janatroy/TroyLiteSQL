@@ -55,21 +55,36 @@ public partial class CompanyInfo : System.Web.UI.Page
         DataSet ds = new DataSet();
         DataSet ds1 = new DataSet();
         BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataTable dt;
+        DataColumn dc;             
 
         ds = bl.ListBranchCodeConfigsales();
-        ds1 = bl.ListBranchCode();
+        ds1 = bl.ListBranchCode();       
 
-        if (ds.Tables[0].Rows.Count > 0)
+        if (ds != null)
         {
-            EditableGrid.DataSource = ds;          
-            EditableGrid.DataBind();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                EditableGrid.DataSource = ds;
+                EditableGrid.DataBind();
+            }
         }
 
-        if (ds1.Tables[0].Rows.Count > 0)
+        if (ds1 != null)
         {
-            ds.Merge(ds1);
-            EditableGrid.DataSource = ds;
-            EditableGrid.DataBind();
+            if (ds1.Tables[0].Rows.Count > 0)
+            {
+                if (ds != null)
+                {
+                    ds.Merge(ds1);
+                    EditableGrid.DataSource = ds;
+                }
+                else
+                {
+                    EditableGrid.DataSource = ds1;
+                }
+                EditableGrid.DataBind();
+            }
         }
     }
 
@@ -1415,7 +1430,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
                             if (txtNorSal.Text != "")
                             {
-                                bl.InsertSalesBillNo(Convert.ToInt32(txtNorSal.Text),Convert.ToInt32(txtManSal.Text),Convert.ToInt32(txtPurRtn.Text),Convert.ToInt32(txtIntTfn.Text),Convert.ToInt32(txtDlNte.Text),Convert.ToInt32(txtDlRtn.Text), branchcode);                               
+                                bl.InsertSalesBillNo(Convert.ToInt32(txtNorSal.Text), Convert.ToInt32(txtManSal.Text), Convert.ToInt32(txtPurRtn.Text), Convert.ToInt32(txtIntTfn.Text), Convert.ToInt32(txtDlNte.Text), Convert.ToInt32(txtDlRtn.Text), branchcode);
                             }
                         }
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Sales Bill No Information Successfully Stored. Please Logout and Login again to refelect the Changes. Thank You.');", true);

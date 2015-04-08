@@ -287,7 +287,7 @@ public partial class BulkAdditionBrand : System.Web.UI.Page
 
             String strConnection = "ConnectionString";
             string connectionString = "";
-            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
+            string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=" + "\"";
             char[] specialCharactersArray = specialCharacters.ToCharArray();
 
             if (FileUpload1.HasFile)

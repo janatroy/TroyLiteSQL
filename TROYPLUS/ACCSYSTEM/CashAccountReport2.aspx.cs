@@ -382,12 +382,15 @@ public partial class CashAccountReport2 : System.Web.UI.Page
 
     protected void CalculateDebitCredit()
     {
-
-
+        string LedgerID = string.Empty;
+        int iLedgerID = 1;
         ReportsBL.ReportClass rpt = new ReportsBL.ReportClass();
 
         if (Request.Cookies["Company"]  != null)
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
 
         double opCr = 0.0;
         double opDr = 0.0;
@@ -395,7 +398,7 @@ public partial class CashAccountReport2 : System.Web.UI.Page
         DateTime startDate, endDate;
         startDate = Convert.ToDateTime(txtStartDate.Text);
         endDate = Convert.ToDateTime(txtEndDate.Text);
-
+        DataSet ds = new DataSet();
 
 
         DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
@@ -417,15 +420,41 @@ public partial class CashAccountReport2 : System.Web.UI.Page
             Branch = Request.QueryString["Branch"].ToString();
         }
 
+        string connection = Request.Cookies["Company"].Value;
+
+        if (Branch == "0")
+        {
+            ds = bl.ListBranchInfo(connection, "", "");
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    iLedgerID = bl.getCashACLedgerId(connection, dr["Branchcode"].ToString());
+
+                    LedgerID = LedgerID + iLedgerID;
+                    LedgerID = LedgerID + ",";
+                }
+                LedgerID = LedgerID.TrimEnd(',');
+                //LedgerID = LedgerID.Replace(",", "");
+            }
+        }
+        else
+        {
+            iLedgerID = bl.getCashACLedgerId(connection, Branch);
+            LedgerID = iLedgerID.ToString();
+        }
+
+
         startDate = Convert.ToDateTime(stdt);
         endDate = Convert.ToDateTime(etdt);
 
-        BusinessLogic bl = new BusinessLogic(sDataSource);
+       // BusinessLogic bl = new BusinessLogic(sDataSource);
 
         //opCr = rpt.getLedgerOpeningBalance(1, "credit", sDataSource) + rpt.getOpeningBalance(1, "credit", Convert.ToDateTime(Session["startDate"]), sDataSource);
-        opCr = bl.getOpeningBalanceCash(0, 0, 1, "credit", startDate, sDataSource, Branch);
+        opCr = bl.getOpeningBalanceCash(0, 0,Convert.ToInt32(LedgerID), "credit", startDate, sDataSource, Branch);
         //opDr = rpt.getLedgerOpeningBalance(1, "debit", sDataSource) + rpt.getOpeningBalance(1, "debit", Convert.ToDateTime(Session["startDate"]), sDataSource);
-        opDr = bl.getOpeningBalanceCash(0, 0, 1, "debit", startDate, sDataSource, Branch);
+        opDr = bl.getOpeningBalanceCash(0, 0, Convert.ToInt32(LedgerID), "debit", startDate, sDataSource, Branch);
 
         if (opDr > opCr)
         {
