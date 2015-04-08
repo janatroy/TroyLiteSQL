@@ -57,6 +57,46 @@
                         <tr style="height:15px">
 
                         </tr>
+                         <tr>
+                            <td colspan="4">
+                                <table style="width:100%">
+                                    <tr>
+                                         <td style="width: 35%;" class="ControlLabelproject">
+                                             <%--   <asp:CompareValidator ID="CompareValidator5" ValidationGroup="salesval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
+                                                Select Branch  *
+                                                 <%-- <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
+                                                      Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
+                                                      Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
+                                            </td>
+                                            <td class="ControlDrpBorder" style="width: 24%">
+                                               <asp:DropDownList ID="drpBranch" TabIndex="4" EnableTheming="False" AppendDataBoundItems="True" CssClass="drpDownListMedium"
+                                                                                                runat="server" Width="100%" DataTextField="BranchName" BackColor="#E7E7E7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                DataValueField="Branchcode">
+                                                                                                <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
+                                                                                            </asp:DropDownList>
+                                            </td>
+                                        <td style="width:40%" align="center">
+                                            
+                                        </td>
+                                       
+                                    </tr>
+                                    <tr style="height:10px">
+
+                                    </tr>
+                                    <%--<tr>
+                                        <td style="width:30%">
+                                        
+                                        </td>
+                                        <td style="width:35%" align="center" >
+                                            <asp:Button ID="Button2" runat="server" SkinID="skinButtonCol2" Text="Excel Format" Height="21px"  Width="100px" onclick="btnFormat_Click"/>
+                                        </td>
+                                        <td style="width:35%">
+                                        
+                                        </td>
+                                    </tr>--%>
+                                </table>
+                            </td>
+                        </tr>
                         <tr>
                             <td  style="width:30%">
 
@@ -84,33 +124,20 @@
 
                             </td>
                         </tr>
-                        <tr style="height:6px">
-
-                        </tr>
-                        <tr>
+                             <tr>
                             <td colspan="4">
                                 <table style="width:100%">
                                     <tr>
-                                         <td style="width: 25%;" class="ControlLabelproject">
-                                             <%--   <asp:CompareValidator ID="CompareValidator5" ValidationGroup="salesval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
-                                                Select Branch  *
-                                                 <%-- <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
-                                                      Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
-                                                      Text="*" ValueToCompare="0"></asp:CompareValidator>--%>
+                                         <td style="width: 35%;" class="ControlLabelproject">
+                                             
                                             </td>
-                                            <td class="ControlDrpBorder" style="width: 24%">
-                                               <asp:DropDownList ID="drpBranch" TabIndex="4" EnableTheming="False" AppendDataBoundItems="True" CssClass="drpDownListMedium"
-                                                                                                runat="server" Width="100%" DataTextField="BranchName" BackColor="#E7E7E7" Style="border: 1px solid #e7e7e7" Height="26px"
-                                                                                                DataValueField="Branchcode">
-                                                                                                <asp:ListItem Text="All Branch" Value="All"></asp:ListItem>
-                                                                                            </asp:DropDownList>
+                                            <td  style="width: 24%">
+                                               <asp:Button ID="btnUpload" runat="server" Height="21px"  SkinID="skinButtonCol2" Text="Upload" Width="100px" onclick="btnUpload_Click"/>
                                             </td>
-                                        <td style="width:35%" align="center">
-                                            <asp:Button ID="btnUpload" runat="server" Height="21px"  SkinID="skinButtonCol2" Text="Upload" Width="100px" onclick="btnUpload_Click"/>
+                                        <td style="width:40%" align="center">
+                                            
                                         </td>
-                                        <td style="width:35%">
                                         
-                                        </td>
                                     </tr>
                                     <tr style="height:10px">
 
@@ -129,6 +156,10 @@
                                 </table>
                             </td>
                         </tr>
+                        <tr style="height:6px">
+
+                        </tr>
+                       
                     </table>
                 </td>
             </tr>

@@ -15,7 +15,8 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         {
             BindGridData();
             BindDropdowns();
-           
+
+            //GrdViewRequestes.PageSize = 2;
         }
     }
     private string GetConnectionString()
@@ -40,6 +41,34 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         {
             GrdViewRequestes.DataSource = dbData;
             GrdViewRequestes.DataBind();
+        }
+    }
+
+    protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            GrdViewRequestes.PageIndex = ((DropDownList)sender).SelectedIndex;
+
+           // ModalPopupExtender1.Show();
+            BindGridData();
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+    protected void GrdViewRequestes_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        try
+        {
+            GrdViewRequestes.PageIndex = e.NewPageIndex;
+
+            BindGridData();
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
         }
     }
 
@@ -94,78 +123,85 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         //{
         //    TroyLiteExceptionManager.HandleException(ex);
         //}
+
+
+
+        //frmViewAdd.Visible = true;
+        //frmViewAdd.ChangeMode(FormViewMode.Edit);
+        //GrdViewBranches.Columns[8].Visible = false;
+        //lnkBtnAdd.Visible = false;
+        modalPopupApproveReject.Show();
+
+        //GridViewRow row = (GridViewRow)((Control)e.CommandSource).NamingContainer;
+
+        GridViewRow row = GrdViewRequestes.SelectedRow;
+
+        int rowIndex = row.RowIndex;
+
+        hdRequestID.Value = GrdViewRequestes.DataKeys[rowIndex].Value.ToString();
+        //if (frmViewAdd.CurrentMode == FormViewMode.Edit)
+        //    Accordion1.SelectedIndex = 1;
     }
 
     protected void GrdViewRequestes_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnApprove")
-        {
-            //frmViewAdd.Visible = true;
-            //frmViewAdd.ChangeMode(FormViewMode.Edit);
-            //GrdViewBranches.Columns[8].Visible = false;
-            //lnkBtnAdd.Visible = false;
-            modalPopupApproveReject.Show();
+        //if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnApprove")
+        //{
+           
+        //}
+        //else if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnEdit")
+        //{
+        //    try
+        //    {
 
-            GridViewRow row = (GridViewRow)((Control)e.CommandSource).NamingContainer;
-            int rowIndex = row.RowIndex;
+        //        GridViewRow Row = GrdViewRequestes.SelectedRow;
+        //        string connection = Request.Cookies["Company"].Value;
+        //        IInternalTransferService bl = new BusinessLogic(connection);
 
-            hdRequestID.Value = GrdViewRequestes.DataKeys[rowIndex].Value.ToString();
-            //if (frmViewAdd.CurrentMode == FormViewMode.Edit)
-            //    Accordion1.SelectedIndex = 1;
-        }
-        else if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnEdit")
-        {
-            try
-            {
+        //        int ID = Convert.ToInt32(GrdViewRequestes.SelectedDataKey.Value);
+        //        UpdateButton.Visible = true;
+        //        InsertButton.Visible = false;
+        //        contentPopUp.Visible = true;
+        //        cmbStatus.Enabled = false;
+        //        txtCompletedDate.Enabled = false;
+        //        txtReason.Enabled = false;
 
-                GridViewRow Row = GrdViewRequestes.SelectedRow;
-                string connection = Request.Cookies["Company"].Value;
-                IInternalTransferService bl = new BusinessLogic(connection);
+        //        //GrdViewBranches.Visible = false;
 
-                int ID = Convert.ToInt32(GrdViewRequestes.SelectedDataKey.Value);
-                UpdateButton.Visible = true;
-                InsertButton.Visible = false;
-                contentPopUp.Visible = true;
-                cmbStatus.Enabled = false;
-                txtCompletedDate.Enabled = false;
-                txtReason.Enabled = false;
+        //        InternalTransferRequest requestDetail = bl.GetInternalTransferRequest(connection, ID);
 
-                //GrdViewBranches.Visible = false;
+        //        if (requestDetail != null)
+        //        {
+        //            hdRequestID.Value = ID.ToString();
 
-                InternalTransferRequest requestDetail = bl.GetInternalTransferRequest(connection, ID);
+        //            txtRequestedDate.Text = requestDetail.RequestedDate.ToShortDateString();
+        //            if (cmbProd.Items.FindByValue(requestDetail.ItemCode) != null)
+        //                cmbProd.SelectedValue = requestDetail.ItemCode;
 
-                if (requestDetail != null)
-                {
-                    hdRequestID.Value = ID.ToString();
+        //            if (cmbRequestedBranch.Items.FindByValue(requestDetail.RequestedBranch) != null)
+        //                cmbRequestedBranch.SelectedValue = requestDetail.RequestedBranch;
 
-                    txtRequestedDate.Text = requestDetail.RequestedDate.ToShortDateString();
-                    if (cmbProd.Items.FindByValue(requestDetail.ItemCode) != null)
-                        cmbProd.SelectedValue = requestDetail.ItemCode;
+        //            if (cmbBranchHasStock.Items.FindByValue(requestDetail.BranchHasStock) != null)
+        //                cmbBranchHasStock.SelectedValue = requestDetail.BranchHasStock;
 
-                    if (cmbRequestedBranch.Items.FindByValue(requestDetail.RequestedBranch) != null)
-                        cmbRequestedBranch.SelectedValue = requestDetail.RequestedBranch;
+        //            if (cmbStatus.Items.FindByValue(requestDetail.Status) != null)
+        //                cmbStatus.SelectedValue = requestDetail.Status;
 
-                    if (cmbBranchHasStock.Items.FindByValue(requestDetail.BranchHasStock) != null)
-                        cmbBranchHasStock.SelectedValue = requestDetail.BranchHasStock;
+        //            txtReason.Text = requestDetail.RejectedReason;
 
-                    if (cmbStatus.Items.FindByValue(requestDetail.Status) != null)
-                        cmbStatus.SelectedValue = requestDetail.Status;
+        //            txtQtyAdd.Text = requestDetail.Quantity.ToString();
 
-                    txtReason.Text = requestDetail.RejectedReason;
+        //            if (requestDetail.CompletedDate.HasValue)
+        //                txtCompletedDate.Text = requestDetail.CompletedDate.ToString();
 
-                    txtQtyAdd.Text = requestDetail.Quantity.ToString();
-
-                    if (requestDetail.CompletedDate.HasValue)
-                        txtCompletedDate.Text = requestDetail.CompletedDate.ToString();
-
-                    ModalPopupExtender1.Show();
-                }
-            }
-            catch (Exception ex)
-            {
-                TroyLiteExceptionManager.HandleException(ex);
-            }
-        }
+        //            ModalPopupExtender1.Show();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TroyLiteExceptionManager.HandleException(ex);
+        //    }
+        //}
     }
 
     protected void GrdViewRequestes_RowCreated(object sender, GridViewRowEventArgs e)
@@ -737,9 +773,9 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
                         "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
 
-                    iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.BranchHasStock);
+                    iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.RequestedBranch);
 
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iSupplier, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.BranchHasStock, connection, "NO", paymentdata);
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iSupplier, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata);
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;

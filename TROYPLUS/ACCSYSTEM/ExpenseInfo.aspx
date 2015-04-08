@@ -213,7 +213,7 @@
                                                                 <td class="ControlLabel" style="width: 40%">Expense Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Expense Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender123" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
+                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender123" ValidChars=" " runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
                                                                         TargetControlID="txtLdgrName" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
@@ -452,7 +452,7 @@
                                                                 <td class="ControlLabel" style="width: 40%">Expense Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Expense Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
+                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" ValidChars=" " FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
                                                                         TargetControlID="txtLdgrNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
@@ -688,9 +688,9 @@
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                             <Columns>
-                                                <asp:BoundField DataField="Expensehead" HeaderText="Expense Name" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="GroupName" HeaderText="Group Name" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Expensehead" HeaderText="Expense Name" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Left" />
+                                                <asp:BoundField DataField="AliasName" HeaderText="Alias Name" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Left" />
+                                                <asp:BoundField DataField="GroupName" HeaderText="Group Name" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Left" />
                                                 <%--<asp:BoundField DataField="IsActive" HeaderText="IsActive" HeaderStyle-BorderColor="Gray" />--%>
                                              <%--   <asp:TemplateField HeaderText="Opening Balance" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>

@@ -919,7 +919,7 @@
                         </asp:ObjectDataSource>
                         <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetLedgerInfoForId"
                             TypeName="BusinessLogic" OnUpdating="frmSource_Updating" OnInserting="frmSource_Inserting"
-                            InsertMethod="InsertLedgerInfo" UpdateMethod="UpdateLedgerInfo">
+                            InsertMethod="InsertLedgerInfo" UpdateMethod="UpdateLedgerInfo1">
                             <UpdateParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="LedgerID" Type="Int32" />

@@ -192,6 +192,8 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
 
             if (FileUpload1.HasFile)
             {
+
+
                 string datett = DateTime.Now.ToString();
                 string dtaa = Convert.ToDateTime(datett).ToString("dd-MM-yyyy-hh-mm-ss");
                 string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName) + dtaa;
@@ -240,6 +242,12 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Uploading Excel is Empty');", true);
                     return;
                 }
+                if (drpBranch.SelectedValue=="0")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select any one branch. It cannot be Left blank');", true);
+                    return;
+                }
+                             
 
 
 
@@ -311,75 +319,75 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                 }
 
                 //Check character validation:-
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["ItemCode"]) != null) || (Convert.ToString(dr["ItemCode"]) != ""))
-                    {
-                        int index = Convert.ToString(dr["ItemCode"]).IndexOfAny(specialCharactersArray);
-                        //index == -1 no special characters
-                        if (index != -1)
-                        {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Item code');", true);
-                            return;
-                        }
-                    }
-                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["ItemCode"]) != null) || (Convert.ToString(dr["ItemCode"]) != ""))
+                //    {
+                //        int index = Convert.ToString(dr["ItemCode"]).IndexOfAny(specialCharactersArray);
+                //        //index == -1 no special characters
+                //        if (index != -1)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Item code');", true);
+                //            return;
+                //        }
+                //    }
+                //}
 
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["PRODUCTNAME"]) != null) || (Convert.ToString(dr["PRODUCTNAME"]) != ""))
-                    {
-                        int index = Convert.ToString(dr["PRODUCTNAME"]).IndexOfAny(specialCharactersArray);
-                        //index == -1 no special characters
-                        if (index != -1)
-                        {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Product Name');", true);
-                            return;
-                        }
-                    }
-                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["PRODUCTNAME"]) != null) || (Convert.ToString(dr["PRODUCTNAME"]) != ""))
+                //    {
+                //        int index = Convert.ToString(dr["PRODUCTNAME"]).IndexOfAny(specialCharactersArray);
+                //        //index == -1 no special characters
+                //        if (index != -1)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Product Name');", true);
+                //            return;
+                //        }
+                //    }
+                //}
 
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["Model"]) != null) || (Convert.ToString(dr["Model"]) != ""))
-                    {
-                        int index = Convert.ToString(dr["Model"]).IndexOfAny(specialCharactersArray);
-                        //index == -1 no special characters
-                        if (index != -1)
-                        {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Model');", true);
-                            return;
-                        }
-                    }
-                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Model"]) != null) || (Convert.ToString(dr["Model"]) != ""))
+                //    {
+                //        int index = Convert.ToString(dr["Model"]).IndexOfAny(specialCharactersArray);
+                //        //index == -1 no special characters
+                //        if (index != -1)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Model');", true);
+                //            return;
+                //        }
+                //    }
+                //}
 
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["Brand"]) != null) || (Convert.ToString(dr["Brand"]) != ""))
-                    {
-                        int index = Convert.ToString(dr["Brand"]).IndexOfAny(specialCharactersArray);
-                        //index == -1 no special characters
-                        if (index != -1)
-                        {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Brand');", true);
-                            return;
-                        }
-                    }
-                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Brand"]) != null) || (Convert.ToString(dr["Brand"]) != ""))
+                //    {
+                //        int index = Convert.ToString(dr["Brand"]).IndexOfAny(specialCharactersArray);
+                //        //index == -1 no special characters
+                //        if (index != -1)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Brand');", true);
+                //            return;
+                //        }
+                //    }
+                //}
 
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["Category"]) != null) || (Convert.ToString(dr["Category"]) != ""))
-                    {
-                        int index = Convert.ToString(dr["Category"]).IndexOfAny(specialCharactersArray);
-                        //index == -1 no special characters
-                        if (index != -1)
-                        {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Category');", true);
-                            return;
-                        }
-                    }
-                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Category"]) != null) || (Convert.ToString(dr["Category"]) != ""))
+                //    {
+                //        int index = Convert.ToString(dr["Category"]).IndexOfAny(specialCharactersArray);
+                //        //index == -1 no special characters
+                //        if (index != -1)
+                //        {
+                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Special characters not allowed in Category');", true);
+                //            return;
+                //        }
+                //    }
+                //}
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
@@ -602,7 +610,7 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         drpBranch.Items.Clear();
-        drpBranch.Items.Add(new ListItem("All Branch", "All"));
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
         ds = bl.ListBranch();
         drpBranch.DataSource = ds;
         drpBranch.DataBind();

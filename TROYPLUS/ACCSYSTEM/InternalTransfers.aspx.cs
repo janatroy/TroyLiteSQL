@@ -98,78 +98,107 @@ public partial class InternalTransfers : System.Web.UI.Page
         //{
         //    TroyLiteExceptionManager.HandleException(ex);
         //}
+        try
+        {
+
+            GridViewRow Row = GrdViewRequestes.SelectedRow;
+            string connection = Request.Cookies["Company"].Value;
+            IInternalTransferService bl = new BusinessLogic(connection);
+
+            int ID = Convert.ToInt32(GrdViewRequestes.SelectedDataKey.Value);
+            UpdateButton.Visible = true;
+            InsertButton.Visible = false;
+            contentPopUp.Visible = true;
+            cmbStatus.Enabled = false;
+            txtCompletedDate.Enabled = false;
+            txtReason.Enabled = false;
+
+            //GrdViewBranches.Visible = false;
+
+            InternalTransferRequest requestDetail = bl.GetInternalTransferRequest(connection, ID);
+
+            if (requestDetail != null)
+            {
+                hdRequestID.Value = ID.ToString();
+
+                txtRequestedDate.Text = requestDetail.RequestedDate.ToShortDateString();
+                if (cmbProd.Items.FindByValue(requestDetail.ItemCode) != null)
+                    cmbProd.SelectedValue = requestDetail.ItemCode;
+
+                if (cmbRequestedBranch.Items.FindByValue(requestDetail.RequestedBranch) != null)
+                    cmbRequestedBranch.SelectedValue = requestDetail.RequestedBranch;
+
+                if (cmbBranchHasStock.Items.FindByValue(requestDetail.BranchHasStock) != null)
+                    cmbBranchHasStock.SelectedValue = requestDetail.BranchHasStock;
+
+                if (cmbStatus.Items.FindByValue(requestDetail.Status) != null)
+                    cmbStatus.SelectedValue = requestDetail.Status;
+
+                txtReason.Text = requestDetail.RejectedReason;
+
+                txtQtyAdd.Text = requestDetail.Quantity.ToString();
+
+                if (requestDetail.CompletedDate.HasValue)
+                    txtCompletedDate.Text = requestDetail.CompletedDate.ToString();
+
+                ModalPopupExtender1.Show();
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            GrdViewRequestes.PageIndex = ((DropDownList)sender).SelectedIndex;
+
+            // ModalPopupExtender1.Show();
+            BindGridData();
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+    protected void GrdViewRequestes_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        try
+        {
+            GrdViewRequestes.PageIndex = e.NewPageIndex;
+
+            BindGridData();
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
     }
 
     protected void GrdViewRequestes_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnApprove")
-        {
-            //frmViewAdd.Visible = true;
-            //frmViewAdd.ChangeMode(FormViewMode.Edit);
-            //GrdViewBranches.Columns[8].Visible = false;
-            //lnkBtnAdd.Visible = false;
-            modalPopupApproveReject.Show();
+        //if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnApprove")
+        //{
+        //    //frmViewAdd.Visible = true;
+        //    //frmViewAdd.ChangeMode(FormViewMode.Edit);
+        //    //GrdViewBranches.Columns[8].Visible = false;
+        //    //lnkBtnAdd.Visible = false;
+        //    modalPopupApproveReject.Show();
             
-            GridViewRow row = (GridViewRow)((Control)e.CommandSource).NamingContainer;
-            int rowIndex = row.RowIndex;
+        //    GridViewRow row = (GridViewRow)((Control)e.CommandSource).NamingContainer;
+        //    int rowIndex = row.RowIndex;
 
-            hdRequestID.Value = GrdViewRequestes.DataKeys[rowIndex].Value.ToString();
-            //if (frmViewAdd.CurrentMode == FormViewMode.Edit)
-            //    Accordion1.SelectedIndex = 1;
-        }
-        else if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnEdit")
-        {
-            try
-            {
-
-                GridViewRow Row = GrdViewRequestes.SelectedRow;
-                string connection = Request.Cookies["Company"].Value;
-                IInternalTransferService bl = new BusinessLogic(connection);
-
-                int ID = Convert.ToInt32(GrdViewRequestes.SelectedDataKey.Value);
-                UpdateButton.Visible = true;
-                InsertButton.Visible = false;
-                contentPopUp.Visible = true;
-                cmbStatus.Enabled = false;
-                txtCompletedDate.Enabled = false;
-                txtReason.Enabled = false;
-
-                //GrdViewBranches.Visible = false;
-
-                InternalTransferRequest requestDetail = bl.GetInternalTransferRequest(connection, ID);
-
-                if (requestDetail != null)
-                {
-                    hdRequestID.Value = ID.ToString();
-
-                    txtRequestedDate.Text = requestDetail.RequestedDate.ToShortDateString();
-                    if (cmbProd.Items.FindByValue(requestDetail.ItemCode) != null)
-                        cmbProd.SelectedValue = requestDetail.ItemCode;
-
-                    if (cmbRequestedBranch.Items.FindByValue(requestDetail.RequestedBranch) != null)
-                        cmbRequestedBranch.SelectedValue = requestDetail.RequestedBranch;
-
-                    if (cmbBranchHasStock.Items.FindByValue(requestDetail.BranchHasStock) != null)
-                        cmbBranchHasStock.SelectedValue = requestDetail.BranchHasStock;
-
-                    if (cmbStatus.Items.FindByValue(requestDetail.Status) != null)
-                        cmbStatus.SelectedValue = requestDetail.Status;
-
-                    txtReason.Text = requestDetail.RejectedReason;
-
-                    txtQtyAdd.Text = requestDetail.Quantity.ToString();
-
-                    if (requestDetail.CompletedDate.HasValue)
-                        txtCompletedDate.Text = requestDetail.CompletedDate.ToString();
-
-                    ModalPopupExtender1.Show();
-                }
-            }
-            catch (Exception ex)
-            {
-                TroyLiteExceptionManager.HandleException(ex);
-            }
-        }
+        //    hdRequestID.Value = GrdViewRequestes.DataKeys[rowIndex].Value.ToString();
+        //    //if (frmViewAdd.CurrentMode == FormViewMode.Edit)
+        //    //    Accordion1.SelectedIndex = 1;
+        //}
+        //else if (((System.Web.UI.WebControls.Image)(e.CommandSource as ImageButton)).ID == "btnEdit")
+        //{
+           
+        //}
     }
 
     protected void GrdViewRequestes_RowCreated(object sender, GridViewRowEventArgs e)
@@ -349,6 +378,13 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                 request.RequestID = int.Parse(hdRequestID.Value);
                 request.UserID = UserID;
+
+                if (cmbRequestedBranch.SelectedValue == cmbBranchHasStock.SelectedValue)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Request branch and Branch has stock cannot be same.');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
 
                 if (cmbProd.SelectedValue != "0")
                     request.ItemCode = cmbProd.SelectedValue;
@@ -790,7 +826,14 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                 InternalTransferRequest request = new InternalTransferRequest();
                 IInternalTransferService bl = new BusinessLogic(connection);
-                
+
+                if (cmbRequestedBranch.SelectedValue == cmbBranchHasStock.SelectedValue)
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Request branch and Branch has stock cannot be same.');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+                }
+
                 if (cmbProd.SelectedValue != "0")
                     request.ItemCode = cmbProd.SelectedValue;
                 if (cmbRequestedBranch.SelectedValue != "0")

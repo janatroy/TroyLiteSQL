@@ -36,6 +36,10 @@ public partial class ProductSalesBill : System.Web.UI.Page
     private string currencyType = string.Empty;
     string BillingMethod = string.Empty;
 
+    private bool isvalid = false;
+
+
+
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -68,9 +72,9 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 }
                 else
                 {
-                    lblDivisions.Visible = true;
+                    lblDivisions.Visible = false;
                     ddDivsions.Visible = true;
-                    divDiv.Visible = true;
+                    divDiv.Visible = false;
                 }
             }
 
@@ -79,10 +83,10 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 iBillno = Convert.ToInt32(Request.QueryString["SID"].ToString());
                 string branchCode = Request.QueryString["BID"].ToString();
 
-                if (ddDivsions.SelectedIndex != 0)
-                {
-                    FillDivision();
-                }
+                //if (ddDivsions.SelectedIndex != 0)
+                //{
+                FillDivision();
+                //}
 
                 GetHeaderInfo();
                 GetSalesDetailsA4Format(iBillno, branchCode);
@@ -187,8 +191,8 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 lblBillDate.Text = Convert.ToString(dr["BillDate"]);
                 lblBillDateEx.Text = Convert.ToString(dr["BillDate"]);
 
-                lblInvoice.Text = Convert.ToString(dr["BillNo"]);
-                lblInvoiceEx.Text = Convert.ToString(dr["BillNo"]);
+                lblInvoice.Text = branchCode + "-" + Convert.ToString(dr["BillNo"]);
+                lblInvoiceEx.Text = branchCode + "-" + Convert.ToString(dr["BillNo"]);
 
                 lblCustomerID.Text = Convert.ToString(dr["CustomerID"]);
                 lblCustomerIDEx.Text = Convert.ToString(dr["CustomerID"]);
@@ -305,11 +309,11 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 billSales.Tables[0].Rows.Add(drNew);
             }
 
-            gvGeneral.Visible = true;
+            gvGeneral.Visible = false;
             gvGeneral.DataSource = billSales;
             gvGeneral.DataBind();
 
-            gvGeneralEx.Visible = true;
+            gvGeneralEx.Visible = false;
             gvGeneralEx.DataSource = billSales;
             gvGeneralEx.DataBind();
         }
@@ -344,7 +348,13 @@ public partial class ProductSalesBill : System.Web.UI.Page
             dc = new DataColumn("Particulars");
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("SalesPerson");
+            dt.Columns.Add(dc);
+
             dc = new DataColumn("Qty");
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("TotalPrice");
             dt.Columns.Add(dc);
 
             dc = new DataColumn("Unit");
@@ -382,7 +392,11 @@ public partial class ProductSalesBill : System.Web.UI.Page
             string itemCode = string.Empty;
             string sParticulars = string.Empty;
             double dRate = 0;
+            double dVAT = 0;
+            double dVATAmt = 0;
+            double dDisc = 0;
             double dNetRate = 0;
+            double dTotprice = 0;
             int iBundles = 0;
             int iRods = 0;
             double qty = 0;
@@ -395,18 +409,18 @@ public partial class ProductSalesBill : System.Web.UI.Page
 
             if (ds.Tables[0].Rows.Count > 0)
             {
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     drNew = dt.NewRow();
-                    if (dr["itemCode"] != null)
+                    if (ds.Tables[0].Rows[i]["itemCode"] != null)
                     {
-                        itemCode = Convert.ToString(dr["ItemCode"]);
+                        itemCode = Convert.ToString(ds.Tables[0].Rows[i]["itemCode"]);
                         sParticulars = bl.getBillProductName(itemCode);
                         measureUnit = bl.getBillProductUnit(itemCode);
                     }
                     salesDs = bl.GetProductSalesBill(salesID, itemCode);
                     qty = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Quantity"]);
-                    if (dr["Rate"] != null)
+                    if (salesDs.Tables[0].Rows[0]["Rate"] != null)
                     {
                         dRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Rate"]);
                     }
@@ -415,29 +429,131 @@ public partial class ProductSalesBill : System.Web.UI.Page
                         dNetRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["SumVat"]) / qty;
                     }
 
+                    if (ds.Tables[0].Rows[i]["VAT"] != null)
+                    {
+                        dVAT = Convert.ToDouble(ds.Tables[0].Rows[i]["VAT"]);
+                    }
+
+                    if (ds.Tables[0].Rows[i]["VATAmount"] != null)
+                    {
+                        dVATAmt = Convert.ToDouble(ds.Tables[0].Rows[i]["VATAmount"]);
+                    }
+
+                    if (ds.Tables[0].Rows[i]["Discount"] != null)
+                    {
+                        dDisc = Convert.ToDouble(ds.Tables[0].Rows[i]["Discount"]);
+                    }
+
+                    if (ds.Tables[0].Rows[i]["TotalPrice"] != null)
+                    {
+                        dTotprice = Convert.ToDouble(ds.Tables[0].Rows[i]["TotalPrice"]);
+                    }
+
+                    if (ds.Tables[0].Rows[i]["Totalmrp"] != null)
+                    {
+                        dAmout = Convert.ToDouble(ds.Tables[0].Rows[i]["Totalmrp"]);
+                    }
+
+
                     dTotal = dRate * qty;
 
                     drNew["Particulars"] = sParticulars;
-                    drNew["ProductName"] = Convert.ToString(dr["ProductName"]);
-                    drNew["ProductDesc"] = Convert.ToString(dr["ProductDesc"]);
+                    drNew["ProductName"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]);
+                    drNew["ProductDesc"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
 
-                    drNew["ProductItem"] = Convert.ToString(dr["ProductName"]) + " - " + Convert.ToString(dr["ProductDesc"]);
+                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
+
+                    drNew["SalesPerson"] = GetEmployeeName(Convert.ToInt32(ds.Tables[0].Rows[i]["executivename"]));
 
                     drNew["Rate"] = dRate.ToString("f2");
                     drNew["NetRate"] = dNetRate.ToString("f2");
-                    drNew["Bundles"] = Convert.ToString(dr["Bundles"]);
-                    drNew["Rods"] = Convert.ToString(dr["Rods"]);
+                    drNew["Bundles"] = Convert.ToString(ds.Tables[0].Rows[i]["Bundles"]);
+                    drNew["Rods"] = Convert.ToString(ds.Tables[0].Rows[i]["Rods"]);
                     drNew["Qty"] = Convert.ToString(qty);
                     drNew["Unit"] = measureUnit;
-                    drNew["Amount"] = dTotal;
-                    drNew["CST"] = Convert.ToString(dr["CST"]);
-                    drNew["VAT"] = Convert.ToString(dr["VAT"]);
-                    drNew["VATAmount"] = Convert.ToString(dr["Vatamount"]);
+                    drNew["TotalPrice"] = dTotal.ToString("f2");
+                    drNew["Amount"] = dAmout.ToString("f2");  //dTotal;
+                    drNew["CST"] = Convert.ToString(ds.Tables[0].Rows[i]["CST"]);
+                    drNew["VAT"] = dVAT.ToString("#0.00");  //Convert.ToString(dr["VAT"]);;
+                    drNew["VATAmount"] = dVATAmt.ToString("f2");
 
-                    drNew["Discount"] = Convert.ToString(dr["Discount"]);
+                    drNew["Discount"] = Convert.ToString(ds.Tables[0].Rows[i]["Discount"]);// dDisc.ToString("f2");
 
                     billDs.Tables[0].Rows.Add(drNew);
                 }
+
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    drNew = dt.NewRow();
+                //    if (dr["itemCode"] != null)
+                //    {
+                //        itemCode = Convert.ToString(dr["ItemCode"]);
+                //        sParticulars = bl.getBillProductName(itemCode);
+                //        measureUnit = bl.getBillProductUnit(itemCode);
+                //    }
+                //    salesDs = bl.GetProductSalesBill(salesID, itemCode);
+                //    qty = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Quantity"]);
+                //    if (dr["Rate"] != null)
+                //    {
+                //        dRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Rate"]);
+                //    }
+                //    if (salesDs.Tables[0].Rows[0]["SumVat"] != null)
+                //    {
+                //        dNetRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["SumVat"]) / qty;
+                //    }
+
+                //    if (dr["VAT"] != null)
+                //    {
+                //        dVAT = Convert.ToDouble(ds.Tables[0].Rows[0]["VAT"]);
+                //    }
+
+                //    if (dr["VATAmount"] != null)
+                //    {
+                //        dVATAmt = Convert.ToDouble(ds.Tables[0].Rows[0]["VATAmount"]);
+                //    }
+
+                //    if (dr["Discount"] != null)
+                //    {
+                //        dDisc = Convert.ToDouble(ds.Tables[0].Rows[0]["Discount"]);
+                //    }
+
+                //    if (dr["TotalPrice"] != null)
+                //    {
+                //        dTotprice = Convert.ToDouble(ds.Tables[0].Rows[0]["TotalPrice"]);
+                //    }
+
+                //    if (dr["Totalmrp"] != null)
+                //    {
+                //        dAmout = Convert.ToDouble(ds.Tables[0].Rows[0]["Totalmrp"]);
+                //    }
+
+
+                //    dTotal = dRate * qty;
+
+                //    drNew["Particulars"] = sParticulars;
+                //    drNew["ProductName"] = Convert.ToString(dr["ProductName"]);
+                //    drNew["ProductDesc"] = Convert.ToString(dr["ProductDesc"]);
+
+                //    drNew["ProductItem"] = Convert.ToString(dr["ProductName"]) + " - " + Convert.ToString(dr["ProductDesc"]);
+
+                //    drNew["SalesPerson"] = GetEmployeeName(Convert.ToInt32(dr["executivename"]));
+
+                //    drNew["Rate"] = dRate.ToString("f2");
+                //    drNew["NetRate"] = dNetRate.ToString("f2");
+                //    drNew["Bundles"] = Convert.ToString(dr["Bundles"]);
+                //    drNew["Rods"] = Convert.ToString(dr["Rods"]);
+                //    drNew["Qty"] = Convert.ToString(qty);
+                //    drNew["Unit"] = measureUnit;
+                //    drNew["TotalPrice"] = dTotprice.ToString("f2");
+                //    drNew["Amount"] = dTotal.ToString("f2");  //dTotal;
+                //    drNew["CST"] = Convert.ToString(dr["CST"]);
+                //    drNew["VAT"] = dVAT.ToString("#0.00");  //Convert.ToString(dr["VAT"]);;
+                //    drNew["VATAmount"] = dVATAmt.ToString("f2");
+
+                //    drNew["Discount"] = Convert.ToString(dr["Discount"]);// dDisc.ToString("f2");
+
+                //    billDs.Tables[0].Rows.Add(drNew);
+                //}
 
                 if (billDs.Tables[0].Rows.Count < 10)
                 {
@@ -450,11 +566,13 @@ public partial class ProductSalesBill : System.Web.UI.Page
                         drNew["Particulars"] = string.Empty;
                         drNew["ProductName"] = string.Empty;
                         drNew["ProductDesc"] = string.Empty;
+                        drNew["SalesPerson"] = string.Empty;
                         drNew["Rate"] = string.Empty;
                         drNew["NetRate"] = string.Empty;
                         drNew["Bundles"] = string.Empty;
                         drNew["Rods"] = string.Empty;
                         drNew["Qty"] = string.Empty;
+                        drNew["TotalPrice"] = string.Empty;
                         drNew["Unit"] = string.Empty;
                         drNew["Amount"] = string.Empty;
                         drNew["CST"] = string.Empty;
@@ -490,32 +608,33 @@ public partial class ProductSalesBill : System.Web.UI.Page
 
 
         int payMode;
-
+        double tot;
         if ((ds != null) && (ds.Tables[0].Rows.Count > 0))
         {
             foreach (DataRow dr in ds.Tables[0].Rows)
-            {                
-                lblTotal.Text = Convert.ToString(dr["Total"]);
+            {
+                tot = Convert.ToDouble(dr["Total"]);
+                lblTotal.Text = tot.ToString("#0.00");// Convert.ToString(dr["Total"]);
 
-                payMode = Convert.ToInt32(dr["PayMode"]);                
+                payMode = Convert.ToInt32(dr["PayMode"]);
             }
         }
 
         ds1 = bl.GetSalesItemsForIdRet(BillNo, BranchCode);
 
-       // GetSalesItemsForIdRet - dicount , vatTotal, lblSubTotal(mrp) 
+        // GetSalesItemsForIdRet - dicount , vatTotal, lblSubTotal(mrp) 
 
         if ((ds1 != null) && (ds1.Tables[0].Rows.Count > 0))
         {
             foreach (DataRow dr in ds1.Tables[0].Rows)
             {
-                lblSubTotal.Text = Convert.ToString(dr["TotalMrp"]);
-              //lblSalesTax.Text = Convert.ToString(dr["Tax"]);
+                //lblSubTotal.Text = Convert.ToString(dr["TotalMrp"]);
+                //lblSalesTax.Text = Convert.ToString(dr["Tax"]);
 
-                lblDiscount.Text = Convert.ToString(dr["Discount"]);                
+                //lblDiscount.Text = Convert.ToString(dr["Discount"]);
             }
         }
-        
+
 
     }
 
@@ -618,12 +737,12 @@ public partial class ProductSalesBill : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
 
-        ds = bl.ListDivisions();
+        //ds = bl.GetBranchDivisions();
         //ds.Tables[0].Rows[0].Delete();
         ddDivsions.DataSource = ds;
         ddDivsions.DataBind();
-        ddDivsions.DataTextField = "DivisionName";
-        ddDivsions.DataValueField = "DivisionID";
+        ddDivsions.DataTextField = "BranchName";
+        ddDivsions.DataValueField = "BranchID";
         ddDivsions.SelectedIndex = 1;
     }
 
@@ -668,32 +787,59 @@ public partial class ProductSalesBill : System.Web.UI.Page
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 if (DataBinder.Eval(e.Row.DataItem, "VAT") != DBNull.Value && DataBinder.Eval(e.Row.DataItem, "VAT") != "")
+                {
                     vat = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "VAT"));
+                }
+                else
+                {
+                    vat = 0;
+                }
                 //if (DataBinder.Eval(e.Row.DataItem, "CST") != DBNull.Value)
                 //    cst = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CST"));
-                if (DataBinder.Eval(e.Row.DataItem, "Discount") != DBNull.Value && DataBinder.Eval(e.Row.DataItem, "Discount") != "")
-                    discount = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Discount"));
+
+
+                if (DataBinder.Eval(e.Row.DataItem, "Discount") == "" || Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Discount")) == 0)
+                {
+                    //discount = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Discount"));
+                    if (isvalid != true)
+                    {
+                        gvItem.Columns[7].Visible = false;
+                    }
+                    //discountLbl.Visible = false;
+                }
+                else
+                {
+                    gvItem.Columns[7].Visible = true;
+                    isvalid = true;
+                }
+
                 if (DataBinder.Eval(e.Row.DataItem, "Rate") != DBNull.Value && DataBinder.Eval(e.Row.DataItem, "Rate") != "")
                     purchaseRate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Rate"));
                 //if (vat > 0)
-                   // lblSalesTaxRate.Text = vat + " % ";
+                // lblSalesTaxRate.Text = vat + " % ";
                 //if (cst > 0)
                 //    lblSalesTaxRate.Text = cst + " % ";
 
-                vat += vat;
-               
+                dVat = dVat + vat;
+
             }
             else if (e.Row.RowType == DataControlRowType.Footer)
             {
                 //dFr = Convert.ToDouble(lblFg.Text);
+
+                if (isvalid == false)
+                {
+                    gvItem.Columns[7].Visible = false;
+                    //  discountLbl.Visible = false;
+                }
 
                 sumNet = dDis + vatTotal + dFr + dCST;
 
                 e.Row.Cells[5].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[5].Text = dTot.ToString("f2");
 
-                lblSalesTax.Text = vat.ToString();              
-
+                //lblSalesTax.Text = dVat.ToString();
+                dVat = 0;
             }
         }
         catch (Exception ex)
@@ -734,13 +880,26 @@ public partial class ProductSalesBill : System.Web.UI.Page
         return empName;
     }
 
+    private string GetEmployeeName(int empNo)
+    {
+        string empName = string.Empty;
+
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        var empDetails = bl.GetEmployeeDetails(empNo);
+
+        empName = Convert.ToString(empDetails.Tables[0].Rows[0]["empFirstName"]);
+
+        return empName;
+    }
+
     private void FillDivision()
     {
 
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet companyInfo = new DataSet();
-
-        companyInfo = bl.GetDivisionForId(sDataSource, int.Parse(ddDivsions.SelectedValue));
+        string branchCode = Request.QueryString["BID"].ToString();
+        //companyInfo = bl.GetBranchDetailsForId(sDataSource, branchCode);
 
         if (companyInfo != null)
         {
@@ -748,23 +907,28 @@ public partial class ProductSalesBill : System.Web.UI.Page
             {
                 foreach (DataRow dr in companyInfo.Tables[0].Rows)
                 {
-                    lblCompany.Text = Convert.ToString(dr["DivisionName"]);
-                    lblCompanyEx.Text = Convert.ToString(dr["DivisionName"]);
+                    lblCompany.Text = Convert.ToString(dr["BranchName"]);
+                    lblCompanyEx.Text = Convert.ToString(dr["BranchName"]);
 
-                    lblPhn.Text = Convert.ToString(dr["Phone"]);
-                    lblPhnEx.Text = Convert.ToString(dr["Phone"]);
+                    lblAddress1.Text = Convert.ToString(dr["BranchAddress1"]);
+                    lblPhnEx.Text = Convert.ToString(dr["BranchAddress1"]);
 
-                    lblAddress.Text = Convert.ToString(dr["Address"]);
-                    lblAddressEx.Text = Convert.ToString(dr["Address"]);
+                    lblAddress2.Text = Convert.ToString(dr["BranchAddress2"]);
+                    lblAddressEx.Text = Convert.ToString(dr["BranchAddress2"]);
 
-                    lblCity.Text = Convert.ToString(dr["city"]);
-                    lblCityEx.Text = Convert.ToString(dr["city"]);
+                    if (dr["BranchAddress3"].ToString() == "")
+                    {
+                        address3.Visible = false;
+                    }
+                    else
+                    {
+                        lblAddress3.Text = Convert.ToString(dr["BranchAddress3"]);
+                        lblCityEx.Text = Convert.ToString(dr["BranchAddress3"]);
+                    }
 
-                    lblPincode.Text = Convert.ToString(dr["Pincode"]);
-                    lblPincodeEx.Text = Convert.ToString(dr["Pincode"]);
+                    lblLocation.Text = Convert.ToString(dr["BranchLocation"]);
+                    lblPincodeEx.Text = Convert.ToString(dr["BranchLocation"]);
 
-                    lblState.Text = Convert.ToString(dr["state"]);
-                    lblStateEx.Text = Convert.ToString(dr["state"]);
                 }
             }
         }
@@ -834,7 +998,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 lblTotalEx.Text = String.Format("{0:0,0}", sumNet);
                 //lblCurrRs.Text = currencyType + " " + String.Format("{0:0,0}", sumNet);
 
-               // lblSubTotalEx.Text = dTot.ToString("f2");
+                // lblSubTotalEx.Text = dTot.ToString("f2");
 
                 if (dDis > 0)
                     lblDiscountEx.Visible = true;
@@ -861,4 +1025,5 @@ public partial class ProductSalesBill : System.Web.UI.Page
             divPrintEx.Visible = false;
         }
     }
+
 }

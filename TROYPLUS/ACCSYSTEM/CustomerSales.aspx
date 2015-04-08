@@ -300,7 +300,9 @@
                                                                                                     </table>
                                                                                                 </td>
                                                                                             </tr>
-                                                                                            <tr style="height: 6px"></tr>
+                                                                                            <tr style="height:12px;">
+                                                                                                <div id="divspace" style="background-color:#BDBDBD;" runat="server"/>
+                                                                                            </tr>
                                                                                             <tr>
                                                                                                 <td>
                                                                                                     <cc1:TabContainer ID="tabs2" runat="server" ActiveTabIndex="0" CssClass="fancy fancy-green" Width="1280px">
@@ -389,9 +391,10 @@
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
                                                                                                                                 <tr>
-                                                                                                                                    <td class="ControlLabelproject" style="width: 15%;"><%--Mobile No(Without International Code)--%>
+                                                                                                                                    <td class="ControlLabelproject" style="width: 15%;">Customer ID
                                                                                                                                     </td>
-                                                                                                                                    <td class="ControlDrpBorder" style="width: 24%">
+                                                                                                                                    <td class="ControlTextBox3" style="width: 24%">
+                                                                                                                                         <asp:TextBox ID="txtCusID" Enabled="false" runat="server" AutoPostBack="True" BackColor="#e7e7e7" CssClass="cssTextBox" Height="23px" MaxLength="10" TabIndex="1"></asp:TextBox>
                                                                                                                                         <%--  <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
                                                                                                                                                 <asp:DropDownList ID="drpMobile" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="Mobile" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="drpMobile_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="100%">
@@ -1126,13 +1129,13 @@
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Disc(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <cc1:FilteredTextBoxExtender ID="Disc" runat="server" FilterType="Numbers" TargetControlID="txtDisPre" />
+                                                                                                                                                                            <cc1:FilteredTextBoxExtender ID="Disc" runat="server" FilterType="Numbers,Custom" ValidChars="." TargetControlID="txtDisPre" />
                                                                                                                                                                             <asp:TextBox ID="txtDisPre" Style="text-align: right" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" ReadOnly="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="VAT(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <cc1:FilteredTextBoxExtender ID="VAT" runat="server" FilterType="Numbers" TargetControlID="txtVATPre" />
+                                                                                                                                                                            <cc1:FilteredTextBoxExtender ID="VAT" runat="server" FilterType="Numbers,Custom" ValidChars="." TargetControlID="txtVATPre" />
                                                                                                                                                                             <asp:TextBox ID="txtVATPre" Style="text-align: right" ReadOnly="false" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>

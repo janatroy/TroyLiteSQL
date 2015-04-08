@@ -146,7 +146,7 @@
                                                                     Branch Code *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtBranchcode"
                                                                         Display="Dynamic" ErrorMessage="Branch code is mandatory">*</asp:RequiredFieldValidator>
-                                                                     <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender123" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
+                                                                     <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender123" ValidChars=" " runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
                                                                         TargetControlID="txtBranchcode" />
                                                                 </td>
                                                                 <td style="width: 30%;" class="ControlDrpBorder">
@@ -167,7 +167,7 @@
                                                                     Branch Name *
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtBranchName"
                                                                         Display="Dynamic" ErrorMessage="Branch Name is mandatory">*</asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers"
+                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" ValidChars=" " runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
                                                                         TargetControlID="txtBranchName" />
                                                                 </td>
                                                                 <td style="width: 25%;" class="ControlDrpBorder">

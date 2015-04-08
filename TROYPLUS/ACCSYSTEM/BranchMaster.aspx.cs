@@ -852,20 +852,23 @@ public partial class BranchMaster : System.Web.UI.Page
 
                     if (dste != null)
                     {
-                        foreach (DataRow dr in dste.Tables[0].Rows)
+                        if (dste.Tables[0].Rows.Count > 0)
                         {
-                            drNewttt = dtttt.NewRow();
-                            drNewttt["GroupID"] = 8;
-                            drNewttt["LedgerName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
-                            drNewttt["AliasName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
-                            drNewttt["ContactName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
-                            drNewttt["Inttrans"] = "NO";
-                            drNewttt["Branchcode"] = Branchcode;
-                            drNewttt["Add1"] = "";
-                            drNewttt["Add2"] = "";
-                            drNewttt["Add3"] = "";
+                            foreach (DataRow dr in dste.Tables[0].Rows)
+                            {
+                                drNewttt = dtttt.NewRow();
+                                drNewttt["GroupID"] = 8;
+                                drNewttt["LedgerName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
+                                drNewttt["AliasName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
+                                drNewttt["ContactName"] = dr["Expensehead"].ToString() + " - " + Branchcode;
+                                drNewttt["Inttrans"] = "NO";
+                                drNewttt["Branchcode"] = Branchcode;
+                                drNewttt["Add1"] = "";
+                                drNewttt["Add2"] = "";
+                                drNewttt["Add3"] = "";
 
-                            dstesttt.Tables[0].Rows.Add(drNewttt);
+                                dstesttt.Tables[0].Rows.Add(drNewttt);
+                            }
                         }
                     }
 
