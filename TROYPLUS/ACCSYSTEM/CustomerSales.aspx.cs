@@ -6209,7 +6209,8 @@ public partial class CustomerSales : System.Web.UI.Page
                                 Session["productDs"] = null;
                                 //MyAccordion.Visible = true;
                                 //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Sales Details Saved Successfully. Your Bill No. is " + billNo.ToString() + "')", true);
-                                Response.Redirect("ProductSalesBill.aspx?SID=" + billNo.ToString() + "&RT=" + purchaseReturn);
+                                //Response.Redirect("ProductSalesBill.aspx?SID=" + billNo.ToString() + "&RT=" + purchaseReturn);
+                                Response.Redirect("ProductSalesBill.aspx?SID=" + billNo.ToString() + "&BID=" + branchcode);
                             }
                         }
                         else

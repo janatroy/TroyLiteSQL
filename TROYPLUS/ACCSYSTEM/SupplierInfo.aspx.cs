@@ -71,7 +71,7 @@ public partial class SupplierInfo : System.Web.UI.Page
                 }
 
 
-                GrdViewLedger.PageSize = 8;
+                GrdViewLedger.PageSize = 11;
 
 
                 string connection = Request.Cookies["Company"].Value;

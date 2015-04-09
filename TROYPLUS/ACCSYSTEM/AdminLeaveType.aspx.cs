@@ -64,16 +64,16 @@ public partial class Leave_AdminLeaveType : System.Web.UI.Page
             string usernam = Request.Cookies["LoggedUserName"].Value;
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
-            //if (bl.CheckUserHaveAdd(usernam, "SUPPINFO"))
-            //{
-            //    lnkBtnAddAttendance.Enabled = false;
-            //    lnkBtnAddAttendance.ToolTip = "You are not allowed to make Add New ";
-            //}
-            //else
-            //{
-            //    lnkBtnAddAttendance.Enabled = true;
-            //    lnkBtnAddAttendance.ToolTip = "Click to Add New ";
-            //}
+            if (bl.CheckUserHaveAdd(usernam, "LVTP"))
+            {
+                lnkBtnAddLeave.Enabled = false;
+                lnkBtnAddLeave.ToolTip = "You are not allowed to make Add New ";
+            }
+            else
+            {
+                lnkBtnAddLeave.Enabled = true;
+                lnkBtnAddLeave.ToolTip = "Click to Add New ";
+            }
 
 
 
@@ -417,7 +417,16 @@ public partial class Leave_AdminLeaveType : System.Web.UI.Page
             {
                 Image btn_Edit_Enable = (Image)e.Row.FindControl("btnEdit");
                 btn_Edit_Enable.Enabled = true;
-            }            
+            }
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            string connection = Request.Cookies["Company"].Value;
+            string usernam = Request.Cookies["LoggedUserName"].Value;
+
+            if (bl.CheckUserHaveEdit(usernam, "LVTP"))
+            {
+                ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+            }
         }
     }
 

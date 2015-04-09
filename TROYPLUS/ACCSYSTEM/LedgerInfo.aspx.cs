@@ -46,7 +46,7 @@ public partial class LedgerInfo : System.Web.UI.Page
                 }
 
 
-                GrdViewLedger.PageSize = 8;
+                GrdViewLedger.PageSize = 11;
 
 
                 string connection = Request.Cookies["Company"].Value;
@@ -1011,7 +1011,7 @@ public partial class LedgerInfo : System.Web.UI.Page
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeofContact")).SelectedValue;
 
         if (((DropDownList)this.frmViewAdd.FindControl("drpBranch")) != null)
-            e.InputParameters["BranchCode"] = "All";
+            e.InputParameters["BranchCode"] = ((DropDownList)this.frmViewAdd.FindControl("drpBranch")).SelectedValue;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }

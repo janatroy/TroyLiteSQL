@@ -187,7 +187,7 @@
                             CancelControlID="BtnPopUpCancel1" DynamicServicePath="" Enabled="True" PopupControlID="purchasePanel"
                             RepositionMode="RepositionOnWindowResizeAndScroll" TargetControlID="dummyPurchase">
                         </cc1:ModalPopupExtender>
-                        <asp:Panel ID="purchasePanel" runat="server" Style="width: 70%; display: none">
+                        <asp:Panel ID="purchasePanel" runat="server" Style="width: 67%; display: none">
                             <asp:UpdatePanel ID="updatePnlPurchase" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
                                     <div id="Div1" style="background-color: White;">
@@ -226,10 +226,6 @@
                                                                                         <asp:TextBox ID="txtUser" runat="server" SkinID="skinTxtBoxGrid" ValidationGroup="product"></asp:TextBox>
                                                                                     </td>
                                                                                     <td class="ControlLabelproject" style="width: 20%">Email
-                                                                                        <asp:RegularExpressionValidator ID="remail1" runat="server"
-                                                                                                ControlToValidate="txtEmail" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
-                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
-                                                                                            </asp:RegularExpressionValidator>
                                                                                     </td>
                                                                                     <td class="ControlTextBox3" style="width: 20%">
                                                                                         <asp:TextBox ID="txtEmail" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -507,7 +503,7 @@
                                                                                             </rwg:BulkEditGridView>
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
-                                                                                    <cc1:TabPanel ID="TabEXPENSES" runat="server" HeaderText="Financial">
+                                                                                    <cc1:TabPanel ID="TabEXPENSES" runat="server" HeaderText="Finacial">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridEXPENSES" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
@@ -778,7 +774,7 @@
                                                                                             </rwg:BulkEditGridView>
                                                                                         </ContentTemplate>
                                                                                     </cc1:TabPanel>
-                                                                                    <cc1:TabPanel ID="TabSECURITY" Visible="false" runat="server" HeaderText="Security">
+                                                                                    <cc1:TabPanel ID="TabSECURITY"  runat="server" HeaderText="Human Resources">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GridSECURITY" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"

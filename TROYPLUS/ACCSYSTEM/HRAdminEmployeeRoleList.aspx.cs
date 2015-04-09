@@ -57,16 +57,16 @@ public partial class EmployeeRole_HRAdminRoleList : System.Web.UI.Page
             string usernam = Request.Cookies["LoggedUserName"].Value;
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
-            //if (bl.CheckUserHaveAdd(usernam, "SUPPINFO"))
-            //{
-            //    lnkBtnAddAttendance.Enabled = false;
-            //    lnkBtnAddAttendance.ToolTip = "You are not allowed to make Add New ";
-            //}
-            //else
-            //{
-            //    lnkBtnAddAttendance.Enabled = true;
-            //    lnkBtnAddAttendance.ToolTip = "Click to Add New ";
-            //}
+            if (bl.CheckUserHaveAdd(usernam, "EMPRL"))
+            {
+                lnkBtnAddEmpRole.Enabled = false;
+                lnkBtnAddEmpRole.ToolTip = "You are not allowed to make Add New ";
+            }
+            else
+            {
+                lnkBtnAddEmpRole.Enabled = true;
+                lnkBtnAddEmpRole.ToolTip = "Click to Add New ";
+            }
 
             if (Request.QueryString["myname"] != null)
             {
@@ -162,6 +162,41 @@ public partial class EmployeeRole_HRAdminRoleList : System.Web.UI.Page
 
     protected void grdViewEmpRoleSummary_RowDataBound(object sender, GridViewRowEventArgs e)
     {
+        try
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+
+                if (bl.CheckUserHaveEdit(usernam, "EMPRL"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
+                if (bl.CheckUserHaveEdit(usernam, "EMPRL"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnLeaveEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnLeaveEditDisabled")).Visible = true;
+                }
+                if (bl.CheckUserHaveEdit(usernam, "EMPRL"))
+                {
+                    ((ImageButton)e.Row.FindControl("btnPayEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnPayEditDisabled")).Visible = true;
+                }
+
+                if (bl.CheckUserHaveDelete(usernam, "EMPRL"))
+                {
+                    ((ImageButton)e.Row.FindControl("lnkB")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("lnkBDisabled")).Visible = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
 
     }
 

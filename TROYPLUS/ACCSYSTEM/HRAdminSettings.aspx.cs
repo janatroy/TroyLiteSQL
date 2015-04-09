@@ -67,6 +67,21 @@ public partial class HR_AdminSettings : System.Web.UI.Page
                 else
                     Response.Redirect("Login.aspx");
 
+                string connection = Request.Cookies["Company"].Value;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+                BusinessLogic bl = new BusinessLogic(sDataSource);
+
+                if (bl.CheckUserHaveAdd(usernam, "ADM"))
+                {
+                    btnSettingsSave.Enabled = false;
+                    btnSettingsSave.ToolTip = "You are not allowed to make update New ";
+                }
+                else
+                {
+                    btnSettingsSave.Enabled = true;
+                    btnSettingsSave.ToolTip = "Click to update New ";
+                }
+
                 int settingsId = 0;
                 int strHolidayCount = 0;
                 int strPermissionHr = 0;
@@ -90,7 +105,7 @@ public partial class HR_AdminSettings : System.Web.UI.Page
                 }
                 else
                 {
-                    BusinessLogic bl = new BusinessLogic(sDataSource);
+                  //  BusinessLogic bl = new BusinessLogic(sDataSource);
 
                     int affectedRows = bl.InsertAdminSettingsInfo(settingsId, strHolidayCount, strPermissionHr, strNumPermission, strCompOff, strWorkdaysWeek, boolSupervisorOverwrite);
 

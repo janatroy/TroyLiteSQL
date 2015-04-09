@@ -13,8 +13,11 @@ using System.Text;
 
 public partial class ResetPassword : System.Web.UI.Page
 {
-    public string sDataSource = string.Empty;
+   
+    private string sDataSource = string.Empty;
 
+    string connection;
+    string usernam;
 
 
     protected void Page_Load(object sender, EventArgs e)
@@ -37,11 +40,16 @@ public partial class ResetPassword : System.Web.UI.Page
                 BusinessLogic objChk = new BusinessLogic();
 
                 loadUserName();
+               // BranchEnable_Disable();
+                connection = Request.Cookies["Company"].Value;
+                usernam = Request.Cookies["LoggedUserName"].Value;
 
                 if (objChk.CheckForOffline(Server.MapPath("Offline\\" + dbfileName + ".offline")))
                 {
                     lnkBtnSave.Visible = false;
                 }
+
+               
             }
         }
         catch (Exception ex)
@@ -49,6 +57,29 @@ public partial class ResetPassword : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    //private void BranchEnable_Disable()
+    //{
+    //    string sCustomer = string.Empty;
+    //    connection = Request.Cookies["Company"].Value;
+    //    usernam = Request.Cookies["LoggedUserName"].Value;
+    //    BusinessLogic bl = new BusinessLogic();
+    //    DataSet dsd = bl.GetBranch(connection, usernam);
+
+    //    sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+    //    drpBranch.ClearSelection();
+    //    ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+    //    if (li != null) li.Selected = true;
+
+    //    if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+    //    {
+    //        drpBranch.Enabled = true;
+    //    }
+    //    else
+    //    {
+    //        drpBranch.Enabled = false;
+    //    }
+    //}
 
     private void loadUserName()
     {

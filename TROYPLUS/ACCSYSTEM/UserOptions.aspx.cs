@@ -11,7 +11,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using SMSLibrary;
-using System.Text.RegularExpressions;
 
 public partial class UserOptions : System.Web.UI.Page
 {
@@ -339,7 +338,7 @@ public partial class UserOptions : System.Web.UI.Page
             GridREPORT.DataSource = dstdfd;
             GridREPORT.DataBind();
 
-            DataSet dstdfdd = bl.GetUserOptionsForId(username, connection, "SECURITY");
+            DataSet dstdfdd = bl.GetUserOptionsForId(username, connection, "HUMAN RESOURCES");
             GridSECURITY.DataSource = dstdfdd;
             GridSECURITY.DataBind();
 
@@ -574,7 +573,7 @@ public partial class UserOptions : System.Web.UI.Page
             GridREPORT.DataSource = dstttttdf;
             GridREPORT.DataBind();
 
-            dstttttdff = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SECURITY");
+            dstttttdff = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "HUMAN RESOURCES");
             GridSECURITY.DataSource = dstttttdff;
             GridSECURITY.DataBind();
 
@@ -622,29 +621,12 @@ public partial class UserOptions : System.Web.UI.Page
     {
         try
         {
-           
-
-
             if (lbloption.Text == "New")
             {
                 if ((txtpassword.Text == "") && (txtconfirmpassword.Text == ""))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter Password And Confirm Password.');", true);
                     return;
-                }
-                if (txtEmail.Text=="")
-                {
-
-                }
-                else
-                {
-                    bool isEmail = Regex.IsMatch(txtEmail.Text.Trim(), @"\A(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)\Z");
-                if (!isEmail)
-                {
-                   
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email Id is invalid ')", true);
-                    return;
-                }
                 }
 
                 if (txtpassword.Text == "")

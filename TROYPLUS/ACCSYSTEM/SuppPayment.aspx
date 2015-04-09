@@ -1388,7 +1388,7 @@
                                                                                                                                                 <asp:UpdatePanel ID="UpdatePanel112" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
                                                                                                                                                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
-                                                                                                                                                    Width="100%" DataKeyNames="Billno" EmptyDataText="No Credit Sales found." GridLines="None">
+                                                                                                                                                    Width="100%" DataKeyNames="Billno" EmptyDataText="No Datas found." GridLines="None">
                                                                                                                                                     <EmptyDataRowStyle CssClass="GrdContent" />
                                                                                                                                                     <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" Font-Size="Small" />
                                                                                                                                                     <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="25px" Font-Size="Small" ForeColor="#0567AE" />

@@ -506,13 +506,35 @@ public partial class BusinessLogic : IInternalTransferService
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
+        string BranchName = string.Empty;
+
+        DataSet  dst =new DataSet();
+
+        StringBuilder dbQrytt = new StringBuilder();
+
         try
         {
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
+
+            dbQrytt.Append("SELECT BranchName FROM  tblBranch ");
+                    dbQrytt.AppendFormat("Where BranchCode = '{0}'", BranchCode);
+
+                    dst = manager.ExecuteDataSet(CommandType.Text, dbQrytt.ToString());
+                
+
+                if (dst != null)
+                {
+                    foreach (DataRow drdd in dst.Tables[0].Rows)
+                    {
+                        BranchName = drdd["BranchName"].ToString();
+                    }
+
+                }
+
             //dbQry = string.Format("select iCustomerID, iSupplierID from tblBranch Where BranchCode = '{0}'", BranchCode.ToUpper());
-            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID  Where tblGroups.GroupName='Sundry Debtors'");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID  Where tblGroups.GroupName='Sundry Debtors' and tblLedger.LedgerName ='"+ BranchName +"' ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -546,13 +568,34 @@ public partial class BusinessLogic : IInternalTransferService
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
+        string BranchName = string.Empty;
+
+        DataSet dst = new DataSet();
+
+        StringBuilder dbQrytt = new StringBuilder();
+
         try
         {
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
+            dbQrytt.Append("SELECT BranchName FROM  tblBranch ");
+            dbQrytt.AppendFormat("Where BranchCode = '{0}'", BranchCode);
+
+            dst = manager.ExecuteDataSet(CommandType.Text, dbQrytt.ToString());
+
+
+            if (dst != null)
+            {
+                foreach (DataRow drdd in dst.Tables[0].Rows)
+                {
+                    BranchName = drdd["BranchName"].ToString();
+                }
+
+            }
+
             //dbQry = string.Format("select iCustomerID, iSupplierID from tblBranch Where BranchCode = '{0}'", BranchCode.ToUpper());
-            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID  Where tblGroups.GroupName='Sundry Creditors'");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID  Where tblGroups.GroupName='Sundry Creditors' and tblLedger.LedgerName ='" + BranchName + "' ");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);

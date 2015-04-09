@@ -832,6 +832,19 @@ public partial class PageMaster : System.Web.UI.MasterPage
         {
             lnkmanufacturereport.Visible = false;
         }
+        A10.Visible = false;
+        A9.Visible = false;
+        A11.Visible = false;
+        A15.Visible = false;
+        A23.Visible = false;
+        A12.Visible = false;
+        A13.Visible = false;
+        A14.Visible = false;
+        A21.Visible = false;
+        A22.Visible = false;
+        A16.Visible = false;
+        lnkTimeSheet.Visible = false;
+        
 
         //if (Helper.GetDecryptedKey("InstallationType") != "ONLINE-OFFLINE-CLIENT")
         //{
