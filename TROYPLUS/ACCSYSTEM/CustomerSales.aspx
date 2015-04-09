@@ -1749,7 +1749,7 @@
                                                                 <a href='<%#String.Format("javascript:PrintItem({0}, &#39;{1}&#39;)", Eval("Billno"),  Eval("BranchCode")) %>'>                                                                                                                                                                                                  
                                                                     <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/PrintIcon_btn.png" />
                                                                 </a>
-                                                                <asp:ImageButton ID="btnViewDisabled" Enabled="false" SkinID="search" runat="Server"></asp:ImageButton>
+                                                                <asp:ImageButton ID="btnViewDisabled" Visible="false" Enabled="false" SkinID="search" runat="Server"></asp:ImageButton>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="45px" HeaderText="Delete" HeaderStyle-BorderColor="Gray">

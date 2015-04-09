@@ -84,3 +84,4 @@ C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\bin\Debug\FtpClien
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\bin\Debug\FtpClient.pdb
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\obj\Debug\FtpClient.dll
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\obj\Debug\FtpClient.pdb
+C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\FtpClient\obj\Debug\FtpClient.csprojResolveAssemblyReference.cache
