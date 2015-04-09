@@ -200,7 +200,7 @@
                                                                                                 <td style="width: 20%" class="ControlLabelNew">Name of Product *
                                                                                                             <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="txtItemNameAdd"
                                                                                                                 Text="*" Display="Dynamic" ValidationGroup="salesval" ErrorMessage="Please enter Product Name. It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" " TargetControlID="txtItemNameAdd" />
+                                                                                                    <%--<cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers" TargetControlID="txtItemNameAdd" />--%>
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                                                     <asp:TextBox ID="txtItemNameAdd" runat="server" Text='<%# Bind("ProductName") %>'

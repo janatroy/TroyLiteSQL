@@ -213,7 +213,7 @@
                                                                 <td class="ControlLabel" style="width: 40%">Expense Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrName" runat="server" ControlToValidate="txtLdgrName"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Expense Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender123" ValidChars=" " runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
+                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender123" ValidChars=" ./\-" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
                                                                         TargetControlID="txtLdgrName" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
@@ -452,7 +452,7 @@
                                                                 <td class="ControlLabel" style="width: 40%">Expense Name *
                                                                     <asp:RequiredFieldValidator ID="rvLdgrNameAdd" runat="server" ControlToValidate="txtLdgrNameAdd"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Expense Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" ValidChars=" " FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
+                                                                    <cc1:FilteredTextBoxExtender ID="rvLdgrNameAddFilteredTextBoxExtender2" runat="server" ValidChars=" ./\-" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom"
                                                                         TargetControlID="txtLdgrNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">

@@ -496,7 +496,7 @@ public partial class LedgerInfo : System.Web.UI.Page
                     {
                         foreach (DataRow dr in dst.Tables[0].Rows)
                         {
-                            if (Convert.ToString(dr["heading"]) == "InDirect Expenses")
+                            if ((Convert.ToString(dr["heading"]) == "InDirect Expenses") || (Convert.ToString(dr["GroupName"]) == "Cash in Hand") || (Convert.ToString(dr["GroupName"]) == "Purchase A/c") || (Convert.ToString(dr["GroupName"]) == "Sales A/c"))
                             {
                                 ((DropDownList)this.frmViewAdd.FindControl("ddAccGroup")).Enabled = false;
                                 ((TextBox)this.frmViewAdd.FindControl("txtLdgrName")).Enabled = false;
