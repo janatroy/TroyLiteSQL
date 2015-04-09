@@ -587,7 +587,7 @@
                                                         <li class="color submenumenu"><a href="./CreditDebitNote.aspx" runat="server" id="lnkCreditDebitNote">Credit / Debit Note</a></li>
                                                         <li class="color submenumenu"><a href="./MultipleJournal.aspx" runat="server" id="lnkMultipleInfo">Journals</a></li>
                                                         <li class="color submenumenu"><a href="./ExpPayment.aspx" runat="server" id="lnkExpensePayment">Expense payments</a></li>
-                                                          <li class="color submenumenu"><a href="./ManualClearance.aspx" runat="server">Manual Clearance</a></li>
+                                                          <li class="color submenumenu"><a href="./ManualClearance.aspx" runat="server" id="lnkmanualclearing">Manual Clearance</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="color submenumenu"><a href="#"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: right; float: right">►</span>Reports</a>

@@ -11,7 +11,6 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using SMSLibrary;
-using System.Text.RegularExpressions;
 
 public partial class UserOptions : System.Web.UI.Page
 {
@@ -377,7 +376,7 @@ public partial class UserOptions : System.Web.UI.Page
                     //txtpassword.Enabled = false;
                     //txtconfirmpassword.Enabled = false;
                     chkboxdatelock.Checked = bool.Parse(dsd.Tables[0].Rows[0]["DateLock"].ToString());
-                 //   txtUserGroup.Text = dsd.Tables[0].Rows[0]["UserGroup"].ToString();
+                    txtUserGroup.Text = dsd.Tables[0].Rows[0]["UserGroup"].ToString();
                     chkhidedeviation.Checked = bool.Parse(dsd.Tables[0].Rows[0]["HideDeviation"].ToString());
                     chkBranch.Checked = bool.Parse(dsd.Tables[0].Rows[0]["BranchCheck"].ToString());
 
@@ -512,7 +511,7 @@ public partial class UserOptions : System.Web.UI.Page
             txtUser.Text = "";
             chkAccLocked.Checked = false;
 
-          //  txtUserGroup.Text = "";
+            txtUserGroup.Text = "";
             chkboxdatelock.Checked = false;
             txtEmail.Text = "";
             BusinessLogic objBus = new BusinessLogic();
@@ -622,29 +621,12 @@ public partial class UserOptions : System.Web.UI.Page
     {
         try
         {
-           
-
-
             if (lbloption.Text == "New")
             {
                 if ((txtpassword.Text == "") && (txtconfirmpassword.Text == ""))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Enter Password And Confirm Password.');", true);
                     return;
-                }
-                if (txtEmail.Text=="")
-                {
-
-                }
-                else
-                {
-                    bool isEmail = Regex.IsMatch(txtEmail.Text.Trim(), @"\A(?:[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)\Z");
-                if (!isEmail)
-                {
-                   
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Email Id is invalid ')", true);
-                    return;
-                }
                 }
 
                 if (txtpassword.Text == "")
@@ -1785,8 +1767,8 @@ public partial class UserOptions : System.Web.UI.Page
             if (drpBranch.Text.Trim() != string.Empty)
                 defaultbranch = Convert.ToString(drpBranch.SelectedValue);
 
-          //  if (txtUserGroup.Text.Trim() != string.Empty)
-             //   UserGroup = txtUserGroup.Text.Trim();
+            if (txtUserGroup.Text.Trim() != string.Empty)
+                UserGroup = txtUserGroup.Text.Trim();
             else
                 UserGroup = "Users";
 
