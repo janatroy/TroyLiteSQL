@@ -391,15 +391,15 @@
                                            <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
                                                     <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                             <Columns>
-                                                <asp:BoundField DataField="ItemCode" HeaderText="Product Code" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="ProductName" HeaderText="Product Name" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Model" HeaderText="Model" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="CategoryName" HeaderText="Category" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="ProductDesc" HeaderText="Brand" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="OpeningStock" HeaderText="Opening Stock" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Stock" HeaderText="Current Stock" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="EntryDate" HeaderText="Date" HeaderStyle-BorderColor="Gray" DataFormatString="{0:dd/MM/yyyy}"/>
+                                                <asp:BoundField DataField="ItemCode" HeaderText="Product Code" HeaderStyle-BorderColor="Gray" ItemStyle-Width="15px" />
+                                                <asp:BoundField DataField="ProductName" HeaderText="Product Name" HeaderStyle-BorderColor="Gray" ItemStyle-Width="15px" />
+                                                <asp:BoundField DataField="Model" HeaderText="Model" HeaderStyle-BorderColor="Gray" ItemStyle-Width="15px"  Visible="false" />
+                                                <asp:BoundField DataField="CategoryName" HeaderText="Category" HeaderStyle-BorderColor="Gray" ItemStyle-Width="10px" Visible="false" />
+                                                <asp:BoundField DataField="ProductDesc" HeaderText="Brand" HeaderStyle-BorderColor="Gray"  ItemStyle-Width="10px" />
+                                                <asp:BoundField DataField="OpeningStock" HeaderText="Opening Stock" HeaderStyle-BorderColor="Gray" ItemStyle-Width="10px"  />
+                                                <asp:BoundField DataField="Stock" HeaderText="Current Stock" HeaderStyle-BorderColor="Gray" ItemStyle-Width="5px"  />
+                                                <asp:BoundField DataField="BranchCode" HeaderText="Branch Code" HeaderStyle-BorderColor="Gray" ItemStyle-Width="5px"  />
+                                                <asp:BoundField DataField="EntryDate" HeaderText="Date" HeaderStyle-BorderColor="Gray" DataFormatString="{0:dd/MM/yyyy}" ItemStyle-Width="10px" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" CausesValidation="false" SkinID="edit"
@@ -426,7 +426,7 @@
                                                         <td style="border-color: white">Goto Page
                                                         </td>
                                                         <td style="border-color: white">
-                                                            <asp:DropDownList ID="ddlPageSelector" runat="server" Width="65px" BackColor="#e7e7e7" Style="border: 1px solid blue">
+                                                            <asp:DropDownList ID="ddlPageSelector" runat="server" Width="65px" BackColor="#e7e7e7" Style="border: 1px solid blue" AutoPostBack="true">
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td style="border-color: white; width: 5px"></td>
