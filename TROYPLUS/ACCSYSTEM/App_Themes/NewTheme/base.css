@@ -9898,7 +9898,7 @@ fieldset
 .exportexl6
 {
     background: url(images/ExportToExcel_Latest.png) no-repeat !important;
-    width: 125px !important;
+    width: 150px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10020,8 +10020,38 @@ fieldset
 
 .Updatebutton1231
 {
-    background: url(images/TroyUpdate.png) no-repeat !important;
+    background: url(images/Update_btn.png) no-repeat !important;
     width: 120px !important;
+    height: 34px !important;
+    display: block !important;
+    border: none;
+    cursor: pointer;
+}
+
+.Uploadbutton1231
+{
+    background: url(images/Upload_Btn.png) no-repeat !important;
+    width: 120px !important;
+    height: 34px !important;
+    display: block !important;
+    border: none;
+    cursor: pointer;
+}
+
+.Showenterstock
+{
+    background: url(images/showenteredstock_Btn.png) no-repeat !important;
+    width: 140px !important;
+    height: 34px !important;
+    display: block !important;
+    border: none;
+    cursor: pointer;
+}
+
+.Saveclostock
+{
+    background: url(images/Saveclosingstock_Btn.png) no-repeat !important;
+    width: 140px !important;
     height: 34px !important;
     display: block !important;
     border: none;

@@ -737,7 +737,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
 
-        //ds = bl.GetBranchDivisions();
+        ds = bl.GetBranchDivisions();
         //ds.Tables[0].Rows[0].Delete();
         ddDivsions.DataSource = ds;
         ddDivsions.DataBind();
@@ -899,7 +899,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet companyInfo = new DataSet();
         string branchCode = Request.QueryString["BID"].ToString();
-        //companyInfo = bl.GetBranchDetailsForId(sDataSource, branchCode);
+        companyInfo = bl.GetBranchDetailsForId(sDataSource, branchCode);
 
         if (companyInfo != null)
         {

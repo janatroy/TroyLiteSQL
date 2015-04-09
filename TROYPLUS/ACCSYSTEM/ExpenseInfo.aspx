@@ -456,7 +456,7 @@
                                                                         TargetControlID="txtLdgrNameAdd" />
                                                                 </td>
                                                                 <td class="ControlTextBox3" style="width: 25%">
-                                                                    <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("Expensehead") %>'
+                                                                    <asp:TextBox ID="txtLdgrNameAdd" runat="server" Text='<%# Bind("LedgerName") %>'
                                                                         SkinID="skinTxtBoxGrid" TabIndex="1"></asp:TextBox>
                                                                 </td>
 

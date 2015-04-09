@@ -8,6 +8,7 @@
     <title>Bulk Addition</title>
     <link href="App_Themes/DefaultTheme/calendar.css" rel="stylesheet" type="text/css" />
     <link href="App_Themes/DefaultTheme/DefaultTheme.css" rel="stylesheet" type="text/css" />
+  
     <script language="javascript" type="text/javascript" src="Scripts/calendar_eu.js"></script>
     <script type="text/javascript" language="JavaScript">
         function CallPrint(strid) {
@@ -95,7 +96,9 @@
                                         
                                         </td>
                                         <td style="width:35%" align="center">
-                                            <asp:Button ID="btnUpload" runat="server" Height="21px"  SkinID="skinButtonCol2" Text="Upload" Width="100px" onclick="btnUpload_Click"/>
+                                           <%-- <asp:Button ID="btnUpload" runat="server" Height="21px" CssClass="Uploadbutton1231" Width="100px" onclick="btnUpload_Click"/>--%>
+                                              <asp:Button ID="btnUpload" OnClick="btnUpload_Click" Font-Bold="True" runat="server" CssClass="Uploadbutton1231"
+                                                        EnableTheming="false" ForeColor="White" Width="80px" />
                                         </td>
                                         <td style="width:35%">
                                         
@@ -123,7 +126,9 @@
                                         
                             </td>
                             <td style="width:50%">
-                                <asp:Button ID="Button2" runat="server" SkinID="skinButtonCol2" Text="Download Sample Excel Format" Height="23px"   onclick="btnFormat_Click" Width="200px" />        
+                             <%--   <asp:Button ID="Button2" runat="server" CssClass="Uploadbutton12312" SkinID="skinButtonCol2" Height="23px"   onclick="btnFormat_Click" Width="200px" />        --%>
+                                      <asp:Button ID="Button2" OnClick="btnFormat_Click" Font-Bold="True" runat="server" CssClass="Uploadbutton12312"
+                                                        EnableTheming="false" ForeColor="White" Width="250px" />
                             </td>
                         </tr>
                     </table>
