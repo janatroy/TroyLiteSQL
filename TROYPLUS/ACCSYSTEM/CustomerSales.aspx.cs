@@ -260,7 +260,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 //AddNewRow();                
             }
-
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
             errPanel.Visible = false;
             ErrMsg.Text = "";
             //cmdBarcode.Click += new EventHandler(this.txtBarcode_Populated); //Jolo Barcode
@@ -1417,11 +1417,11 @@ public partial class CustomerSales : System.Web.UI.Page
                         hdContact.Value = Convert.ToString(customerDs.Tables[0].Rows[0]["Mobile"]);
                         txtCustPh.Text = Convert.ToString(customerDs.Tables[0].Rows[0]["Mobile"]);
                     }
-
-                    if (customerDs.Tables[0].Rows[0]["LedgerID"] != null)
-                    {
-                        txtCusID.Text = Convert.ToString(customerDs.Tables[0].Rows[0]["LedgerID"]);
-                    }
+                    txtCusID.Text = Convert.ToString(iLedgerID);
+                    //if (customerDs.Tables[0].Rows[0]["LedgerID"] != null)
+                    //{
+                    //    txtCusID.Text = Convert.ToString(customerDs.Tables[0].Rows[0]["LedgerID"]);
+                    //}
                 }
                 else
                 {
@@ -2510,6 +2510,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
     protected void chk_CheckedChanged(object sender, EventArgs e)
     {
+      //  ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         if (chk.Checked == false)
         {
             txtCustomerName.Visible = true;
