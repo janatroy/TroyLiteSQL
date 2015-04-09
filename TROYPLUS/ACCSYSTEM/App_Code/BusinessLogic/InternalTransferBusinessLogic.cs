@@ -107,7 +107,7 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            object returnStock = manager.ExecuteScalar(CommandType.Text, "Select stock from tblProductStock WHERE itemCode='" + ItemCode + "'");
+            object returnStock = manager.ExecuteScalar(CommandType.Text, "Select stock from tblProductStock WHERE itemCode='" + ItemCode + "' and BranchCode='"+BranchCode+"'");
             if ((returnStock != null) && (returnStock != DBNull.Value))
             {
                 if (Convert.ToDecimal(returnStock) < Qty)
@@ -234,7 +234,7 @@ public partial class BusinessLogic : IInternalTransferService
     }
 
 
-    public List<InternalTransferRequest> ListInternalRequests(string connection, string txtSearch, string dropDown)
+    public List<InternalTransferRequest> ListInternalRequests(string connection, string txtSearch, string dropDown,string branch)
     {
         DataSet dsData = new DataSet();
         StringBuilder dbQry = new StringBuilder();
@@ -251,8 +251,15 @@ public partial class BusinessLogic : IInternalTransferService
 
             if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate"))
                 txtSearch = "%" + txtSearch + "%";
+            if (branch == "All")
+            {
+                dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests  ");
+            }
+            else
+            {
 
-            dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests ");
+                dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests where RequestedBranch='"+ branch +"'  ");
+            }
 
             if (dropDown == "ItemCode" && !string.IsNullOrEmpty(txtSearch))
             {
@@ -308,6 +315,85 @@ public partial class BusinessLogic : IInternalTransferService
             throw ex;
         }
     }
+
+    public List<InternalTransferRequest> ListInternalRequests1(string connection, string txtSearch, string dropDown)
+    {
+        DataSet dsData = new DataSet();
+        StringBuilder dbQry = new StringBuilder();
+        List<InternalTransferRequest> list = new List<InternalTransferRequest>();
+
+        try
+        {
+            string sDataSource = CreateConnectionString(connection);
+
+            DBManager manager = new DBManager(DataProvider.SqlServer);
+            manager.ConnectionString = sDataSource;
+
+            manager.Open();
+
+            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate"))
+                txtSearch = "%" + txtSearch + "%";
+           
+          
+
+                dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests ");
+           
+
+            if (dropDown == "ItemCode" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where ItemCode = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "Status" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where Status = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "RequestedBranch" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where RequestedBranch = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "CompletedDate" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where CompletedDate = '{0}' ", txtSearch);
+            }
+
+            dbQry.Append(" Order By RequestID");
+
+            dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
+            if (dsData != null)
+            {
+                if (dsData.Tables[0].Rows.Count > 0)
+                {
+
+
+                    foreach (DataRow item in dsData.Tables[0].Rows)
+                    {
+                        InternalTransferRequest newRequest = new InternalTransferRequest();
+                        newRequest.RequestID = item.Field<int>("RequestID");
+                        newRequest.UserID = item["UserID"].ToString();
+                        newRequest.RequestedDate = item.Field<DateTime>("RequestedDate");
+                        newRequest.ItemCode = item["ItemCode"].ToString();
+                        newRequest.Quantity = item["Quantity"].ToString() != "" ? Convert.ToDecimal(item["Quantity"].ToString()) : 0;
+                        newRequest.RequestedBranch = item["RequestedBranch"].ToString();
+                        newRequest.RejectedReason = item["RejectedReason"].ToString();
+                        newRequest.CompletedUser = item["CompletedUser"].ToString();
+                        newRequest.Status = item["Status"].ToString();
+                        newRequest.CompletedDate = item.Field<DateTime?>("CompletedDate");
+                        newRequest.BranchHasStock = item["BranchHasStock"].ToString();
+
+                        list.Add(newRequest);
+                    }
+                }
+            }
+
+            return list;
+        }
+        catch (Exception ex)
+        {
+            //ObjNLog.Error(string.Format("Exception Raised {0}", ex.Message));
+            throw ex;
+        }
+    }
+
 
     public InternalTransferRequest GetInternalTransferRequest(string connection, int RequestID)
     {
@@ -642,7 +728,9 @@ public interface IInternalTransferService
     void ApproveInternalTrasfer(string connection, InternalTransferRequest request);
     DataSet GetProductList(string connection);
     DataSet GetBranches(string connection);
-    List<InternalTransferRequest> ListInternalRequests(string connection, string txtSearch, string dropDown);
+    List<InternalTransferRequest> ListInternalRequests(string connection, string txtSearch, string dropDown,string branch);
+
+    List<InternalTransferRequest> ListInternalRequests1(string connection, string txtSearch, string dropDown);
     InternalTransferRequest GetInternalTransferRequest(string connection, int RequestID);
     void UpdateInternalRequest(string connection, InternalTransferRequest request);
     void DeleteInternalRequest(string connection, int RequestID);
