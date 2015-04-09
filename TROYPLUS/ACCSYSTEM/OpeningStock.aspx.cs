@@ -62,7 +62,7 @@ public partial class OpeningStock : System.Web.UI.Page
                 //myRangeValidator.MinimumValue = System.DateTime.Now.AddYears(-100).ToShortDateString();
                 //myRangeValidator.MaximumValue = System.DateTime.Now.ToShortDateString();
 
-                GrdViewSerVisit.PageSize = 8;
+                GrdViewSerVisit.PageSize = 11;
 
                  connection = Request.Cookies["Company"].Value;
                  usernam = Request.Cookies["LoggedUserName"].Value;
@@ -107,6 +107,25 @@ public partial class OpeningStock : System.Web.UI.Page
 
             }
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+    protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            GrdViewSerVisit.PageIndex = ((DropDownList)sender).SelectedIndex;
+
+            //string textt = string.Empty;
+            //string dropd = string.Empty;
+
+            //textt = txtSearch.Text;
+            //dropd = ddCriteria.SelectedValue;
+
+            //BindGrid(textt, dropd);
         }
         catch (Exception ex)
         {

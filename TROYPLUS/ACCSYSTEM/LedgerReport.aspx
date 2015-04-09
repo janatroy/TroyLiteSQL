@@ -47,7 +47,7 @@
                                     <script type="text/javascript" language="JavaScript">
                                         new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                                 </td>
-                                <td style="width: 20%">
+                                <td style="width: 10%">
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
                                         Display="None" ErrorMessage="Please Enter Start Date" CssClass="lblFont"></asp:RequiredFieldValidator>
                                 </td>
@@ -62,7 +62,7 @@
                                     <script type="text/javascript" language="JavaScript">
                                         new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
                                 </td>
-                                <td style="width: 20%">
+                                <td style="width: 10%">
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
                                         Display="None" ErrorMessage="Please Enter The End Date" CssClass="lblFont"></asp:RequiredFieldValidator>
                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToCompare="txtStartDate"
@@ -82,7 +82,7 @@
 
                                 </td>
                                 <td style="width: 10%"></td>
-                                <td style="width: 20%"></td>
+                                <td style="width: 10%"></td>
                             </tr>
                             <tr>
                                 <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Ledger Group
@@ -95,7 +95,7 @@
                                     </asp:DropDownList>
                                 </td>
                                 <td style="width: 10%"></td>
-                                <td style="width: 20%"></td>
+                                <td style="width: 10%"></td>
                             </tr>
                             <tr>
                                 <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Ledger Name
@@ -108,7 +108,18 @@
                                     </asp:DropDownList>
                                 </td>
                                 <td style="width: 10%"></td>
-                                <td style="width: 20%"></td>
+                                <td style="width: 10%"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">
+                                    Branch
+                                </td>
+                                <td align="left" class="ControlDrpBorder" style="width: 40%">
+                                    <asp:DropDownList ID="drpBranch" runat="server" AppendDataBoundItems="True" BackColor="#E7E7E7" CssClass="drpDownListMedium" EnableTheming="False" Height="26px" Style="border: 1px solid #e7e7e7" Width="100%" DataTextField="BranchName" DataValueField="Branchcode">
+                                                                                                            </asp:DropDownList>
+                                </td>
+                                <td style="width: 10%"></td>
+                                <td style="width: 10%"></td>
                             </tr>
                             <tr>
                                 <td>&nbsp;

@@ -285,14 +285,14 @@ public partial class OpeningBulkAddition : System.Web.UI.Page
                         return;
                     }
                 }
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    if ((Convert.ToString(dr["Remarks"]) == null) || (Convert.ToString(dr["Remarks"]) == ""))
-                    {
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Remarks is empty');", true);
-                        return;
-                    }
-                }
+                //foreach (DataRow dr in ds.Tables[0].Rows)
+                //{
+                //    if ((Convert.ToString(dr["Remarks"]) == null) || (Convert.ToString(dr["Remarks"]) == ""))
+                //    {
+                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Remarks is empty');", true);
+                //        return;
+                //    }
+                //}
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     if ((Convert.ToString(dr["DueDate"]) == null) || (Convert.ToString(dr["DueDate"]) == ""))
