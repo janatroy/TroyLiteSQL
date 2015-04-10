@@ -312,10 +312,10 @@
                                                                                     RequestedDate: *
                                                                                     <asp:RequiredFieldValidator ID="rvRequesteDate" runat="server" ValidationGroup="grpDetails"
                                                                                         ControlToValidate="txtRequestedDate" Text="*" ErrorMessage="RequestedDate is mandatory"
-                                                                                        CssClass="rfv" Display="Dynamic" EnableClientScript="True"></asp:RequiredFieldValidator>
+                                                                                        CssClass="rfv" Display="Dynamic"  EnableClientScript="True"></asp:RequiredFieldValidator>
                                                                                 </td>
                                                                                 <td class="ControlTextBox3" style="width: 25%;">
-                                                                                    <asp:TextBox ID="txtRequestedDate" runat="server" Text='<%# Bind("RequestedDate") %>'
+                                                                                    <asp:TextBox ID="txtRequestedDate" Enabled="false" runat="server" Text='<%# Bind("RequestedDate") %>'
                                                                                         CssClass="cssTextBox" Width="100px"></asp:TextBox>
                                                                                 </td>
                                                                                 <td class="ControlLabel" style="width: 25%;">
@@ -345,12 +345,7 @@
                                                                 <tr>
                                                                     <td align="right" style="width: 36%;">
                                                                     </td>
-                                                                    <td align="center" style="width: 17%;">
-                                                                        <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
-                                                                            CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="UpdateCancelButton_Click">
-                                                                        </asp:Button>
-                                                                    </td>
-                                                                    <td align="center" style="width: 17%;">
+                                                                      <td align="center" style="width: 17%;">
                                                                         <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
                                                                             CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="UpdateButton_Click">
                                                                         </asp:Button>
@@ -358,6 +353,12 @@
                                                                             CommandName="Insert" CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                             OnClick="InsertButton_Click"></asp:Button>
                                                                     </td>
+                                                                    <td align="center" style="width: 17%;">
+                                                                        <asp:Button ID="UpdateCancelButton" runat="server" CausesValidation="False" CommandName="Cancel"
+                                                                            CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="UpdateCancelButton_Click">
+                                                                        </asp:Button>
+                                                                    </td>
+                                                                  
                                                                     <td style="width: 30%;">
                                                                     </td>
                                                                 </tr>

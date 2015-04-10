@@ -35,7 +35,8 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         string connection = Request.Cookies["Company"].Value;
         IInternalTransferService bl = new BusinessLogic(connection);
-        var dbData = bl.ListInternalRequests(connection, txtSearch.Text, ddCriteria.SelectedValue);
+      //  string branch = Request.Cookies["Branch"].Value;
+        var dbData = bl.ListInternalRequests1(connection, txtSearch.Text, ddCriteria.SelectedValue);
 
         if (dbData != null)
         {
