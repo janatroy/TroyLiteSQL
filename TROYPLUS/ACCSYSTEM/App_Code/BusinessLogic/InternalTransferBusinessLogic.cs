@@ -93,6 +93,49 @@ public partial class BusinessLogic : IInternalTransferService
     
     }
 
+    public void RejectInternalTrasfer(string connection, InternalTransferRequest request)
+    {
+        string sDataSource = CreateConnectionString(connection);
+
+        DBManager manager = new DBManager(DataProvider.SqlServer);
+        manager.ConnectionString = sDataSource.ToLower();
+        DataSet ds = new DataSet();
+        string dbQry = string.Empty;
+
+        string Status = "Reject";
+
+        try
+        {
+            manager.Open();
+            manager.ProviderType = DataProvider.SqlServer;
+
+            manager.BeginTransaction();
+
+            //int BranchID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BranchID) FROM tblOfficeBranches");
+          //  DateTime completedDate = request.CompletedDate != null ? request.CompletedDate.GetValueOrDefault().ToString("yyyy-MM-dd") : "null";
+            DateTime completedDate = DateTime.Now;
+
+            dbQry = string.Format("UPDATE tblInternalTransferRequests SET CompletedUser='{0}', CompletedDate='{1}', Status='{2}' Where RequestID={3}",
+                request.UserID, completedDate.ToString("yyyy-MM-dd"), Status, request.RequestID);
+
+            //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
+
+            manager.ExecuteNonQuery(CommandType.Text, dbQry.ToString());
+
+            manager.CommitTransaction();
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            manager.Dispose();
+        }
+
+    }
+
     public bool CheckIftheItemHasStock(string connection, string ItemCode, string BranchCode, decimal Qty)
     {
         string sDataSource = CreateConnectionString(connection);
@@ -726,6 +769,7 @@ public interface IInternalTransferService
 {
     void RaiseInternalTrasfer(string connection, InternalTransferRequest request);
     void ApproveInternalTrasfer(string connection, InternalTransferRequest request);
+    void RejectInternalTrasfer(string connection, InternalTransferRequest request);
     DataSet GetProductList(string connection);
     DataSet GetBranches(string connection);
     List<InternalTransferRequest> ListInternalRequests(string connection, string txtSearch, string dropDown,string branch);

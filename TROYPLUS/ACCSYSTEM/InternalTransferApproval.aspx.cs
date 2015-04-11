@@ -422,13 +422,14 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         if (cmbApproveReject.SelectedValue == "Reject")
         {
-            if (txtComments.Text.Trim() == string.Empty)
-            {
-                rvComments.Enabled = true;
-                Page.Validate();
+            //if (txtComments.Text.Trim() == string.Empty)
+            //{
+            //    rvComments.Enabled = true;
+            //    Page.Validate();
                 modalPopupApproveReject.Show();
-                return;
-            }
+            //   // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
+               return;
+            //}
         }
         else
         {
@@ -726,19 +727,23 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
         DataSet paymentdata = null;
+       
+      
         if (cmbApproveReject.SelectedValue == "Approve")
         {
-            string connection = Request.Cookies["Company"].Value;
-            string UserID = Request.Cookies["LoggedUserName"].Value;
-
-            string RequestID = hdRequestID.Value;
+           
             int iSupplier = 0;
             int iCustomer = 0;
 
             int iPaymode = 1;
             string sInvoiceno = string.Empty;
+            string connection = Request.Cookies["Company"].Value;
+            string UserID = Request.Cookies["LoggedUserName"].Value;
 
+            string RequestID = hdRequestID.Value;
             IInternalTransferService transferService = new BusinessLogic(connection);
+
+
             InternalTransferRequest request = transferService.GetInternalTransferRequest(connection, int.Parse(RequestID));
 
             BusinessLogic branchHasStockService = new BusinessLogic(connection);
@@ -792,6 +797,31 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Insufficent stock, please check the Branch if it has sufficient stock available.');", true);
             }
 
+            BindGridData();
+
+        }
+        else if (cmbApproveReject.SelectedValue == "Reject")
+        {
+            string connection1 = Request.Cookies["Company"].Value;
+            
+
+            string RequestID = hdRequestID.Value;
+            IInternalTransferService transferService = new BusinessLogic(connection1);
+
+            if ((txtComments.Text == "") || (txtComments.Text ==null))
+            {
+                modalPopupApproveReject.Show();
+                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
+                return;
+            }
+            InternalTransferRequest request1 = transferService.GetInternalTransferRequest(connection1, int.Parse(RequestID));
+          //  string connection1;
+           // string RequestID = hdRequestID.Value;
+           // IInternalTransferService transferService1 = new BusinessLogic(connection);
+           // InternalTransferRequest request = transferService1.GetInternalTransferRequest(connection, int.Parse(RequestID));
+            transferService.RejectInternalTrasfer(connection1, request1);
+            modalPopupApproveReject.Hide();
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Rejected.Please contact administration');", true);
             BindGridData();
 
         }
