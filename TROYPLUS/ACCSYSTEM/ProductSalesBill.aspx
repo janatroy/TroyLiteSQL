@@ -281,7 +281,7 @@
 
                                                                     <tr>
                                                                         <td class="auto-style20">
-                                                                            <asp:Label ID="lblLocation" runat="server"> </asp:Label>,
+                                                                            <asp:Label ID="lblLocation" runat="server"> </asp:Label>.
                                                                         </td>
                                                                     </tr>
 
@@ -808,25 +808,23 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="auto-style20">
-                                                                            <asp:Label ID="lblAddressEx" runat="server"></asp:Label>,
+                                                                            <asp:Label ID="lblAddress1Ex" runat="server"></asp:Label>,
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="auto-style20">
-                                                                            <asp:Label ID="lblCityEx" runat="server" />
-                                                                            -
-                                                                    <asp:Label ID="lblPincodeEx" runat="server"></asp:Label>,
+                                                                            <asp:Label ID="lblAddress2Ex" runat="server" />,
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    <tr id="address3Ex" runat="server">
                                                                         <td class="auto-style20">
-                                                                            <asp:Label ID="lblStateEx" runat="server"> </asp:Label>,
+                                                                            <asp:Label ID="lblAddress3Ex" runat="server"> </asp:Label>,
                                                                         </td>
                                                                     </tr>
 
                                                                     <tr>
-                                                                        <td class="auto-style20">Mobile:
-                                                                            <asp:Label ID="lblPhnEx" runat="server"> </asp:Label>
+                                                                        <td class="auto-style20">
+                                                                            <asp:Label ID="lblLocationEx" runat="server"> </asp:Label>.
                                                                         </td>
                                                                     </tr>
 
@@ -1064,22 +1062,27 @@
                                                                     <%# ((GridViewRow)Container).RowIndex + 1%>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:BoundField ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="White" ItemStyle-BorderColor="White" ItemStyle-Width="100px" DataField="ProductName"
+
+                                                            <asp:BoundField ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="White" ItemStyle-BorderColor="White" ItemStyle-Width="290px" DataField="ProductItem"
                                                                 HeaderText="Item" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
-                                                            <asp:BoundField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="240px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
-                                                                DataField="ProductDesc" HeaderText="Description" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
-                                                            <asp:BoundField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="60px" DataField="Qty" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
+                                                            <asp:BoundField ItemStyle-HorizontalAlign="Center" HeaderStyle-BorderColor="White" ItemStyle-BorderColor="White" ItemStyle-Width="50px" DataField="SalesPerson"
+                                                                HeaderText="Sales Person" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />                                                           
+                                                            <asp:BoundField Visible="false" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="65px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
+                                                                DataField="VAT" HeaderText="VAT" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
+                                                            <asp:BoundField ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50px" DataField="Qty" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
                                                                 HeaderText="Qty" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
                                                             <asp:BoundField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="80px" DataField="Rate" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
                                                                 HeaderText="Unit Price" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
-                                                            <asp:BoundField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="90px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
+                                                            <asp:BoundField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="80px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
                                                                 DataField="Amount" HeaderText="Total Price" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
-                                                            <asp:BoundField Visible="false" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="90px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
-                                                                DataField="VAT" HeaderText="VAT" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
+                                                            <asp:BoundField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="70px" ItemStyle-BorderColor="White"
+                                                                DataField="Discount" HeaderText="Discount" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
                                                             <asp:BoundField Visible="false" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="90px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
                                                                 DataField="VATAmount" HeaderText="VAT Amount" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
-                                                            <asp:BoundField Visible="false" ItemStyle-HorizontalAlign="Right" ItemStyle-Width="90px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White" HeaderStyle-BorderColor="White"
-                                                                DataField="Discount" HeaderText="Discount" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
+                                                           <asp:BoundField ItemStyle-HorizontalAlign="Right" ItemStyle-Width="125px" DataFormatString="{0:f2}" ItemStyle-BorderColor="White"
+                                                                DataField="Amount" HeaderText="Total Price" HeaderStyle-ForeColor="White" ItemStyle-CssClass="itemGrid" HeaderStyle-CssClass="headerGrid" />
+                                                           
+
                                                         </Columns>
                                                         <PagerTemplate>
                                                         </PagerTemplate>
@@ -1212,7 +1215,14 @@
                                                                             <ContentTemplate>
                                                                                 <table border="0" cellpadding="2" cellspacing="0" style="font-family: 'Trebuchet MS'; font-size: 13px; width: 224px;">
 
-                                                                                    <tr>
+                                                                                     <tr>
+                                                                                        <td class="auto-style23" style="color: white;">Net Total</td>
+                                                                                        <td class="auto-style6" style="font-weight: bold; text-align: right;">
+                                                                                            <asp:Label ID="lblTotalEx" runat="server"></asp:Label>
+                                                                                        </td>
+                                                                                    </tr>
+
+                                                                                   <%-- <tr>
                                                                                         <td class="auto-style23" style="color: white;">Subtotal </td>
                                                                                         <td class="auto-style6" style="font-weight: bold; text-align: right;">
                                                                                             <asp:Label ID="lblSubTotalEx" runat="server"></asp:Label>
@@ -1239,7 +1249,7 @@
                                                                                         <td class="auto-style6" style="font-weight: bold; text-align: right;">
                                                                                             <asp:Label ID="lblTotalEx" runat="server"></asp:Label>
                                                                                         </td>
-                                                                                    </tr>
+                                                                                    </tr>--%>
 
                                                                                 </table>
                                                                             </ContentTemplate>

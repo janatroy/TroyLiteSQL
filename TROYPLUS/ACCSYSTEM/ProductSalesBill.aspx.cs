@@ -168,6 +168,9 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     {
                         lblSupplierAddr1.Text = address[0];
                         lblShipToAddr1.Text = address[0];
+
+                        lblSupplierAddr1Ex.Text = address[0];
+                        lblShipToAddr1Ex.Text = address[0];
                     }
                 }
 
@@ -175,6 +178,9 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 {
                     lblSupplierAddr2.Text = address2;
                     lblShipToAddr2.Text = address2;
+
+                    lblSupplierAddr2Ex.Text = address2;
+                    lblShipToAddr2Ex.Text = address2;
                 }
 
                 if (address3 != null)
@@ -615,7 +621,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
             {
                 tot = Convert.ToDouble(dr["Total"]);
                 lblTotal.Text = tot.ToString("#0.00");// Convert.ToString(dr["Total"]);
-
+                lblTotalEx.Text = tot.ToString("#0.00");
                 payMode = Convert.ToInt32(dr["PayMode"]);
             }
         }
@@ -738,7 +744,11 @@ public partial class ProductSalesBill : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         ds = bl.GetBranchDivisions();
+<<<<<<< HEAD
+        ds.Tables[0].Rows[0].Delete();
+=======
         //ds.Tables[0].Rows[0].Delete();
+>>>>>>> origin/master
         ddDivsions.DataSource = ds;
         ddDivsions.DataBind();
         ddDivsions.DataTextField = "BranchName";
@@ -911,23 +921,25 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     lblCompanyEx.Text = Convert.ToString(dr["BranchName"]);
 
                     lblAddress1.Text = Convert.ToString(dr["BranchAddress1"]);
-                    lblPhnEx.Text = Convert.ToString(dr["BranchAddress1"]);
+                    lblAddress1Ex.Text = Convert.ToString(dr["BranchAddress1"]);
 
                     lblAddress2.Text = Convert.ToString(dr["BranchAddress2"]);
-                    lblAddressEx.Text = Convert.ToString(dr["BranchAddress2"]);
+                    lblAddress2Ex.Text = Convert.ToString(dr["BranchAddress2"]);
 
                     if (dr["BranchAddress3"].ToString() == "")
                     {
                         address3.Visible = false;
+                        address3Ex.Visible = false;
+
                     }
                     else
                     {
                         lblAddress3.Text = Convert.ToString(dr["BranchAddress3"]);
-                        lblCityEx.Text = Convert.ToString(dr["BranchAddress3"]);
+                        lblAddress3Ex.Text = Convert.ToString(dr["BranchAddress3"]);
                     }
 
                     lblLocation.Text = Convert.ToString(dr["BranchLocation"]);
-                    lblPincodeEx.Text = Convert.ToString(dr["BranchLocation"]);
+                    lblLocationEx.Text = Convert.ToString(dr["BranchLocation"]);
 
                 }
             }
@@ -954,57 +966,59 @@ public partial class ProductSalesBill : System.Web.UI.Page
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 if (DataBinder.Eval(e.Row.DataItem, "VAT") != DBNull.Value && DataBinder.Eval(e.Row.DataItem, "VAT") != "")
+                {
                     vat = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "VAT"));
+                }
+                else
+                {
+                    vat = 0;
+                }
                 //if (DataBinder.Eval(e.Row.DataItem, "CST") != DBNull.Value)
                 //    cst = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CST"));
-                if (DataBinder.Eval(e.Row.DataItem, "Discount") != DBNull.Value && DataBinder.Eval(e.Row.DataItem, "Discount") != "")
-                    discount = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Discount"));
+
+
+                if (DataBinder.Eval(e.Row.DataItem, "Discount") == "" || Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Discount")) == 0)
+                {
+                    //discount = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Discount"));
+                    if (isvalid != true)
+                    {
+                        gvItemEx.Columns[7].Visible = false;
+                    }
+                    //discountLbl.Visible = false;
+                }
+                else
+                {
+                    gvItemEx.Columns[7].Visible = true;
+                    isvalid = true;
+                }
+
                 if (DataBinder.Eval(e.Row.DataItem, "Rate") != DBNull.Value && DataBinder.Eval(e.Row.DataItem, "Rate") != "")
                     purchaseRate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Rate"));
-                if (vat > 0)
-                    lblSalesTaxRateEx.Text = vat + " % ";
+                //if (vat > 0)
+                // lblSalesTaxRate.Text = vat + " % ";
                 //if (cst > 0)
                 //    lblSalesTaxRate.Text = cst + " % ";
 
-                dTot = dTot + Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Amount"));
-                dVat = dVat + Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "NetRate"));
-                dRat = dRat + Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Rate"));
-                dQty = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Qty"));
-                currDis = GetDiscount(dQty, purchaseRate, discount);
-                dDis = dDis + currDis;
-                dCST = dCST + GetCSTVAT(currDis, cst);
-                disTot = disTot + ((dQty * purchaseRate) * (discount / 100));
-                cstTotal = cstTotal + dCST;
-                currVat = GetCSTVAT(currDis, vat);
-                vatTotal = vatTotal + currVat;
-                amtTotal = amtTotal + GetSum(currDis, vat, cst);
-                sumVat = sumVat + (Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "NetRate")) - Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Rate"))) * dQty;
+                dVat = dVat + vat;
+
             }
             else if (e.Row.RowType == DataControlRowType.Footer)
             {
                 //dFr = Convert.ToDouble(lblFg.Text);
+
+                if (isvalid == false)
+                {
+                    gvItemEx.Columns[7].Visible = false;
+                    //  discountLbl.Visible = false;
+                }
 
                 sumNet = dDis + vatTotal + dFr + dCST;
 
                 e.Row.Cells[5].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[5].Text = dTot.ToString("f2");
 
-                lblSalesTaxEx.Text = Math.Abs(vatTotal).ToString("f2");
-
-                lblDiscountEx.Text = disTot.ToString("f2");
-
-                //lblGrandCst.Text = dCST.ToString("f2");
-
-                lblTotalEx.Text = String.Format("{0:0,0}", sumNet);
-                //lblCurrRs.Text = currencyType + " " + String.Format("{0:0,0}", sumNet);
-
-                // lblSubTotalEx.Text = dTot.ToString("f2");
-
-                if (dDis > 0)
-                    lblDiscountEx.Visible = true;
-                else
-                    lblDiscountEx.Visible = false;
-
+                //lblSalesTax.Text = dVat.ToString();
+                dVat = 0;
             }
         }
         catch (Exception ex)
