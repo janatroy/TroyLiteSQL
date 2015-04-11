@@ -146,11 +146,11 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 lblShipToName.Text = Convert.ToString(dr["Customername"]);
                 lblShipToNameEx.Text = Convert.ToString(dr["Customername"]);
 
-                lblSupplierCmpnyName.Text = Convert.ToString(dr["Customername"]);
-                lblSupplierCmpnyNameEx.Text = Convert.ToString(dr["Customername"]);
+                lblSupplierAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
+                lblSupplierAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
 
-                lblShipToCmpnyName.Text = Convert.ToString(dr["Customername"]);
-                lblShipToCmpnyNameEx.Text = Convert.ToString(dr["Customername"]);
+                lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
+                lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
 
                 custAdd = Convert.ToString(dr["CustomerAddress"]);
                 string[] address = new string[3] { "", "", "" };
@@ -166,15 +166,15 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 {
                     if (address[0] != string.Empty)
                     {
-                        lblSupplierAddr1.Text = address[0];
-                        lblShipToAddr1.Text = address[0];
+                        lblSupplierAddr2.Text = address2;
+                        lblShipToAddr2.Text = address2;
                     }
                 }
 
                 if (address2 != null)
                 {
-                    lblSupplierAddr2.Text = address2;
-                    lblShipToAddr2.Text = address2;
+                    lblSupplierAddr3.Text = address3;
+                    lblShipToAddr3.Text = address3;
                 }
 
                 if (address3 != null)
@@ -182,11 +182,11 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     //lblSuppAdd3.Text = address3;
                 }
 
-                lblSupplierPhn.Text = Convert.ToString(dr["CustomerContacts"]);
-                lblSupplierPhnEx.Text = Convert.ToString(dr["CustomerContacts"]);
+                lblSupplierPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                lblSupplierPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
 
-                lblShipToPhn.Text = Convert.ToString(dr["CustomerContacts"]);
-                lblShipToPhnEx.Text = Convert.ToString(dr["CustomerContacts"]);
+                lblShipToPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                lblShipToPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
 
                 lblBillDate.Text = Convert.ToString(dr["BillDate"]);
                 lblBillDateEx.Text = Convert.ToString(dr["BillDate"]);
