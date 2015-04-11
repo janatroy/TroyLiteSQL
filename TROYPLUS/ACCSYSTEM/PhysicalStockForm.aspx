@@ -59,13 +59,13 @@
 
                                     </td>
                                 <td >
-                                    <asp:Button ID="cmdShow" runat="server" ValidationGroup="salesval" CssClass="Button"
-                                        Width="150px" Text="Show Entered Stock" OnClick="cmdShow_Click" />
+                                    <asp:Button ID="cmdShow" runat="server" ValidationGroup="salesval" CssClass="Showenterstock" Font-Bold="True"
+                                         EnableTheming="false" ForeColor="White" Width="120px" OnClick="cmdShow_Click" />
                                    
                                 </td>
                                 <td align="left">
-                                     &nbsp;<asp:Button ID="cmdSave" runat="server" ValidationGroup="salesval" CssClass="Button"
-                                        Width="150px" Text="Save Closing Stock" OnClick="cmdSave_Click" />
+                                     &nbsp;<asp:Button ID="cmdSave" runat="server" ValidationGroup="salesval" CssClass="Saveclostock" Font-Bold="True"
+                                        EnableTheming="false" ForeColor="White" Width="120px" OnClick="cmdSave_Click" />
                                     &nbsp;<asp:Button ID="cmdOpen" runat="server" ValidationGroup="salesval" CssClass="Button"
                                         Width="150px" Text="Show Op.Stock" Visible="false" OnClick="cmdOpen_Click" />
                                     </td>

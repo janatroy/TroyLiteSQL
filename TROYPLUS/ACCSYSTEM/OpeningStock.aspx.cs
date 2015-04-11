@@ -113,6 +113,25 @@ public partial class OpeningStock : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+    protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            GrdViewSerVisit.PageIndex = ((DropDownList)sender).SelectedIndex;
+
+            //string textt = string.Empty;
+            //string dropd = string.Empty;
+
+            //textt = txtSearch.Text;
+            //dropd = ddCriteria.SelectedValue;
+
+            //BindGrid(textt, dropd);
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
 
     private void BranchEnable_Disable()
     {

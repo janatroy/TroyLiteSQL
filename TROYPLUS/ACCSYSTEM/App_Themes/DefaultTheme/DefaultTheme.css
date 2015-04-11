@@ -2262,3 +2262,33 @@ padding-left:2px;
 font-family:Algerian;
 height:36px;
 }
+
+.Uploadbutton1231
+{
+    background: url(images/Upload_Btn.png) no-repeat !important;
+    width: 120px !important;
+    height: 34px !important;
+    display: block !important;
+    border: none;
+    cursor: pointer;
+}
+
+.Uploadbutton12312
+{
+    background: url(images/Downloadsample_format_Btn.png) no-repeat !important;
+    width: 120px !important;
+    height: 34px !important;
+    display: block !important;
+    border: none;
+    cursor: pointer;
+}
+
+.Uploadbutton123121
+{
+    background: url(images/Browse_Btn.png) no-repeat !important;
+    width: 250px !important;
+    height: 34px !important;
+    display: block !important;
+    border: none;
+    cursor: pointer;
+}
