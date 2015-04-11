@@ -425,7 +425,17 @@ public partial class ProductSalesBill : System.Web.UI.Page
                         measureUnit = bl.getBillProductUnit(itemCode);
                     }
                     salesDs = bl.GetProductSalesBill(salesID, itemCode);
-                    qty = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Quantity"]);
+                    //qty = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Quantity"]);
+
+                    if (ds.Tables[0].Rows[i]["Qty"] != null)
+                    {
+                        qty = Convert.ToInt32(ds.Tables[0].Rows[i]["Qty"]);
+                    }
+                    else
+                    {
+                        qty = 0;
+                    }
+
                     if (salesDs.Tables[0].Rows[0]["Rate"] != null)
                     {
                         dRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Rate"]);
@@ -744,11 +754,11 @@ public partial class ProductSalesBill : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         ds = bl.GetBranchDivisions();
-<<<<<<< HEAD
+
         ds.Tables[0].Rows[0].Delete();
-=======
+
         //ds.Tables[0].Rows[0].Delete();
->>>>>>> origin/master
+
         ddDivsions.DataSource = ds;
         ddDivsions.DataBind();
         ddDivsions.DataTextField = "BranchName";
