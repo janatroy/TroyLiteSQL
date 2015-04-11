@@ -744,11 +744,11 @@ public partial class ProductSalesBill : System.Web.UI.Page
         DataSet ds = new DataSet();
 
         ds = bl.GetBranchDivisions();
-<<<<<<< HEAD
+
         ds.Tables[0].Rows[0].Delete();
-=======
+
         //ds.Tables[0].Rows[0].Delete();
->>>>>>> origin/master
+
         ddDivsions.DataSource = ds;
         ddDivsions.DataBind();
         ddDivsions.DataTextField = "BranchName";
