@@ -3971,7 +3971,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                         double per = 0;
                                         double rate2 = 0;
 
-                                        if (dsrate.Tables[0].Rows.Count > 0)
+                                        if (dsrate != null && dsrate.Tables[0].Rows.Count > 0)
                                         {
                                             foreach (DataRow dr in dsrate.Tables[0].Rows)
                                             {
