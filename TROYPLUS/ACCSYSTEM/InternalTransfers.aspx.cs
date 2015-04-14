@@ -38,7 +38,8 @@ public partial class InternalTransfers : System.Web.UI.Page
     {
         string connection = Request.Cookies["Company"].Value;
         IInternalTransferService bl = new BusinessLogic(connection);
-        var dbData = bl.ListInternalRequests(connection, txtSearch.Text, ddCriteria.SelectedValue);
+        string branch = Request.Cookies["Branch"].Value;
+        var dbData = bl.ListInternalRequests(connection, txtSearch.Text, ddCriteria.SelectedValue,branch);
 
         if (dbData != null)
         {
@@ -112,6 +113,7 @@ public partial class InternalTransfers : System.Web.UI.Page
             cmbStatus.Enabled = false;
             txtCompletedDate.Enabled = false;
             txtReason.Enabled = false;
+            BranchEnable_Disable();
 
             //GrdViewBranches.Visible = false;
 
@@ -318,6 +320,10 @@ public partial class InternalTransfers : System.Web.UI.Page
             //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('This is Trial Version, Please upgrade to Full Version of this Software. Thank You.');", true);
             //    return;
             //}
+            cmbProd.SelectedIndex = 0;
+            cmbBranchHasStock.SelectedIndex = 0;
+            cmbRequestedBranch.SelectedIndex = 0;
+            txtQtyAdd.Text = string.Empty;
             txtRequestedDate.Text = DateTime.Now.ToShortDateString();
             cmbStatus.Enabled = false;
             txtCompletedDate.Enabled = false;
@@ -327,6 +333,7 @@ public partial class InternalTransfers : System.Web.UI.Page
             contentPopUp.Visible = true;
             UpdateButton.Visible = false;
             InsertButton.Visible = true;
+            BranchEnable_Disable();
             ModalPopupExtender1.Show();
 
         }
@@ -418,6 +425,28 @@ public partial class InternalTransfers : System.Web.UI.Page
                 TroyLiteExceptionManager.HandleException(ex);
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Error occured while saving details. Please contact Administrator');", true);
             }
+        }
+    }
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+      string  connection = Request.Cookies["Company"].Value;
+       string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        cmbRequestedBranch.ClearSelection();
+        ListItem li = cmbRequestedBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            cmbRequestedBranch.Enabled = true;
+        }
+        else
+        {
+            cmbRequestedBranch.Enabled = false;
         }
     }
 
