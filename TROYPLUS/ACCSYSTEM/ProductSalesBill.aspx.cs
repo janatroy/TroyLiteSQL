@@ -456,7 +456,6 @@ public partial class ProductSalesBill : System.Web.UI.Page
                         qty = 0;
                     }
 
-
                     if (salesDs.Tables[0].Rows[0]["Rate"] != null)
                     {
                         dRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Rate"]);

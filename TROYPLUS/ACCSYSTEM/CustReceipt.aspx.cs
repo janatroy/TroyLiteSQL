@@ -1093,6 +1093,8 @@ public partial class CustReceipt : System.Web.UI.Page
             loadBranch();
 
 
+            string Branch = Row.Cells[7].Text;
+
             if (!bl.IsValidDate(connection, Convert.ToDateTime(recondate)))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date is invalid')", true);
@@ -1101,7 +1103,7 @@ public partial class CustReceipt : System.Web.UI.Page
             else
             {
                 //pnlEdit.Visible = true;
-                DataSet ds = bl.GetRecForId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()));
+                DataSet ds = bl.GetRecForId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()), Branch);
                 if (ds != null)
                 {
 
@@ -1830,7 +1832,7 @@ public partial class CustReceipt : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
 
-            ds = bl.ListBanks();
+            ds = bl.ListBankLedgerpaymnet();
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -2356,7 +2358,7 @@ public partial class CustReceipt : System.Web.UI.Page
         //    dstt.Tables[0].Rows.Add(drNewt);
         //}
 
-
+	 string Branchcde = drpBranchAdd.SelectedValue;
 
         int CreditorID = 0;
         string sCustomerName = string.Empty;
@@ -2384,7 +2386,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 return;
             }
 
-            CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,true,"");
+            CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,false,Branchcde);
             sCustomerName = txtCustomerName.Text;
         }
         else
@@ -3390,7 +3392,7 @@ public partial class CustReceipt : System.Web.UI.Page
         //    dstt.Tables[0].Rows.Add(drNewt);
         //}
 
-
+	string Branchcde = drpBranchAdd.SelectedValue;
 
         int CreditorID = 0;
         string sCustomerName = string.Empty;
@@ -3418,7 +3420,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 return;
             }
 
-            CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, true, "");
+            CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, false,Branchcde);
             sCustomerName = txtCustomerName.Text;
         }
         else
@@ -5176,25 +5178,6 @@ public partial class CustReceipt : System.Web.UI.Page
     protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
     {
         loadLedgers(drpBranchAdd.SelectedValue);
-
-        GridView1.DataSource = null;
-        GridView1.DataBind();
-        totalrow.Visible = false;
-        totalrow1.Visible = false;
-        totalrow123.Visible = false;
-
-        BusinessLogic bl = new BusinessLogic(sDataSource);
-        string connection = string.Empty;
-        connection = Request.Cookies["Company"].Value;
-        DataSet dsd = new DataSet();
-        dsd = bl.ListCusCategory(connection);
-        drpCustomerCategoryAdd.Items.Clear();
-        drpCustomerCategoryAdd.Items.Add(new ListItem("Select Customer Category", "0"));
-
-        drpCustomerCategoryAdd.DataTextField = "CusCategory_Name";
-        drpCustomerCategoryAdd.DataValueField = "CusCategory_Value";
-        drpCustomerCategoryAdd.DataSource = dsd;
-        drpCustomerCategoryAdd.DataBind();
     }
 
     private void loadLedgers(string Branch)
@@ -5206,10 +5189,7 @@ public partial class CustReceipt : System.Web.UI.Page
         
         drpLedger.Items.Clear();
         drpLedger.Items.Add(new ListItem("Select Customer", "0"));
-
-        ds = bl.ListSundryDebtorswithMobNoExceptIsActive(connection, Branch);
-
-        //ds = bl.ListSundryDebitorsIsActive(connection, Branch);
+        ds = bl.ListSundryDebitorsIsActive(connection, Branch);
         drpLedger.DataSource = ds;
         
         drpLedger.DataTextField = "LedgerName";
@@ -5322,7 +5302,7 @@ public partial class CustReceipt : System.Web.UI.Page
             txtCustomerName.Visible = true;
             drpLedger.Visible = false;
 
-            txtCustomerId.Visible = false;
+            txtCustomerId.Visible = true;
             drpMobile.Visible = false;
 
             txtAddress.ReadOnly = false;
@@ -5342,7 +5322,7 @@ public partial class CustReceipt : System.Web.UI.Page
             drpLedger.Visible = true;
             txtCustomerName.Visible = false;
 
-            drpMobile.Visible = false;
+            drpMobile.Visible = true;
             txtCustomerId.Visible = false;
 
             txtAddress.ReadOnly = true;
@@ -5716,7 +5696,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 drpCustomerCategoryAdd.Enabled = false;
 
                 drpLedger.Visible = true;
-                drpMobile.Visible = false;
+                drpMobile.Visible = true;
                 txtCustomerId.Enabled = false;
                 txtCustomerName.Enabled = false;
                 chk.Checked = true;
@@ -6592,7 +6572,7 @@ public partial class CustReceipt : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
 
-            ds = bl.ListBanks();
+            ds = bl.ListBankLedgerpaymnet();
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
