@@ -317,8 +317,12 @@
                                                                                 <td class="ControlTextBox3" style="width: 25%;">
                                                                                     <asp:TextBox ID="txtRequestedDate" Enabled="false" runat="server" Text='<%# Bind("RequestedDate") %>'
                                                                                         CssClass="cssTextBox" Width="100px"></asp:TextBox>
+                                                                                     <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" CssClass="datepicker" Width="20px" />
+                                                                                     <cc1:CalendarExtender ID="calBillDate" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="btnBillDate" TargetControlID="txtRequestedDate">
+                                                                                                                                        </cc1:CalendarExtender>                                                                                    
                                                                                 </td>
                                                                                 <td class="ControlLabel" style="width: 25%;">
+                                                                                    
                                                                                     Completed Date:
                                                                                 </td>
                                                                                 <td class="ControlTextBox3" style="width: 25%;">

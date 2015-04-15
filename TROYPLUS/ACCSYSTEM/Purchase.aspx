@@ -611,7 +611,6 @@
                                                                                                             </HeaderTemplate>
                                                                                                             <ContentTemplate>
                                                                                                                 <table width="600px" cellpadding="1" cellspacing="1" class="tblLeft">
-
                                                                                                                     <tr>
                                                                                                                         <td align="center" colspan="4">
                                                                                                                             <asp:HiddenField ID="hdRole" runat="server" Value="N" />
@@ -1012,25 +1011,23 @@
                                                                                                                                             </tr>
                                                                                                                                             <tr>
                                                                                                                                                 <td colspan="4">
-                                                                                                                                                    <div style="height: 250px; width: 1190px; overflow: scroll">
+                                                                                                                                                    <div style="max-height:250px; width: 1190px;" id="grvStudentDetails_parent">
                                                                                                                                                         <center>
-                                                                                                                                                            <asp:GridView ID="grvStudentDetails" runat="server" Width="50%"
+                                                                                                                                                            <asp:GridView ID="grvStudentDetails" CssClass="grvStudentDetails" runat="server" Width="50%" 
                                                                                                                                                                 ShowFooter="True" AutoGenerateColumns="False" OnRowDeleting="grvStudentDetails_RowDeleting" OnRowDataBound="grvStudentDetails_RowDataBound"
                                                                                                                                                                 CellPadding="1"
                                                                                                                                                                 GridLines="None">
-
                                                                                                                                                                 <%--<RowStyle CssClass="dataRow" />
                                                                                                                                                         <SelectedRowStyle CssClass="SelectdataRow" />
                                                                                                                                                         <AlternatingRowStyle CssClass="altRow" />
                                                                                                                                                         <EmptyDataRowStyle CssClass="HeadataRow" Font-Bold="true" />
                                                                                                                                                         <HeaderStyle CssClass="HeadataRow" Wrap="false" />
                                                                                                                                                         <FooterStyle CssClass="dataRow" />--%>
-
                                                                                                                                                                 <Columns>
                                                                                                                                                                     <asp:BoundField DataField="RowNumber" HeaderText="#" ItemStyle-Width="45px" ItemStyle-Font-Size="15px" HeaderStyle-ForeColor="Black" />
                                                                                                                                                                     <asp:TemplateField HeaderText="Product Code-Name-Model" ItemStyle-Width="1px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:DropDownList ID="drpPrd" Width="300px" runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged">
+                                                                                                                                                                            <asp:DropDownList ID="drpPrd"  Width="300px" runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged">
                                                                                                                                                                             </asp:DropDownList>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
@@ -1086,10 +1083,10 @@
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <asp:TextBox ID="txtTotal" Style="text-align: right" runat="server" ReadOnly="true" Width="100px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
-                                                                                                                                                                        <FooterStyle HorizontalAlign="Left" />
+                                                                                                                                                                        <FooterStyle HorizontalAlign="Right" />
                                                                                                                                                                         <FooterTemplate>
-                                                                                                                                                                            <asp:Button ID="ButtonAdd" runat="server" AutoPostback="true" EnableTheming="false" OnClick="ButtonAdd_Click"
-                                                                                                                                                                                ValidationGroup="DynRowAdd" Text="Add New" />
+                                                                                                                                                                        <asp:Button ID="ButtonAdd" runat="server" AutoPostback="true" EnableTheming="false" OnClick="ButtonAdd_Click"
+                                                                                                                                                                        ValidationGroup="DynRowAdd" Text="Add New" />
                                                                                                                                                                         </FooterTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:CommandField ShowDeleteButton="True" ButtonType="Button" />
@@ -1116,12 +1113,7 @@
                                                                                                         <br></br>
                                                                                                         </br>
                                                                                                         </br>--%>
-                                                                                                                        </td>
-                                                                                                                    </tr>
-                                                                                                                    <tr style="height: 5px">
-                                                                                                                    </tr>
-                                                                                                                    <tr>
-                                                                                                                        <td>
+                                                                                                                       
                                                                                                                             <asp:UpdatePanel ID="UpdatePanel14" runat="server" UpdateMode="Conditional">
                                                                                                                                 <ContentTemplate>
                                                                                                                                     <table width="100%">
