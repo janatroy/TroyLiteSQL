@@ -735,7 +735,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             int iSupplier = 0;
             int iCustomer = 0;
 
-            int iPaymode = 1;
+            int iPaymode = 3;
             string sInvoiceno = string.Empty;
             string connection = Request.Cookies["Company"].Value;
             string UserID = Request.Cookies["LoggedUserName"].Value;

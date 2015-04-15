@@ -125,7 +125,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
 
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet dsBill = new DataSet();
-        dsBill = bl.GetPurchaseForpurchaseId(Convert.ToInt32(Request.QueryString["SID"]));
+        dsBill = bl.GetPurchaseForpurchaseId(Convert.ToInt32(Request.QueryString["SID"]),"");
         int supplierID = 0;
 
         if (dsBill.Tables[0].Rows.Count > 0)

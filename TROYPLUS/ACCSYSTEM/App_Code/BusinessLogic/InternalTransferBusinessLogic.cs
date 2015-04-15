@@ -578,7 +578,7 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Order By ledgerName");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblGroups.GroupName='Sundry Debtors' and BranchCode='" + BranchCode + "' Order By ledgerName");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);

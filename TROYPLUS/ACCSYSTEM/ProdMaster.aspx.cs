@@ -1864,14 +1864,35 @@ public partial class ProdMaster : System.Web.UI.Page
                 ProductDesc = txtProdDescAdd.SelectedValue;
                 Rate = Convert.ToDouble(txtUnitRateAdd.Text);
                 MRPEffDate = DateTime.Parse(txtMrpDateAdd.Text);
-                Unit = Convert.ToInt32(txtUnitAdd.Text);
+                if (txtUnitAdd.Text != "")
+                {
+                    Unit = Convert.ToInt32(txtUnitAdd.Text);
+                }
+                else
+                {
+                    Unit = 0;
+                }
                 VAT = Convert.ToDouble(txtVATAdd.Text);
                 Discount = Convert.ToInt32(txtDiscountAdd.Text);
-                BuyUnit = Convert.ToInt32(txtBuyUnitAdd.Text);
+                if (txtBuyUnitAdd.Text != "")
+                {
+                    BuyUnit = Convert.ToInt32(txtBuyUnitAdd.Text);
+                }
+                else
+                {
+                    BuyUnit = 0;
+                }
                 BuyVAT = Convert.ToDouble(txtBuyVATAdd.Text);
                 BuyRate = Convert.ToDouble(txtBuyRateAdd.Text);
                 BuyDiscount = Convert.ToInt32(txtBuyDiscountAdd.Text);
-                DealerUnit = Convert.ToInt32(txtDealerUnitAdd.Text);
+                if (txtDealerUnitAdd.Text != "")
+                {
+                    DealerUnit = Convert.ToInt32(txtDealerUnitAdd.Text);
+                }
+                else
+                {
+                    DealerUnit = 0;
+                }
                 DealerVAT = Convert.ToDouble(txtDealerVATAdd.Text);
                 CST = Convert.ToDouble(txtCSTAdd.Text);
                 DealerRate = Convert.ToDouble(txtDealerRateAdd.Text);
