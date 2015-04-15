@@ -1096,18 +1096,7 @@
 
                                                                                                                                 
 
-                                                                                                                                <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
-                                                                                                                                    <ContentTemplate>
-                                                                                                                                        <asp:DropDownList Visible="false" ID="drpMobile" runat="server" AppendDataBoundItems="true" DataSourceID="srcCreditorDebitorIsActive" AutoPostBack="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="Mobile" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="drpMobile_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" Width="260px">
-                                                                                                                                            <asp:ListItem style="background-color: #e7e7e7" Text="Select Mobile" Value="0"></asp:ListItem>
-                                                                                                                                        </asp:DropDownList>
-                                                                                                                                        <asp:TextBox ID="txtCustomerId" runat="server" BackColor="#e7e7e7" SkinID="skinTxtBoxGrid" Visible="false"></asp:TextBox>
-                                                                                                                                    </ContentTemplate>
-                                                                                                                                   <%-- <Triggers>
-                                                                                                                                        <asp:AsyncPostBackTrigger ControlID="chk" EventName="CheckedChanged" />
-                                                                                                                                        <asp:AsyncPostBackTrigger ControlID="drpLedger" EventName="SelectedIndexChanged" />
-                                                                                                                                    </Triggers>--%>
-                                                                                                                                </asp:UpdatePanel>
+                                                                                                                                
                                                                                                                             </td>
 
                                                                                                                             <td style="width: 15%;" align="left">
@@ -1131,21 +1120,21 @@
                                                                                                                         </tr>
                                                                                                                         <tr>
                                                                                                                             <td class="ControlLabelNew" style="width: 17%">
-                                                                                                                                <%--<asp:CompareValidator ID="cvCustomer" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Customer Category. It cannot be left blank." Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>--%>
-                                                                                                                                        Category of Customer *
+                                                                                                                                Mobile
                                                                                                                             </td>
                                                                                                                             <td class="ControlDrpBorder" style="width: 22%">
-                                                                                                                                <asp:UpdatePanel ID="UpdatePanel10" runat="server" UpdateMode="Conditional">
-                                                                                                                                            <ContentTemplate>
-                                                                                                                                                <asp:DropDownList ID="drpCustomerCategoryAdd" runat="server" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="260px">
-                                                                                                                                                    <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer Category" Value="0"></asp:ListItem>
-                                                                                                                                                </asp:DropDownList>
-                                                                                                                                            </ContentTemplate>
-                                                                                                                                            <Triggers>
-                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpLedger" EventName="SelectedIndexChanged" />
-                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />
-                                                                                                                                            </Triggers>
-                                                                                                                                        </asp:UpdatePanel>
+                                                                                                                                <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
+                                                                                                                                    <ContentTemplate>
+                                                                                                                                        <asp:DropDownList Visible="false" ID="drpMobile" runat="server" AppendDataBoundItems="true" DataSourceID="srcCreditorDebitorIsActive" AutoPostBack="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="Mobile" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="drpMobile_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" Width="260px">
+                                                                                                                                            <asp:ListItem style="background-color: #e7e7e7" Text="Select Mobile" Value="0"></asp:ListItem>
+                                                                                                                                        </asp:DropDownList>
+                                                                                                                                        <asp:TextBox ID="txtCustomerId" runat="server" BackColor="#e7e7e7" SkinID="skinTxtBoxGrid" Visible="false"></asp:TextBox>
+                                                                                                                                    </ContentTemplate>
+                                                                                                                                   <%-- <Triggers>
+                                                                                                                                        <asp:AsyncPostBackTrigger ControlID="chk" EventName="CheckedChanged" />
+                                                                                                                                        <asp:AsyncPostBackTrigger ControlID="drpLedger" EventName="SelectedIndexChanged" />
+                                                                                                                                    </Triggers>--%>
+                                                                                                                                </asp:UpdatePanel>
                                                                                                                             </td>
                                                                                                                             <td></td>
 
@@ -1163,6 +1152,28 @@
                                                                                                                                 </asp:UpdatePanel>
                                                                                                                             </td>
                                                                                                                             <td></td>
+                                                                                                                        </tr>
+                                                                                                                        <tr style="height: 2px">
+                                                                                                                        </tr>
+                                                                                                                        <tr>
+                                                                                                                            <td class="ControlLabelNew" style="width: 17%">
+                                                                                                                                <%--<asp:CompareValidator ID="cvCustomer" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Customer Category. It cannot be left blank." Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>--%>
+                                                                                                                                        Category of Customer *
+                                                                                                                            </td>
+                                                                                                                            <td class="ControlDrpBorder" style="width: 22%">
+                                                                                                                                <asp:UpdatePanel ID="UpdatePanel10" runat="server" UpdateMode="Conditional">
+                                                                                                                                            <ContentTemplate>
+                                                                                                                                                <asp:DropDownList ID="drpCustomerCategoryAdd" runat="server" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="260px">
+                                                                                                                                                    <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer Category" Value="0"></asp:ListItem>
+                                                                                                                                                </asp:DropDownList>
+                                                                                                                                            </ContentTemplate>
+                                                                                                                                            <Triggers>
+                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpLedger" EventName="SelectedIndexChanged" />
+                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />
+                                                                                                                                            </Triggers>
+                                                                                                                                        </asp:UpdatePanel>
+                                                                                                                            </td>
+                                                                                                                            
                                                                                                                         </tr>
                                                                                                                         <tr style="height: 6px">
                                                                                                                             </tr>

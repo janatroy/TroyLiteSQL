@@ -1918,7 +1918,7 @@ public partial class Purchase : System.Web.UI.Page
                         Session["SalesReturn"] = salesReturn.ToUpper();
 
                         Session["PurchaseProductDs"] = null;
-                        Response.Redirect("ProductPurchaseBill.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn);
+                        Response.Redirect("ProductPurchaseBillNew.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn + "&BID=" + branchcode );
                         /*March 18*/
                         //}
                         ///*March 18*/
