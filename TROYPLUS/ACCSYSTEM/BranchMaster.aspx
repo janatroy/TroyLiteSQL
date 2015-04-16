@@ -254,6 +254,72 @@
                                                                     
                                                                 </td>
                                                             </tr>
+                                                                <tr style="height:2px">
+                                                            </tr>
+                                                             <tr>
+                                                                <td style="width: 10%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 35%" class="ControlLabelNew">
+                                                                    Mobile 1 *
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="Txtmobile1"
+                                                                        Display="Dynamic" ErrorMessage="Please enter Mobile 1. It cannot be left Blank.">*</asp:RequiredFieldValidator>
+                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType=" Numbers"
+                                                                        TargetControlID="Txtmobile1"  />
+                                                                </td>
+                                                                <td style="width: 25%;" class="ControlDrpBorder">
+                                                                    <asp:TextBox ID="Txtmobile1" MaxLength="10" runat="server" CssClass="cssTextBox"
+                                                                        ></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 30%" >
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                                <tr style="height:2px">
+                                                            </tr>
+                                                             <tr>
+                                                                <td style="width: 10%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 35%" class="ControlLabelNew">
+                                                                    Mobile 2 
+                                                                  <%--  <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="Txtmobile2"
+                                                                        Display="Dynamic" ErrorMessage="Please enter Mobile 2. It cannot be left Blank.">*</asp:RequiredFieldValidator>--%>
+                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType=" Numbers"
+                                                                        TargetControlID="Txtmobile2" />
+                                                                </td>
+                                                                <td style="width: 25%;" class="ControlDrpBorder">
+                                                                    <asp:TextBox ID="Txtmobile2" MaxLength="10" runat="server" CssClass="cssTextBox"
+                                                                        ></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 30%" >
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                                <tr style="height:2px">
+                                                            </tr>
+                                                             <tr>
+                                                                <td style="width: 10%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 35%" class="ControlLabelNew">
+                                                                   Emailid 
+                                                                  <%--   <asp:RequiredFieldValidator ID="RequiredFieldValidator756" runat="server" ControlToValidate="Txtemailid"
+                                                                        Display="Dynamic" ErrorMessage="Please enter Emailid. It cannot be Left Blank.">*</asp:RequiredFieldValidator>--%>
+
+                                                                  <asp:RegularExpressionValidator ID="remail123" runat="server"
+                                                                                                ControlToValidate="Txtemailid" Display="Dynamic" Text="*" EnableClientScript="True" ErrorMessage="Please enter Correct Email Address. It cannot be left blank."
+                                                                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                                                            </asp:RegularExpressionValidator>
+                                                                </td>
+                                                                <td style="width: 25%;" class="ControlDrpBorder">
+                                                                    <asp:TextBox ID="Txtemailid" runat="server" CssClass="cssTextBox"
+                                                                       ></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 30%" >
+                                                                    
+                                                                </td>
+                                                            </tr>
                                                             <tr style="height:2px">
                                                             </tr>
                                                             <tr>

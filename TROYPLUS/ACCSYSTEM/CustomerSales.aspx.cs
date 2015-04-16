@@ -7861,22 +7861,13 @@ public partial class CustomerSales : System.Web.UI.Page
                 //int sBillNo = Convert.ToInt32(GrdViewSales.DataKeys[e.RowIndex].Value.ToString());
                 //string branchcode = GrdViewSales.Rows[e.RowIndex].Cells[9].Text.Trim(); //row.Cells[9].Text;
 
-
-                salesID1 = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value.ToString());
-                string branchcode = row.Cells[9].Text;
-
-
                 if (bl.CheckUserHaveEdit(usernam, "SALES"))
                 {
                     ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
                     ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
                 }
 
-                if (bl.CheckAdvAmtAdjustSales(salesID1, branchcode))
-                {
-                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
-                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
-                }
+               
 
 
                 if (bl.CheckUserHaveDelete(usernam, "SALES"))
@@ -7894,6 +7885,17 @@ public partial class CustomerSales : System.Web.UI.Page
                 {
                     ((ImageButton)e.Row.FindControl("btnViewDisabled")).Visible = false;
                 }
+
+
+                salesID1 = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value.ToString());
+                string branchcode = row.Cells[9].Text;
+
+                if (bl.CheckAdvAmtAdjustSales(salesID1, branchcode))
+                {
+                    ((ImageButton)e.Row.FindControl("btnEdit")).Visible = false;
+                    ((ImageButton)e.Row.FindControl("btnEditDisabled")).Visible = true;
+                }
+               
 
             }
             errPanel.Visible = false;
