@@ -8514,7 +8514,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         GrdViewReceipt.Visible = false;
 
                         DataSet receiptData = new DataSet();
-                        receiptData = bl.ListReceiptsForBillNoOrder(lblBillNo.Text);
+                        receiptData = bl.ListReceiptsForBillNoOrder(lblBillNo.Text,branchcode);
                         string sDebitor = string.Empty;
 
                         int gg = 1;
