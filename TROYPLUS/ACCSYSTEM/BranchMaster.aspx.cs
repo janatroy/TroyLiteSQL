@@ -133,6 +133,9 @@ public partial class BranchMaster : System.Web.UI.Page
                     string BranchAddress2 = string.Empty;
                     string BranchAddress3 = string.Empty;
                     string BranchLocation = string.Empty;
+                    string mobile1 = string.Empty;
+                    string mobile2 = string.Empty;
+                    string emailid = string.Empty;
                     string IsActive = string.Empty;
 
                     IsActive = drpIsActive.SelectedValue;
@@ -146,12 +149,15 @@ public partial class BranchMaster : System.Web.UI.Page
                     BranchAddress2 = txtBranchAddress2.Text.Trim();
                     BranchAddress3 = txtBranchAddress3.Text.Trim();
                     BranchLocation = txtBranchLocation.Text.Trim();
+                    mobile1 = Txtmobile1.Text.Trim();
+                    mobile2 = Txtmobile2.Text.Trim();
+                    emailid = Txtemailid.Text.Trim();
 
                     BusinessLogic bl = new BusinessLogic(sDataSource);
                     string connection = Request.Cookies["Company"].Value;
 
 
-                    bl.UpdateBranch(connection, BranchID, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive,Username);
+                    bl.UpdateBranch(connection, BranchID, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, mobile1, mobile2, emailid, IsActive, Username);
 
                         //MyAccordion.Visible = true;
                         pnlVisitDetails.Visible = false;
@@ -415,6 +421,9 @@ public partial class BranchMaster : System.Web.UI.Page
         txtBranchName.Enabled = true;
         txtBranchName.Text = "";
         txtBranchAddress3.Text = "";
+        Txtmobile1.Text = "";
+        Txtmobile2.Text = "";
+        Txtemailid.Text = "";
     }
 
     protected void UpdateCancelButton_Click(object sender, EventArgs e)
@@ -541,6 +550,9 @@ public partial class BranchMaster : System.Web.UI.Page
                 txtBranchAddress2.Text = ds.Tables[0].Rows[0]["BranchAddress2"].ToString();
                 txtBranchAddress3.Text = ds.Tables[0].Rows[0]["BranchAddress3"].ToString();
                 txtBranchLocation.Text = ds.Tables[0].Rows[0]["BranchLocation"].ToString();
+                Txtmobile1.Text = ds.Tables[0].Rows[0]["mobile1"].ToString();
+                Txtmobile2.Text = ds.Tables[0].Rows[0]["mobile2"].ToString();
+                Txtemailid.Text = ds.Tables[0].Rows[0]["Emailid"].ToString();
                 drpIsActive.SelectedValue = ds.Tables[0].Rows[0]["IsActive"].ToString();
 
                 txtBranchcode.Enabled = false;
@@ -672,6 +684,9 @@ public partial class BranchMaster : System.Web.UI.Page
                     string BranchAddress2 = string.Empty;
                     string BranchAddress3 = string.Empty;
                     string BranchLocation = string.Empty;
+                    string txtmobile1 = string.Empty;
+                    string txtmobile2 = string.Empty;
+                    string txtemailid = string.Empty;
                     string IsActive = string.Empty;
 
                     string Username = Request.Cookies["LoggedUserName"].Value;
@@ -683,6 +698,9 @@ public partial class BranchMaster : System.Web.UI.Page
                     BranchAddress2 = txtBranchAddress2.Text.Trim();
                     BranchAddress3 = txtBranchAddress3.Text.Trim();
                     BranchLocation = txtBranchLocation.Text.Trim();
+                    txtmobile1 = Txtmobile1.Text.Trim();
+                    txtmobile2 = Txtmobile2.Text.Trim();
+                    txtemailid = Txtemailid.Text.Trim();
 
                     IsActive = drpIsActive.SelectedValue;
 
@@ -934,7 +952,7 @@ public partial class BranchMaster : System.Web.UI.Page
                         }
                     }
 
-                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, IsActive, Username, dstest, dstestt, dstesttt);
+                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation,txtmobile1,txtmobile2,txtemailid,IsActive, Username, dstest, dstestt, dstesttt);
                        
                     //MyAccordion.Visible = true;
                     pnlVisitDetails.Visible = false;

@@ -387,24 +387,24 @@
                                             OnRowDeleting="GrdViewRequestes_RowDeleting" OnPageIndexChanging="GrdViewRequestes_PageIndexChanging">
                                             <EmptyDataRowStyle CssClass="GrdContent" />
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                            <RowStyle Font-Bold="true" HorizontalAlign="Center"  Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                             <Columns>
-                                                <asp:BoundField DataField="RequestID" HeaderStyle-Wrap="false" HeaderText="Request ID"
+                                                <asp:BoundField DataField="RequestID" HeaderStyle-Wrap="false" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderText="Request ID"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderText="Requested User"
+                                                <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderText="Requested User"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedDate" HeaderStyle-Wrap="false" HeaderText="Requested Date" DataFormatString="{0:dd/MM/yyyy}"
+                                                <asp:BoundField DataField="RequestedDate" HeaderStyle-Width="30px" ItemStyle-Width="30px" HeaderStyle-Wrap="false" HeaderText="Requested Date" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="ItemCode" HeaderStyle-Wrap="false" HeaderText="Product"
+                                                <asp:BoundField DataField="ItemCode" HeaderStyle-Wrap="false" HeaderStyle-Width="30px" ItemStyle-Width="30px" HeaderText="Product"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Quantity" HeaderStyle-Wrap="false" HeaderText="Quantity"
+                                                <asp:BoundField DataField="Quantity" HeaderStyle-Wrap="false" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderText="Quantity"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedBranch" HeaderText="RequestedBranch" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="RequestedBranch" HeaderText="RequestedBranch" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="BranchHasStock" HeaderText="BranchHasStock" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="BranchHasStock" HeaderText="BranchHasStock" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Status" HeaderStyle-Wrap="false" HeaderText="Status" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="CompletedDate" HeaderStyle-Wrap="false" HeaderText="CompletedDate" DataFormatString="{0:dd/MM/yyyy}"
+                                                <asp:BoundField DataField="Status" HeaderStyle-Wrap="false" HeaderStyle-Width="30px" ItemStyle-Width="30px" HeaderText="Status" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="CompletedDate" HeaderStyle-Width="30px" ItemStyle-Width="30px" HeaderStyle-Wrap="false" HeaderText="CompletedDate" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Approve/Reject"
                                                     HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" Visible="false">
