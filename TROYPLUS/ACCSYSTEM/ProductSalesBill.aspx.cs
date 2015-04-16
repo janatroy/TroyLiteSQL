@@ -63,6 +63,32 @@ public partial class ProductSalesBill : System.Web.UI.Page
             if (!Page.IsPostBack)
             {
                 loadDivisions();
+                 DataSet companyInfo = new DataSet();
+                 if (Request.Cookies["Company"] != null)
+                 {
+                     companyInfo = bl.getCompanyInfo(Request.Cookies["Company"].Value);
+
+                     if (companyInfo != null)
+                     {
+                         if (companyInfo.Tables[0].Rows.Count > 0)
+                         {
+                             foreach (DataRow dr in companyInfo.Tables[0].Rows)
+                             {
+                                 lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                                 lblHead.Text = Convert.ToString(dr["CompanyName"]);
+                                 Label5.Text = Convert.ToString(dr["CompanyName"]);
+                                 lblPhone.Text = Convert.ToString(dr["Phone"]);
+                                 lblGSTno.Text = Convert.ToString(dr["GSTno"]);
+
+                                 lblAddress.Text = Convert.ToString(dr["Address"]);
+                                 lblCity.Text = Convert.ToString(dr["city"]) + "-" + Convert.ToString(dr["Pincode"]);
+                                // lblPincode.Text = Convert.ToString(dr["Pincode"]);
+                                 lblState.Text = Convert.ToString(dr["state"]);
+
+                             }
+                         }
+                     }
+                 }
 
                 if (ddDivsions.Items.Count == 1)
                 {
@@ -105,6 +131,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    
     }
 
     public void GetHeaderInfo()
@@ -419,7 +446,17 @@ public partial class ProductSalesBill : System.Web.UI.Page
                         measureUnit = bl.getBillProductUnit(itemCode);
                     }
                     salesDs = bl.GetProductSalesBill(salesID, itemCode);
-                    qty = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Quantity"]);
+                    //qty = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Quantity"]);
+
+                    if (ds.Tables[0].Rows[i]["Qty"] != null)
+                    {
+                        qty = Convert.ToInt32(ds.Tables[0].Rows[i]["Qty"]);
+                    }
+                    else
+                    {
+                        qty = 0;
+                    }
+
                     if (salesDs.Tables[0].Rows[0]["Rate"] != null)
                     {
                         dRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Rate"]);
@@ -461,7 +498,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     drNew["ProductName"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]);
                     drNew["ProductDesc"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
 
-                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
+                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["CategoryName"]);
 
                     drNew["SalesPerson"] = GetEmployeeName(Convert.ToInt32(ds.Tables[0].Rows[i]["executivename"]));
 
@@ -934,7 +971,8 @@ public partial class ProductSalesBill : System.Web.UI.Page
 
                     lblLocation.Text = Convert.ToString(dr["BranchLocation"]);
                     lblLocationEx.Text = Convert.ToString(dr["BranchLocation"]);
-
+                    lblMob1.Text = "Mob.No.:" + Convert.ToString(dr["Mobile1"]) + "," + Convert.ToString(dr["Mobile2"]);
+                    lblEmail.Text = "EmailID :" + Convert.ToString(dr["EMailid"]);
                 }
             }
         }

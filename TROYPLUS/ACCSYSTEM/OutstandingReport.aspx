@@ -81,14 +81,14 @@
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Ledger Name
                     </td>
                     <td align="left" style="width: 35%" class="ControlDrpBorder">
-                        <asp:DropDownList ID="drpLedgerName" runat="server" Width="100%" DataTextField="GroupName" CssClass="drpDownListMedium" BackColor="#e7e7e7"
+                        <asp:DropDownList ID="drpLedgerName" runat="server" Width="100%"  OnSelectedIndexChanged="drpLedgerName_SelectedIndexChanged" AutoPostBack="true" DataTextField="GroupName" CssClass="drpDownListMedium" BackColor="#e7e7e7"
                             DataValueField="GroupID" Style="border: 1px solid #e7e7e7" Height="26px">
                         </asp:DropDownList>
                     </td>
                     <td style="width: 15%"></td>
                 </tr>
                 <tr style="height: 2px;" />
-                <tr>
+                <tr runat="server" visible="true" id="row">
                     <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Select Branch
                     </td>
                     <td align="left" style="width: 35%" class="ControlDrpBorder">

@@ -28,51 +28,7 @@
     <script language="javascript" type="text/javascript" src="Scripts\calendar_eu.js"></script>
 
     <style id="Style1" runat="server">
-        .fancy-green .ajax__tab_header {
-            background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
-            cursor: pointer;
-        }
-
-        .fancy-green .ajax__tab_hover .ajax__tab_outer, .fancy-green .ajax__tab_active .ajax__tab_outer {
-            background: url(App_Themes/NewTheme/Images/green_left_Tab.gif) no-repeat left top;
-        }
-
-        .fancy-green .ajax__tab_hover .ajax__tab_inner, .fancy-green .ajax__tab_active .ajax__tab_inner {
-            background: url(App_Themes/NewTheme/Images/green_right_Tab.gif) no-repeat right top;
-        }
-
-        .fancy .ajax__tab_header {
-            font-size: 13px;
-            font-weight: bold;
-            color: #000;
-            font-family: sans-serif;
-        }
-
-            .fancy .ajax__tab_active .ajax__tab_outer, .fancy .ajax__tab_header .ajax__tab_outer, .fancy .ajax__tab_hover .ajax__tab_outer {
-                height: 46px;
-            }
-
-            .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
-                height: 46px;
-                margin-left: 16px; /* offset the width of the left image */
-            }
-
-            .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
-                margin: 16px 16px 0px 0px;
-            }
-
-        .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_active .ajax__tab_tab {
-            color: #fff;
-        }
-
-        .fancy .ajax__tab_body {
-            font-family: Arial;
-            font-size: 10pt;
-            border-top: 0;
-            border: 1px solid #999999;
-            padding: 8px;
-            background-color: #ffffff;
-        }
+      
     </style>
 
 </head>

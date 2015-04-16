@@ -408,11 +408,15 @@
                         <asp:Button ID="BlkAdd" runat="server"  OnClientClick="window.open('BulkPriceUpdation.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');"
                                     EnableTheming="false" Text="Import Existing Prices using Excel" Visible="false"></asp:Button>
                     </td>
-                    <td  style="width:1%">
+                    <td  style="width:15%">
                         <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" OnClientClick="javascript:CheckDate();"
                                     EnableTheming="false" Visible="false" Text="Update Price for Single Product"></asp:Button>
+
+                        <asp:Button ID="Button5" runat="server"  OnClientClick="window.open('BulkPriceUpd.aspx','billSummary', 'toolbar=no,status=no,menu=no,location=no,resizable=yes,height=250,width=500,left=425,top=220, scrollbars=yes');"
+                                    EnableTheming="false" Text="Import Prices using Excel"></asp:Button>
+
                     </td>
-                    <td  style="width:15%">
+                    <td  style="width:1%">
                         
                     </td> 
                  <td  style="width:30%">

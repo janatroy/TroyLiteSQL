@@ -6,17 +6,22 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text;
 using System.Data;
+using System.Configuration;
 
 public partial class InternalTransfers : System.Web.UI.Page
 {
+    public string sDataSource = string.Empty;
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
         if (!Page.IsPostBack)
         {
             BindGridData();
             BindDropdowns();
 
-              string sDataSource = string.Empty;
+              //string sDataSource = string.Empty;
             string connection = Request.Cookies["Company"].Value;
             string usernam = Request.Cookies["LoggedUserName"].Value;
             BusinessLogic bl1 = new BusinessLogic(sDataSource);
@@ -143,6 +148,20 @@ public partial class InternalTransfers : System.Web.UI.Page
                 if (requestDetail.CompletedDate.HasValue)
                     txtCompletedDate.Text = requestDetail.CompletedDate.ToString();
 
+
+                BusinessLogic bll = new BusinessLogic(connection);
+
+                string itemCode = cmbProd.SelectedValue;
+
+                double Reqchk = bll.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+                double Haschk = bll.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+                txtReqStock.Text = Reqchk.ToString();
+                txtHasStock.Text = Haschk.ToString();
+                UpdatePanel1.Update();
+                UpdatePanel2.Update();
+
+
                 ModalPopupExtender1.Show();
             }
         }
@@ -150,6 +169,57 @@ public partial class InternalTransfers : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    protected void cmbProd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        string itemCode = cmbProd.SelectedValue;
+
+        double Reqchk = bl.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+        double Haschk = bl.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+        txtReqStock.Text = Reqchk.ToString();
+        txtHasStock.Text = Haschk.ToString();
+        UpdatePanel1.Update();
+        UpdatePanel2.Update();
+
+        ModalPopupExtender1.Show();
+    }
+
+    protected void cmbRequestedBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        string itemCode = cmbProd.SelectedValue;
+
+        double Reqchk = bl.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+        double Haschk = bl.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+        txtReqStock.Text = Reqchk.ToString();
+        txtHasStock.Text = Haschk.ToString();
+        UpdatePanel1.Update();
+        UpdatePanel2.Update();
+
+        ModalPopupExtender1.Show();
+    }
+
+    protected void cmbBranchHasStock_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        string itemCode = cmbProd.SelectedValue;
+
+        double Reqchk = bl.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+        double Haschk = bl.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+        txtReqStock.Text = Reqchk.ToString();
+        txtHasStock.Text = Haschk.ToString();
+        UpdatePanel1.Update();
+        UpdatePanel2.Update();
+
+        ModalPopupExtender1.Show();
     }
 
     protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -335,6 +405,9 @@ public partial class InternalTransfers : System.Web.UI.Page
             InsertButton.Visible = true;
             BranchEnable_Disable();
             ModalPopupExtender1.Show();
+
+            txtHasStock.Text = "0";
+            txtReqStock.Text = "0";
 
         }
         catch (Exception ex)
@@ -797,7 +870,8 @@ public partial class InternalTransfers : System.Web.UI.Page
 
             if (transferService.CheckIftheItemHasStock(connection, request.ItemCode, request.BranchHasStock, request.Quantity))
             {
-                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock);
+                iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock,iCustomer);
                 DataSet executives = transferService.GeBranchHasStockExecutives(connection, request.BranchHasStock);
                 DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock);
 
@@ -808,7 +882,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                     //DataSet prodData = branchHasStockService.GetProductForId(connection, request.ItemCode);
                     
-                    iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                    //iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
 
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 
