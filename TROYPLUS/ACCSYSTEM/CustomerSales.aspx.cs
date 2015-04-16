@@ -3454,9 +3454,10 @@ public partial class CustomerSales : System.Web.UI.Page
                     return;
                 }
 
-                //Paymode as Bank
+               
 
-                if (iPaymode == 4)
+                //Paymode as Bank
+                if(iPaymode==4)
                 {
                     var recAmount = double.Parse(lblReceivedTotal.Text);
                     var salesAmount = double.Parse(lblNet.Text);
@@ -3479,6 +3480,53 @@ public partial class CustomerSales : System.Web.UI.Page
                         //updatePnlSales.Update();
                         return;
                     }
+                }
+
+                string check = "Y";
+                string DuplicateCopy = "N";
+                string CName = txtCustomerName.Text;
+                bool mobchk;
+                string CustomerIdMobile = "0";
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+                if (chk.Checked == false)
+                {
+                    if (bl.IsLedgerAlreadyFound(connection, CName))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer " + CName + " with this name already exists.');", true);
+                        return;
+                    }
+                    //if (chk.Checked == false && txtCustomerId.Text == "")
+                    if (chk.Checked == false)
+                    {
+                        if (txtCustPh.Text == "")
+                        {
+                            mobchk = false;
+                            sCustomerID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode);
+                            sCustomerName = txtCustomerName.Text;
+                        }
+                        else
+                        {
+                            mobchk = true;
+                            sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode);
+                            sCustomerName = txtCustomerName.Text;
+                        }
+                    }
+                    //else
+                    //{
+                    //    mobchk = false;
+                    //    sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
+                    //    sCustomerName = txtCustomerName.Text;
+                    //}
+                }
+                else
+                {
+                    sCustomerName = cmbCustomer.SelectedItem.Text;
+                    sCustomerID = Convert.ToInt32(cmbCustomer.SelectedItem.Value);
+                }
+
+                if (iPaymode == 4)
+                {
+                   
 
                     receiptData = GenerateReceiptData();
 
@@ -3488,7 +3536,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
                         dr["DebitorID"] = ddBank1.SelectedValue;
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtAmount1.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -3505,7 +3560,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
                         dr["DebitorID"] = ddBank2.SelectedValue;
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtAmount2.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -3522,7 +3584,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
                         dr["DebitorID"] = ddBank3.SelectedValue;
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtAmount3.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -3539,7 +3608,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = Convert.ToDateTime(recondate).ToString("yyyy-MM-dd");
                         dr["DebitorID"] = bl.getCashACLedgerId(connection, branchcode);   //"1";                      
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtCashAmount.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -3691,11 +3767,11 @@ public partial class CustomerSales : System.Web.UI.Page
                 //    }
                 //}
 
-                string check = "Y";
-                string DuplicateCopy = "N";
-                string CName = txtCustomerName.Text;
-                bool mobchk;
-                string CustomerIdMobile = "0";
+                //string check = "Y";
+                //string DuplicateCopy = "N";
+                //string CName = txtCustomerName.Text;
+                //bool mobchk;
+                //string CustomerIdMobile = "0";
                 if (chk.Checked == false)
                 {
                     if (txtCustPh.Text != "")
@@ -3714,7 +3790,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 string discType = GetDiscType();
 
 
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+              
 
                 //ds = (DataSet)GrdViewItems.DataSource;
                 //if (Session["productDs"] != null)/////////// Previous code
@@ -3726,41 +3802,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         //if (ds.Tables[0].Rows.Count > 0)
                         //{
-                        if (chk.Checked == false)
-                        {
-                            if (bl.IsLedgerAlreadyFound(connection, CName))
-                            {
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer " + CName + " with this name already exists.');", true);
-                                return;
-                            }
-                            //if (chk.Checked == false && txtCustomerId.Text == "")
-                            if (chk.Checked == false)
-                            {
-                                if (txtCustPh.Text == "")
-                                {
-                                    mobchk = false;
-                                    sCustomerID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode);
-                                    sCustomerName = txtCustomerName.Text;
-                                }
-                                else
-                                {
-                                    mobchk = true;
-                                    sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode);
-                                    sCustomerName = txtCustomerName.Text;
-                                }
-                            }
-                            //else
-                            //{
-                            //    mobchk = false;
-                            //    sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3);
-                            //    sCustomerName = txtCustomerName.Text;
-                            //}
-                        }
-                        else
-                        {
-                            sCustomerName = cmbCustomer.SelectedItem.Text;
-                            sCustomerID = Convert.ToInt32(cmbCustomer.SelectedItem.Value);
-                        }
+                       
 
                         //&&&&&& Sales Item Table Insert Dataset &&&&&&&&&&&&&&&&&                          
 
@@ -3934,12 +3976,13 @@ public partial class CustomerSales : System.Web.UI.Page
                                         }
                                     }
                                 }
-                                if (EXCLUSIVErate1 > EXCrate1)
-                                {
-                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Rate cannot be greater than " + EXCrate1 + " in row " + col + "')", true);
-                                    checkflag = true;
-                                    return;
-                                }
+                                //For Temporary MRP Lock
+                                //if (EXCLUSIVErate1 > EXCrate1)
+                                //{
+                                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Rate cannot be greater than " + EXCrate1 + " in row " + col + "')", true);
+                                //    checkflag = true;
+                                //    return;
+                                //}
                             }
 
                             //string usernam = Request.Cookies["LoggedUserName"].Value;
@@ -5165,15 +5208,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 ///////////////////////////////////////////
 
-
-
-
-
-
-
-                DataSet receiptData = null;
-                string MultiPayment = string.Empty;
-                if (iPaymode == 4)
+                if(iPaymode==4)
                 {
                     var recAmount = double.Parse(lblReceivedTotal.Text);
                     var salesAmount = double.Parse(txtfixedtotal.Text);
@@ -5196,8 +5231,35 @@ public partial class CustomerSales : System.Web.UI.Page
                         //updatePnlSales.Update();
                         return;
                     }
+                }
+
+                string check = "Y";
+                string DuplicateCopy = "N";
+                string CName = txtCustomerName.Text;
+                string usernam = Request.Cookies["LoggedUserName"].Value;
+
+                if (chk.Checked == false)
+                {
+                    if (bl.IsLedgerAlreadyFound(connection, CName))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer " + CName + " with this name already exists.');", true);
+                        return;
+                    }
+
+                    sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, true, branchcode);
+                    sCustomerName = txtCustomerName.Text;
+                }
+                else
+                {
+                    sCustomerName = cmbCustomer.SelectedItem.Text;
+                    sCustomerID = Convert.ToInt32(cmbCustomer.SelectedItem.Value);
+                }
 
 
+                DataSet receiptData = null;
+                string MultiPayment = string.Empty;
+                if (iPaymode == 4)
+                {         
                     string userna = Request.Cookies["LoggedUserName"].Value;
                     DataSet dat = new DataSet();
                     dat = bl.ListReceiptsForBillNoOrder(lblBillNo.Text);
@@ -5215,8 +5277,6 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                     }
 
-
-
                     receiptData = GenerateReceiptData();
 
                     if (ddBank1.SelectedValue != "0" && txtCCard1.Text != "" && txtAmount1.Text != "0")
@@ -5225,7 +5285,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = recondate;
                         dr["DebitorID"] = ddBank1.SelectedValue;
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtAmount1.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -5242,7 +5309,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = recondate;
                         dr["DebitorID"] = ddBank2.SelectedValue;
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtAmount2.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -5259,7 +5333,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = recondate;
                         dr["DebitorID"] = ddBank3.SelectedValue;
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtAmount3.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -5276,7 +5357,14 @@ public partial class CustomerSales : System.Web.UI.Page
                         dr["RefNo"] = "";
                         dr["TransDate"] = recondate;
                         dr["DebitorID"] = "1";
-                        dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        if (chk.Checked == true)
+                        {
+                            dr["CreditorID"] = cmbCustomer.SelectedValue;
+                        }
+                        else
+                        {
+                            dr["CreditorID"] = sCustomerID;
+                        }
                         dr["Amount"] = txtCashAmount.Text;
                         dr["Narration"] = "";
                         dr["VoucherType"] = "Receipt";
@@ -5415,9 +5503,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
 
-                string check = "Y";
-                string DuplicateCopy = "N";
-                string CName = txtCustomerName.Text;
+              
 
                 int CustomerIdMobile = 0;
                 if (chk.Checked == false)
@@ -5435,7 +5521,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 string discType = GetDiscType();
 
 
-                string usernam = Request.Cookies["LoggedUserName"].Value;
+             
 
 
                 //ds = (DataSet)GrdViewItems.DataSource;
@@ -5447,23 +5533,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     if (ds != null)
                     {
                         if (ds.Tables[0].Rows.Count > 0)
-                        {
-                            if (chk.Checked == false)
-                            {
-                                if (bl.IsLedgerAlreadyFound(connection, CName))
-                                {
-                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer " + CName + " with this name already exists.');", true);
-                                    return;
-                                }
-
-                                sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, true, branchcode);
-                                sCustomerName = txtCustomerName.Text;
-                            }
-                            else
-                            {
-                                sCustomerName = cmbCustomer.SelectedItem.Text;
-                                sCustomerID = Convert.ToInt32(cmbCustomer.SelectedItem.Value);
-                            }
+                        {                         
 
 
                             //&&&&&& Sales Item Table Insert Dataset &&&&&&&&&&&&&&&&&                          
@@ -5599,12 +5669,13 @@ public partial class CustomerSales : System.Web.UI.Page
                                             }
                                         }
                                     }
-                                    if (EXCLUSIVErate1 > EXCrate1)
-                                    {
-                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Rate cannot be greater than " + EXCrate1 + " in row " + col + "')", true);
-                                        checkflag = true;
-                                        return;
-                                    }
+                                    //For Temporary MRP Lock
+                                    //if (EXCLUSIVErate1 > EXCrate1)
+                                    //{
+                                    //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Rate cannot be greater than " + EXCrate1 + " in row " + col + "')", true);
+                                    //    checkflag = true;
+                                    //    return;
+                                    //}
                                 }
 
 
@@ -10481,12 +10552,13 @@ public partial class CustomerSales : System.Web.UI.Page
                         }
                     }
                 }
-                if (EXCLUSIVErate1 > EXCrate1)
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Rate cannot be greater than " + EXCrate1 + "')", true);
-                    checkflag = true;
-                    return;
-                }
+                //For temporary MRP Lock
+                //if (EXCLUSIVErate1 > EXCrate1)
+                //{
+                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Rate cannot be greater than " + EXCrate1 + "')", true);
+                //    checkflag = true;
+                //    return;
+                //}
             }
 
 
