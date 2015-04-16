@@ -232,7 +232,11 @@
                                                                         <asp:Label ID="Label4" Text="Benit & Co" runat="server" />
                                                                     </td>
                                                                 </tr>
-
+                                                                <tr id="tr2" runat="server">
+                                                                    <td align="center" class="auto-style16" style="font-weight: 400; font-size: 18px;">
+                                                                        <asp:Label ID="Label5"  runat="server" />
+                                                                    </td>
+                                                                </tr>
                                                                 <tr id="trTINCST" runat="server">
                                                                     <td align="center" class="auto-style16" style="font-weight: 400; font-size: 18px;">
                                                                         <asp:Label ID="Label10" Text="Tax Invoice" runat="server" />
@@ -308,60 +312,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table>
-                                <tr>
-                                    <td align="left" width="150px" valign="top">
-                                        <asp:Panel BackColor="#c0c0c0" Height="110px"
-                                            runat="server" ID="Panel1" Width="300px" HorizontalAlign="left" Style="margin-left: 0px;">
-                                            <table style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: bold; text-align: left; font-size: 10px;">
-                                                <tr>
-                                                    <td class="auto-style12" style="width: 250px">TIN#:
-                                        <asp:Label ID="lblTNGST" runat="server"></asp:Label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="auto-style12" style="width: 250px">
-                                                        <asp:Label ID="lblHead" runat="server"></asp:Label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="auto-style12" style="width: 250px"><%--GST#:--%>
-                                                        <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="auto-style12" style="width: 250px">
-                                                        <asp:Label ID="lblAddress" runat="server"></asp:Label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="auto-style12" style="width: 250px">
-                                                        <asp:Label ID="lblCity" runat="server" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <asp:Label ID="lblPincode" runat="server"></asp:Label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="auto-style12" style="width: 250px">
-                                                        <asp:Label ID="lblState" runat="server"> </asp:Label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="auto-style12" style="width: 250px">Ph:
-                                                        <asp:Label ID="lblPhone" runat="server"></asp:Label>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </asp:Panel>
-                                        <cc1:RoundedCornersExtender Corners="All" Radius="10" TargetControlID="Panel1"
-                                            ID="RoundedCornersExtender3" runat="server">
-                                        </cc1:RoundedCornersExtender>
-                                    </td>
-                                </tr>
-                            </table>
+
                             <table border="0" cellpadding="2" cellspacing="0" class="lblFont" style="font-family: 'Trebuchet MS'; font-size: 14px; margin-left: 0px; height: 121px; width: 682px;"
                                 align="center">
 
@@ -745,13 +696,17 @@
                                                                             </ContentTemplate>
                                                                         </asp:UpdatePanel>
                                                                     </td>
-
+                                                                  
                                                                     <td class="auto-style22 " style="padding-left: 140px;">
                                                                         <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Always">
                                                                             <ContentTemplate>
                                                                                 <table border="0" cellpadding="2" cellspacing="0" style="font-family: 'Trebuchet MS'; font-size: 13px; width: 224px;">
+                                                                                     <tr style="height:10px">
+                                                                                        <td class="auto-style6" style="font-weight: bold; text-align: right;">
+                                                                                        </td>
+                                                                                    </tr>                                                                                   
                                                                                     <tr>
-                                                                                        <td class="auto-style6" style="font-weight: bold; text-align: right;">Authorized Signature
+                                                                                        <td class="auto-style6" style="font-weight: bold; text-align: left;">Authorized Signature:
                                                                                         </td>
                                                                                     </tr>
                                                                                     <%--<tr>
@@ -791,6 +746,64 @@
                                                                                 </table>
                                                                             </ContentTemplate>
                                                                         </asp:UpdatePanel>
+
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td align="left" width="150px" valign="top">
+                                                                                    <asp:Panel BackColor="#c0c0c0" Height="85px"
+                                                                                        runat="server" ID="Panel1" Width="280px" HorizontalAlign="left" Style="margin-left: 0px;">
+                                                                                        <table style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: bold; text-align: left; font-size: 10px;">
+                                                                                           
+                                                                                            <tr>
+                                                                                                <td class="auto-style12" style="width: 250px">
+                                                                                                    <asp:Label ID="lblHead" runat="server"></asp:Label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                             <tr>
+                                                                                                <td class="auto-style12" style="width: 250px">TIN#:
+                                                                                                    <asp:Label ID="lblTNGST" runat="server"></asp:Label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="auto-style12" style="width: 250px"><%--GST#:--%>
+                                                                                                    <asp:Label ID="lblGSTno" runat="server" Visible="false"></asp:Label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="auto-style12" style="width: 250px">
+                                                                                                    <asp:Label ID="lblAddress" runat="server"></asp:Label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="auto-style12" style="width: 250px">
+                                                                                                    <asp:Label ID="lblCity" runat="server" />
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                          <%--  <tr>
+                                                                                                <td>
+                                                                                                    <asp:Label ID="lblPincode" runat="server"></asp:Label>
+                                                                                                </td>
+                                                                                            </tr>--%>
+                                                                                            <tr>
+                                                                                                <td class="auto-style12" style="width: 250px">
+                                                                                                    <asp:Label ID="lblState" runat="server"> </asp:Label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td class="auto-style12" style="width: 250px">Ph:
+                                                        <asp:Label ID="lblPhone" runat="server"></asp:Label>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </asp:Panel>
+                                                                                    <cc1:RoundedCornersExtender Corners="All" Radius="10" TargetControlID="Panel1"
+                                                                                        ID="RoundedCornersExtender3" runat="server">
+                                                                                    </cc1:RoundedCornersExtender>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+
+
                                                                     </td>
 
                                                                 </tr>

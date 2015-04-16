@@ -174,7 +174,7 @@
                                                                                                 <td style="width: 20%" class="ControlLabelNew">Product ID *
                                                                                                             <asp:RequiredFieldValidator ID="rvItemCodeAdd" runat="server" ControlToValidate="txtItemCodeAdd"
                                                                                                                 Text="*" Display="Dynamic" ValidationGroup="salesval" ErrorMessage="Please enter Product ID. It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                                                    <cc1:FilteredTextBoxExtender ID="fltItemCodeAdd" runat="server" FilterType="Numbers, UppercaseLetters, LowercaseLetters,Custom" ValidChars=" ."
+                                                                                                    <cc1:FilteredTextBoxExtender ID="fltItemCodeAdd" runat="server" FilterType="Numbers, UppercaseLetters, LowercaseLetters,Custom" ValidChars=" .*-()/"
                                                                                                         TargetControlID="txtItemCodeAdd" Enabled="True" />
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
@@ -200,7 +200,7 @@
                                                                                                 <td style="width: 20%" class="ControlLabelNew">Name of Product *
                                                                                                             <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="txtItemNameAdd"
                                                                                                                 Text="*" Display="Dynamic" ValidationGroup="salesval" ErrorMessage="Please enter Product Name. It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" ." TargetControlID="txtItemNameAdd" />
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .*-()/" TargetControlID="txtItemNameAdd" />
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                                                     <asp:TextBox ID="txtItemNameAdd" runat="server" Text='<%# Bind("ProductName") %>'
@@ -427,7 +427,7 @@
                                                                                             <tr>
                                                                                                 <td class="ControlLabelNew" style="width: 20%">Name of Model *
                                                                                                     <asp:RequiredFieldValidator ID="rvModelAdd" runat="server" ControlToValidate="txtModelAdd" Display="Dynamic" ErrorMessage="Please enter Name of Model. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
-                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .-''()" TargetControlID="txtModelAdd" />
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .*-()/''" TargetControlID="txtModelAdd" />
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 25%;">
                                                                                                     <asp:TextBox ID="txtModelAdd" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -954,7 +954,7 @@
                                                 <asp:BoundField DataField="Row" HeaderText="#" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" HeaderStyle-Width="60px" />
                                                 <asp:BoundField DataField="ItemCode" HeaderText="Product Code" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="ProductName" HeaderText="Product Name" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Model" HeaderText="Model" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Model" HeaderText="Model" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="30px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="CategoryName" HeaderText="Category" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="ProductDesc" HeaderText="Brand" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
                                                 <%--<asp:BoundField DataField="Stock" HeaderText="In Stock"  HeaderStyle-BorderColor="Gray" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"/>--%>

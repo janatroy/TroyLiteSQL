@@ -870,7 +870,8 @@ public partial class InternalTransfers : System.Web.UI.Page
 
             if (transferService.CheckIftheItemHasStock(connection, request.ItemCode, request.BranchHasStock, request.Quantity))
             {
-                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock);
+                iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock,iCustomer);
                 DataSet executives = transferService.GeBranchHasStockExecutives(connection, request.BranchHasStock);
                 DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock);
 
@@ -881,7 +882,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                     //DataSet prodData = branchHasStockService.GetProductForId(connection, request.ItemCode);
                     
-                    iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                    //iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
 
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 

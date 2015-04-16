@@ -76,12 +76,13 @@ public partial class ProductSalesBill : System.Web.UI.Page
                              {
                                  lblTNGST.Text = Convert.ToString(dr["TINno"]);
                                  lblHead.Text = Convert.ToString(dr["CompanyName"]);
+                                 Label5.Text = Convert.ToString(dr["CompanyName"]);
                                  lblPhone.Text = Convert.ToString(dr["Phone"]);
                                  lblGSTno.Text = Convert.ToString(dr["GSTno"]);
 
                                  lblAddress.Text = Convert.ToString(dr["Address"]);
-                                 lblCity.Text = Convert.ToString(dr["city"]);
-                                 lblPincode.Text = Convert.ToString(dr["Pincode"]);
+                                 lblCity.Text = Convert.ToString(dr["city"]) + "-" + Convert.ToString(dr["Pincode"]);
+                                // lblPincode.Text = Convert.ToString(dr["Pincode"]);
                                  lblState.Text = Convert.ToString(dr["state"]);
 
                              }
