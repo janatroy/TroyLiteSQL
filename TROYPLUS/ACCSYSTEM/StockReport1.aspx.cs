@@ -338,12 +338,18 @@ public partial class StockReport1 : System.Web.UI.Page
             cond = Server.UrlDecode(cond);
             cond1 = Request.QueryString["cond1"].ToString();
             cond1 = Server.UrlDecode(cond1);
-            cond2 = Request.QueryString["cond2"].ToString();
-            cond2 = Server.UrlDecode(cond2);
-            cond3 = Request.QueryString["cond3"].ToString();
-            cond3 = Server.UrlDecode(cond3);
-            cond4 = Request.QueryString["cond4"].ToString();
-            cond4 = Server.UrlDecode(cond4);
+
+            //cond2 = Request.QueryString["cond2"].ToString();
+            //cond2 = Server.UrlDecode(cond2);
+
+            cond2 = cond.Replace("BranchCode", "S.BranchCode");
+            cond3 = cond.Replace("BranchCode", "P.BranchCode");
+            cond4 = cond.Replace("BranchCode", "SI.BranchCode");
+
+            //cond3 = Request.QueryString["cond3"].ToString();
+            //cond3 = Server.UrlDecode(cond3);
+            //cond4 = Request.QueryString["cond4"].ToString();
+            //cond4 = Server.UrlDecode(cond4);
             cond5 = Request.QueryString["cond5"].ToString();
             cond5 = cond5.ToString();
             cond6 = Request.QueryString["cond6"].ToString();

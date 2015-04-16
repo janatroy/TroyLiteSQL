@@ -517,7 +517,9 @@ public partial class StockReport : System.Web.UI.Page
                 string cond6 = "";
                 cond6 = getCond6();
                 //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-                Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+                Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
             }
         }
         catch (Exception ex)
