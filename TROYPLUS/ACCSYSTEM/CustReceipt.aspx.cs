@@ -1095,6 +1095,8 @@ public partial class CustReceipt : System.Web.UI.Page
 
             string Branch = Row.Cells[7].Text;
 
+            string name = Row.Cells[3].Text;
+
             if (!bl.IsValidDate(connection, Convert.ToDateTime(recondate)))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date is invalid')", true);
@@ -1103,7 +1105,7 @@ public partial class CustReceipt : System.Web.UI.Page
             else
             {
                 //pnlEdit.Visible = true;
-                DataSet ds = bl.GetRecForId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()), Branch);
+                DataSet ds = bl.GetRecForId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()), Branch, name);
                 if (ds != null)
                 {
 

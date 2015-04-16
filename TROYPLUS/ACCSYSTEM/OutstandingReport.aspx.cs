@@ -83,6 +83,18 @@ public partial class OutstandingReport : System.Web.UI.Page
         }
     }
 
+    protected void drpLedgerName_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (drpLedgerName.SelectedValue == "2")
+        {
+            row.Visible = false;
+        }
+        else
+        {
+            row.Visible = true;
+        }
+    }
+
     private void loadBranch()
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -92,18 +104,19 @@ public partial class OutstandingReport : System.Web.UI.Page
         lstBranch.Items.Clear();
 
         brncode = Request.Cookies["Branch"].Value;
-        if (brncode == "All")
-        {
+        //if (brncode == "All")
+        //{
             ds = bl.ListBranch();
             lstBranch.Items.Add(new ListItem("All", "0"));
-        }
-        else
-        {
-            ds = bl.ListDefaultBranch(brncode);
-        }
-        lstBranch.DataSource = ds;
+        //}
+        //else
+        //{
+        //    ds = bl.ListDefaultBranch(brncode);
+        //}
+        
         lstBranch.DataTextField = "BranchName";
         lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataSource = ds;
         lstBranch.DataBind();
     }
 
@@ -293,8 +306,8 @@ public partial class OutstandingReport : System.Web.UI.Page
                                 if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
                                 {
                                     dsSales.Tables[0].Rows[i].BeginEdit();
-                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                    dsSales.Tables[0].Rows[i]["Amount"] = val;
+                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString()) - double.Parse(billAmount));
+                                    dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                                     dsSales.Tables[0].Rows[i].EndEdit();
 
                                     if (val == 0.0)
