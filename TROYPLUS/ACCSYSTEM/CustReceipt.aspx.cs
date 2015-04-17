@@ -1320,7 +1320,7 @@ public partial class CustReceipt : System.Web.UI.Page
 
 
 
-                    string billsData = bl.GetReceivedAmtId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()));
+                    //string billsData = bl.GetReceivedAmtId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()));
 
                     //Session["BillData"] = billsData;
 
@@ -1417,7 +1417,7 @@ public partial class CustReceipt : System.Web.UI.Page
                     
         
                     Session["RMode"] = "Edit";
-                    ShowPendingBillsAutoT(billsData);
+                    //ShowPendingBillsAutoT(billsData);
                     //checkPendingBills(billsData);
                 }
 

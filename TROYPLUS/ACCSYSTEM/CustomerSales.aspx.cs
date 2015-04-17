@@ -5262,7 +5262,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 {         
                     string userna = Request.Cookies["LoggedUserName"].Value;
                     DataSet dat = new DataSet();
-                    dat = bl.ListReceiptsForBillNoOrder(lblBillNo.Text);
+                    dat = bl.ListReceiptsForBillNoOrder(lblBillNo.Text, branchcode);
                     int TransN = 0;
 
                     if (dat.Tables[0].Rows.Count > 0)
@@ -5393,7 +5393,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         if (dsttt.Tables[0].Rows.Count > 0)
                         {
                             DataSet dat = new DataSet();
-                            dat = bl.ListReceiptsForBillNoOrder(lblBillNo.Text);
+                            dat = bl.ListReceiptsForBillNoOrder(lblBillNo.Text, branchcode);
                             TransN = 0;
 
                             if (dat.Tables[0].Rows.Count > 0)
@@ -5413,7 +5413,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
                     DataSet datee = new DataSet();
-                    datee = bl.ListReceiptsForBillNoOrder(lblBillNo.Text);
+                    datee = bl.ListReceiptsForBillNoOrder(lblBillNo.Text, branchcode);
 
                     TransN = 0;
 
@@ -5445,7 +5445,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             string username2 = Request.Cookies["LoggedUserName"].Value;
 
                             DataSet dat = new DataSet();
-                            dat = bl.ListReceiptsForBillNoOrder(lblBillNo.Text);
+                            dat = bl.ListReceiptsForBillNoOrder(lblBillNo.Text, branchcode);
                             int TransN = 0;
 
                             if (dat.Tables[0].Rows.Count > 0)
