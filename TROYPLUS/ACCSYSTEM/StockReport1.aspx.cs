@@ -373,6 +373,7 @@ public partial class StockReport1 : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("ProductName"));
                 dt.Columns.Add(new DataColumn("Brand"));
                 dt.Columns.Add(new DataColumn("Model"));
+                dt.Columns.Add(new DataColumn("CategoryName"));
                 //dt.Columns.Add(new DataColumn("Rol"));
 
                 char[] commaSeparator = new char[] { ',' };
@@ -420,7 +421,7 @@ public partial class StockReport1 : System.Web.UI.Page
                     dr_final6["ProductName"] = dr["ProductName"];
                     dr_final6["Model"] = dr["Model"];
                     dr_final6["ItemCode"] = dr["Itemcode"];
-
+                    dr_final6["CategoryName"] = dr["CategoryName"];
                     if (dst != null)
                     {
                         if (dst.Tables[0].Rows.Count > 0)
@@ -524,8 +525,9 @@ public partial class StockReport1 : System.Web.UI.Page
             e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Left;
             e.Row.Cells[2].HorizontalAlign = HorizontalAlign.Left;
             e.Row.Cells[3].HorizontalAlign = HorizontalAlign.Left;
+            e.Row.Cells[4].HorizontalAlign = HorizontalAlign.Left;
 
-            for (int i = 4; i <= colCount - 1; i++)
+            for (int i = 5; i <= colCount - 1; i++)
             {
                 e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Right;
             }

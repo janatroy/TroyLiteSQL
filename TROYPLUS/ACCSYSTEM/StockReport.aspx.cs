@@ -348,6 +348,7 @@ public partial class StockReport : System.Web.UI.Page
                     dt.Columns.Add(new DataColumn("ProductName"));
                     dt.Columns.Add(new DataColumn("Brand"));
                     dt.Columns.Add(new DataColumn("Model"));
+                    dt.Columns.Add(new DataColumn("CategoryName"));
                     //dt.Columns.Add(new DataColumn("Rol"));
                     char[] commaSeparator = new char[] { ',' };
                     string[] result;
@@ -394,7 +395,7 @@ public partial class StockReport : System.Web.UI.Page
                         dr_final6["ProductName"] = dr["ProductName"];
                         dr_final6["Model"] = dr["Model"];
                         dr_final6["ItemCode"] = dr["Itemcode"];
-
+                        dr_final6["CategoryName"] = dr["CategoryName"];
                         if (dst != null)
                         {
                             if (dst.Tables[0].Rows.Count > 0)
