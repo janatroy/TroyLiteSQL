@@ -379,6 +379,7 @@
                                                 <asp:ListItem Value="TransDate">Transaction Date</asp:ListItem>
                                                 <asp:ListItem Value="LedgerName">Received From</asp:ListItem>
                                                 <asp:ListItem Value="Narration">Narration</asp:ListItem>
+                                                 <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                             </asp:DropDownList>
                                     </td>
                                     <td style="width: 21%; text-align: left">

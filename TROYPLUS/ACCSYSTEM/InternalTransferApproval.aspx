@@ -385,9 +385,9 @@
                                             OnRowDeleting="GrdViewRequestes_RowDeleting">
                                             <EmptyDataRowStyle CssClass="GrdContent" />
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
+                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="12px" ForeColor="#0567AE" />
                                             <Columns>
-                                                <asp:BoundField DataField="RequestID" HeaderStyle-Wrap="false" HeaderText="Request ID"
+                                                <asp:BoundField DataField="RequestID" HeaderStyle-Wrap="false" Visible="false" HeaderText="Request ID"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderText="Requested User"
                                                     HeaderStyle-BorderColor="Gray" />

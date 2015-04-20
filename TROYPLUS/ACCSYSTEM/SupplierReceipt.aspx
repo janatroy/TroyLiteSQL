@@ -225,6 +225,7 @@
                                                 <asp:ListItem Value="LedgerName">Supplier Name</asp:ListItem>
                                                 <asp:ListItem Value="AutoLedgerID">Supplier ID</asp:ListItem>
                                                 <asp:ListItem Value="Narration">Narration</asp:ListItem>
+                                                 <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                     </td>
