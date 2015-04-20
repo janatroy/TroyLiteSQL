@@ -443,22 +443,22 @@
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                             <RowStyle Font-Bold="true" HorizontalAlign="Center"  Height="30px" Font-Size="12px" ForeColor="#0567AE" />
                                             <Columns>
-                                                <asp:BoundField DataField="RequestID" Visible="false" HeaderStyle-Wrap="false" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderText="Request ID"
+                                                <asp:BoundField DataField="RequestID"  HeaderStyle-Wrap="false" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderText="Req.ID"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderStyle-Width="15px" ItemStyle-Width="10px" HeaderText="Requested User"
+                                                <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderStyle-Width="15px" ItemStyle-Width="10px" HeaderText="Req.User"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedDate" HeaderStyle-Width="30px" ItemStyle-Width="30px" HeaderStyle-Wrap="false" HeaderText="Requested Date" DataFormatString="{0:dd/MM/yyyy}"
+                                                <asp:BoundField DataField="RequestedDate" HeaderStyle-Width="30px" ItemStyle-Width="30px" HeaderStyle-Wrap="false" HeaderText="Req.Date" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="ItemCode" HeaderStyle-Wrap="false" HeaderStyle-Width="30px" ItemStyle-Width="30px" HeaderText="Product"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Quantity" HeaderStyle-Wrap="false" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderText="Quantity"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedBranch" HeaderText="RequestedBranch" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="RequestedBranch" HeaderText="Req.Branch" HeaderStyle-Width="20px" ItemStyle-Width="10px" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="BranchHasStock" HeaderText="BranchHas Stock" HeaderStyle-Width="15px" ItemStyle-Width="10px" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="BranchHasStock" HeaderText="BranchHasStock" HeaderStyle-Width="15px" ItemStyle-Width="10px" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Status" HeaderStyle-Wrap="false" HeaderStyle-Width="15px" ItemStyle-Width="30px" HeaderText="Status" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="CompletedDate" HeaderStyle-Width="30px" ItemStyle-Width="15px" HeaderStyle-Wrap="false" HeaderText="Completed Date" DataFormatString="{0:dd/MM/yyyy}"
+                                                <asp:BoundField DataField="CompletedDate" HeaderStyle-Width="20px" ItemStyle-Width="15px" HeaderStyle-Wrap="false" HeaderText="Completed Date" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Approve/Reject"
                                                     HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" Visible="false">
