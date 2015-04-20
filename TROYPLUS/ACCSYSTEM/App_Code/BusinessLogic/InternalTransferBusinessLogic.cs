@@ -218,7 +218,7 @@ public partial class BusinessLogic : IInternalTransferService
 
 
         //dbQry = "select ItemCode,ProductName from tblProductMaster  Order By ProductName";
-        dbQry = "SELECT ProductName + ' - ' + ItemCode + ' - ' + Model  As ProductName,ItemCode FROM tblProductMaster Order By ProductName,Model,ItemCode Asc";
+        dbQry = "SELECT Model + ' - ' + ItemCode + ' - ' + Productdesc  As ProductName,ItemCode FROM tblProductMaster Order By ProductName,Model,ItemCode Asc";
 
         try
         {
@@ -321,7 +321,7 @@ public partial class BusinessLogic : IInternalTransferService
                 dbQry.AppendFormat("Where CompletedDate = '{0}' ", txtSearch);
             }
 
-            dbQry.Append(" Order By RequestID");
+            dbQry.Append(" Order By RequestID desc");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
@@ -399,7 +399,7 @@ public partial class BusinessLogic : IInternalTransferService
                 dbQry.AppendFormat("Where CompletedDate like '%{0}%' ", txtSearch);
             }
 
-            dbQry.Append(" Order By RequestID");
+            dbQry.Append(" Order By RequestID desc");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
