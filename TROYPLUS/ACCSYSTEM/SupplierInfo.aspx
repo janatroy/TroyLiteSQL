@@ -729,7 +729,7 @@
                                                                                             </asp:RegularExpressionValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtEmailIdAdd" MaxLength="10" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                                            <asp:TextBox ID="txtEmailIdAdd" MaxLength="50" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mobile

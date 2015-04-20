@@ -276,6 +276,7 @@
                                                 <asp:ListItem Value="0">All</asp:ListItem>
                                                 <asp:ListItem Value="LedgerName">Customer Name</asp:ListItem>
                                                 <asp:ListItem Value="AliasName">Alias Name</asp:ListItem>
+                                                 <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                     </td>
@@ -375,10 +376,10 @@
                                                                                         <td class="ControlLabel" style="width: 14%">Opening Balance *
                                                                     <asp:CompareValidator ID="cvOpenBal" runat="server" ControlToValidate="txtOpenBal"
                                                                         Display="Dynamic" EnableClientScript="True" ErrorMessage="Open Balance should be numeric value"
-                                                                        Operator="DataTypeCheck" Type="Double">*</asp:CompareValidator>
+                                                                        Operator="DataTypeCheck"  Type="Double">*</asp:CompareValidator>
                                                                                             <asp:RequiredFieldValidator ID="rvOpenBal" runat="server" ControlToValidate="txtOpenBal"
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="please Enter Open Balance. It cannotbe left blank.">*</asp:RequiredFieldValidator>
-                                                                                            <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" FilterType="Numbers" TargetControlID="txtOpenBal" />
+                                                                                            <cc1:FilteredTextBoxExtender ID="OBvalid" runat="server" ValidChars="." FilterType="Numbers,Custom" TargetControlID="txtOpenBal" />
                                                                                         </td>
                                                                                         <td class="ControlNumberBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtOpenBal" TabIndex="4" runat="server" Text='<%# Bind("OpenBalance") %>'
@@ -474,7 +475,7 @@
                                                                                             </asp:RegularExpressionValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtEmailId"  TabIndex="8" MaxLength="20" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                                            <asp:TextBox ID="txtEmailId"  TabIndex="8" MaxLength="50" runat="server" Text='<%# Bind("EmailId") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                           
                                                                                         </td>
@@ -802,7 +803,7 @@
                                                                         Operator="DataTypeCheck" Type="Double" />
                                                                                             <asp:RequiredFieldValidator ID="rvOpenBalAdd" runat="server" ControlToValidate="txtOpenBalAdd"
                                                                                                 Text="*" Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Opening Balance. It cannot be left blank. " />
-                                                                                            <cc1:FilteredTextBoxExtender ID="OBvalidAdd" runat="server" FilterType="Numbers"
+                                                                                            <cc1:FilteredTextBoxExtender ID="OBvalidAdd" runat="server" ValidChars="." FilterType="Numbers,Custom"
                                                                                                 TargetControlID="txtOpenBalAdd" />
                                                                                         </td>
                                                                                         <td class="ControlNumberBox3" style="width: 28%">
@@ -904,7 +905,7 @@
                                                                     
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtEmailIdAdd" MaxLength="20" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
+                                                                                            <asp:TextBox ID="txtEmailIdAdd" MaxLength="50" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("EmailId") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                              
                                                                                         </td>

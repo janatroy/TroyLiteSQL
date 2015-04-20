@@ -193,7 +193,7 @@
                                                                             <asp:RequiredFieldValidator ValidationGroup="Save" ID="rq" runat="server" ErrorMessage="Emp no is mandatory"
                                                                                 Text="*" ControlToValidate="txtEmpno"></asp:RequiredFieldValidator>
                                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="txtEmpno"
-                                                                                FilterType="Numbers" />
+                                                                                FilterType="Numbers,Custom" />
                                                                             Partner No. *
                                                                         </td>
                                                                         <td style="width: 25%" class="ControlTextBox3">

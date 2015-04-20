@@ -120,6 +120,7 @@
                                                     <asp:ListItem Value="TransNo">Trans No</asp:ListItem>
                                                     <asp:ListItem Value="BillDate">Bill Date</asp:ListItem>
                                                     <asp:ListItem Value="CustomerName">Customer Name</asp:ListItem>
+                                                     <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                             <asp:TextBox ValidationGroup="search" ID="txtTransNo" runat="server" MaxLength="8"

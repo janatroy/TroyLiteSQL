@@ -383,6 +383,7 @@
                                                 <asp:ListItem Value="TransDate">Transaction Date</asp:ListItem>
                                                 <asp:ListItem Value="LedgerName">Received From</asp:ListItem>
                                                 <asp:ListItem Value="Narration">Narration</asp:ListItem>
+                                                 <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                             </asp:DropDownList>
                                     </td>
                                     <td style="width: 15%; text-align: left">
@@ -1009,31 +1010,7 @@
                                                                                                                                 </asp:RadioButtonList>
                                                                                                                             </td>
                                                                                                                             <td style="width: 15%;" align="left"></td>
-                                                                                                                            
-                                                                                                                                
-                                                                                                                            
-                                                                                                                            <td style="width: 19%;" class="ControlLabelNew">
-                                                                                                                                        Branch *
-                                                                                           <%-- <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpBranchAdd"
-                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
-                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>--%>
-                                                                                                                                    </td>
-                                                                                                                                    <td class="ControlDrpBorder" style="width: 22%">
-                                                                                                                                       <asp:DropDownList ID="drpBranchAdd" TabIndex="10" AutoPostBack="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" Width="260px"  CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
-                                                                                                 runat="server">
-                                                                                             </asp:DropDownList>
-                                                                                                                                    </td>
-                                                                                                                            <td>
-                                                                                                                                <asp:CheckBox ID="chkcash" runat="server" Text="Cash" OnCheckedChanged="chkcash_CheckedChanged" AutoPostBack="true"  Visible="false"/>
-                                                                                                                                <asp:CheckBox ID="chkcheque" runat="server" Text="Cheque" OnCheckedChanged="chkcheque_CheckedChanged" AutoPostBack="true"  Visible="false" />
-                                                                                                                                <asp:CheckBox ID="chkcard" runat="server" Text="Card" OnCheckedChanged="chkcard_CheckedChanged" AutoPostBack="true"  Visible="false" />
-                                                                                                                            </td>
-
-                                                                                                                        </tr>
-                                                                                                                        <tr style="height: 2px">
-                                                                                                                        </tr>
-                                                                                                                        <tr>
-                                                                                                                            <td class="ControlLabelNew" style="width: 17%">Received Date *
+                                                                                                                              <td class="ControlLabelNew" style="width: 17%">Received Date *
                                                                                                                                <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDate" Display="Dynamic"
                                                                                                                                     ErrorMessage="Please select Received Date. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                                                                 <asp:CompareValidator ControlToValidate="txtDate" Operator="DataTypeCheck" Type="Date" Display="Dynamic"
@@ -1051,6 +1028,35 @@
                                                                                                                                 <asp:ImageButton ID="ImageButton1" ImageUrl="App_Themes/NewTheme/images/cal.gif" CausesValidation="false"
                                                                                                                                     Width="20px" runat="server" />
                                                                                                                             </td>
+                                                                                                                            
+                                                                                                                                
+                                                                                                                            
+                                                                                                                           
+                                                                                                                            <td>
+                                                                                                                                <asp:CheckBox ID="chkcash" runat="server" Text="Cash" OnCheckedChanged="chkcash_CheckedChanged" AutoPostBack="true"  Visible="false"/>
+                                                                                                                                <asp:CheckBox ID="chkcheque" runat="server" Text="Cheque" OnCheckedChanged="chkcheque_CheckedChanged" AutoPostBack="true"  Visible="false" />
+                                                                                                                                <asp:CheckBox ID="chkcard" runat="server" Text="Card" OnCheckedChanged="chkcard_CheckedChanged" AutoPostBack="true"  Visible="false" />
+                                                                                                                            </td>
+
+                                                                                                                        </tr>
+                                                                                                                        <tr style="height: 2px">
+                                                                                                                        </tr>
+                                                                                                                        <tr>
+                                                                                                                             <td style="width: 19%;" class="ControlLabelNew">
+                                                                                                                                        Branch *
+                                                                                           <%-- <asp:CompareValidator ID="CompareValidator3" runat="server" ControlToValidate="drpBranchAdd"
+                                                                                                Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Branch. It cannot be left blank."
+                                                                                                Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>--%>
+                                                                                                                                    </td>
+                                                                                                                                    <td class="ControlDrpBorder" style="width: 22%">
+                                                                                                                                       <asp:DropDownList ID="drpBranchAdd" TabIndex="10" AutoPostBack="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" Width="260px"  CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                 runat="server">
+                                                                                             </asp:DropDownList>
+                                                                                                                                    </td>
+                                                                                                                             <td  style="width: 17%">
+                                                                                                                               
+                                                                                                                            </td>
+                                                                                                                          
 
                                                                                                                             <td class="ControlLabelNew" style="width: 15%;">Address Line 1</td>
                                                                                                                             <td class="ControlTextBox3" style="width: 22%;">
