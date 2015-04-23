@@ -246,10 +246,10 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 }
                 else if (dr["paymode"].ToString() == "3")
                 {
-                    lblPayMode.Text = "Cheque";
+                    lblPayMode.Text = "Credit";
                     divBankPaymode.Visible = false;
 
-                    lblPayModeEx.Text = "Cheque";
+                    lblPayModeEx.Text = "Credit";
                     divBankPaymodeEx.Visible = false;
                 }
 
@@ -498,7 +498,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     drNew["ProductName"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]);
                     drNew["ProductDesc"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
 
-                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["CategoryName"]);
+                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["CategoryName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["Model"]);
 
                     drNew["SalesPerson"] = GetEmployeeName(Convert.ToInt32(ds.Tables[0].Rows[i]["executivename"]));
 

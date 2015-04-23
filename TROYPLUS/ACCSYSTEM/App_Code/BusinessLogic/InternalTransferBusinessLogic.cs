@@ -173,7 +173,7 @@ public partial class BusinessLogic : IInternalTransferService
         }
     }
 
-    public DataSet GetRequestedBranchSupplierID(string connection, string BranchCode)
+    public DataSet GetRequestedBranchSupplierID(string connection, string BranchCode,int supid)
     {
         string sDataSource = CreateConnectionString(connection);
 
@@ -187,7 +187,7 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where (tblGroups.GroupName='Sundry Debtors' or GroupName = 'Sundry Creditors') and tblLedger.Inttrans ='YES' ORDER By LedgerName");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where (tblGroups.GroupName='Sundry Debtors' or GroupName = 'Sundry Creditors') and tblLedger.Inttrans ='YES' and LedgerId='" + supid  + "' ORDER By LedgerName");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -282,7 +282,7 @@ public partial class BusinessLogic : IInternalTransferService
         DataSet dsData = new DataSet();
         StringBuilder dbQry = new StringBuilder();
         List<InternalTransferRequest> list = new List<InternalTransferRequest>();
-
+      
         try
         {
             string sDataSource = CreateConnectionString(connection);
@@ -292,7 +292,7 @@ public partial class BusinessLogic : IInternalTransferService
 
             manager.Open();
 
-            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate"))
+            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock"))
                 txtSearch = "%" + txtSearch + "%";
             if (branch == "All")
             {
@@ -320,8 +320,12 @@ public partial class BusinessLogic : IInternalTransferService
             {
                 dbQry.AppendFormat("Where CompletedDate = '{0}' ", txtSearch);
             }
+            else if (dropDown == "BranchHasStock" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where BranchHasStock = '{0}' ", txtSearch);
+            }
 
-            dbQry.Append(" Order By RequestID desc");
+            dbQry.Append(" Order By Status desc,RequestedDate desc ");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
@@ -399,7 +403,7 @@ public partial class BusinessLogic : IInternalTransferService
                 dbQry.AppendFormat("Where CompletedDate like '%{0}%' ", txtSearch);
             }
 
-            dbQry.Append(" Order By RequestID desc");
+            dbQry.Append(" Order By Status desc,RequestedDate desc ");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
@@ -779,7 +783,7 @@ public interface IInternalTransferService
     void UpdateInternalRequest(string connection, InternalTransferRequest request);
     void DeleteInternalRequest(string connection, int RequestID);
     bool CheckIftheItemHasStock(string connection, string ItemCode, string BranchCode, decimal Qty);
-    DataSet GetRequestedBranchSupplierID(string connection, string BranchCode);
+    DataSet GetRequestedBranchSupplierID(string connection, string BranchCode, int supid);
     DataSet GeBranchHasStockCustomerID(string connection, string BranchCode,int cusid);
     DataSet GeBranchHasStockExecutives(string connection, string BranchCode);
     int GetCustomerIDForBranchCode(string connection, string BranchCode);

@@ -49,6 +49,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Outdated"));
                 dt.Columns.Add(new DataColumn("Vat"));
                 dt.Columns.Add(new DataColumn("StockLevel"));
+                dt.Columns.Add(new DataColumn("Price"));
+                dt.Columns.Add(new DataColumn("PriceName"));
 
                 DataRow dr_final123 = dt.NewRow();
                 dt.Rows.Add(dr_final123);
@@ -66,6 +68,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                     dr_final1["Vat"] = dr["Vat"];
                     //dr_final1["NLC"] = dr["rol"];
                     dr_final1["StockLevel"] = dr["rol"];
+                    dr_final1["Price"] = dr["Price"];
+                    dr_final1["PriceName"] = dr["PriceName"];
                     dt.Rows.Add(dr_final1);
                 }
                 DataRow dr_final2 = dt.NewRow();
@@ -76,6 +80,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dr_final2["CategoryName"] = "";
                 dr_final2["Vat"] = "";
                 dr_final2["StockLevel"] = "";
+                dr_final2["Price"] = "";
+                dr_final2["PriceName"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }

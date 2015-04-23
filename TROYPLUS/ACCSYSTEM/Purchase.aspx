@@ -45,6 +45,16 @@
                 document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
             }
         }
+
+        //function PrintItem(ID, BID) {
+        //    window.showModalDialog('./ProductPurchaseBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+        //}
+
+        function PrintItem(ID, RT, BID) {         
+            window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+        }
+
+
     </script>
     <style id="Style1" runat="server">
         /*.fancy-green .ajax__tab_header {
@@ -1563,8 +1573,9 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-Width="45px" HeaderText="Print" HeaderStyle-BorderColor="Gray">
                                                         <ItemTemplate>
-                                                            <a href='<%# DataBinder.Eval(Container, "DataItem.PurchaseID", "javascript:PrintItem({0});") %>'>
-                                                                <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/Print1.png" />
+                                                         <%-- <a href='<%# DataBinder.Eval(Container, "DataItem.PurchaseID", "javascript:PrintItem({0});") %>'>--%>
+                                                             <a href='<%#String.Format("javascript:PrintItem({0},&#39;{1}&#39;,&#39;{2}&#39;)", Eval("PurchaseID"), Eval("SalesReturn"),  Eval("BranchCode")) %>'>
+                                                                <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/PrintIcon_btn.png" />
                                                             </a>
                                                             <asp:ImageButton ID="btnViewDisabled" Enabled="false" SkinID="search" runat="Server"></asp:ImageButton>
                                                         </ItemTemplate>

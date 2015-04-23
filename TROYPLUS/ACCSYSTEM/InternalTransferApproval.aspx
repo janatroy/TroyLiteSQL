@@ -36,6 +36,55 @@
         function PrintItem(ID) {
             window.showModalDialog('./PrintPayment.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
         }
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            // alert('test');
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function clearfilterclick() {
+            var button = document.getElementById('<%=BtnClearFilter.ClientID %>');
+            alert('clicent');
+            button.style.visibility = "hidden";
+            //button.click();
+
+        }
+
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+            //alert('test');
+            <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
+
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                // alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = false;
+                <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+                // window.onload = function ();
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+                //alert(sender.value.length);
+                // alert(first.value.length);
+                //BtnClearFilter.disabled = true;
+                <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+            //else {
+
+            //    document.getElementById(target).disabled = false;
+            //}
+        }
  
     </script>
     <style id="Style1" runat="server">
@@ -124,6 +173,9 @@
                                         <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false"
                                             ForeColor="White" OnClick="btnSearch_Click" />
                                     </td>
+                                      <td style="width: 16%" class="tblLeftNoPad">
+                                            <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        </td>
                                     <td style="width: 16%" class="tblLeftNoPad">&nbsp;
                                     </td>
                                 </tr>
@@ -385,19 +437,19 @@
                                             OnRowDeleting="GrdViewRequestes_RowDeleting">
                                             <EmptyDataRowStyle CssClass="GrdContent" />
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
-                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="12px" ForeColor="#0567AE" />
+                                            <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="12px" ForeColor="#414141" />
                                             <Columns>
-                                                <asp:BoundField DataField="RequestID" HeaderStyle-Wrap="false" Visible="false" HeaderText="Request ID"
+                                                <asp:BoundField DataField="RequestID" HeaderStyle-Wrap="false" HeaderText="Req.ID"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderText="Requested User"
+                                                <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderText="Req.User"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedDate" HeaderStyle-Wrap="false" HeaderText="Requested Date" DataFormatString="{0:dd/MM/yyyy}"
+                                                <asp:BoundField DataField="RequestedDate" HeaderStyle-Wrap="false" HeaderText="Req.Date" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="ItemCode" HeaderStyle-Wrap="false" HeaderText="Product"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Quantity" HeaderStyle-Wrap="false" HeaderText="Quantity"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedBranch" HeaderText="RequestedBranch" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="RequestedBranch" HeaderText="Req.Branch" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="BranchHasStock" HeaderText="BranchHasStock" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />

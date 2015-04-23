@@ -5356,7 +5356,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         DataRow dr = receiptData.Tables[0].NewRow();
                         dr["RefNo"] = "";
                         dr["TransDate"] = recondate;
-                        dr["DebitorID"] = "1";
+                        dr["DebitorID"] = bl.getCashACLedgerId(connection, branchcode); //"1";
                         if (chk.Checked == true)
                         {
                             dr["CreditorID"] = cmbCustomer.SelectedValue;

@@ -86,7 +86,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "CURRENCY")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "CURRENCY")
                 {
                     currency = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -125,7 +125,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
 
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet dsBill = new DataSet();
-        dsBill = bl.GetPurchaseForpurchaseId(Convert.ToInt32(Request.QueryString["SID"]),"");
+        dsBill = bl.GetPurchaseForpurchaseId(Convert.ToInt32(Request.QueryString["SID"]), Convert.ToString(Request.QueryString["BID"]));
         int supplierID = 0;
 
         if (dsBill.Tables[0].Rows.Count > 0)
@@ -133,7 +133,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
             foreach (DataRow dr in dsBill.Tables[0].Rows)
             {
 
-                lblBillno.Text = Convert.ToString(dr["billno"]);
+                lblBillno.Text = Convert.ToString(Request.QueryString["BID"]) + "-" + Convert.ToString(dr["billno"]);
                 lblBillDate.Text = Convert.ToDateTime(dr["billdate"]).ToShortDateString();
                 lblTransNo.Text = dr["TransNo"].ToString();
                 lblVoucherDate.Text = Convert.ToDateTime(dr["InvoiceDate"]).ToShortDateString();

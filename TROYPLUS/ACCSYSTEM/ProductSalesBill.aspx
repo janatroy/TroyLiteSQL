@@ -221,7 +221,8 @@
                                                 <table style="font-family: 'Trebuchet MS'; font-size: 14px; width: 700px;">
                                                     <tr>
                                                         <td class="auto-style12">
-                                                            <asp:Image ID="Image4" runat="server" ImageUrl="~/img/Benit-Icon.png" Width="120px" Height="114px" />
+                                                           <asp:Image ID="Image4" runat="server" ImageUrl="~/img/Benit-Icon.png" Width="120px" Height="114px" />
+                                                           <%--  <asp:Image ID="Image4" runat="server" ImageUrl="~/img/Logo-Varunavi Enterprises.jpg" Width="120px" Height="114px" />--%>
                                                         </td>
                                                         <td valign="top" align="left" class="auto-style24">
 
