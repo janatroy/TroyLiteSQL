@@ -1151,7 +1151,8 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                 if (DataBinder.Eval(e.Row.DataItem, "Loading") != DBNull.Value)
                     dLURate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Loading"));
 
-                dGrandRate = dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
+                dGrandRate = dNetRate - dDisRate;
+               // dGrandRate = dDiscountRate + dVatRate + dCSTRate;// +dFrRate + dLURate;
 
 
                 dSNetRate = dSNetRate + dNetRate;
@@ -1246,7 +1247,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                     else if (secondLevel == "Customerwise")
                         ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "CustomerName", purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelBillWiseItemWise(Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBillWiseItemWise(Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductName", purReturn, intTrans, delNote,brcode);
                     else if (secondLevel == "Daywise")
                         ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "BillNo", "BillDate", purReturn, intTrans, delNote, brcode, lblBillNo.Text);
 
@@ -1462,7 +1463,8 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
 
 
 
-                dGrandRate = dGrandRate + dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
+               // dGrandRate = dGrandRate + dDiscountRate + dVatRate + dCSTRate;
+                dGrandRate = dNetRate -dDisRate;// +dFrRate + dLURate;
 
                 dSQty = dSQty + dQuantity;
                 dSCNetRate = dSCNetRate + dNetRate;
@@ -1471,7 +1473,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                 dSCCSTRate = dSCCSTRate + dCSTRate;
 
 
-                dSCGrandRate = dSCGrandRate + dGrandRate;
+                dSCGrandRate = dSCGrandRate + dGrandRate - dSCDiscountRate;
                 lblTotal.Text = dGrandRate.ToString("f2");
                 dGrandRate = 0;
                 //e.Row.Cells[6].Visible = false;

@@ -154,6 +154,7 @@
                                                         <asp:ListItem Value="Date">Bill Date</asp:ListItem>
                                                         <asp:ListItem Value="VoucherDate">Voucher Date</asp:ListItem>
                                                         <asp:ListItem Value="SupplierName">Supplier Name</asp:ListItem>
+                                                         <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                                 <asp:TextBox ValidationGroup="search" ID="txtTransNo" runat="server" MaxLength="8"

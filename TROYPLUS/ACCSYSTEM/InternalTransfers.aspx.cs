@@ -15,6 +15,7 @@ public partial class InternalTransfers : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
 
         if (!Page.IsPostBack)
         {
@@ -51,6 +52,13 @@ public partial class InternalTransfers : System.Web.UI.Page
             GrdViewRequestes.DataSource = dbData;
             GrdViewRequestes.DataBind();
         }
+    }
+
+    protected void BtnClearFilter_Click(object sender, EventArgs e)
+    {
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
+        BindGridData();
     }
 
     protected void GrdViewRequestes_SelectedIndexChanged(object sender, EventArgs e)
@@ -978,9 +986,9 @@ public partial class InternalTransfers : System.Web.UI.Page
         try
         {
             rvSearch.Enabled = true;
-            Page.Validate();
+           // Page.Validate();
 
-            if (Page.IsValid)
+           // if (Page.IsValid)
             {
                 BindGridData();
             }
