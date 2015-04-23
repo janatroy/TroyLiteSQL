@@ -292,8 +292,8 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
                     lblSuppAdd2.Text = Convert.ToString(dr["Add2"]);
                     lblSuppAdd3.Text = Convert.ToString(dr["Add3"]);
                     lblSuppPh.Text = Convert.ToString(dr["Phone"]);
-                    if (dr["COntactname"].ToString() != string.Empty)
-                        lblSupplier.Text = Convert.ToString(dr["ContactName"]);
+               
+                        lblSupplier.Text = Convert.ToString(dr["LedgerName"]);
                 }
             }
         }

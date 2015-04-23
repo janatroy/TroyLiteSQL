@@ -119,6 +119,7 @@
                                                     <asp:ListItem Value="ProductName">Product Name</asp:ListItem>
                                                     <asp:ListItem Value="Model">Model</asp:ListItem>
                                                     <asp:ListItem Value="Brand">Brand</asp:ListItem>
+                                                    <asp:ListItem Value="Category">Category</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </td>
