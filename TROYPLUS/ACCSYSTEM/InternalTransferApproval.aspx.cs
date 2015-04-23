@@ -11,6 +11,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         if (!Page.IsPostBack)
         {
             BindGridData();
@@ -43,6 +44,12 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             GrdViewRequestes.DataSource = dbData;
             GrdViewRequestes.DataBind();
         }
+    }
+    protected void BtnClearFilter_Click(object sender, EventArgs e)
+    {
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
+        BindGridData();
     }
 
     protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)

@@ -282,7 +282,7 @@ public partial class BusinessLogic : IInternalTransferService
         DataSet dsData = new DataSet();
         StringBuilder dbQry = new StringBuilder();
         List<InternalTransferRequest> list = new List<InternalTransferRequest>();
-
+      
         try
         {
             string sDataSource = CreateConnectionString(connection);
@@ -292,7 +292,7 @@ public partial class BusinessLogic : IInternalTransferService
 
             manager.Open();
 
-            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate"))
+            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock"))
                 txtSearch = "%" + txtSearch + "%";
             if (branch == "All")
             {
@@ -320,8 +320,12 @@ public partial class BusinessLogic : IInternalTransferService
             {
                 dbQry.AppendFormat("Where CompletedDate = '{0}' ", txtSearch);
             }
+            else if (dropDown == "BranchHasStock" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where BranchHasStock = '{0}' ", txtSearch);
+            }
 
-            dbQry.Append(" Order By RequestID desc");
+            dbQry.Append(" Order By Status desc,RequestedDate desc ");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
@@ -399,7 +403,7 @@ public partial class BusinessLogic : IInternalTransferService
                 dbQry.AppendFormat("Where CompletedDate like '%{0}%' ", txtSearch);
             }
 
-            dbQry.Append(" Order By RequestID desc");
+            dbQry.Append(" Order By Status desc,RequestedDate desc ");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
