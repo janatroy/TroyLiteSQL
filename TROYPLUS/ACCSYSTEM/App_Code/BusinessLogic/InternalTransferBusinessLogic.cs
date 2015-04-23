@@ -173,7 +173,7 @@ public partial class BusinessLogic : IInternalTransferService
         }
     }
 
-    public DataSet GetRequestedBranchSupplierID(string connection, string BranchCode)
+    public DataSet GetRequestedBranchSupplierID(string connection, string BranchCode,int supid)
     {
         string sDataSource = CreateConnectionString(connection);
 
@@ -187,7 +187,7 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where (tblGroups.GroupName='Sundry Debtors' or GroupName = 'Sundry Creditors') and tblLedger.Inttrans ='YES' ORDER By LedgerName");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where (tblGroups.GroupName='Sundry Debtors' or GroupName = 'Sundry Creditors') and tblLedger.Inttrans ='YES' and LedgerId='" + supid  + "' ORDER By LedgerName");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -779,7 +779,7 @@ public interface IInternalTransferService
     void UpdateInternalRequest(string connection, InternalTransferRequest request);
     void DeleteInternalRequest(string connection, int RequestID);
     bool CheckIftheItemHasStock(string connection, string ItemCode, string BranchCode, decimal Qty);
-    DataSet GetRequestedBranchSupplierID(string connection, string BranchCode);
+    DataSet GetRequestedBranchSupplierID(string connection, string BranchCode, int supid);
     DataSet GeBranchHasStockCustomerID(string connection, string BranchCode,int cusid);
     DataSet GeBranchHasStockExecutives(string connection, string BranchCode);
     int GetCustomerIDForBranchCode(string connection, string BranchCode);

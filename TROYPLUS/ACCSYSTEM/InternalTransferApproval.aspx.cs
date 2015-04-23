@@ -756,9 +756,10 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             if (transferService.CheckIftheItemHasStock(connection, request.ItemCode, request.BranchHasStock, request.Quantity))
             {
                 iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.RequestedBranch);
                 DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock, iCustomer);
                 DataSet executives = transferService.GeBranchHasStockExecutives(connection, request.BranchHasStock);
-                DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock);
+                DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock,iSupplier);
 
                 if (customer != null && executives != null)
                 {
@@ -775,14 +776,16 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
                     DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
-                    int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iCustomer,
-                        customer.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
+                  
+
+                    int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iSupplier,
+                        supplier.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
                         "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
 
-                    iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.RequestedBranch);
+                  
 
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iSupplier, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata);
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata);
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;
