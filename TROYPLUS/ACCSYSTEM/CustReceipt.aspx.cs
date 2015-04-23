@@ -1962,7 +1962,7 @@ public partial class CustReceipt : System.Web.UI.Page
             }
             else if (txtt.Text == "")
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Narration in row " + col + " ')", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
                 return;
             }
             else if (txttd.SelectedValue == "0")
@@ -2388,8 +2388,24 @@ public partial class CustReceipt : System.Web.UI.Page
                 return;
             }
 
-            CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,false,Branchcde);
-            sCustomerName = txtCustomerName.Text;
+            //CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,false,Branchcde);
+            //sCustomerName = txtCustomerName.Text;
+
+            bool mobchk;
+
+            if (txtCustomerId.Text == "")
+            {
+                mobchk = false;
+                CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, false, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+            else
+            {
+                mobchk = true;
+                CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+
         }
         else
         {
@@ -2996,7 +3012,7 @@ public partial class CustReceipt : System.Web.UI.Page
             }
             else if (txtt.Text == "")
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Narration in row " + col + " ')", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
                 return;
             }
             else if (txttd.SelectedValue == "0")
@@ -3422,8 +3438,22 @@ public partial class CustReceipt : System.Web.UI.Page
                 return;
             }
 
-            CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, false,Branchcde);
-            sCustomerName = txtCustomerName.Text;
+
+            bool mobchk;
+
+            if (txtCustomerId.Text == "")
+            {
+                mobchk = false;
+                CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, false, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+            else
+            {
+                mobchk = true;
+                CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+
         }
         else
         {
@@ -5043,7 +5073,7 @@ public partial class CustReceipt : System.Web.UI.Page
         txtAddress2.Text = "";
         txtAddress3.Text = "";
         drpMobile.SelectedIndex = 0;
-        txtCustomerId.Visible = false;
+        txtCustomerId.Visible = true;
         txtCustomerName.Visible = false;
 
         //txttot.Text = "0";
@@ -5191,7 +5221,7 @@ public partial class CustReceipt : System.Web.UI.Page
         
         drpLedger.Items.Clear();
         drpLedger.Items.Add(new ListItem("Select Customer", "0"));
-        ds = bl.ListSundryDebitorsIsActive(connection, Branch);
+        ds = bl.ListSundryDebitorsCustomerIdIsActive(connection, Branch);
         drpLedger.DataSource = ds;
         
         drpLedger.DataTextField = "LedgerName";
@@ -5240,7 +5270,10 @@ public partial class CustReceipt : System.Web.UI.Page
                 if (customerDs.Tables[0].Rows[0]["Mobile"] != null)
                 {
                     txtCustomerId.Text = Convert.ToString(customerDs.Tables[0].Rows[0]["Mobile"]);
+                    txtCustomerId.Visible = true;
                 }
+
+                UpdatePanel7.Update();
 
                 drpMobile.ClearSelection();
                 ListItem lit = drpMobile.Items.FindByValue(Convert.ToString(debtorID));
@@ -5305,7 +5338,7 @@ public partial class CustReceipt : System.Web.UI.Page
             drpLedger.Visible = false;
 
             txtCustomerId.Visible = true;
-            drpMobile.Visible = false;
+            //drpMobile.Visible = false;
 
             txtAddress.ReadOnly = false;
             txtAddress2.ReadOnly = false;
@@ -5324,8 +5357,8 @@ public partial class CustReceipt : System.Web.UI.Page
             drpLedger.Visible = true;
             txtCustomerName.Visible = false;
 
-            drpMobile.Visible = true;
-            txtCustomerId.Visible = false;
+            //drpMobile.Visible = true;
+            txtCustomerId.Visible = true;
 
             txtAddress.ReadOnly = true;
             txtAddress2.ReadOnly = true;
@@ -5698,12 +5731,12 @@ public partial class CustReceipt : System.Web.UI.Page
                 drpCustomerCategoryAdd.Enabled = false;
 
                 drpLedger.Visible = true;
-                drpMobile.Visible = true;
-                txtCustomerId.Enabled = false;
+                //drpMobile.Visible = true;
+                txtCustomerId.Enabled = true;
                 txtCustomerName.Enabled = false;
                 chk.Checked = true;
                 chk.Enabled = false;
-                txtCustomerId.Visible = false;
+                txtCustomerId.Visible = true;
                 txtCustomerName.Visible = false;
 
 

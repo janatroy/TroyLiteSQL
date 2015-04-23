@@ -3358,11 +3358,11 @@ public partial class CustomerSales : System.Web.UI.Page
                     }
                 }
 
-                if (Convert.ToDouble(txtfixedtotal.Text) == 0 || txtfixedtotal.Text == "")
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter FixedTotal')", true);
-                    return;
-                }
+                //if (Convert.ToDouble(txtfixedtotal.Text) == 0 || txtfixedtotal.Text == "")
+                //{
+                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter FixedTotal')", true);
+                //    return;
+                //}
 
                 if (chk.Checked == false)
                 {
@@ -5011,11 +5011,11 @@ public partial class CustomerSales : System.Web.UI.Page
                     return;
                 }
 
-                if (Convert.ToDouble(txtfixedtotal.Text) == 0)
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter FixedTotal')", true);
-                    return;
-                }
+                //if (Convert.ToDouble(txtfixedtotal.Text) == 0)
+                //{
+                //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter FixedTotal')", true);
+                //    return;
+                //}
 
                 if (chk.Checked == false)
                 {
@@ -7206,7 +7206,7 @@ public partial class CustomerSales : System.Web.UI.Page
         lblledgerCategory.Text = "";
         txtFreight.Text = "0";
         txtLU.Text = "0";
-        txtfixedtotal.Text = "";
+        txtfixedtotal.Text = "0";
         txtdespatced.Text = "";
         txtnarr.Text = "";
         chk.Checked = true;
