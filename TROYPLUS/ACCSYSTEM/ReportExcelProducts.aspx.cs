@@ -27,6 +27,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
 
             DateTime date = Convert.ToDateTime("01-01-1900");
             DataSet ds = new DataSet();
+            DataSet ds1 = new DataSet();
+
 
             string connection = string.Empty;
 
@@ -36,6 +38,9 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 Response.Redirect("Login.aspx");
 
             ds = objBL.ListProducts(connection, "", "");
+
+           
+          
 
             if (ds.Tables[0].Rows.Count > 0)
             {
