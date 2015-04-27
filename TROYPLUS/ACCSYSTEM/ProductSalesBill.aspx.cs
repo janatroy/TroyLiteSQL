@@ -246,10 +246,10 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 }
                 else if (dr["paymode"].ToString() == "3")
                 {
-                    lblPayMode.Text = "Cheque";
+                    lblPayMode.Text = "Credit";
                     divBankPaymode.Visible = false;
 
-                    lblPayModeEx.Text = "Cheque";
+                    lblPayModeEx.Text = "Credit";
                     divBankPaymodeEx.Visible = false;
                 }
 

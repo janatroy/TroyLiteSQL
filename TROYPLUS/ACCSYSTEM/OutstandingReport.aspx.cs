@@ -247,6 +247,7 @@ public partial class OutstandingReport : System.Web.UI.Page
             string datet = string.Empty;
 
             string nme = string.Empty;
+            string op = string.Empty;
             string connStr = string.Empty;
             if (Request.Cookies["Company"] != null)
                 connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -293,7 +294,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                     }
 
                     var customerID = dr["LedgerID"].ToString();
-                    var dsSales = bl.ListCreditSales(connStr.Trim(), customerID);
+                    var dsSales = bl.ListCreditSal(connStr.Trim(), customerID);
                     var receivedData = bl.GetCustReceivedAmount(connStr);
                     if (dsSales != null)
                     {
@@ -341,8 +342,11 @@ public partial class OutstandingReport : System.Web.UI.Page
                                 //datet = datet + " , " + dsSales.Tables[0].Rows[i]["BillDate"].ToString();
                                 //datet = datet + " , " + Convert.ToDateTime(dsSales.Tables[0].Rows[i]["BillDate"]).ToString();
                             }
+
+                            op = dsSales.Tables[0].Rows[i]["op"].ToString();
+
                         }
-                        dr_export["Bill No"] = nme;
+                        dr_export["Bill No"] = nme + " " + op;
                         dr_export["Bill Date"] = datet;
                         nme = string.Empty;
                         datet = string.Empty;
