@@ -477,7 +477,7 @@ public partial class SalesReport : System.Web.UI.Page
                 dr_final12["Vat"] = dr["vat"];
                 dr_final12["Cst"] = dr["cst"];
                 dr_final12["Discount"] = dr["discount"];
-                dr_final12["Value"] = Convert.ToDouble(dr["Amount"]);
+                dr_final12["Value"] = dr["Rate"];// Convert.ToDouble(dr["Amount"]);
                 dr_final12["BranchCode"] = dr["BranchCode"];
                 brandTotal = brandTotal + (Convert.ToDouble(dr["Amount"]));
                 catTotal = catTotal + (Convert.ToDouble(dr["Amount"]));
@@ -505,7 +505,7 @@ public partial class SalesReport : System.Web.UI.Page
         dr_final789["Vat"] = "";
         dr_final789["Cst"] = "";
         dr_final789["Discount"] = "";
-        dr_final789["Value"] = Convert.ToString(Convert.ToDecimal(total));
+        dr_final789["Value"] = "";// Convert.ToString(Convert.ToDecimal(total));
         dr_final789["BranchCode"] = "";
         dt.Rows.Add(dr_final789);
 
@@ -541,7 +541,6 @@ public partial class SalesReport : System.Web.UI.Page
                     Response.End();
                 }
             }
-
         }
     }
 
