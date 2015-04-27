@@ -369,9 +369,9 @@ public partial class StockReport1 : System.Web.UI.Page
             {
                 overallvalue = 0;
                 overallstock = 0;
-                dt.Columns.Add(new DataColumn("ItemCode"));
-                dt.Columns.Add(new DataColumn("ProductName"));
                 dt.Columns.Add(new DataColumn("Brand"));
+                dt.Columns.Add(new DataColumn("ItemCode"));
+                dt.Columns.Add(new DataColumn("ProductName"));            
                 dt.Columns.Add(new DataColumn("Model"));
                 dt.Columns.Add(new DataColumn("CategoryName"));
                 //dt.Columns.Add(new DataColumn("Rol"));
