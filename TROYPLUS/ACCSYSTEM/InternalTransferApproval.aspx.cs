@@ -488,14 +488,14 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         if (cmbApproveReject.SelectedValue == "Reject")
         {
-            //if (txtComments.Text.Trim() == string.Empty)
-            //{
-            //    rvComments.Enabled = true;
-            //    Page.Validate();
+            if (txtComments.Text.Trim() == string.Empty)
+            {
+               rvComments.Enabled = true;
+                Page.Validate();
                 modalPopupApproveReject.Show();
-            //   // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
+              // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
                return;
-            //}
+            }
         }
         else
         {
@@ -839,7 +839,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 
                     DataSet prodData = bl.ListSalesProductPriceDetails(request.ItemCode, customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), request.BranchHasStock);
-                
+
                     DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
                   
@@ -870,6 +870,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             BindGridData();
 
         }
+
         else if (cmbApproveReject.SelectedValue == "Reject")
         {
             string connection1 = Request.Cookies["Company"].Value;

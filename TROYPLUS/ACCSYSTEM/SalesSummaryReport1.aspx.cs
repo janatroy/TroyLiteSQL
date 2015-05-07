@@ -1228,7 +1228,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                     else if (secondLevel == "Brandwise")
                         ds = bl.SecondLevelModelwiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+                        ds = bl.SecondLevelBrandWiseCustomerWise(Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Itemwise")
                         ds = bl.SecondLevelModelWiseItemWise(Convert.ToDateTime(stDate), Convert.ToDateTime(eDate), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "ProductName", purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Daywise")

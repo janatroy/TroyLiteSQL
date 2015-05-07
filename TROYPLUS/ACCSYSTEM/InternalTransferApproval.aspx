@@ -85,6 +85,37 @@
             //    document.getElementById(target).disabled = false;
             //}
         }
+
+
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+
+
+        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+
+        }
+
+        function EnableDisableButton(sender, target) {
+            var first = document.getElementById('<%=txtSearch.ClientID %>');
+
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+
+            }
+
+            if (sender.value.length < 1 && first.value.length < 1) {
+
+                document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+            }
+        }
  
     </script>
     <style id="Style1" runat="server">
@@ -160,17 +191,21 @@
                                     </td>
                                     <td style="width: 18%" class="NewBox">
                                         <div style="width: 160px; font-family: 'Trebuchet MS';">
-                                            <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="white"
+                                             <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="white"
                                                 Height="23px" Style="text-align: center; border: 1px solid White">
-                                                <asp:ListItem Value="ItemCode">Product Code</asp:ListItem>
+                                               <asp:ListItem Value="ItemCode">Product Code</asp:ListItem>
+                                                 <asp:ListItem Value="RequestID">Request ID</asp:ListItem>
+                                                 <asp:ListItem Value="UserID">Req.User</asp:ListItem>
+                                                 <asp:ListItem Value="RequestedDate">Request Date</asp:ListItem>
                                                 <asp:ListItem Value="Status">Status</asp:ListItem>
                                                 <asp:ListItem Value="RequestedBranch">Requested Branch</asp:ListItem>
+                                                 <asp:ListItem Value="BranchHasStock">BranchHasStock</asp:ListItem>
                                                 <asp:ListItem Value="CompletedDate">Completed Date</asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                     </td>
                                     <td style="width: 22%; text-align: left">
-                                        <asp:Button ID="btnSearch" runat="server" Text="" CssClass="ButtonSearch6" EnableTheming="false"
+                                        <asp:Button ID="btnSearch" runat="server"  onkeyup="EnableDisableButton(this,'BtnClearFilter')" Text="" CssClass="ButtonSearch6" EnableTheming="false"
                                             ForeColor="White" OnClick="btnSearch_Click" />
                                     </td>
                                       <td style="width: 16%" class="tblLeftNoPad">
@@ -593,22 +628,22 @@
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="12px" ForeColor="#414141" />
                                             <Columns>
-                                                <asp:BoundField DataField="RequestID" HeaderStyle-Wrap="false" HeaderText="Req.ID"
+                                                <asp:BoundField DataField="RequestID" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Req.ID"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="UserID" HeaderStyle-Wrap="false" HeaderText="Req.User"
+                                                <asp:BoundField DataField="UserID" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Req.User"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedDate" HeaderStyle-Wrap="false" HeaderText="Req.Date" DataFormatString="{0:dd/MM/yyyy}"
+                                                <asp:BoundField DataField="RequestedDate" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Req.Date" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="ItemCode" HeaderStyle-Wrap="false" HeaderText="Product"
+                                                <asp:BoundField DataField="ItemCode" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Product"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Quantity" HeaderStyle-Wrap="false" HeaderText="Quantity"
+                                                <asp:BoundField DataField="Quantity" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Quantity"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RequestedBranch" HeaderText="Req.Branch" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="RequestedBranch" ItemStyle-Font-Size="12px" HeaderText="Req.Branch" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="BranchHasStock" HeaderText="BranchHasStock" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="BranchHasStock" ItemStyle-Font-Size="12px" HeaderText="BranchHasStock" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Status" HeaderStyle-Wrap="false" HeaderText="Status" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="CompletedDate" HeaderStyle-Wrap="false" HeaderText="CompletedDate" DataFormatString="{0:dd/MM/yyyy}"
+                                                <asp:BoundField DataField="Status" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Status" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="CompletedDate" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="CompletedDate" DataFormatString="{0:dd/MM/yyyy}"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Approve/Reject"
                                                     HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center">
