@@ -315,7 +315,7 @@ public partial class PageMaster : System.Web.UI.MasterPage
     {
         try
         {
-            Response.Redirect("ProductMaster.aspx?myname=" + "NEWPROD");
+            Response.Redirect("ProdMaster.aspx?myname=" + "NEWPROD");
         }
         catch (Exception ex)
         {

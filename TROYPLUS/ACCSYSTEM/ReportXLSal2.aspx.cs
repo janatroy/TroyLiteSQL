@@ -271,7 +271,8 @@ public partial class ReportXLSal2 : System.Web.UI.Page
             }
             else
             {             
-                credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+               // credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+                credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
                 dr_final12["Amount"] = credit.ToString("#0.00");
                 Tottot = Tottot + credit;
                 credit = 0.00;

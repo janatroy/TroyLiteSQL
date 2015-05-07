@@ -231,8 +231,8 @@ public partial class SalesSummaryReport : System.Web.UI.Page
         else if ((cmbDisplayCat.SelectedItem.Text) == "Executivewise")
         {
             dt.Columns.Add(new DataColumn(cmbDisplayCat.SelectedItem.Text));
-            field2 = "tblsales.executivename,";
-            GroupBy = "tblsales.executivename,";
+            field2 = "tblSalesItems.executivename,";
+            GroupBy = "tblSalesItems.executivename,";
         }
         else if ((cmbDisplayCat.SelectedItem.Text) == "Itemwise")
         {
@@ -1141,7 +1141,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     else if (secondLevel == "Brandwise")
                         ds = bl.SecondLevelModelwiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote, "", "");
+                        ds = bl.SecondLevelBrandWiseCustomerWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
                         ds = bl.SecondLevelModelWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "ProductName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Daywise")

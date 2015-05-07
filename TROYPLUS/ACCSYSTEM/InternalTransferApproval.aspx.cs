@@ -429,14 +429,14 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         if (cmbApproveReject.SelectedValue == "Reject")
         {
-            //if (txtComments.Text.Trim() == string.Empty)
-            //{
-            //    rvComments.Enabled = true;
-            //    Page.Validate();
+            if (txtComments.Text.Trim() == string.Empty)
+            {
+               rvComments.Enabled = true;
+                Page.Validate();
                 modalPopupApproveReject.Show();
-            //   // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
+              // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
                return;
-            //}
+            }
         }
         else
         {
@@ -779,16 +779,14 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 
-                    DataSet prodData = bl.ListSalesProductPriceDetails(request.ItemCode, customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), request.BranchHasStock);
-
-                    DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
+                    DataSet prodData = bl.ListSalesProductPriceDetails(request.ItemCode, "Customer", request.BranchHasStock);                    DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
                   
 
                     int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iSupplier,
                         supplier.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
-                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
+                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Customer", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
 
                   
 
@@ -811,6 +809,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             BindGridData();
 
         }
+
         else if (cmbApproveReject.SelectedValue == "Reject")
         {
             string connection1 = Request.Cookies["Company"].Value;
@@ -894,7 +893,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
             //if (Page.IsValid)
             //{
-                BindGridData();
+            BindGridData();
             //}
         }
         catch (Exception ex)

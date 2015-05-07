@@ -383,6 +383,7 @@
                                                                                                                         <td class="ControlTextBox3" style="width: 19%;">
                                                                                                                             <asp:TextBox ID="txtBillno" runat="server" MaxLength="8" CssClass="cssTextBox" BackColor="#e7e7e7" Width="80%"
                                                                                                                                 ValidationGroup="purchaseval" BorderStyle="NotSet" Height="23px"></asp:TextBox>
+                                                                                                                              <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender9" runat="server" FilterType="Numbers" TargetControlID="txtBillno" />
                                                                                                                         </td>
                                                                                                                         <td style="width: 14%;"></td>
                                                                                                                         <td class="ControlLabelproject" style="width: 14%;">Purchase Entry Date
