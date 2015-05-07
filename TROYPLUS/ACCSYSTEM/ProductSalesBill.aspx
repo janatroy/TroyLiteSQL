@@ -70,6 +70,11 @@
             color: #00007a;
         }
 
+        .auto-style161 {
+            width: 210px;
+            color: #00007a;
+        }
+
         .auto-style18 {
             width: 245px;
         }
@@ -239,13 +244,13 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr id="trTINCST" runat="server">
-                                                                    <td align="center" class="auto-style16" style="font-weight: 400; font-size: 18px;">
-                                                                        <asp:Label ID="Label10" Text="Tax Invoice" runat="server" />
+                                                                    <td align="center" class="auto-style161" style="font-weight: 400; font-size: 16px;">
+                                                                        <asp:Label ID="Label10" Text="" runat="server" />
                                                                     </td>
                                                                 </tr>
                                                                 <tr id="trCST" runat="server">
                                                                     <td align="center" class="auto-style16" style="font-weight: 400; font-size: 16px;">
-                                                                        <asp:Label ID="Label11" Text="Customer Copy" runat="server" />
+                                                                        <asp:Label ID="Label11" Text="" runat="server" />
                                                                     </td>
 
                                                                 </tr>

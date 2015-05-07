@@ -1107,7 +1107,8 @@ public partial class ReportXlSal : System.Web.UI.Page
             }
             else
             {
-                credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+              //  credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+                credit = double.Parse(dr["SalesDiscount"].ToString())  + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
                 dr_final12["Amount"] = credit.ToString("#0.00");
                 Tottot = Tottot + credit;
                 credit = 0.00;
@@ -1440,7 +1441,8 @@ public partial class ReportXlSal : System.Web.UI.Page
             dr_final12["Date"] = dtaa;
             dr_final12["BillNo"] = dr["BillNo"].ToString();
             dr_final12["BranchCode"] = dr["BranchCode"].ToString();          
-            credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+           // credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+            credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
             dr_final12["Amount"] = credit.ToString("#0.00");
             Tottot = Tottot + credit;
             credit = 0.00;

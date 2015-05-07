@@ -134,6 +134,65 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
 
 
+        BindDropdowns();
+
+        string connection = Request.Cookies["Company"].Value;
+        BusinessLogic bll = new BusinessLogic(connection);
+
+        int ID = Convert.ToInt32(GrdViewRequestes.SelectedDataKey.Value);
+
+        IInternalTransferService bl = new BusinessLogic(connection);
+
+        InternalTransferRequest requestDetail = bl.GetInternalTransferRequest(connection, ID);
+
+        if (requestDetail != null)
+        {
+
+            TextBox3.Text = requestDetail.RequestedDate.ToShortDateString();
+            if (DropDownList1.Items.FindByValue(requestDetail.ItemCode) != null)
+                DropDownList1.SelectedValue = requestDetail.ItemCode;
+
+            if (DropDownList2.Items.FindByValue(requestDetail.RequestedBranch) != null)
+                DropDownList2.SelectedValue = requestDetail.RequestedBranch;
+
+            if (DropDownList3.Items.FindByValue(requestDetail.BranchHasStock) != null)
+                DropDownList3.SelectedValue = requestDetail.BranchHasStock;
+
+            if (DropDownList4.Items.FindByValue(requestDetail.Status) != null)
+                DropDownList4.SelectedValue = requestDetail.Status;
+
+            TextBox2.Text = requestDetail.RejectedReason;
+
+            TextBox1.Text = requestDetail.Quantity.ToString();
+
+            if (requestDetail.CompletedDate.HasValue)
+                TextBox4.Text = requestDetail.CompletedDate.ToString();
+
+
+
+            string itemCode = DropDownList1.SelectedValue;
+
+            double Reqchk = bll.getStockInfo(itemCode, DropDownList2.SelectedValue);
+            double Haschk = bll.getStockInfo(itemCode, DropDownList3.SelectedValue);
+
+            txtReqStock.Text = Reqchk.ToString();
+            txtHasStock.Text = Haschk.ToString();
+            UpdatePanel1.Update();
+            UpdatePanel2.Update();
+        }
+
+
+
+
+
+
+
+
+      
+
+
+
+
         //frmViewAdd.Visible = true;
         //frmViewAdd.ChangeMode(FormViewMode.Edit);
         //GrdViewBranches.Columns[8].Visible = false;
@@ -429,14 +488,14 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         if (cmbApproveReject.SelectedValue == "Reject")
         {
-            //if (txtComments.Text.Trim() == string.Empty)
-            //{
-            //    rvComments.Enabled = true;
-            //    Page.Validate();
+            if (txtComments.Text.Trim() == string.Empty)
+            {
+               rvComments.Enabled = true;
+                Page.Validate();
                 modalPopupApproveReject.Show();
-            //   // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
+              // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
                return;
-            //}
+            }
         }
         else
         {
@@ -780,7 +839,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 
                     DataSet prodData = bl.ListSalesProductPriceDetails(request.ItemCode, customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), request.BranchHasStock);
-                
+
                     DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
                   
@@ -811,6 +870,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             BindGridData();
 
         }
+
         else if (cmbApproveReject.SelectedValue == "Reject")
         {
             string connection1 = Request.Cookies["Company"].Value;
@@ -913,19 +973,19 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
         if (prodData != null)
         {
-            cmbProd.DataSource = prodData;
-            cmbProd.DataBind();
+            DropDownList1.DataSource = prodData;
+            DropDownList1.DataBind();
         }
 
         var branchData = bl.GetBranches(connection);
 
         if (branchData != null)
         {
-            cmbRequestedBranch.DataSource = branchData;
-            cmbRequestedBranch.DataBind();
+            DropDownList2.DataSource = branchData;
+            DropDownList2.DataBind();
 
-            cmbBranchHasStock.DataSource = branchData;
-            cmbBranchHasStock.DataBind();
+            DropDownList3.DataSource = branchData;
+            DropDownList3.DataBind();
         }
     }
 

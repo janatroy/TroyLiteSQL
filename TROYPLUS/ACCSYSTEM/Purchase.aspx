@@ -53,14 +53,14 @@
         function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtSearch.ClientID %>');
 
-                if (sender.value.length >= 1 && first.value.length >= 1) {
-                    document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "visible";
+            if (sender.value.length >= 1 && first.value.length >= 1) {
+                document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "visible";
 
-           }
+            }
 
-           if (sender.value.length < 1 && first.value.length < 1) {
+            if (sender.value.length < 1 && first.value.length < 1) {
 
-               document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
+                document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
             }
         }
 
@@ -68,7 +68,7 @@
         //    window.showModalDialog('./ProductPurchaseBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
         //}
 
-        function PrintItem(ID, RT, BID) {
+        function PrintItem(ID, RT, BID) {         
             window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
         }
 
@@ -172,7 +172,7 @@
                                                         <asp:ListItem Value="Date">Bill Date</asp:ListItem>
                                                         <asp:ListItem Value="VoucherDate">Voucher Date</asp:ListItem>
                                                         <asp:ListItem Value="SupplierName">Supplier Name</asp:ListItem>
-                                                        <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
+                                                         <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                                 <asp:TextBox ValidationGroup="search" ID="txtTransNo" runat="server" MaxLength="8"
@@ -207,7 +207,7 @@
                                             </td>
                                             <td style="width: 15%; font-size: 14px; color: White;">
                                                 <asp:CheckBox ID="chkDelRtn" Text="Delivery Return" runat="server" AutoPostBack="true" OnCheckedChanged="chkDelRtn_CheckedChanged" />
-                                            </td>
+                                            </td>                                          
                                             <td style="width: 13%; font-size: 14px; color: White;">
                                                 <asp:CheckBox ID="chkIntTrans" Text="Internal Transfer" runat="server" AutoPostBack="true" OnCheckedChanged="chkIntTrans_CheckedChanged"/>
                                             </td>
@@ -404,16 +404,16 @@
                                                                                                                         <td class="ControlTextBox3" style="width: 19%;">
                                                                                                                             <asp:TextBox ID="txtBillno" runat="server" MaxLength="8" CssClass="cssTextBox" BackColor="#e7e7e7" Width="80%"
                                                                                                                                 ValidationGroup="purchaseval" BorderStyle="NotSet" Height="23px"></asp:TextBox>
-                                                                                                                            <%-- <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender9" runat="server" FilterType="Numbers" TargetControlID="txtBillno" />--%>
+                                                                                                                              <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender9" runat="server" FilterType="Numbers" TargetControlID="txtBillno" />
                                                                                                                         </td>
                                                                                                                         <td style="width: 14%;"></td>
                                                                                                                         <td class="ControlLabelproject" style="width: 14%;">Purchase Entry Date
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 19%;">
-                                                                                                                            <asp:TextBox ID="txtInvoiveDate" Enabled="false" runat="server" CssClass="cssTextBox" MaxLength="10" Height="23px" BackColor="#e7e7e7" 
+                                                                                                                            <asp:TextBox ID="txtInvoiveDate" Enabled="false" runat="server" CssClass="cssTextBox" MaxLength="10" Height="23px" BackColor="#e7e7e7"
                                                                                                                                 ValidationGroup="purchaseval" Width="80%"></asp:TextBox>
 
-                                                                                                                            <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy" 
+                                                                                                                            <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy"
                                                                                                                                 PopupButtonID="ImageButton1"
                                                                                                                                 TargetControlID="txtInvoiveDate" Enabled="True">
                                                                                                                             </cc1:CalendarExtender>
@@ -1123,8 +1123,8 @@
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                         <FooterStyle HorizontalAlign="Right" />
                                                                                                                                                                         <FooterTemplate>
-                                                                                                                                                                            <asp:Button ID="ButtonAdd" runat="server" AutoPostback="true" EnableTheming="false" OnClick="ButtonAdd_Click"
-                                                                                                                                                                                ValidationGroup="DynRowAdd" Text="Add New" />
+                                                                                                                                                                        <asp:Button ID="ButtonAdd" runat="server" AutoPostback="true" EnableTheming="false" OnClick="ButtonAdd_Click"
+                                                                                                                                                                        ValidationGroup="DynRowAdd" Text="Add New" />
                                                                                                                                                                         </FooterTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:CommandField ShowDeleteButton="True" ButtonType="Button" />
@@ -1151,7 +1151,7 @@
                                                                                                         <br></br>
                                                                                                         </br>
                                                                                                         </br>--%>
-
+                                                                                                                       
                                                                                                                             <asp:UpdatePanel ID="UpdatePanel14" runat="server" UpdateMode="Conditional">
                                                                                                                                 <ContentTemplate>
                                                                                                                                     <table width="100%">
@@ -1623,8 +1623,8 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-Width="45px" HeaderText="Print" HeaderStyle-BorderColor="Gray">
                                                         <ItemTemplate>
-                                                            <%-- <a href='<%# DataBinder.Eval(Container, "DataItem.PurchaseID", "javascript:PrintItem({0});") %>'>--%>
-                                                            <a href='<%#String.Format("javascript:PrintItem({0},&#39;{1}&#39;,&#39;{2}&#39;)", Eval("PurchaseID"), Eval("SalesReturn"),  Eval("BranchCode")) %>'>
+                                                         <%-- <a href='<%# DataBinder.Eval(Container, "DataItem.PurchaseID", "javascript:PrintItem({0});") %>'>--%>
+                                                             <a href='<%#String.Format("javascript:PrintItem({0},&#39;{1}&#39;,&#39;{2}&#39;)", Eval("PurchaseID"), Eval("SalesReturn"),  Eval("BranchCode")) %>'>
                                                                 <asp:Image runat="server" ID="lnkprint" alt="Print" border="0" src="App_Themes/DefaultTheme/Images/PrintIcon_btn.png" />
                                                             </a>
                                                             <asp:ImageButton ID="btnViewDisabled" Enabled="false" SkinID="search" runat="Server"></asp:ImageButton>

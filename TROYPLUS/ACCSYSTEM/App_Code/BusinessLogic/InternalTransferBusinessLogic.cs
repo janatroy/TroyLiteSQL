@@ -292,7 +292,7 @@ public partial class BusinessLogic : IInternalTransferService
 
             manager.Open();
 
-            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock"))
+            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock" || dropDown == "RequestID" || dropDown == "UserID" || dropDown == "RequestedDate"))
                 txtSearch = "%" + txtSearch + "%";
             if (branch == "All")
             {
@@ -318,11 +318,23 @@ public partial class BusinessLogic : IInternalTransferService
             }
             else if (dropDown == "CompletedDate" && !string.IsNullOrEmpty(txtSearch))
             {
-                dbQry.AppendFormat("Where CompletedDate = '{0}' ", txtSearch);
+                dbQry.AppendFormat("Where CompletedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
             else if (dropDown == "BranchHasStock" && !string.IsNullOrEmpty(txtSearch))
             {
                 dbQry.AppendFormat("Where BranchHasStock = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "UserID" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where UserID = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "RequestID" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where RequestID = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "RequestedDate" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where RequestedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
 
             dbQry.Append(" Order By Status desc,RequestedDate desc ");
@@ -378,30 +390,46 @@ public partial class BusinessLogic : IInternalTransferService
 
             manager.Open();
 
-            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate"))
+            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock" || dropDown == "RequestID" || dropDown == "UserID" || dropDown == "RequestedDate"))
                 txtSearch = "%" + txtSearch + "%";
            
           
 
                 dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests ");
-           
 
-            if (dropDown == "ItemCode" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where ItemCode like '%{0}%' ", txtSearch);
-            }
-            else if (dropDown == "Status" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where Status like '%{0}%' ", txtSearch);
-            }
-            else if (dropDown == "RequestedBranch" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where RequestedBranch like '%{0}%' ", txtSearch);
-            }
-            else if (dropDown == "CompletedDate" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where CompletedDate like '%{0}%' ", txtSearch);
-            }
+
+                if (dropDown == "ItemCode" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where ItemCode = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "Status" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where Status = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "RequestedBranch" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where RequestedBranch = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "CompletedDate" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where CompletedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+                }
+                else if (dropDown == "BranchHasStock" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where BranchHasStock = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "UserID" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where UserID = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "RequestID" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where RequestID = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "RequestedDate" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where RequestedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+                }
 
             dbQry.Append(" Order By Status desc,RequestedDate desc ");
 

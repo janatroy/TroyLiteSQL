@@ -279,6 +279,17 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
             }
         }
 
+        DataSet dsd = bl.GetBranchDetailsForId(Request.Cookies["Company"].Value, Convert.ToString(Request.QueryString["BID"]));
+        if (dsd != null)
+        {
+            if (dsd.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow drd in dsd.Tables[0].Rows)
+                {
+                    lblAddress.Text = lblAddress.Text + " (" + Convert.ToString(drd["BranchName"]) + " Branch), " + Convert.ToString(drd["BranchAddress1"]) + ", " + Convert.ToString(drd["BranchAddress2"]) + " " + Convert.ToString(drd["BranchAddress3"]) + " " + Convert.ToString(drd["BranchLocation"]);
+                }
+            }
+        }
 
 
         DataSet dsSupplier = bl.getAddressInfo(supplierID);

@@ -14,8 +14,8 @@ public partial class InternalTransfers : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         if (!Page.IsPostBack)
         {
@@ -53,7 +53,6 @@ public partial class InternalTransfers : System.Web.UI.Page
             GrdViewRequestes.DataBind();
         }
     }
-
     protected void BtnClearFilter_Click(object sender, EventArgs e)
     {
         txtSearch.Text = "";
@@ -473,13 +472,6 @@ public partial class InternalTransfers : System.Web.UI.Page
                     ModalPopupExtender1.Show();
                     return;
                 }
-                if(txtQtyAdd.Text=="0")
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Qty. must be greater than Zero');", true);
-                    ModalPopupExtender1.Show();
-                    return;
-
-                }
 
                 if (cmbProd.SelectedValue != "0")
                     request.ItemCode = cmbProd.SelectedValue;
@@ -861,7 +853,7 @@ public partial class InternalTransfers : System.Web.UI.Page
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
         DataSet paymentdata=null;
-        if (cmbApproveReject.SelectedValue == "Approve")
+       if (cmbApproveReject.SelectedValue == "Approve")
         {
             string connection = Request.Cookies["Company"].Value;
             string UserID = Request.Cookies["LoggedUserName"].Value;
@@ -931,9 +923,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
             BindGridData();
                
-        }
-
-    }
+        }   }
     protected void InsertButton_Click(object sender, EventArgs e)
     {
         if (Page.IsValid)
@@ -992,10 +982,10 @@ public partial class InternalTransfers : System.Web.UI.Page
     {
         try
         {
-            rvSearch.Enabled = true;
-           // Page.Validate();
+            txtSearch.Enabled = true;
+            // Page.Validate();
 
-           // if (Page.IsValid)
+            // if (Page.IsValid)
             {
                 BindGridData();
             }

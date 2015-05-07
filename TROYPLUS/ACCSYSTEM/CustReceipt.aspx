@@ -1009,7 +1009,7 @@
                                                                                                                                     <asp:ListItem Text="Advance" Value="2"></asp:ListItem>
                                                                                                                                 </asp:RadioButtonList>
                                                                                                                             </td>
-                                                                                                                            <td style="width: 15%;" align="left"></td>
+                                                                                                                            <td style="width: 13%;" align="left"></td>
                                                                                                                               <td class="ControlLabelNew" style="width: 17%">Received Date *
                                                                                                                                <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDate" Display="Dynamic"
                                                                                                                                     ErrorMessage="Please select Received Date. It cannot be left blank.">*</asp:RequiredFieldValidator>
@@ -1053,7 +1053,7 @@
                                                                                                  runat="server">
                                                                                              </asp:DropDownList>
                                                                                                                                     </td>
-                                                                                                                             <td  style="width: 17%">
+                                                                                                                             <td  style="width: 13%">
                                                                                                                                
                                                                                                                             </td>
                                                                                                                           
@@ -1105,7 +1105,7 @@
                                                                                                                                 
                                                                                                                             </td>
 
-                                                                                                                            <td style="width: 15%;" align="left">
+                                                                                                                            <td style="width: 13%;" align="left">
                                                                                                                                 <asp:CheckBox runat="server" ID="chk" Text="Existing Customer"  Checked="true" OnCheckedChanged="chk_CheckedChanged"  Font-Bold="true" AutoPostBack="true" />
                                                                                                                             </td>
 
@@ -1178,6 +1178,22 @@
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                             </td>
+                                                                                                                             <td></td>
+                                                                                                                            <td class="ControlLabelNew" style="width: 19%;">
+                                                                                                                                            Outstanding to be Adjusted
+                                                                                                                                        </td>
+                                                                                                                                        <td class="ControlLabelNew1" align="left" >
+                                                                                                                                            <asp:UpdatePanel ID="UpdatePanel15" runat="server" UpdateMode="Conditional">
+                                                                                                                                            <ContentTemplate>
+                                                                                                                                            <asp:label runat="server" ID="outstand" Text="">
+
+                                                                                                                                            </asp:label>
+                                                                                                                                                </ContentTemplate>
+                                                                                                                                            <Triggers>
+                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpLedger" EventName="SelectedIndexChanged" />
+                                                                                                                                            </Triggers>
+                                                                                                                                        </asp:UpdatePanel>
+                                                                                                                                        </td>
                                                                                                                             
                                                                                                                         </tr>
                                                                                                                         <tr style="height: 6px">
@@ -1527,26 +1543,37 @@
                                                                                                                                  
                                                                                                                                 <table style="width: 100%">
                                                                                                                                     <tr>
+                                                                                                                                        <td>
                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel14" runat="server" UpdateMode="Conditional">
                                                                                                                                     <ContentTemplate>
                                                                                                                                         <asp:Panel  id="totalrow" runat="server" visible="false"
                                                                                                     Width="100%" >
-                                                                                                                                        <td style="width: 57%">
+                                                                                                                                 
+                                                                                                                                <table style="width: 100%">
+                                                                                                                                    <tr>
+                                                                                                                                        <td style="width: 8%">
+                                                                                                                                            
+                                                                                                                                        </td>
+                                                                                                                                        
+                                                                                                                                        <td style="width: 47%">
                                                                                                                                             
                                                                                                                                         </td>
                                                                                                                                         <td class="ControlLabelNew" style="width: 20%">
                                                                                                                                             Total Amount Adjusted
                                                                                                                                 
                                                                                                                                         </td>
-                                                                                                                                        <td style="width: 16%">
+                                                                                                                                        <td style="width: 16%;">
                                                                                                                                             <asp:TextBox ID="TextBox1" runat="server"  BackColor="#e7e7e7" Height="20px" Width="100%" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699" ReadOnly="true"  Font-Bold="true" ></asp:TextBox>
                                                                                                                                         </td>
                                                                                                                                         <td style="width: 8%">
                                                                                                                                             
                                                                                                                                         </td>
+                                                                                                                                        </tr>
+                                                                                                                                    </table>
                                                                                                                                             </asp:Panel>
                                                                                                                                         </ContentTemplate>
                                                                                                                                             </asp:UpdatePanel>
+                                                                                                                                            </td>
                                                                                                                                     </tr>
                                                                                                                                 </table>
                                                                                                                                      
@@ -1828,6 +1855,8 @@
             <asp:HiddenField ID="hdMobile" runat="server" />
             <asp:HiddenField ID="hddate" runat="server" Value="0" />
             <asp:HiddenField ID="hdSMSRequired" runat="server" Value="NO" />
+            <asp:HiddenField ID="hd" runat="server" Value="0" />
+            <asp:HiddenField ID="hd1" runat="server" Value="0" />
             <asp:HiddenField ID="hdPendingCount" runat="server" Value="0" />
             <asp:HiddenField ID="hdEmailRequired" runat="server" Value="NO" />
         </ContentTemplate>
