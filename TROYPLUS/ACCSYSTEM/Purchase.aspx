@@ -627,6 +627,7 @@
                                                                                                                             <asp:HiddenField ID="hdRole" runat="server" Value="N" />
                                                                                                                             <asp:HiddenField ID="hdStock" runat="server" Value="0" />
                                                                                                                             <asp:HiddenField ID="hdPurchase" runat="server" Value="0" />
+                                                                                                                             <asp:HiddenField ID="hdPurchase1" runat="server" Value="0" />
                                                                                                                             <asp:HiddenField ID="hdFilename" runat="server" Value="0" />
                                                                                                                             <asp:HiddenField ID="hdTotalAmt" runat="server" Value="0" />
                                                                                                                             <asp:HiddenField ID="hdMode" runat="server" Value="New" />

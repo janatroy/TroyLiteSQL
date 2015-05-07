@@ -1033,7 +1033,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text, drpBranch.SelectedValue);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1319,7 +1319,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text, drpBranch.SelectedValue);
 
                     if (receivedBill != string.Empty)
                     {
@@ -1564,7 +1564,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text, drpBranch.SelectedValue);
 
                     if (receivedBill != string.Empty)
                     {
@@ -6489,7 +6489,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text, drpBranch.SelectedValue);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7568,7 +7568,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text, drpBranch.SelectedValue);
 
                     if (receivedBill != string.Empty)
                     {
@@ -7735,7 +7735,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                 {
-                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text);
+                    receivedBill = bl.IsAmountPaidForBill(connection, lblBillNo.Text, drpBranch.SelectedValue);
 
                     if (receivedBill != string.Empty)
                     {
@@ -8598,7 +8598,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                     txtCashAmount.Text = dr["Amount"].ToString();
                                     TextBox5.Text = dr["SFRefNo"].ToString();
                                 }
-                                else if (dr["Paymode"].ToString() == "Cheque")
+                                else if ((dr["Paymode"].ToString() == "Cheque")||(dr["Paymode"].ToString() == "Card"))
                                 {
                                     if (gg == 1)
                                     {
@@ -9446,7 +9446,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                     if (salesData.Tables[0].Rows[0]["Paymode"] != null && salesData.Tables[0].Rows[0]["Paymode"].ToString() == "3")
                     {
-                        var receivedBill = bl.IsAmountPaidForBill(connection, sBillNo.ToString());
+                        var receivedBill = bl.IsAmountPaidForBill(connection, sBillNo.ToString(), branchcode);
 
                         if (receivedBill != string.Empty)
                         {
