@@ -1451,10 +1451,20 @@ public partial class Purchase : System.Web.UI.Page
                                 //checkflag = true;
                                 //return;
 
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Alert! VAT(%) and CST(%) are Zeros(0) in row " + col + " . Are you Sure? ')", true);
-                                //return;
+                                // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Alert! VAT(%) and CST(%) are Zeros(0) in row " + col + " . Are you Sure? ')", true);
+                                // ScriptManager.RegisterStartupScript(grvStudentDetails, grvStudentDetails.GetType(), "myAlert", "return confirm('Called from code-behind directly!');", true);
+                                //   checkflag = true;
+                                //  return;
+                                //  ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:if(confirm('Are you sure you want to delete?') == false) return false;", true);
+                                //  ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:return confirm('Are you sure you want to delete');", true);
+                                //   ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "con();", false);
 
-                            }
+
+
+                                //  ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>ConfirmIt();</script>", false);
+                                if (inpHide.Value == "1")
+                                {
+                                }
                                 else
                                 {
                                     checkflag = true;
@@ -7770,6 +7780,8 @@ public partial class Purchase : System.Web.UI.Page
             lblTotalCST.Text = sumCST.ToString("#0.00");
             lblNet.Text = sumNet.ToString("#0.00");
             hdPurchase.Value = lblNet.Text;
+            double totvat = 0;
+
             /*Start Purchase Loading / Unloading Freight Change - March 16*/
             lblFreight.Text = sumLUFreight.ToString("#0.00");
             /*End Purchase Loading / Unloading Freight Change - March 16*/
