@@ -7821,7 +7821,7 @@ public partial class Purchase : System.Web.UI.Page
             /*Start Purchase Loading / Unloading Freight Change - March 16*/
             lblFreight.Text = sumLUFreight.ToString("#0.00");
             /*End Purchase Loading / Unloading Freight Change - March 16*/
-            //if (lblvatamt.Text != "") lblvatamt.Text = "0";
+            if (lblvatamt.Text == "") lblvatamt.Text = "0";
             double vatinclusiverate3 = Convert.ToDouble(TextBoxRate.Text) * Convert.ToDouble(TextBoxQty.Text);
             double vatinclusiverate1 = Convert.ToDouble(vatinclusiverate3) - (Convert.ToDouble(vatinclusiverate3) * Convert.ToDouble(TextBoxDisPre.Text) / 100);
             double vatinclusiverate5 = Convert.ToDouble(vatinclusiverate1) - Convert.ToDouble(TextBoxDiscAmt.Text);
