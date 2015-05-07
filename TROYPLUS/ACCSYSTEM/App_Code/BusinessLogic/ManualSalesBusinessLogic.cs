@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Web;
 using System.Collections;
 using System.Data.OleDb;
@@ -53,7 +53,7 @@ public partial class BusinessLogic
         }
     }
 
-    public void InsertManualSalesBook(string connection, int BookFrom, int BookTo, string BookName, string Username, string Types)
+    public void InsertManualSalesBook(string connection, int BookFrom, int BookTo, string BookName, string Username, string Types,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -69,8 +69,8 @@ public partial class BusinessLogic
 
             manager.BeginTransaction();
 
-            dbQry = string.Format("INSERT INTO tblManualSalesBook(BookFrom, BookTo, BookName, CreatedBy, CreatedDate) VALUES({0},{1},'{2}','{3}',{4})",
-                BookFrom, BookTo, BookName, Username, DateTime.Now.ToShortDateString());
+            dbQry = string.Format("INSERT INTO tblManualSalesBook(BookFrom, BookTo, BookName, CreatedBy, CreatedDate,Branchcode) VALUES({0},{1},'{2}','{3}','{4}','{5}')",
+                BookFrom, BookTo, BookName, Username, DateTime.Now.ToString(), branchcode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -253,7 +253,7 @@ public partial class BusinessLogic
         }
     }
 
-    public bool IsManualSaleBookAlreadyEntered(string connection, string BookName, string FromNo, string ToNo)
+    public bool IsManualSaleBookAlreadyEntered(string connection, string BookName, string FromNo, string ToNo,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -267,7 +267,7 @@ public partial class BusinessLogic
         try
         {
 
-            dbQry = string.Format("Select BookFrom,BookTo, BookName from tblManualSalesBook Where UPPER(BookName)='{0}'", BookName.ToUpper());
+            dbQry = string.Format("Select BookFrom,BookTo, BookName from tblManualSalesBook Where UPPER(BookName)='{0}' and Branchcode='{1}'", BookName.ToUpper(),branchcode);
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);

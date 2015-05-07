@@ -543,8 +543,8 @@ public partial class BusinessLogic : IInternalTransferService
 
             //int BranchID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BranchID) FROM tblOfficeBranches");
 
-            dbQry = string.Format("UPDATE tblInternalTransferRequests SET UserID='{0}', RequestedDate={1}, ItemCode='{2}', RequestedBranch='{3}', BranchHasStock='{4}', Status='{5}', Quantity={6} Where RequestID={7}",
-                request.UserID, request.RequestedDate.ToShortDateString(), request.ItemCode, request.RequestedBranch, request.BranchHasStock, request.Status, request.Quantity, request.RequestID);
+            dbQry = string.Format("UPDATE tblInternalTransferRequests SET UserID='{0}', RequestedDate='{1}', ItemCode='{2}', RequestedBranch='{3}', BranchHasStock='{4}', Status='{5}', Quantity={6} Where RequestID={7}",
+                request.UserID, request.RequestedDate.ToString("yyyy-MM-dd"), request.ItemCode, request.RequestedBranch, request.BranchHasStock, request.Status, request.Quantity, request.RequestID);
 
             //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
 

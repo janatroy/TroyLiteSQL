@@ -209,11 +209,22 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     //lblSuppAdd3.Text = address3;
                 }
 
-                lblSupplierPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
-                lblSupplierPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                if (Convert.ToDouble(dr["CustomerIdMobile"]) == 0)
+                {
+                    lblSupplierPhn.Text = "";
+                    lblSupplierPhnEx.Text = "";
 
-                lblShipToPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
-                lblShipToPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                    lblShipToPhn.Text = "";
+                    lblShipToPhnEx.Text = "";
+                }
+                else
+                {
+                    lblSupplierPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                    lblSupplierPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
+
+                    lblShipToPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                    lblShipToPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                }
 
                 lblBillDate.Text = Convert.ToString(dr["BillDate"]);
                 lblBillDateEx.Text = Convert.ToString(dr["BillDate"]);
@@ -654,6 +665,29 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 lblTotal.Text = tot.ToString("#0.00");// Convert.ToString(dr["Total"]);
                 lblTotalEx.Text = tot.ToString("#0.00");
                 payMode = Convert.ToInt32(dr["PayMode"]);
+
+                if(Convert.ToString(dr["internaltransfer"]) == "YES")
+                {
+                    Label10.Text = "Internal Transfer Sales Note";
+                    Label11.Text = "Branch Copy";
+                }
+                else if (Convert.ToString(dr["DeliveryNote"]) == "YES")
+                {
+                    Label10.Text = "Delivery Note";
+                    Label11.Text = "Customer Copy";
+                    
+                }
+                else if (Convert.ToString(dr["purchasereturn"]) == "YES")
+                {
+                    Label10.Text = "Purchase Return";
+                    Label11.Text = "Customer Copy";
+
+                }
+                else
+                {
+                    Label10.Text = "Tax Invoice";
+                    Label11.Text = "Customer Copy";
+                }
             }
         }
 
@@ -916,7 +950,14 @@ public partial class ProductSalesBill : System.Web.UI.Page
 
         var empDetails = bl.GetEmployeeDetails(empNo);
 
-        empName = Convert.ToString(empDetails.Tables[0].Rows[0]["empFirstName"]);
+        if (empDetails != null)
+        {
+            empName = Convert.ToString(empDetails.Tables[0].Rows[0]["empFirstName"]);
+        }
+        else
+        {
+            empName = "";
+        }
 
         return empName;
     }
@@ -929,8 +970,10 @@ public partial class ProductSalesBill : System.Web.UI.Page
 
         var empDetails = bl.GetEmployeeDetails(empNo);
 
-        empName = Convert.ToString(empDetails.Tables[0].Rows[0]["empFirstName"]);
-
+        if (empDetails != null)
+        {
+            empName = Convert.ToString(empDetails.Tables[0].Rows[0]["empFirstName"]);
+        }
         return empName;
     }
 

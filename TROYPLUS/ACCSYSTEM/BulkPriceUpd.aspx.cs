@@ -355,12 +355,6 @@ public partial class BulkPriceUpd : System.Web.UI.Page
 
                 string connection = Request.Cookies["Company"].Value;
 
-                if (Convert.ToInt32(drpPriceList.SelectedIndex) == 0)
-                {
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select any one Price List before upload');", true);
-                    return;
-                }
-
                 if (ds == null)
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Uploading Excel is Empty');", true);
@@ -437,8 +431,12 @@ public partial class BulkPriceUpd : System.Web.UI.Page
                     ii = 1;
                 }
 
-                int type = Convert.ToInt32(drpPriceList.SelectedValue);
-                string pricelist = drpPriceList.SelectedItem.Text;
+                //int type = Convert.ToInt32(drpPriceList.SelectedValue);
+                //string pricelist = drpPriceList.SelectedItem.Text;
+
+
+                int type = 0;
+                string pricelist = "";
 
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {

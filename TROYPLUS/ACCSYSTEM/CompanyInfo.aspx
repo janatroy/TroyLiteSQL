@@ -730,8 +730,13 @@
                                                                 <asp:ListItem Text="Select PriceList" Value="0"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </td>
-                                                        <td style="width: 15%" />
-                                                        <td style="width: 20%" />
+                                                        <td style="width: 15%" class="ControlLabelproject">Purchase Round Off Value
+                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender7" runat="server" FilterType="Numbers"
+                                                                TargetControlID="txtPurRnd" />
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlTextBox3">
+                                                            <asp:TextBox ID="txtPurRnd" runat="server" CssClass="cssTextBox" Width="165px"></asp:TextBox>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td></td>

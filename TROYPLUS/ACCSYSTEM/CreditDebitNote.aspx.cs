@@ -196,7 +196,7 @@ public partial class CreditDebitNote : System.Web.UI.Page
             string recondate = Row.Cells[2].Text;
             hdPayment.Value = Convert.ToString(GrdViewNote.SelectedDataKey.Value);
 
-            var receivedBill = bl.IsAmountPaidForBill(connection, hdPayment.Value);
+            var receivedBill = bl.IsAmountPaidForBill(connection, hdPayment.Value,"");
 
             if (receivedBill != string.Empty)
             {
@@ -1379,7 +1379,7 @@ public partial class CreditDebitNote : System.Web.UI.Page
             hdPayment.Value = Convert.ToString(GrdViewNote.SelectedDataKey.Value);
 
 
-            var receivedBill = bl.IsAmountPaidForBill(connection, hdPayment.Value);
+            var receivedBill = bl.IsAmountPaidForBill(connection, hdPayment.Value,"");
 
             if (receivedBill != string.Empty)
             {
