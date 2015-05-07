@@ -13,6 +13,8 @@ using System.Web.UI.WebControls.WebParts;
 public partial class ManualSalesBook : System.Web.UI.Page
 {
     private string sDataSource = string.Empty;
+    string connection;
+    string usernam;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -52,7 +54,8 @@ public partial class ManualSalesBook : System.Web.UI.Page
                 string connection = Request.Cookies["Company"].Value;
                 string usernam = Request.Cookies["LoggedUserName"].Value;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-
+                loadBranch();
+                BranchEnable_Disable();
                 //if (bl.CheckUserHaveAdd(usernam, "CHQMST"))
                 //{
                 //    lnkBtnAdd.Enabled = false;
@@ -63,8 +66,6 @@ public partial class ManualSalesBook : System.Web.UI.Page
                 //    lnkBtnAdd.Enabled = true;
                 //    lnkBtnAdd.ToolTip = "Click to Add New ";
                 //}
-
-
             }
         }
         catch (Exception ex)
@@ -83,7 +84,43 @@ public partial class ManualSalesBook : System.Web.UI.Page
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
     }
 
+    private void loadBranch()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
+        drpBranch.Items.Clear();
+        drpBranch.Items.Add(new ListItem("Select Branch", "0"));
+        ds = bl.ListBranch();
+        drpBranch.DataSource = ds;
+        drpBranch.DataBind();
+        drpBranch.DataTextField = "BranchName";
+        drpBranch.DataValueField = "Branchcode";       
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+        connection = Request.Cookies["Company"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranch.ClearSelection();
+        ListItem li = drpBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranch.Enabled = true;
+        }
+        else
+        {
+            drpBranch.Enabled = false;
+        }
+    }
 
     protected void btnCancelUnused_Click(object sender, EventArgs e)
     {
@@ -127,18 +164,20 @@ public partial class ManualSalesBook : System.Web.UI.Page
                 string BankName = string.Empty;
                 string FromNo = string.Empty;
                 string ToNo = string.Empty;
+                string branchcode = string.Empty;
                 
                 string Username = Request.Cookies["LoggedUserName"].Value;
                 BookName = txtBookNameAdd.Text;
                 string Types = "Update";
 
+                branchcode = drpBranch.SelectedValue;
                 FromNo = txtFromNoAdd.Text;
                 ToNo = txtBookToAdd.Text;
                 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if(row.Cells[1].Text.ToUpper().Trim() != BookName.ToUpper().Trim()){
                 
-                    if (bl.IsManualSaleBookAlreadyEntered(connection, BookName, FromNo, ToNo))
+                    if (bl.IsManualSaleBookAlreadyEntered(connection, BookName, FromNo, ToNo,branchcode))
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given Book No already entered with the another book having the same name.');", true);
                         ModalPopupExtender1.Show();
@@ -732,6 +771,7 @@ public partial class ManualSalesBook : System.Web.UI.Page
             if (Page.IsValid)
             {
                 string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+                string branchcode = string.Empty;
                 string AccountNo = string.Empty;
                 string BookName = string.Empty;
                 string FromNo = string.Empty;
@@ -742,6 +782,7 @@ public partial class ManualSalesBook : System.Web.UI.Page
                 //AccountNo = txtAccNoAdd.Text;
                 string Types = "New";
 
+                branchcode = drpBranch.SelectedValue;
                 FromNo = txtFromNoAdd.Text.Trim();
                 ToNo = txtBookToAdd.Text.Trim();
                 BookName = txtBookNameAdd.Text.Trim();
@@ -753,7 +794,7 @@ public partial class ManualSalesBook : System.Web.UI.Page
 
                 BusinessLogic bl = new BusinessLogic(sDataSource);
 
-                if (bl.IsManualSaleBookAlreadyEntered(connection, BookName, FromNo, ToNo))
+                if (bl.IsManualSaleBookAlreadyEntered(connection, BookName, FromNo, ToNo,branchcode))
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given Book No already entered with the another book having the same name');", true);
                     ModalPopupExtender1.Show();
@@ -782,7 +823,7 @@ public partial class ManualSalesBook : System.Web.UI.Page
 
                 try
                 {
-                    bl.InsertManualSalesBook(connection, int.Parse( FromNo), int.Parse( ToNo), BookName, Username, Types);
+                    bl.InsertManualSalesBook(connection, int.Parse( FromNo), int.Parse( ToNo), BookName, Username, Types,branchcode);
                     
                     //MyAccordion.Visible = true;
                     pnlVisitDetails.Visible = false;

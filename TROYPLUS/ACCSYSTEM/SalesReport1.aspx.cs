@@ -635,7 +635,7 @@ public partial class SalesReport1 : System.Web.UI.Page
 
                 sumValue = sumDis + sumVat + sumCst;
 
-                lblValue.Text = sumValue.ToString("f2"); // Convert.ToString(sumValue);
+                lblValue.Text = sumRateQty.ToString("f2"); // sumValue.ToString("f2"); // Convert.ToString(sumValue);
 
 
             }

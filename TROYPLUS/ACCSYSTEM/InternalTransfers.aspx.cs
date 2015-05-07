@@ -473,6 +473,13 @@ public partial class InternalTransfers : System.Web.UI.Page
                     ModalPopupExtender1.Show();
                     return;
                 }
+                if(txtQtyAdd.Text=="0")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Product Qty. must be greater than Zero');", true);
+                    ModalPopupExtender1.Show();
+                    return;
+
+                }
 
                 if (cmbProd.SelectedValue != "0")
                     request.ItemCode = cmbProd.SelectedValue;
@@ -498,7 +505,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                 contentPopUp.Visible = false;
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Request Saved Successfully.');", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Request Updated Successfully.');", true);
 
             }
             catch (Exception ex)

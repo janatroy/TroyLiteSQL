@@ -839,7 +839,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 
                     DataSet prodData = bl.ListSalesProductPriceDetails(request.ItemCode, customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), request.BranchHasStock);
-
+                
                     DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
                   
@@ -847,7 +847,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                     int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iSupplier,
                         supplier.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
-                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
+                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
 
                   
 
