@@ -344,12 +344,18 @@ public partial class Purchase : System.Web.UI.Page
                 //return;
 
             }
-            else if (txtDiscAmt.Text == "")
-            {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Discount Amount in row " + col + " ')", true);
-                checkflag = true;
-                return;
-            }
+            //else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) <= 0) && (Convert.ToDouble(txtCSTPre.Text) <= 0)) || ((Convert.ToDouble(txtVATPre.Text) > 0) && (Convert.ToDouble(txtCSTPre.Text) > 0)))
+            //{
+            //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
+            //    checkflag = true;
+            //    return;
+            //}
+            //else if (txtDiscAmt.Text == "")
+            //{
+            //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Discount Amount in row " + col + " ')", true);
+            //    checkflag = true;
+            //    return;
+            //}
             else if (txtTotal.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Total in row " + col + " ')", true);
@@ -1026,6 +1032,8 @@ public partial class Purchase : System.Web.UI.Page
                 int iSalesID = 0;
                 string filename = string.Empty;
                 double dTotalAmt = 0;
+
+                //iPurchase = Convert.ToInt32(hdPurchase.Value.Replace(".00",""));
                 iPurchase = Convert.ToInt32(hdPurchase.Value);
                 sBillno = txtBillno.Text.Trim();
                 DateTime sBilldate;
@@ -1353,7 +1361,7 @@ public partial class Purchase : System.Web.UI.Page
                                 return;
                             }
 
-                            iSupplier = bl.InsertCustomerInfoDirect(connection, sSupplierName, sSupplierName, 2, 0, 0, 0, "", sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", sSupplierName, usernam, "YES", "", 3,true,branchcode);
+                            iSupplier = bl.InsertCustomerInfoDirect(connection, sSupplierName, sSupplierName, 2, 0, 0, 0, "", sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", sSupplierName, usernam, "YES", "", 3, true, branchcode);
                         }
                         else
                         {
@@ -1391,7 +1399,7 @@ public partial class Purchase : System.Web.UI.Page
                                 txtQty.Focus();
                                 return;
                             }
-                            else if (optionmethod.SelectedValue == "SalesReturn" ||optionmethod.SelectedValue == "DeliveryReturn")
+                            else if (optionmethod.SelectedValue == "SalesReturn" || optionmethod.SelectedValue == "DeliveryReturn")
                             {
                                 if (txtRtnQty.Text == "" || txtRtnQty.Text == "0")
                                 {
@@ -1451,10 +1459,20 @@ public partial class Purchase : System.Web.UI.Page
                                 //checkflag = true;
                                 //return;
 
-                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Alert! VAT(%) and CST(%) are Zeros(0) in row " + col + " . Are you Sure? ')", true);
-                                //return;
+                                // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Alert! VAT(%) and CST(%) are Zeros(0) in row " + col + " . Are you Sure? ')", true);
+                                // ScriptManager.RegisterStartupScript(grvStudentDetails, grvStudentDetails.GetType(), "myAlert", "return confirm('Called from code-behind directly!');", true);
+                                //   checkflag = true;
+                                //  return;
+                                //  ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:if(confirm('Are you sure you want to delete?') == false) return false;", true);
+                                //  ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:return confirm('Are you sure you want to delete');", true);
+                                //   ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "con();", false);
 
-                            }
+
+
+                                //  ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>ConfirmIt();</script>", false);
+                                if (inpHide.Value == "1")
+                                {
+                                }
                                 else
                                 {
                                     checkflag = true;
@@ -2047,6 +2065,9 @@ public partial class Purchase : System.Web.UI.Page
 
                 DateTime checkdate3 = Convert.ToDateTime(txtBillDate.Text.Trim());
                 DateTime checkdate2 = Convert.ToDateTime(txtInvoiveDate.Text.Trim());
+                //for (int vLoop = 0; vLoop < grvStudentDetails.Rows.Count; vLoop++)
+                //{
+                //    TextBox txtVATPre1 = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtVATPre");
 
                 //    if (txtVATPre1.Text == "" || txtVATPre1.Text == null || txtVATPre1.Text == "0")
                 //    {
@@ -2175,6 +2196,7 @@ public partial class Purchase : System.Web.UI.Page
                         txtVATPre2.Text = "0";
                     }
                 }
+
 
                 string sBillno = string.Empty;
                 string sInvoiceno = string.Empty;
@@ -2501,7 +2523,7 @@ public partial class Purchase : System.Web.UI.Page
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Ledger " + sSupplierName + " with this name already exists.');", true);
                                     return;
                                 }
-                                iSupplier = bl.InsertCustomerInfoDirect(connection, sSupplierName, sSupplierName, 2, 0, 0, 0, "", sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", sSupplierName, usernam, "YES", "", 3,true,branchcode);
+                                iSupplier = bl.InsertCustomerInfoDirect(connection, sSupplierName, sSupplierName, 2, 0, 0, 0, "", sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3, "", "", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", sSupplierName, usernam, "YES", "", 3, true, branchcode);
                             }
                             else
                             {
@@ -2549,7 +2571,6 @@ public partial class Purchase : System.Web.UI.Page
                                     txtRate.Focus();
                                     return;
                                 }
-
                                 else if (txtDisPre.Text == "")
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Discount Percentage in row " + col + " ')", true);
@@ -2558,23 +2579,42 @@ public partial class Purchase : System.Web.UI.Page
                                 }
                                 else if (txtVATPre.Text == "")
                                 {
-                                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill VAT Percentage in row " + col + " ')", true);
-                                    txtCSTPre.Text = "0";
-                                    return;
+                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill VAT Percentage in row " + col + " ')", true);
+                                    txtVATPre.Text = "0";
+                                    //return;
                                 }
                                 else if (txtCSTPre.Text == "")
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill CST Percentage in row " + col + " ')", true);
-                                    txtVATPre.Text = "0";
+                                    txtCSTPre.Text = "0";
                                     return;
                                 }
-                                else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) <= 0) && (Convert.ToDouble(txtCSTPre.Text) <= 0)) || ((Convert.ToDouble(txtVATPre.Text) > 0) && (Convert.ToDouble(txtCSTPre.Text) > 0)))
+                                //else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) <= 0) && (Convert.ToDouble(txtCSTPre.Text) <= 0)) || ((Convert.ToDouble(txtVATPre.Text) > 0) && (Convert.ToDouble(txtCSTPre.Text) > 0)))
+                                //{
+                                //    if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES")
+                                //    {
+                                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
+                                //        return;
+                                //    }
+                                //}
+                                else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) == 0) && (Convert.ToDouble(txtCSTPre.Text) == 0)))
                                 {
-                                    if ((ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES"))
+                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
+                                    //checkflag = true;
+                                    //return;
+
+                                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Alert! VAT(%) and CST(%) are Zeros(0) in row " + col + " . Are you Sure? ')", true);
+                                    //return;
+
+                                    if (inpHide.Value == "1")
                                     {
-                                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
+                                    }
+                                    else
+                                    {
+                                        checkflag = true;
                                         return;
                                     }
+
                                 }
                                 else if (txtDiscAmt.Text == "")
                                 {
@@ -4424,7 +4464,7 @@ public partial class Purchase : System.Web.UI.Page
         object usernam = Session["LoggedUserName"];
         string branch = Request.Cookies["Branch"].Value;
         //if (strBillno == "0" && strTransNo == "0")
-        ds = bl.GetPurchaseListWay(textSearch,branch);
+        ds = bl.GetPurchaseListWay(textSearch, branch);
         //else
         //    ds = bl.GetPurchaseForId(strBillno, strTransNo);
 
@@ -7769,11 +7809,19 @@ public partial class Purchase : System.Web.UI.Page
             lblTotalVAT.Text = sumVat.ToString("#0.00");
             lblTotalCST.Text = sumCST.ToString("#0.00");
             lblNet.Text = sumNet.ToString("#0.00");
-            hdPurchase.Value = lblNet.Text;
+            hdPurchase1.Value = lblNet.Text;
+            if (TextBoxVATPre.Text == "" || TextBoxVATPre.Text == "0")
+            {
+                if (inpHide1.Value != "")
+                {
+                    inpHide1.Value = "0";
+                }
+            }
+            double totvat = 0;
             /*Start Purchase Loading / Unloading Freight Change - March 16*/
             lblFreight.Text = sumLUFreight.ToString("#0.00");
             /*End Purchase Loading / Unloading Freight Change - March 16*/
-            if (lblvatamt.Text == "") lblvatamt.Text = "0";
+            //if (lblvatamt.Text != "") lblvatamt.Text = "0";
             double vatinclusiverate3 = Convert.ToDouble(TextBoxRate.Text) * Convert.ToDouble(TextBoxQty.Text);
             double vatinclusiverate1 = Convert.ToDouble(vatinclusiverate3) - (Convert.ToDouble(vatinclusiverate3) * Convert.ToDouble(TextBoxDisPre.Text) / 100);
             double vatinclusiverate5 = Convert.ToDouble(vatinclusiverate1) - Convert.ToDouble(TextBoxDiscAmt.Text);
@@ -8328,7 +8376,7 @@ public partial class Purchase : System.Web.UI.Page
     }
     protected void chkAll_CheckedChanged(object sender, EventArgs e)
     {
-        if(chkAll.Checked==true)
+        if (chkAll.Checked == true)
         {
             chkNorSa.Checked = false;
             chkPurRtn.Checked = false;
@@ -8340,7 +8388,7 @@ public partial class Purchase : System.Web.UI.Page
     }
     protected void chkNorSa_CheckedChanged(object sender, EventArgs e)
     {
-        if(chkNorSa.Checked==true)
+        if (chkNorSa.Checked == true)
         {
             chkAll.Checked = false;
             chkPurRtn.Checked = false;
@@ -8352,7 +8400,7 @@ public partial class Purchase : System.Web.UI.Page
     }
     protected void chkPurRtn_CheckedChanged(object sender, EventArgs e)
     {
-        if(chkPurRtn.Checked==true)
+        if (chkPurRtn.Checked == true)
         {
             chkAll.Checked = false;
             chkNorSa.Checked = false;
@@ -8364,7 +8412,7 @@ public partial class Purchase : System.Web.UI.Page
     }
     protected void chkDelNote_CheckedChanged(object sender, EventArgs e)
     {
-        if(chkDelNote.Checked==true)
+        if (chkDelNote.Checked == true)
         {
             chkAll.Checked = false;
             chkNorSa.Checked = false;
@@ -8376,7 +8424,7 @@ public partial class Purchase : System.Web.UI.Page
     }
     protected void chkDelRtn_CheckedChanged(object sender, EventArgs e)
     {
-        if(chkDelRtn.Checked==true)
+        if (chkDelRtn.Checked == true)
         {
             chkAll.Checked = false;
             chkNorSa.Checked = false;
