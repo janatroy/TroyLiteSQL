@@ -505,7 +505,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                 contentPopUp.Visible = false;
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Request Saved Successfully.');", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Request Updated Successfully.');", true);
 
             }
             catch (Exception ex)

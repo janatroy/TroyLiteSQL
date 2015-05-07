@@ -37,7 +37,7 @@ public partial class ReportExcelProducts : System.Web.UI.Page
             else
                 Response.Redirect("Login.aspx");
 
-            ds = objBL.ListProducts(connection, "", "");
+            ds = objBL.ListProductsReport(connection, "", "");
 
            
           

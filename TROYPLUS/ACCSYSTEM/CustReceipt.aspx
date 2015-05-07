@@ -379,7 +379,7 @@
                                             <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="White" Height="23px" Style="text-align: center; border: 1px solid White">
                                                 <%--<asp:ListItem Value="0" style="background-color: #bce1fe">All</asp:ListItem>--%>
                                                 <asp:ListItem Value="TransNo">Trans. No.</asp:ListItem>
-                                                <asp:ListItem Value="RefNo">Ref. No.</asp:ListItem>
+                                                <asp:ListItem Value="RefNo">Bill No.</asp:ListItem>
                                                 <asp:ListItem Value="TransDate">Transaction Date</asp:ListItem>
                                                 <asp:ListItem Value="LedgerName">Received From</asp:ListItem>
                                                 <asp:ListItem Value="Narration">Narration</asp:ListItem>
@@ -1272,7 +1272,7 @@
                                                                                                                                                             </ItemTemplate>
                                                                                                                                                         </asp:TemplateField>
                                                                                                                                                         
-                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Reference Number" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="24%">
+                                                                                                                                                        <asp:TemplateField FooterStyle-Font-Bold="True" HeaderText="Bill Number" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="24%">
                                                                                                                                                             <ItemTemplate>
                                                                                                                                                                 <asp:TextBox ID="txtRefNo" runat="server" Width="98%" Height="20px" BorderColor="#cccccc" BorderStyle="Solid" BorderWidth="1px" ForeColor="#006699"  Font-Bold="true"
                                                                                                                                                                     ></asp:TextBox>
@@ -1732,7 +1732,7 @@
                                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" ForeColor="#0567AE" />
                                             <Columns>
                                                 <asp:BoundField DataField="TransNo" HeaderText="Trans. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="RefNo" HeaderText="Ref. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="RefNo" HeaderText="Bill No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="TransDate" HeaderText="Transaction Date" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray"
                                                     DataFormatString="{0:dd/MM/yyyy}" />
                                                 <asp:BoundField DataField="LedgerName" HeaderText="Received From" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
