@@ -7749,6 +7749,7 @@ public partial class Purchase : System.Web.UI.Page
             Double sumRate = 0;
             Double sumCST = 0;
             Double sumNet = 0;
+
             DataSet ds = new DataSet();
             //ds.ReadXml(Server.MapPath("Reports\\" + hdFilename.Value + "_product.xml"));
 
@@ -7810,6 +7811,8 @@ public partial class Purchase : System.Web.UI.Page
             lblTotalCST.Text = sumCST.ToString("#0.00");
             lblNet.Text = sumNet.ToString("#0.00");
             hdPurchase.Value = lblNet.Text;
+
+            double totvat = 0;
             /*Start Purchase Loading / Unloading Freight Change - March 16*/
             lblFreight.Text = sumLUFreight.ToString("#0.00");
             /*End Purchase Loading / Unloading Freight Change - March 16*/

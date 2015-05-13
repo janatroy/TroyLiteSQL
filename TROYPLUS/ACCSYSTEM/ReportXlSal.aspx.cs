@@ -1153,6 +1153,25 @@ public partial class ReportXlSal : System.Web.UI.Page
         return cond1;
     }
 
+    protected string getCond2()
+    {
+        string cond2 = "";
+
+        foreach (ListItem listItem in lstBranch.Items)
+        {
+            if (listItem.Text != "All")
+            {
+                if (listItem.Selected)
+                {
+                    cond2 += " tblSales.BranchCode='" + listItem.Value + "' ,";
+                }
+            }
+        }
+        cond2 = cond2.TrimEnd(',');
+        cond2 = cond2.Replace(",", "or");
+        return cond2;
+    }
+
     protected string getCond()
     {
         string cond = "";
@@ -2042,6 +2061,94 @@ public partial class ReportXlSal : System.Web.UI.Page
         string cond1 = "";
         cond1 = getCond1();
 
+       // string check = "";
+        bool jan = CheckBox10.Checked;
+        bool feb = CheckBox11.Checked;
+        bool mar = CheckBox12.Checked;
+        bool apl = CheckBox1.Checked;
+        bool may = CheckBox2.Checked;
+        bool jun = CheckBox3.Checked;
+        bool jly = CheckBox4.Checked;
+        bool sep = CheckBox6.Checked;
+        bool oct = CheckBox7.Checked;
+        bool nov = CheckBox8.Checked;
+        bool dec = CheckBox9.Checked;
+        bool aug = CheckBox5.Checked;
+        bool all = CheckBox13.Checked;
+        if (CheckBox10.Checked == true)
+        {
+            jan = true;
+
+        }
+
+        if (CheckBox11.Checked == true)
+        {
+            feb = true;
+
+        }
+           
+        if (CheckBox12.Checked == true)
+        {
+            mar = true;
+
+        }
+        if (CheckBox1.Checked == true)
+        {
+            apl = true;
+
+        }
+        if (CheckBox2.Checked == true)
+        {
+            may = true;
+
+        }
+        if (CheckBox3.Checked == true)
+        {
+            jun = true;
+
+        }
+        if (CheckBox4.Checked == true)
+        {
+            jly = true;
+
+        }
+        if (CheckBox5.Checked == true)
+        {
+            aug = true;
+
+        }
+        if (CheckBox6.Checked == true)
+        {
+            sep = true;
+
+        }
+        if (CheckBox7.Checked == true)
+        {
+            oct = true;
+
+        }
+        if (CheckBox8.Checked == true)
+        {
+            nov = true;
+
+        }
+        if (CheckBox9.Checked == true)
+        {
+            dec = true;
+
+        }
+        if (CheckBox13.Checked == true)
+        {
+            all = true;
+
+        }
+        //if (CheckBox10.Checked == true)
+        //{
+        //    jan = 1;
+
+        //}
+
+
         //bindDataSubTot(cond, cond1);
 
         if (lstBranch.SelectedIndex == -1)
@@ -2051,7 +2158,23 @@ public partial class ReportXlSal : System.Web.UI.Page
         else
         {
             // Response.Write("<script language='javascript'> window.open('ReportXLSal1.aspx?cond=" + cond + "&cond1=" + Server.UrlEncode(cond1) +"' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-            Response.Write("<script language='javascript'> window.open('ReportXLSal2.aspx?startDate=" + startDate + "&cond=" + Server.UrlEncode(cond) + "&endDate=" + endDate + "&cond1=" + Server.UrlEncode(cond1) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+            Response.Write("<script language='javascript'> window.open('ReportXLSal2.aspx?startDate=" + startDate + "&cond=" + Server.UrlEncode(cond) + "&endDate=" + endDate + "&cond1=" + Server.UrlEncode(cond1) + "&jan=" + jan + "&feb=" + feb + "&mar=" + mar + "&may=" + may + "&jun=" + jun + "&jly=" + jly + "&aug=" + aug + "&sep=" + sep + "&oct=" + oct + "&nov=" + nov + "&dec=" + dec + "&apl=" + apl + "&all=" + all + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
         }
     }
+    //protected int getcheck1()
+    //{
+    //    int jan=0;
+    //    if (CheckBox10.Checked == true)
+    //    {
+    //        jan = 1;
+
+    //    }
+         
+    //    else
+    //    {
+    //        jan = 0;
+    //    }
+    //    return jan;
+             
+    //}
 }
