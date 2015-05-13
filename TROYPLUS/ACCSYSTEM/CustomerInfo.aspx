@@ -394,31 +394,16 @@
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
+                                                                                   
                                                                                     <tr>
-                                                                                        <td class="ControlLabel" style="width: 20%">Address 1
-                                                                                        </td>
-                                                                                        <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtAdd1" TabIndex="6" runat="server" Text='<%# Bind("Add1") %>'
-                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                                        </td>
-                                                                                         <td style="width: 3%"></td>
-                                                                                        <td class="ControlLabel" style="width: 14%">Phone No.
+                                                                                        <td class="ControlLabel" style="width: 20%">
+                                                                                            Phone No.
                                                                     <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" FilterType="Custom, Numbers"
                                                                         TargetControlID="txtPhone" ValidChars="+" />
+                                                                                            
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
                                                                                             <asp:TextBox ID="txtPhone" MaxLength="7" TabIndex="9" runat="server" Text='<%# Bind("Phone") %>'
-                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                                        </td>
-                                                                                        <td style="width: 10%"></td>
-                                                                                    </tr>
-                                                                                    <tr style="height: 3px">
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td class="ControlLabel" style="width: 20%">Address 2
-                                                                                        </td>
-                                                                                        <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtAdd2" TabIndex="7" runat="server" Text='<%# Bind("Add2") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
                                                                                          <td style="width: 3%"></td>
@@ -441,11 +426,10 @@
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td class="ControlLabel" style="width: 20%">Address 3
+                                                                                        <td class="ControlLabel" style="width: 20%">
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtAdd3" TabIndex="8" runat="server" Text='<%# Bind("Add3") %>'
-                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            
                                                                                         </td>
                                                                                          <td style="width: 3%"></td>
                                                                                         <td class="ControlLabel" style="width: 14%">Mode of Contact *
@@ -559,6 +543,117 @@
                                                                                                 DataValueField="GroupID" Width="98%" AppendDataBoundItems="True" Visible="False">
                                                                                                 <%--<asp:ListItem style="background-color: #90c9fc" Selected="True" Value="0">Select Account Group</asp:ListItem>--%>
                                                                                             </asp:DropDownList>
+                                                                                    </tr>
+
+                                                                                </table>
+                                                                            </ContentTemplate>
+                                                                        </cc1:TabPanel>
+                                                                        <cc1:TabPanel ID="TabPanel1" runat="server" HeaderText="Address Details">
+                                                                            <ContentTemplate>
+                                                                                <table align="center" cellpadding="3" cellspacing="1" style="border: 0px solid #5078B3; width: 770px;">
+                                                                                    <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">
+                                                                                        </td>
+                                                                                        <td class="ControlLabelNew123" style="width: 28%">
+                                                                                           Billing Address
+                                                                                        </td>
+                                                                                         <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">
+                                                                                        </td>
+                                                                                        <td class="ControlLabelNew123" style="width: 28%">
+                                                                                            Delivery Address
+                                                                                        </td>
+                                                                                        <td style="width: 10%"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                        <tr>
+                                                                                        <td style="width: 20%">
+                                                                                        </td>
+                                                                                        <td style="width: 28%">
+                                                                                           
+                                                                                        </td>
+                                                                                         <td style="width: 3%"></td>
+                                                                                        <td style="width: 14%">
+                                                                                        </td>
+                                                                                        <td style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                           <asp:CheckBox runat="server" ID="chk1" Text="Same as Billing Address" AutoPostBack="true" OnCheckedChanged="chk1_CheckedChanged"/>
+                                                                                                    </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                    </tr>
+                                                                                         <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">Street
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:TextBox ID="txtAdd1" TabIndex="6" runat="server" Text='<%# Bind("Add1") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                        </td>
+                                                                                         <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">Street
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                            <asp:TextBox ID="txtDeliveryAdd1" runat="server" Text='<%# Bind("DeliveryAdd1") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">Area
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:TextBox ID="txtAdd2" TabIndex="7" runat="server" Text='<%# Bind("Add2") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            
+                                                                                        </td>
+                                                                                         <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">Area
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel9" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                            <asp:TextBox ID="txtDeliveryAdd2" runat="server" Text='<%# Bind("DeliveryAdd2") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                       <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">City
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:TextBox ID="txtAdd3" TabIndex="8" runat="server" Text='<%# Bind("Add3") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                           
+                                                                                        </td>
+                                                                                        <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">City
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel10" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                            <asp:TextBox ID="txtDeliveryAdd3" runat="server" Text='<%# Bind("DeliveryAdd3") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
                                                                                     </tr>
 
                                                                                 </table>
@@ -819,31 +914,14 @@
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
+                                                                                    
                                                                                     <tr>
-                                                                                        <td class="ControlLabel" style="width: 20%">Address 1
-                                                                                        </td>
-                                                                                        <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtAdd1Add" TabIndex="6" runat="server" BackColor="#e7e7e7" Text='<%# Bind("Add1") %>'
-                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                                        </td>
-                                                                                        <td style="width: 3%"></td>
-                                                                                        <td class="ControlLabel" style="width: 14%">Phone No.
+                                                                                        <td class="ControlLabel" style="width: 20%">Phone No.
                                                                     <cc1:FilteredTextBoxExtender ID="FTBoxE5Add" runat="server" FilterType="Custom,Numbers"
                                                                         TargetControlID="txtPhoneAdd" ValidChars="+" />
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtPhoneAdd" runat="server" MaxLength="7" TabIndex="9" BackColor="#e7e7e7" Text='<%# Bind("Phone") %>'
-                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
-                                                                                        </td>
-                                                                                        <td style="width: 10%;"></td>
-                                                                                    </tr>
-                                                                                    <tr style="height: 3px">
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td class="ControlLabel" style="width: 20%">Address 2
-                                                                                        </td>
-                                                                                        <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtAdd2Add" TabIndex="7" runat="server" BackColor="#e7e7e7" Text='<%# Bind("Add2") %>'
+                                                                                             <asp:TextBox ID="txtPhoneAdd" runat="server" MaxLength="7" TabIndex="9" BackColor="#e7e7e7" Text='<%# Bind("Phone") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
                                                                                         <td style="width: 3%"></td>
@@ -870,10 +948,10 @@
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td class="ControlLabel" style="width: 20%">Address 3
+                                                                                        <td class="ControlLabel" style="width: 20%">Customer ID
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 28%">
-                                                                                            <asp:TextBox ID="txtAdd3Add" TabIndex="8" runat="server" Width="150%" BackColor="#e7e7e7" Text='<%# Bind("Add3") %>'
+                                                                                            <asp:TextBox ID="txtcustomeridautoAdd" MaxLength="10" runat="server" Text='<%# Bind("AutoLedgerID") %>'
                                                                                                 SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
                                                                                         <td style="width: 3%"></td>
@@ -970,12 +1048,11 @@
                                                                                             </asp:DropDownList>
                                                                                         </td>
                                                                                         <td style="width: 3%"></td>
-                                                                                        <td style="width: 20%;" align="left" class="ControlLabel">Customer ID
+                                                                                        <td style="width: 20%;" align="left" class="ControlLabel">
                                                                                         </td>
-                                                                                        <td style="width: 28%" class="ControlDrpBorder">
+                                                                                        <td style="width: 28%">
 
-                                                                                            <asp:TextBox ID="txtcustomeridautoAdd" MaxLength="10" TabIndex="13" runat="server" Text='<%# Bind("AutoLedgerID") %>'
-                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            
                                                                                         </td>
                                                                                     </tr>
                                                                                     <%--<tr>
@@ -1011,6 +1088,119 @@
                                                                                     </tr>
 
                                                                                 </table>
+                                                                            </ContentTemplate>
+                                                                        </cc1:TabPanel>
+                                                                        <cc1:TabPanel ID="TabPanel2" runat="server" HeaderText="Address Details">
+                                                                            <ContentTemplate>
+                                                                                <table align="center" cellpadding="3" cellspacing="5" style="border: 0px solid #5078B3; width: 770px;">
+                                                                         <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">
+                                                                                        </td>
+                                                                                        <td class="ControlLabelNew123" style="width: 28%">
+                                                                                           Billing Address
+                                                                                        </td>
+                                                                                         <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">
+                                                                                        </td>
+                                                                                        <td class="ControlLabelNew123" style="width: 28%">
+                                                                                            Delivery Address
+                                                                                        </td>
+                                                                                        <td style="width: 10%"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                        <tr>
+                                                                                        <td style="width: 20%">
+                                                                                        </td>
+                                                                                        <td style="width: 28%">
+                                                                                           
+                                                                                        </td>
+                                                                                         <td style="width: 3%"></td>
+                                                                                        <td style="width: 14%">
+                                                                                        </td>
+                                                                                        <td style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                            <asp:CheckBox runat="server" ID="chk" AutoPostBack="true" Text="Same as Billing Address" OnCheckedChanged="chk_CheckedChanged"/>
+                                                                                                    </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">Street
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:TextBox ID="txtAdd1Add" TabIndex="6" runat="server" BackColor="#e7e7e7" Text='<%# Bind("Add1") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                        </td>
+                                                                                        <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">
+                                                                                           Street
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                            <asp:TextBox ID="txtDeliveryAdd1Add" TabIndex="7" runat="server" BackColor="#e7e7e7" Text='<%# Bind("DeliveryAdd1") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                           </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%;"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">Area
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:TextBox ID="txtAdd2Add" TabIndex="7" runat="server" BackColor="#e7e7e7" Text='<%# Bind("Add2") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            
+                                                                                           
+                                                                                        </td>
+                                                                                        <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">
+                                                                                            Area
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                            <asp:TextBox ID="txtDeliveryAdd2Add" TabIndex="6" runat="server" BackColor="#e7e7e7" Text='<%# Bind("DeliveryAdd2") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                           </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%;"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td class="ControlLabel" style="width: 20%">City
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:TextBox ID="txtAdd3Add" TabIndex="8" runat="server" Width="150%" BackColor="#e7e7e7" Text='<%# Bind("Add3") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                            
+                                                                                        </td>
+                                                                                        <td style="width: 3%"></td>
+                                                                                        <td class="ControlLabel" style="width: 14%">
+                                                                                           City
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 28%">
+                                                                                            <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                                            <asp:TextBox ID="txtDeliveryAdd3Add" TabIndex="6" runat="server" BackColor="#e7e7e7" Text='<%# Bind("DeliveryAdd3") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                           </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                                        </td>
+                                                                                        <td style="width: 10%;"></td>
+                                                                                    </tr>
+                                                                                    <tr style="height: 3px">
+                                                                                    </tr>
+                                                                        </table>
                                                                             </ContentTemplate>
                                                                         </cc1:TabPanel>
                                                                         <cc1:TabPanel ID="tabInsAddTab" runat="server" HeaderText="Additional Details">
@@ -1343,6 +1533,10 @@
                                 <asp:Parameter Name="BranchCode" Type="string" />
                                 <asp:Parameter Name="AutoLedgerID" Type="String" />
                                 <asp:Parameter Name="ManualClearing" Type="String" />
+                                <asp:Parameter Name="DeliveryAdd1" Type="String" />
+                                <asp:Parameter Name="DeliveryAdd2" Type="String" />
+                                <asp:Parameter Name="DeliveryAdd3" Type="String" />
+                                <asp:Parameter Name="chksame" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -1381,6 +1575,10 @@
                                 <asp:Parameter Name="BranchCode" Type="string" />
                                 <asp:Parameter Name="AutoLedgerID" Type="String" />
                                 <asp:Parameter Name="ManualClearing" Type="String" />
+                                <asp:Parameter Name="DeliveryAdd1" Type="String" />
+                                <asp:Parameter Name="DeliveryAdd2" Type="String" />
+                                <asp:Parameter Name="DeliveryAdd3" Type="String" />
+                                <asp:Parameter Name="chksame" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

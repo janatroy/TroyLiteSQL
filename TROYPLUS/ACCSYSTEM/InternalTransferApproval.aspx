@@ -395,36 +395,36 @@
                                                     CssClass="fancy fancy-green">
                                                     <cc1:TabPanel ID="TabPanel1" runat="server" HeaderText="Status Update">
                                                         <ContentTemplate>
-                                                            <table style="width: 600px; border: 0px solid #86b2d1; vertical-align: text-top; text-align:left"
+                                                            <table style="width:100%; border: 0px solid #86b2d1; vertical-align: text-top; text-align:left"
                                                                 cellpadding="1" cellspacing="1">
                                                                 <tr>
-                                                                    <td class="ControlLabel" style="width: 30%;">
+                                                                    <td class="ControlLabel" style="width: 34%;">
                                                                         Status: *
                                                                     </td>
-                                                                    <td class="ControlDrpBorder" style="width: 40%;">
+                                                                    <td class="ControlDrpBorder" style="width: 24%;">
                                                                         <asp:DropDownList ID="cmbApproveReject" runat="server" BackColor="#e7e7e7" AutoPostBack="true" CssClass="drpDownListMedium"
                                                                             Height="26px" Style="text-align: center; border: 1px solid #e7e7e7" Width="100%" OnSelectedIndexChanged="cmbApproveReject_SelectedIndexChanged">
                                                                             <asp:ListItem Value="Approve">Approve</asp:ListItem>
                                                                             <asp:ListItem Value="Reject">Reject</asp:ListItem>
                                                                         </asp:DropDownList>
                                                                     </td>
-                                                                    <td style="width: 30%; text-align:center">
+                                                                    <td style="width: 42%; text-align:center">
                                                                         <asp:Button ID="btnSaveComments" runat="server" CausesValidation="True"
                                                                             CommandName="Insert" CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                             OnClick="SaveCommentsButton_Click"></asp:Button>
                                                                     </td>
                                                                 </tr>
                                                                 <tr runat="server" id="rowComments">
-                                                                    <td class="ControlLabel" style="width: 20%;">
+                                                                    <td class="ControlLabel" style="width: 36%;">
                                                                         Comments:
                                                                         <asp:RequiredFieldValidator ID="rvComments" runat="server" ControlToValidate="txtComments"
                                                                                         ErrorMessage="Comments is mandatory for Rejection" Enabled="false" Text="*"  />
                                                                     </td>
-                                                                    <td style="width: 40%;" class="ControlDrpBorder">
+                                                                    <td style="width: 22%;" class="ControlDrpBorder">
                                                                         <asp:TextBox ID="txtComments" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox"
                                                                             Height="23px" ValidationGroup="grpDetails" Width="115px"></asp:TextBox>
                                                                     </td>
-                                                                    <td style="width: 30%; text-align:center">
+                                                                    <td style="width: 38%; text-align:center">
                                                                         <asp:Button ID="btnCancelSaveComments" runat="server" CausesValidation="False" CommandName="Cancel"
                                                                             CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="btnCancelSaveComments_Click">
                                                                         </asp:Button>
