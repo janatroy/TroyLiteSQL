@@ -10403,6 +10403,21 @@ fieldset
     text-decoration:none;
 }
 
+.ControlLabelNew123
+{
+    height:23px;    
+    padding-top:5px;
+    padding-left:5px;
+    padding-right:5px;
+    text-align:left;
+    vertical-align:middle;
+    color:#1657f2;
+    font-family:'ARIAL';
+    font-size:13px;
+    
+    text-decoration:none;
+}
+
 /* Navigation MENU */
 #Menu1 {
     margin-left:4px;
