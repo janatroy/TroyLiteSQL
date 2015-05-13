@@ -1441,6 +1441,17 @@ public partial class CustomerSales : System.Web.UI.Page
                     if (customerDs.Tables[0].Rows[0]["Add3"] != null)
                         txtAddress3.Text = address + customerDs.Tables[0].Rows[0]["Add3"].ToString() + Environment.NewLine;
 
+
+                    if (customerDs.Tables[0].Rows[0]["DeliveryAdd1"] != null)
+                        txtDeliveryAddress1.Text = customerDs.Tables[0].Rows[0]["DeliveryAdd1"].ToString() + Environment.NewLine;
+
+                    if (customerDs.Tables[0].Rows[0]["DeliveryAdd2"] != null)
+                        txtDeliveryAddress2.Text = address + customerDs.Tables[0].Rows[0]["DeliveryAdd2"].ToString() + Environment.NewLine;
+
+                    if (customerDs.Tables[0].Rows[0]["DeliveryAdd3"] != null)
+                        txtDeliveryAddress3.Text = address + customerDs.Tables[0].Rows[0]["DeliveryAdd3"].ToString() + Environment.NewLine;
+
+
                     //txtAddress.Text = address;
 
                     if (customerDs.Tables[0].Rows[0]["Mobile"] != null)
@@ -2546,6 +2557,9 @@ public partial class CustomerSales : System.Web.UI.Page
         {
             txtCustomerName.Visible = true;
             cmbCustomer.Visible = false;
+            CheckBox2.Visible = true;
+
+            CheckBox1.Visible = false;
 
             //txtCustomerId.Visible = true;
             //drpMobile.Visible = false;
@@ -2556,11 +2570,40 @@ public partial class CustomerSales : System.Web.UI.Page
             cmbCustomer.Visible = true;
             txtCustomerName.Visible = false;
 
+            CheckBox2.Visible = false;
+
+            CheckBox1.Visible = true;
             //drpMobile.Visible = true;
             //txtCustomerId.Visible = false;
             drpCustomerCategoryAdd.Enabled = false;
         }
+
+        txtAddress.Text = "";
+        txtAddress2.Text = "";
+        txtAddress3.Text = "";
+
+        txtDeliveryAddress1.Text = "";
+        txtDeliveryAddress2.Text = "";
+        txtDeliveryAddress3.Text = "";
+      
         //UpdatePanel21.Update();
+    }
+
+    protected void CheckBox2_CheckedChanged(object sender, EventArgs e)
+    {
+        if (CheckBox2.Checked == false)
+        {
+            txtDeliveryAddress1.Text = "";
+            txtDeliveryAddress2.Text = "";
+            txtDeliveryAddress3.Text = "";
+        }
+        else
+        {
+            txtDeliveryAddress1.Text = txtAddress.Text;
+            txtDeliveryAddress2.Text = txtAddress2.Text;
+            txtDeliveryAddress3.Text = txtAddress3.Text;
+        }
+
     }
 
     private DataSet EmptyDataSet()
@@ -3335,6 +3378,11 @@ public partial class CustomerSales : System.Web.UI.Page
             string sCustomerAddress3 = string.Empty;
             string executivename = string.Empty;
 
+            string sCustomerDAddress1 = string.Empty;
+            string sCustomerDAddress2 = string.Empty;
+            string sCustomerDAddress3 = string.Empty;
+
+            string chksame = string.Empty;
             string sCustomerContact = string.Empty;
             string sOtherCusName = string.Empty;// krishnavelu 26 June
             int sCustomerID = 0;
@@ -3434,6 +3482,28 @@ public partial class CustomerSales : System.Web.UI.Page
 
                 dTotalAmt = Convert.ToDouble(lblNet.Text);
                 //executive = drpIncharge.SelectedValue;
+
+                if (CheckBox2.Checked == true)
+                {
+                    sCustomerDAddress1 = txtAddress.Text.Trim();
+                    sCustomerDAddress2 = txtAddress2.Text.Trim();
+                    sCustomerDAddress3 = txtAddress3.Text.Trim();
+                }
+                else
+                {
+                    sCustomerDAddress1 = txtDeliveryAddress1.Text.Trim();
+                    sCustomerDAddress2 = txtDeliveryAddress2.Text.Trim();
+                    sCustomerDAddress3 = txtDeliveryAddress3.Text.Trim();
+                }
+
+                if(CheckBox2.Checked == true)
+                {
+                    chksame = "1";
+                }
+                else
+                {
+                    chksame = "0";
+                }
 
                 cuscategory = drpCustomerCategoryAdd.SelectedValue;
                 branchcode = drpBranch.SelectedValue;
@@ -3542,13 +3612,13 @@ public partial class CustomerSales : System.Web.UI.Page
                         if (txtCustPh.Text == "")
                         {
                             mobchk = false;
-                            sCustomerID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode);
+                            sCustomerID = bl.InsertCustomerInfoDirectSales1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame);
                             sCustomerName = txtCustomerName.Text;
                         }
                         else
                         {
                             mobchk = true;
-                            sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode);
+                            sCustomerID = bl.InsertCustomerInfoDirectSales(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame);
                             sCustomerName = txtCustomerName.Text;
                         }
                     }
@@ -4561,7 +4631,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode, connection, deliveryReturn, bookId);
+                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode, connection, deliveryReturn, bookId, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame);
                         if (purchaseReturn == "YES" || deliveryReturn == "YES")
                         {
                             iUpdateRtnQty = bl.UpdatePurchaseRtnStatus(iPurID);
@@ -5030,6 +5100,12 @@ public partial class CustomerSales : System.Web.UI.Page
             double fixedtotal = 0.0;
             int manualno = 0;
 
+            string sCustomerDAddress1 = string.Empty;
+            string sCustomerDAddress2 = string.Empty;
+            string sCustomerDAddress3 = string.Empty;
+
+            string chksame = string.Empty;
+
             string sCustomerContact = string.Empty;
             int sCustomerID = 0;
             double dTotalAmt = 0;
@@ -5170,6 +5246,40 @@ public partial class CustomerSales : System.Web.UI.Page
                 {
                     manualno = 0;
                 }
+
+                if (CheckBox2.Checked == true)
+                {
+                    sCustomerDAddress1 = txtAddress.Text.Trim();
+                    sCustomerDAddress2 = txtAddress2.Text.Trim();
+                    sCustomerDAddress3 = txtAddress3.Text.Trim();
+                }
+                else
+                {
+                    sCustomerDAddress1 = txtDeliveryAddress1.Text.Trim();
+                    sCustomerDAddress2 = txtDeliveryAddress2.Text.Trim();
+                    sCustomerDAddress3 = txtDeliveryAddress3.Text.Trim();
+                }
+
+                if (CheckBox2.Checked == true)
+                {
+                    chksame = "1";
+                }
+                else
+                {
+                    chksame = "0";
+                }
+
+                int chkupdate = 0;
+                if (CheckBox1.Checked == true)
+                {
+                    chkupdate = 1;
+                }
+                else
+                {
+                    chkupdate = 0;
+                }
+
+
                 //if (chkboxManual.Checked == true)
                 //{
                 //    manual = "YES";
@@ -5301,6 +5411,8 @@ public partial class CustomerSales : System.Web.UI.Page
                 string check = "Y";
                 string DuplicateCopy = "N";
                 string CName = txtCustomerName.Text;
+                bool mobchk;
+                string CustomerIdMobile = "0";
                 string usernam = Request.Cookies["LoggedUserName"].Value;
 
                 if (chk.Checked == false)
@@ -5311,8 +5423,28 @@ public partial class CustomerSales : System.Web.UI.Page
                         return;
                     }
 
-                    sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, true, branchcode);
-                    sCustomerName = txtCustomerName.Text;
+
+
+                    if (chk.Checked == false)
+                    {
+                        if (txtCustPh.Text == "")
+                        {
+                            mobchk = false;
+                            sCustomerID = bl.InsertCustomerInfoDirectSales1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame);
+                            sCustomerName = txtCustomerName.Text;
+                        }
+                        else
+                        {
+                            mobchk = true;
+                            sCustomerID = bl.InsertCustomerInfoDirectSales(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscategory, 0, "", CustomerIdMobile, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, branchcode, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame);
+                            sCustomerName = txtCustomerName.Text;
+                        }
+                    }
+
+
+
+                    //sCustomerID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", "Customer", 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, true, branchcode, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame);
+                    //sCustomerName = txtCustomerName.Text;
                 }
                 else
                 {
@@ -5815,7 +5947,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
 
-                int CustomerIdMobile = 0;
+                int CustomerIdMobile1 = 0;
                 if (chk.Checked == false)
                 {
                     //if (txtCustomerId.Text != "")
@@ -5825,7 +5957,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 }
                 else
                 {
-                    CustomerIdMobile = 0;
+                    CustomerIdMobile1 = 0;
                 }
 
                 string discType = GetDiscType();
@@ -5976,7 +6108,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             //old code
                             //int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, Convert.ToInt32(executive), dFreight, dLU, dss, sOtherCusName, intTrans, userID, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, receiptData, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, MultiPayment, Types, snarr, cuscategory);
 
-                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, branchcode, connection);
+                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile1, cuscategory, discType, branchcode, connection, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame, chkupdate);
 
 
                             if (billNo == -1)
@@ -6635,6 +6767,8 @@ public partial class CustomerSales : System.Web.UI.Page
                     }
                 }
 
+            CheckBox1.Visible = false;
+            CheckBox2.Visible = false;
 
                 //////////////////////////////////////////////////////////////////////
 
@@ -7226,6 +7360,8 @@ public partial class CustomerSales : System.Web.UI.Page
             optionmethod.SelectedIndex = 0;
             Session["Method"] = "Add";
 
+         
+
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
             BillingMethod = bl.getConfigInfoMethod();
@@ -7273,6 +7409,13 @@ public partial class CustomerSales : System.Web.UI.Page
         txtAddress.Text = "";
         txtAddress2.Text = "";
         txtAddress3.Text = "";
+
+        txtDeliveryAddress1.Text = "";
+        txtDeliveryAddress2.Text = "";
+        txtDeliveryAddress3.Text = "";
+        CheckBox1.Checked = false;
+        CheckBox2.Checked = false;
+
         cmbCustomer.SelectedIndex = 0;
         drpPaymode.SelectedIndex = 0;
         drpBankName.SelectedIndex = 0;
@@ -8265,6 +8408,8 @@ public partial class CustomerSales : System.Web.UI.Page
                 return;
             }
 
+            CheckBox1.Visible = true;
+
             if (GrdViewSales.SelectedDataKey.Value != null && GrdViewSales.SelectedDataKey.Value.ToString() != "")
                 salesID = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value.ToString());
             string branchcode = row.Cells[9].Text;
@@ -8401,6 +8546,17 @@ public partial class CustomerSales : System.Web.UI.Page
                         txtAddress3.Text = Convert.ToString(ds.Tables[0].Rows[0]["CustomerAddress3"]);
                     else
                         txtAddress3.Text = "";
+
+
+                    if (ds.Tables[0].Rows[0]["DeliveryAdd1"] != null)
+                        txtDeliveryAddress1.Text = ds.Tables[0].Rows[0]["DeliveryAdd1"].ToString() + Environment.NewLine;
+
+                    if (ds.Tables[0].Rows[0]["DeliveryAdd2"] != null)
+                        txtDeliveryAddress2.Text = ds.Tables[0].Rows[0]["DeliveryAdd2"].ToString() + Environment.NewLine;
+
+                    if (ds.Tables[0].Rows[0]["DeliveryAdd3"] != null)
+                        txtDeliveryAddress3.Text = ds.Tables[0].Rows[0]["DeliveryAdd3"].ToString() + Environment.NewLine;
+
 
                     if (ds.Tables[0].Rows[0]["CustomerContacts"] != null)
                         txtCustPh.Text = Convert.ToString(ds.Tables[0].Rows[0]["CustomerContacts"]);

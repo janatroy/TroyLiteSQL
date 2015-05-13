@@ -378,6 +378,7 @@ public partial class UserOptions : System.Web.UI.Page
                     chkboxdatelock.Checked = bool.Parse(dsd.Tables[0].Rows[0]["DateLock"].ToString());
                     txtUserGroup.Text = dsd.Tables[0].Rows[0]["UserGroup"].ToString();
                     chkhidedeviation.Checked = bool.Parse(dsd.Tables[0].Rows[0]["HideDeviation"].ToString());
+                    CheckBox1.Checked = bool.Parse(dsd.Tables[0].Rows[0]["AllowCheque"].ToString());
                     chkBranch.Checked = bool.Parse(dsd.Tables[0].Rows[0]["BranchCheck"].ToString());
 
                     if (dsd.Tables[0].Rows[0]["EmpNo"] != null)
@@ -1773,7 +1774,7 @@ public partial class UserOptions : System.Web.UI.Page
                 UserGroup = "Users";
 
             bool HideDeviation = chkhidedeviation.Checked;
-
+            bool AllowCheque = CheckBox1.Checked;
 
             DataSet debrninsert = new DataSet();
             dsBranch = new DataSet();
@@ -1829,7 +1830,7 @@ public partial class UserOptions : System.Web.UI.Page
 
                     if (Session["Show"] == "Add New")
                     {
-                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch))
+                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch, AllowCheque))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Created sucessfully. Thank you');", true);
                             //BindGrid();
@@ -2011,7 +2012,7 @@ public partial class UserOptions : System.Web.UI.Page
                     }
                     else if (Session["Show"] == "Edit")
                     {
-                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch);
+                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch, AllowCheque);
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Updated Successfully. Please Logout and login again to reflect the changes. Thank you');", true);
                         //BindGrid();
 

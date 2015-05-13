@@ -7539,7 +7539,7 @@ public partial class Purchase : System.Web.UI.Page
 
             if (Session["PurchaseProductbindDs"] == null)
             {
-                ds = bl.ListProdForDynammicrowPurchase(sDataSource);
+            ds = bl.ListProdForDynammicrowPurchase(sDataSource);
                 Session["PurchaseProductbindDs"] = ds;
             }
 
@@ -7768,7 +7768,7 @@ public partial class Purchase : System.Web.UI.Page
             //lblvatamt.Text = totvat.ToString("#0.00");
         }
         sumAmt = 0;
-
+       
         inpHide1.Value = "1";
         for (int i = 0; i < grvStudentDetails.Rows.Count; i++)
         {
@@ -7789,6 +7789,7 @@ public partial class Purchase : System.Web.UI.Page
             Double sumRate = 0;
             Double sumCST = 0;
             Double sumNet = 0;
+
             DataSet ds = new DataSet();
             //ds.ReadXml(Server.MapPath("Reports\\" + hdFilename.Value + "_product.xml"));
 
