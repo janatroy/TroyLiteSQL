@@ -133,6 +133,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         //}
 
 
+        btnSaveComments.Enabled = true; 
 
         BindDropdowns();
 
@@ -793,7 +794,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
         DataSet paymentdata = null;
-       
+        btnSaveComments.Enabled = false; 
       
         if (cmbApproveReject.SelectedValue == "Approve")
         {
@@ -865,6 +866,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             else
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Insufficent stock, please check the Branch if it has sufficient stock available.');", true);
+                btnSaveComments.Enabled = true; 
             }
 
             BindGridData();
@@ -883,7 +885,8 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             {
                 modalPopupApproveReject.Show();
                  ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
-                return;
+                 btnSaveComments.Enabled = true; 
+                 return;
             }
             InternalTransferRequest request1 = transferService.GetInternalTransferRequest(connection1, int.Parse(RequestID));
           //  string connection1;

@@ -263,8 +263,15 @@ public partial class OutstandingReport : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Bill Date"));
                 dt.Columns.Add(new DataColumn("Mobile"));
                 dt.Columns.Add(new DataColumn("BranchCode"));
-                dt.Columns.Add(new DataColumn("Debit"));
-                dt.Columns.Add(new DataColumn("Credit"));
+                //dt.Columns.Add(new DataColumn("Debit"));
+                DataColumn colInt32Debit = new DataColumn("Debit");
+                colInt32Debit.DataType = System.Type.GetType("System.Double");
+                dt.Columns.Add(colInt32Debit);
+
+                //dt.Columns.Add(new DataColumn("Credit"));
+                DataColumn colInt32Credit = new DataColumn("Credit");
+                colInt32Credit.DataType = System.Type.GetType("System.Double");
+                dt.Columns.Add(colInt32Credit);
                 dt.Columns.Add(new DataColumn("Balance"));
 
                 DataRow dr_export1 = dt.NewRow();
@@ -369,8 +376,8 @@ public partial class OutstandingReport : System.Web.UI.Page
                 DataRow dr_lastexport1 = dt.NewRow();
                 dr_lastexport1["Ledgername"] = "";
                 dr_lastexport1["BranchCode"] = "";
-                dr_lastexport1["Debit"] = "";
-                dr_lastexport1["Credit"] = "";
+                //dr_lastexport1["Debit"] = "";
+                //dr_lastexport1["Credit"] = "";
                 dr_lastexport1["Balance"] = "";
                 dr_lastexport1["Bill No"] = "";
                 dr_lastexport1["Bill Date"] = "";
@@ -391,8 +398,8 @@ public partial class OutstandingReport : System.Web.UI.Page
                 DataRow dr_lastexport3 = dt.NewRow();
                 dr_lastexport3["Ledgername"] = "";
                 dr_lastexport3["BranchCode"] = "";
-                dr_lastexport3["Debit"] = "";
-                dr_lastexport3["Credit"] = "";
+                //dr_lastexport3["Debit"] = "";
+                //dr_lastexport3["Credit"] = "";
                 dr_lastexport3["Balance"] = "";
                 dr_lastexport3["Bill No"] = "";
                 dr_lastexport3["Bill Date"] = "";

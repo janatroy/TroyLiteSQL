@@ -1002,7 +1002,10 @@ public partial class ReportXlSal : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Month"));
         dtt.Columns.Add(new DataColumn("BillNo"));
         dtt.Columns.Add(new DataColumn("BranchCode"));       
-        dtt.Columns.Add(new DataColumn("Amount"));
+        //dtt.Columns.Add(new DataColumn("Amount"));      
+        DataColumn colInt32Amountmonth = new DataColumn("Amount");
+        colInt32Amountmonth.DataType = System.Type.GetType("System.Double");
+        dtt.Columns.Add(colInt32Amountmonth);
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);
@@ -1423,7 +1426,10 @@ public partial class ReportXlSal : System.Web.UI.Page
         dtt.Columns.Add(new DataColumn("Date"));
         dtt.Columns.Add(new DataColumn("BillNo"));
         dtt.Columns.Add(new DataColumn("BranchCode"));     
-        dtt.Columns.Add(new DataColumn("Amount"));
+        //dtt.Columns.Add(new DataColumn("Amount"));
+        DataColumn colInt32Amount = new DataColumn("Amount");
+        colInt32Amount.DataType = System.Type.GetType("System.Double");
+        dtt.Columns.Add(colInt32Amount);
 
         DataRow dr_final14 = dtt.NewRow();
         dtt.Rows.Add(dr_final14);

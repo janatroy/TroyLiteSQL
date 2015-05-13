@@ -1509,7 +1509,7 @@
                                                                                                                                                 <tr>
                                                                                                                                                     <td style="width: 9%"></td>
                                                                                                                                                     <td class="ControlLabelproject" style="width: 22%; text-align: center">Receipt Source </td>
-                                                                                                                                                    <td class="ControlLabelproject" style="width: 20%; text-align: center">Ref / SF No </td>
+                                                                                                                                                    <td class="ControlLabelproject" style="width: 20%; text-align: center">Bill / SF No </td>
                                                                                                                                                     <td class="ControlLabelproject" style="width: 20%; text-align: center">Cheque/CreditCard </td>
                                                                                                                                                     <td class="ControlLabelproject" style="width: 20%; text-align: center">Amount </td>
                                                                                                                                                     <td style="width: 9%"></td>
@@ -1591,7 +1591,7 @@
                                                                                                                                                     <td align="right" class="ControlDrp3" style="width: 20%;">
                                                                                                                                                         <asp:TextBox ID="TextBox2" runat="server" CssClass="cssTextBox" Text="0"></asp:TextBox>
                                                                                                                                                     </td>
-                                                                                                                                                    <td class="ControlDrp3" style="width: 20%">
+                                                                                                                                                    <td class="ControlDrp3" style="width: 20%;text-align: right">
                                                                                                                                                         <asp:TextBox ID="txtCashAmount" runat="server" AutoPostBack="true" CssClass="cssTextBox" OnTextChanged="txtRAmount_TextChanged" TabIndex="21" Width="97%"></asp:TextBox>
                                                                                                                                                         <cc1:FilteredTextBoxExtender ID="ftCash" runat="server" Enabled="True" FilterType="Custom, Numbers" TargetControlID="txtCashAmount" ValidChars="." />
                                                                                                                                                     </td>
@@ -1603,12 +1603,13 @@
                                                                                                                                                     <td style="width: 9%"></td>
                                                                                                                                                     <td style="width: 22%"></td>
                                                                                                                                                     <td style="width: 20%"></td>
-                                                                                                                                                    <td style="width: 20%; text-align: center"></td>
-                                                                                                                                                    <td class="tblLeft allPad" style="width: 20%; font-weight: bold; display: none">
-                                                                                                                                                        <asp:Label ID="lblReceivedTotal" runat="server"></asp:Label>
+                                                                                                                                                    <td class="ControlLabelproject" style="width: 20%; text-align: right">Total</td>
+                                                                                                                                                   <%-- <td class="tblLeft allPad" style="width: 20%; font-weight: bold; display: none">--%>
+                                                                                                                                                     <td style="width: 20%; font-weight: bold">
+                                                                                                                                                        <asp:Label CssClass="ControlLabelproject" ID="lblReceivedTotal" ForeColor="Blue" runat="server"></asp:Label>
                                                                                                                                                     </td>
                                                                                                                                                     <td style="width: 9%"></td>
-                                                                                                                                                </tr>
+                                                                                                                                                </tr>                                                                                                                                                
                                                                                                                                             </table>
                                                                                                                                         </div>
                                                                                                                                         <div id="divListMPayments" runat="server" align="center" style="text-align: center">

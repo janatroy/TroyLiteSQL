@@ -176,8 +176,8 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 lblSupplierAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
                 lblSupplierAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
 
-                lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
-                lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
+                lblShipToAddr1.Text = Convert.ToString(dr["deliveryadd1"]);
+                lblShipToAddr1.Text = Convert.ToString(dr["deliveryadd1"]);
 
                 custAdd = Convert.ToString(dr["CustomerAddress"]);
                 string[] address = new string[3] { "", "", "" };
@@ -189,19 +189,35 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 string address3 = string.Empty;
                 address3 = Convert.ToString(dr["CustomerAddress3"]);
 
+                string address4 = string.Empty;
+                address4 = Convert.ToString(dr["deliveryadd2"]);
+
+                string address5 = string.Empty;
+                address5 = Convert.ToString(dr["deliveryadd3"]);
+
                 if (address.Length >= 1)
                 {
                     if (address[0] != string.Empty)
                     {
                         lblSupplierAddr1.Text = address[0];
-                        lblShipToAddr1.Text = address[0];
+                       // lblShipToAddr1.Text = address[0];
                     }
                 }
 
                 if (address2 != null)
                 {
                     lblSupplierAddr2.Text = address2;
-                    lblShipToAddr2.Text = address2;
+                   //lblShipToAddr2.Text = address2;
+                }
+
+                if (address4 != null)
+                {                  
+                    lblShipToAddr2.Text = address4;
+                }
+
+                if (address5 != null)
+                {
+                    lblShipToAddr3.Text = address5;
                 }
 
                 if (address3 != null)
@@ -509,7 +525,8 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     drNew["ProductName"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]);
                     drNew["ProductDesc"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
 
-                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["CategoryName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["Model"]);
+                    //drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["CategoryName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["Model"]);
+                    drNew["ProductItem"] =  Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["CategoryName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["Model"]);
 
                     drNew["SalesPerson"] = GetEmployeeName(Convert.ToInt32(ds.Tables[0].Rows[i]["executivename"]));
 
