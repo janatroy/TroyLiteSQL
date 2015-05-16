@@ -83,6 +83,18 @@ public partial class OutstandingReport : System.Web.UI.Page
         }
     }
 
+    protected void drpLedgerName_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (drpLedgerName.SelectedValue == "2")
+        {
+            row.Visible = false;
+        }
+        else
+        {
+            row.Visible = true;
+        }
+    }
+
     private void loadBranch()
     {
         BusinessLogic bl = new BusinessLogic(sDataSource);
@@ -92,18 +104,19 @@ public partial class OutstandingReport : System.Web.UI.Page
         lstBranch.Items.Clear();
 
         brncode = Request.Cookies["Branch"].Value;
-        if (brncode == "All")
-        {
+        //if (brncode == "All")
+        //{
             ds = bl.ListBranch();
             lstBranch.Items.Add(new ListItem("All", "0"));
-        }
-        else
-        {
-            ds = bl.ListDefaultBranch(brncode);
-        }
-        lstBranch.DataSource = ds;
+        //}
+        //else
+        //{
+        //    ds = bl.ListDefaultBranch(brncode);
+        //}
+        
         lstBranch.DataTextField = "BranchName";
         lstBranch.DataValueField = "Branchcode";
+        lstBranch.DataSource = ds;
         lstBranch.DataBind();
     }
 
@@ -234,6 +247,7 @@ public partial class OutstandingReport : System.Web.UI.Page
             string datet = string.Empty;
 
             string nme = string.Empty;
+            string op = string.Empty;
             string connStr = string.Empty;
             if (Request.Cookies["Company"] != null)
                 connStr = System.Configuration.ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
@@ -249,8 +263,15 @@ public partial class OutstandingReport : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Bill Date"));
                 dt.Columns.Add(new DataColumn("Mobile"));
                 dt.Columns.Add(new DataColumn("BranchCode"));
-                dt.Columns.Add(new DataColumn("Debit"));
-                dt.Columns.Add(new DataColumn("Credit"));
+                //dt.Columns.Add(new DataColumn("Debit"));
+                DataColumn colInt32Debit = new DataColumn("Debit");
+                colInt32Debit.DataType = System.Type.GetType("System.Double");
+                dt.Columns.Add(colInt32Debit);
+
+                //dt.Columns.Add(new DataColumn("Credit"));
+                DataColumn colInt32Credit = new DataColumn("Credit");
+                colInt32Credit.DataType = System.Type.GetType("System.Double");
+                dt.Columns.Add(colInt32Credit);
                 dt.Columns.Add(new DataColumn("Balance"));
 
                 DataRow dr_export1 = dt.NewRow();
@@ -280,7 +301,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                     }
 
                     var customerID = dr["LedgerID"].ToString();
-                    var dsSales = bl.ListCreditSales(connStr.Trim(), customerID);
+                    var dsSales = bl.ListCreditSal(connStr.Trim(), customerID);
                     var receivedData = bl.GetCustReceivedAmount(connStr);
                     if (dsSales != null)
                     {
@@ -293,8 +314,8 @@ public partial class OutstandingReport : System.Web.UI.Page
                                 if (billNo.Trim() == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
                                 {
                                     dsSales.Tables[0].Rows[i].BeginEdit();
-                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["Amount"].ToString()) - double.Parse(billAmount));
-                                    dsSales.Tables[0].Rows[i]["Amount"] = val;
+                                    double val = (double.Parse(dsSales.Tables[0].Rows[i]["PendingAmount"].ToString()) - double.Parse(billAmount));
+                                    dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                                     dsSales.Tables[0].Rows[i].EndEdit();
 
                                     if (val == 0.0)
@@ -328,8 +349,11 @@ public partial class OutstandingReport : System.Web.UI.Page
                                 //datet = datet + " , " + dsSales.Tables[0].Rows[i]["BillDate"].ToString();
                                 //datet = datet + " , " + Convert.ToDateTime(dsSales.Tables[0].Rows[i]["BillDate"]).ToString();
                             }
+
+                            op = dsSales.Tables[0].Rows[i]["op"].ToString();
+
                         }
-                        dr_export["Bill No"] = nme;
+                        dr_export["Bill No"] = nme + " " + op;
                         dr_export["Bill Date"] = datet;
                         nme = string.Empty;
                         datet = string.Empty;
@@ -352,8 +376,8 @@ public partial class OutstandingReport : System.Web.UI.Page
                 DataRow dr_lastexport1 = dt.NewRow();
                 dr_lastexport1["Ledgername"] = "";
                 dr_lastexport1["BranchCode"] = "";
-                dr_lastexport1["Debit"] = "";
-                dr_lastexport1["Credit"] = "";
+                //dr_lastexport1["Debit"] = "";
+                //dr_lastexport1["Credit"] = "";
                 dr_lastexport1["Balance"] = "";
                 dr_lastexport1["Bill No"] = "";
                 dr_lastexport1["Bill Date"] = "";
@@ -374,8 +398,8 @@ public partial class OutstandingReport : System.Web.UI.Page
                 DataRow dr_lastexport3 = dt.NewRow();
                 dr_lastexport3["Ledgername"] = "";
                 dr_lastexport3["BranchCode"] = "";
-                dr_lastexport3["Debit"] = "";
-                dr_lastexport3["Credit"] = "";
+                //dr_lastexport3["Debit"] = "";
+                //dr_lastexport3["Credit"] = "";
                 dr_lastexport3["Balance"] = "";
                 dr_lastexport3["Bill No"] = "";
                 dr_lastexport3["Bill Date"] = "";

@@ -344,10 +344,11 @@ public partial class StockReport : System.Web.UI.Page
             {
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    dt.Columns.Add(new DataColumn("ItemCode"));
-                    dt.Columns.Add(new DataColumn("ProductName"));
                     dt.Columns.Add(new DataColumn("Brand"));
+                    dt.Columns.Add(new DataColumn("ItemCode"));
+                    dt.Columns.Add(new DataColumn("ProductName"));                  
                     dt.Columns.Add(new DataColumn("Model"));
+                    dt.Columns.Add(new DataColumn("CategoryName"));
                     //dt.Columns.Add(new DataColumn("Rol"));
                     char[] commaSeparator = new char[] { ',' };
                     string[] result;
@@ -355,7 +356,10 @@ public partial class StockReport : System.Web.UI.Page
 
                     foreach (string str in result)
                     {
-                        dt.Columns.Add(new DataColumn(str));
+                        //dt.Columns.Add(new DataColumn(str));
+                        DataColumn colInt32pricelst = new DataColumn(str);
+                        colInt32pricelst.DataType = System.Type.GetType("System.Int32");
+                        dt.Columns.Add(colInt32pricelst);
                     }
                     dt.Columns.Remove("Column1");
 
@@ -365,12 +369,29 @@ public partial class StockReport : System.Web.UI.Page
 
                     foreach (string str1 in result1)
                     {
-                        dt.Columns.Add(new DataColumn(str1));
-                        dt.Columns.Add(new DataColumn(str1 + " - Value"));
+                        //dt.Columns.Add(new DataColumn(str1));
+                        DataColumn colInt32branch = new DataColumn(str1);
+                        colInt32branch.DataType = System.Type.GetType("System.Int32");
+                        dt.Columns.Add(colInt32branch);
+
+                        //dt.Columns.Add(new DataColumn(str1 + " - Value"));
+                        DataColumn colInt32branchval = new DataColumn(str1 + " - Value");
+                        colInt32branchval.DataType = System.Type.GetType("System.Int32");
+                        dt.Columns.Add(colInt32branchval);
                     }
 
-                    dt.Columns.Add(new DataColumn("Overall Stock"));
-                    dt.Columns.Add(new DataColumn("Overall Value"));
+                    //dt.Columns.Add(new DataColumn("Overall Stock"));
+                    DataColumn colInt32Stock = new DataColumn("Overall Stock");
+                    colInt32Stock.DataType = System.Type.GetType("System.Int32");
+                    dt.Columns.Add(colInt32Stock);
+
+
+                    //dt.Columns.Add(new DataColumn("Overall Value"));
+                    DataColumn colInt32Value = new DataColumn("Overall Value");
+                    colInt32Value.DataType = System.Type.GetType("System.Int32");
+                    dt.Columns.Add(colInt32Value);
+
+
                     dt.Columns.Remove("Column1");
                     dt.Columns.Remove(" - Value");
 
@@ -392,9 +413,9 @@ public partial class StockReport : System.Web.UI.Page
                         DataRow dr_final6 = dt.NewRow();
                         dr_final6["Brand"] = dr["brand"];
                         dr_final6["ProductName"] = dr["ProductName"];
-                        dr_final6["Model"] = dr["Model"];
+                        dr_final6["Model"] = dst.Tables[0].Rows[0]["Model"].ToString();// dr["Model"];
                         dr_final6["ItemCode"] = dr["Itemcode"];
-
+                        dr_final6["CategoryName"] = dst.Tables[0].Rows[0]["CategoryName"].ToString();// dr["CategoryName"];
                         if (dst != null)
                         {
                             if (dst.Tables[0].Rows.Count > 0)
@@ -517,7 +538,9 @@ public partial class StockReport : System.Web.UI.Page
                 string cond6 = "";
                 cond6 = getCond6();
                 //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
-                Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+
+                Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
             }
         }
         catch (Exception ex)

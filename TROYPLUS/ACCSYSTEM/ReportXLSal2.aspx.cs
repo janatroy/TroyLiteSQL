@@ -23,6 +23,19 @@ public partial class ReportXLSal2 : System.Web.UI.Page
 
     DateTime stdt;
     DateTime etdt;
+    bool jan = false;
+    bool feb = false;
+    bool mar = false;
+    bool apl = false;
+    bool may = false;
+    bool jun = false;
+    bool jly = false;
+    bool aug = false;
+    bool sep = false;
+    bool oct = false;
+    bool nov = false;
+    bool dec = false;
+    bool all = false;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -109,6 +122,8 @@ public partial class ReportXLSal2 : System.Web.UI.Page
                 SalesPanel.Visible = true;
                 string option = string.Empty;
 
+               
+
 
 
                 if (Request.QueryString["startDate"] != null)
@@ -118,6 +133,44 @@ public partial class ReportXLSal2 : System.Web.UI.Page
                 if (Request.QueryString["option"] != null)
                     option = Request.QueryString["option"].ToString();
 
+                if (Request.QueryString["jan"] != null)
+                    jan =Convert.ToBoolean( Request.QueryString["jan"].ToString());
+
+                if (Request.QueryString["feb"] != null)
+                    feb = Convert.ToBoolean(Request.QueryString["feb"].ToString());
+
+                if (Request.QueryString["mar"] != null)
+                    mar = Convert.ToBoolean(Request.QueryString["mar"].ToString());
+
+                if (Request.QueryString["apl"] != null)
+                    apl = Convert.ToBoolean(Request.QueryString["apl"].ToString());
+
+                if (Request.QueryString["may"] != null)
+                    may = Convert.ToBoolean(Request.QueryString["may"].ToString());
+
+                if (Request.QueryString["jun"] != null)
+                    jun = Convert.ToBoolean(Request.QueryString["jun"].ToString());
+
+                if (Request.QueryString["jly"] != null)
+                    jly = Convert.ToBoolean(Request.QueryString["jly"].ToString());
+
+                if (Request.QueryString["aug"] != null)
+                    aug = Convert.ToBoolean(Request.QueryString["aug"].ToString());
+
+                if (Request.QueryString["sep"] != null)
+                    sep = Convert.ToBoolean(Request.QueryString["sep"].ToString());
+
+                if (Request.QueryString["oct"] != null)
+                    oct = Convert.ToBoolean(Request.QueryString["oct"].ToString());
+
+                if (Request.QueryString["nov"] != null)
+                    nov = Convert.ToBoolean(Request.QueryString["nov"].ToString());
+
+                if (Request.QueryString["dec"] != null)
+                    dec = Convert.ToBoolean(Request.QueryString["dec"].ToString());
+
+                if (Request.QueryString["all"] != null)
+                    all = Convert.ToBoolean(Request.QueryString["all"].ToString());
 
                 cond = Request.QueryString["cond"].ToString();
                 cond = Server.UrlDecode(cond);
@@ -156,6 +209,49 @@ public partial class ReportXLSal2 : System.Web.UI.Page
         string itrans = "NO";
         string denot = "NO";
 
+
+
+
+        if (Request.QueryString["jan"] != null)
+            jan = Convert.ToBoolean(Request.QueryString["jan"].ToString());
+
+        if (Request.QueryString["feb"] != null)
+            feb = Convert.ToBoolean(Request.QueryString["feb"].ToString());
+
+        if (Request.QueryString["mar"] != null)
+            mar = Convert.ToBoolean(Request.QueryString["mar"].ToString());
+
+        if (Request.QueryString["apl"] != null)
+            apl = Convert.ToBoolean(Request.QueryString["apl"].ToString());
+
+        if (Request.QueryString["may"] != null)
+            may = Convert.ToBoolean(Request.QueryString["may"].ToString());
+
+        if (Request.QueryString["jun"] != null)
+            jun = Convert.ToBoolean(Request.QueryString["jun"].ToString());
+
+        if (Request.QueryString["jly"] != null)
+            jly = Convert.ToBoolean(Request.QueryString["jly"].ToString());
+
+        if (Request.QueryString["aug"] != null)
+            aug = Convert.ToBoolean(Request.QueryString["aug"].ToString());
+
+        if (Request.QueryString["sep"] != null)
+            sep = Convert.ToBoolean(Request.QueryString["sep"].ToString());
+
+        if (Request.QueryString["oct"] != null)
+            oct = Convert.ToBoolean(Request.QueryString["oct"].ToString());
+
+        if (Request.QueryString["nov"] != null)
+            nov = Convert.ToBoolean(Request.QueryString["nov"].ToString());
+
+        if (Request.QueryString["dec"] != null)
+            dec = Convert.ToBoolean(Request.QueryString["dec"].ToString());
+
+        if (Request.QueryString["all"] != null)
+            all = Convert.ToBoolean(Request.QueryString["all"].ToString());
+
+
         startDate = Convert.ToDateTime(Request.QueryString["startDate"].ToString());
         endDate = Convert.ToDateTime(Request.QueryString["endDate"].ToString());
 
@@ -181,6 +277,7 @@ public partial class ReportXLSal2 : System.Web.UI.Page
             if (aa == "1")
             {
                 //if (CheckBox10.Checked == true)
+                if(jan==true)
                     dr_final12["Month"] = "January";
                 //else
                 //    dr_final12["Month"] = " ";
@@ -188,79 +285,90 @@ public partial class ReportXLSal2 : System.Web.UI.Page
             else if (aa == "2")
             {
                 //if (CheckBox11.Checked == true)
+                if(feb==true)
                     dr_final12["Month"] = "February";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                   dr_final12["Month"] = " ";
             }
             else if (aa == "3")
             {
                 //if (CheckBox12.Checked == true)
+                if (mar == true)
                     dr_final12["Month"] = "March";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "4")
             {
                 //if (CheckBox1.Checked == true)
+                if (apl == true)
                     dr_final12["Month"] = "April";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                   dr_final12["Month"] = " ";
             }
             else if (aa == "5")
             {
                 //if (CheckBox2.Checked == true)
+                if (may == true)
                     dr_final12["Month"] = "May";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "6")
             {
                 //if (CheckBox3.Checked == true)
+                if (jun == true)
                     dr_final12["Month"] = "June";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "7")
             {
                 //if (CheckBox4.Checked == true)
+                if (jly == true)
                     dr_final12["Month"] = "July";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "8")
             {
                 //if (CheckBox5.Checked == true)
+                if (aug == true)
                     dr_final12["Month"] = "August";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "9")
             {
                 //if (CheckBox6.Checked == true)
+                if (sep == true)
                     dr_final12["Month"] = "September";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "10")
             {
                 //if (CheckBox7.Checked == true)
+                if (oct == true)
                     dr_final12["Month"] = "October";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "11")
             {
                 //if (CheckBox8.Checked == true)
+                if (nov == true)
                     dr_final12["Month"] = "November";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
             else if (aa == "12")
             {
                 //if (CheckBox9.Checked == true)
+                if (dec == true)
                     dr_final12["Month"] = "December";
-                //else
-                //    dr_final12["Month"] = " ";
+                else
+                    dr_final12["Month"] = " ";
             }
 
             dr_final12["BillNo"] = dr["BillNo"].ToString();
@@ -271,7 +379,8 @@ public partial class ReportXLSal2 : System.Web.UI.Page
             }
             else
             {             
-                credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+               // credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualVAT"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
+                credit = double.Parse(dr["SalesDiscount"].ToString()) + double.Parse(dr["ActualCST"].ToString()) + double.Parse(dr["Loading"].ToString()) + double.Parse(dr["SumFreight"].ToString());
                 dr_final12["Amount"] = credit.ToString("#0.00");
                 Tottot = Tottot + credit;
                 credit = 0.00;

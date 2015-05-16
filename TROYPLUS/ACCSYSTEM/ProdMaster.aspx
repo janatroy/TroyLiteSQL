@@ -119,6 +119,7 @@
                                                     <asp:ListItem Value="ProductName">Product Name</asp:ListItem>
                                                     <asp:ListItem Value="Model">Model</asp:ListItem>
                                                     <asp:ListItem Value="Brand">Brand</asp:ListItem>
+                                                    <asp:ListItem Value="Category">Category</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </td>
@@ -174,7 +175,7 @@
                                                                                                 <td style="width: 20%" class="ControlLabelNew">Product ID *
                                                                                                             <asp:RequiredFieldValidator ID="rvItemCodeAdd" runat="server" ControlToValidate="txtItemCodeAdd"
                                                                                                                 Text="*" Display="Dynamic" ValidationGroup="salesval" ErrorMessage="Please enter Product ID. It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                                                    <cc1:FilteredTextBoxExtender ID="fltItemCodeAdd" runat="server" FilterType="Numbers, UppercaseLetters, LowercaseLetters"
+                                                                                                    <cc1:FilteredTextBoxExtender ID="fltItemCodeAdd" runat="server" FilterType="Numbers, UppercaseLetters, LowercaseLetters,Custom" ValidChars=" .*-()/"
                                                                                                         TargetControlID="txtItemCodeAdd" Enabled="True" />
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
@@ -200,7 +201,7 @@
                                                                                                 <td style="width: 20%" class="ControlLabelNew">Name of Product *
                                                                                                             <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="txtItemNameAdd"
                                                                                                                 Text="*" Display="Dynamic" ValidationGroup="salesval" ErrorMessage="Please enter Product Name. It cannot be left blank."></asp:RequiredFieldValidator>
-                                                                                                    <%--<cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers" TargetControlID="txtItemNameAdd" />--%>
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .*-()/" TargetControlID="txtItemNameAdd" />
                                                                                                 </td>
                                                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                                                     <asp:TextBox ID="txtItemNameAdd" runat="server" Text='<%# Bind("ProductName") %>'
@@ -427,7 +428,7 @@
                                                                                             <tr>
                                                                                                 <td class="ControlLabelNew" style="width: 20%">Name of Model *
                                                                                                     <asp:RequiredFieldValidator ID="rvModelAdd" runat="server" ControlToValidate="txtModelAdd" Display="Dynamic" ErrorMessage="Please enter Name of Model. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
-                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers" TargetControlID="txtModelAdd" />
+                                                                                                    <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" FilterType="LowercaseLetters, UppercaseLetters,Numbers,Custom" ValidChars=" .*-()/''" TargetControlID="txtModelAdd" />
                                                                                                 </td>
                                                                                                 <td class="ControlTextBox3" style="width: 25%;">
                                                                                                     <asp:TextBox ID="txtModelAdd" runat="server" SkinID="skinTxtBoxGrid"></asp:TextBox>
@@ -949,16 +950,16 @@
                                             OnRowCommand="GrdViewProduct_RowCommand" OnRowDataBound="GrdViewProduct_RowDataBound" OnRowDeleted="GrdViewProduct_RowDeleted"
                                             OnSelectedIndexChanged="GrdViewProduct_SelectedIndexChanged">
                                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
-                                            <RowStyle Font-Bold="True" HorizontalAlign="Center" Height="30px" ForeColor="#0567AE" Font-Size="15px" />
+                                            <RowStyle Font-Bold="True" HorizontalAlign="Center" Height="30px" ForeColor="#0567AE" Font-Size="12px" />
                                             <Columns>
-                                                <asp:BoundField DataField="Row" HeaderText="#" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" HeaderStyle-Width="60px" />
-                                                <asp:BoundField DataField="ItemCode" HeaderText="Product Code" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="ProductName" HeaderText="Product Name" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="Model" HeaderText="Model" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="CategoryName" HeaderText="Category" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="ProductDesc" HeaderText="Brand" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Row" HeaderText="#" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="12px" HeaderStyle-Width="60px" />
+                                                <asp:BoundField DataField="ItemCode" HeaderText="Product Code" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="12px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="ProductName" HeaderText="Product Name" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="12px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="Model" HeaderText="Model" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="12px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="CategoryName" HeaderText="Category" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="12px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="ProductDesc" HeaderText="Brand" ItemStyle-HorizontalAlign="Left" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="12px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" HeaderStyle-BorderColor="Gray" />
                                                 <%--<asp:BoundField DataField="Stock" HeaderText="In Stock"  HeaderStyle-BorderColor="Gray" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true"/>--%>
-                                                <asp:BoundField DataField="Rate" HeaderText="MRP" HeaderStyle-BorderColor="Gray" Visible="false" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="15px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" />
+                                                <asp:BoundField DataField="Rate" HeaderText="MRP" HeaderStyle-BorderColor="Gray" Visible="false" ItemStyle-Font-Bold="true" ItemStyle-Font-Size="12px" ItemStyle-ForeColor="#0567AE" HeaderStyle-Font-Bold="true" />
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderText="Edit" HeaderStyle-Width="50px" HeaderStyle-BorderColor="Gray">
                                                     <ItemStyle Width="50px" HorizontalAlign="Center" />
                                                     <ItemTemplate>

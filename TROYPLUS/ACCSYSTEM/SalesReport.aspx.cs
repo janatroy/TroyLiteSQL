@@ -366,12 +366,23 @@ public partial class SalesReport : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("ProductName"));
         dt.Columns.Add(new DataColumn("Model"));
         dt.Columns.Add(new DataColumn("BranchCode"));
-        dt.Columns.Add(new DataColumn("Qty"));
-        dt.Columns.Add(new DataColumn("Rate"));
+        //dt.Columns.Add(new DataColumn("Qty"));
+        DataColumn colInt32Qty = new DataColumn("Qty");
+        colInt32Qty.DataType = System.Type.GetType("System.Int32");
+        dt.Columns.Add(colInt32Qty);
+        //dt.Columns.Add(new DataColumn("Rate"));
+        DataColumn colInt32Rate = new DataColumn("Rate");
+        colInt32Rate.DataType = System.Type.GetType("System.Int32");
+        dt.Columns.Add(colInt32Rate);
         dt.Columns.Add(new DataColumn("Discount"));
         dt.Columns.Add(new DataColumn("Vat"));
         dt.Columns.Add(new DataColumn("Cst"));
-        dt.Columns.Add(new DataColumn("Value"));
+        //dt.Columns.Add(new DataColumn("Value"));
+        DataColumn colInt32Value = new DataColumn("Value");
+        colInt32Value.DataType = System.Type.GetType("System.Int32");
+        dt.Columns.Add(colInt32Value);
+
+
         
 
         string groupBy = string.Empty;
@@ -477,7 +488,7 @@ public partial class SalesReport : System.Web.UI.Page
                 dr_final12["Vat"] = dr["vat"];
                 dr_final12["Cst"] = dr["cst"];
                 dr_final12["Discount"] = dr["discount"];
-                dr_final12["Value"] = Convert.ToDouble(dr["Amount"]);
+                dr_final12["Value"] = dr["Rate"];// Convert.ToDouble(dr["Amount"]);
                 dr_final12["BranchCode"] = dr["BranchCode"];
                 brandTotal = brandTotal + (Convert.ToDouble(dr["Amount"]));
                 catTotal = catTotal + (Convert.ToDouble(dr["Amount"]));
@@ -500,12 +511,12 @@ public partial class SalesReport : System.Web.UI.Page
         dr_final789["ItemCode"] = "";
         dr_final789["ProductName"] = "";
         dr_final789["Model"] = "";
-        dr_final789["Qty"] = "";
-        dr_final789["Rate"] = "";
+        //dr_final789["Qty"] = 0;
+        //dr_final789["Rate"] = 0;
         dr_final789["Vat"] = "";
         dr_final789["Cst"] = "";
         dr_final789["Discount"] = "";
-        dr_final789["Value"] = Convert.ToString(Convert.ToDecimal(total));
+       // dr_final789["Value"] = 0;// Convert.ToString(Convert.ToDecimal(total));
         dr_final789["BranchCode"] = "";
         dt.Rows.Add(dr_final789);
 
@@ -541,7 +552,6 @@ public partial class SalesReport : System.Web.UI.Page
                     Response.End();
                 }
             }
-
         }
     }
 

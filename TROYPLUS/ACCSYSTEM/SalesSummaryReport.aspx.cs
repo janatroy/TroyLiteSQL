@@ -231,8 +231,8 @@ public partial class SalesSummaryReport : System.Web.UI.Page
         else if ((cmbDisplayCat.SelectedItem.Text) == "Executivewise")
         {
             dt.Columns.Add(new DataColumn(cmbDisplayCat.SelectedItem.Text));
-            field2 = "tblsales.executivename,";
-            GroupBy = "tblsales.executivename,";
+            field2 = "tblSalesItems.executivename,";
+            GroupBy = "tblSalesItems.executivename,";
         }
         else if ((cmbDisplayCat.SelectedItem.Text) == "Itemwise")
         {
@@ -661,9 +661,9 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     dr_final12["CST Rate"] = (Convert.ToDouble(dr["Actualcst"]));
                     dr_final12["Freight"] = (Convert.ToDouble(dr["sumfreight"]));
                     dr_final12["Loading/Unloading"] = (Convert.ToDouble(dr["Loading"]));
-                    dr_final12["Total"] = (Convert.ToDouble(dr["NetRate"])) + (Convert.ToDouble(dr["ActualVat"])) + (Convert.ToDouble(dr["Actualcst"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"]));
+                    dr_final12["Total"] = (Convert.ToDouble(dr["NetRate"]))  - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"]));
 
-                    brandTotal = brandTotal + ((Convert.ToDouble(dr["NetRate"])) + (Convert.ToDouble(dr["ActualVat"])) + (Convert.ToDouble(dr["Actualcst"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"])));
+                    brandTotal = brandTotal + ((Convert.ToDouble(dr["NetRate"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"])));
                     load1Total = load1Total + (Convert.ToDouble(dr["Loading"]));
                     freight1Total = freight1Total + (Convert.ToDouble(dr["sumfreight"]));
                     cst1Total = cst1Total + (Convert.ToDouble(dr["Actualcst"]));
@@ -681,7 +681,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     rateTotal = rateTotal + (Convert.ToDouble(dr["SRate"]));
 
                     CategoryqtyTotal = CategoryqtyTotal + Convert.ToDouble(dr["quantity"]);
-                    total = total + ((Convert.ToDouble(dr["NetRate"])) + (Convert.ToDouble(dr["ActualVat"])) + (Convert.ToDouble(dr["Actualcst"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"])));
+                    total = total + ((Convert.ToDouble(dr["NetRate"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"])));
                     qty1Total = qty1Total + Convert.ToDouble(dr["quantity"]);
 
 
@@ -1065,7 +1065,8 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 if (DataBinder.Eval(e.Row.DataItem, "Loading") != DBNull.Value)
                     dLURate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Loading"));
 
-                dGrandRate = dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
+               // dGrandRate = dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
+                dGrandRate = dNetRate;
 
 
                 dSNetRate = dSNetRate + dNetRate;
@@ -1140,7 +1141,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     else if (secondLevel == "Brandwise")
                         ds = bl.SecondLevelModelwiseBrandWise(Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), Convert.ToDateTime(txtStartDate.Text.Trim()), Convert.ToDateTime(txtEndDate.Text.Trim()), purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelGeneralProductWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote, "", "");
+                        ds = bl.SecondLevelBrandWiseCustomerWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
                         ds = bl.SecondLevelModelWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "Model", "ProductName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Daywise")
@@ -1159,7 +1160,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     else if (secondLevel == "Customerwise")
                         ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelBillWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductName", purReturn, intTrans, delNote);
+                        ds = bl.SecondLevelBillWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductName", purReturn, intTrans, delNote,"");
                     else if (secondLevel == "Daywise")
                         ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "BillNo", "BillDate", purReturn, intTrans, delNote, "", "");
 
@@ -1368,7 +1369,9 @@ public partial class SalesSummaryReport : System.Web.UI.Page
 
 
 
-                dGrandRate = dGrandRate + dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
+               // dGrandRate = dGrandRate + dDiscountRate + dVatRate + dCSTRate;
+
+                dGrandRate = dNetRate;// +dFrRate + dLURate;
 
                 dSQty = dSQty + dQuantity;
                 dSCNetRate = dSCNetRate + dNetRate;
@@ -1377,7 +1380,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 dSCCSTRate = dSCCSTRate + dCSTRate;
 
 
-                dSCGrandRate = dSCGrandRate + dGrandRate;
+                dSCGrandRate = dSCGrandRate + dGrandRate ;
                 lblTotal.Text = dGrandRate.ToString("f2");
                 dGrandRate = 0;
                 //e.Row.Cells[6].Visible = false;

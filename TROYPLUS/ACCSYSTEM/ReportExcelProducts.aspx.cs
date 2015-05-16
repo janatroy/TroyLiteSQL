@@ -27,6 +27,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
 
             DateTime date = Convert.ToDateTime("01-01-1900");
             DataSet ds = new DataSet();
+            DataSet ds1 = new DataSet();
+
 
             string connection = string.Empty;
 
@@ -35,7 +37,10 @@ public partial class ReportExcelProducts : System.Web.UI.Page
             else
                 Response.Redirect("Login.aspx");
 
-            ds = objBL.ListProducts(connection, "", "");
+            ds = objBL.ListProductsReport(connection, "", "");
+
+           
+          
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -49,6 +54,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn("Outdated"));
                 dt.Columns.Add(new DataColumn("Vat"));
                 dt.Columns.Add(new DataColumn("StockLevel"));
+                dt.Columns.Add(new DataColumn("Price"));
+                dt.Columns.Add(new DataColumn("PriceName"));
 
                 DataRow dr_final123 = dt.NewRow();
                 dt.Rows.Add(dr_final123);
@@ -66,6 +73,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                     dr_final1["Vat"] = dr["Vat"];
                     //dr_final1["NLC"] = dr["rol"];
                     dr_final1["StockLevel"] = dr["rol"];
+                    dr_final1["Price"] = dr["Price"];
+                    dr_final1["PriceName"] = dr["PriceName"];
                     dt.Rows.Add(dr_final1);
                 }
                 DataRow dr_final2 = dt.NewRow();
@@ -76,6 +85,8 @@ public partial class ReportExcelProducts : System.Web.UI.Page
                 dr_final2["CategoryName"] = "";
                 dr_final2["Vat"] = "";
                 dr_final2["StockLevel"] = "";
+                dr_final2["Price"] = "";
+                dr_final2["PriceName"] = "";
                 dt.Rows.Add(dr_final2);
                 ExportToExcel(dt);
             }

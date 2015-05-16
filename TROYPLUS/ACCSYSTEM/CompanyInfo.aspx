@@ -730,8 +730,13 @@
                                                                 <asp:ListItem Text="Select PriceList" Value="0"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </td>
-                                                        <td style="width: 15%" />
-                                                        <td style="width: 20%" />
+                                                        <td style="width: 15%" class="ControlLabelproject">Purchase Round Off Value
+                                                            <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender7" runat="server" FilterType="Numbers"
+                                                                TargetControlID="txtPurRnd" />
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlTextBox3">
+                                                            <asp:TextBox ID="txtPurRnd" runat="server" CssClass="cssTextBox" Width="165px"></asp:TextBox>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td></td>
@@ -831,6 +836,23 @@
                                                         </td>
                                                     </tr>
                                                     <tr style="height: 15px">
+                                                        <td style="width: 15%" class="ControlLabelproject">SAP B1 Integration
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlTextBox3">
+                                                            <%--<div style="border-width: 1px; border-color: #bce1fe; border-style: solid; width: 170px;">--%>
+                                                            <asp:RadioButtonList ID="chksap" runat="server" RepeatDirection="Horizontal">
+                                                                <asp:ListItem Selected="True" Text="YES"></asp:ListItem>
+                                                                <asp:ListItem Text="NO"></asp:ListItem>
+                                                            </asp:RadioButtonList>
+                                                            <%--</div>--%>
+                                                        </td>
+                                                        <%-- <td style="width: 20%">
+                                                                                        <asp:UpdatePanel runat="server" ID="upBranch">
+                                                                                            <ContentTemplate>
+                                                                                                <asp:CheckBox ID="chksap" runat="server" Text="SAP Process" Font-Size="15px" AutoPostBack="true" />
+                                                                                            </ContentTemplate>
+                                                                                        </asp:UpdatePanel>
+                                                                                    </td>--%>
                                                     </tr>
                                                     <tr>
                                                         <td></td>

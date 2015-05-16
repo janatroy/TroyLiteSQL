@@ -594,9 +594,9 @@ public partial class CustReceipt : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic();
         var customerID = drpLedger.SelectedValue.Trim();
 
-        var dsSales = bl.ListCreditSales(connStr.Trim(), customerID);
+        var dsSales = bl.ListCreditSalesTTT(connStr.Trim(), customerID);
 
-        var receivedData = bl.GetCustReceivedAmount(connStr);
+        var receivedData = bl.GetCustRecAmount(connStr, drpBranchAdd.SelectedValue);
 
         if (dsSales != null)
         {
@@ -712,8 +712,9 @@ public partial class CustReceipt : System.Web.UI.Page
 
     }
 
-    private void ShowPendingBillsAutoT(string billsData)
+    private void ShowPendingBillsAutoT(DataSet billsData)
     {
+        double tot1 = 0;
         string connStr = string.Empty;
 
         if (Request.Cookies["Company"] != null)
@@ -724,9 +725,9 @@ public partial class CustReceipt : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic();
         var customerID = drpLedger.SelectedValue.Trim();
 
-        var dsSales = bl.ListCreditSalesT(connStr.Trim(), customerID, billsData);
+        var dsSales = bl.ListCreditSalesTT(connStr.Trim(), customerID,hd.Value);
 
-        var receivedData = bl.GetCustReceivedAmount(connStr);
+        var receivedData = bl.GetCustReceivedAmount5(connStr, Convert.ToInt32(hd.Value), hd1.Value);
 
         if (dsSales != null)
         {
@@ -745,8 +746,14 @@ public partial class CustReceipt : System.Web.UI.Page
                         dsSales.Tables[0].Rows[i]["PendingAmount"] = val;
                         dsSales.Tables[0].Rows[i].EndEdit();
 
-                        if (val == 0.0)
-                            dsSales.Tables[0].Rows[i].Delete();
+                        if(hd.Value == dsSales.Tables[0].Rows[i]["BillNo"].ToString())
+                        {
+                        }
+                        else
+                        {
+                            if (val == 0.0)
+                                dsSales.Tables[0].Rows[i].Delete();
+                        }
                     }
                 }
                 dsSales.Tables[0].AcceptChanges();
@@ -791,6 +798,8 @@ public partial class CustReceipt : System.Web.UI.Page
 
             dstd.Tables.Add(dttt);
 
+            double tot2 = 0;
+
             int sno = 1;
             if (dsSales != null)
             {
@@ -802,13 +811,44 @@ public partial class CustReceipt : System.Web.UI.Page
                         drNew["Row"] = sno;
                         drNew["Billno"] = Convert.ToInt32(dsSales.Tables[0].Rows[i]["Billno"]);
                         drNew["CustomerName"] = Convert.ToString(dsSales.Tables[0].Rows[i]["CustomerName"]);
-                        drNew["PendingAmount"] = Convert.ToDouble(dsSales.Tables[0].Rows[i]["PendingAmount"]);
+                        drNew["PendingAmount"] = Convert.ToDouble(dsSales.Tables[0].Rows[i]["BillAmount"]);
                         drNew["Amount"] = Convert.ToDouble(dsSales.Tables[0].Rows[i]["BillAmount"]);
                         string dtaa = Convert.ToDateTime(dsSales.Tables[0].Rows[i]["BillDate"]).ToString("dd/MM/yyyy");
 
+                        DataSet receiptData = new DataSet();
+                        receiptData = bl.ListReceiptsForBillNoOrder5(connStr, dsSales.Tables[0].Rows[i]["Billno"].ToString(), drpBranchAdd.SelectedValue);
+                        String no = "" ;
+                        if (receiptData != null)
+                        {
+                            if (receiptData.Tables[0].Rows.Count > 0)
+                            {
+                                for (int i1 = 0; i1 < receiptData.Tables[0].Rows.Count; i1++)
+                                {
+
+                                    tot2 = tot2 + Convert.ToDouble(receiptData.Tables[0].Rows[i1]["Amount"]);
+
+
+
+                                }
+                                drNew["AdjustAmount"] = tot2;
+                                tot1 = tot1 + tot2;
+
+                                drNew["Amount1"] = tot2;
+                            }
+                            else
+                            {
+                                drNew["AdjustAmount"] = 0;
+                                drNew["Amount1"] = 0;
+                            }
+                        }
+                        else
+                        {
+                            drNew["AdjustAmount"] = 0;
+                            drNew["Amount1"] = 0;
+                        }
+
                         drNew["BillDate"] = dtaa;
-                        drNew["AdjustAmount"] = 0;
-                        drNew["Amount1"] = 0;
+                        
                         drNew["Completed"] = "N";
                         dstd.Tables[0].Rows.Add(drNew);
                         sno = sno + 1;
@@ -816,27 +856,42 @@ public partial class CustReceipt : System.Web.UI.Page
                 }
             }
 
+
+
+            drpReceiptType.SelectedValue = "1";
+            drpLedger.Visible = true;
+            drpLedger.Enabled = false;
+
+            chk.Enabled = false;
+
             GridView1.DataSource = dstd;
             GridView1.DataBind();
 
-            totalrow.Visible = true;
-            totalrow1.Visible = true;
             totalrow123.Visible = true;
-
-            //div3.Visible = true;
+            totalrow1.Visible = true;
+            totalrow.Visible = true;
         }
         else
         {
             GridView1.DataSource = null;
             GridView1.DataBind();
+            drpLedger.Enabled = true;
+
+            chk.Enabled = true;
+
+            totalrow.Visible = false;
+            totalrow1.Visible = false;
+            totalrow123.Visible = false;
         }
 
+        TextBox1.Text = tot1.ToString();
 
         //Panel4.Visible = true;
         //if (dsSales != null)
         //{
         //    hdPendingCount.Value = dsSales.Tables[0].Rows.Count.ToString();
         //}
+
 
     }
 
@@ -1072,7 +1127,9 @@ public partial class CustReceipt : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic();
             string recondate = Row.Cells[2].Text;
             Session["BillData"] = null;
-            //hd.Value = Convert.ToString(GrdViewReceipt.SelectedDataKey.Value);
+            hd.Value = Convert.ToString(Row.Cells[1].Text);
+            hd1.Value = Convert.ToString(Row.Cells[7].Text);
+
             loadBanksEdit();
 
             //GrdViewItems.RowDataBound += new GridViewRowEventHandler(GrdViewItems_RowDataBound);
@@ -1093,6 +1150,10 @@ public partial class CustReceipt : System.Web.UI.Page
             loadBranch();
 
 
+            string Branch = Row.Cells[7].Text;
+
+            string name = Row.Cells[3].Text;
+
             if (!bl.IsValidDate(connection, Convert.ToDateTime(recondate)))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date is invalid')", true);
@@ -1101,7 +1162,7 @@ public partial class CustReceipt : System.Web.UI.Page
             else
             {
                 //pnlEdit.Visible = true;
-                DataSet ds = bl.GetRecForId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()));
+                DataSet ds = bl.GetRecForId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()), Branch, name);
                 if (ds != null)
                 {
 
@@ -1219,6 +1280,8 @@ public partial class CustReceipt : System.Web.UI.Page
 
                     string sCustomer = string.Empty;
 
+                    double tot = 0;
+
                     for (int vLoop = 0; vLoop < GridView2.Rows.Count; vLoop++)
                     {
                         DropDownList Type = (DropDownList)GridView2.Rows[vLoop].FindControl("txtType");
@@ -1253,11 +1316,14 @@ public partial class CustReceipt : System.Web.UI.Page
                         }
 
                         txtAmount.Text = dstd.Tables[0].Rows[vLoop]["Amount"].ToString();
+                        tot = tot + Convert.ToDouble(txtAmount.Text);
                         txtChequeNo.Text = dstd.Tables[0].Rows[vLoop]["ChequeNo"].ToString();
                         txtRefNo.Text = dstd.Tables[0].Rows[vLoop]["RefNo"].ToString();
                         txtNarration.Text = dstd.Tables[0].Rows[vLoop]["Narration"].ToString();
                     }
 
+                    TextBox txt = (TextBox)GridView2.FooterRow.FindControl("txttot");
+                    txt.Text = tot.ToString();
 
                     ViewState["CurrentTable1"] = dttt;
 
@@ -1304,6 +1370,31 @@ public partial class CustReceipt : System.Web.UI.Page
 
                         drpCustomerCategoryAdd.SelectedValue = Convert.ToString(customerDs.Tables[0].Rows[0]["LedgerCategory"]);
 
+                        DataSet dsdd = new DataSet();
+                        dsdd = bl.generateCustomerIdOutStanding(1, sDataSource, drpBranchAdd.SelectedValue, debtorID);
+
+                        double damt = Convert.ToDouble(dsdd.Tables[0].Rows[0]["debit"]) - Convert.ToDouble(dsdd.Tables[0].Rows[0]["credit"]);
+
+                        if (dsdd != null && dsdd.Tables[0].Rows.Count > 0)
+                        {
+                            if (damt > 0)
+                            {
+                                outstand.Text = damt + " DR";
+                                outstand.ForeColor = System.Drawing.Color.Red;
+                            }
+                            else if (damt == 0)
+                            {
+                                outstand.Text = damt + " ";
+                                outstand.ForeColor = System.Drawing.Color.Red;
+                            }
+
+                            else
+                            {
+                                outstand.Text = -damt + " CR";
+                                outstand.ForeColor = System.Drawing.Color.Green;
+                            }
+                        }
+
                     }
                     else
                     {
@@ -1316,9 +1407,9 @@ public partial class CustReceipt : System.Web.UI.Page
 
 
 
-                    string billsData = bl.GetReceivedAmtId(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()));
+                    DataSet billsData = bl.GetReceivedAmtId1(connection, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()), drpBranchAdd.SelectedValue);
 
-                    //Session["BillData"] = billsData;
+                    Session["BillData"] = billsData;
 
                     //if (billsData.Tables[0].Rows[0]["BillNo"].ToString() == "0")
                     //{
@@ -1328,90 +1419,100 @@ public partial class CustReceipt : System.Web.UI.Page
                     //GrdBills.DataBind();
 
 
-                    //DataSet dsttN;
-                    //DataTable dttN;
-                    //DataRow drNewtN;
+                //    DataSet dsttN;
+                //    DataTable dttN;
+                //    DataRow drNewtN;
 
-                    //DataColumn dctN;
+                //    DataColumn dctN;
 
-                    //dsttN = new DataSet();
+                //    dsttN = new DataSet();
 
-                    //dttN = new DataTable();
+                //    dttN = new DataTable();
 
-                    //dctN = new DataColumn("Billno");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("Billno");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("Row");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("Row");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("CustomerName");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("CustomerName");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("Amount");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("Amount");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("BillDate");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("BillDate");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("PendingAmount");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("PendingAmount");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("AdjustAmount");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("AdjustAmount");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("Completed");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("Completed");
+                //    dttN.Columns.Add(dctN);
 
-                    //dctN = new DataColumn("Amount1");
-                    //dttN.Columns.Add(dctN);
+                //    dctN = new DataColumn("Amount1");
+                //    dttN.Columns.Add(dctN);
 
-                    //dsttN.Tables.Add(dttN);
+                //    dsttN.Tables.Add(dttN);
 
-                    //int sno1 = 1;
+                //    double tot1 = 0;
+                //    int sno1 = 1;
 
-                    //for (int i = 0; i < billsData.Tables[0].Rows.Count; i++)
-                    //{
-                       
+                //    if (billsData != null && billsData.Tables[0].Rows.Count > 0)
+                //    {
+                //        for (int i = 0; i < billsData.Tables[0].Rows.Count; i++)
+                //        {
 
-                    //    drNewtN = dttN.NewRow();
-                    //    drNewtN["Row"] = sno1;
-                    //    drNewtN["Billno"] = billsData.Tables[0].Rows[i]["BillNo"].ToString();
 
-                    //    drNewtN["CustomerName"] = billsData.Tables[0].Rows[i]["CustomerName"].ToString();
-                    //    drNewtN["PendingAmount"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
-                    //    drNewtN["Amount"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
-                    //    drNewtN["BillDate"] = billsData.Tables[0].Rows[i]["BillDate"].ToString();
-                    //    drNewtN["AdjustAmount"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
-                    //    drNewtN["Amount1"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
-                    //    drNewtN["Completed"] = "N";
-                    //    dsttN.Tables[0].Rows.Add(drNewtN);
-                    //    sno1 = sno1 + 1;
-                    //}
-
-                    //if (dsttN != null)
-                    //{
-                    //    if (dsttN.Tables.Count > 0)
-                    //    {
-                    //        GridView1.DataSource = dsttN;
-                    //        GridView1.DataBind();
-                    //        totalrow.Visible = true;
-                    //        totalrow1.Visible = true;
-                    //        totalrow123.Visible = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        GridView1.DataSource = null;
-                    //        GridView1.DataBind();
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    GridView1.DataSource = null;
-                    //    GridView1.DataBind();
-                    //}
-
+                //            drNewtN = dttN.NewRow();
+                //            drNewtN["Row"] = sno1;
+                //            drNewtN["Billno"] = billsData.Tables[0].Rows[i]["BillNo"].ToString();
+                //            tot1 = tot1 + Convert.ToDouble(billsData.Tables[0].Rows[i]["Amount"]);
+                //            drNewtN["CustomerName"] = billsData.Tables[0].Rows[i]["CustomerName"].ToString();
+                //            drNewtN["PendingAmount"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
+                //            drNewtN["Amount"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
+                //            drNewtN["BillDate"] = billsData.Tables[0].Rows[i]["BillDate"].ToString();
+                //            drNewtN["AdjustAmount"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
+                //            drNewtN["Amount1"] = billsData.Tables[0].Rows[i]["Amount"].ToString();
+                //            drNewtN["Completed"] = "N";
+                //            dsttN.Tables[0].Rows.Add(drNewtN);
+                //            sno1 = sno1 + 1;
+                //        }
                     
-        
+
+                //    if (dsttN != null)
+                //    {
+                //        if (dsttN.Tables.Count > 0)
+                //        {
+                //            GridView1.DataSource = dsttN;
+                //            GridView1.DataBind();
+                //            totalrow.Visible = true;
+                //            totalrow1.Visible = true;
+                //            totalrow123.Visible = true;
+                //        }
+                //        else
+                //        {
+                //            GridView1.DataSource = null;
+                //            GridView1.DataBind();
+                //        }
+                //    }
+                //    else
+                //    {
+                //        GridView1.DataSource = null;
+                //        GridView1.DataBind();
+                //    }
+                //}
+                //    else
+                //    {
+                //        GridView1.DataSource = null;
+                //        GridView1.DataBind();
+                //    }
+
+                //    TextBox1.Text = tot1.ToString();
+
                     Session["RMode"] = "Edit";
                     ShowPendingBillsAutoT(billsData);
                     //checkPendingBills(billsData);
@@ -1675,6 +1776,9 @@ public partial class CustReceipt : System.Web.UI.Page
             ClearPanel();
             ShowPendingBillsAuto();
 
+            outstand.Text = "0";
+            TextBox1.Text = "0";
+
             chk.Enabled = false;
 
             FirstGridViewRow1();
@@ -1703,6 +1807,9 @@ public partial class CustReceipt : System.Web.UI.Page
             //drpLedger.Focus();
             chkPayTo.SelectedValue = "Cash";
             div.Visible = true;
+
+            drpLedger.Enabled = true;
+
             //Panel4.Visible = false;
             if (chkPayTo.SelectedItem != null)
             {
@@ -1830,7 +1937,7 @@ public partial class CustReceipt : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
 
-            ds = bl.ListBanks();
+            ds = bl.ListBankLedgerpaymnet();
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -1887,10 +1994,11 @@ public partial class CustReceipt : System.Web.UI.Page
         //CultureInfo culture = new CultureInfo("pt-BR");
         string sPath = string.Empty;
         BusinessLogic bl = new BusinessLogic(sDataSource);
-
+        Button4.Enabled = false;
         if (txtDate.Text == "")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Date. It cannot be left blank.')", true);
+            Button4.Enabled = true;
             return;
 
         }
@@ -1898,12 +2006,14 @@ public partial class CustReceipt : System.Web.UI.Page
         if (!bl.IsValidDate(connection, Convert.ToDateTime(txtDate.Text)))
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date is invalid')", true);
+            Button4.Enabled = true;
             return;
         }
 
         if (drpBranchAdd.SelectedValue == "0")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Branch. It cannot be left blank.')", true);
+            Button4.Enabled = true;
             return;
 
         }
@@ -1913,6 +2023,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if(drpLedger.SelectedValue=="0")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Customer name. It cannot be left blank.')", true);
+                Button4.Enabled = true;
                 return;
 
             }
@@ -1923,6 +2034,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if ((txtCustomerName.Text == "" )|| (txtCustomerName.Text == " ") || (txtCustomerName.Text == null))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Customer name. It cannot be left blank.')", true);
+                Button4.Enabled = true;
                 return;
             }
         }
@@ -1949,16 +2061,19 @@ public partial class CustReceipt : System.Web.UI.Page
             if (txttt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill RefNo in row " + col + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
             else if (txt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Amount in row " + col + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
             else if (txtt.Text == "")
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Narration in row " + col + " ')", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
             else if (txttd.SelectedValue == "0")
@@ -1966,6 +2081,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 if (txtttd.SelectedItem.Text != "Cash")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Bank in row " + col + " ')", true);
+                    Button4.Enabled = true;
                     return;
                 }
             }
@@ -1974,6 +2090,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 if (txtttd.SelectedItem.Text != "Cash")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Cheque No in row " + col + " ')", true);
+                    Button4.Enabled = true;
                     return;
                 }
             }                       
@@ -2012,6 +2129,7 @@ public partial class CustReceipt : System.Web.UI.Page
                             if (itemc == txt1.Text)
                             {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque/Card No - " + itemcd + " - cannot be duplicate.');", true);
+                                Button4.Enabled = true;
                                 return;
                             }
                         }
@@ -2056,6 +2174,7 @@ public partial class CustReceipt : System.Web.UI.Page
                                 if (txt1.SelectedItem.Text == "Cash")
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Receipt Mode - " + itemcdz + " - cannot be duplicate.');", true);
+                                    Button4.Enabled = true;
                                     return;
                                 }
                             }
@@ -2088,6 +2207,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if (Convert.ToDouble(txttd.Text) < Convert.ToDouble(txttdd.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Adjust Amount can not be greater than Amount in row " + coll + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
 
@@ -2100,6 +2220,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if (tot > Convert.ToDouble(txt.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Total Adjust Amount can not be greater than total receipt Amount ')", true);
+                Button4.Enabled = true;
                 return;
             }
         }
@@ -2356,7 +2477,7 @@ public partial class CustReceipt : System.Web.UI.Page
         //    dstt.Tables[0].Rows.Add(drNewt);
         //}
 
-
+	 string Branchcde = drpBranchAdd.SelectedValue;
 
         int CreditorID = 0;
         string sCustomerName = string.Empty;
@@ -2381,11 +2502,28 @@ public partial class CustReceipt : System.Web.UI.Page
             if (bl.IsLedgerAlreadyFound(connection, CName))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer " + CName + " with this name already exists.');", true);
+                Button4.Enabled = true;
                 return;
             }
 
-            CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,true,"");
-            sCustomerName = txtCustomerName.Text;
+            //CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3,false,Branchcde);
+            //sCustomerName = txtCustomerName.Text;
+
+            bool mobchk;
+
+            if (txtCustomerId.Text == "")
+            {
+                mobchk = false;
+                CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, false, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+            else
+            {
+                mobchk = true;
+                CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+
         }
         else
         {
@@ -2434,38 +2572,109 @@ public partial class CustReceipt : System.Web.UI.Page
 
 
 
-            for (int vLoop1 = 0; vLoop1 < GridView2.Rows.Count; vLoop1++)
+        for (int vLoop1 = 0; vLoop1 < GridView2.Rows.Count; vLoop1++)
+        {
+            TextBox txt = (TextBox)GridView2.Rows[vLoop1].FindControl("txtAmount");
+            DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtType");
+            TextBox txtChequeNo = (TextBox)GridView2.Rows[vLoop1].FindControl("txtChequeNo");
+
+            double adtotal = Convert.ToDouble(txt.Text);
+
+            for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
             {
-                TextBox txt = (TextBox)GridView2.Rows[vLoop1].FindControl("txtAmount");
-                DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtType");
-                TextBox txtChequeNo = (TextBox)GridView2.Rows[vLoop1].FindControl("txtChequeNo");
+                Label txttt = (Label)GridView1.Rows[vLoop].FindControl("txtBillno");
+                Label txtttdd = (Label)GridView1.Rows[vLoop].FindControl("txtBillDate");
+                Label txtd = (Label)GridView1.Rows[vLoop].FindControl("txtCustomerName");
+                Label txtamount = (Label)GridView1.Rows[vLoop].FindControl("txtAmount");
+                TextBox txttd = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
+                Label txtamount1 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount1");
+                Label txttCompleted = (Label)GridView1.Rows[vLoop].FindControl("txtCompleted");
+                Label txttd123 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount123");
 
-                double adtotal = Convert.ToDouble(txt.Text);
-
-                for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
+                if (txttCompleted.Text == "N")
                 {
-                    Label txttt = (Label)GridView1.Rows[vLoop].FindControl("txtBillno");
-                    Label txtttdd = (Label)GridView1.Rows[vLoop].FindControl("txtBillDate");
-                    Label txtd = (Label)GridView1.Rows[vLoop].FindControl("txtCustomerName");
-                    Label txtamount = (Label)GridView1.Rows[vLoop].FindControl("txtAmount");
-                    TextBox txttd = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
-                    Label txtamount1 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount1");
-                    Label txttCompleted = (Label)GridView1.Rows[vLoop].FindControl("txtCompleted");
-                    Label txttd123 = (Label)GridView1.Rows[vLoop].FindControl("txtAmount123");
+                    drNewtt = dttt.NewRow();
+                    drNewtt["Billno"] = txttt.Text;
+                    drNewtt["BillDate"] = txtttdd.Text;
+                    drNewtt["CustomerName"] = txtd.Text;
 
-                    if (txttCompleted.Text == "N")
+                    if (adtotal > Convert.ToDouble(txtamount1.Text))
                     {
-                        drNewtt = dttt.NewRow();
-                        drNewtt["Billno"] = txttt.Text;
-                        drNewtt["BillDate"] = txtttdd.Text;
-                        drNewtt["CustomerName"] = txtd.Text;
-
-                        if (adtotal > Convert.ToDouble(txtamount1.Text))
+                        drNewtt["Type"] = txtttd.Text;
+                        drNewtt["Amount"] = txtamount1.Text;
+                        adtotal = adtotal - Convert.ToDouble(txtamount1.Text);
+                        drNewtt["Completed"] = "Y";
+                        if (txtttd.SelectedItem.Text == "Cash")
                         {
-                            drNewtt["Type"] = txtttd.Text;
-                            drNewtt["Amount"] = txtamount1.Text;
-                            adtotal = adtotal - Convert.ToDouble(txtamount1.Text);
+                            drNewtt["ChequeNo"] = 0;
+                        }
+                        else
+                        {
+                            drNewtt["ChequeNo"] = txtChequeNo.Text;
+                        }
+
+                        dsttt.Tables[0].Rows.Add(drNewtt);
+
+                        for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                        {
+                            if (txttt.Text == dstt.Tables[0].Rows[i]["BillNo"].ToString())
+                            {
+                                dstt.Tables[0].Rows[i].BeginEdit();
+                                dstt.Tables[0].Rows[i]["Completed"] = "Y";
+                                dstt.Tables[0].Rows[i]["Amount1"] = 0;
+                                dstt.Tables[0].Rows[i].EndEdit();
+                            }
+                        }
+                        dstt.Tables[0].AcceptChanges();
+
+                        GridView1.DataSource = dstt;
+                        GridView1.DataBind();
+
+                    }
+                    else if (adtotal < Convert.ToDouble(txtamount1.Text))
+                    {
+                        drNewtt["Type"] = txtttd.Text;
+                        drNewtt["Amount"] = adtotal;
+                        adtotal = Convert.ToDouble(txtamount1.Text) - adtotal;
+                        drNewtt["Completed"] = "N";
+                        if (txtttd.SelectedItem.Text == "Cash")
+                        {
+                            drNewtt["ChequeNo"] = 0;
+                        }
+                        else
+                        {
+                            drNewtt["ChequeNo"] = txtChequeNo.Text;
+                        }
+
+                        dsttt.Tables[0].Rows.Add(drNewtt);
+
+                        for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
+                        {
+                            if (txttt.Text == dstt.Tables[0].Rows[i]["BillNo"].ToString())
+                            {
+                                dstt.Tables[0].Rows[i].BeginEdit();
+                                dstt.Tables[0].Rows[i]["Completed"] = "N";
+                                dstt.Tables[0].Rows[i]["Amount1"] = adtotal;
+                                dstt.Tables[0].Rows[i].EndEdit();
+                            }
+                        }
+                        dstt.Tables[0].AcceptChanges();
+
+                        GridView1.DataSource = dstt;
+                        GridView1.DataBind();
+
+                        break;
+                    }
+                    else if (adtotal == Convert.ToDouble(txtamount1.Text))
+                    {
+                        drNewtt["Type"] = txtttd.Text;
+
+                        if ((Convert.ToDouble(txtamount.Text) - Convert.ToDouble(txtamount1.Text)) == 0)
+                        {
                             drNewtt["Completed"] = "Y";
+                            drNewtt["Amount"] = Convert.ToDouble(txtamount1.Text);
+                            adtotal = 0;
+
                             if (txtttd.SelectedItem.Text == "Cash")
                             {
                                 drNewtt["ChequeNo"] = 0;
@@ -2492,13 +2701,14 @@ public partial class CustReceipt : System.Web.UI.Page
                             GridView1.DataSource = dstt;
                             GridView1.DataBind();
 
+
                         }
-                        else if (adtotal < Convert.ToDouble(txtamount1.Text))
+                        else
                         {
-                            drNewtt["Type"] = txtttd.Text;
-                            drNewtt["Amount"] = adtotal;
-                            adtotal = Convert.ToDouble(txtamount1.Text) - adtotal;
+                            adtotal = 0;
                             drNewtt["Completed"] = "N";
+                            drNewtt["Amount"] = Convert.ToDouble(txtamount1.Text);
+
                             if (txtttd.SelectedItem.Text == "Cash")
                             {
                                 drNewtt["ChequeNo"] = 0;
@@ -2516,7 +2726,7 @@ public partial class CustReceipt : System.Web.UI.Page
                                 {
                                     dstt.Tables[0].Rows[i].BeginEdit();
                                     dstt.Tables[0].Rows[i]["Completed"] = "N";
-                                    dstt.Tables[0].Rows[i]["Amount1"] = adtotal;
+                                    dstt.Tables[0].Rows[i]["Amount1"] = (Convert.ToDouble(txtamount.Text) - Convert.ToDouble(txtamount1.Text));
                                     dstt.Tables[0].Rows[i].EndEdit();
                                 }
                             }
@@ -2524,90 +2734,18 @@ public partial class CustReceipt : System.Web.UI.Page
 
                             GridView1.DataSource = dstt;
                             GridView1.DataBind();
-
-                            break;
                         }
-                        else if (adtotal == Convert.ToDouble(txtamount1.Text))
-                        {
-                            drNewtt["Type"] = txtttd.Text;
 
-                            if ((Convert.ToDouble(txtamount.Text) - Convert.ToDouble(txtamount1.Text)) == 0)
-                            {
-                                drNewtt["Completed"] = "Y";
-                                drNewtt["Amount"] = Convert.ToDouble(txtamount1.Text);
-                                adtotal = 0;
+                        break;
 
-                                if (txtttd.SelectedItem.Text == "Cash")
-                                {
-                                    drNewtt["ChequeNo"] = 0;
-                                }
-                                else
-                                {
-                                    drNewtt["ChequeNo"] = txtChequeNo.Text;
-                                }
 
-                                dsttt.Tables[0].Rows.Add(drNewtt);
 
-                                for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
-                                {
-                                    if (txttt.Text == dstt.Tables[0].Rows[i]["BillNo"].ToString())
-                                    {
-                                        dstt.Tables[0].Rows[i].BeginEdit();
-                                        dstt.Tables[0].Rows[i]["Completed"] = "Y";
-                                        dstt.Tables[0].Rows[i]["Amount1"] = 0;
-                                        dstt.Tables[0].Rows[i].EndEdit();
-                                    }
-                                }
-                                dstt.Tables[0].AcceptChanges();
 
-                                GridView1.DataSource = dstt;
-                                GridView1.DataBind();
 
-                                
-                            }
-                            else
-                            {
-                                adtotal = 0;
-                                drNewtt["Completed"] = "N";
-                                drNewtt["Amount"] = Convert.ToDouble(txtamount1.Text);
-
-                                if (txtttd.SelectedItem.Text == "Cash")
-                                {
-                                    drNewtt["ChequeNo"] = 0;
-                                }
-                                else
-                                {
-                                    drNewtt["ChequeNo"] = txtChequeNo.Text;
-                                }
-
-                                dsttt.Tables[0].Rows.Add(drNewtt);
-
-                                for (int i = 0; i < dstt.Tables[0].Rows.Count; i++)
-                                {
-                                    if (txttt.Text == dstt.Tables[0].Rows[i]["BillNo"].ToString())
-                                    {
-                                        dstt.Tables[0].Rows[i].BeginEdit();
-                                        dstt.Tables[0].Rows[i]["Completed"] = "N";
-                                        dstt.Tables[0].Rows[i]["Amount1"] = (Convert.ToDouble(txtamount.Text) - Convert.ToDouble(txtamount1.Text));
-                                        dstt.Tables[0].Rows[i].EndEdit();
-                                    }
-                                }
-                                dstt.Tables[0].AcceptChanges();
-
-                                GridView1.DataSource = dstt;
-                                GridView1.DataBind();
-                            }
-
-                            break;
-                            
-                            
-                            
-
-                            
-                        }
                     }
-                }          
+                }
             }
+        }
 
 
             string Branchcode = drpBranchAdd.SelectedValue;
@@ -2992,7 +3130,7 @@ public partial class CustReceipt : System.Web.UI.Page
             }
             else if (txtt.Text == "")
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Narration in row " + col + " ')", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
                 return;
             }
             else if (txttd.SelectedValue == "0")
@@ -3390,7 +3528,7 @@ public partial class CustReceipt : System.Web.UI.Page
         //    dstt.Tables[0].Rows.Add(drNewt);
         //}
 
-
+	string Branchcde = drpBranchAdd.SelectedValue;
 
         int CreditorID = 0;
         string sCustomerName = string.Empty;
@@ -3418,8 +3556,22 @@ public partial class CustReceipt : System.Web.UI.Page
                 return;
             }
 
-            CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, true, "");
-            sCustomerName = txtCustomerName.Text;
+
+            bool mobchk;
+
+            if (txtCustomerId.Text == "")
+            {
+                mobchk = false;
+                CreditorID = bl.InsertCustomerInfoDirect1(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, false, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+            else
+            {
+                mobchk = true;
+                CreditorID = bl.InsertCustomerInfoDirect(connection, CName, CName, 1, 0, 0, 0, "", CName, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, "", cuscat, 0, "", sCustomerContact, 0, 0, "NO", "NO", "NO", CName, usernam, "YES", "", 3, mobchk, Branchcde);
+                sCustomerName = txtCustomerName.Text;
+            }
+
         }
         else
         {
@@ -4415,17 +4567,7 @@ public partial class CustReceipt : System.Web.UI.Page
         }
 
 
-        double tota = 0;
-        for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
-        {
-            TextBox txt = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
-            if (txt.Text != "")
-            {
-                tota = Convert.ToDouble(txt.Text) + tota;
-            }
-
-        }
-        TextBox1.Text = Convert.ToString(tota);
+       
 
 
         //DataSet dsd;
@@ -5021,6 +5163,20 @@ public partial class CustReceipt : System.Web.UI.Page
             totalrow.Visible = false;
             totalrow123.Visible = false;
         }
+
+
+        double tota = 0;
+        for (int vLoop = 0; vLoop < GridView1.Rows.Count; vLoop++)
+        {
+            TextBox txt = (TextBox)GridView1.Rows[vLoop].FindControl("txtAdjustAmount");
+            if (txt.Text != "")
+            {
+                tota = Convert.ToDouble(txt.Text) + tota;
+            }
+
+        }
+        TextBox1.Text = Convert.ToString(tota);
+
     }
 
     private void ClearPanel()
@@ -5039,7 +5195,7 @@ public partial class CustReceipt : System.Web.UI.Page
         txtAddress2.Text = "";
         txtAddress3.Text = "";
         drpMobile.SelectedIndex = 0;
-        txtCustomerId.Visible = false;
+        txtCustomerId.Visible = true;
         txtCustomerName.Visible = false;
 
         //txttot.Text = "0";
@@ -5176,25 +5332,6 @@ public partial class CustReceipt : System.Web.UI.Page
     protected void drpBranchAdd_SelectedIndexChanged(object sender, EventArgs e)
     {
         loadLedgers(drpBranchAdd.SelectedValue);
-
-        GridView1.DataSource = null;
-        GridView1.DataBind();
-        totalrow.Visible = false;
-        totalrow1.Visible = false;
-        totalrow123.Visible = false;
-
-        BusinessLogic bl = new BusinessLogic(sDataSource);
-        string connection = string.Empty;
-        connection = Request.Cookies["Company"].Value;
-        DataSet dsd = new DataSet();
-        dsd = bl.ListCusCategory(connection);
-        drpCustomerCategoryAdd.Items.Clear();
-        drpCustomerCategoryAdd.Items.Add(new ListItem("Select Customer Category", "0"));
-
-        drpCustomerCategoryAdd.DataTextField = "CusCategory_Name";
-        drpCustomerCategoryAdd.DataValueField = "CusCategory_Value";
-        drpCustomerCategoryAdd.DataSource = dsd;
-        drpCustomerCategoryAdd.DataBind();
     }
 
     private void loadLedgers(string Branch)
@@ -5206,10 +5343,7 @@ public partial class CustReceipt : System.Web.UI.Page
         
         drpLedger.Items.Clear();
         drpLedger.Items.Add(new ListItem("Select Customer", "0"));
-
-        ds = bl.ListSundryDebtorswithMobNoExceptIsActive(connection, Branch);
-
-        //ds = bl.ListSundryDebitorsIsActive(connection, Branch);
+        ds = bl.ListSundryDebitorsCustomerIdIsActive(connection, Branch);
         drpLedger.DataSource = ds;
         
         drpLedger.DataTextField = "LedgerName";
@@ -5258,14 +5392,44 @@ public partial class CustReceipt : System.Web.UI.Page
                 if (customerDs.Tables[0].Rows[0]["Mobile"] != null)
                 {
                     txtCustomerId.Text = Convert.ToString(customerDs.Tables[0].Rows[0]["Mobile"]);
+                    txtCustomerId.Visible = true;
                 }
+
+                UpdatePanel7.Update();
 
                 drpMobile.ClearSelection();
                 ListItem lit = drpMobile.Items.FindByValue(Convert.ToString(debtorID));
                 if (lit != null) lit.Selected = true;
 
                 drpCustomerCategoryAdd.SelectedValue = Convert.ToString(customerDs.Tables[0].Rows[0]["LedgerCategory"]);
-                
+
+                DataSet dsd = new DataSet();
+                dsd = bl.generateCustomerIdOutStanding(1, sDataSource, drpBranchAdd.SelectedValue, debtorID);
+
+                double damt = Convert.ToDouble(dsd.Tables[0].Rows[0]["debit"]) - Convert.ToDouble(dsd.Tables[0].Rows[0]["credit"]);
+
+                if (dsd != null && dsd.Tables[0].Rows.Count > 0)
+                {
+                    if (damt > 0)
+                    {
+                        outstand.Text = damt + " DR";
+                        outstand.ForeColor = System.Drawing.Color.Red;
+                    }
+                    else if (damt == 0)
+                    {
+                        outstand.Text = damt + " ";
+                        outstand.ForeColor = System.Drawing.Color.Red;
+                    }
+
+                    else
+                    {
+                        outstand.Text = -damt + " CR";
+                        outstand.ForeColor = System.Drawing.Color.Green;
+                    }
+                }
+
+                //outstand.Text = generateCustomerIdOutStanding(int iGroupID, string sDataSource, string branchcode, int ledgerid)
+
             }
             else
             {
@@ -5322,8 +5486,8 @@ public partial class CustReceipt : System.Web.UI.Page
             txtCustomerName.Visible = true;
             drpLedger.Visible = false;
 
-            txtCustomerId.Visible = false;
-            drpMobile.Visible = false;
+            txtCustomerId.Visible = true;
+            //drpMobile.Visible = false;
 
             txtAddress.ReadOnly = false;
             txtAddress2.ReadOnly = false;
@@ -5342,8 +5506,8 @@ public partial class CustReceipt : System.Web.UI.Page
             drpLedger.Visible = true;
             txtCustomerName.Visible = false;
 
-            drpMobile.Visible = false;
-            txtCustomerId.Visible = false;
+            //drpMobile.Visible = true;
+            txtCustomerId.Visible = true;
 
             txtAddress.ReadOnly = true;
             txtAddress2.ReadOnly = true;
@@ -5716,14 +5880,14 @@ public partial class CustReceipt : System.Web.UI.Page
                 drpCustomerCategoryAdd.Enabled = false;
 
                 drpLedger.Visible = true;
-                drpMobile.Visible = false;
-                txtCustomerId.Enabled = false;
+                //drpMobile.Visible = true;
+                txtCustomerId.Enabled = true;
                 txtCustomerName.Enabled = false;
                 chk.Checked = true;
                 chk.Enabled = false;
-                txtCustomerId.Visible = false;
+                txtCustomerId.Visible = true;
                 txtCustomerName.Visible = false;
-
+                drpLedger.Enabled = true;
 
                 totalrow.Visible = true;
                 totalrow1.Visible = true;
@@ -5745,6 +5909,8 @@ public partial class CustReceipt : System.Web.UI.Page
                 txtCustomerName.Text = "";
                 chk.Checked = true;
                 chk.Enabled = true;
+
+                drpLedger.Enabled = true;
 
                 GridView1.DataSource = null;
                 GridView1.DataBind();
@@ -6592,7 +6758,7 @@ public partial class CustReceipt : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
 
-            ds = bl.ListBanks();
+            ds = bl.ListBankLedgerpaymnet();
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {

@@ -307,7 +307,7 @@
                                                                                         </asp:UpdatePanel>
                                                                                     </td>
                                                                                     
-                                                                                    <td style="width: 20%"></td>
+                                                                                    <td style="width: 20%"><asp:CheckBox ID="CheckBox1" runat="server" Text="Allow Cheque Entries" Font-Size="15px" AutoPostBack="true" /></td>
                                                                                    
                                                                                     <td style="width: 20%"></td>
                                                                                 </tr>

@@ -173,7 +173,7 @@ public partial class BusinessLogic : IInternalTransferService
         }
     }
 
-    public DataSet GetRequestedBranchSupplierID(string connection, string BranchCode)
+    public DataSet GetRequestedBranchSupplierID(string connection, string BranchCode,int supid)
     {
         string sDataSource = CreateConnectionString(connection);
 
@@ -187,7 +187,7 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where (tblGroups.GroupName='Sundry Debtors' or GroupName = 'Sundry Creditors') and tblLedger.Inttrans ='YES' ORDER By LedgerName");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Where (tblGroups.GroupName='Sundry Debtors' or GroupName = 'Sundry Creditors') and tblLedger.Inttrans ='YES' and LedgerId='" + supid  + "' ORDER By LedgerName");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -218,7 +218,7 @@ public partial class BusinessLogic : IInternalTransferService
 
 
         //dbQry = "select ItemCode,ProductName from tblProductMaster  Order By ProductName";
-        dbQry = "SELECT ProductName + ' - ' + ItemCode + ' - ' + Model  As ProductName,ItemCode FROM tblProductMaster Order By ProductName,Model,ItemCode Asc";
+        dbQry = "SELECT Model + ' - ' + ItemCode + ' - ' + Productdesc  As ProductName,ItemCode FROM tblProductMaster Order By ProductName,Model,ItemCode Asc";
 
         try
         {
@@ -282,7 +282,7 @@ public partial class BusinessLogic : IInternalTransferService
         DataSet dsData = new DataSet();
         StringBuilder dbQry = new StringBuilder();
         List<InternalTransferRequest> list = new List<InternalTransferRequest>();
-
+      
         try
         {
             string sDataSource = CreateConnectionString(connection);
@@ -292,7 +292,7 @@ public partial class BusinessLogic : IInternalTransferService
 
             manager.Open();
 
-            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate"))
+            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock" || dropDown == "RequestID" || dropDown == "UserID" || dropDown == "RequestedDate"))
                 txtSearch = "%" + txtSearch + "%";
             if (branch == "All")
             {
@@ -318,10 +318,26 @@ public partial class BusinessLogic : IInternalTransferService
             }
             else if (dropDown == "CompletedDate" && !string.IsNullOrEmpty(txtSearch))
             {
-                dbQry.AppendFormat("Where CompletedDate = '{0}' ", txtSearch);
+                dbQry.AppendFormat("Where CompletedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+            }
+            else if (dropDown == "BranchHasStock" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where BranchHasStock = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "UserID" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where UserID = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "RequestID" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where RequestID = '{0}' ", txtSearch);
+            }
+            else if (dropDown == "RequestedDate" && !string.IsNullOrEmpty(txtSearch))
+            {
+                dbQry.AppendFormat("Where RequestedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
             }
 
-            dbQry.Append(" Order By RequestID");
+            dbQry.Append(" Order By Status desc,RequestedDate desc ");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
@@ -374,32 +390,48 @@ public partial class BusinessLogic : IInternalTransferService
 
             manager.Open();
 
-            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate"))
+            if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock" || dropDown == "RequestID" || dropDown == "UserID" || dropDown == "RequestedDate"))
                 txtSearch = "%" + txtSearch + "%";
            
           
 
                 dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests ");
-           
 
-            if (dropDown == "ItemCode" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where ItemCode = '{0}' ", txtSearch);
-            }
-            else if (dropDown == "Status" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where Status = '{0}' ", txtSearch);
-            }
-            else if (dropDown == "RequestedBranch" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where RequestedBranch = '{0}' ", txtSearch);
-            }
-            else if (dropDown == "CompletedDate" && !string.IsNullOrEmpty(txtSearch))
-            {
-                dbQry.AppendFormat("Where CompletedDate = '{0}' ", txtSearch);
-            }
 
-            dbQry.Append(" Order By RequestID");
+                if (dropDown == "ItemCode" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where ItemCode = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "Status" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where Status = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "RequestedBranch" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where RequestedBranch = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "CompletedDate" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where CompletedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+                }
+                else if (dropDown == "BranchHasStock" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where BranchHasStock = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "UserID" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where UserID = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "RequestID" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where RequestID = '{0}' ", txtSearch);
+                }
+                else if (dropDown == "RequestedDate" && !string.IsNullOrEmpty(txtSearch))
+                {
+                    dbQry.AppendFormat("Where RequestedDate = '{0}' ", Convert.ToDateTime(txtSearch).ToString("yyyy-MM-dd"));
+                }
+
+            dbQry.Append(" Order By Status desc,RequestedDate desc ");
 
             dsData = manager.ExecuteDataSet(CommandType.Text, dbQry.ToString());
             if (dsData != null)
@@ -511,8 +543,8 @@ public partial class BusinessLogic : IInternalTransferService
 
             //int BranchID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BranchID) FROM tblOfficeBranches");
 
-            dbQry = string.Format("UPDATE tblInternalTransferRequests SET UserID='{0}', RequestedDate={1}, ItemCode='{2}', RequestedBranch='{3}', BranchHasStock='{4}', Status='{5}', Quantity={6} Where RequestID={7}",
-                request.UserID, request.RequestedDate.ToShortDateString(), request.ItemCode, request.RequestedBranch, request.BranchHasStock, request.Status, request.Quantity, request.RequestID);
+            dbQry = string.Format("UPDATE tblInternalTransferRequests SET UserID='{0}', RequestedDate='{1}', ItemCode='{2}', RequestedBranch='{3}', BranchHasStock='{4}', Status='{5}', Quantity={6} Where RequestID={7}",
+                request.UserID, request.RequestedDate.ToString("yyyy-MM-dd"), request.ItemCode, request.RequestedBranch, request.BranchHasStock, request.Status, request.Quantity, request.RequestID);
 
             //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
 
@@ -564,7 +596,7 @@ public partial class BusinessLogic : IInternalTransferService
 
     }
 
-    public DataSet GeBranchHasStockCustomerID(string connection, string BranchCode)
+    public DataSet GeBranchHasStockCustomerID(string connection, string BranchCode,int cusid)
     {
         string connectionStr = CreateConnectionString(connection);
 
@@ -578,7 +610,7 @@ public partial class BusinessLogic : IInternalTransferService
             manager.Open();
             manager.ProviderType = DataProvider.SqlServer;
 
-            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID Order By ledgerName");
+            dbQry = string.Format("select LedgerId, LedgerName from tblLedger inner join tblGroups on tblGroups.GroupID = tblLedger.GroupID where tblGroups.GroupName='Sundry Debtors' and BranchCode='" + BranchCode + "' and LedgerID=" +  cusid + " Order By ledgerName");
 
             manager.Open();
             ds = manager.ExecuteDataSet(CommandType.Text, dbQry);
@@ -779,8 +811,8 @@ public interface IInternalTransferService
     void UpdateInternalRequest(string connection, InternalTransferRequest request);
     void DeleteInternalRequest(string connection, int RequestID);
     bool CheckIftheItemHasStock(string connection, string ItemCode, string BranchCode, decimal Qty);
-    DataSet GetRequestedBranchSupplierID(string connection, string BranchCode);
-    DataSet GeBranchHasStockCustomerID(string connection, string BranchCode);
+    DataSet GetRequestedBranchSupplierID(string connection, string BranchCode, int supid);
+    DataSet GeBranchHasStockCustomerID(string connection, string BranchCode,int cusid);
     DataSet GeBranchHasStockExecutives(string connection, string BranchCode);
     int GetCustomerIDForBranchCode(string connection, string BranchCode);
     int GetSupplierIDForBranchCode(string connection, string BranchCode);

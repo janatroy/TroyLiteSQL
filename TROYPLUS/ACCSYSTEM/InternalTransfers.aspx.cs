@@ -6,17 +6,23 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text;
 using System.Data;
+using System.Configuration;
 
 public partial class InternalTransfers : System.Web.UI.Page
 {
+    public string sDataSource = string.Empty;
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
         if (!Page.IsPostBack)
         {
             BindGridData();
             BindDropdowns();
 
-              string sDataSource = string.Empty;
+              //string sDataSource = string.Empty;
             string connection = Request.Cookies["Company"].Value;
             string usernam = Request.Cookies["LoggedUserName"].Value;
             BusinessLogic bl1 = new BusinessLogic(sDataSource);
@@ -46,6 +52,12 @@ public partial class InternalTransfers : System.Web.UI.Page
             GrdViewRequestes.DataSource = dbData;
             GrdViewRequestes.DataBind();
         }
+    }
+    protected void BtnClearFilter_Click(object sender, EventArgs e)
+    {
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
+        BindGridData();
     }
 
     protected void GrdViewRequestes_SelectedIndexChanged(object sender, EventArgs e)
@@ -143,6 +155,20 @@ public partial class InternalTransfers : System.Web.UI.Page
                 if (requestDetail.CompletedDate.HasValue)
                     txtCompletedDate.Text = requestDetail.CompletedDate.ToString();
 
+
+                BusinessLogic bll = new BusinessLogic(connection);
+
+                string itemCode = cmbProd.SelectedValue;
+
+                double Reqchk = bll.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+                double Haschk = bll.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+                txtReqStock.Text = Reqchk.ToString();
+                txtHasStock.Text = Haschk.ToString();
+                UpdatePanel1.Update();
+                UpdatePanel2.Update();
+
+
                 ModalPopupExtender1.Show();
             }
         }
@@ -150,6 +176,57 @@ public partial class InternalTransfers : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+
+    protected void cmbProd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        string itemCode = cmbProd.SelectedValue;
+
+        double Reqchk = bl.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+        double Haschk = bl.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+        txtReqStock.Text = Reqchk.ToString();
+        txtHasStock.Text = Haschk.ToString();
+        UpdatePanel1.Update();
+        UpdatePanel2.Update();
+
+        ModalPopupExtender1.Show();
+    }
+
+    protected void cmbRequestedBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        string itemCode = cmbProd.SelectedValue;
+
+        double Reqchk = bl.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+        double Haschk = bl.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+        txtReqStock.Text = Reqchk.ToString();
+        txtHasStock.Text = Haschk.ToString();
+        UpdatePanel1.Update();
+        UpdatePanel2.Update();
+
+        ModalPopupExtender1.Show();
+    }
+
+    protected void cmbBranchHasStock_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+
+        string itemCode = cmbProd.SelectedValue;
+
+        double Reqchk = bl.getStockInfo(itemCode, cmbRequestedBranch.SelectedValue);
+        double Haschk = bl.getStockInfo(itemCode, cmbBranchHasStock.SelectedValue);
+
+        txtReqStock.Text = Reqchk.ToString();
+        txtHasStock.Text = Haschk.ToString();
+        UpdatePanel1.Update();
+        UpdatePanel2.Update();
+
+        ModalPopupExtender1.Show();
     }
 
     protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -336,6 +413,9 @@ public partial class InternalTransfers : System.Web.UI.Page
             BranchEnable_Disable();
             ModalPopupExtender1.Show();
 
+            txtHasStock.Text = "0";
+            txtReqStock.Text = "0";
+
         }
         catch (Exception ex)
         {
@@ -417,7 +497,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                 contentPopUp.Visible = false;
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Request Saved Successfully.');", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Internal Transfer Request Updated Successfully.');", true);
 
             }
             catch (Exception ex)
@@ -773,7 +853,7 @@ public partial class InternalTransfers : System.Web.UI.Page
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
         DataSet paymentdata=null;
-        if (cmbApproveReject.SelectedValue == "Approve")
+       if (cmbApproveReject.SelectedValue == "Approve")
         {
             string connection = Request.Cookies["Company"].Value;
             string UserID = Request.Cookies["LoggedUserName"].Value;
@@ -797,9 +877,11 @@ public partial class InternalTransfers : System.Web.UI.Page
 
             if (transferService.CheckIftheItemHasStock(connection, request.ItemCode, request.BranchHasStock, request.Quantity))
             {
-                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock);
+                iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.BranchHasStock);
+                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock,iCustomer);
                 DataSet executives = transferService.GeBranchHasStockExecutives(connection, request.BranchHasStock);
-                DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock);
+                DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock,iSupplier);
 
                 if (customer != null && executives != null)
                 {
@@ -808,7 +890,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                     //DataSet prodData = branchHasStockService.GetProductForId(connection, request.ItemCode);
                     
-                    iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                    //iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
 
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 
@@ -816,14 +898,14 @@ public partial class InternalTransfers : System.Web.UI.Page
 
                     DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
-                    int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iCustomer,
-                        customer.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "",0.0,
+                    int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iSupplier,
+                        supplier.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
-                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE",0,request.BranchHasStock,connection,"NO", 0);
+                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0, "", "", "", "");
 
-                    iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.BranchHasStock);
-                   
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iSupplier, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.BranchHasStock, connection, "NO", paymentdata);
+
+
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.BranchHasStock, connection, "NO", paymentdata);
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;
@@ -841,9 +923,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
             BindGridData();
                
-        }
-
-    }
+        }   }
     protected void InsertButton_Click(object sender, EventArgs e)
     {
         if (Page.IsValid)
@@ -902,10 +982,10 @@ public partial class InternalTransfers : System.Web.UI.Page
     {
         try
         {
-            rvSearch.Enabled = true;
-            Page.Validate();
+            txtSearch.Enabled = true;
+            // Page.Validate();
 
-            if (Page.IsValid)
+            // if (Page.IsValid)
             {
                 BindGridData();
             }

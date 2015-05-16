@@ -1002,17 +1002,17 @@ public partial class CustomerInfo : System.Web.UI.Page
             //if (((TextBox)this.frmViewAdd.FindControl("txtPhoneAdd")).Text != "")
             e.InputParameters["Phone"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtPhoneAdd")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd1Add")).Text != "")
+        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd1Add")).Text != "")
             //if (((TextBox)this.frmViewAdd.FindControl("txtAdd1Add")).Text != "")
-            e.InputParameters["Add1"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd1Add")).Text;
+            e.InputParameters["Add1"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd1Add")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd2Add")).Text != "")
+        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd2Add")).Text != "")
             //if (((TextBox)this.frmViewAdd.FindControl("txtAdd2Add")).Text != "")
-            e.InputParameters["Add2"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd2Add")).Text;
+            e.InputParameters["Add2"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd2Add")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd3Add")).Text != "")
+        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd3Add")).Text != "")
             //if (((TextBox)this.frmViewAdd.FindControl("txtAdd3Add")).Text != "")
-            e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("txtAdd3Add")).Text;
+            e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd3Add")).Text;
 
         if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpLedgerCatAdd")) != null)
             e.InputParameters["LedgerCategory"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpLedgerCatAdd")).SelectedValue;
@@ -1079,6 +1079,40 @@ public partial class CustomerInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpmanualclearAdd")) != null)
             e.InputParameters["ManualClearing"] = ((DropDownList)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsMain").FindControl("drpmanualclearAdd")).SelectedValue;
 
+        if (((CheckBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("chk")).Checked)
+        {
+            if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd1Add")).Text != "")
+                //if (((TextBox)this.frmViewAdd.FindControl("txtAdd1Add")).Text != "")
+                e.InputParameters["DeliveryAdd1"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd1Add")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd2Add")).Text != "")
+                //if (((TextBox)this.frmViewAdd.FindControl("txtAdd2Add")).Text != "")
+                e.InputParameters["DeliveryAdd2"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd2Add")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd3Add")).Text != "")
+                //if (((TextBox)this.frmViewAdd.FindControl("txtAdd3Add")).Text != "")
+                e.InputParameters["DeliveryAdd3"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd3Add")).Text;
+        }
+        else
+        {
+            if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd1Add")).Text != "")
+                //if (((TextBox)this.frmViewAdd.FindControl("txtAdd1Add")).Text != "")
+                e.InputParameters["DeliveryAdd1"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd1Add")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd2Add")).Text != "")
+                //if (((TextBox)this.frmViewAdd.FindControl("txtAdd2Add")).Text != "")
+                e.InputParameters["DeliveryAdd2"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd2Add")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd3Add")).Text != "")
+                //if (((TextBox)this.frmViewAdd.FindControl("txtAdd3Add")).Text != "")
+                e.InputParameters["DeliveryAdd3"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd3Add")).Text;
+        }
+
+        if (((CheckBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("chk")).Checked)
+            e.InputParameters["chksame"] = "1";
+        else
+            e.InputParameters["chksame"] = "0";
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
     }
@@ -1118,14 +1152,14 @@ public partial class CustomerInfo : System.Web.UI.Page
         if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtPhone")).Text != "")
             e.InputParameters["Phone"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtPhone")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtAdd1")).Text != "")
-            e.InputParameters["Add1"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtAdd1")).Text;
+        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd1")).Text != "")
+            e.InputParameters["Add1"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd1")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtAdd2")).Text != "")
-            e.InputParameters["Add2"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtAdd2")).Text;
+        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd2")).Text != "")
+            e.InputParameters["Add2"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd2")).Text;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtAdd3")).Text != "")
-            e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtAdd3")).Text;
+        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd3")).Text != "")
+            e.InputParameters["Add3"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd3")).Text;
 
         e.InputParameters["LedgerID"] =Convert.ToInt32( GrdViewLedger.SelectedDataKey.Value);
 
@@ -1196,7 +1230,73 @@ public partial class CustomerInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpmanualclear")) != null)
             e.InputParameters["ManualClearing"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("drpmanualclear")).SelectedValue;
 
+        if (((CheckBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("chk1")).Checked)
+        {
+            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd1")).Text != "")
+                e.InputParameters["DeliveryAdd1"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd1")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd2")).Text != "")
+                e.InputParameters["DeliveryAdd2"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd2")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd3")).Text != "")
+                e.InputParameters["DeliveryAdd3"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd3")).Text;
+        }
+        else
+        {
+            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd1")).Text != "")
+                e.InputParameters["DeliveryAdd1"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd1")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd2")).Text != "")
+                e.InputParameters["DeliveryAdd2"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd2")).Text;
+
+            if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd3")).Text != "")
+                e.InputParameters["DeliveryAdd3"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd3")).Text;
+        }
+
+        if (((CheckBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("chk1")).Checked)
+            e.InputParameters["chksame"] = "1";
+        else
+            e.InputParameters["chksame"] = "0";
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+    }
+
+    protected void chk_CheckedChanged(object sender, EventArgs e)
+    {
+            if (((CheckBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("chk")).Checked == true)
+            {
+                ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd1Add")).Text = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd1Add")).Text;
+                ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd2Add")).Text = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd2Add")).Text;
+                ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd3Add")).Text = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtAdd3Add")).Text;
+            }
+            else
+            {
+                ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd1Add")).Text = "";
+                ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd2Add")).Text = "";
+                ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("txtDeliveryAdd3Add")).Text = "";
+            }
+            ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("UpdatePanel4")).Update();
+            ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("UpdatePanel5")).Update();
+            ((UpdatePanel)this.frmViewAdd.FindControl("tablInsert").FindControl("TabPanel2").FindControl("UpdatePanel6")).Update();
+    }
+
+    protected void chk1_CheckedChanged(object sender, EventArgs e)
+    {
+        if (((CheckBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("chk1")).Checked == true)
+        {
+            ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd1")).Text = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd1")).Text;
+            ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd2")).Text = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd2")).Text;
+            ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd3")).Text = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtAdd3")).Text;
+        }
+        else
+        {
+            ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd1")).Text = "";
+            ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd2")).Text = "";
+            ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("txtDeliveryAdd3")).Text = "";
+        }
+        ((UpdatePanel)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("UpdatePanel8")).Update();
+        ((UpdatePanel)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("UpdatePanel9")).Update();
+        ((UpdatePanel)this.frmViewAdd.FindControl("tabEdit").FindControl("TabPanel1").FindControl("UpdatePanel10")).Update();
     }
 
     protected void drpIncharge_DataBound(object sender, EventArgs e)

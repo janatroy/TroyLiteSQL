@@ -86,7 +86,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
 
             for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
             {
-                if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "CURRENCY")
+                if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "CURRENCY")
                 {
                     currency = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                 }
@@ -125,7 +125,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
 
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet dsBill = new DataSet();
-        dsBill = bl.GetPurchaseForpurchaseId(Convert.ToInt32(Request.QueryString["SID"]));
+        dsBill = bl.GetPurchaseForpurchaseId(Convert.ToInt32(Request.QueryString["SID"]), Convert.ToString(Request.QueryString["BID"]));
         int supplierID = 0;
 
         if (dsBill.Tables[0].Rows.Count > 0)
@@ -133,7 +133,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
             foreach (DataRow dr in dsBill.Tables[0].Rows)
             {
 
-                lblBillno.Text = Convert.ToString(dr["billno"]);
+                lblBillno.Text = Convert.ToString(Request.QueryString["BID"]) + "-" + Convert.ToString(dr["billno"]);
                 lblBillDate.Text = Convert.ToDateTime(dr["billdate"]).ToShortDateString();
                 lblTransNo.Text = dr["TransNo"].ToString();
                 lblVoucherDate.Text = Convert.ToDateTime(dr["InvoiceDate"]).ToShortDateString();
@@ -279,6 +279,17 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
             }
         }
 
+        DataSet dsd = bl.GetBranchDetailsForId(Request.Cookies["Company"].Value, Convert.ToString(Request.QueryString["BID"]));
+        if (dsd != null)
+        {
+            if (dsd.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow drd in dsd.Tables[0].Rows)
+                {
+                    lblAddress.Text = lblAddress.Text + " (" + Convert.ToString(drd["BranchName"]) + " Branch), " + Convert.ToString(drd["BranchAddress1"]) + ", " + Convert.ToString(drd["BranchAddress2"]) + " " + Convert.ToString(drd["BranchAddress3"]) + " " + Convert.ToString(drd["BranchLocation"]);
+                }
+            }
+        }
 
 
         DataSet dsSupplier = bl.getAddressInfo(supplierID);
@@ -292,8 +303,8 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
                     lblSuppAdd2.Text = Convert.ToString(dr["Add2"]);
                     lblSuppAdd3.Text = Convert.ToString(dr["Add3"]);
                     lblSuppPh.Text = Convert.ToString(dr["Phone"]);
-                    if (dr["COntactname"].ToString() != string.Empty)
-                        lblSupplier.Text = Convert.ToString(dr["ContactName"]);
+               
+                        lblSupplier.Text = Convert.ToString(dr["LedgerName"]);
                 }
             }
         }

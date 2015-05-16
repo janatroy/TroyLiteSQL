@@ -23,6 +23,9 @@ html
     _height: 100%;
     
 }
+body * {
+    font-family: Arial !important;
+}
 
 body
 {
@@ -32,7 +35,7 @@ body
     _width: 98%;
     min-height: 100%;
     color: #000000;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial !important;
     font-size: 11px;
     background: black;
     margin-bottom: 0px;
@@ -995,7 +998,11 @@ h2
     display: block;
     padding: 0px 0px 0px 0px;
 }
+.mainGridHold th { 
 
+    font-size:14px;
+    font-weight:600;
+}
 .accordionContent
 {
     border: 1px solid #5078B3;
@@ -1475,7 +1482,7 @@ h2
     width:110px;
     height:20px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:2px;
 }
@@ -1485,7 +1492,7 @@ h2
     width:110px;
     height:20px;
     border:1px solid #c3c3c3;
-    /* background-color:#e7e7e7; */
+    /* background-color:#FFFFFF; */
     padding-left:1px;
     padding-right:30px;
 }
@@ -1505,7 +1512,7 @@ h2
     width:100%;
     height:20px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -1515,7 +1522,7 @@ h2
     width:100px;
     height:20px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -1525,7 +1532,7 @@ h2
     width:60px;
     border:1px solid #c3c3c3;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -1535,7 +1542,7 @@ h2
     width:32px;
     border:1px solid #c3c3c3;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -1544,7 +1551,7 @@ h2
 {
     width:110px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:10px;
 }
@@ -1560,7 +1567,7 @@ h2
 {
     width:75px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:5px;
 }
@@ -1569,7 +1576,7 @@ h2
 {
     width:110px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -1578,7 +1585,7 @@ h2
 {
     width:110px;
     height:27px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -1588,7 +1595,7 @@ h2
     width:110px;
     height:27px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -1598,7 +1605,7 @@ h2
     width:110px;
     height:27px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -1607,7 +1614,7 @@ h2
 {
     width:60%;
     height:24px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:0px;
     padding-right:0px;
 }
@@ -1630,7 +1637,7 @@ h2
 
     width:60%;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -1641,7 +1648,7 @@ h2
     width:63%;
     height:24px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -1652,7 +1659,7 @@ h2
     width:40%;
     height:24px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -1662,7 +1669,7 @@ h2
 {
     width:70px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:1px;
     padding-right:30px;
 }
@@ -1671,7 +1678,7 @@ h2
 {
     width:70px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:30px;
 }
@@ -1680,7 +1687,7 @@ h2
 {
     width:70px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
 }
 
@@ -1689,7 +1696,7 @@ h2
     width:70px;
     height:20px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
 }
 
@@ -2813,7 +2820,7 @@ legend
 }
 
 .loginbuttonbg:hover
-{
+{                                                                           
     background: url(images/loginbuttonbg_hover.png) no-repeat;
 }
 
@@ -2845,6 +2852,11 @@ legend
 	font-size:13px !important;
 }
 
+    .searchbg td {
+
+        font-size:14px !important;
+        font-weight:600;
+    }
 .cssTextBoxbg
 {
     background: url(images/textbox-bg.png) 0px 7px no-repeat;
@@ -3438,7 +3450,7 @@ fieldset
 .addproductbutton
 {
     background: url(images/addproduct.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3448,7 +3460,7 @@ fieldset
 .Newproductbutton
 {
     background: url(images/Newproduct.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3458,7 +3470,7 @@ fieldset
 .Newproductbutton1
 {
     background: url(images/Newproductbtn33.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3468,7 +3480,7 @@ fieldset
 .Newproductbutton6
 {
     background: url(images/newproduct6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3478,7 +3490,7 @@ fieldset
 .addproductbutton1
 {
     background: url(images/newproductbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3488,7 +3500,7 @@ fieldset
 .addproductbutton6
 {
     background: url(images/addproduct5.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3498,7 +3510,7 @@ fieldset
 .NewCustomerbutton
 {
     background: url(images/NewCustomer.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3508,7 +3520,7 @@ fieldset
 .NewCustomerbutton1
 {
     background: url(images/newcustomerbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3518,7 +3530,7 @@ fieldset
 .NewCustomerbutton6
 {
     background: url(images/newcustomer6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3528,7 +3540,7 @@ fieldset
 .NewSupplierbutton
 {
     background: url(images/NewSupplier.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3538,7 +3550,7 @@ fieldset
 .NewSupplierbutton6
 {
     background: url(images/newsupplier6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3548,7 +3560,7 @@ fieldset
 .printbutton
 {
     background: url(images/Print.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3558,7 +3570,7 @@ fieldset
 .printbutton1
 {
     background: url(images/printbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3568,37 +3580,37 @@ fieldset
 .printbutton6
 {
     background: url(images/TroyPrint.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
     cursor: pointer;
 }
 
-.savebutton
+.savebutton_
 {
     background: url(images/save.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
     cursor: pointer;
 }
 
-.savebutton123
+.savebutton123_
 {
     background: url(images/savebtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
     cursor: pointer;
 }
 
-.savebutton1231
+.savebutton1231_
 {
     background: url(images/TroySave.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3608,7 +3620,7 @@ fieldset
 .NewCat
 {
     background: url(images/NewCat.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 30px !important;
     display: block !important;
     border: none;
@@ -3618,7 +3630,7 @@ fieldset
 .ClearFilter
 {
     background: url(images/ClearFilter.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3653,7 +3665,7 @@ fieldset
 .ClearFilter666
 {
     background: url(images/TroyClearfilter.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3663,7 +3675,7 @@ fieldset
 .ClearFilter123
 {
     background: url(images/ClearFilter123.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3673,7 +3685,7 @@ fieldset
 .CloseWindow
 {
     background: url(images/CloseWindow.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3683,7 +3695,7 @@ fieldset
 .CloseWindow6
 {
     background: url(images/TroyClose.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3693,7 +3705,7 @@ fieldset
 .GoBack
 {
     background: url(images/back6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 30px !important;
     display: block !important;
     border: none;
@@ -3703,7 +3715,7 @@ fieldset
 .AddProd
 {
     background: url(images/AddProd.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3713,7 +3725,7 @@ fieldset
 .AddProd6
 {
     background: url(images/TroyAddproduct.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3723,7 +3735,7 @@ fieldset
 .UpdateProd
 {
     background: url(images/UpdateProd.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3733,37 +3745,37 @@ fieldset
 .UpdateProd6
 {
     background: url(images/updateproduct6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
     cursor: pointer;
 }
 
-.cancelbutton
+.cancelbutton_
 {
     background: url(images/cancel.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
     cursor: pointer;
 }
 
-.cancelbutton1
+.cancelbutton1_
 {
     background: url(images/cancelbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
     cursor: pointer;
 }
 
-.cancelbutton6
+.cancelbutton6_
 {
     background: url(images/TroyCancel.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3773,7 +3785,7 @@ fieldset
 .addbillbutton
 {
     background: url(images/addbill.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3783,7 +3795,7 @@ fieldset
 .addbillbutton6
 {
     background: url(images/addbill6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3793,7 +3805,7 @@ fieldset
 .pendingbillbutton
 {
     background: url(images/pendingbill.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3803,7 +3815,7 @@ fieldset
 .pendingbillbutton6
 {
     background: url(images/pendingbill6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3814,7 +3826,7 @@ fieldset
 .AddProdNew2
 {
     background: url(images/AddProd.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -3858,7 +3870,7 @@ fieldset
 .CloseWindowNew
 {
     background: url(images/CloseWindow.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4326,7 +4338,7 @@ fieldset
 .clearbutton
 {
     background: url(images/clearbtn2.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4363,7 +4375,7 @@ fieldset
 .deletebutton
 {
     background: url(images/deletebtn2.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4509,7 +4521,7 @@ fieldset
 .addContactbutton
 {
     background: url(images/addcontact6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4519,7 +4531,7 @@ fieldset
 .AddLeadContact
 {
     background: url(images/savecontact6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4529,7 +4541,7 @@ fieldset
 .UpdateLeadContact
 {
     background: url(images/updatecontact6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4539,7 +4551,7 @@ fieldset
 .exportExcel
 {
     background: url(images/exportToExcel.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4549,7 +4561,7 @@ fieldset
 .NewReport
 {
     background: url(images/NewReport.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4559,7 +4571,7 @@ fieldset
 .NewReport1
 {
     background: url(images/reportbtn.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4579,7 +4591,7 @@ fieldset
 .DamageLeaf
 {
     background: url(images/DamageLeaf.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4589,7 +4601,7 @@ fieldset
 .DamageLeaf6
 {
     background: url(images/DamageLeaf6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4600,7 +4612,7 @@ fieldset
 .UnusedLeaf
 {
     background: url(images/UnusedLeaf.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4610,7 +4622,7 @@ fieldset
 .UnusedLeaf6
 {
     background: url(images/showunused.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4630,7 +4642,7 @@ fieldset
 .CstDetailed
 {
     background: url(images/CstDetailed.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4640,7 +4652,7 @@ fieldset
 .CstDetail
 {
     background: url(images/CstDetail.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4650,7 +4662,7 @@ fieldset
 .VatDetailed
 {
     background: url(images/VatDetailed.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4660,7 +4672,7 @@ fieldset
 .VatDetail
 {
     background: url(images/VatDetail.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4712,7 +4724,7 @@ fieldset
 .VatDetailedexport
 {
     background: url(images/VatDetailedexport.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4747,7 +4759,7 @@ fieldset
 .AddGetRefNo
 {
     background: url(images/AddRefNo.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4757,7 +4769,7 @@ fieldset
 .AddGetRefNo6
 {
     background: url(images/getrefno.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4767,7 +4779,7 @@ fieldset
 .AddGetRefNos
 {
     background: url(images/AddRefNos.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4777,7 +4789,7 @@ fieldset
 .AddGetRefNos6
 {
     background: url(images/submit.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4787,7 +4799,7 @@ fieldset
 .UpGetRefNos
 {
     background: url(images/UpRefNo.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4806,7 +4818,7 @@ fieldset
 .LoadData
 {
     background: url(images/Lad.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4829,7 +4841,7 @@ fieldset
 .Updatebutton1231
 {
     background: url(images/TroyUpdate.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4875,7 +4887,7 @@ fieldset
 .Start
 {
     background: url(images/Enter.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4885,7 +4897,7 @@ fieldset
 .Start1
 {
     background: url(images/submitbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4895,7 +4907,7 @@ fieldset
 .Start6
 {
     background: url(images/TroyStart.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4945,7 +4957,7 @@ fieldset
 .Bulkupdation
 {
     background: url(images/bulkupdation6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4955,7 +4967,7 @@ fieldset
 .bulkaddition
 {
     background: url(images/TroyBulkAddition.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4965,7 +4977,7 @@ fieldset
 .backup
 {
     background: url(images/backup6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -4975,7 +4987,7 @@ fieldset
 .Upload
 {
     background: url(images/Upload.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -5086,7 +5098,7 @@ fieldset
 .NewCustomerNew
 {
     background: url(images/NewCustomerNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -5095,7 +5107,7 @@ fieldset
 .PrintbtnNew
 {
     background: url(images/PrintbtnNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -5104,7 +5116,7 @@ fieldset
 .SavebtnNew
 {
     background: url(images/SavebtnNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -5113,7 +5125,7 @@ fieldset
 .cancelbtnNew
 {
     background: url(images/cancelbtnNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -5122,7 +5134,7 @@ fieldset
 .StartbtnNew
 {
     background: url(images/startNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -5132,7 +5144,7 @@ fieldset
 .UpdatebtnNew
 {
     background: url(images/UpdateNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -6704,7 +6716,7 @@ h2
     width:110px;
     height:30px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -6714,7 +6726,7 @@ h2
     width:110px;
     height:50px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -6736,7 +6748,7 @@ h2
     width:100px;
     height:20px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -6747,7 +6759,7 @@ h2
     height:20px;
     border:1px solid  #c3c3c3;
     background-color:none;
-    /*background-color:#e7e7e7;*/
+    /*background-color:#FFFFFF;*/
     /*-webkit-padding-start:0 0 0 0px;*/
    
    
@@ -6758,7 +6770,7 @@ h2
      width:100px;
     height:20px;
     border:1px solid  #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     
    
    
@@ -6769,7 +6781,7 @@ h2
     width:60px;
     border:1px solid #c3c3c3;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -6779,7 +6791,7 @@ h2
     width:32px;
     border:1px solid #c3c3c3;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:1px;
 }
@@ -6788,7 +6800,7 @@ h2
 {
     width:110px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:10px;
 }
@@ -6804,7 +6816,7 @@ h2
 {
     width:75px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:5px;
 }
@@ -6813,7 +6825,7 @@ h2
 {
     width:110px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -6822,7 +6834,7 @@ h2
 {
     width:110px;
     height:27px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -6832,7 +6844,7 @@ h2
     width:110px;
     height:27px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -6842,7 +6854,7 @@ h2
     width:110px;
     height:27px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
     padding-right:0px;
 }
@@ -6851,7 +6863,7 @@ h2
 {
     width:60%;
     height:24px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:0px;
     padding-right:0px;
 }
@@ -6861,7 +6873,7 @@ h2
     width:60%;
     height:24px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -6883,7 +6895,7 @@ h2
 
     width:60%;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -6894,7 +6906,7 @@ h2
     width:63%;
     height:24px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -6905,7 +6917,7 @@ h2
     width:40%;
     height:24px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -6915,7 +6927,7 @@ h2
 {
     width:70px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:1px;
     padding-right:30px;
 }
@@ -6924,7 +6936,7 @@ h2
 {
     width:70px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:white;
     padding-left:1px;
     padding-right:30px;
 }
@@ -6933,7 +6945,7 @@ h2
 {
     width:70px;
     height:20px;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
 }
 
@@ -6942,7 +6954,7 @@ h2
     width:70px;
     height:20px;
     border:1px solid #c3c3c3;
-    background-color:#e7e7e7;
+    background-color:#FFFFFF;
     padding-left:1px;
 }
 
@@ -7293,7 +7305,7 @@ RadioBkSuppRec
     background-color: transparent;
     border: solid 1px #808080;
     background-repeat: repeat-x;
-    background: transparent url(images/divBg.jpg) repeat top left;
+    background: white !important;
     border-top-width: 0px;
     _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=images/shadow.png,sizingMethod='scale');
     float: left;
@@ -8131,7 +8143,7 @@ legend
 
 .cssTextBox
 {
-    background: transparent;
+    background: White;
     width: 100% !important;
     float: left;
     margin: 0px 0px 0px 1px;
@@ -8593,7 +8605,7 @@ fieldset
 .addproductbutton
 {
     background: url(images/addproduct.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8603,7 +8615,7 @@ fieldset
 .Newproductbutton
 {
     background: url(images/Newproduct.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8613,7 +8625,7 @@ fieldset
 .Newproductbutton1
 {
     background: url(images/Newproductbtn33.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8623,7 +8635,7 @@ fieldset
 .Newproductbutton6
 {
     background: url(images/newproduct6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8633,7 +8645,7 @@ fieldset
 .addproductbutton1
 {
     background: url(images/newproductbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8643,7 +8655,7 @@ fieldset
 .addproductbutton6
 {
     background: url(images/addproduct5.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8653,7 +8665,7 @@ fieldset
 .NewCustomerbutton
 {
     background: url(images/NewCustomer.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8663,7 +8675,7 @@ fieldset
 .NewCustomerbutton1
 {
     background: url(images/newcustomerbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8673,7 +8685,7 @@ fieldset
 .NewCustomerbutton6
 {
     background: url(images/newcustomer6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8683,7 +8695,7 @@ fieldset
 .NewSupplierbutton
 {
     background: url(images/NewSupplier.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8693,7 +8705,7 @@ fieldset
 .NewSupplierbutton6
 {
     background: url(images/newsupplier6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8703,7 +8715,7 @@ fieldset
 .printbutton
 {
     background: url(images/Print.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8713,7 +8725,7 @@ fieldset
 .printbutton1
 {
     background: url(images/printbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8723,7 +8735,7 @@ fieldset
 .printbutton6
 {
     background: url(images/Print_Btn_Latest.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8733,7 +8745,7 @@ fieldset
 .savebutton
 {
     background: url(images/save.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8743,7 +8755,7 @@ fieldset
 .savebutton123
 {
     background: url(images/savebtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8754,7 +8766,7 @@ fieldset
 {
    
     background: url(images/Save_Latest.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8764,7 +8776,7 @@ fieldset
 .savebuttonforproject
 {
     background: url(images/TroySave.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8785,7 +8797,7 @@ fieldset
 .NewCat
 {
     background: url(images/NewCat.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 30px !important;
     display: block !important;
     border: none;
@@ -8795,7 +8807,7 @@ fieldset
 .ClearFilter
 {
     background: url(images/ClearFilter.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8830,7 +8842,7 @@ fieldset
 .ClearFilter666
 {
     background: url(images/TroyClearfilter.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8840,7 +8852,7 @@ fieldset
 .ClearFilter123
 {
     background: url(images/ClearFilter123.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8850,7 +8862,7 @@ fieldset
 .CloseWindow
 {
     background: url(images/CloseWindow.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8860,7 +8872,7 @@ fieldset
 .CloseWindow6
 {
     background: url(images/TroyClose.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8870,7 +8882,7 @@ fieldset
 .GoBack
 {
     background: url(images/back6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 30px !important;
     display: block !important;
     border: none;
@@ -8880,7 +8892,7 @@ fieldset
 .AddProd
 {
     background: url(images/AddProd.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8890,7 +8902,7 @@ fieldset
 .AddProd6
 {
     background: url(images/TroyAddproduct.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8900,7 +8912,7 @@ fieldset
 .UpdateProd
 {
     background: url(images/UpdateProd.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8910,7 +8922,7 @@ fieldset
 .UpdateProd6
 {
     background: url(images/updateproduct6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8920,7 +8932,7 @@ fieldset
 .cancelbutton
 {
     background: url(images/cancel.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8930,7 +8942,7 @@ fieldset
 .cancelbutton1
 {
     background: url(images/cancelbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8940,7 +8952,7 @@ fieldset
 .cancelbutton6
 {
     background: url(images/Cancel_Btn_Latest.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8951,7 +8963,7 @@ fieldset
 {
    
     background: url(images/TroyCancel.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8961,7 +8973,7 @@ fieldset
 .addbillbutton
 {
     background: url(images/addbill.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8971,7 +8983,7 @@ fieldset
 .addbillbutton6
 {
     background: url(images/addbill6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8981,7 +8993,7 @@ fieldset
 .pendingbillbutton
 {
     background: url(images/pendingbill.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -8991,7 +9003,7 @@ fieldset
 .pendingbillbutton6
 {
     background: url(images/pendingbill6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9002,7 +9014,7 @@ fieldset
 .AddProdNew2
 {
     background: url(images/AddProd.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9046,7 +9058,7 @@ fieldset
 .CloseWindowNew
 {
     background: url(images/CloseWindow.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9514,7 +9526,7 @@ fieldset
 .clearbutton
 {
     background: url(images/clearbtn2.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9551,7 +9563,7 @@ fieldset
 .deletebutton
 {
     background: url(images/deletebtn2.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9697,7 +9709,7 @@ fieldset
 .addContactbutton
 {
     background: url(images/addcontact6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9707,7 +9719,7 @@ fieldset
 .AddLeadContact
 {
     background: url(images/savecontact6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9717,7 +9729,7 @@ fieldset
 .UpdateLeadContact
 {
     background: url(images/updatecontact6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9727,7 +9739,7 @@ fieldset
 .exportExcel
 {
     background: url(images/exportToExcel.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9737,7 +9749,7 @@ fieldset
 .NewReport
 {
     background: url(images/NewReport.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9747,7 +9759,7 @@ fieldset
 .NewReport1
 {
     background: url(images/reportbtn.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9767,7 +9779,7 @@ fieldset
 .DamageLeaf
 {
     background: url(images/DamageLeaf.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9777,7 +9789,7 @@ fieldset
 .DamageLeaf6
 {
     background: url(images/DamageLeaf6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9788,7 +9800,7 @@ fieldset
 .UnusedLeaf
 {
     background: url(images/UnusedLeaf.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9798,7 +9810,7 @@ fieldset
 .UnusedLeaf6
 {
     background: url(images/showunused.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9818,7 +9830,7 @@ fieldset
 .CstDetailed
 {
     background: url(images/CstDetailed.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9828,7 +9840,7 @@ fieldset
 .CstDetail
 {
     background: url(images/CstDetail.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9838,7 +9850,7 @@ fieldset
 .VatDetailed
 {
     background: url(images/VatDetailed.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9848,7 +9860,7 @@ fieldset
 .VatDetail
 {
     background: url(images/VatDetail.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9889,7 +9901,7 @@ fieldset
 .VatDetailedexport
 {
     background: url(images/VatDetailedexport.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9904,7 +9916,8 @@ fieldset
 
 .someClass td
 {
-    font-size: 15px;
+
+    font-size: 12px;
     border : 1px solid Gray ;
     
 }
@@ -9919,7 +9932,7 @@ fieldset
 .AddGetRefNo
 {
     background: url(images/AddRefNo.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9929,7 +9942,7 @@ fieldset
 .AddGetRefNo6
 {
     background: url(images/getrefno.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9939,7 +9952,7 @@ fieldset
 .AddGetRefNos
 {
     background: url(images/AddRefNos.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9949,7 +9962,7 @@ fieldset
 .AddGetRefNos6
 {
     background: url(images/submit.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9959,7 +9972,7 @@ fieldset
 .UpGetRefNos
 {
     background: url(images/UpRefNo.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -9978,7 +9991,7 @@ fieldset
 .LoadData
 {
     background: url(images/Lad.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10001,7 +10014,7 @@ fieldset
 .Updatebutton1231
 {
     background: url(images/Update_btn.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10011,7 +10024,7 @@ fieldset
 .Uploadbutton1231
 {
     background: url(images/Upload_Btn.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10066,7 +10079,7 @@ fieldset
 .Start
 {
     background: url(images/Enter.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10076,7 +10089,7 @@ fieldset
 .Start1
 {
     background: url(images/submitbtn3.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10086,7 +10099,7 @@ fieldset
 .Start6
 {
     background: url(images/Start_Btn_Latest.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10141,7 +10154,7 @@ fieldset
 .Bulkupdation
 {
     background: url(images/bulkupdation6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10151,7 +10164,7 @@ fieldset
 .bulkaddition
 {
     background: url(images/BulkAddition_Btn_Latest.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10161,7 +10174,7 @@ fieldset
 .backup
 {
     background: url(images/backup6.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10171,7 +10184,7 @@ fieldset
 .Upload
 {
     background: url(images/Upload.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10219,7 +10232,8 @@ fieldset
 .NewBox
 {
     /*background: url('images/Newbox.png') 0px 7px no-repeat;*/
-    padding-left:2px;
+    padding-left:12px;
+    padding-right:12px;
     width: 152px;
     height: 27px;
 }
@@ -10282,7 +10296,7 @@ fieldset
 .NewCustomerNew
 {
     background: url(images/NewCustomerNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10291,7 +10305,7 @@ fieldset
 .PrintbtnNew
 {
     background: url(images/PrintbtnNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10300,7 +10314,7 @@ fieldset
 .SavebtnNew
 {
     background: url(images/SavebtnNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10309,7 +10323,7 @@ fieldset
 .cancelbtnNew
 {
     background: url(images/cancelbtnNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10318,7 +10332,7 @@ fieldset
 .StartbtnNew
 {
     background: url(images/startNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10328,7 +10342,7 @@ fieldset
 .UpdatebtnNew
 {
     background: url(images/UpdateNew.png) no-repeat !important;
-    width: 120px !important;
+    width: 155px !important;
     height: 34px !important;
     display: block !important;
     border: none;
@@ -10372,6 +10386,36 @@ fieldset
     padding-left:0px;
     padding-right:0px;
     text-align:center;
+}
+
+.ControlLabelNew1
+{
+    height:27px;    
+    padding-top:5px;
+    padding-left:5px;
+    padding-right:5px;
+    text-align:left;
+    vertical-align:middle;
+    color:#0567AE;
+    font-family:'ARIAL';
+    font-size:14px;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.ControlLabelNew123
+{
+    height:23px;    
+    padding-top:5px;
+    padding-left:5px;
+    padding-right:5px;
+    text-align:left;
+    vertical-align:middle;
+    color:#1657f2;
+    font-family:'ARIAL';
+    font-size:13px;
+    
+    text-decoration:none;
 }
 
 /* Navigation MENU */
@@ -10551,4 +10595,12 @@ left:-180px !important;
             padding: 8px;
             background-color: #ffc000;
             width: 98.5%;
+        }
+        /*GRID CONTROL*/
+
+        
+        .grvStudentDetails td
+        {
+            
+            border:1px solid #DDD;
         }

@@ -11,6 +11,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         if (!Page.IsPostBack)
         {
             BindGridData();
@@ -43,6 +44,12 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             GrdViewRequestes.DataSource = dbData;
             GrdViewRequestes.DataBind();
         }
+    }
+    protected void BtnClearFilter_Click(object sender, EventArgs e)
+    {
+        txtSearch.Text = "";
+        ddCriteria.SelectedIndex = 0;
+        BindGridData();
     }
 
     protected void ddlPageSelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -124,6 +131,66 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         //{
         //    TroyLiteExceptionManager.HandleException(ex);
         //}
+
+
+        btnSaveComments.Enabled = true; 
+
+        BindDropdowns();
+
+        string connection = Request.Cookies["Company"].Value;
+        BusinessLogic bll = new BusinessLogic(connection);
+
+        int ID = Convert.ToInt32(GrdViewRequestes.SelectedDataKey.Value);
+
+        IInternalTransferService bl = new BusinessLogic(connection);
+
+        InternalTransferRequest requestDetail = bl.GetInternalTransferRequest(connection, ID);
+
+        if (requestDetail != null)
+        {
+
+            TextBox3.Text = requestDetail.RequestedDate.ToShortDateString();
+            if (DropDownList1.Items.FindByValue(requestDetail.ItemCode) != null)
+                DropDownList1.SelectedValue = requestDetail.ItemCode;
+
+            if (DropDownList2.Items.FindByValue(requestDetail.RequestedBranch) != null)
+                DropDownList2.SelectedValue = requestDetail.RequestedBranch;
+
+            if (DropDownList3.Items.FindByValue(requestDetail.BranchHasStock) != null)
+                DropDownList3.SelectedValue = requestDetail.BranchHasStock;
+
+            if (DropDownList4.Items.FindByValue(requestDetail.Status) != null)
+                DropDownList4.SelectedValue = requestDetail.Status;
+
+            TextBox2.Text = requestDetail.RejectedReason;
+
+            TextBox1.Text = requestDetail.Quantity.ToString();
+
+            if (requestDetail.CompletedDate.HasValue)
+                TextBox4.Text = requestDetail.CompletedDate.ToString();
+
+
+
+            string itemCode = DropDownList1.SelectedValue;
+
+            double Reqchk = bll.getStockInfo(itemCode, DropDownList2.SelectedValue);
+            double Haschk = bll.getStockInfo(itemCode, DropDownList3.SelectedValue);
+
+            txtReqStock.Text = Reqchk.ToString();
+            txtHasStock.Text = Haschk.ToString();
+            UpdatePanel1.Update();
+            UpdatePanel2.Update();
+        }
+
+
+
+
+
+
+
+
+      
+
 
 
 
@@ -422,14 +489,14 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         if (cmbApproveReject.SelectedValue == "Reject")
         {
-            //if (txtComments.Text.Trim() == string.Empty)
-            //{
-            //    rvComments.Enabled = true;
-            //    Page.Validate();
+            if (txtComments.Text.Trim() == string.Empty)
+            {
+               rvComments.Enabled = true;
+                Page.Validate();
                 modalPopupApproveReject.Show();
-            //   // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
+              // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
                return;
-            //}
+            }
         }
         else
         {
@@ -727,7 +794,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
         DataSet paymentdata = null;
-       
+        btnSaveComments.Enabled = false; 
       
         if (cmbApproveReject.SelectedValue == "Approve")
         {
@@ -735,7 +802,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             int iSupplier = 0;
             int iCustomer = 0;
 
-            int iPaymode = 1;
+            int iPaymode = 3;
             string sInvoiceno = string.Empty;
             string connection = Request.Cookies["Company"].Value;
             string UserID = Request.Cookies["LoggedUserName"].Value;
@@ -755,9 +822,11 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
             if (transferService.CheckIftheItemHasStock(connection, request.ItemCode, request.BranchHasStock, request.Quantity))
             {
-                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock);
+                iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.RequestedBranch);
+                DataSet customer = transferService.GeBranchHasStockCustomerID(connection, request.BranchHasStock, iCustomer);
                 DataSet executives = transferService.GeBranchHasStockExecutives(connection, request.BranchHasStock);
-                DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock);
+                DataSet supplier = transferService.GetRequestedBranchSupplierID(connection, request.BranchHasStock,iSupplier);
 
                 if (customer != null && executives != null)
                 {
@@ -766,7 +835,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
                     //DataSet prodData = branchHasStockService.GetProductForId(connection, request.ItemCode);
 
-                    iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
+                   // iCustomer = transferService.GetCustomerIDForBranchCode(connection, request.BranchHasStock);
 
                     DataSet customerInfo = bl.GetExecutive(iCustomer);
 
@@ -774,14 +843,16 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
                     DataSet ds = GetProductDetails(request.ItemCode, request.BranchHasStock, request.Quantity, BillingMethod, prodData);
 
-                    int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iCustomer,
-                        customer.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
+                  
+
+                    int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iSupplier,
+                        supplier.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
-                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0);
+                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0,"","","","");
 
-                    iSupplier = transferService.GetSupplierIDForBranchCode(connection, request.RequestedBranch);
+                  
 
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iSupplier, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata);
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata);
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;
@@ -795,11 +866,13 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             else
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Insufficent stock, please check the Branch if it has sufficient stock available.');", true);
+                btnSaveComments.Enabled = true; 
             }
 
             BindGridData();
 
         }
+
         else if (cmbApproveReject.SelectedValue == "Reject")
         {
             string connection1 = Request.Cookies["Company"].Value;
@@ -812,7 +885,8 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             {
                 modalPopupApproveReject.Show();
                  ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
-                return;
+                 btnSaveComments.Enabled = true; 
+                 return;
             }
             InternalTransferRequest request1 = transferService.GetInternalTransferRequest(connection1, int.Parse(RequestID));
           //  string connection1;
@@ -879,12 +953,12 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         try
         {
             rvSearch.Enabled = true;
-            Page.Validate();
+            //Page.Validate();
 
-            if (Page.IsValid)
-            {
+            //if (Page.IsValid)
+            //{
                 BindGridData();
-            }
+            //}
         }
         catch (Exception ex)
         {
@@ -902,19 +976,19 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
         if (prodData != null)
         {
-            cmbProd.DataSource = prodData;
-            cmbProd.DataBind();
+            DropDownList1.DataSource = prodData;
+            DropDownList1.DataBind();
         }
 
         var branchData = bl.GetBranches(connection);
 
         if (branchData != null)
         {
-            cmbRequestedBranch.DataSource = branchData;
-            cmbRequestedBranch.DataBind();
+            DropDownList2.DataSource = branchData;
+            DropDownList2.DataBind();
 
-            cmbBranchHasStock.DataSource = branchData;
-            cmbBranchHasStock.DataBind();
+            DropDownList3.DataSource = branchData;
+            DropDownList3.DataBind();
         }
     }
 

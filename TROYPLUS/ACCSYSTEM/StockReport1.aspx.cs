@@ -338,12 +338,18 @@ public partial class StockReport1 : System.Web.UI.Page
             cond = Server.UrlDecode(cond);
             cond1 = Request.QueryString["cond1"].ToString();
             cond1 = Server.UrlDecode(cond1);
-            cond2 = Request.QueryString["cond2"].ToString();
-            cond2 = Server.UrlDecode(cond2);
-            cond3 = Request.QueryString["cond3"].ToString();
-            cond3 = Server.UrlDecode(cond3);
-            cond4 = Request.QueryString["cond4"].ToString();
-            cond4 = Server.UrlDecode(cond4);
+
+            //cond2 = Request.QueryString["cond2"].ToString();
+            //cond2 = Server.UrlDecode(cond2);
+
+            cond2 = cond.Replace("BranchCode", "S.BranchCode");
+            cond3 = cond.Replace("BranchCode", "P.BranchCode");
+            cond4 = cond.Replace("BranchCode", "SI.BranchCode");
+
+            //cond3 = Request.QueryString["cond3"].ToString();
+            //cond3 = Server.UrlDecode(cond3);
+            //cond4 = Request.QueryString["cond4"].ToString();
+            //cond4 = Server.UrlDecode(cond4);
             cond5 = Request.QueryString["cond5"].ToString();
             cond5 = cond5.ToString();
             cond6 = Request.QueryString["cond6"].ToString();
@@ -363,10 +369,11 @@ public partial class StockReport1 : System.Web.UI.Page
             {
                 overallvalue = 0;
                 overallstock = 0;
-                dt.Columns.Add(new DataColumn("ItemCode"));
-                dt.Columns.Add(new DataColumn("ProductName"));
                 dt.Columns.Add(new DataColumn("Brand"));
+                dt.Columns.Add(new DataColumn("ItemCode"));
+                dt.Columns.Add(new DataColumn("ProductName"));            
                 dt.Columns.Add(new DataColumn("Model"));
+                dt.Columns.Add(new DataColumn("CategoryName"));
                 //dt.Columns.Add(new DataColumn("Rol"));
 
                 char[] commaSeparator = new char[] { ',' };
@@ -412,9 +419,9 @@ public partial class StockReport1 : System.Web.UI.Page
                     DataRow dr_final6 = dt.NewRow();
                     dr_final6["Brand"] = dr["brand"];
                     dr_final6["ProductName"] = dr["ProductName"];
-                    dr_final6["Model"] = dr["Model"];
+                    dr_final6["Model"] = dst.Tables[0].Rows[0]["Model"].ToString();// dr["Model"];
                     dr_final6["ItemCode"] = dr["Itemcode"];
-
+                    dr_final6["CategoryName"] = dst.Tables[0].Rows[0]["CategoryName"].ToString();//dr["CategoryName"];
                     if (dst != null)
                     {
                         if (dst.Tables[0].Rows.Count > 0)
@@ -518,8 +525,9 @@ public partial class StockReport1 : System.Web.UI.Page
             e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Left;
             e.Row.Cells[2].HorizontalAlign = HorizontalAlign.Left;
             e.Row.Cells[3].HorizontalAlign = HorizontalAlign.Left;
+            e.Row.Cells[4].HorizontalAlign = HorizontalAlign.Left;
 
-            for (int i = 4; i <= colCount - 1; i++)
+            for (int i = 5; i <= colCount - 1; i++)
             {
                 e.Row.Cells[i].HorizontalAlign = HorizontalAlign.Right;
             }
