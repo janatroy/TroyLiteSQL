@@ -207,7 +207,7 @@ public partial class ManualSalesBook : System.Web.UI.Page
 
                 try
                 {
-                    bl.UpdateManualSalesBook(connection, BookId, BookName, int.Parse( FromNo), int.Parse( ToNo), Username, Types);
+                    bl.UpdateManualSalesBook(connection, BookId, BookName, int.Parse( FromNo), int.Parse( ToNo), Username, Types,branchcode);
 
 
                     //MyAccordion.Visible = true;

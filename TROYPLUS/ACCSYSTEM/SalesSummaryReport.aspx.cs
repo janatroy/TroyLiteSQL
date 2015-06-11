@@ -700,7 +700,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     rateTotal = rateTotal + (Convert.ToDouble(dr["SRate"]));
 
                     CategoryqtyTotal = CategoryqtyTotal + Convert.ToDouble(dr["quantity"]);
-                    total = total + ((Convert.ToDouble(dr["NetRate"])) + (Convert.ToDouble(dr["ActualVat"])) + (Convert.ToDouble(dr["Actualcst"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"])));
+                    total = total + ((Convert.ToDouble(dr["NetRate"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"])));
                     qty1Total = qty1Total + Convert.ToDouble(dr["quantity"]);
 
 

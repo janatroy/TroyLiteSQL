@@ -889,7 +889,12 @@ public partial class SupplierInfo : System.Web.UI.Page
             e.InputParameters["AutoLedgerid"] = "";
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
-        e.InputParameters["BranchCode"] = "All";       
+        e.InputParameters["BranchCode"] = "All";
+
+        if (((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("txtCredtLimitDaysAdd")).Text != "")
+            e.InputParameters["CreditDays"] = ((TextBox)this.frmViewAdd.FindControl("tablInsert").FindControl("tabInsAddTab").FindControl("txtCredtLimitDaysAdd")).Text;
+        else
+            e.InputParameters["CreditDays"] = "0";
     }
 
     private void setUpdateParameters(ObjectDataSourceMethodEventArgs e)
@@ -988,15 +993,22 @@ public partial class SupplierInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditAddTab").FindControl("drpmanualclear")) != null)
             e.InputParameters["ManualClear"] = ((DropDownList)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditAddTab").FindControl("drpmanualclear")).SelectedValue;
 
-        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtcustomeridautoAdd")).Text != "")
+        e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
+        e.InputParameters["BranchCode"] = "All";
+
+        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditAddTab").FindControl("txtCredtLimitDays")).Text != "")
+            e.InputParameters["CreditDays"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditAddTab").FindControl("txtCredtLimitDays")).Text;
+        else
+            e.InputParameters["CreditDays"] = "0";
+
+        if (((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtcustomeridauto")).Text != "")
             e.InputParameters["AutoLedgerid"] = ((TextBox)this.frmViewAdd.FindControl("tabEdit").FindControl("tabEditMain").FindControl("txtcustomeridauto")).Text;
         else
             e.InputParameters["AutoLedgerid"] = "";
 
 
 
-        e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
-        e.InputParameters["BranchCode"] = "All";    
+       
     }
 
     protected void drpIncharge_DataBound(object sender, EventArgs e)

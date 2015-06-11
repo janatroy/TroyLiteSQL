@@ -18,7 +18,7 @@ public partial class CustReceipt : System.Web.UI.Page
     public string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
-        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        ScriptManager.RegisterStartupScript(this, GetType(), "text", "hide();", true);
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         try
         {
@@ -2003,10 +2003,11 @@ public partial class CustReceipt : System.Web.UI.Page
         //CultureInfo culture = new CultureInfo("pt-BR");
         string sPath = string.Empty;
         BusinessLogic bl = new BusinessLogic(sDataSource);
-
+        Button4.Enabled = false;
         if (txtDate.Text == "")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Date. It cannot be left blank.')", true);
+            Button4.Enabled = true;
             return;
 
         }
@@ -2014,12 +2015,14 @@ public partial class CustReceipt : System.Web.UI.Page
         if (!bl.IsValidDate(connection, Convert.ToDateTime(txtDate.Text)))
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date is invalid')", true);
+            Button4.Enabled = true;
             return;
         }
 
         if (drpBranchAdd.SelectedValue == "0")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Branch. It cannot be left blank.')", true);
+            Button4.Enabled = true;
             return;
 
         }
@@ -2029,6 +2032,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if(drpLedger.SelectedValue=="0")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Customer name. It cannot be left blank.')", true);
+                Button4.Enabled = true;
                 return;
 
             }
@@ -2039,6 +2043,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if ((txtCustomerName.Text == "" )|| (txtCustomerName.Text == " ") || (txtCustomerName.Text == null))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Customer name. It cannot be left blank.')", true);
+                Button4.Enabled = true;
                 return;
             }
         }
@@ -2065,16 +2070,19 @@ public partial class CustReceipt : System.Web.UI.Page
             if (txttt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill RefNo in row " + col + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
             else if (txt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Amount in row " + col + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
             else if (txtt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Remarks in row " + col + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
             else if (txttd.SelectedValue == "0")
@@ -2082,6 +2090,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 if (txtttd.SelectedItem.Text != "Cash")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Bank in row " + col + " ')", true);
+                    Button4.Enabled = true;
                     return;
                 }
             }
@@ -2090,6 +2099,7 @@ public partial class CustReceipt : System.Web.UI.Page
                 if (txtttd.SelectedItem.Text != "Cash")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Cheque No in row " + col + " ')", true);
+                    Button4.Enabled = true;
                     return;
                 }
             }                       
@@ -2128,6 +2138,7 @@ public partial class CustReceipt : System.Web.UI.Page
                             if (itemc == txt1.Text)
                             {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque/Card No - " + itemcd + " - cannot be duplicate.');", true);
+                                Button4.Enabled = true;
                                 return;
                             }
                         }
@@ -2172,6 +2183,7 @@ public partial class CustReceipt : System.Web.UI.Page
                                 if (txt1.SelectedItem.Text == "Cash")
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Receipt Mode - " + itemcdz + " - cannot be duplicate.');", true);
+                                    Button4.Enabled = true;
                                     return;
                                 }
                             }
@@ -2204,6 +2216,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if (Convert.ToDouble(txttd.Text) < Convert.ToDouble(txttdd.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Adjust Amount can not be greater than Amount in row " + coll + " ')", true);
+                Button4.Enabled = true;
                 return;
             }
 
@@ -2216,6 +2229,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if (tot > Convert.ToDouble(txt.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Total Adjust Amount can not be greater than total receipt Amount ')", true);
+                Button4.Enabled = true;
                 return;
             }
         }
@@ -2500,6 +2514,7 @@ public partial class CustReceipt : System.Web.UI.Page
             if (bl.IsLedgerAlreadyFound(connection, CName))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Customer " + CName + " with this name already exists.');", true);
+                Button4.Enabled = true;
                 return;
             }
 

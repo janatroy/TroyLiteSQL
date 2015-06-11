@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.IO;
+using System.Net.NetworkInformation;
 
 public partial class CompanyInfo : System.Web.UI.Page
 {
@@ -36,6 +37,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 DisableForOffline();
                 BindGrid();
                 loadBanks();
+                GetMACAddress();
                 //GrdTransporter.PageSize = 5;
                 //GrdUnitMnt.PageSize = 5;
 
@@ -433,11 +435,11 @@ public partial class CompanyInfo : System.Web.UI.Page
                         {
                             if (dr["KeyValue"] != null)
                                txtSAPSupplierAccountCode.Text = dr["KeyValue"].ToString();
-                        }
                     }
                 }
             }
         }
+    }
     }
     public void GetCompanyInfo()
     {
@@ -560,6 +562,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 string savelog = string.Empty;
                 string enablevat = string.Empty;
                 string enabledate = string.Empty;
+                string sapcheck = string.Empty;
 
                 string emailRequired = string.Empty;
                 string macaddress = string.Empty;
@@ -605,6 +608,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 strDate = txtDate.Text.Trim();
                 strBillFormat = cmdBill.SelectedItem.Text;
                 dealer = rdDealer.SelectedValue;
+                sapcheck = chksap.SelectedValue;
                 barcode = rdoBarcode.SelectedValue;
                 stockEdit = rdoStockEdit.SelectedValue;
 
@@ -643,7 +647,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
                 try
                 {
-                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround, SAPCustomerAccountCode, SAPSupplierAccountCode);
+                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround);
 
                     System.Threading.Thread.Sleep(1000);
 
@@ -994,6 +998,19 @@ public partial class CompanyInfo : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+    public string GetMACAddress()
+    {
+        NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+        String sMacAddress = string.Empty;
+        foreach (NetworkInterface adapter in nics)
+        {
+            if (sMacAddress == String.Empty)// only return MAC Address from first card  
+            {
+                IPInterfaceProperties properties = adapter.GetIPProperties();
+                sMacAddress = adapter.GetPhysicalAddress().ToString();
+            }
+        } return sMacAddress;
     }
 
     protected void btnAddIP_Click(object sender, EventArgs e)

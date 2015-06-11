@@ -358,6 +358,10 @@ public partial class UserOptions : System.Web.UI.Page
             GridConfig.DataSource = dastdfdd;
             GridConfig.DataBind();
 
+            DataSet dashbrd = bl.GetUserOptionsForId(username, connection, "DASHBOARD");
+            Griddashborad.DataSource = dashbrd;
+            Griddashborad.DataBind();
+
             DataSet dsd = bl.GetUserInfo(username, connection);
 
             if (dsd != null)
@@ -537,6 +541,7 @@ public partial class UserOptions : System.Web.UI.Page
             DataSet dstttttdffpro = new DataSet();
             DataSet dstttttdffmanu = new DataSet();
             DataSet dstttttdfflead = new DataSet();
+            DataSet dstttttdffdashbrd = new DataSet();
 
             dst = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "PURCHASE");
             GridSupplier.DataSource = dst;
@@ -589,6 +594,11 @@ public partial class UserOptions : System.Web.UI.Page
             dstttttdffpro = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "PROJECT");
             GridPROJECT.DataSource = dstttttdffpro;
             GridPROJECT.DataBind();
+
+
+            dstttttdffdashbrd = objBus.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "DASHBOARD");
+            Griddashborad.DataSource = dstttttdffdashbrd;
+            Griddashborad.DataBind();
 
 
             DataSet datast = new DataSet();
@@ -1662,6 +1672,73 @@ public partial class UserOptions : System.Web.UI.Page
                 drNew["Area"] = GridMANUFACTURE.Rows[vLoop].Cells[0].Text;
 
                 lblDebtorID = (Label)GridMANUFACTURE.Rows[vLoop].FindControl("lblDebtorID");
+                drNew["Orderno"] = lblDebtorID.Text;
+
+                drNew["Add"] = Add;
+                drNew["Edit"] = Edit;
+                drNew["Delete"] = Delete;
+                drNew["View"] = Views;
+                ds.Tables[0].Rows.Add(drNew);
+            }
+
+            for (int vLoop = 0; vLoop < Griddashborad.Rows.Count; vLoop++)
+            {
+                CheckBox txt = (CheckBox)Griddashborad.Rows[vLoop].FindControl("chkboxAdd");
+                if (txt.Checked)
+                {
+                    Add = txt.Checked;
+                }
+                else
+                {
+                    Add = false;
+                }
+
+                CheckBox txttt = (CheckBox)Griddashborad.Rows[vLoop].FindControl("chkboxEdit");
+                if (txttt.Checked)
+                {
+                    Edit = txttt.Checked;
+                }
+                else
+                {
+                    Edit = false;
+                }
+
+                CheckBox txth = (CheckBox)Griddashborad.Rows[vLoop].FindControl("chkboxDel");
+                if (txth.Checked)
+                {
+                    Delete = txth.Checked;
+                }
+                else
+                {
+                    Delete = false;
+                }
+
+                CheckBox txthh = (CheckBox)Griddashborad.Rows[vLoop].FindControl("chkboxView");
+                if (txthh.Checked)
+                {
+                    Views = txthh.Checked;
+                }
+                else
+                {
+                    Views = false;
+                }
+
+                if ((txt.Checked == true) || (txttt.Checked == true) || (txth.Checked == true) || (txthh.Checked == true))
+                {
+                    drNewt = dtt.NewRow();
+                    drNewt["UserName"] = txtUser.Text;
+                    drNewt["Role"] = Griddashborad.Rows[vLoop].Cells[3].Text;
+                    dsroles.Tables[0].Rows.Add(drNewt);
+                }
+
+                drNew = dt.NewRow();
+                drNew["UserName"] = txtUser.Text;
+                drNew["Role"] = Griddashborad.Rows[vLoop].Cells[3].Text;
+                drNew["RoleDesc"] = Griddashborad.Rows[vLoop].Cells[2].Text;
+                drNew["Section"] = Griddashborad.Rows[vLoop].Cells[1].Text;
+                drNew["Area"] = Griddashborad.Rows[vLoop].Cells[0].Text;
+
+                lblDebtorID = (Label)Griddashborad.Rows[vLoop].FindControl("lblDebtorID");
                 drNew["Orderno"] = lblDebtorID.Text;
 
                 drNew["Add"] = Add;

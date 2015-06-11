@@ -121,7 +121,7 @@ public partial class PageMaster : System.Web.UI.MasterPage
 
                 for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
                 {
-                    if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "QTYRETURN")
+                    if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "QTYRETURN")
                     {
                         if (appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString() == "YES")
                             isItemTrackingRequired = true;
@@ -832,6 +832,10 @@ public partial class PageMaster : System.Web.UI.MasterPage
         {
             lnkmanufacturereport.Visible = false;
         }
+        //if (!this.Page.User.IsInRole("SALEREP"))
+        //{
+        //    A241.Visible = false;
+        //}
         A10.Visible = false;
         A9.Visible = false;
         A11.Visible = false;

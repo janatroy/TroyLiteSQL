@@ -36,8 +36,8 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         string connection = Request.Cookies["Company"].Value;
         IInternalTransferService bl = new BusinessLogic(connection);
-      //  string branch = Request.Cookies["Branch"].Value;
-        var dbData = bl.ListInternalRequests1(connection, txtSearch.Text, ddCriteria.SelectedValue);
+        string branch = Request.Cookies["Branch"].Value;
+        var dbData = bl.ListInternalRequests1(connection, txtSearch.Text, ddCriteria.SelectedValue,branch);
 
         if (dbData != null)
         {
@@ -133,6 +133,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         //}
 
 
+        btnSaveComments.Enabled = true; 
 
         BindDropdowns();
 
@@ -793,7 +794,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
         DataSet paymentdata = null;
-       
+        btnSaveComments.Enabled = false; 
       
         if (cmbApproveReject.SelectedValue == "Approve")
         {
@@ -849,7 +850,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
                         "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", customerInfo.Tables[0].Rows[0]["LedgerCategory"].ToString(), "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0, "", "", "", "",  false);
 
-
+                  
 
                     branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata, "", "", "", "", "",false);
 
@@ -865,6 +866,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             else
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Insufficent stock, please check the Branch if it has sufficient stock available.');", true);
+                btnSaveComments.Enabled = true; 
             }
 
             BindGridData();
@@ -883,6 +885,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             {
                 modalPopupApproveReject.Show();
                  ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
+                 btnSaveComments.Enabled = true; 
                 return;
             }
             InternalTransferRequest request1 = transferService.GetInternalTransferRequest(connection1, int.Parse(RequestID));

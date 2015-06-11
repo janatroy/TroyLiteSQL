@@ -136,6 +136,7 @@ public partial class ProductPurchaseBill : System.Web.UI.Page
                 lblBillno.Text = Convert.ToString(Request.QueryString["BID"]) + "-" + Convert.ToString(dr["billno"]);
                 lblBillDate.Text = Convert.ToDateTime(dr["billdate"]).ToShortDateString();
                 lblTransNo.Text = dr["TransNo"].ToString();
+                lblponumber.Text = dr["PoNumber"].ToString();
                 lblVoucherDate.Text = Convert.ToDateTime(dr["InvoiceDate"]).ToShortDateString();
                 //lblReason.Text = Convert.ToString(dr["PurchaseReturnReason"]);
                 if (dr["SalesReturn"] != null)

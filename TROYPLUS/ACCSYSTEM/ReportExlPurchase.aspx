@@ -299,7 +299,7 @@
                                                     Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                             </td>
                                             <td class="ControlTextBox3" style="width: 18%;">
-                                                <asp:TextBox ID="txtstdate" Enabled="false" CssClass="cssTextBox" MaxLength="10"
+                                                <asp:TextBox ID="txtstdate"  CssClass="cssTextBox" MaxLength="10"
                                                     runat="server" />
                                                 <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="True" 
                                                     Format="dd/MM/yyyy"

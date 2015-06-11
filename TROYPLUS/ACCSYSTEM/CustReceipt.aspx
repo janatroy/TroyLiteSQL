@@ -18,19 +18,30 @@
 
         @end@*/
 
-        window.onload = function Showalert() {
+       <%-- window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
             if (txt.value == "") {
+                alert(btn);
                 // alert(txt.value);
                 btn.style.visibility = "hidden";
                 // when the window is loaded, hide the button if the textbox is empty
             }
 
+        }--%>
+        function Show() {
+            document.getElementById("<%= BtnClearFilter.ClientID %>").style.visibility = "visible";
         }
 
-        function EnableDisableButton(sender, target) {
+        window.onload = function Hide() {
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            btn.style.visibility = "hidden";
+            alert("hide");
+            document.getElementById("<%= BtnClearFilter.ClientID %>").style.visibility = "Hidden";
+        }
+
+       <%-- function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtSearch.ClientID %>');
 
             if (sender.value.length >= 1 && first.value.length >= 1) {
@@ -41,8 +52,9 @@
             if (sender.value.length < 1 && first.value.length < 1) {
 
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+                alert(length);
             }
-        }
+        }--%>
 
 
 
@@ -387,11 +399,11 @@
                                             </asp:DropDownList>
                                     </td>
                                     <td style="width: 15%; text-align: left">
-                                        <asp:Button ID="btnSearch" runat="server" CssClass="ButtonSearch6"
+                                        <asp:Button ID="btnSearch" runat="server" CssClass="ButtonSearch6" onkeyup="show()"
                                             EnableTheming="false" ForeColor="White" OnClick="btnSearch_Click" />
                                     </td>
                                     <td style="width: 16%" class="tblLeftNoPad">
-                                        <asp:Button ID="BtnClearFilter" onkeyup="EnableDisableButton(this,'BtnClearFilter')" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        <asp:Button ID="BtnClearFilter" onkeyup="hide()" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
                                     </td>
                                 </tr>
                             </table>

@@ -70,7 +70,7 @@ public partial class BusinessLogic
             manager.BeginTransaction();
 
             dbQry = string.Format("INSERT INTO tblManualSalesBook(BookFrom, BookTo, BookName, CreatedBy, CreatedDate,Branchcode) VALUES({0},{1},'{2}','{3}','{4}','{5}')",
-                BookFrom, BookTo, BookName, Username, DateTime.Now.ToString(), branchcode);
+                BookFrom, BookTo, BookName, Username, DateTime.Now.ToString("yyyy-MM-dd"), branchcode);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
@@ -96,7 +96,7 @@ public partial class BusinessLogic
         }
     }
 
-    public void UpdateManualSalesBook(string connection, int BookId, string BookName, int BookFrom, int BookTo, string Username, string Types)
+    public void UpdateManualSalesBook(string connection, int BookId, string BookName, int BookFrom, int BookTo, string Username, string Types,string branchcode)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
@@ -121,8 +121,8 @@ public partial class BusinessLogic
 
             //InsertManualSalesBook(connection, BookFrom, BookTo, BookName,  Username, Types);
 
-            dbQry = string.Format("Update tblManualSalesBook SET BookName='{0}', BookFrom={1}, BookTo={2},CreatedBy='{3}', CreatedDate={4} WHERE BookId={5}",
-                BookName, BookFrom, BookTo, Username, DateTime.Now.ToShortDateString(), BookId);
+            dbQry = string.Format("Update tblManualSalesBook SET BookName='{0}', BookFrom={1}, BookTo={2},CreatedBy='{3}', CreatedDate={4},BranchCode='{5}' WHERE BookId={6}",
+                BookName, BookFrom, BookTo, Username, DateTime.Now.ToString("yyyy-MM-dd"),branchcode,BookId);
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -482,11 +482,13 @@ public partial class BusinessLogic
         manager.ConnectionString = CreateConnectionString(connection);
         manager.Open();
 
+        string Branch = (string)manager.ExecuteScalar(CommandType.Text, "SELECT branchcode FROM tblManualSalesBook where bookid='"+ bookId +"'");
+
         try
         {
             object objBillNo = manager.ExecuteScalar(CommandType.Text, string.Format("Select ManualNo from tblSales Where ManualSales='YES' and ManualNo={0} and BookId={1}", billNo, bookId));
             object damangedLeafNo = manager.ExecuteScalar(CommandType.Text, string.Format("select LeafNo From tblManualSalesBookLeaf Where LeafNo={0} and LeafID={1}", billNo, bookId));
-            object isBillNoWithInBookRange = manager.ExecuteScalar(CommandType.Text, string.Format("select BookId From tblManualSalesBook Where {0} >= BookFrom and {0} <= BookTo and BookId={1}", billNo, bookId));
+            object isBillNoWithInBookRange = manager.ExecuteScalar(CommandType.Text, string.Format("select BookId From tblManualSalesBook Where {0} >= BookFrom and {0} <= BookTo and BookId={1} and branchcode='{2}'", billNo, bookId,Branch));
 
             if (isBillNoWithInBookRange != null && objBillNo == null && damangedLeafNo == null)
             {
@@ -505,14 +507,14 @@ public partial class BusinessLogic
         }
     }
 
-    public DataSet GetManualSalesBooks(string connection)
+    public DataSet GetManualSalesBooks(string connection,string branch)
     {
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = CreateConnectionString(connection);
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
-        dbQry = "select BookId, BookFrom, BookTo, BookName, CreatedBy, CreatedDate From tblManualSalesBook Order By BookName";
+        dbQry = "select BookId, BookFrom, BookTo, BookName, CreatedBy, CreatedDate,branchcode From tblManualSalesBook where branchcode='"+ branch +"' Order By BookName";
 
         try
         {

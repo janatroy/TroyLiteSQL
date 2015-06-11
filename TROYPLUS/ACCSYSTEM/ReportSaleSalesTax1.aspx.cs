@@ -199,7 +199,7 @@ public partial class ReportSaleSalesTax1 : System.Web.UI.Page
                     {
                         total14 = total14 + Convert.ToDouble(dr["ActualVAT"]);
                     }
-                    tot = tot + Convert.ToDouble(dr["NetPurchaseRate"]);
+                    tot = tot + Convert.ToDouble(dr["NetPurchaseRate"]) - (Convert.ToDouble(dr["ActualDiscount"]) + Convert.ToDouble(dr["DiscAmt"]));
 
                     tot1 = tot1 + Convert.ToDouble(dr["ActualVAT"]);
 

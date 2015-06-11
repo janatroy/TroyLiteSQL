@@ -147,7 +147,7 @@ public partial class ExpPayment : System.Web.UI.Page
                     }
                 }
 
-
+                
             }
         }
         catch (Exception ex)
@@ -973,6 +973,7 @@ public partial class ExpPayment : System.Web.UI.Page
             loadBranch();
             BranchEnable_Disable();
             loadLedger(drpGroup.SelectedValue, drpBranchAdd.SelectedValue);
+            SaveButton.Enabled = true;
         }
         catch (Exception ex)
         {
@@ -1537,12 +1538,14 @@ public partial class ExpPayment : System.Web.UI.Page
     {
         try
         {
+            SaveButton.Enabled = false;
             int ichequestatus = 0;
             DataSet dsData = (DataSet)Session["BillData"];
 
             if (calcDatasetSum(dsData) > double.Parse(txtAmount.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Total Bills amount is exceeding the Payment Amount. Please check the Bill Amount')", true);
+                SaveButton.Enabled = true;
                 return;
             }
 
@@ -1551,11 +1554,13 @@ public partial class ExpPayment : System.Web.UI.Page
                 if (ddBanks.SelectedValue == "0")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bank Name is Mandatory')", true);
+                    SaveButton.Enabled = true;
                     return;
                 }
                 if (cmbChequeNo.SelectedValue == "0")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No  is Mandatory')", true);
+                    SaveButton.Enabled = true;
                     return;
                 }
             }
@@ -1625,12 +1630,14 @@ public partial class ExpPayment : System.Web.UI.Page
                         if (bl.IsChequeNoAlreadyPresent(connection, ChequeNo))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Already Billed')", true);
+                            SaveButton.Enabled = true;
                             return;
                         }
 
                         if (bl.GetDamageChequeNo(connection, ChequeNo))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No is noted as damaged. Select any other Cheque No')", true);
+                            SaveButton.Enabled = true;
                             return;
                         }
 
@@ -1666,6 +1673,7 @@ public partial class ExpPayment : System.Web.UI.Page
                                 if (datad == "N")
                                 {
                                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque No Not Found in Cheque Book')", true);
+                                    SaveButton.Enabled = true;
                                     return;
                                 }
                             }

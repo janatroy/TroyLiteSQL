@@ -419,9 +419,9 @@ public partial class StockReport1 : System.Web.UI.Page
                     DataRow dr_final6 = dt.NewRow();
                     dr_final6["Brand"] = dr["brand"];
                     dr_final6["ProductName"] = dr["ProductName"];
-                    dr_final6["Model"] = dr["Model"];
+                    dr_final6["Model"] = dst.Tables[0].Rows[0]["Model"].ToString();// dr["Model"];
                     dr_final6["ItemCode"] = dr["Itemcode"];
-                    dr_final6["CategoryName"] = dr["CategoryName"];
+                    dr_final6["CategoryName"] = dst.Tables[0].Rows[0]["CategoryName"].ToString();//dr["CategoryName"];
                     if (dst != null)
                     {
                         if (dst.Tables[0].Rows.Count > 0)

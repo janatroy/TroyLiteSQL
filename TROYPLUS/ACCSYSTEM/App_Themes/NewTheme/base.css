@@ -2852,6 +2852,16 @@ legend
 	font-size:13px !important;
 }
 
+.searchbg1
+{
+    background-color : #7c7c7c;
+    /*background: url(images/searchbg.jpg) repeat-x;*/
+    height: 30px;
+    border: 1px Solid Gray;
+    color: #FFFFFF !important;
+	font-size:13px !important;
+}
+
     .searchbg td {
 
         font-size:14px !important;
@@ -8060,6 +8070,15 @@ legend
     background-color : #2d3e50;
     /*background: url(images/searchbg.jpg) repeat-x;*/
     height: 47px;
+    border: 1px Solid Gray;
+    color: #FFFFFF;
+}
+
+.searchbg1
+{
+    background-color : #2d3e50;
+    /*background: url(images/searchbg.jpg) repeat-x;*/
+    height: 30px;
     border: 1px Solid Gray;
     color: #FFFFFF;
 }

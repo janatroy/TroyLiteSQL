@@ -235,7 +235,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("BillDate"));
         dt.Columns.Add(new DataColumn("Branchcode"));
 
-        if(withsalreturn.Checked==true)
+        if (withsalreturn.Checked == true)
             dt.Columns.Add(new DataColumn("VoucherType"));
 
         if (chkboxQty.Checked == true)
@@ -333,7 +333,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn( "Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
@@ -341,9 +341,9 @@ public partial class ReportExlSales : System.Web.UI.Page
         Branch = DropDownList1.SelectedValue;
 
 
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
       
 
         if (ds != null)
@@ -387,31 +387,128 @@ public partial class ReportExlSales : System.Web.UI.Page
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        //if (lstPricelist.SelectedValue == "NLC")
+                            //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                       // if (lstPricelist.SelectedValue == "NLC")
+                       // dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //if (lstPricelist.SelectedValue == "MRP")
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //if (lstPricelist.SelectedValue == "MRP")
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //if (lstPricelist.SelectedValue == "DP")
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //if (lstPricelist.SelectedValue == "DP")
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
 
                         CategoryTotal = 0;
@@ -491,32 +588,129 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["amount"]))) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = (((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                    //if (lstPricelist.SelectedValue == "NLC")
+                    //dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"])));
+                    //if (lstPricelist.SelectedValue == "NLC")
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"])));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                    //if (lstPricelist.SelectedValue == "MRP")
+                    //dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"])));
+                    //if (lstPricelist.SelectedValue == "MRP")
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"])));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                    //if (lstPricelist.SelectedValue == "DP")
+                    //dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = (((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //if (lstPricelist.SelectedValue == "DP")
+                    //dr_final12["DP Per%"] = (((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -582,32 +776,128 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final897["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final897["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //if (lstPricelist.SelectedValue == "NLC")
+            //dr_final897["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final897["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //if (lstPricelist.SelectedValue == "NLC")
+            //dr_final897["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final897["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //if (lstPricelist.SelectedValue == "MRP")
+            //dr_final897["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final897["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //if (lstPricelist.SelectedValue == "MRP")
+            //dr_final897["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final897["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //if (lstPricelist.SelectedValue == "DP")
+            //dr_final897["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final897["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //if (lstPricelist.SelectedValue == "DP")
+            //dr_final897["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final897["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final897["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final897["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final897["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final897["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final897["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -647,32 +937,128 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //if (lstPricelist.SelectedValue == "NLC")
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //if (lstPricelist.SelectedValue == "NLC")
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //if (lstPricelist.SelectedValue == "MRP")
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //if (lstPricelist.SelectedValue == "MRP")
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //if (lstPricelist.SelectedValue == "DP")
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //if (lstPricelist.SelectedValue == "DP")
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -837,14 +1223,14 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
 
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -880,32 +1266,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         dt.Rows.Add(dr_final8);
 
@@ -967,32 +1443,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["amount"]))) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = (((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                    //dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"])));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"])));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                    //dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"])));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"])));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                    //dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = (((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = (((Convert.ToDouble(dr["amount"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -1047,32 +1613,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final897["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final897["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final897["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final897["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final897["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final897["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final897["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final897["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final897["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final897["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final897["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final897["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final897["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final897["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final897["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final897["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final897["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final897["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final897["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final897["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -1104,32 +1760,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -1165,7 +1911,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         dt.Columns.Add(new DataColumn("CategoryName"));
 
-        if(chkboxQty.Checked==true)
+        if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
         if (chkboxVal.Checked == true)
@@ -1238,7 +1984,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     dr_final12["NLC Value"] = Convert.ToDouble(dr["NLCValue"]);
 
                 if (chkboxNlcper.Checked == true)
-                    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - Convert.ToDouble(dr["NLCValue"]))/(Convert.ToDouble(dr["NLCValue"])));
+                    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - Convert.ToDouble(dr["NLCValue"])) / (Convert.ToDouble(dr["NLCValue"])));
                 
                 if (chkboxMRPvalue.Checked == true)
                     dr_final12["MRP Value"] = Convert.ToDouble(dr["MRPValue"]);
@@ -1252,7 +1998,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                 if (chkboxDpper.Checked == true)
                     dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - Convert.ToDouble(dr["DPValue"])) / (Convert.ToDouble(dr["DPValue"])));
                
-                CategoryTotal = CategoryTotal +  Convert.ToDouble(dr["amount"]);
+                CategoryTotal = CategoryTotal + Convert.ToDouble(dr["amount"]);
                 CategoryqtyTotal = CategoryqtyTotal + Convert.ToDouble(dr["qty"]);
 
                 total = total + Convert.ToDouble(dr["amount"]);
@@ -1635,13 +2381,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -1682,32 +2428,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -1784,32 +2620,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -1872,32 +2798,123 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -1938,32 +2955,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -2121,15 +3228,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -2160,32 +3267,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -2246,32 +3443,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -2324,32 +3611,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -2384,32 +3761,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -2461,8 +3928,8 @@ public partial class ReportExlSales : System.Web.UI.Page
         double gpdpTotal = 0;
         double qtyTotal = 0;
 
-        double  rateTotal = 0;
-        double  rateqtyTotal = 0;
+        double rateTotal = 0;
+        double rateqtyTotal = 0;
 
         startDate = Convert.ToDateTime(txtstdate.Text);
         endDate = Convert.ToDateTime(txteddate.Text);
@@ -2493,8 +3960,8 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxAvg.Checked == true)
             dt.Columns.Add(new DataColumn("Avg"));
 
-        //if (chkboxPer.Checked == true)
-        //    dt.Columns.Add(new DataColumn("Per%"));
+        if (chkboxPer.Checked == true)
+            dt.Columns.Add(new DataColumn("Per%"));
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -2540,16 +4007,16 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -2587,32 +4054,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         brandTotal = 0;
                         mrpvalueTotal = 0;
@@ -2689,32 +4246,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -2776,32 +4423,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             brandTotal = 0;
             mrpvalueTotal = 0;
@@ -2836,32 +4573,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(brandqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -2983,15 +4810,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -3022,32 +4849,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         brandTotal = 0;
                         mrpvalueTotal = 0;
@@ -3109,32 +5026,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -3188,32 +5195,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             brandTotal = 0;
             mrpvalueTotal = 0;
@@ -3248,32 +5345,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(brandqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -3593,13 +5780,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -3645,32 +5832,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -3713,32 +5990,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -3817,32 +6184,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -3924,32 +6381,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -3989,32 +6536,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -4057,32 +6694,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -4217,15 +6944,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -4260,32 +6987,137 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -4327,32 +7159,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -4419,32 +7341,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                   // dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -4518,32 +7530,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -4578,32 +7680,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -4640,32 +7832,123 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -5148,13 +8431,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -5202,32 +8485,121 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                                }
+
+                            }
+                        }
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                       // dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
                         qty2Total = 0;
                         gpdTotal = 0;
@@ -5273,32 +8645,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -5342,32 +8804,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -5444,32 +8996,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -5560,32 +9202,121 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final899["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                    }
+
+                }
+            }
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+            //dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+            //dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+            //dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+            //dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+            //dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+            //dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final899["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final899["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final899["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final899["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final899["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+            if (chkgpdp.Checked == true)
+                dr_final899["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
             qty2Total = 0;
             gpdTotal = 0;
@@ -5626,32 +9357,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -5690,32 +9511,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -5756,32 +9667,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -5928,15 +9929,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -5975,32 +9976,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
                         qty2Total = 0;
                         gpdTotal = 0;
@@ -6023,7 +10114,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     {
                         DataRow dr_final8 = dt.NewRow();
                         dr_final8["Brand Name"] = "";
-                        dr_final8["Product Name"] = "Total : "+sLvlValue;
+                        dr_final8["Product Name"] = "Total : " + sLvlValue;
                         dr_final8["Model"] = "";
 
 
@@ -6042,32 +10133,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -6104,32 +10285,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -6196,32 +10467,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -6308,32 +10669,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final899["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+            //dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+            //dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+            //dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+            //dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+            //dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+            //dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final899["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final899["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final899["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final899["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final899["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+            if (chkgpdp.Checked == true)
+                dr_final899["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
             qty2Total = 0;
             gpdTotal = 0;
@@ -6370,32 +10821,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -6432,32 +10973,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -6495,32 +11126,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -7028,8 +11749,8 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxAvg.Checked == true)
             dt.Columns.Add(new DataColumn("Avg"));
 
-        //if (chkboxPer.Checked == true)
-        //    dt.Columns.Add(new DataColumn("Per%"));
+        if (chkboxPer.Checked == true)
+            dt.Columns.Add(new DataColumn("Per%"));
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -7075,15 +11796,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -7121,32 +11842,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -7223,32 +12034,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                    //dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                    //dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                    //dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"]))-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"]))-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -7311,32 +12212,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -7378,32 +12369,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -7526,13 +12607,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -7563,32 +12644,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -7650,32 +12821,121 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))));
+                            }
+
+                        }
+                    }
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                    //dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                    //dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["mrp"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                    //dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))) / ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["dp"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -7728,32 +12988,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -7788,32 +13138,121 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -8460,15 +13899,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -8512,32 +13951,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -8579,32 +14108,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -8681,32 +14300,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                    //dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                    //dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                    //dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"])-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"])-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -8789,32 +14498,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -8854,32 +14653,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -8922,32 +14811,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -9082,15 +15061,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -9125,32 +15104,123 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                       // dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                       // dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -9189,32 +15259,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -9281,32 +15441,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
+                    //dr_final12["NLC Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]);
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
+                    //dr_final12["MRP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]);
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
+                    //dr_final12["DP Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]);
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -9360,7 +15610,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
             DataRow dr_final89 = dt.NewRow();
             dr_final89["Brand Name"] = fLvlValue;
-            dr_final89["Model"] =  sLvlValue;
+            dr_final89["Model"] = sLvlValue;
 
             if (chkboxQty.Checked == true)
                 dr_final89["Qty"] = Convert.ToString(Convert.ToDecimal(qtyTotal));
@@ -9374,35 +15624,125 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxAvg.Checked == true)
                 dr_final89["Avg"] = "";
 
-            //if (chkboxPer.Checked == true)
-            //    dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
+            if (chkboxPer.Checked == true)
+                dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
 
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             dt.Rows.Add(dr_final89);
 
@@ -9437,32 +15777,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -9496,35 +15926,141 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxAvg.Checked == true)
                 dr_final789["Avg"] = "";
 
-            //if (chkboxPer.Checked == true)
-            //    dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
+            if (chkboxPer.Checked == true)
+                dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
 
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -9655,13 +16191,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -9718,32 +16254,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -9837,32 +16463,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"]))-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"]))-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -9942,31 +16658,31 @@ public partial class ReportExlSales : System.Web.UI.Page
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -10009,31 +16725,31 @@ public partial class ReportExlSales : System.Web.UI.Page
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -10155,15 +16871,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -10207,32 +16923,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -10311,32 +17117,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -10404,32 +17300,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -10464,32 +17450,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+           // dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -10822,32 +17898,14 @@ public partial class ReportExlSales : System.Web.UI.Page
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
                 dt.Columns.Add(new DataColumn("Gp for" + item1));
-
-
-
-                DataColumn colInt32Debitlll = new DataColumn(item1 + " Value");
-                    colInt32Debitlll.DataType = System.Type.GetType("System.Double");
-                    dt.Columns.Add(colInt32Debitlll);
-
-
-
-                    DataColumn colInt32Debitll = new DataColumn(item1 + " Per%");
-                    colInt32Debitll.DataType = System.Type.GetType("System.Double");
-                    dt.Columns.Add(colInt32Debitll);
-
-
-                    DataColumn colInt32Debitl = new DataColumn("Gp for" + item1);
-                    colInt32Debitl.DataType = System.Type.GetType("System.Double");
-                    dt.Columns.Add(colInt32Debitl);
-
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -10887,32 +17945,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -10990,32 +18138,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
 
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
@@ -11079,32 +18317,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -11145,32 +18473,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -11315,13 +18733,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -11354,32 +18772,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -11441,32 +18949,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -11519,32 +19117,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -11579,32 +19267,121 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+           // dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -11940,16 +19717,16 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
 
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -11987,32 +19764,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(dateTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         dateTotal = 0;
                         mrpvalueTotal = 0;
@@ -12095,32 +19962,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"]))-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"]))-(Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
@@ -12183,32 +20140,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(dateTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             dateTotal = 0;
             mrpvalueTotal = 0;
@@ -12248,32 +20295,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryQtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -12431,15 +20568,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -12471,32 +20608,121 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(dateTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                       // dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         dateTotal = 0;
                         mrpvalueTotal = 0;
@@ -12560,32 +20786,121 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                   // dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                   // dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                   // dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -12643,32 +20958,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(dateTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
+           // dr_final89["NLC Per%"] = (dateTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+           // dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (dateTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (dateTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             dateTotal = 0;
             mrpvalueTotal = 0;
@@ -12701,32 +21106,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryQtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+           // dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+          //  dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+           // dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -13062,13 +21557,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -13158,32 +21653,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -13310,32 +21895,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"]))-((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"]))-((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -13446,32 +22121,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+           // dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -13513,32 +22278,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -13695,15 +22550,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -13778,32 +22633,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -13914,32 +22859,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -14040,32 +23075,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -14100,32 +23225,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -14292,7 +23507,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                 if (chkboxDpper.Checked == true)
                     dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - Convert.ToDouble(dr["DP"])) / (Convert.ToDouble(dr["DP"])));
 
-                CategoryTotal = CategoryTotal + ( Convert.ToDouble(dr["rate"]));
+                CategoryTotal = CategoryTotal + (Convert.ToDouble(dr["rate"]));
                 CategoryqtyTotal = CategoryqtyTotal + Convert.ToDouble(dr["qty"]);
 
                 total = total + (Convert.ToDouble(dr["rate"]));
@@ -14505,15 +23720,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -14553,32 +23768,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -14659,32 +23964,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["NLC"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["NLC"])));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["NLC"])));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"]))-( (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"]))-((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -14749,32 +24144,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final86["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final86["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final86["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final86["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final86["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final86["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final86["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final86["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final86["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final86["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final86["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final86["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final86["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final86["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final86["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final86["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final86["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final86["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final86["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             CategoryTotal = 0;
             mrpvalueTotal = 0;
@@ -14816,32 +24301,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -14999,15 +24574,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -15036,32 +24611,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                       // dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                       // dr_final8["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                       // dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         CategoryTotal = 0;
                         mrpvalueTotal = 0;
@@ -15123,32 +24788,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["NLC"])));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["NLC"])));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["NLC"])));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                   // dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["Qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = (Convert.ToDouble(dr["rate"])) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -15203,32 +24958,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final86["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final86["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final86["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final86["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final86["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final86["NLC Per%"] = (CategoryTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final86["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final86["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final86["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final86["MRP Per%"] = (CategoryTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final86["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final86["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final86["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final86["DP Per%"] = (CategoryTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final86["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final86["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final86["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final86["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final86["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final86["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             dt.Rows.Add(dr_final86);
 
@@ -15253,32 +25098,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+           // dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -15602,15 +25537,15 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-        ds = objBL.getallhistoryrate(sDataSource, ds,Branch);
+        ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
@@ -15645,32 +25580,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -15708,32 +25733,137 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                       // dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -15800,32 +25930,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"])-(Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"])-(Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -15897,32 +26117,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -15957,32 +26267,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -16019,32 +26419,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -16220,13 +26710,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -16272,32 +26762,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -16340,32 +26920,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -16443,32 +27113,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["MRP"]));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["DP"]));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -16551,32 +27311,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -16616,32 +27466,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -16684,32 +27624,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -17227,17 +28257,17 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
-        if(ds!=null)
+        if (ds != null)
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -17281,32 +28311,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
                         qty2Total = 0;
                         gpdTotal = 0;
@@ -17350,32 +28470,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -17419,32 +28629,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -17519,32 +28819,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) *Convert.ToDouble(dr["MRP"]));
+                    //dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) *Convert.ToDouble(dr["DP"]));
+                    //dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["Qty"]) *Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"])-((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -17637,32 +29027,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final899["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+            //dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+            //dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+            //dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+            //dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+            //dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+            //dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final899["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final899["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final899["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final899["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final899["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+            if (chkgpdp.Checked == true)
+                dr_final899["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
             qty2Total = 0;
             gpdTotal = 0;
@@ -17703,32 +29183,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -17767,32 +29337,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -17833,32 +29493,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -18040,13 +29790,13 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for" + item1));
+                dt.Columns.Add(new DataColumn("Gp for " + item1));
             }
         }
 
         string Branch = string.Empty;
         Branch = DropDownList1.SelectedValue;
-        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options,salrettype,Branch);
+        ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
@@ -18086,32 +29836,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                       // dr_final8["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
                         qty2Total = 0;
                         gpdTotal = 0;
@@ -18135,7 +29975,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                         DataRow dr_final8 = dt.NewRow();
                         dr_final8["Category"] = "";
-                        dr_final8["Brand Name"] = "Total : " +sLvlValue;
+                        dr_final8["Brand Name"] = "Total : " + sLvlValue;
                         dr_final8["Product Name"] = "";
 
                         if (chkboxQty.Checked == true)
@@ -18153,32 +29993,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                       // dr_final8["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
                         producttot = 0;
                         qtyTotal = 0;
@@ -18217,32 +30147,122 @@ public partial class ReportExlSales : System.Web.UI.Page
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "NLC";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "MRP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                                }
+
+                            }
+                        }
+
+                        foreach (ListItem listItem1 in lstPricelist.Items)
+                        {
+                            if (listItem1.Selected)
+                            {
+                                string item1 = listItem1.Value;
+                                string item123 = "DP";
+
+                                if (item123 == item1)
+                                {
+                                    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                                }
+
+                            }
+                        }
+
                         //if (chkboxNlcvalue.Checked == true)
-                        //    dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                        //dr_final8["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
                         //if (chkboxNlcper.Checked == true)
-                        //    dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                        //dr_final8["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
                         //if (chkboxMRPvalue.Checked == true)
-                        //    dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                        //dr_final8["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
                         //if (chkboxMRPper.Checked == true)
-                        //    dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                        //dr_final8["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
                         //if (chkboxDpvalue.Checked == true)
-                        //    dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                        //dr_final8["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
                         //if (chkboxDpper.Checked == true)
-                        //    dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                        //dr_final8["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-                        //if (chkgpmrp.Checked == true)
-                        //    dr_final8["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+                        if (chkgpmrp.Checked == true)
+                            dr_final8["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-                        //if (chkgpnlc.Checked == true)
-                        //    dr_final8["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+                        if (chkgpnlc.Checked == true)
+                            dr_final8["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-                        //if (chkgpdp.Checked == true)
-                        //    dr_final8["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+                        if (chkgpdp.Checked == true)
+                            dr_final8["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
                         brandTotal = 0;
                         gpfdpTotal = 0;
@@ -18309,32 +30329,123 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["amount"])) * 100;
 
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                            }
+
+                        }
+                    }
+
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "NLC";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "MRP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                            }
+
+                        }
+                    }
+
+                    foreach (ListItem listItem1 in lstPricelist.Items)
+                    {
+                        if (listItem1.Selected)
+                        {
+                            string item1 = listItem1.Value;
+                            string item123 = "DP";
+
+                            if (item123 == item1)
+                            {
+                                dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                            }
+
+                        }
+                    }
+
                     //if (chkboxNlcvalue.Checked == true)
-                    //    dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
+                    //dr_final12["NLC Value"] = (Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"]));
 
                     //if (chkboxNlcper.Checked == true)
-                    //    dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
+                    //dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["NLC"]))));
 
                     //if (chkboxMRPvalue.Checked == true)
-                    //    dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
+                   // dr_final12["MRP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
 
                     //if (chkboxMRPper.Checked == true)
-                    //    dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
+                    //dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["MRP"]))));
 
                     //if (chkboxDpvalue.Checked == true)
-                    //    dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
+                   // dr_final12["DP Value"] = (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
 
                     //if (chkboxDpper.Checked == true)
-                    //    dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
+                    //dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]))) / (Convert.ToDouble(dr["qty"]) * (Convert.ToDouble(dr["DP"]))));
 
-                    //if (chkgpmrp.Checked == true)
-                    //    dr_final12["GP for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
+                    if (chkgpmrp.Checked == true)
+                        dr_final12["Gp for MRP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
 
-                    //if (chkgpnlc.Checked == true)
-                    //    dr_final12["GP for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
+                    if (chkgpnlc.Checked == true)
+                        dr_final12["Gp for NLC"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["qty"]) * Convert.ToDouble(dr["NLC"])));
 
-                    //if (chkgpdp.Checked == true)
-                    //    dr_final12["GP for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
+                    if (chkgpdp.Checked == true)
+                        dr_final12["Gp for DP"] = Convert.ToDouble(dr["amount"]) - ((Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
                     if (Convert.ToString(dr["vouchertype"]) == "Sales Return")
                     {
@@ -18420,32 +30531,122 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final899["Per%"] = (100 / (Convert.ToDouble(qty2Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
+            //dr_final899["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
+            //dr_final899["NLC Per%"] = (brandTotal - nlcvTotal) / (nlcvTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
+            //dr_final899["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
+            //dr_final899["MRP Per%"] = (brandTotal - mrpvTotal) / (mrpvTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
+            //dr_final899["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
+            //dr_final899["DP Per%"] = (brandTotal - dpvTotal) / (dpvTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final899["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final899["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final899["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final899["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final899["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
+            if (chkgpdp.Checked == true)
+                dr_final899["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdTotal));
 
             qty2Total = 0;
             gpdTotal = 0;
@@ -18463,7 +30664,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
             DataRow dr_final89 = dt.NewRow();
             dr_final89["Category"] = "";
-            dr_final89["Brand Name"] = "Total : " +sLvlValue;
+            dr_final89["Brand Name"] = "Total : " + sLvlValue;
             dr_final89["Product Name"] = "";
 
             if (chkboxQty.Checked == true)
@@ -18481,32 +30682,123 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final89["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+                    }
+
+                }
+            }
+
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
+            //dr_final89["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalueTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
+            //dr_final89["NLC Per%"] = (brandTotal - nlcvalueTotal) / (nlcvalueTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
+            //dr_final89["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalueTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
+            //dr_final89["MRP Per%"] = (brandTotal - mrpvalueTotal) / (mrpvalueTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
+            //dr_final89["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalueTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
+            //dr_final89["DP Per%"] = (brandTotal - dpvalueTotal) / (dpvalueTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final89["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final89["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpformrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final89["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final89["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfornlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final89["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final89["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfordpTotal));
 
             producttot = 0;
             qtyTotal = 0;
@@ -18542,32 +30834,137 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final8799["Per%"] = (100 / (Convert.ToDouble(qty1Total) * Convert.ToDouble(brandTotal))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+                    }
+
+                }
+            }
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
+            //dr_final8799["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcvalTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
+            //dr_final8799["NLC Per%"] = (brandTotal - nlcvalTotal) / (nlcvalTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
+            //dr_final8799["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpvalTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
+            //dr_final8799["MRP Per%"] = (brandTotal - mrpvalTotal) / (mrpvalTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
+            //dr_final8799["DP Value"] = Convert.ToString(Convert.ToDecimal(dpvalTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
+            //dr_final8799["DP Per%"] = (brandTotal - dpvalTotal) / (dpvalTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final8799["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
+            if (chkgpmrp.Checked == true)
+            dr_final8799["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpfmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final8799["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
+            if (chkgpnlc.Checked == true)
+            dr_final8799["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpfnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final8799["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
+            if (chkgpdp.Checked == true)
+            dr_final8799["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpfdpTotal));
 
             brandTotal = 0;
             gpfdpTotal = 0;
@@ -18604,32 +31001,123 @@ public partial class ReportExlSales : System.Web.UI.Page
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
 
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "NLC";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "MRP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+                    }
+
+                }
+            }
+
+            foreach (ListItem listItem1 in lstPricelist.Items)
+            {
+                if (listItem1.Selected)
+                {
+                    string item1 = listItem1.Value;
+                    string item123 = "DP";
+
+                    if (item123 == item1)
+                    {
+                        dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+                    }
+
+                }
+            }
+
+
             //if (chkboxNlcvalue.Checked == true)
-            //    dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
+            //dr_final789["NLC Value"] = Convert.ToString(Convert.ToDecimal(nlcTotal));
 
             //if (chkboxNlcper.Checked == true)
-            //    dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
+            //dr_final789["NLC Per%"] = (total - nlcTotal) / (nlcTotal);
 
             //if (chkboxMRPvalue.Checked == true)
-            //    dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
+            //dr_final789["MRP Value"] = Convert.ToString(Convert.ToDecimal(mrpTotal));
 
             //if (chkboxMRPper.Checked == true)
-            //    dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
+            //dr_final789["MRP Per%"] = (total - mrpTotal) / (mrpTotal);
 
             //if (chkboxDpvalue.Checked == true)
-            //    dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
+            //dr_final789["DP Value"] = Convert.ToString(Convert.ToDecimal(dpTotal));
 
             //if (chkboxDpper.Checked == true)
-            //    dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
+            //dr_final789["DP Per%"] = (total - dpTotal) / (dpTotal);
 
-            //if (chkgpmrp.Checked == true)
-            //    dr_final789["GP for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
+            if (chkgpmrp.Checked == true)
+                dr_final789["Gp for MRP"] = Convert.ToString(Convert.ToDecimal(gpmrpTotal));
 
-            //if (chkgpnlc.Checked == true)
-            //    dr_final789["GP for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
+            if (chkgpnlc.Checked == true)
+                dr_final789["Gp for NLC"] = Convert.ToString(Convert.ToDecimal(gpnlcTotal));
 
-            //if (chkgpdp.Checked == true)
-            //    dr_final789["GP for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
+            if (chkgpdp.Checked == true)
+                dr_final789["Gp for DP"] = Convert.ToString(Convert.ToDecimal(gpdpTotal));
 
             dt.Rows.Add(dr_final789);
 
@@ -19336,7 +31824,7 @@ public partial class ReportExlSales : System.Web.UI.Page
     {
         string connection = Request.Cookies["Company"].Value;
         BusinessLogic bl = new BusinessLogic(sDataSource);
-        var ds = bl.ListCategory(connection,"");
+        var ds = bl.ListCategory(connection, "");
 
         ddlCategory.DataSource = ds;
         ddlCategory.DataTextField = "CategoryName";
@@ -19397,9 +31885,9 @@ public partial class ReportExlSales : System.Web.UI.Page
         double catTotal = 0;
         double total = 0;
         double producttot = 0;
-        string brand=string.Empty;
+        string brand = string.Empty;
         string Category = string.Empty;
-        string product=string.Empty;
+        string product = string.Empty;
 
         Category = ddlCategory.SelectedItem.Text;
         brand = ddlBrand.SelectedValue;
@@ -19432,7 +31920,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         colInt32Debitll.DataType = System.Type.GetType("System.Double");
         dt.Columns.Add(colInt32Debitll);
 
-        ds = objBL.getSalesreport(startDate, endDate, Category,brand, product,cond);
+        ds = objBL.getSalesreport(startDate, endDate, Category, brand, product, cond);
         if (ds.Tables[0].Rows.Count > 0)
         {
             DataRow dr_final11 = dt.NewRow();
@@ -19480,7 +31968,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     dr_final8["BranchCode"] = "";
                     dr_final8["Qty"] = "";
                     dr_final8["Rate"] = "";
-                    dr_final8["Amount"] =brandTotal.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(brandTotal).ToString("#0.00"));
+                    dr_final8["Amount"] = brandTotal.ToString("#0.00");// Convert.ToString(Convert.ToDecimal(brandTotal).ToString("#0.00"));
                     brandTotal = 0;
                     dt.Rows.Add(dr_final8);
 

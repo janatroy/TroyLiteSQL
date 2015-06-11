@@ -522,6 +522,20 @@
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
+                                                                                    <tr>
+                                                                                         <td class="ControlLabel" style="width: 20%">Credit Days Allowed
+                                                                                <cc1:FilteredTextBoxExtender ID="FTextBoxExtender1" runat="server" FilterType="Custom,Numbers"
+                                                                                    ValidChars="." TargetControlID="txtCredtLimitDays" />
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 25%">
+                                                                                            <asp:TextBox ID="txtCredtLimitDays" TabIndex="15" runat="server" Text='<%# Bind("CreditDays") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                        </td>
+                                                                                        <td  style="width: 14%">
+                                                                                            </td>
+                                                                                        <td  style="width: 28%">
+                                                                                            </td>
+                                                                                    </tr>
                                                                                     <tr  runat="server" visible="false"> 
                                                                                           <td  style="width: 20%; visibility:hidden">Internal Transfer
                                                                                         </td>
@@ -833,6 +847,20 @@
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
+                                                                                    <tr>
+                                                                                         <td class="ControlLabel" style="width: 20%">Credit Days Allowed
+                                                                                <cc1:FilteredTextBoxExtender ID="FTextBoxExtender12" runat="server" FilterType="Custom,Numbers"
+                                                                                    ValidChars="." TargetControlID="txtCredtLimitDaysAdd" />
+                                                                                        </td>
+                                                                                        <td class="ControlTextBox3" style="width: 25%">
+                                                                                            <asp:TextBox ID="txtCredtLimitDaysAdd" TabIndex="15" runat="server" Text='<%# Bind("CreditDays") %>'
+                                                                                                SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                        </td>
+                                                                                        <td  style="width: 14%">
+                                                                                            </td>
+                                                                                        <td  style="width: 28%">
+                                                                                            </td>
+                                                                                    </tr>
                                                                                       <tr  runat="server" visible="false">
                                                                                          <td  style="width: 20%; visibility:hidden">Internal Transfer
                                                                                         </td>
@@ -1051,6 +1079,7 @@
                                 <asp:Parameter Name="BranchCode" Type="string" />
                                  <asp:Parameter Name="AutoLedgerid" Type="string" />
                                  <asp:Parameter Name="Manualclear" Type="string" />
+                                 <asp:Parameter Name="CreditDays" Type="Int32" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -1087,6 +1116,7 @@
                                  <asp:Parameter Name="BranchCode" Type="string" />
                                  <asp:Parameter Name="AutoLedgerid" Type="string" />
                                  <asp:Parameter Name="Manualclear" Type="string" />
+                                 <asp:Parameter Name="CreditDays" Type="Int32" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>
