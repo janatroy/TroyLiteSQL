@@ -901,11 +901,11 @@ public partial class InternalTransfers : System.Web.UI.Page
                     int billNo = branchHasStockService.InsertSalesNewSeries("", DateTime.Now.ToShortDateString(), iSupplier,
                         supplier.Tables[0].Rows[0]["LedgerName"].ToString(), "", "", 3, "", 0, 0.0, "NO", "", 0.0,
                         0.0, ds, "", "YES", null, "NO", "NO", "", "", executives.Tables[0].Rows[0]["empFirstName"].ToString(), dispatchFrom, 0, 0, 0.0, UserID, "NO",
-                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0, "", "", "", "");
+                        "NO", "VAT EXCLUSIVE", "Internal Transfer", "N", "Y", "0", "Others", "PERCENTAGE", 0, request.BranchHasStock, connection, "NO", 0, "", "", "", "", false);
 
 
 
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.BranchHasStock, connection, "NO", paymentdata);
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.BranchHasStock, connection, "NO", paymentdata, "", "", "", "", "", false);
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;

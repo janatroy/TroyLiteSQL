@@ -342,6 +342,64 @@
                                                                     
                                                                 </td>
                                                             </tr>
+                                                            <tr style="height:2px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width: 10%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 35%" class="ControlLabelNew">
+                                                                    SAPCashAccount
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator123" runat="server" ControlToValidate="txtSAPCashAccount"
+                                                                        Display="Dynamic" ErrorMessage="SAPCashAccount is mandatory">*</asp:RequiredFieldValidator>--%>
+                                                                </td>
+                                                                <td style="width: 25%;" class="ControlDrpBorder">
+                                                                    <asp:TextBox ID="txtSAPCashAccount" MaxLength="10" runat="server" CssClass="cssTextBox"
+                                                                        ></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 30%" >
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                            <tr style="height:2px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width: 10%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 35%" class="ControlLabelNew">
+                                                                    SAPSalesAccount
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtSAPSalesAccount"
+                                                                        Display="Dynamic" ErrorMessage="SAPSalesAccount is mandatory">*</asp:RequiredFieldValidator>--%>
+                                                                </td>
+                                                                <td style="width: 25%;" class="ControlDrpBorder">
+                                                                    <asp:TextBox ID="txtSAPSalesAccount" MaxLength="10" runat="server" CssClass="cssTextBox"
+                                                                        ></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 30%" >
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                             <tr style="height:2px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width: 10%">
+                                                                    
+                                                                </td>
+                                                                <td style="width: 35%" class="ControlLabelNew">
+                                                                    SAPPurchaseAccount
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtSAPPurchaseAccount"
+                                                                        Display="Dynamic" ErrorMessage="SAPPurchaseAccount is mandatory">*</asp:RequiredFieldValidator>--%>
+                                                                </td>
+                                                                <td style="width: 25%;" class="ControlDrpBorder">
+                                                                    <asp:TextBox ID="txtSAPPurchaseAccount" MaxLength="10" runat="server" CssClass="cssTextBox"
+                                                                        ></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 30%" >
+                                                                    
+                                                                </td>
+                                                            </tr>
+
                                                             <tr style="height:10px">
                                                             </tr>
                                                             <tr>

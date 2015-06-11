@@ -1641,13 +1641,14 @@ public partial class Purchase : System.Web.UI.Page
                             }
                         }
 
+                        bool custtype = chk.Checked;
 
                         //*******************************
 
                         /*Start Purchase Loading / Unloading Freight Change - March 16*/
                         /*Start InvoiceNo and InvoiceDate - Jan 26*/
                         //iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData);
-                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData);
+                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData, sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3,sCustomerContact,custtype);
 
                         //if(deliveryNote=="YES")
                         if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
@@ -1755,27 +1756,36 @@ public partial class Purchase : System.Web.UI.Page
                                             string body = "\n";
 
                                             int index123 = emailcontent.IndexOf("@Branch");
-                                            body = Request.Cookies["Company"].Value;
+                                            body = drpBranch.SelectedItem.Text;
                                             if (index123 >= 0)
                                             {
                                                 emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
                                             }
 
+                                            string dll = string.Empty;
+                                            int indexll = emailcontent.IndexOf("@Space");
+                                            if (indexll >= 0)
+                                            {
+                                                dll = "\n";
+                                                emailcontent = emailcontent.Remove(indexll, 6).Insert(indexll, dll);
+                                            }
+
+
                                             int sno = 1;
                                             string prd = string.Empty;
                                             int index322 = emailcontent.IndexOf("@Product");
-                                            if (ds != null)
+                                            if (dss != null)
                                             {
-                                                if (ds.Tables[0].Rows.Count > 0)
+                                                if (dss.Tables[0].Rows.Count > 0)
                                                 {
                                                     //emailcontent = emailcontent.Remove(index322, 8).Insert(index322, body);
 
-                                                    foreach (DataRow drd in ds.Tables[0].Rows)
+                                                    foreach (DataRow drd in dss.Tables[0].Rows)
                                                     {
 
                                                         //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                        prd = prd + "\n";
-                                                        prd = prd + drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
+                                                        //prd = prd + "\n";
+                                                        prd = prd + drd["Prd"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
                                                         prd = prd + "\n";
                                                     }
                                                     if (index322 >= 0)
@@ -1783,6 +1793,14 @@ public partial class Purchase : System.Web.UI.Page
                                                         emailcontent = emailcontent.Remove(index322, 8).Insert(index322, prd);
                                                     }
                                                 }
+                                            }
+
+                                            string prdll = string.Empty;
+                                            int index123ll = emailcontent.IndexOf("@Space");
+                                            if (index123ll >= 0)
+                                            {
+                                                prdll = "\n";
+                                                emailcontent = emailcontent.Remove(index123ll, 6).Insert(index123ll, prdll);
                                             }
 
                                             int index312 = emailcontent.IndexOf("@User");
@@ -1810,6 +1828,14 @@ public partial class Purchase : System.Web.UI.Page
                                             if (index >= 0)
                                             {
                                                 emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                            }
+
+                                            string prdl = string.Empty;
+                                            int index123l = emailcontent.IndexOf("@Space");
+                                            if (index123l >= 0)
+                                            {
+                                                prdl = "\n";
+                                                emailcontent = emailcontent.Remove(index123l, 6).Insert(index123l, prdl);
                                             }
 
                                             int index1 = emailcontent.IndexOf("@Amount");
@@ -2703,7 +2729,7 @@ public partial class Purchase : System.Web.UI.Page
 
                             //*******************************
 
-                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, connection, branchcode, deliveryReturn);
+                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, connection, branchcode, deliveryReturn,sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3,sCustomerContact,chk.Checked);
 
 
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
@@ -2824,27 +2850,35 @@ public partial class Purchase : System.Web.UI.Page
                                                 string body = "\n";
 
                                                 int index123 = emailcontent.IndexOf("@Branch");
-                                                body = Request.Cookies["Company"].Value;
+                                                body = drpBranch.SelectedItem.Text;
                                                 if (index123 >= 0)
                                                 {
                                                     emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
                                                 }
 
+                                                string prdll = string.Empty;
+                                                int index123ll = emailcontent.IndexOf("@Space");
+                                                if (index123ll >= 0)
+                                                {
+                                                    prdll = "\n";
+                                                    emailcontent = emailcontent.Remove(index123ll, 6).Insert(index123ll, prdll);
+                                                }
+
                                                 int sno = 1;
                                                 string prd = string.Empty;
                                                 int index322 = emailcontent.IndexOf("@Product");
-                                                if (ds != null)
+                                                if (dss != null)
                                                 {
-                                                    if (ds.Tables[0].Rows.Count > 0)
+                                                    if (dss.Tables[0].Rows.Count > 0)
                                                     {
                                                         //emailcontent = emailcontent.Remove(index322, 8).Insert(index322, body);
 
-                                                        foreach (DataRow drd in ds.Tables[0].Rows)
+                                                        foreach (DataRow drd in dss.Tables[0].Rows)
                                                         {
 
                                                             //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                            prd = prd + "\n";
-                                                            prd = prd + drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
+                                                            //prd = prd + "\n";
+                                                            prd = prd + drd["Prd"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
                                                             prd = prd + "\n";
                                                         }
                                                         if (index322 >= 0)
@@ -2854,6 +2888,13 @@ public partial class Purchase : System.Web.UI.Page
                                                     }
                                                 }
 
+                                                string prdl = string.Empty;
+                                                int index123l = emailcontent.IndexOf("@Space");
+                                                if (index123l >= 0)
+                                                {
+                                                    prdl = "\n";
+                                                    emailcontent = emailcontent.Remove(index123l, 6).Insert(index123l, prdl);
+                                                }
 
                                                 int index21 = emailcontent.IndexOf("@BillNo");
                                                 body = sBillno;
@@ -2881,6 +2922,14 @@ public partial class Purchase : System.Web.UI.Page
                                                 if (index >= 0)
                                                 {
                                                     emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
+                                                }
+
+                                                string dll = string.Empty;
+                                                int indexll = emailcontent.IndexOf("@Space");
+                                                if (indexll >= 0)
+                                                {
+                                                    dll = "\n";
+                                                    emailcontent = emailcontent.Remove(indexll, 6).Insert(indexll, dll);
                                                 }
 
                                                 int index1 = emailcontent.IndexOf("@Amount");

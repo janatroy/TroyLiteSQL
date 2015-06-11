@@ -999,7 +999,7 @@
                 <tr style="width: 100%">
                     <td style="width: 918px" align="left">
                         <asp:ObjectDataSource ID="GridSource" runat="server" SelectMethod="ListSupplierInfo"
-                            TypeName="BusinessLogic" DeleteMethod="DeleteLedger" OnDeleting="GridSource_Deleting">
+                            TypeName="BusinessLogic" DeleteMethod="DeleteSupplier" OnDeleting="GridSource_Deleting">
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="LedgerID" Type="Int32" />

@@ -17,6 +17,7 @@ using System.Management;
 public partial class SalesReport1 : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
+    Double tot = 0;
     Double SumCashSales = 0.0d;
     BusinessLogic objBL;
     string cond;
@@ -600,6 +601,8 @@ public partial class SalesReport1 : System.Web.UI.Page
 
     protected void gvProducts_RowDataBound(object sender, GridViewRowEventArgs e)
     {
+        
+
         try
         {
             double sumValue = 0.0;
@@ -612,6 +615,9 @@ public partial class SalesReport1 : System.Web.UI.Page
             double cst = 0;
             double rate = 0;
             double qty = 0;
+
+           
+
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
 
@@ -637,8 +643,10 @@ public partial class SalesReport1 : System.Web.UI.Page
 
                 lblValue.Text = sumRateQty.ToString("f2"); // sumValue.ToString("f2"); // Convert.ToString(sumValue);
 
-
+                tot = tot + Convert.ToDouble(lblValue.Text);
             }
+
+            Label4.Text = tot.ToString();
         }
         catch (Exception ex)
         {

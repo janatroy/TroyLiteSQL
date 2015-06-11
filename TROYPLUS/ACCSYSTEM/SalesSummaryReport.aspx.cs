@@ -276,15 +276,34 @@ public partial class SalesSummaryReport : System.Web.UI.Page
 
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BranchCode"));
-        dt.Columns.Add(new DataColumn("Sales Rate"));
+        //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        DataColumn colInt32Debitl = new DataColumn("Sales Rate");
+        colInt32Debitl.DataType = System.Type.GetType("System.Double");
+        dt.Columns.Add(colInt32Debitl);
+
         dt.Columns.Add(new DataColumn("Qty"));
-        dt.Columns.Add(new DataColumn("Net Rate"));
+        //dt.Columns.Add(new DataColumn("Net Rate"));
+
+        DataColumn colInt32Debitll = new DataColumn("Net Rate");
+        colInt32Debitll.DataType = System.Type.GetType("System.Double");
+        dt.Columns.Add(colInt32Debitll);
+
         dt.Columns.Add(new DataColumn("Discount Rate"));
         dt.Columns.Add(new DataColumn("Vat Rate"));
+
+        DataColumn colInt32Debitlll = new DataColumn("Vat Rate");
+        colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+        dt.Columns.Add(colInt32Debitlll);
+
         dt.Columns.Add(new DataColumn("CST Rate"));
         dt.Columns.Add(new DataColumn("Freight"));
         dt.Columns.Add(new DataColumn("Loading/Unloading"));
-        dt.Columns.Add(new DataColumn("Total"));
+        //dt.Columns.Add(new DataColumn("Total"));
+
+        DataColumn colInt32Debit = new DataColumn("Total");
+        colInt32Debit.DataType = System.Type.GetType("System.Double");
+        dt.Columns.Add(colInt32Debit);
 
 
         double dNetRate = 0;

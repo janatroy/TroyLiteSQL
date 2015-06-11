@@ -1485,6 +1485,9 @@ public partial class SuppPayment : System.Web.UI.Page
         dctt = new DataColumn("ChequeNo");
         dttt.Columns.Add(dctt);
 
+        dctt = new DataColumn("Bank");
+        dttt.Columns.Add(dctt);
+
         dsttt.Tables.Add(dttt);
 
 
@@ -1494,6 +1497,7 @@ public partial class SuppPayment : System.Web.UI.Page
             TextBox txt = (TextBox)GridView2.Rows[vLoop1].FindControl("txtAmount");
             DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtType");
             DropDownList txtChequeNo = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtChequeNo");
+            DropDownList txtttddt = (DropDownList)GridView2.Rows[vLoop1].FindControl("drpBank");
 
             double adtotal = Convert.ToDouble(txt.Text);
 
@@ -1512,7 +1516,14 @@ public partial class SuppPayment : System.Web.UI.Page
                 {
                     drNewtt = dttt.NewRow();
                     drNewtt["Billno"] = txttt.Text;
-
+                    if (txtttddt.SelectedIndex == 0)
+                    {
+                        drNewtt["Bank"] = "";
+                    }
+                    else
+                    {
+                        drNewtt["Bank"] = txtttddt.SelectedItem.Text;
+                    }
 
                     if (adtotal > Convert.ToDouble(txtamount1.Text))
                     {
@@ -1664,10 +1675,16 @@ public partial class SuppPayment : System.Web.UI.Page
         }
 
 
+
+        bool custtype = chk.Checked;
+        int ReceiptType = Convert.ToInt32(drpReceiptType.SelectedValue);
+
+    
+       
         string Branchcode = DropDownList1.SelectedValue;
 
 
-        bl.UpdateMultipleCustPayment(conn, ds, DebitorID, dsttt, usernam, Branchcode,int.Parse(GrdViewPayment.SelectedDataKey.Value.ToString()));
+        bl.UpdateMultipleCustPayment(conn, ds, DebitorID, dsttt, usernam, Branchcode, int.Parse(GrdViewPayment.SelectedDataKey.Value.ToString()), custtype, ReceiptType, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, sCustomerName);
 
         string salestype = string.Empty;
         int ScreenNo = 0;
@@ -2516,6 +2533,9 @@ public partial class SuppPayment : System.Web.UI.Page
         dctt = new DataColumn("ChequeNo");
         dttt.Columns.Add(dctt);
 
+        dctt = new DataColumn("Bank");
+        dttt.Columns.Add(dctt);
+
         dsttt.Tables.Add(dttt);
 
 
@@ -2525,6 +2545,7 @@ public partial class SuppPayment : System.Web.UI.Page
             TextBox txt = (TextBox)GridView2.Rows[vLoop1].FindControl("txtAmount");
             DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtType");
             DropDownList txtChequeNo = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtChequeNo");
+            DropDownList txtttddt = (DropDownList)GridView2.Rows[vLoop1].FindControl("drpBank");
 
             double adtotal = Convert.ToDouble(txt.Text);
 
@@ -2543,7 +2564,14 @@ public partial class SuppPayment : System.Web.UI.Page
                 {
                     drNewtt = dttt.NewRow();
                     drNewtt["Billno"] = txttt.Text;
-
+                    if (txtttddt.SelectedIndex == 0)
+                    {
+                        drNewtt["Bank"] = "";
+                    }
+                    else
+                    {
+                        drNewtt["Bank"] = txtttddt.SelectedItem.Text;
+                    }
 
                     if (adtotal > Convert.ToDouble(txtamount1.Text))
                     {
@@ -2694,11 +2722,13 @@ public partial class SuppPayment : System.Web.UI.Page
             }
         }
 
+        bool custtype = chk.Checked;
+        int ReceiptType = Convert.ToInt32(drpReceiptType.SelectedValue);
 
         string Branchcode = DropDownList1.SelectedValue;
 
 
-        bl.InsertMultipleCustPayment(conn, ds, DebitorID, dsttt, usernam, Branchcode);
+        bl.InsertMultipleCustPayment(conn, ds, DebitorID, dsttt, usernam, Branchcode, custtype, ReceiptType, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, sCustomerName);
 
         string salestype = string.Empty;
         int ScreenNo = 0;

@@ -63,6 +63,9 @@ public partial class BusinessLogic : IInternalTransferService
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
 
+        string dbQ = string.Empty;
+        DataSet dsd = new DataSet();
+
         try
         {
             manager.Open();
@@ -78,6 +81,42 @@ public partial class BusinessLogic : IInternalTransferService
             //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry.ToString());
+
+
+
+            string savesap = string.Empty;
+            dbQ = "SELECT KeyValue From tblSettings WHERE KEYNAME='SAPPROCESS'";
+            dsd = manager.ExecuteDataSet(CommandType.Text, dbQ.ToString());
+            if (dsd.Tables[0].Rows.Count > 0)
+                savesap = dsd.Tables[0].Rows[0]["KeyValue"].ToString();
+
+            if (savesap == "YES")
+            {
+                int Unique = 0;
+                object retUniqueKey = manager.ExecuteScalar(CommandType.Text, "SELECT MAX(UniqueKey) FROM SAPOUT");
+
+                if ((retUniqueKey != null) && (retUniqueKey != DBNull.Value))
+                {
+                    Unique = Convert.ToInt32(manager.ExecuteScalar(CommandType.Text, "SELECT MAX(UniqueKey) FROM SAPOUT"));
+                    Unique = Unique + 1;
+                }
+                else
+                {
+                    Unique = 1;
+                }
+
+                string xmldata = "";
+                xmldata = xmldata + "<InternalTransfer><Date>" + Convert.ToDateTime(completedDate).ToString("yyyyMMdd") + "</Date><ReqID>" + request.RequestID + "</ReqID><ReqUser>" + request.CompletedUser + "</ReqUser><ProductCode>" + request.ItemCode + "</ProductCode><Quantity>" + request.Quantity + "</Quantity><RequestingBranch>" + request.RequestedBranch + "</RequestingBranch><RequestedBranch>" + request.BranchHasStock + "</RequestedBranch><UniqueKey>" + Unique + "</UniqueKey></InternalTransfer>";
+
+                dbQry = string.Format("INSERT INTO SAPOUT(EntryCreateDateTime,TroyTransNo,ObjName,XMLData,UniqueKey) VALUES('{0}',{1},'{2}','{3}',{4})",
+                      DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), request.RequestID, "InternalTransfer", xmldata, Unique);
+
+                manager.ExecuteNonQuery(CommandType.Text, dbQry);
+            }
+
+
+
+
 
             manager.CommitTransaction();
 

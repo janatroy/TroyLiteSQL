@@ -226,6 +226,17 @@ public partial class SupplierInfo : System.Web.UI.Page
 
 
                         }
+                        else if ((e.Exception.InnerException.Message.IndexOf("duplicate values in the index") > -1) ||
+                            (e.Exception.InnerException.Message.IndexOf("SAPAccountCode") > -1))
+                        {
+                            e.ExceptionHandled = true;
+                            e.KeepInInsertMode = true;
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('SAPAccountCode');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+
+
+                        }
                     }
                     else
                     {

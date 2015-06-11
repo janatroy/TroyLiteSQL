@@ -295,6 +295,26 @@ public partial class LedgerInfo : System.Web.UI.Page
 
                 }
             }
+
+            string sap = bl.getSAPConfig(connection);
+
+            if (sap == "YES")
+            {
+                string saptext = ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text;
+                if ((saptext == null) || (saptext == ""))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('SAPBankAccountCode is mandatory')", true);
+                    check = true;
+                    ModalPopupExtender1.Show();
+                    frmViewAdd.Visible = true;
+                    frmViewAdd.ChangeMode(FormViewMode.Insert);
+                    e.Cancel = true;
+                    return;
+                    // break;
+                }
+            }
+
+
             //BusinessLogic bl = new BusinessLogic(sDataSource);
             //string connection = Request.Cookies["Company"].Value;
 
@@ -917,6 +937,15 @@ public partial class LedgerInfo : System.Web.UI.Page
         if (((DropDownList)this.frmViewAdd.FindControl("drpBranchAdd")) != null)
             e.InputParameters["BranchCode"] = "All";
 
+        if (((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text != "")
+            e.InputParameters["SAPAccountCode"] = ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text;
+
+        if (((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Text != "")
+            e.InputParameters["AccountNo"] = ((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Text;
+        else
+            e.InputParameters["AccountNo"] = "";
+
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
 
@@ -1065,6 +1094,69 @@ public partial class LedgerInfo : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
+
+    protected void ddAccGroupAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            BusinessLogic bl = new BusinessLogic(sDataSource);
+            string connection = Request.Cookies["Company"].Value;
+
+           if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroupAdd")).SelectedValue == "1")
+           {
+               string sap = bl.getSAPCustSuppAccCodeConfig(connection, "Customer");
+
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text = sap;
+               ((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Enabled = false;
+
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Enabled = false;
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel1")).Update();
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel2")).Update();
+               ModalPopupExtender1.Show();
+           }
+           else if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroupAdd")).SelectedValue == "2")
+           {
+               string sap = bl.getSAPCustSuppAccCodeConfig(connection, "Supp");
+
+               ((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Enabled = false;
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text = sap;
+
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Enabled = false;
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel1")).Update();
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel2")).Update();
+
+
+               ModalPopupExtender1.Show();
+           }
+           else if (((DropDownList)this.frmViewAdd.FindControl("ddAccGroupAdd")).SelectedValue == "3")
+           {
+               ((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Enabled = true;
+               
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text = "";
+
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Enabled = true;
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel1")).Update();
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel2")).Update();
+               ModalPopupExtender1.Show();
+           }
+           else
+           {
+               ((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Enabled = false;
+
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text = "";
+
+               ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Enabled = true;
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel1")).Update();
+               ((UpdatePanel)this.frmViewAdd.FindControl("UpdatePanel2")).Update();
+               ModalPopupExtender1.Show();
+           }
+        }
+        catch (Exception ex)
+        {
+            TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
 
     protected void drpLedgerCatAdd_DataBound(object sender, EventArgs e)
     {
