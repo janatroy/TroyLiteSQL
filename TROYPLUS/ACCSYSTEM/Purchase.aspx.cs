@@ -30,6 +30,7 @@ public partial class Purchase : System.Web.UI.Page
     string EnableVat = string.Empty;
     string connection;
     string usernam;
+    public DataTable CurrentTable; 
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
@@ -215,6 +216,7 @@ public partial class Purchase : System.Web.UI.Page
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
     }
 
+  
     private void FirstGridViewRow()
     {
         DataTable dt = new DataTable();
@@ -245,6 +247,7 @@ public partial class Purchase : System.Web.UI.Page
         dt.Rows.Add(dr);
         ViewState["CurrentTable"] = dt;
 
+
         grvStudentDetails.DataSource = dt;
 
         if (cmdSave.Visible == true)
@@ -263,6 +266,7 @@ public partial class Purchase : System.Web.UI.Page
             grvStudentDetails.Columns[3].Visible = false;
         }
         grvStudentDetails.DataBind();
+       
     }
 
     bool checkflag = false;
@@ -369,7 +373,7 @@ public partial class Purchase : System.Web.UI.Page
         {
             int rowIndex = 0;
 
-            if (ViewState["CurrentTable"] != null)
+            if (ViewState["CurrentTable"] != null)           
             {
                 DataTable dtCurrentTable = (DataTable)ViewState["CurrentTable"];
                 DataRow drCurrentRow = null;
@@ -1164,8 +1168,14 @@ public partial class Purchase : System.Web.UI.Page
                 }
                 iSupplier = Convert.ToInt32(cmbSupplier.SelectedItem.Value);
 
-                if (lblTotalSum.Text != string.Empty || lblTotalSum.Text != "0")
-                    dTotalAmt = Convert.ToDouble(lblTotalSum.Text);
+                //if (lblTotalSum.Text != string.Empty || lblTotalSum.Text != "0")
+                //    dTotalAmt = Convert.ToDouble(lblTotalSum.Text);
+               
+                if (lblNet.Text != "")
+                {
+                    dTotalAmt = Convert.ToDouble(lblNet.Text.Trim());
+                }
+
                 /*Start Purchase Loading / Unloading Freight Change - March 16*/
                 double dFreight = 0;
                 double dLU = 0;
@@ -1383,9 +1393,7 @@ public partial class Purchase : System.Web.UI.Page
                         {
                             sSupplierName = cmbSupplier.SelectedItem.Text;
                             iSupplier = Convert.ToInt32(cmbSupplier.SelectedItem.Value);
-                        }
-
-
+                        }                        
 
                         //****************** purchase item insert *************
                         for (int vLoop = 0; vLoop < grvStudentDetails.Rows.Count; vLoop++)
@@ -1585,7 +1593,7 @@ public partial class Purchase : System.Web.UI.Page
                                     txtRtnQty.Text = "0";
 
                                 drNew = dt.NewRow();
-                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value);
+                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0,drpProduct.SelectedItem.Value.IndexOf("-"));                               
                                 if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                                 {
                                     drNew["Qty"] = txtQty.Text;
@@ -1612,7 +1620,7 @@ public partial class Purchase : System.Web.UI.Page
                                 if (Convert.ToInt32(txtRtnQty.Text) > 0)
                                 {
                                     drNew = dt.NewRow();
-                                    drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value);
+                                    drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-"));      
                                     if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                                     {
                                         drNew["Qty"] = txtQty.Text;
@@ -2013,7 +2021,8 @@ public partial class Purchase : System.Web.UI.Page
 
                         Session["PurchaseProductDs"] = null;
                         Session["PurchaseProductbindDs"] = null;
-                        Response.Redirect("ProductPurchaseBill.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn + "&BID=" + branchcode);
+                        //Response.Redirect("ProductPurchaseBill.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn + "&BID=" + branchcode);
+                        Response.Redirect("ProductPurchaseBillNew.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn + "&BID=" + branchcode);
                         /*March 18*/
                         //}
                         ///*March 18*/
@@ -2714,7 +2723,7 @@ public partial class Purchase : System.Web.UI.Page
 
 
                                 drNew = dt.NewRow();
-                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value);
+                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-"));   
                                 drNew["Qty"] = txtQty.Text;
                                 drNew["Rate"] = txtRate.Text;
                                 drNew["NLP"] = txtNLP.Text;
@@ -3112,8 +3121,8 @@ public partial class Purchase : System.Web.UI.Page
                     Session["SalesReturn"] = salesReturn;
                     Session["PurchaseProductDs"] = null;
                     Session["PurchaseProductbindDs"] = null;
-                    Response.Redirect("ProductPurchaseBill.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn.ToUpper() + "&BID=" + branchcode);
-
+                    //Response.Redirect("ProductPurchaseBill.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn.ToUpper() + "&BID=" + branchcode);
+                    Response.Redirect("ProductPurchaseBillNew.aspx?SID=" + iPurchaseId.ToString() + "&RT=" + salesReturn.ToUpper() + "&BID=" + branchcode);
                 }
             }
         }
@@ -3897,7 +3906,8 @@ public partial class Purchase : System.Web.UI.Page
             ModalPopupPurchase.Show();
 
             EmptyRow();
-
+            chk.Checked = true;
+            chk_CheckedChanged(sender, e);
             if (optionmethod.SelectedValue == "Purchase")
             {
                 lblHeading.Text = "Purchase Details";
@@ -4926,7 +4936,11 @@ public partial class Purchase : System.Web.UI.Page
                 {
                     sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["ItemCode"]);
                     drpProduct.ClearSelection();
-                    ListItem li = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                    //ListItem li = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                    ListItem li = (from i in drpProduct.Items.Cast<ListItem>()
+                                     where ((ListItem)i).Value.Contains(sCustomer)
+                                     select i).FirstOrDefault() as ListItem;
+                    //drpProduct.Items.FindByValue(li.Value).Selected = true;
                     if (li != null) li.Selected = true;
                 }
 
@@ -4947,6 +4961,10 @@ public partial class Purchase : System.Web.UI.Page
                 if (txtDisPre.Text == "") txtDisPre.Text = "0";
                 if (txtVATPre.Text == "") txtVATPre.Text = "0";
                 if (txtCSTPre.Text == "") txtCSTPre.Text = "0";
+
+                if (txtVATPre.Text == "0.00" && txtCSTPre.Text == "0.00") inpHide.Value = "1";
+               
+
                 if (txtDiscAmt.Text == "") txtDiscAmt.Text = "0";
                 double vatinclusiverate3 = Convert.ToDouble(txtRate.Text) * Convert.ToDouble(txtQty.Text);
                 double vatinclusiverate1 = Convert.ToDouble(vatinclusiverate3) - (Convert.ToDouble(vatinclusiverate3) * Convert.ToDouble(txtDisPre.Text) / 100);
@@ -5748,7 +5766,8 @@ public partial class Purchase : System.Web.UI.Page
             Session["purchaseID"] = hdPurchase.Value;
             delFlag.Value = "0";
             deleteFile();
-            Response.Redirect("ProductPurchaseBill.aspx?SID=" + hdPurchase.Value.ToString() + "&RT=" + drpSalesReturn.SelectedValue.ToUpper() + "&BID=" + drpBranch.SelectedValue.ToString());
+            //Response.Redirect("ProductPurchaseBill.aspx?SID=" + hdPurchase.Value.ToString() + "&RT=" + drpSalesReturn.SelectedValue.ToUpper() + "&BID=" + drpBranch.SelectedValue.ToString());
+            Response.Redirect("ProductPurchaseBillNew.aspx?SID=" + hdPurchase.Value.ToString() + "&RT=" + drpSalesReturn.SelectedValue.ToUpper() + "&BID=" + drpBranch.SelectedValue.ToString());            
         }
         catch (Exception ex)
         {
@@ -7555,7 +7574,8 @@ public partial class Purchase : System.Web.UI.Page
                 ddl.Items[0].Attributes.Add("background-color", "color:#bce1fe");
                 ddl.DataBind();
                 ddl.DataTextField = "ProductName";
-                ddl.DataValueField = "ItemCode";
+                //ddl.DataValueField = "ItemCode";
+                ddl.DataValueField = "Retrieve";
             }
 
 
@@ -7666,75 +7686,75 @@ public partial class Purchase : System.Web.UI.Page
             }
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
 
-            for (int i = grvStudentDetails.Rows.Count; i == grvStudentDetails.Rows.Count; i++)
-            {
-                DropDownList DrpProduct = (DropDownList)grvStudentDetails.Rows[i - 1].FindControl("drpPrd");
-                TextBox TextBoxQty = (TextBox)grvStudentDetails.Rows[i - 1].Cells[2].FindControl("txtQty");
-                TextBox txtRtnQty = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtRtnQty");
-                TextBox txtRate = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtRate");
-                TextBox txtNLP = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtNLP");
-                TextBox txtDisPre = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtDisPre");
-                TextBox txtVATPre = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtVATPre");
-                TextBox txtCSTPre = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtCSTPre");
-                TextBox txtDiscAmt = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtDiscAmt");
-                TextBox txtTotal = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtTotal");
+            //for (int i = grvStudentDetails.Rows.Count; i == grvStudentDetails.Rows.Count; i++)
+            //{
+            //    DropDownList DrpProduct = (DropDownList)grvStudentDetails.Rows[i - 1].FindControl("drpPrd");
+            //    TextBox TextBoxQty = (TextBox)grvStudentDetails.Rows[i - 1].Cells[2].FindControl("txtQty");
+            //    TextBox txtRtnQty = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtRtnQty");
+            //    TextBox txtRate = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtRate");
+            //    TextBox txtNLP = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtNLP");
+            //    TextBox txtDisPre = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtDisPre");
+            //    TextBox txtVATPre = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtVATPre");
+            //    TextBox txtCSTPre = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtCSTPre");
+            //    TextBox txtDiscAmt = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtDiscAmt");
+            //    TextBox txtTotal = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtTotal");
 
 
-                //DataSet customerDs = bl.ListPurchaseRateDetails(DrpProduct.SelectedItem.Value.Trim());
-                DataSet customerDs = (DataSet)Session["PurchaseProductbindDs"];
-                foreach (DataRow row in customerDs.Tables[0].Rows)
-                {
-                    if (row["ItemCode"].ToString() == DrpProduct.SelectedValue)
-                    {
-                        string address = string.Empty;
+            //    //DataSet customerDs = bl.ListPurchaseRateDetails(DrpProduct.SelectedItem.Value.Trim());
+            //    DataSet customerDs = (DataSet)Session["PurchaseProductbindDs"];
+            //    foreach (DataRow row in customerDs.Tables[0].Rows)
+            //    {
+            //        if (row["ItemCode"].ToString() == DrpProduct.SelectedValue)
+            //        {
+            //            string address = string.Empty;
 
-                        if (customerDs != null && customerDs.Tables[0].Rows.Count > 0)
-                        {
+            //            if (customerDs != null && customerDs.Tables[0].Rows.Count > 0)
+            //            {
 
-                            if (ddDeliveryReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES")
-                            {
-                                //if (customerDs.Tables[0].Rows[0]["Price"] != null)
-                                // txtRate.Text = Convert.ToDouble(customerDs.Tables[0].Rows[0]["Price"].ToString()).ToString("#0.00");
-                                if (row["Price"] != null)
-                                    txtRate.Text = Convert.ToDouble(row["Price"].ToString()).ToString("#0.00");
-                            }
-                            else
-                            {
-                                //if (customerDs.Tables[0].Rows[0]["Price"] != null)
-                                //txtRate.Text = "0.00";
-                                if (row["Price"] != null)
-                                    txtRate.Text = "0.00";
-                            }
+            //                if (ddDeliveryReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES")
+            //                {
+            //                    //if (customerDs.Tables[0].Rows[0]["Price"] != null)
+            //                    // txtRate.Text = Convert.ToDouble(customerDs.Tables[0].Rows[0]["Price"].ToString()).ToString("#0.00");
+            //                    if (row["Price"] != null)
+            //                        txtRate.Text = Convert.ToDouble(row["Price"].ToString()).ToString("#0.00");
+            //                }
+            //                else
+            //                {
+            //                    //if (customerDs.Tables[0].Rows[0]["Price"] != null)
+            //                    //txtRate.Text = "0.00";
+            //                    if (row["Price"] != null)
+            //                        txtRate.Text = "0.00";
+            //                }
 
-                            //if (customerDs.Tables[0].Rows[0]["Discount"] != null)
-                                //txtDisPre.Text = customerDs.Tables[0].Rows[0]["Discount"].ToString();
-                            if (row["Discount"] != null)
-                                txtDisPre.Text = row["Discount"].ToString();
+            //                //if (customerDs.Tables[0].Rows[0]["Discount"] != null)
+            //                    //txtDisPre.Text = customerDs.Tables[0].Rows[0]["Discount"].ToString();
+            //                if (row["Discount"] != null)
+            //                    txtDisPre.Text = row["Discount"].ToString();
 
-                            //if (customerDs.Tables[0].Rows[0]["VAT"] != null)
-                                // txtVATPre.Text = customerDs.Tables[0].Rows[0]["VAT"].ToString();
-                                // txtVATPre.Text = "0.00";
-                            if (row["VAT"] != null)
-                                txtVATPre.Text = row["VAT"].ToString();
+            //                //if (customerDs.Tables[0].Rows[0]["VAT"] != null)
+            //                    // txtVATPre.Text = customerDs.Tables[0].Rows[0]["VAT"].ToString();
+            //                    // txtVATPre.Text = "0.00";
+            //                if (row["VAT"] != null)
+            //                    txtVATPre.Text = row["VAT"].ToString();
                             
 
-                            //if (customerDs.Tables[0].Rows[0]["CST"] != null)
-                                //txtCSTPre.Text = customerDs.Tables[0].Rows[0]["CST"].ToString();
-                            if (row["CST"] != null)
-                                txtCSTPre.Text = row["CST"].ToString();
-                        }
-                        else
-                        {
+            //                //if (customerDs.Tables[0].Rows[0]["CST"] != null)
+            //                    //txtCSTPre.Text = customerDs.Tables[0].Rows[0]["CST"].ToString();
+            //                if (row["CST"] != null)
+            //                    txtCSTPre.Text = row["CST"].ToString();
+            //            }
+            //            else
+            //            {
 
-                            txtRate.Text = string.Empty;
-                            txtDisPre.Text = string.Empty;
-                            txtVATPre.Text = string.Empty;
-                            txtCSTPre.Text = string.Empty;
-                        }
-                        TextBoxQty.Focus();
-                    }
-                }
-            }
+            //                txtRate.Text = string.Empty;
+            //                txtDisPre.Text = string.Empty;
+            //                txtVATPre.Text = string.Empty;
+            //                txtCSTPre.Text = string.Empty;
+            //            }
+            //            TextBoxQty.Focus();
+            //        }
+            //    }
+            //}
         }
     }
 
@@ -8193,11 +8213,23 @@ public partial class Purchase : System.Web.UI.Page
                     TextBox txtTotal = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtTotal");
 
 
+                    //if (itemDs.Tables[0].Rows[vLoop]["itemCode"] != null)
+                    //{
+                    //    sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["ItemCode"]);
+                    //    drpProduct.ClearSelection();
+                    //    ListItem li = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                    //    if (li != null) li.Selected = true;
+                    //}
+
                     if (itemDs.Tables[0].Rows[vLoop]["itemCode"] != null)
                     {
                         sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["ItemCode"]);
                         drpProduct.ClearSelection();
-                        ListItem li = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                        //ListItem li = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+                        ListItem li = (from i in drpProduct.Items.Cast<ListItem>()
+                                       where ((ListItem)i).Value.Contains(sCustomer)
+                                       select i).FirstOrDefault() as ListItem;
+                        //drpProduct.Items.FindByValue(li.Value).Selected = true;
                         if (li != null) li.Selected = true;
                     }
 
