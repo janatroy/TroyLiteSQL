@@ -120,7 +120,7 @@
         }
 
     </script>
-    <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
+    <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
 
             <table style="width: 100%">
@@ -357,18 +357,44 @@
                                                                  <td style="width: 5%" align="left">
                                                                       <asp:ImageButton ID="btnBillDate1" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                  </td>
-                                                                <td style="width: 15%;"   >
+                                                                <td style="width: 15%;"  class="ControlLabel">
                                                                    
-                                                                   
+                                                                   SAPAccountCode
                                                                 </td>
-                                                                <td style="width: 20%">
+                                                                <td style="width: 20%" class="ControlTextBox3">
+
+                                                                    <asp:TextBox ID="txtSAPAccountCode" TabIndex="13" Enabled="false" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("SAPAccountCode") %>'
+                                                                        SkinID="skinTxtBoxGrid"></asp:TextBox>
+
                                                                      <asp:DropDownList Visible="false" ID="drpBranch" TabIndex="14" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                          runat="server">
                                                                      </asp:DropDownList>
                                                                 </td>
 
                                                             </tr>
+                                                                 <tr style="height: 3px">
+                                                            </tr>
+                                                            <tr>
+                                                               
+                                                                <td class="ControlLabel" style="width: 15%">AccountNo
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 20%">
+                                                                    <asp:TextBox ID="txtAccountNo" TabIndex="13" Enabled="false" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("AccountNo") %>'
+                                                                        SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                </td>
+                                                                 <td style="width: 5%" align="left">
+                                                                 </td>
+                                                                <td style="width: 15%;"  class="ControlLabel">
+                                                                  
+                                                                </td>
+                                                                <td style="width: 20%" class="ControlTextBox3">
 
+                                                                    
+
+                                                                    
+                                                                </td>
+
+                                                            </tr>
                                                             <tr>
                                                                 <td></td>
                                                                 <td>
@@ -580,11 +606,15 @@
                                                                         Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                 </td>
                                                                 <td class="ControlDrpBorder" style="width: 20%">
-                                                                    <asp:DropDownList ID="ddAccGroupAdd" DataSourceID="srcGroupInfoAdd" CssClass="drpDownListMedium" BackColor="#e7e7e7"
+                                                                    <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                    <asp:DropDownList ID="ddAccGroupAdd" DataSourceID="srcGroupInfoAdd" CssClass="drpDownListMedium" BackColor="#e7e7e7" OnSelectedIndexChanged="ddAccGroupAdd_SelectedIndexChanged" AutoPostBack="true"
                                                                         runat="server" SelectedValue='<%# Bind("GroupID") %>' DataTextField="GroupName" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                         DataValueField="GroupID" Width="100%" AppendDataBoundItems="True">
                                                                         <asp:ListItem style="background-color: #e7e7e7" Selected="True" Value="0">Select Account Group</asp:ListItem>
                                                                     </asp:DropDownList>
+                                                                                                    </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
                                                                 </td>
                                                                 <td style="width: 10%"></td>
                                                             </tr>
@@ -666,17 +696,52 @@
                                                                  <td style="width: 5%" align="left">
                                                                      <asp:ImageButton ID="btnBillDate" runat="server" CausesValidation="False" ImageUrl="App_Themes/NewTheme/images/cal.gif" Width="20px" />
                                                                  </td>
-                                                                <td style="width: 15%;" >
+                                                                <td style="width: 15%;" class="ControlLabel" >
                                                                     
-                                                                    
+                                                                    SAPAccountCode
                                                                 </td>
-                                                                <td style="width: 20%" >
+                                                                <td style="width: 20%"  class="ControlTextBox3">
+                                                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                    <asp:TextBox ID="txtSAPAccountCodeAdd" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("SAPAccountCode") %>'
+                                                                        SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                                                    </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
                                                                      <asp:DropDownList ID="drpBranchAdd" Visible="false" TabIndex="10" Width="100%" CssClass="drpDownListMedium" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                          runat="server">
                                                                      </asp:DropDownList>
                                                                 </td>
 
                                                             </tr>
+
+                                                            <tr style="height: 3px">
+                                                            </tr>
+                                                            <tr>   
+                                                              
+                                                               
+                                                                      <td class="ControlLabel" style="width: 15%">AccountNo
+                                                                    </td>
+                                                                    <td class="ControlTextBox3" style="width: 20%">
+                                                                         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                                                                                                <ContentTemplate>
+                                                                       <asp:TextBox ID="txtAccountNoAdd" TabIndex="13" Width="150%" BackColor="#e7e7e7" runat="server" Text='<%# Bind("AccountNo") %>'
+                                                                            SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                        </ContentTemplate>
+                                                                                            </asp:UpdatePanel>
+                                                                    </td>
+                                                                    <td style="width: 5%" align="left">
+                                                                    
+                                                                    </td>
+                                                                    <td style="width: 15%;">
+                                                                
+                                                                    </td>
+                                                                    <td style="width: 20%">
+                                                                    
+                                                                    </td>
+                                                                                                                         
+                                                             
+                                                            </tr>
+
                                                             <%--<tr>
                                                                 <td colspan="5">
                                                                     &nbsp
@@ -949,6 +1014,8 @@
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
                                 <asp:Parameter Name="BranchCode" Type="String" />
+                                <asp:Parameter Name="SAPAccountCode" Type="Int32" />
+                                <asp:Parameter Name="AccountNo" Type="String" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -983,6 +1050,8 @@
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
                                 <asp:Parameter Name="BranchCode" Type="String" />
+                                <asp:Parameter Name="SAPAccountCode" Type="Int32" />
+                                <asp:Parameter Name="AccountNo" Type="String" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

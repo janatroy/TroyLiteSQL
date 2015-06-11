@@ -291,6 +291,29 @@
                                                                 </td>
                                                                 <td style="width: 8%"></td>
                                                             </tr>
+                                                                 <tr style="height: 3px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabel" style="width: 20%">AccountNo
+                                                                    
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 26%">
+                                                                    <asp:TextBox ID="txtAccountNo" TabIndex="2" Enabled="false" runat="server" Text='<%# Bind("AccountNo") %>'
+                                                                        SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 7%"></td>
+                                                                <td class="ControlLabel" style="width: 13%"> SAP BankAccountCode*
+                                                                    
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 26%">
+                                                                    <asp:TextBox ID="txtSAPBankAccountCode" TabIndex="2" Enabled="false" runat="server" Text='<%# Bind("SAPAccountCode") %>'
+                                                                        SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                </td>
+
+
+                                                                <td style="width: 8%"></td>
+                                                            </tr>
+
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
@@ -587,6 +610,37 @@
                                                                 <td style="width: 8%"></td>
 
                                                             </tr>
+
+                                                                          <tr style="height: 3px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabel" style="width: 20%">
+                                                                    Account No *
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtAccountNoAdd"
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter Account No. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 26%">
+                                                                    <asp:TextBox ID="txtAccountNoAdd" TabIndex="4" runat="server" Height="26px" Text='<%# Bind("AccountNo") %>'
+                                                                        SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 7%"></td>
+
+                                                                <td class="ControlLabel" style="width: 13%"> SAP BankAccountCode *
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtSAPBankAccountCodeAdd"
+                                                                        Display="Dynamic" EnableClientScript="True" ErrorMessage="Please enter SAP Account Code. It cannot be left blank.">*</asp:RequiredFieldValidator>
+                                                                    --%>
+                                                                </td>
+                                                                <td class="ControlDrpBorder" style="width: 26%">
+                                                                   <asp:TextBox ID="txtSAPBankAccountCodeAdd" TabIndex="5" runat="server" Height="26px" Text='<%# Bind("SAPAccountCode") %>'
+                                                                        SkinID="skinTxtBoxGrid"></asp:TextBox>
+                                                                </td>
+
+
+                                                                <td style="width: 8%"></td>
+
+                                                            </tr>
+
+
                                                             <tr style="height: 3px">
                                                             </tr>
                                                             <tr>
@@ -890,7 +944,7 @@
                 <tr style="width: 100%">
                     <td style="width: 918px" align="left">
                         <asp:ObjectDataSource ID="GridSource" runat="server" SelectMethod="ListBankInfo"
-                            TypeName="BusinessLogic" DeleteMethod="DeleteLedger" OnDeleting="GridSource_Deleting">
+                            TypeName="BusinessLogic" DeleteMethod="DeleteBank" OnDeleting="GridSource_Deleting">
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="LedgerID" Type="Int32" />
@@ -910,7 +964,7 @@
                         </asp:ObjectDataSource>
                         <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetLedgerInfoForId"
                             TypeName="BusinessLogic" OnUpdating="frmSource_Updating" OnInserting="frmSource_Inserting"
-                            InsertMethod="InsertLedgerInfo" UpdateMethod="UpdateLedgerInfo">
+                            InsertMethod="InsertBankInfo" UpdateMethod="UpdateBankInfo">
                             <UpdateParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="LedgerID" Type="Int32" />
@@ -940,6 +994,8 @@
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
                                 <asp:Parameter Name="BranchCode" Type="String" />
+                                <asp:Parameter Name="AccountNo" Type="String" />
+                                <asp:Parameter Name="SAPAccountCode" Type="Int32" />
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="LedgerID" PropertyName="SelectedValue"
@@ -974,6 +1030,8 @@
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
                                 <asp:Parameter Name="BranchCode" Type="String" />
+                                <asp:Parameter Name="AccountNo" Type="String" />
+                                <asp:Parameter Name="SAPAccountCode" Type="Int32" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

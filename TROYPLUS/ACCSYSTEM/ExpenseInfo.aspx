@@ -236,6 +236,17 @@
                                                                         TabIndex="4"></asp:TextBox>
                                                                 </td>
                                                                  </tr>
+                                                            <tr style="height: 3px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabel" style="width: 20%">SAPAccountCode
+                                                                    
+                                                                </td>
+                                                                <td class="ControlTextBox3" style="width: 25%">
+                                                                    <asp:TextBox ID="txtSAPAccountCode" runat="server" Enabled="false"  Text='<%# Bind("SAPAccountCode") %>' SkinID="skinTxtBoxGrid"
+                                                                        TabIndex="4"></asp:TextBox>
+                                                                </td>
+                                                                 </tr>
                                                             <tr id="trid" runat="server" visible="false">
                                                                 <td class="ControlLabel" style="width: 20%">Opening Balance *
                                                                     <asp:CompareValidator ID="cvOpenBal" runat="server" ControlToValidate="txtOpenBal"
@@ -472,6 +483,17 @@
                                                                 </td>
                                                                 <td style="width: 25%" class="ControlTextBox3">
                                                                     <asp:TextBox ID="txtAliasNameAdd" runat="server" Text='<%# Bind("AliasName") %>'
+                                                                        SkinID="skinTxtBoxGrid" TabIndex="4"></asp:TextBox>
+                                                                </td>
+                                                                <td style="width: 35%"></td>
+                                                            </tr>
+                                                            <tr style="height: 3px">
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ControlLabel" style="width: 40%">SAPAccountCode
+                                                                </td>
+                                                                <td style="width: 25%" class="ControlTextBox3">
+                                                                    <asp:TextBox ID="txtSAPAccountCodeAdd" runat="server" Text='<%# Bind("SAPAccountCode") %>'
                                                                         SkinID="skinTxtBoxGrid" TabIndex="4"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 35%"></td>
@@ -790,7 +812,8 @@
                                 <asp:Parameter Name="AliasName" Type="String" />
                                 <asp:Parameter Name="GroupID" Type="Int32" />
                                 <asp:Parameter Name="Username" Type="String" />
-                                 <asp:Parameter Name="IsActive" Type="String" />               
+                                 <asp:Parameter Name="IsActive" Type="String" />   
+                                <asp:Parameter Name="SAPAccountCode" Type="Int32" />            
                             </UpdateParameters>
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="GrdViewLedger" Name="ID" PropertyName="SelectedValue"
@@ -824,6 +847,7 @@
                                 <asp:Parameter Name="EmailId" Type="String" />
                                 <asp:Parameter Name="ModeofContact" Type="Int32" />
                                 <asp:Parameter Name="OpDueDate" Type="String" />
+                                <asp:Parameter Name="SAPAccountCode" Type="Int32" />
                             </InsertParameters>
                         </asp:ObjectDataSource>
                     </td>

@@ -489,7 +489,11 @@ public partial class CustomerSales : System.Web.UI.Page
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
-        ds = bl.ListBankLedgerpaymnetIsActive();
+        string Username = Request.Cookies["LoggedUserName"].Value;
+
+        //ds = bl.ListBankLedgerpaymnetIsActive();
+        ds = bl.ListBankLedgerpaymnetIsActive1(Username);
+
         drpBankName.Items.Clear();
         drpBankName.Items.Add(new ListItem("Select Bank", "0"));
         drpBankName.DataSource = ds;
@@ -525,7 +529,12 @@ public partial class CustomerSales : System.Web.UI.Page
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataSet ds = new DataSet();
-        ds = bl.ListBankLedgerpaymnet();
+
+        string Username = Request.Cookies["LoggedUserName"].Value;
+
+        //ds = bl.ListBankLedgerpaymnet();
+        ds = bl.ListBankLedgerpay(Username);
+
         drpBankName.Items.Clear();
         drpBankName.Items.Add(new ListItem("Select Bank", "0"));
         drpBankName.DataSource = ds;
@@ -4300,6 +4309,9 @@ public partial class CustomerSales : System.Web.UI.Page
                         dc = new DataColumn("Emp");
                         dt.Columns.Add(dc);
 
+                        dc = new DataColumn("Emp1");
+                        dt.Columns.Add(dc);
+
                         dc = new DataColumn("Desc");
                         dt.Columns.Add(dc);
 
@@ -4392,6 +4404,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                 drNew = dt.NewRow();
                                 drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
                                 drNew["Emp"] = Convert.ToString(drpIncharge.SelectedItem.Value);
+                                drNew["Emp1"] = Convert.ToString(drpIncharge.SelectedItem.Text);
                                 drNew["Desc"] = txtDesc.Text;
 
                                 if (txtRate.Text != "")
@@ -4523,6 +4536,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                     drNew = dt.NewRow();
                                     drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
                                     drNew["Emp"] = Convert.ToString(drpIncharge.SelectedItem.Value);
+                                    drNew["Emp1"] = Convert.ToString(drpIncharge.SelectedItem.Text);
                                     drNew["Desc"] = txtDesc.Text;
 
                                     if (txtRate.Text != "")
@@ -4705,7 +4719,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode, connection, deliveryReturn, bookId, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame);
+                        int billNo = bl.InsertSalesNewSeries(Series, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, ManualSales, NormalSales, Types, snarr, DuplicateCopy, check, CustomerIdMobile, cuscategory, discType, iPurID, branchcode, connection, deliveryReturn, bookId, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame, chk.Checked);
                         if (purchaseReturn == "YES" || deliveryReturn == "YES")
                         {
                             iUpdateRtnQty = bl.UpdatePurchaseRtnStatus(iPurID);
@@ -4869,10 +4883,18 @@ public partial class CustomerSales : System.Web.UI.Page
                                                 string body = "\n";
 
                                                 int index123 = emailcontent.IndexOf("@Branch");
-                                                body = Request.Cookies["Company"].Value;
+                                                body = drpBranch.SelectedItem.Text;
                                                 if (index123 >= 0)
                                                 {
                                                     emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                                }
+
+                                                string prdl = string.Empty;
+                                                int index123l = emailcontent.IndexOf("@Space");
+                                                if (index123l >= 0)
+                                                {
+                                                    prdl = "\n";
+                                                    emailcontent = emailcontent.Remove(index123l, 6).Insert(index123l, prdl);
                                                 }
 
                                                 int sno = 1;
@@ -4888,8 +4910,8 @@ public partial class CustomerSales : System.Web.UI.Page
                                                         {
 
                                                             //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                            prd = prd + "\n";
-                                                            prd = prd + drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
+
+                                                            prd = prd + drd["PrdName"].ToString() + ",  " + drd["Qty"].ToString() + ",  " + drd["Rate"].ToString() + ",  " + drd["tot"].ToString() + ",  " + drd["Emp1"].ToString();
                                                             prd = prd + "\n";
 
                                                         }
@@ -4898,6 +4920,14 @@ public partial class CustomerSales : System.Web.UI.Page
                                                             emailcontent = emailcontent.Remove(index322, 8).Insert(index322, prd);
                                                         }
                                                     }
+                                                }
+
+                                                string prdll = string.Empty;
+                                                int index123ll = emailcontent.IndexOf("@Space");
+                                                if (index123ll >= 0)
+                                                {
+                                                    prdll = "\n";
+                                                    emailcontent = emailcontent.Remove(index123ll, 6).Insert(index123ll, prdll);
                                                 }
 
                                                 int index312 = emailcontent.IndexOf("@User");
@@ -4921,8 +4951,16 @@ public partial class CustomerSales : System.Web.UI.Page
                                                     emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
                                                 }
 
+                                                string dll = string.Empty;
+                                                int indexll = emailcontent.IndexOf("@Space");
+                                                if (indexll >= 0)
+                                                {
+                                                    dll = "\n";
+                                                    emailcontent = emailcontent.Remove(indexll, 6).Insert(indexll, dll);
+                                                }
+
                                                 int index1 = emailcontent.IndexOf("@Amount");
-                                                body = txttotal.Text;
+                                                body = lblNet.Text;
                                                 if (index1 >= 0)
                                                 {
                                                     emailcontent = emailcontent.Remove(index1, 7).Insert(index1, body);
@@ -6071,6 +6109,9 @@ public partial class CustomerSales : System.Web.UI.Page
                             dc = new DataColumn("Emp");
                             dt.Columns.Add(dc);
 
+                            dc = new DataColumn("Emp1");
+                            dt.Columns.Add(dc);
+
                             dc = new DataColumn("Desc");
                             dt.Columns.Add(dc);
 
@@ -6156,6 +6197,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                 drNew = dt.NewRow();
                                 drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
                                 drNew["Emp"] = Convert.ToString(drpIncharge.SelectedItem.Value);
+                                drNew["Emp1"] = Convert.ToString(drpIncharge.SelectedItem.Text);
                                 drNew["Desc"] = txtDesc.Text;
                                 drNew["Rate"] = txtRate.Text;
                                 drNew["TotPrice"] = txtTotalPrice.Text;
@@ -6184,7 +6226,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             //old code
                             //int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, Convert.ToInt32(executive), dFreight, dLU, dss, sOtherCusName, intTrans, userID, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, receiptData, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, MultiPayment, Types, snarr, cuscategory);
 
-                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile1, cuscategory, discType, branchcode, connection, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame, chkupdate);
+                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile1, cuscategory, discType, branchcode, connection, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame, chkupdate,chk.Checked);
 
 
                             if (billNo == -1)
@@ -6344,10 +6386,18 @@ public partial class CustomerSales : System.Web.UI.Page
                                                     string body = "\n";
 
                                                     int index123 = emailcontent.IndexOf("@Branch");
-                                                    body = Request.Cookies["Company"].Value;
+                                                    body = drpBranch.SelectedItem.Text;
                                                     if (index123 >= 0)
                                                     {
                                                         emailcontent = emailcontent.Remove(index123, 7).Insert(index123, body);
+                                                    }
+
+                                                    string prdl = string.Empty;
+                                                    int index123l = emailcontent.IndexOf("@Space");
+                                                    if (index123l >= 0)
+                                                    {
+                                                        prdl = "\n";
+                                                        emailcontent = emailcontent.Remove(index123l, 6).Insert(index123l, prdl);
                                                     }
 
                                                     int sno = 1;
@@ -6363,8 +6413,8 @@ public partial class CustomerSales : System.Web.UI.Page
                                                             {
 
                                                                 //body = drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
-                                                                prd = prd + "\n";
-                                                                prd = prd + drd["PrdName"].ToString() + "  " + drd["Qty"].ToString() + "  " + drd["Rate"].ToString();
+
+                                                                prd = prd + drd["PrdName"].ToString() + ",  " + drd["Qty"].ToString() + ",  " + drd["Rate"].ToString() + ",  " + drd["tot"].ToString() + ",  " + drd["Emp1"].ToString();
                                                                 prd = prd + "\n";
 
                                                             }
@@ -6373,6 +6423,14 @@ public partial class CustomerSales : System.Web.UI.Page
                                                                 emailcontent = emailcontent.Remove(index322, 8).Insert(index322, prd);
                                                             }
                                                         }
+                                                    }
+
+                                                    string prdll = string.Empty;
+                                                    int index123ll = emailcontent.IndexOf("@Space");
+                                                    if (index123ll >= 0)
+                                                    {
+                                                        prdll = "\n";
+                                                        emailcontent = emailcontent.Remove(index123ll, 6).Insert(index123ll, prdll);
                                                     }
 
                                                     int index312 = emailcontent.IndexOf("@User");
@@ -6386,7 +6444,6 @@ public partial class CustomerSales : System.Web.UI.Page
                                                     body = txtBillDate.Text;
                                                     if (index2 >= 0)
                                                     {
-
                                                         emailcontent = emailcontent.Remove(index2, 5).Insert(index2, body);
                                                     }
 
@@ -6397,8 +6454,16 @@ public partial class CustomerSales : System.Web.UI.Page
                                                         emailcontent = emailcontent.Remove(index, 9).Insert(index, body);
                                                     }
 
+                                                    string dll = string.Empty;
+                                                    int indexll = emailcontent.IndexOf("@Space");
+                                                    if (indexll >= 0)
+                                                    {
+                                                        dll = "\n";
+                                                        emailcontent = emailcontent.Remove(indexll, 6).Insert(indexll, dll);
+                                                    }
+
                                                     int index1 = emailcontent.IndexOf("@Amount");
-                                                    body = txttotal.Text;
+                                                    body = lblNet.Text;
                                                     if (index1 >= 0)
                                                     {
                                                         emailcontent = emailcontent.Remove(index1, 7).Insert(index1, body);
@@ -8510,6 +8575,37 @@ public partial class CustomerSales : System.Web.UI.Page
             {
                 if (ds.Tables[0].Rows.Count > 0)
                 {
+
+                    if (ds.Tables[0].Rows[0]["BillNo"] != null)
+                        lblBillNo.Text = ds.Tables[0].Rows[0]["BillNo"].ToString();
+
+                   
+                        string Username = Request.Cookies["LoggedUserName"].Value;
+
+                        if ((Convert.ToInt32(ds.Tables[0].Rows[0]["Paymode"]) == 4))
+                        {                          
+                            DataSet rec = new DataSet();
+                            rec = bl.ListReceiptsForBillNoOrder(lblBillNo.Text, branchcode);
+
+                            if (!bl.IsCustomerHadCheque(connection, rec, Username))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please contact Administrator.')", true);
+                                return;
+                            }
+                        }
+                        else if ((Convert.ToInt32(ds.Tables[0].Rows[0]["Paymode"]) == 2))
+                        {
+                            int debtorid = Convert.ToInt32(ds.Tables[0].Rows[0]["Debtorid"]);
+
+                            if (!bl.IsCustomerHadChequeForId(connection, debtorid, Username))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please contact Administrator.')", true);
+                                return;
+                            }
+                        }
+                   
+
+
                     if (ds.Tables[0].Rows[0]["Types"] != null)
                         Labelll.Text = Convert.ToString(ds.Tables[0].Rows[0]["Types"]);
                     else
@@ -8518,8 +8614,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     if (ds.Tables[0].Rows[0]["BillDate"] != null)
                         txtBillDate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["BillDate"]).ToString("dd/MM/yyyy");
 
-                    if (ds.Tables[0].Rows[0]["BillNo"] != null)
-                        lblBillNo.Text = ds.Tables[0].Rows[0]["BillNo"].ToString();
+                    
 
                     if (ds.Tables[0].Rows[0]["InternalTransfer"] != null)
                     {

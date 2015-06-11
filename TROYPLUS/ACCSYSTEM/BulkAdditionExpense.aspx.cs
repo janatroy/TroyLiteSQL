@@ -125,14 +125,16 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
         DataTable dt = new DataTable();
 
         dt.Columns.Add(new DataColumn("ExpenseName"));
-       
+        dt.Columns.Add(new DataColumn("SAPAccountCode"));
+
         //dt.Columns.Add(new DataColumn("Inttrans"));
         //dt.Columns.Add(new DataColumn("Paymentmade"));
         //dt.Columns.Add(new DataColumn("dc"));
         
         DataRow dr_final12 = dt.NewRow();
         dr_final12["ExpenseName"] = "";
-    
+        dr_final12["SAPAccountCode"] = "";
+
         //dr_final12["Inttrans"] = "NO";
         //dr_final12["Paymentmade"] = "NO";
         //dr_final12["dc"] = "NO";
@@ -349,18 +351,10 @@ public partial class BulkAdditionExpense : System.Web.UI.Page
 
                 //foreach (DataRow dr in ds.Tables[0].Rows)
                 //{
-                //    string brand = Convert.ToString(dr["brand"]);
-                //    if ((Convert.ToString(dr["ItemCode"]) == null) || (Convert.ToString(dr["ItemCode"]) == ""))
+                //    if ((Convert.ToString(dr["SAPAccountCode"]) == null) || (Convert.ToString(dr["SAPAccountCode"]) == ""))
                 //    {
-
-                //    }
-                //    else
-                //    {
-                //        if (!objBL.CheckIfbrandIsThere(brand))
-                //        {
-                //            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Brand with - " + brand + " - does not exists in the Brand Master');", true);
-                //            return;
-                //        }
+                //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('');", true);
+                //        return;
                 //    }
                 //}
 

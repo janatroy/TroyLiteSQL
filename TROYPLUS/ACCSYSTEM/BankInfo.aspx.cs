@@ -15,6 +15,7 @@ public partial class BankInfo : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
     public string EnableOpbalance = string.Empty;
+    public string sap = string.Empty;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -437,6 +438,25 @@ public partial class BankInfo : System.Web.UI.Page
 
                 }
             }
+
+             sap = bl.getSAPConfig(connection);
+
+             if (sap == "YES")
+             {
+                 string saptext = ((TextBox)this.frmViewAdd.FindControl("txtSAPBankAccountCodeAdd")).Text;
+                 if ((saptext == null) || (saptext == ""))
+                 {
+                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('SAPBankAccountCode is mandatory')", true);
+                     check = true;
+                     ModalPopupExtender1.Show();
+                     frmViewAdd.Visible = true;
+                     frmViewAdd.ChangeMode(FormViewMode.Insert);
+                     e.Cancel = true;
+                     return;
+                     // break;
+                 }
+             }
+
             //BusinessLogic bl = new BusinessLogic(sDataSource);
             //string connection = Request.Cookies["Company"].Value;
 
@@ -567,6 +587,30 @@ public partial class BankInfo : System.Web.UI.Page
 
                         }
                     }
+
+
+                    sap = bl.getSAPConfig(connection);
+
+                    if (sap == "NO")
+                    {
+                        if (this.frmViewAdd.FindControl("txtSAPBankAccountCodeAdd") != null)
+                        {
+                            ((TextBox)this.frmViewAdd.FindControl("txtSAPBankAccountCodeAdd")).Enabled = false;
+                        }
+                        else
+                        {
+                            if (this.frmViewAdd.FindControl("txtSAPBankAccountCodeAdd") == null)
+                            {
+                                ((TextBox)this.frmViewAdd.FindControl("txtSAPBankAccountCodeAdd")).Enabled = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                       
+                    }
+
+
                 }
             }
 
@@ -951,6 +995,12 @@ public partial class BankInfo : System.Web.UI.Page
 
         e.InputParameters["BranchCode"] = "All";
 
+        if (((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Text != "")
+            e.InputParameters["AccountNo"] = ((TextBox)this.frmViewAdd.FindControl("txtAccountNoAdd")).Text;
+
+        if (((TextBox)this.frmViewAdd.FindControl("txtSAPBankAccountCodeAdd")).Text != "")
+            e.InputParameters["SAPAccountCode"] = ((TextBox)this.frmViewAdd.FindControl("txtSAPBankAccountCodeAdd")).Text;
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
 
@@ -1045,6 +1095,12 @@ public partial class BankInfo : System.Web.UI.Page
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")).SelectedValue;
 
         e.InputParameters["BranchCode"] = "All";
+
+        if (((TextBox)this.frmViewAdd.FindControl("txtAccountNo")).Text != "")
+            e.InputParameters["AccountNo"] = ((TextBox)this.frmViewAdd.FindControl("txtAccountNo")).Text;
+
+        if (((TextBox)this.frmViewAdd.FindControl("txtSAPBankAccountCode")).Text != "")
+            e.InputParameters["SAPAccountCode"] = ((TextBox)this.frmViewAdd.FindControl("txtSAPBankAccountCode")).Text;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 

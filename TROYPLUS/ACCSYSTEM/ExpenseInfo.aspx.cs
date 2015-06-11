@@ -346,6 +346,25 @@ public partial class ExpenseInfo : System.Web.UI.Page
                 }
             }
 
+            string sap = bl.getSAPConfig(connection);
+
+            if (sap == "YES")
+            {
+                string saptext = ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text;
+                if ((saptext == null) || (saptext == ""))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('SAPBankAccountCode is mandatory')", true);
+                    check = true;
+                    ModalPopupExtender1.Show();
+                    frmViewAdd.Visible = true;
+                    frmViewAdd.ChangeMode(FormViewMode.Insert);
+                    e.Cancel = true;
+                    return;
+                    // break;
+                }
+            }
+
+
             //BusinessLogic bl = new BusinessLogic(sDataSource);
             //string connection = Request.Cookies["Company"].Value;
 
@@ -893,6 +912,9 @@ public partial class ExpenseInfo : System.Web.UI.Page
             e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeofContactAdd")).SelectedValue;
 
 
+        if (((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text != "")
+            e.InputParameters["SAPAccountCode"] = ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCodeAdd")).Text;
+
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
 
     }
@@ -988,6 +1010,9 @@ public partial class ExpenseInfo : System.Web.UI.Page
 
         //if (((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")) != null)
         //    e.InputParameters["ModeOfContact"] = ((DropDownList)this.frmViewAdd.FindControl("drpModeOfContact")).SelectedValue;
+
+        if (((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCode")).Text != "")
+            e.InputParameters["SAPAccountCode"] = ((TextBox)this.frmViewAdd.FindControl("txtSAPAccountCode")).Text;
 
         e.InputParameters["Username"] = Request.Cookies["LoggedUserName"].Value;
     }
