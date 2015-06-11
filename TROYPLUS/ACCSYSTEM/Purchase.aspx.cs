@@ -4981,7 +4981,7 @@ public partial class Purchase : System.Web.UI.Page
                 double vatinclusiverate4 = Convert.ToDouble(vatinclusiverate5) + Convert.ToDouble(vatinclusiverate6) + Convert.ToDouble(vatinclusiverate7);
                 txtTotal.Text = vatinclusiverate4.ToString("#0.00");
 
-                totvat = totvat + Convert.ToDouble(vatinclusiverate6);               
+                totvat = totvat + Convert.ToDouble(vatinclusiverate6);
                 lblvatamt.Text = totvat.ToString("#0.00");
 
             }
@@ -7527,7 +7527,7 @@ public partial class Purchase : System.Web.UI.Page
                 SetPreviousData();
                 txtQty_TextChanged(sender, e);
                 txtFreight_TextChanged1(sender, e);
-               
+
             }
             else
             {
@@ -7564,7 +7564,7 @@ public partial class Purchase : System.Web.UI.Page
 
             if (Session["PurchaseProductbindDs"] == null)
             {
-            ds = bl.ListProdForDynammicrowPurchase(sDataSource);
+                ds = bl.ListProdForDynammicrowPurchase(sDataSource);
                 Session["PurchaseProductbindDs"] = ds;
             }
 
@@ -7705,44 +7705,60 @@ public partial class Purchase : System.Web.UI.Page
                 TextBox txtTotal = (TextBox)grvStudentDetails.Rows[i - 1].FindControl("txtTotal");
 
 
-                DataSet customerDs = bl.ListPurchaseRateDetails(DrpProduct.SelectedItem.Value.Trim());
-
-                string address = string.Empty;
-
-                if (customerDs != null && customerDs.Tables[0].Rows.Count > 0)
+                //DataSet customerDs = bl.ListPurchaseRateDetails(DrpProduct.SelectedItem.Value.Trim());
+                DataSet customerDs = (DataSet)Session["PurchaseProductbindDs"];
+                foreach (DataRow row in customerDs.Tables[0].Rows)
                 {
-
-                    if (ddDeliveryReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES")
+                    if (row["ItemCode"].ToString() == DrpProduct.SelectedValue)
                     {
-                        if (customerDs.Tables[0].Rows[0]["Price"] != null)
-                            txtRate.Text = Convert.ToDouble(customerDs.Tables[0].Rows[0]["Price"].ToString()).ToString("#0.00");
+                        string address = string.Empty;
+
+                        if (customerDs != null && customerDs.Tables[0].Rows.Count > 0)
+                        {
+
+                            if (ddDeliveryReturn.SelectedValue != "YES" && ddDeliveryNote.SelectedValue != "YES")
+                            {
+                                //if (customerDs.Tables[0].Rows[0]["Price"] != null)
+                                // txtRate.Text = Convert.ToDouble(customerDs.Tables[0].Rows[0]["Price"].ToString()).ToString("#0.00");
+                                if (row["Price"] != null)
+                                    txtRate.Text = Convert.ToDouble(row["Price"].ToString()).ToString("#0.00");
+                            }
+                            else
+                            {
+                                //if (customerDs.Tables[0].Rows[0]["Price"] != null)
+                                //txtRate.Text = "0.00";
+                                if (row["Price"] != null)
+                                    txtRate.Text = "0.00";
+                            }
+
+                            //if (customerDs.Tables[0].Rows[0]["Discount"] != null)
+                                //txtDisPre.Text = customerDs.Tables[0].Rows[0]["Discount"].ToString();
+                            if (row["Discount"] != null)
+                                txtDisPre.Text = row["Discount"].ToString();
+
+                            //if (customerDs.Tables[0].Rows[0]["VAT"] != null)
+                                // txtVATPre.Text = customerDs.Tables[0].Rows[0]["VAT"].ToString();
+                                // txtVATPre.Text = "0.00";
+                            if (row["VAT"] != null)
+                                txtVATPre.Text = row["VAT"].ToString();
+                            
+
+                            //if (customerDs.Tables[0].Rows[0]["CST"] != null)
+                                //txtCSTPre.Text = customerDs.Tables[0].Rows[0]["CST"].ToString();
+                            if (row["CST"] != null)
+                                txtCSTPre.Text = row["CST"].ToString();
+                        }
+                        else
+                        {
+
+                            txtRate.Text = string.Empty;
+                            txtDisPre.Text = string.Empty;
+                            txtVATPre.Text = string.Empty;
+                            txtCSTPre.Text = string.Empty;
+                        }
+                        TextBoxQty.Focus();
                     }
-                    else
-                    {
-                        if (customerDs.Tables[0].Rows[0]["Price"] != null)
-                            txtRate.Text = "0.00";
-                    }
-
-                    if (customerDs.Tables[0].Rows[0]["Discount"] != null)
-                        txtDisPre.Text = customerDs.Tables[0].Rows[0]["Discount"].ToString();
-
-                    if (customerDs.Tables[0].Rows[0]["VAT"] != null)
-                        txtVATPre.Text = customerDs.Tables[0].Rows[0]["VAT"].ToString();
-                    // txtVATPre.Text = "0.00";
-
-                    if (customerDs.Tables[0].Rows[0]["CST"] != null)
-                        txtCSTPre.Text = customerDs.Tables[0].Rows[0]["CST"].ToString();
-
                 }
-                else
-                {
-
-                    txtRate.Text = string.Empty;
-                    txtDisPre.Text = string.Empty;
-                    txtVATPre.Text = string.Empty;
-                    txtCSTPre.Text = string.Empty;
-                }
-                TextBoxQty.Focus();
             }
         }
     }
@@ -7793,7 +7809,7 @@ public partial class Purchase : System.Web.UI.Page
             //lblvatamt.Text = totvat.ToString("#0.00");
         }
         sumAmt = 0;
-       
+
         inpHide1.Value = "1";
         for (int i = 0; i < grvStudentDetails.Rows.Count; i++)
         {
@@ -7883,7 +7899,7 @@ public partial class Purchase : System.Web.UI.Page
                     inpHide1.Value = "0";
                 }
             }
-            
+
             /*Start Purchase Loading / Unloading Freight Change - March 16*/
             lblFreight.Text = sumLUFreight.ToString("#0.00");
             lblvatamt.Text = "0";
@@ -7896,7 +7912,7 @@ public partial class Purchase : System.Web.UI.Page
             double vatinclusiverate7 = (Convert.ToDouble(vatinclusiverate5) * Convert.ToDouble(TextBoxCSTPre.Text) / 100);
             double vatinclusiverate4 = Convert.ToDouble(vatinclusiverate5) + Convert.ToDouble(vatinclusiverate6) + Convert.ToDouble(vatinclusiverate7);
 
-            totvat = totvat + Convert.ToDouble(vatinclusiverate6);           
+            totvat = totvat + Convert.ToDouble(vatinclusiverate6);
             lblvatamt.Text = totvat.ToString("#0.00");
 
             UpdatePanel14.Update();

@@ -537,7 +537,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
                     drNew["Qty"] = Convert.ToString(qty);
                     drNew["Unit"] = measureUnit;
                     drNew["TotalPrice"] = dTotal.ToString("f2");
-                    drNew["Amount"] = dAmout.ToString("f2");  //dTotal;
+                    drNew["Amount"] = dTotal.ToString("f2");  //dTotal;
                     drNew["CST"] = Convert.ToString(ds.Tables[0].Rows[i]["CST"]);
                     drNew["VAT"] = dVAT.ToString("#0.00");  //Convert.ToString(dr["VAT"]);;
                     drNew["VATAmount"] = dVATAmt.ToString("f2");
