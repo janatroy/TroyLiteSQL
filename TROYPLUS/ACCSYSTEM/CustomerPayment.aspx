@@ -1060,7 +1060,7 @@
                 <tr style="width: 100%">
                     <td style="width: 918px" align="left">
                         <asp:ObjectDataSource ID="GridSource" runat="server" SelectMethod="ListCustomerPayments"
-                            TypeName="BusinessLogic" DeleteMethod="DeletePayment" OnDeleting="GridSource_Deleting">
+                            TypeName="BusinessLogic" DeleteMethod="DeleteCustPayment" OnDeleting="GridSource_Deleting">
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="TransNo" Type="Int32" />
@@ -1069,7 +1069,7 @@
                             </DeleteParameters>
                         </asp:ObjectDataSource>
                         <asp:ObjectDataSource ID="frmSource" runat="server" SelectMethod="GetPaymentForId"
-                            TypeName="BusinessLogic" InsertMethod="InsertPayment" OnUpdating="frmSource_Updating"
+                            TypeName="BusinessLogic" InsertMethod="InsertCustPayment" OnUpdating="frmSource_Updating"
                             OnInserting="frmSource_Inserting" UpdateMethod="UpdateCustPayment" OnInserted="frmSource_Inserted"
                             OnUpdated="frmSource_Updated">
                             <UpdateParameters>

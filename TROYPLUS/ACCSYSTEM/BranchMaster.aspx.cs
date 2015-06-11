@@ -153,11 +153,15 @@ public partial class BranchMaster : System.Web.UI.Page
                     mobile2 = Txtmobile2.Text.Trim();
                     emailid = Txtemailid.Text.Trim();
 
+                    int SAPCashAccount = Convert.ToInt32(txtSAPCashAccount.Text);
+                    int SAPSalesAccount = Convert.ToInt32(txtSAPSalesAccount.Text);
+                    int SAPPurchaseAccount = Convert.ToInt32(txtSAPPurchaseAccount.Text);
+
                     BusinessLogic bl = new BusinessLogic(sDataSource);
                     string connection = Request.Cookies["Company"].Value;
 
 
-                    bl.UpdateBranch(connection, BranchID, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, mobile1, mobile2, emailid, IsActive, Username);
+                    bl.UpdateBranch(connection, BranchID, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, mobile1, mobile2, emailid, IsActive, Username, SAPCashAccount, SAPSalesAccount, SAPPurchaseAccount);
 
                         //MyAccordion.Visible = true;
                         pnlVisitDetails.Visible = false;
@@ -424,6 +428,14 @@ public partial class BranchMaster : System.Web.UI.Page
         Txtmobile1.Text = "";
         Txtmobile2.Text = "";
         Txtemailid.Text = "";
+
+        txtSAPCashAccount.Enabled = true;
+        txtSAPSalesAccount.Enabled = true;
+        txtSAPPurchaseAccount.Enabled = true;
+
+        txtSAPCashAccount.Text = "";
+        txtSAPSalesAccount.Text = "";
+        txtSAPPurchaseAccount.Text = "";
     }
 
     protected void UpdateCancelButton_Click(object sender, EventArgs e)
@@ -540,6 +552,10 @@ public partial class BranchMaster : System.Web.UI.Page
 
             DataSet ds = bl.GetBranchForId(sDataSource, BranchId);
 
+            txtSAPCashAccount.Enabled = false;
+            txtSAPSalesAccount.Enabled = false;
+            txtSAPPurchaseAccount.Enabled = false;
+
             if (ds != null)
             {
                 hdVisitID.Value = Convert.ToString(BranchId);
@@ -554,6 +570,10 @@ public partial class BranchMaster : System.Web.UI.Page
                 Txtmobile2.Text = ds.Tables[0].Rows[0]["mobile2"].ToString();
                 Txtemailid.Text = ds.Tables[0].Rows[0]["Emailid"].ToString();
                 drpIsActive.SelectedValue = ds.Tables[0].Rows[0]["IsActive"].ToString();
+
+                txtSAPCashAccount.Text = ds.Tables[0].Rows[0]["SAPCashAccount"].ToString();
+                txtSAPSalesAccount.Text = ds.Tables[0].Rows[0]["SAPSalesAccount"].ToString();
+                txtSAPPurchaseAccount.Text = ds.Tables[0].Rows[0]["SAPPurchaseAccount"].ToString();
 
                 txtBranchcode.Enabled = false;
                 txtBranchName.Enabled = false;
@@ -679,6 +699,8 @@ public partial class BranchMaster : System.Web.UI.Page
 
             if (Page.IsValid)
             {
+                
+
                 string BranchAddress1 = string.Empty;
                     string Branchcode = string.Empty;
                     string BranchAddress2 = string.Empty;
@@ -704,6 +726,11 @@ public partial class BranchMaster : System.Web.UI.Page
 
                     IsActive = drpIsActive.SelectedValue;
 
+                    int SAPCashAccount = Convert.ToInt32(txtSAPCashAccount.Text);
+                    int SAPSalesAccount = Convert.ToInt32(txtSAPSalesAccount.Text);
+                    int SAPPurchaseAccount = Convert.ToInt32(txtSAPPurchaseAccount.Text);
+
+
                     BusinessLogic bl = new BusinessLogic(sDataSource);
                     string connection = Request.Cookies["Company"].Value;
 
@@ -720,6 +747,34 @@ public partial class BranchMaster : System.Web.UI.Page
                         ModalPopupExtender1.Show();
                         return;
                     }
+
+                    string sap = bl.getSAPConfig(connection);
+
+                    if (sap == "YES")
+                    {
+                        string saptext = txtSAPCashAccount.Text;
+                        if ((saptext == null) || (saptext == ""))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('SAPCashAccount.');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
+                        string sapSalestext = txtSAPSalesAccount.Text;
+                        if ((sapSalestext == null) || (sapSalestext == ""))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('SAPSalesAccount.');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
+                        string sapPurchasetext = txtSAPPurchaseAccount.Text;
+                        if ((sapPurchasetext == null) || (sapPurchasetext == ""))
+                        {
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('SAPPurchaseAccount.');", true);
+                            ModalPopupExtender1.Show();
+                            return;
+                        }
+                    }
+
 
                     DataSet dstest = new DataSet();
                    
@@ -756,6 +811,9 @@ public partial class BranchMaster : System.Web.UI.Page
                     dct = new DataColumn("Add3");
                     dtt.Columns.Add(dct);
 
+                    dct = new DataColumn("SAPAccountCode");
+                    dtt.Columns.Add(dct);
+
                     dstest.Tables.Add(dtt);
 
 
@@ -774,6 +832,8 @@ public partial class BranchMaster : System.Web.UI.Page
                             drNewt["Add1"] = "";
                             drNewt["Add2"] = "";
                             drNewt["Add3"] = "";
+                            drNewt["SAPAccountCode"] = SAPCashAccount;
+                            
                         }
                         else if (i == 2)
                         {
@@ -786,6 +846,7 @@ public partial class BranchMaster : System.Web.UI.Page
                             drNewt["Add1"] = "";
                             drNewt["Add2"] = "";
                             drNewt["Add3"] = "";
+                            drNewt["SAPAccountCode"] = SAPSalesAccount;
                         }
                         else if (i == 3)
                         {
@@ -798,6 +859,8 @@ public partial class BranchMaster : System.Web.UI.Page
                             drNewt["Add1"] = "";
                             drNewt["Add2"] = "";
                             drNewt["Add3"] = "";
+                            drNewt["SAPAccountCode"] = SAPPurchaseAccount;
+                            
                         }
                         else if (i == 4)
                         {
@@ -810,6 +873,7 @@ public partial class BranchMaster : System.Web.UI.Page
                             drNewt["Add1"] = BranchAddress1;
                             drNewt["Add2"] = BranchAddress2;
                             drNewt["Add3"] = BranchAddress3;
+                            drNewt["SAPAccountCode"] = 0;
                         }
                         else if (i == 5)
                         {
@@ -822,6 +886,7 @@ public partial class BranchMaster : System.Web.UI.Page
                             drNewt["Add1"] = BranchAddress1;
                             drNewt["Add2"] = BranchAddress2;
                             drNewt["Add3"] = BranchAddress3;
+                            drNewt["SAPAccountCode"] = 0;
                         }
                         dstest.Tables[0].Rows.Add(drNewt);
                     }
@@ -952,7 +1017,7 @@ public partial class BranchMaster : System.Web.UI.Page
                         }
                     }
 
-                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation,txtmobile1,txtmobile2,txtemailid,IsActive, Username, dstest, dstestt, dstesttt);
+                    bl.InsertBranch(connection, Branchcode, BranchName, BranchAddress1, BranchAddress2, BranchAddress3, BranchLocation, txtmobile1, txtmobile2, txtemailid, IsActive, Username, dstest, dstestt, dstesttt, SAPCashAccount, SAPSalesAccount, SAPPurchaseAccount);
                        
                     //MyAccordion.Visible = true;
                     pnlVisitDetails.Visible = false;

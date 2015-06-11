@@ -143,7 +143,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 field2 += " , ";
             }
-
+                
             field2 += "tblSalesItems.Rate";
         }
         if (chkboxQty.Checked)
@@ -218,7 +218,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         string options = string.Empty;
         Types = "CategoryWise";
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -241,17 +241,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -309,7 +344,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
         ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
-
+      
 
         if (ds != null)
         {
@@ -487,7 +522,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                         rateTotal = 0;
 
                         dt.Rows.Add(dr_final8);
-
+                        
 
                         DataRow dr_final888 = dt.NewRow();
                         dt.Rows.Add(dr_final888);
@@ -682,7 +717,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                         CategoryTotal = CategoryTotal - (Convert.ToDouble(dr["amount"]));
                         CategoryqtyTotal = CategoryqtyTotal - Convert.ToDouble(dr["qty"]);
                         total = total - Convert.ToDouble(dr["amount"]);
-                        qtyTotal = qtyTotal - Convert.ToDouble(dr["qty"]);
+                        qtyTotal = qtyTotal - Convert.ToDouble(dr["qty"]);   
                         rateTotal = rateTotal - Convert.ToDouble(dr["rate1"]);
                         rateqtyTotal = rateqtyTotal - Convert.ToDouble(dr["rate1"]);
                     }
@@ -702,7 +737,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                                                       
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -1097,17 +1132,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -1515,7 +1585,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -1880,7 +1950,7 @@ public partial class ReportExlSales : System.Web.UI.Page
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 fLvlValueTemp = dr["CategoryName"].ToString().ToUpper().Trim();
-
+                
                 //if (fLvlValue != "" && fLvlValue != fLvlValueTemp)
                 //{
                 //    DataRow dr_final8 = dt.NewRow();
@@ -1894,7 +1964,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                 //    dt.Rows.Add(dr_final888);
                 //}
                 fLvlValue = fLvlValueTemp;
-
+                
                 DataRow dr_final12 = dt.NewRow();
                 dr_final12["CategoryName"] = dr["CategoryName"];
 
@@ -1915,19 +1985,19 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 if (chkboxNlcper.Checked == true)
                     dr_final12["NLC Per%"] = ((Convert.ToDouble(dr["amount"]) - Convert.ToDouble(dr["NLCValue"])) / (Convert.ToDouble(dr["NLCValue"])));
-
+                
                 if (chkboxMRPvalue.Checked == true)
                     dr_final12["MRP Value"] = Convert.ToDouble(dr["MRPValue"]);
-
+                
                 if (chkboxMRPper.Checked == true)
                     dr_final12["MRP Per%"] = ((Convert.ToDouble(dr["amount"]) - Convert.ToDouble(dr["MRPValue"])) / (Convert.ToDouble(dr["MRPValue"])));
-
+                
                 if (chkboxDpvalue.Checked == true)
                     dr_final12["DP Value"] = Convert.ToDouble(dr["DPValue"]);
-
+                
                 if (chkboxDpper.Checked == true)
                     dr_final12["DP Per%"] = ((Convert.ToDouble(dr["amount"]) - Convert.ToDouble(dr["DPValue"])) / (Convert.ToDouble(dr["DPValue"])));
-
+               
                 CategoryTotal = CategoryTotal + Convert.ToDouble(dr["amount"]);
                 CategoryqtyTotal = CategoryqtyTotal + Convert.ToDouble(dr["qty"]);
 
@@ -2220,17 +2290,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -2657,7 +2762,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -3033,16 +3138,51 @@ public partial class ReportExlSales : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("Qty"));
 
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
+            if (chkboxrate.Checked == true)
+            {
+                //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+                DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+                colInt32Debitll.DataType = System.Type.GetType("System.Double");
+                dt.Columns.Add(colInt32Debitll);
+            }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -3445,7 +3585,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -3795,7 +3935,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         Types = "BrandWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -4248,7 +4388,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -5028,7 +5168,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -5036,7 +5176,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpnlcTotal = gpnlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpdpTotal = gpdpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
 
-
+                    
                 }
             }
 
@@ -5365,7 +5505,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Brand Name"));
-
+        
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -5570,7 +5710,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         Types = "BrandProductWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         dt.Columns.Add(new DataColumn("Brand Name"));
         dt.Columns.Add(new DataColumn("Product Name"));
         dt.Columns.Add(new DataColumn("Category"));
@@ -6203,7 +6343,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -7360,7 +7500,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -7937,7 +8077,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     if (chkboxDpper.Checked == true)
                         dr_final8["DP Per%"] = "";
 
-
+                    
                     producttot = 0;
                     dt.Rows.Add(dr_final8);
 
@@ -7980,7 +8120,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                     if (chkboxDpper.Checked == true)
                         dr_final8["DP Per%"] = "";
-
+                    
                     brandTotal = 0;
                     dt.Rows.Add(dr_final8);
 
@@ -8183,7 +8323,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         Types = "BrandProductModelWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -9013,7 +9153,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -10486,7 +10626,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -11584,7 +11724,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         Types = "BillWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -12036,7 +12176,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -12822,7 +12962,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -13687,7 +13827,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         Types = "BrandModelWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -14319,7 +14459,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -14860,7 +15000,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Brand Name"));
-        dt.Columns.Add(new DataColumn("Model"));
+        dt.Columns.Add(new DataColumn("Model"));       
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -15458,7 +15598,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -15956,7 +16096,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         string brand = string.Empty;
         string product = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         startDate = Convert.ToDateTime(txtstdate.Text);
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
@@ -16113,7 +16253,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
-                        
+
                         foreach (ListItem listItem1 in lstPricelist.Items)
                         {
                             if (listItem1.Selected)
@@ -16465,7 +16605,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -16671,7 +16811,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Pay Mode"));
-
+        
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
@@ -17119,7 +17259,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -17661,7 +17801,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         Types = "ExecutiveWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -17679,16 +17819,39 @@ public partial class ReportExlSales : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("Qty"));
 
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -17734,7 +17897,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                 dt.Columns.Add(new DataColumn(item1 + " Value"));
                 dt.Columns.Add(new DataColumn(item1 + " Per%"));
-                dt.Columns.Add(new DataColumn("Gp for " + item1));
+                dt.Columns.Add(new DataColumn("Gp for" + item1));
             }
         }
 
@@ -17970,7 +18133,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     }
 
                     if (chkboxAvg.Checked == true)
-                        dr_final12["Avg"] = "";
+                        dr_final12["Avg"] = 0;
 
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
@@ -18118,7 +18281,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -18305,7 +18468,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                 dr_final789["Sales Value"] = Convert.ToString(Convert.ToDecimal(total));
 
             if (chkboxAvg.Checked == true)
-                dr_final789["Avg"] = "";
+                dr_final789["Avg"] = 0;
 
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
@@ -18492,16 +18655,39 @@ public partial class ReportExlSales : System.Web.UI.Page
             dt.Columns.Add(new DataColumn("Qty"));
 
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -18758,7 +18944,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     }
 
                     if (chkboxAvg.Checked == true)
-                        dr_final12["Avg"] = "";
+                        dr_final12["Avg"] = 0;
 
                     if (chkboxPer.Checked == true)
                         dr_final12["Per%"] = (100 / Convert.ToDouble(dr["rate"])) * 100;
@@ -18905,7 +19091,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -19076,7 +19262,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                 dr_final789["Sales Value"] = Convert.ToString(Convert.ToDecimal(total));
 
             if (chkboxAvg.Checked == true)
-                dr_final789["Avg"] = "";
+                dr_final789["Avg"] = 0;
 
             if (chkboxPer.Checked == true)
                 dr_final789["Per%"] = (100 / (Convert.ToDouble(CategoryqtyTotal) * Convert.ToDouble(total))) * 100;
@@ -19417,7 +19603,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         Types = "DateWise";
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Date"));
@@ -19439,17 +19625,53 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
+
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -19883,7 +20105,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -20255,17 +20477,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -20670,7 +20927,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -21007,7 +21264,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Date"));
-
+        
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
@@ -21168,7 +21425,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         string brand = string.Empty;
         string product = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         startDate = Convert.ToDateTime(txtstdate.Text);
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
@@ -21204,22 +21461,57 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         dt.Columns.Add(new DataColumn("Model"));
         dt.Columns.Add(new DataColumn("Branchcode"));
-
+        
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -21745,7 +22037,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -22167,17 +22459,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -22674,7 +23001,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -23283,7 +23610,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         Types = "CustomerWise";
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
         dt.Columns.Add(new DataColumn("Customer Name"));
@@ -23302,17 +23629,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -23405,7 +23767,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
                         if (chkboxPer.Checked == true)
                             dr_final8["Per%"] = (100 / (Convert.ToDouble(qtyTotal) * Convert.ToDouble(CategoryTotal))) * 100;
-                       
+
                         foreach (ListItem listItem1 in lstPricelist.Items)
                         {
                             if (listItem1.Selected)
@@ -23746,7 +24108,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -24116,22 +24478,57 @@ public partial class ReportExlSales : System.Web.UI.Page
         options = opttype.SelectedItem.Text;
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
-        dt.Columns.Add(new DataColumn("Customer Name"));
+        dt.Columns.Add(new DataColumn("Customer Name"));      
 
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -24535,7 +24932,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["rate"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -25012,7 +25409,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         Types = "CategoryBrandWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -25049,17 +25446,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -25655,7 +26087,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -26187,17 +26619,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -26805,7 +27272,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -27319,7 +27786,7 @@ public partial class ReportExlSales : System.Web.UI.Page
 
         dt.Columns.Add(new DataColumn("Category"));
         dt.Columns.Add(new DataColumn("Brand Name"));
-
+        
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
@@ -27647,7 +28114,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         endDate = Convert.ToDateTime(txteddate.Text);
         string Types = string.Empty;
         string options = string.Empty;
-        options = opttype.SelectedItem.Text;
+        options = opttype.SelectedItem.Text; 
         Types = "CategoryBrandProductWise";
         objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
@@ -27699,17 +28166,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -28478,7 +28980,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -28492,7 +28994,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpmTotal = gpmTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpnTotal = gpnTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpdTotal = gpdTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                   
 
                     dt.Rows.Add(dr_final12);
                 }
@@ -29197,17 +29699,52 @@ public partial class ReportExlSales : System.Web.UI.Page
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
+        //if (chkboxrate.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Rate"));
+
+        //if (chkboxVal.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Sales Value"));
+
+        //if (chkboxAvg.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Avg"));
+
+        //if (chkboxPer.Checked == true)
+        //    dt.Columns.Add(new DataColumn("Per%"));
+
         if (chkboxrate.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Rate"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Rate"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Rate");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxVal.Checked == true)
-            dt.Columns.Add(new DataColumn("Sales Value"));
+        {
+            //dt.Columns.Add(new DataColumn("Sales Value"));
+
+            DataColumn colInt32Debitll = new DataColumn("Sales Value");
+            colInt32Debitll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitll);
+        }
 
         if (chkboxAvg.Checked == true)
-            dt.Columns.Add(new DataColumn("Avg"));
+        {
+            //dt.Columns.Add(new DataColumn("Avg"));
+            DataColumn colInt32Debitlll = new DataColumn("Avg");
+            colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitlll);
+        }
 
         if (chkboxPer.Checked == true)
-            dt.Columns.Add(new DataColumn("Per%"));
+        {
+            //dt.Columns.Add(new DataColumn("Per%"));
+
+            DataColumn colInt32Debitl = new DataColumn("Per%");
+            colInt32Debitl.DataType = System.Type.GetType("System.Double");
+            dt.Columns.Add(colInt32Debitl);
+        }
 
         //if (chkboxNlcvalue.Checked == true)
         //    dt.Columns.Add(new DataColumn("NLC Value"));
@@ -29952,7 +30489,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                     gpformrpTotal = gpformrpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"])));
                     gpfornlcTotal = gpfornlcTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"])));
                     gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr["amount"]) - (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"])));
-
+                    
                     mrpTotal = mrpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["MRP"]));
                     nlcTotal = nlcTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["NLC"]));
                     dpTotal = dpTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["DP"]));
@@ -30630,7 +31167,7 @@ public partial class ReportExlSales : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Category"));
         dt.Columns.Add(new DataColumn("Brand Name"));
         dt.Columns.Add(new DataColumn("Product Name"));
-
+        
         if (chkboxQty.Checked == true)
             dt.Columns.Add(new DataColumn("Qty"));
 
@@ -30818,7 +31355,7 @@ public partial class ReportExlSales : System.Web.UI.Page
                 dr_final12["Category"] = dr["CategoryName"];
                 dr_final12["Brand Name"] = dr["Productdesc"];
                 dr_final12["Product Name"] = dr["ProductName"];
-
+                
                 if (chkboxQty.Checked == true)
                     dr_final12["Qty"] = dr["Qty"];
 
@@ -31217,7 +31754,7 @@ public partial class ReportExlSales : System.Web.UI.Page
     protected string getfield()
     {
         string field1 = "";
-
+                
 
         return field1;
     }
@@ -31336,7 +31873,7 @@ public partial class ReportExlSales : System.Web.UI.Page
     {
         DataSet ds = new DataSet();
         DataTable dt = new DataTable("sales report");
-        DateTime startDate, endDate;
+        DateTime startDate, endDate;      
 
         string fLvlValueTemp = string.Empty;
         string fLvlValue = string.Empty;
@@ -31371,8 +31908,17 @@ public partial class ReportExlSales : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("BranchCode"));
         dt.Columns.Add(new DataColumn("Qty"));
-        dt.Columns.Add(new DataColumn("Rate"));
-        dt.Columns.Add(new DataColumn("Amount"));
+        //dt.Columns.Add(new DataColumn("Rate"));
+
+        DataColumn colInt32Debitlll = new DataColumn("Rate");
+        colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+        dt.Columns.Add(colInt32Debitlll);
+
+        //dt.Columns.Add(new DataColumn("Amount"));
+
+        DataColumn colInt32Debitll = new DataColumn("Amount");
+        colInt32Debitll.DataType = System.Type.GetType("System.Double");
+        dt.Columns.Add(colInt32Debitll);
 
         ds = objBL.getSalesreport(startDate, endDate, Category, brand, product, cond);
         if (ds.Tables[0].Rows.Count > 0)
@@ -31606,7 +32152,7 @@ public partial class ReportExlSales : System.Web.UI.Page
             Category = ddlCategory.SelectedItem.Text;
             brand = ddlBrand.SelectedValue;
             product = ddlproduct.SelectedValue;
-            //   string Branch = drpBranchAdd.SelectedValue;
+         //   string Branch = drpBranchAdd.SelectedValue;
             string cond = "";
             cond = getCond();
 

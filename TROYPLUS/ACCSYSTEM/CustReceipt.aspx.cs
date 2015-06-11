@@ -914,11 +914,13 @@ public partial class CustReceipt : System.Web.UI.Page
         DataSet ds = new DataSet();
         //ds = bl.ListBanks();
 
+        string Username = Request.Cookies["LoggedUserName"].Value;
+
         ddBanks.Items.Clear();
         ListItem lifzzh = new ListItem("Select Bank", "0");
         lifzzh.Attributes.Add("style", "color:Black");
         ddBanks.Items.Add(lifzzh);
-        ds = bl.ListBankLedgerpaymnetIsActive();
+        ds = bl.ListBankLedgerpaymnetIsActive1(Username);
         ddBanks.DataSource = ds;
         ddBanks.DataTextField = "LedgerName";
         ddBanks.DataValueField = "LedgerID";
@@ -1166,7 +1168,14 @@ public partial class CustReceipt : System.Web.UI.Page
                 if (ds != null)
                 {
 
-                    
+                    string Username = Request.Cookies["LoggedUserName"].Value;
+
+                    if (!bl.IsCustomerHadCheque(connection, ds, Username))
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please contact Administrator.')", true);
+                        return;
+                    }
+
 
                     DataTable dttt;
                     DataRow drNew;
@@ -1231,13 +1240,13 @@ public partial class CustReceipt : System.Web.UI.Page
                             drNew["ChequeNo"] = Convert.ToInt32(ds.Tables[0].Rows[i]["ChequeNo"]);
 
                         }
-                        else if (Convert.ToString(ds.Tables[0].Rows[i]["paymode"]) == "Card")
-                        {
-                            drNew["type"] = 3;
-                            drNew["DebtorID"] = Convert.ToInt32(ds.Tables[0].Rows[i]["DebtorID"]);
-                            drNew["ChequeNo"] = Convert.ToInt32(ds.Tables[0].Rows[i]["ChequeNo"]);
+                        //else if (Convert.ToString(ds.Tables[0].Rows[i]["paymode"]) == "Card")
+                        //{
+                        //    drNew["type"] = 3;
+                        //    drNew["DebtorID"] = Convert.ToInt32(ds.Tables[0].Rows[i]["DebtorID"]);
+                        //    drNew["ChequeNo"] = Convert.ToInt32(ds.Tables[0].Rows[i]["ChequeNo"]);
 
-                        }
+                        //}
 
                         drNew["Amount"] = Convert.ToDouble(ds.Tables[0].Rows[i]["Amount"]);
                         string dtaa = Convert.ToDateTime(ds.Tables[0].Rows[i]["TransDate"]).ToString("dd/MM/yyyy");
@@ -2285,16 +2294,16 @@ public partial class CustReceipt : System.Web.UI.Page
                 drNew["Paymode"] = "Cash";
                 drNew["ChequeNo"] = 0;
             }
-            else if (txtttd.SelectedItem.Text == "Cheque")
+            else if (txtttd.SelectedItem.Text == "Cheque/Card")
             {
                 drNew["DebitorID"] = int.Parse(txttd.SelectedValue);
                 drNew["Paymode"] = "Cheque";
                 drNew["ChequeNo"] = txttdd.Text;
             }
-            else if (txtttd.SelectedItem.Text == "Card")
+            else if (txtttd.SelectedItem.Text == "Cheque/Card")
             {
                 drNew["DebitorID"] = int.Parse(txttd.SelectedValue);
-                drNew["Paymode"] = "Card";
+                drNew["Paymode"] = "Cheque";
                 drNew["ChequeNo"] = txttdd.Text;
             }
 
@@ -2479,6 +2488,9 @@ public partial class CustReceipt : System.Web.UI.Page
 
 	 string Branchcde = drpBranchAdd.SelectedValue;
 
+     bool custtype = chk.Checked;
+     int ReceiptType = Convert.ToInt32(drpReceiptType.SelectedValue);
+
         int CreditorID = 0;
         string sCustomerName = string.Empty;
 
@@ -2568,6 +2580,9 @@ public partial class CustReceipt : System.Web.UI.Page
         dctt = new DataColumn("BillDate");
         dttt.Columns.Add(dctt);
 
+        dctt = new DataColumn("Bank");
+        dttt.Columns.Add(dctt);
+
         dsttt.Tables.Add(dttt);
 
 
@@ -2577,6 +2592,8 @@ public partial class CustReceipt : System.Web.UI.Page
             TextBox txt = (TextBox)GridView2.Rows[vLoop1].FindControl("txtAmount");
             DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtType");
             TextBox txtChequeNo = (TextBox)GridView2.Rows[vLoop1].FindControl("txtChequeNo");
+
+            DropDownList txtttddt = (DropDownList)GridView2.Rows[vLoop1].FindControl("drpBank");
 
             double adtotal = Convert.ToDouble(txt.Text);
 
@@ -2596,6 +2613,14 @@ public partial class CustReceipt : System.Web.UI.Page
                     drNewtt = dttt.NewRow();
                     drNewtt["Billno"] = txttt.Text;
                     drNewtt["BillDate"] = txtttdd.Text;
+                    if (txtttddt.SelectedIndex == 0)
+                    {
+                        drNewtt["Bank"] = "";
+                    }
+                    else
+                    {
+                        drNewtt["Bank"] = txtttddt.SelectedItem.Text;
+                    }
                     drNewtt["CustomerName"] = txtd.Text;
 
                     if (adtotal > Convert.ToDouble(txtamount1.Text))
@@ -2751,7 +2776,7 @@ public partial class CustReceipt : System.Web.UI.Page
             string Branchcode = drpBranchAdd.SelectedValue;
 
 
-            bl.UpdateMultipleCustReceipt(conn, ds, CreditorID, dsttt, usernam, Branchcode, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()));
+            bl.UpdateMultipleCustReceipt(conn, ds, CreditorID, dsttt, usernam, Branchcode, int.Parse(GrdViewReceipt.SelectedDataKey.Value.ToString()), custtype, ReceiptType, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, sCustomerName);
 
             string salestype = string.Empty;
             int ScreenNo = 0;
@@ -3336,16 +3361,16 @@ public partial class CustReceipt : System.Web.UI.Page
                 drNew["Paymode"] = "Cash";
                 drNew["ChequeNo"] = 0;
             }
-            else if (txtttd.SelectedItem.Text == "Cheque")
+            else if (txtttd.SelectedItem.Text == "Cheque/Card")
             {
                 drNew["DebitorID"] = int.Parse(txttd.SelectedValue);
                 drNew["Paymode"] = "Cheque";
                 drNew["ChequeNo"] = txttdd.Text;
             }
-            else if (txtttd.SelectedItem.Text == "Card")
+            else if (txtttd.SelectedItem.Text == "Cheque/Card")
             {
                 drNew["DebitorID"] = int.Parse(txttd.SelectedValue);
-                drNew["Paymode"] = "Card";
+                drNew["Paymode"] = "Cheque";
                 drNew["ChequeNo"] = txttdd.Text;
             }
 
@@ -3545,6 +3570,9 @@ public partial class CustReceipt : System.Web.UI.Page
         sCustomerAddress3 = txtAddress3.Text;
         sCustomerContact = txtCustomerId.Text;
 
+        bool custtype = chk.Checked;
+        int ReceiptType = Convert.ToInt32(drpReceiptType.SelectedValue);
+
         string cuscat = string.Empty;
         cuscat = drpCustomerCategoryAdd.SelectedItem.Text;
 
@@ -3616,6 +3644,9 @@ public partial class CustReceipt : System.Web.UI.Page
         dctt = new DataColumn("BillDate");
         dttt.Columns.Add(dctt);
 
+        dctt = new DataColumn("Bank");
+        dttt.Columns.Add(dctt);
+
         dsttt.Tables.Add(dttt);
 
 
@@ -3625,6 +3656,7 @@ public partial class CustReceipt : System.Web.UI.Page
             TextBox txt = (TextBox)GridView2.Rows[vLoop1].FindControl("txtAmount");
             DropDownList txtttd = (DropDownList)GridView2.Rows[vLoop1].FindControl("txtType");
             TextBox txtChequeNo = (TextBox)GridView2.Rows[vLoop1].FindControl("txtChequeNo");
+            DropDownList txtttddt = (DropDownList)GridView2.Rows[vLoop1].FindControl("drpBank");
 
             double adtotal = Convert.ToDouble(txt.Text);
 
@@ -3644,6 +3676,14 @@ public partial class CustReceipt : System.Web.UI.Page
                     drNewtt = dttt.NewRow();
                     drNewtt["Billno"] = txttt.Text;
                     drNewtt["BillDate"] = txtttdd.Text;
+                    if (txtttddt.SelectedIndex == 0)
+                    {
+                        drNewtt["Bank"] = "";
+                    }
+                    else
+                    {
+                        drNewtt["Bank"] = txtttddt.SelectedItem.Text;
+                    }
                     drNewtt["CustomerName"] = txtd.Text;
 
                     if (adtotal > Convert.ToDouble(txtamount1.Text))
@@ -3799,7 +3839,7 @@ public partial class CustReceipt : System.Web.UI.Page
         string Branchcode = drpBranchAdd.SelectedValue;
 
 
-        bl.InsertMultipleCustReceipt(conn, ds, CreditorID, dsttt, usernam, Branchcode);
+        bl.InsertMultipleCustReceipt(conn, ds, CreditorID, dsttt, usernam, Branchcode, custtype, ReceiptType, sCustomerAddress, sCustomerAddress2, sCustomerAddress3, sCustomerName);
 
         string salestype = string.Empty;
         int ScreenNo = 0;
@@ -6758,7 +6798,9 @@ public partial class CustReceipt : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
 
-            ds = bl.ListBankLedgerpaymnet();
+            string Username = Request.Cookies["LoggedUserName"].Value;
+
+            ds = bl.ListBankLedgerpay(Username);
 
             if (e.Row.RowType == DataControlRowType.DataRow)
             {

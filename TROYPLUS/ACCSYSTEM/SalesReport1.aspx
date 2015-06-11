@@ -405,6 +405,16 @@
                     <PageFooterTemplate>
                     </PageFooterTemplate>
                 </wc:ReportGridView>
+                 <table>
+                     <tr>
+                        <td colspan="3" align="center">
+                            <br />
+                            <h5 style="font-size:large" >Total
+                            <asp:Label ID="Label4" runat="server"> </asp:Label>
+                              </h5>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </form>

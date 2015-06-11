@@ -21,6 +21,154 @@
     </script>--%>
 
     <script type="text/javascript">
+
+        function GetSelectedTextValue(drpPrd) {
+
+            var selectedText = drpPrd.options[drpPrd.selectedIndex].innerHTML;
+            var selectedValue = drpPrd.options[drpPrd.selectedIndex].value;// drpPrd.value;
+
+            var split = drpPrd.options[drpPrd.selectedIndex].value.split('-');
+
+            var itemcode = split[0];
+            var prddsc = split[1];
+            var price = split[2];
+            var stock = split[3];
+            var execomm = split[4];
+            var disc = split[5];
+            var vat = split[6];
+            var cst = split[7];
+          
+
+            var GridId = "<%=grvStudentDetails.ClientID %>";
+            var grid = document.getElementById(GridId);
+            rowscount = grid.rows.length;
+            // alert(rowscount);
+
+            var row = drpPrd.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+            //alert("Row index" + row + rowIndex);
+            
+            //for (var i = rowIndex; i < rowscount; i++) {
+            for (var i = rowIndex; i <= rowIndex; i++) {
+                var indexID = 02 + i;
+
+                //alert((indexID < 10) ? '0' + indexID.toString() : indexID.toString());
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_drpPrd').value = drpPrd.options[drpPrd.selectedIndex].value;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtDesc').value = prddsc;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtStock').value = stock;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtExeComm').value = execomm;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATPre').value = vat;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtDisPre').value = disc;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtCSTPre').value = cst;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRate').value = price;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtQty').focus();
+
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtExeComm').value = "0";
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtDisPre').value = "0";
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtCSTPre').value = "0";
+            }
+
+            ChangeText(drpPrd);
+
+            //alert("Selected Text: " + selectedText + " Value: " + selectedValue + itemcode + model + prdname + prddsc + disc + vat + cst + nlc + price);
+        }
+
+        function ChangeText(drpPrd) {
+
+            var GridId = "<%=grvStudentDetails.ClientID %>";
+            var grid = document.getElementById(GridId);
+            rowscount = grid.rows.length;
+             //alert(rowscount);
+            var vat = 0;     
+            var row = drpPrd.parentNode.parentNode;
+            var rowIndex = row.rowIndex - 1;
+
+            var vat = document.getElementById('<%= inpVAT.ClientID %>');
+            var disc = document.getElementById('<%= inpDisc.ClientID %>');
+           
+            for (var i = rowIndex; i <= rowIndex; i++) {
+               
+                var indexID = 02 + i;
+                var TextBoxQty = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtQty').value
+                var TextBoxRate = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRate').value;
+                var TextBoxTotalPrice = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTot').value
+                var TextBoxDisPre = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtDisPre').value
+                var TextBoxVATPre = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATPre').value
+                var TextBoxCSTPre = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtCSTPre').value
+                var txtPrBefVAT = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtPrBefVAT').value
+                var TextBoxVATAmt = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATAmt').value
+                var TextBoxRtVAT = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value               
+                var TextBoxTotal = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTotal').value
+               
+                if (vat.value == "0") {
+                    var toqty = TextBoxRate * TextBoxQty;
+                    
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTotal').value = parseFloat(toqty).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTot').value = parseFloat(toqty).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value = parseFloat(toqty).toFixed(2);
+                    if (disc.value == "0")
+                    {
+                        caldisamt = toqty * TextBoxDisPre / 100;
+                    }
+                    else
+                    {
+                        caldisamt = TextBoxDisPre;
+                    }
+                  
+                    var calnet = toqty - caldisamt;                   
+                    var vatper = TextBoxVATPre;                    
+                    var vatper1 = parseFloat(vatper) + 100;                   
+                    var vatinclusiverate = calnet * vatper / vatper1;
+                    var sVatamount = calnet - vatinclusiverate;
+                   
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATAmt').value = parseFloat(vatinclusiverate).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value =parseFloat(calnet).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtPrBefVAT').value = parseFloat(sVatamount).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTotal').value = parseFloat(calnet).toFixed(2);
+                }
+                else if(vat.value == "1")
+                {
+                    var toqty = TextBoxRate * TextBoxQty;
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value =parseFloat(toqty).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTot').value = parseFloat(toqty).toFixed(2);
+                    if (disc.value == "0") {
+                        vatinclusiverate = toqty * TextBoxDisPre / 100;
+                    }
+                    else {
+                        vatinclusiverate = TextBoxDisPre;
+                    }
+
+                    var vatinclusiverate3 = toqty - vatinclusiverate;                  
+                    var vatinclusiverate1 = vatinclusiverate3 * TextBoxVATPre / 100;
+                    var vatinclusiverate2 = vatinclusiverate1 + vatinclusiverate3;
+
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATAmt').value = parseFloat(vatinclusiverate1).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtPrBefVAT').value = parseFloat(vatinclusiverate3).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value = parseFloat(vatinclusiverate2).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTotal').value = parseFloat(vatinclusiverate2).toFixed(2);
+                }
+
+                var grid = document.getElementById('<%= grvStudentDetails.ClientID%>');
+                var tot = document.getElementById('<%= lblNet.ClientID%>');
+                var total = 0;
+                //Counted Total of length
+                if (grid.rows.length > 0) {
+                    //collected all textbox array with input type
+                    var inputs = grid.getElementsByTagName("input");
+                    for (var i = 0; i < inputs.length; i++) {
+                        //Calculated same type textbox values                    
+                        if (inputs[i].name.indexOf("txtTotal") > 1) {
+                            if (inputs[i].value != "") {
+                                total = parseFloat(total) + parseFloat(inputs[i].value);
+                            }
+                        }
+                    }
+                    tot.value = parseFloat(total).toFixed(2);
+                }
+            }                   
+        }
+
+
         function Confirm() {
             var confirm_value = document.createElement("INPUT");
             confirm_value.type = "hidden";
@@ -771,6 +919,9 @@
                                                                                                                                                 <asp:HiddenField ID="hdCurrRole" runat="server" />
                                                                                                                                                 <asp:HiddenField ID="hdOpr" runat="server" />
                                                                                                                                                 <asp:HiddenField ID="hdEditQty" runat="server" Value="0" />
+
+                                                                                                                                                <input id="inpVAT" type="hidden" runat="server" />
+                                                                                                                                                <input id="inpDisc" type="hidden" runat="server" />
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />
@@ -1151,7 +1302,7 @@
                                                                                                                                                         <div style="height: 250px; width: 100%; overflow: scroll">
 
                                                                                                                                                             <asp:GridView ID="grvStudentDetails" runat="server" Width="100%"
-                                                                                                                                                                ShowFooter="True" AutoGenerateColumns="False"
+                                                                                                                                                                ShowFooter="True" AutoGenerateColumns="False" AutoPostBack="true"
                                                                                                                                                                 CellPadding="1" OnRowDataBound="grvStudentDetails_RowDataBound"
                                                                                                                                                                 GridLines="None" OnRowDeleting="grvStudentDetails_RowDeleting">
 
@@ -1166,14 +1317,14 @@
                                                                                                                                                                     <asp:BoundField DataField="RowNumber" HeaderText="#" ItemStyle-Width="45px" ItemStyle-Font-Size="15px" HeaderStyle-ForeColor="Black" />
                                                                                                                                                                     <asp:TemplateField HeaderText="Product Code-Name-Model" ItemStyle-Width="1px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:DropDownList ID="drpPrd" Width="230px" runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName" DataValueField="ItemCode" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged">
+                                                                                                                                                                            <asp:DropDownList ID="drpPrd" Width="230px" runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName1" DataValueField="Retrieve" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged" onchange="GetSelectedTextValue(this)">
                                                                                                                                                                             </asp:DropDownList>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Quantity" ItemStyle-Width="40px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <cc1:FilteredTextBoxExtender ID="Qty" runat="server" FilterType="Numbers" TargetControlID="txtQty" />
-                                                                                                                                                                            <asp:TextBox ID="txtQty" Style="text-align: right" runat="server" Width="40px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtQty" Style="text-align: right" runat="server" Width="40px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" onchange="ChangeText(this)"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Employee Name" ItemStyle-Width="135px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
@@ -1184,7 +1335,7 @@
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Brand" ItemStyle-Width="115px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtDesc" runat="server" ReadOnly="true" Width="115px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtDesc" runat="server" ReadOnly="false" Enabled="false" Width="115px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                         <FooterStyle HorizontalAlign="Left" />
                                                                                                                                                                         <FooterTemplate>
@@ -1201,56 +1352,57 @@
                                                                                                                                                                     <asp:TemplateField HeaderText="Unit Price" ItemStyle-Width="63px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <cc1:FilteredTextBoxExtender ID="rte" runat="server" Enabled="True" FilterType="Custom, Numbers" TargetControlID="txtRate" ValidChars="." />
-                                                                                                                                                                            <asp:TextBox ID="txtRate" Style="text-align: right" runat="server" Width="63px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtRate_TextChanged"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtRate" Style="text-align: right" runat="server" Width="63px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" onchange="ChangeText(this)"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Total Price" ItemStyle-Width="75px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtTot" Style="text-align: right" ReadOnly="true" runat="server" Width="75px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtTot" Style="text-align: right" Enabled="false" ReadOnly="false" runat="server" Width="75px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Stock" ItemStyle-Width="30px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <%-- <asp:CompareValidator ID="cvCustomer" runat="server" ControlToValidate="txtStock" ControlToCompare="txtQty" Display="Dynamic" ErrorMessage="Quantity is greater than Stock" Operator="GreaterThan" Text="*" ValidationGroup="DynRowAdd"></asp:CompareValidator>--%>
-                                                                                                                                                                            <asp:TextBox ID="txtStock" Style="text-align: right" ReadOnly="true" runat="server" Width="30px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtStock" Style="text-align: right" ReadOnly="false" Enabled="false" runat="server" Width="30px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Exec Commission" ItemStyle-Width="50px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtExeComm" Style="text-align: right" runat="server" ReadOnly="true" Width="50px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtExeComm" Style="text-align: right" runat="server" ReadOnly="false" AutoPostBack="true" Width="50px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Disc(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <cc1:FilteredTextBoxExtender ID="Disc" runat="server" FilterType="Numbers,Custom" ValidChars="." TargetControlID="txtDisPre" />
-                                                                                                                                                                            <asp:TextBox ID="txtDisPre" Style="text-align: right" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" ReadOnly="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtDisPre" Style="text-align: right" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" ReadOnly="false" AutoPostBack="true" onchange="ChangeText(this)"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="VAT(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <cc1:FilteredTextBoxExtender ID="VAT" runat="server" FilterType="Numbers,Custom" ValidChars="." TargetControlID="txtVATPre" />
-                                                                                                                                                                            <asp:TextBox ID="txtVATPre" Style="text-align: right" ReadOnly="false" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" OnTextChanged="txtQty_TextChanged"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtVATPre" Style="text-align: right" ReadOnly="false" runat="server" Width="35px" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" onchange="ChangeText(this)"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="CST(%)" ItemStyle-Width="35px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <cc1:FilteredTextBoxExtender ID="CST" runat="server" FilterType="Numbers" TargetControlID="txtCSTPre" />
-                                                                                                                                                                            <asp:TextBox ID="txtCSTPre" Style="text-align: right" runat="server" ReadOnly="true" Width="35px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtCSTPre" Style="text-align: right" runat="server" ReadOnly="false" Enabled="false" Width="35px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Price Before VAT" ItemStyle-Width="80px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtPrBefVAT" Style="text-align: right" ReadOnly="true" runat="server" Width="80px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtPrBefVAT" Style="text-align: right" Enabled="false" ReadOnly="false" runat="server" Width="80px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="VAT Amount" ItemStyle-Width="70px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtVATAmt" Style="text-align: right" runat="server" ReadOnly="true" Width="70px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtVATAmt" Style="text-align: right" runat="server" Enabled="false" ReadOnly="false" Width="70px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
-                                                                                                                                                                    <asp:TemplateField HeaderText="Rate with VAT" ItemStyle-Width="80px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="false">
+                                                                                                                                                                   <%-- <asp:TemplateField HeaderText="Rate with VAT" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">--%>
+                                                                                                                                                                     <asp:TemplateField HeaderText="" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtRtVAT" Style="text-align: right" runat="server" ReadOnly="true" Width="80px" ForeColor="#0567AE" Font-Bold="false" Visible="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtRtVAT" Style="text-align: right" runat="server" ReadOnly="false" Enabled="false" Width="0px" ForeColor="#0567AE" Font-Bold="false" Visible="true"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="AvaStock" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" Visible="false" HeaderStyle-ForeColor="Black">
@@ -1260,7 +1412,7 @@
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Row Total" ItemStyle-Width="80px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtTotal" Style="text-align: right" runat="server" ReadOnly="true" Width="78px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtTotal" Style="text-align: right" runat="server" Enabled="false" ReadOnly="false" Width="78px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                         <%-- <FooterStyle HorizontalAlign="Left" />
                                                                                                                                                                     <FooterTemplate>
@@ -1429,7 +1581,7 @@
                                                                                                                                                                 <td style="width: 15%"></td>
                                                                                                                                                                 <td style="width: 25%;" class="ControlLabelproject">Grand Total(INR)   
                                                                                                                                                                 <td style="width: 14%;">
-                                                                                                                                                                    <asp:TextBox ID="lblNet" Style="text-align: right" ReadOnly="true" runat="server" AutoPostBack="True" SkinID="skinTxtBox" TabIndex="7" Text="0" Width="200px"></asp:TextBox>
+                                                                                                                                                                    <asp:TextBox ID="lblNet" Style="text-align: right" ReadOnly="false" Enabled="false" runat="server" AutoPostBack="True" SkinID="skinTxtBox" TabIndex="7" Text="0" Width="200px"></asp:TextBox>
                                                                                                                                                                     <%--  <asp:Label ID="lblNet" Style="text-align: right" runat="server" CssClass="ControlLabelproject" Text="0"></asp:Label>--%>
                                                                                                                                                                 </td>
                                                                                                                                                                     <td style="width: 6%;"></td>

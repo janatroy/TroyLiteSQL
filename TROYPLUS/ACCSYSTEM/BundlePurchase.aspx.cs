@@ -426,7 +426,7 @@ public partial class BundlePurchase : System.Web.UI.Page
 
                             BusinessLogic bl = new BusinessLogic(sDataSource);
                             /*Start Purchase Loading / Unloading Freight Change - March 16*/
-                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dTotalAmt, salesReturn, srReason, dFreight, dLU, 0, "NO", ds, "NO", sInvoiceno, sInvoicedate, 0, 0, 0, 0, user, narration2,"","","","");
+                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dTotalAmt, salesReturn, srReason, dFreight, dLU, 0, "NO", ds, "NO", sInvoiceno, sInvoicedate, 0, 0, 0, 0, user, narration2, "", "", "", "", "", "", "", "",false);
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
                             /*Start March 15 Modification */
                             if (iPurchaseId == -2)

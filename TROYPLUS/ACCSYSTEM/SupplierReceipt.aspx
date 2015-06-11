@@ -838,7 +838,7 @@
                 <tr style="width: 100%">
                     <td style="width: 918px" align="left">
                         <asp:ObjectDataSource ID="GridSource" runat="server" SelectMethod="ListReceiptsSuppliers"
-                            TypeName="BusinessLogic" DeleteMethod="DeleteReceipt" OnDeleting="GridSource_Deleting">
+                            TypeName="BusinessLogic" DeleteMethod="DeleteSupplierReceipt" OnDeleting="GridSource_Deleting">
                             <DeleteParameters>
                                 <asp:CookieParameter Name="connection" CookieName="Company" Type="String" />
                                 <asp:Parameter Name="TransNo" Type="Int32" />

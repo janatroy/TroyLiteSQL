@@ -442,6 +442,8 @@ public partial class SalesReport : System.Web.UI.Page
         //ds = objBL.getSalesreport(startDate, endDate, "All", "All", "All");
         string branch = getCond();
 
+        branch = " (" + branch + ")";
+
         ds = objBL.getSalesExporttoexcel(selColumn, field2, condtion, branch);
 
         if (ds.Tables[0].Rows.Count > 0)
@@ -488,12 +490,12 @@ public partial class SalesReport : System.Web.UI.Page
                 dr_final12["Vat"] = dr["vat"];
                 dr_final12["Cst"] = dr["cst"];
                 dr_final12["Discount"] = dr["discount"];
-                dr_final12["Value"] = dr["Rate"];// Convert.ToDouble(dr["Amount"]);
+                dr_final12["Value"] = Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["Rate"]);// Convert.ToDouble(dr["Amount"]);
                 dr_final12["BranchCode"] = dr["BranchCode"];
-                brandTotal = brandTotal + (Convert.ToDouble(dr["Amount"]));
-                catTotal = catTotal + (Convert.ToDouble(dr["Amount"]));
-                producttot = producttot + (Convert.ToDouble(dr["Amount"]));
-                total = total + (Convert.ToDouble(dr["Amount"]));
+                brandTotal = brandTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["Rate"]));
+                catTotal = catTotal + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["Rate"]));
+                producttot = producttot + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["Rate"]));
+                total = total + (Convert.ToDouble(dr["Qty"]) * Convert.ToDouble(dr["Rate"]));
                 dt.Rows.Add(dr_final12);
             }
         }
@@ -505,7 +507,7 @@ public partial class SalesReport : System.Web.UI.Page
 
         DataRow dr_final789 = dt.NewRow();
         dr_final789["BillNo"] = "";
-        dr_final789["BillDate"] = "";
+        dr_final789["BillDate"] = "Total : ";
         dr_final789["Customer"] = "";
         dr_final789["Paymode"] = "";
         dr_final789["ItemCode"] = "";
@@ -516,7 +518,7 @@ public partial class SalesReport : System.Web.UI.Page
         dr_final789["Vat"] = "";
         dr_final789["Cst"] = "";
         dr_final789["Discount"] = "";
-       // dr_final789["Value"] = 0;// Convert.ToString(Convert.ToDecimal(total));
+        dr_final789["Value"] = Convert.ToString(Convert.ToDecimal(total));
         dr_final789["BranchCode"] = "";
         dt.Rows.Add(dr_final789);
 

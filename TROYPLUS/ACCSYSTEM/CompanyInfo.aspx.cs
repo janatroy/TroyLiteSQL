@@ -426,15 +426,20 @@ public partial class CompanyInfo : System.Web.UI.Page
                             if (dr["KeyValue"] != null)
                                 txtPurRnd.Text = dr["KeyValue"].ToString();
                         }
-                        else if (dr["KeyName"].ToString() == "SAPPROCESS")
+                        else if (dr["KeyName"].ToString() == "SAPCCODE")
                         {
                             if (dr["KeyValue"] != null)
-                                chksap.SelectedValue = dr["KeyValue"].ToString();
+                                txtSAPCustomerAccountCode.Text = dr["KeyValue"].ToString();
                         }
+                        else if (dr["KeyName"].ToString() == "SAPSCODE")
+                        {
+                            if (dr["KeyValue"] != null)
+                               txtSAPSupplierAccountCode.Text = dr["KeyValue"].ToString();
                     }
                 }
             }
         }
+    }
     }
     public void GetCompanyInfo()
     {
@@ -569,6 +574,9 @@ public partial class CompanyInfo : System.Web.UI.Page
                 string purchasepricelist = string.Empty;
                 string purchaseround = string.Empty;
 
+                int SAPSupplierAccountCode=0;
+                int SAPCustomerAccountCode = 0;
+
                 salesdiscount = RadioButtonDiscount.SelectedValue;
                 openingbalance = RadioButtonOpening.SelectedValue;
 
@@ -620,6 +628,9 @@ public partial class CompanyInfo : System.Web.UI.Page
                 purchasepricelist = drpPurPriceList.SelectedValue;
                 purchaseround = txtPurRnd.Text.Trim();
 
+                SAPCustomerAccountCode = Convert.ToInt32(txtSAPCustomerAccountCode.Text);
+                SAPSupplierAccountCode =  Convert.ToInt32(txtSAPSupplierAccountCode.Text);
+
                 clsCompany clscmp = new clsCompany();
                 clscmp.Company = strCompany;
                 clscmp.Address = strAddress;
@@ -636,7 +647,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
                 try
                 {
-                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround, sapcheck);
+                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround);
 
                     System.Threading.Thread.Sleep(1000);
 

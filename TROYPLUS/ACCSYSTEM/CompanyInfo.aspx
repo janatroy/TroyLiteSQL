@@ -835,6 +835,25 @@
                                                             <%--</div>--%>
                                                         </td>
                                                     </tr>
+                                                           <tr>
+                                                        <td style="width: 25%" class="ControlLabelproject">SAP CustomerAccountCode
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlTextBox3">
+                                                            <asp:TextBox ID="txtSAPCustomerAccountCode" runat="server" CssClass="cssTextBox" Width="125px"></asp:TextBox>
+                                                        </td>
+                                                        <td style="width: 25%" class="ControlLabelproject">
+                                                            SAP SupplierAccountCode
+                                                          
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlTextBox3">
+                                                            <asp:TextBox ID="txtSAPSupplierAccountCode" runat="server" CssClass="cssTextBox" Width="125px"></asp:TextBox>
+                                                        </td>
+                                                        <td style="height: 10%" align="left">
+                                                        
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="height: 2px">
+                                                    </tr>
                                                     <tr style="height: 15px">
                                                         <td style="width: 15%" class="ControlLabelproject">SAP B1 Integration
                                                         </td>
