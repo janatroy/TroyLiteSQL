@@ -36,8 +36,8 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     {
         string connection = Request.Cookies["Company"].Value;
         IInternalTransferService bl = new BusinessLogic(connection);
-      //  string branch = Request.Cookies["Branch"].Value;
-        var dbData = bl.ListInternalRequests1(connection, txtSearch.Text, ddCriteria.SelectedValue);
+        string branch = Request.Cookies["Branch"].Value;
+        var dbData = bl.ListInternalRequests1(connection, txtSearch.Text, ddCriteria.SelectedValue,branch);
 
         if (dbData != null)
         {
@@ -852,7 +852,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
                   
 
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata);
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata,"");
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;

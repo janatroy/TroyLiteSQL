@@ -187,7 +187,7 @@
                             CancelControlID="BtnPopUpCancel1" DynamicServicePath="" Enabled="True" PopupControlID="purchasePanel"
                             RepositionMode="RepositionOnWindowResizeAndScroll" TargetControlID="dummyPurchase">
                         </cc1:ModalPopupExtender>
-                        <asp:Panel ID="purchasePanel" runat="server" Style="width: 67%; display: none">
+                        <asp:Panel ID="purchasePanel" runat="server" Style="width: 72%; display: none">
                             <asp:UpdatePanel ID="updatePnlPurchase" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
                                     <div id="Div1" style="background-color: White;">
@@ -320,6 +320,51 @@
                                                                         <td colspan="5">
                                                                             <div id="div" runat="server" style="height: 307px; overflow: scroll">
                                                                                 <cc1:TabContainer ID="tabContol" runat="server" Width="100%" ActiveTabIndex="0" CssClass="fancy fancy-green">
+                                                                                      <cc1:TabPanel ID="TabPanel1" runat="server" HeaderText="Dashboard">
+                                                                                        <ContentTemplate>
+                                                                                            <rwg:BulkEditGridView ID="Griddashborad" AutoGenerateColumns="False" BorderWidth="1px"
+                                                                                                BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
+                                                                                                Width="900px">
+                                                                                                <RowStyle CssClass="dataRow" />
+                                                                                                <SelectedRowStyle CssClass="SelectdataRow" />
+                                                                                                <AlternatingRowStyle CssClass="altRow" />
+                                                                                                <EmptyDataRowStyle CssClass="HeadataRow" Font-Bold="true" />
+                                                                                                <HeaderStyle CssClass="HeadataRow" Wrap="false" />
+                                                                                                <FooterStyle CssClass="dataRow" />
+                                                                                                <Columns>
+                                                                                                    <asp:BoundField DataField="Area" HeaderText="Area" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
+                                                                                                    <asp:BoundField DataField="Section" HeaderText="Section" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
+                                                                                                    <asp:BoundField DataField="RoleDesc" HeaderText="Screen Name" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" HeaderStyle-Wrap="false" />
+                                                                                                    <asp:BoundField DataField="Role" HeaderText="Roles" HeaderStyle-Wrap="false" ReadOnly="true" ApplyFormatInEditMode="false" HeaderStyle-BorderColor="Gray" />
+                                                                                                    <asp:TemplateField Visible="false">
+                                                                                                        <ItemTemplate>
+                                                                                                            <asp:Label ID="lblDebtorID" runat="server" Text='<%# Eval("OrderNo")%>' />
+                                                                                                        </ItemTemplate>
+                                                                                                    </asp:TemplateField>
+                                                                                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Add" HeaderStyle-BorderColor="Gray">
+                                                                                                        <ItemTemplate>
+                                                                                                            <asp:CheckBox ID="chkboxAdd" Enabled="false" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Add") %>'></asp:CheckBox>
+                                                                                                        </ItemTemplate>
+                                                                                                    </asp:TemplateField>
+                                                                                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">
+                                                                                                        <ItemTemplate>
+                                                                                                            <asp:CheckBox ID="chkboxEdit" Enabled="false" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Edit") %>'></asp:CheckBox>
+                                                                                                        </ItemTemplate>
+                                                                                                    </asp:TemplateField>
+                                                                                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Delete" HeaderStyle-BorderColor="Gray">
+                                                                                                        <ItemTemplate>
+                                                                                                            <asp:CheckBox ID="chkboxDel" Enabled="false" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Delete") %>'></asp:CheckBox>
+                                                                                                        </ItemTemplate>
+                                                                                                    </asp:TemplateField>
+                                                                                                    <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="View" HeaderStyle-BorderColor="Gray">
+                                                                                                        <ItemTemplate>
+                                                                                                            <asp:CheckBox ID="chkboxView" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Views") %>'></asp:CheckBox>
+                                                                                                        </ItemTemplate>
+                                                                                                    </asp:TemplateField>
+                                                                                                </Columns>
+                                                                                            </rwg:BulkEditGridView>
+                                                                                        </ContentTemplate>
+                                                                                    </cc1:TabPanel>
                                                                                     <cc1:TabPanel ID="tabCustomer" runat="server" HeaderText="Sales">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="GrdViewItem" AutoGenerateColumns="False" BorderWidth="1px"

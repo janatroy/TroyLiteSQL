@@ -48,6 +48,8 @@ public partial class CustomerSales : System.Web.UI.Page
             dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
             dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
 
+            Page.RegisterClientScriptBlock("FrameRefresh", "<script language='javascript'>window.top.frames[index].location.reload(true);</script>");
+            
 
             if (!IsPostBack)
             {
@@ -206,7 +208,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 loadSupplier("Sundry Debtors");
                 loadCategories();
                 LoadProducts(this, null);
-                loadManualSalesBooks();
+                
                 rowmanual.Visible = false;
                 txtBillDate.Focus();
                 //BindGrid(0, 0);
@@ -581,8 +583,12 @@ public partial class CustomerSales : System.Web.UI.Page
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic();
         DataSet ds = new DataSet();
+      
+        string branch = drpBranch.SelectedValue;
 
-        ds = bl.GetManualSalesBooks(sDataSource);
+        ds = bl.GetManualSalesBooks(sDataSource,branch);
+        drpManualSalesBook.Items.Clear();
+        drpManualSalesBook.Items.Add(new ListItem("Select Book", "0"));
         drpManualSalesBook.DataTextField = "BookName";
         drpManualSalesBook.DataValueField = "BookId";
         drpManualSalesBook.DataSource = ds;
@@ -1347,6 +1353,7 @@ public partial class CustomerSales : System.Web.UI.Page
         {
 
             BusinessLogic bl = new BusinessLogic(sDataSource);
+            connection = Request.Cookies["Company"].Value;
 
             if (lblBillNo.Text != "Auto Generated.No need to enter")
             {
@@ -7449,6 +7456,7 @@ public partial class CustomerSales : System.Web.UI.Page
             loadBranch();
             BranchEnable_Disable();
             loadDropDowns();
+            loadManualSalesBooks();
             FirstGridViewRow();
             ModalPopupMethod.Show();
             //ModalPopupExtender1.Show();
@@ -8487,6 +8495,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 salesID = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value.ToString());
             string branchcode = row.Cells[9].Text;
             loadBranch();
+            //loadManualSalesBooks();
 
             DataSet ds = bl.GetSalesForId(salesID, branchcode);
 
@@ -8495,6 +8504,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             string scuscategory = string.Empty;
             loadBanksEdit();
+           
 
             if (ds != null)
             {
@@ -8652,6 +8662,20 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         txtmanual.Text = Convert.ToString(ds.Tables[0].Rows[0]["manualno"]);
                         rowmanual.Visible = true;
+                    }
+                    //loadManualSalesBooks();
+                    if (ds.Tables[0].Rows[0]["bookid"] != null)
+                    {
+                      string bookid = Convert.ToString(ds.Tables[0].Rows[0]["bookid"]);
+                        drpManualSalesBook.Visible = true;
+                        drpManualSalesBook.ClearSelection();
+                        ListItem li = drpManualSalesBook.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(bookid));
+                        if (li != null) li.Selected = true;
+                        //drpManualSalesBook.ClearSelection();
+                        //ListItem clie = drpManualSalesBook.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["bookid"]));
+
+                        //if (clie != null) clie.Selected = true;
+                       
                     }
 
 
@@ -9666,6 +9690,18 @@ public partial class CustomerSales : System.Web.UI.Page
 
             textt = txtSearch.Text;
             dropd = ddCriteria.SelectedValue;
+
+            //if (dropd == "PayMode")
+            //{
+            //    if (textt == "Cash")
+            //        textt = "1";
+            //    if (textt == "Credit")
+            //        textt = "3";
+            //    if (textt == "Bank")
+            //        textt = "2";
+            //    if (textt == "Multiple Payment")
+            //        textt = "4";
+            //}
 
             BindGrid(textt, dropd);
             //Accordion1.SelectedIndex = 0;
@@ -12822,6 +12858,10 @@ public partial class CustomerSales : System.Web.UI.Page
         if (optionmethod.SelectedValue == "DeliveryReturn")
         {
             loadPurchasedeliveryID();
+        }
+        if (optionmethod.SelectedValue == "ManualSales")
+        {
+            loadManualSalesBooks();
         }
 
     }

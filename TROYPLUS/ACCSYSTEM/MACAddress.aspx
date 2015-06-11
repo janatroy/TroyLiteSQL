@@ -18,12 +18,13 @@
             xmlDoc.loadXML(xml);
         }
 
-        function callme() {            
+        function callme() {           
             var locator = new ActiveXObject("WbemScripting.SWbemLocator");
             var service = locator.ConnectServer(".");
             var properties = service.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True");
             var e = new Enumerator(properties);
-            //alert(e);
+           // alert(e);
+            //alert("hi");
             document.write("<table border=1>");
             dispHeading();
             for (; !e.atEnd() ; e.moveNext()) {
@@ -60,7 +61,6 @@
 <body onload="callme();">
     <form id="form1" runat="server">
         <div>
-            
         </div>
     </form>
 </body>

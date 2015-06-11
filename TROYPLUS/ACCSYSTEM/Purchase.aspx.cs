@@ -1067,6 +1067,7 @@ public partial class Purchase : System.Web.UI.Page
                 deliveryNote = ddDeliveryNote.SelectedValue;
                 srReason = txtSRReason.Text.Trim();
                 iPaymode = Convert.ToInt32(cmdPaymode.SelectedItem.Value);
+                string ponumber = txtponumber.Text;
 
                 if (txtdiscamt.Text == "")
                     ddiscamt = 0;
@@ -1116,6 +1117,15 @@ public partial class Purchase : System.Web.UI.Page
                     tabs2.ActiveTabIndex = 1;
                     //updatePnlSales.Update();
                     return;
+                }
+                if(intTrans=="NO" && deliveryReturn=="NO" && deliveryNote=="NO" && salesReturn=="NO")
+                {
+                    if (ponumber== "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter Purchase order number.It cannot be left blank.')", true);
+                        cmdSave.Enabled = true;
+                        return;
+                    }
                 }
 
                 string Paymode = cmbBankName.SelectedItem.Text;
@@ -1377,6 +1387,7 @@ public partial class Purchase : System.Web.UI.Page
                         string sSupplierAddress2 = txtAddress2.Text;
                         string sSupplierAddress3 = txtAddress3.Text;
                         string sCustomerContact = txtMobile.Text;
+                       
 
                         if (chk.Checked == false)
                         {
@@ -1681,7 +1692,7 @@ public partial class Purchase : System.Web.UI.Page
                         /*Start Purchase Loading / Unloading Freight Change - March 16*/
                         /*Start InvoiceNo and InvoiceDate - Jan 26*/
                         //iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData);
-                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData);
+                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData,ponumber);
 
                         //if(deliveryNote=="YES")
                         if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
@@ -2205,6 +2216,7 @@ public partial class Purchase : System.Web.UI.Page
                 }
 
                 int cnt = 0;
+                string ponumber = txtponumber.Text;
 
                 if (intTrans == "YES")
                     cnt = cnt + 1;
@@ -2221,6 +2233,15 @@ public partial class Purchase : System.Web.UI.Page
                     tabs2.ActiveTabIndex = 1;
                     //updatePnlSales.Update();
                     return;
+                }
+                if (intTrans == "NO" && deliveryReturn == "NO" && deliveryNote == "NO" && salesReturn == "NO")
+                {
+                    if (ponumber == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter Purchase order number.It cannot be left blank.')", true);
+                        cmdSave.Enabled = true;
+                        return;
+                    }
                 }
 
                 for (int vLoop = 0; vLoop < grvStudentDetails.Rows.Count; vLoop++)
@@ -2250,6 +2271,7 @@ public partial class Purchase : System.Web.UI.Page
                 int iPurchase = 0;
                 string filename = string.Empty;
                 double dTotalAmt = 0;
+               
 
                 iPurchase = Convert.ToInt32(hdPurchase.Value);
                 // iPurchase = Convert.ToInt32(hdPurchase.Value.Replace(".00", ""));
@@ -2551,6 +2573,7 @@ public partial class Purchase : System.Web.UI.Page
                             string sSupplierAddress2 = txtAddress2.Text;
                             string sSupplierAddress3 = txtAddress3.Text;
                             string sCustomerContact = txtMobile.Text;
+                           
 
                             if (chk.Checked == false)
                             {
@@ -2739,7 +2762,7 @@ public partial class Purchase : System.Web.UI.Page
 
                             //*******************************
 
-                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, connection, branchcode, deliveryReturn);
+                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, connection, branchcode, deliveryReturn,ponumber);
 
 
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
@@ -4673,6 +4696,8 @@ public partial class Purchase : System.Web.UI.Page
             if (ds.Tables[0].Rows[0]["PurchaseId"] != null)
                 txtInvoiveNo.Text = ds.Tables[0].Rows[0]["PurchaseId"].ToString();
 
+            if (ds.Tables[0].Rows[0]["ponumber"] != null)
+                txtponumber.Text = ds.Tables[0].Rows[0]["ponumber"].ToString();
 
             if (ds.Tables[0].Rows[0]["Freight"] != null)
                 txtFreight.Text = Convert.ToString(ds.Tables[0].Rows[0]["Freight"]);
@@ -7008,13 +7033,13 @@ public partial class Purchase : System.Web.UI.Page
 
                 for (int i = 0; i < appSettings.Tables[0].Rows.Count; i++)
                 {
-                    if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "CURRENCY")
+                    if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "CURRENCY")
                     {
                         currency = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                         Session["CurrencyType"] = currency;
                     }
 
-                    if (appSettings.Tables[0].Rows[i]["KEY"].ToString() == "BARCODE")
+                    if (appSettings.Tables[0].Rows[i]["KEYNAME"].ToString() == "BARCODE")
                     {
                         BarCodeRequired = appSettings.Tables[0].Rows[i]["KEYVALUE"].ToString();
                     }

@@ -8,6 +8,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cplhTab" runat="Server">
 </asp:Content>
 
+
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <%-- <script type="text/javascript">
         //function OnChangetxt() {
@@ -194,6 +195,7 @@
         }
 
         function PrintItem(ID) {
+           
             window.showModalDialog('./ProductSalesBill.aspx?SID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
         }
 
@@ -210,8 +212,11 @@
         }
 
         function PrintItem(ID, BID) {
+           // alert("hi");
             window.showModalDialog('./ProductSalesBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
         }
+
+        window.top.frames[index].location.reload(true);
 
     </script>
 
@@ -264,10 +269,12 @@
                                             <div style="width: 150px; font-family: 'Trebuchet MS';">
                                                 <asp:DropDownList ID="ddCriteria" runat="server" BackColor="White" Width="149px" Height="24px" Style="text-align: center; border: 1px solid White">
                                                     <asp:ListItem Value="0">All</asp:ListItem>
-                                                    <asp:ListItem Value="BillNo">Bill No</asp:ListItem>
                                                     <asp:ListItem Value="TransNo">Trans No</asp:ListItem>
+                                                    <asp:ListItem Value="BillNo">Bill No</asp:ListItem>                                                    
                                                     <asp:ListItem Value="BillDate">Bill Date</asp:ListItem>
                                                     <asp:ListItem Value="CustomerName">Customer Name</asp:ListItem>
+                                                    <%-- <asp:ListItem Value="PayMode">Payment mode</asp:ListItem>--%>
+                                                     <asp:ListItem Value="CustomerName">Ledger Name</asp:ListItem>
                                                     <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
@@ -1720,8 +1727,8 @@
                                                                                                                         <td style="width: 20%" class="ControlLabelproject">Manual Sales Book
                                                                                                                         </td>
                                                                                                                         <td style="width: 25%">
-                                                                                                                            <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="false" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" AppendDataBoundItems="true">
-                                                                                                                                <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>
+                                                                                                                            <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" DataTextField="BookName" DataValueField="BookId" AppendDataBoundItems="true">
+                                                                                                                              <%--  <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>--%>
                                                                                                                             </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 15%"></td>

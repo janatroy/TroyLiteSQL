@@ -448,8 +448,15 @@
                             </div>--%>
                                 <div class="menu2" id="chromemenu" style="width: 1001px;">
                                     <ul id="custom-nav-menu">
-                                        <li class="color Mainmenu1"><a href="#">
+                                        <li class="color Mainmenu1"><a href="./DashBoard1.aspx">
                                             <img src="App_Themes/NewTheme/Images/TroyDashboard.png" /></a>
+                                            <ul>
+                                                <li class="color submenumenu" runat="server" visible="false"><a href="./DashBoard.aspx"><span style="font-family: arial; font-size: 10px; position: relative; vertical-align: middle; top: 2px; text-align: left; float: right"></span>REPORT</a>
+                                                    
+                                                </li>
+                                                 <li class="color submenumenu" runat="server" visible="false"><a href="./DashBoard1.aspx" runat="server" id="A2454">Dashboard1</a></li>
+
+                                                </ul>
                                         </li>
                                         <li class="color Mainmenu2"><a href="#">
                                             <img src="App_Themes/NewTheme/Images/TroySales.png" /></a>

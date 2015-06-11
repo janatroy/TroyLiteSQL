@@ -375,7 +375,7 @@ public partial class BusinessLogic : IInternalTransferService
         }
     }
 
-    public List<InternalTransferRequest> ListInternalRequests1(string connection, string txtSearch, string dropDown)
+    public List<InternalTransferRequest> ListInternalRequests1(string connection, string txtSearch, string dropDown,string branch)
     {
         DataSet dsData = new DataSet();
         StringBuilder dbQry = new StringBuilder();
@@ -392,11 +392,16 @@ public partial class BusinessLogic : IInternalTransferService
 
             if (!(dropDown == "ItemCode" || dropDown == "Status" || dropDown == "RequestedBranch" || dropDown == "CompletedDate" || dropDown == "BranchHasStock" || dropDown == "RequestID" || dropDown == "UserID" || dropDown == "RequestedDate"))
                 txtSearch = "%" + txtSearch + "%";
-           
-          
 
+
+            if (branch == "All")
+            {
                 dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests ");
-
+            }
+            else
+            {
+                dbQry.Append("SELECT RequestID, UserID, RequestedDate, ItemCode, RequestedBranch, BranchHasStock, Status, Quantity, RejectedReason, CompletedDate, CompletedUser FROM tblInternalTransferRequests where BranchHasStock='"+ branch +"'  ");
+            }
 
                 if (dropDown == "ItemCode" && !string.IsNullOrEmpty(txtSearch))
                 {
@@ -806,7 +811,7 @@ public interface IInternalTransferService
     DataSet GetBranches(string connection);
     List<InternalTransferRequest> ListInternalRequests(string connection, string txtSearch, string dropDown,string branch);
 
-    List<InternalTransferRequest> ListInternalRequests1(string connection, string txtSearch, string dropDown);
+    List<InternalTransferRequest> ListInternalRequests1(string connection, string txtSearch, string dropDown,string branch);
     InternalTransferRequest GetInternalTransferRequest(string connection, int RequestID);
     void UpdateInternalRequest(string connection, InternalTransferRequest request);
     void DeleteInternalRequest(string connection, int RequestID);
