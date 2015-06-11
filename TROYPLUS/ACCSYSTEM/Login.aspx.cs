@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using Microsoft.Practices.EnterpriseLibrary;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using System.Net.NetworkInformation;
 
 public partial class Login : System.Web.UI.Page
 {
@@ -67,6 +68,7 @@ public partial class Login : System.Web.UI.Page
 
                 Session["CompanyList"] = listComp;
                 txtLogin.Focus();
+                GetMACAddress();
 
             }
         }
@@ -639,7 +641,7 @@ public partial class Login : System.Web.UI.Page
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                if (ds.Tables[0].Rows[i]["IP"].ToString() == ((HiddenField)this.Master.FindControl("hdMAC")).Value.ToString())
+                if (ds.Tables[0].Rows[i]["IP"].ToString() == macAddress.Value)
                     return true;
             }
         }
@@ -650,6 +652,24 @@ public partial class Login : System.Web.UI.Page
 
         return retVal;
 
+    }
+
+    public string GetMACAddress()
+    {
+        NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+        String sMacAddress = string.Empty;
+        foreach (NetworkInterface adapter in nics)
+        {
+            if (sMacAddress == String.Empty)// only return MAC Address from first card  
+            {
+                IPInterfaceProperties properties = adapter.GetIPProperties();
+                sMacAddress = adapter.GetPhysicalAddress().ToString();
+                sMacAddress = sMacAddress.Replace(":", "");
+
+            }
+           
+           // return sMacAddress;
+        } return sMacAddress;
     }
 
     private void IsSMSRequired()

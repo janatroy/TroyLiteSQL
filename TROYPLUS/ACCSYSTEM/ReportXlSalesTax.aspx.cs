@@ -214,7 +214,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                 intTrans = "NO";
                 salesRet = "NO";
                 delNote = "NO";
-                string Branch = drpBranchAdd.SelectedValue;
+                string Branch = DropDownList1.SelectedValue;
                 if (optionrate.SelectedItem.Text == "5%")
                 {
                     condi = " And tblPurchaseItems.vat = 5";
@@ -228,8 +228,8 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                     condi = "";
                 }
 
-                startDate = Convert.ToDateTime(txtStartDate.Text.Trim());
-                endDate = Convert.ToDateTime(txtEndDate.Text.Trim());
+                startDate = Convert.ToDateTime(txtStartDt.Text.Trim());
+                endDate = Convert.ToDateTime(txtEndDt.Text.Trim());
 
                 Response.Write("<script language='javascript'> window.open('ReportSalesSaleTax1.aspx?Branch=" + Branch + "&condi=" + Server.UrlEncode(condi) + "&startdate=" + startDate + "&enddate=" + endDate + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
                 
@@ -261,7 +261,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
             intTrans = "NO";
             salesRet = "NO";
             delNote = "NO";
-            string Branch = drpBranchAdd.SelectedValue;
+            string Branch = DropDownList2.SelectedValue;
             if (optionrate.SelectedItem.Text == "5%")
             {
                 condi = " And tblPurchaseItems.vat = 5";
@@ -305,7 +305,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
             intTrans = "NO";
             salesRet = "NO";
             delNote = "NO";
-            string Branch = drpBranchAdd.SelectedValue;
+            string Branch = DropDownList3.SelectedValue;
             if (optionrate.SelectedItem.Text == "5%")
             {
                 condi = " And tblPurchaseItems.vat = 5";
@@ -462,7 +462,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
         string intTrans = "";
         string salesRet = "";
         string delNote = "";
-
+        double totfin = 0.00;
         string condi = "";
 
         intTrans = "NO";
@@ -524,6 +524,8 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                     dr_export["Invoice Date"] = dtaa;
 
                     dr_export["Purchase Value"] = Convert.ToDouble(dr["NetPurchaseRate"]) - (Convert.ToDouble(dr["ActualDiscount"]) + Convert.ToDouble(dr["DiscAmt"]));
+                    totfin = totfin + Convert.ToDouble(dr["NetPurchaseRate"]) - (Convert.ToDouble(dr["ActualDiscount"]) + Convert.ToDouble(dr["DiscAmt"]));
+
 
                     if (Convert.ToDouble(dr["vat"]) == 5)
                     {
@@ -533,7 +535,7 @@ public partial class ReportXlSalesTax : System.Web.UI.Page
                     {
                         total14 = total14 + Convert.ToDouble(dr["ActualVAT"]);
                     }
-                    tot = tot + Convert.ToDouble(dr["NetPurchaseRate"]);
+                    tot = tot + Convert.ToDouble(dr["NetPurchaseRate"]) - (Convert.ToDouble(dr["ActualDiscount"]) + Convert.ToDouble(dr["DiscAmt"]));
 
                     tot1 = tot1 + Convert.ToDouble(dr["ActualVAT"]);
 

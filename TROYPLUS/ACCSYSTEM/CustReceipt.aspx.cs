@@ -18,7 +18,7 @@ public partial class CustReceipt : System.Web.UI.Page
     public string sDataSource = string.Empty;
     protected void Page_Load(object sender, EventArgs e)
     {
-        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+        ScriptManager.RegisterStartupScript(this, GetType(), "text", "hide();", true);
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "$('.chzn-select').chosen(); $('.chzn-select-deselect').chosen({ allow_single_deselect: true });", true);
         try
         {

@@ -362,7 +362,7 @@
                                                                                                                     </tr>
                                                                                                                     <tr>
                                                                                                                         <td style="width: 25%;" class="ControlLabelproject">
-                                                                                                                            <asp:CompareValidator ID="CompareValidator5" ValidationGroup="purchaseval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Doc Status" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
+                                                                                                                            <asp:CompareValidator ID="CompareValidator5" ValidationGroup="purchaseval" runat="server" ControlToValidate="drpBranch" Display="Dynamic" ErrorMessage="Please Select Branch. It cannot be left Blank" Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                             Select Branch  *
                                                                                                                             <asp:CompareValidator ID="CompareValidator16" runat="server" ControlToValidate="drpBranch"
                                                                                                                                 Display="Dynamic" ErrorMessage="Please Select Branch" Operator="GreaterThan"
@@ -553,10 +553,14 @@
                                                                                                                             <%--</asp:Panel> --%>                                                                                                        
                                                                                                                         </td>
                                                                                                                         <td style="width: 14%;"></td>
-                                                                                                                        <td style="width: 14%">
+                                                                                                                        <td class="ControlLabelproject" style="width: 18%;">
+                                                                                                                             <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtponumber"
+                                                                                                                                                    ErrorMessage="Purchase Order Number is mandatory. It cannot be Left blank" Text="*" ValidationGroup="purchaseval"></asp:RequiredFieldValidator>--%>
+                                                                                                                            Purchase Order number
                                                                                                                         </td>
-                                                                                                                        <td style="width: 19%">
-                                                                                                                            <%--<asp:TextBox ID="txtroundoff" runat="server" CssClass="cssTextBox" Width="100%" Height="23px"  BackColor = "#90c9fc"></asp:TextBox>--%>
+                                                                                                                        <td class="ControlTextBox3" style="width: 19%">
+                                                                                                                            
+                                                                                                                            <asp:TextBox ID="txtponumber" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" Width="500px"></asp:TextBox>
                                                                                                                           <%--  <asp:TextBox ID="txtfixedtotal" runat="server" CssClass="cssTextBox" ValidationGroup="product" Text="0" Width="100%" BackColor="#e7e7e7"></asp:TextBox>--%>
                                                                                                                         </td>
                                                                                                                         <td style="width: 13%"></td>

@@ -120,6 +120,14 @@
                                         Voucher Date:
                                         <asp:Label ID="lblVoucherDate" runat="server"></asp:Label>
                                     </td>
+
+                                </tr>
+                                 <tr>
+                                    <td colspan="2" valign="top" align="right">
+                                        Purchase Order No:
+                                        <asp:Label ID="lblponumber" runat="server"></asp:Label>
+                                    </td>
+
                                 </tr>
                                 <tr>
                                     <td colspan="2" align="left" valign="top">

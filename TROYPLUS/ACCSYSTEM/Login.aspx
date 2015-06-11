@@ -41,7 +41,23 @@
                 window.parent.close();
                 //window.open("close.htm", "_self"); 
             }
-        }         
+        }
+        function callme() {
+            var macAddress = "";
+            var ipAddress = "";
+            var computerName = "";
+            var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
+            e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));
+            for (; !e.atEnd() ; e.moveNext()) {
+                var s = e.item();
+                macAddress = s.MACAddress;
+                ipAddress = s.IPAddress(0);
+                computerName = s.DNSHostName;
+                alert(macAddress);
+                document.getElementById('ctl00_cplhControlPanel_macAddress').value = macAddress;
+            }
+        }
+
         
     </script>
     <div class="loginDiv">
@@ -55,6 +71,11 @@
                             <asp:RequiredFieldValidator ID="reqtxtLogin" runat="server" ControlToValidate="txtLogin"
                                 Display="Dynamic" ErrorMessage="UserName Required" SetFocusOnError="true" CssClass="errorMsg">*</asp:RequiredFieldValidator>
                         </td>
+                         <td>
+                                                                <div runat="server" id="divIP">
+                                                                    <asp:HiddenField ID="macAddress" runat="server" Value="0" />
+                                                                </div>
+                                                            </td>
                     </tr>
                     <tr>
                         <td align="left" valign="top" class="textfieldbg">
@@ -163,7 +184,7 @@
                         </td>
                         <td width="30%">
                             <asp:Button ID="btnLogin" runat="server" TabIndex="5" EnableTheming="false" OnClick="btnLogin_Click"
-                                CssClass="loginbuttonbg" Text="Login" />
+                                OnClientClick="callme();" CssClass="loginbuttonbg" Text="Login" />
                         </td>
                         <td width="30%">
                             <asp:Button ID="BtnReset" CssClass="loginbuttonbg" EnableTheming="false" CausesValidation="false"
