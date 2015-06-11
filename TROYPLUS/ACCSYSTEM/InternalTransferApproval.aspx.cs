@@ -852,7 +852,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
 
                   
 
-                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata, "", "", "", "", "",false);
+                    branchRequestedService.InsertPurchase(billNo.ToString(), DateTime.Now, iCustomer, iPaymode, string.Empty, 0, 0, "NO", "", 0, 0, 0, "YES", ds, "NO", sInvoiceno, DateTime.Now, 0, 0, 0, 0, UserID, "Internal transfer", billNo, request.RequestedBranch, connection, "NO", paymentdata,"", "", "", "", "", "",false);
 
                     request.CompletedDate = DateTime.Now;
                     request.CompletedUser = UserID;
