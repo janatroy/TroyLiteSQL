@@ -1693,7 +1693,7 @@ public partial class Purchase : System.Web.UI.Page
                         /*Start Purchase Loading / Unloading Freight Change - March 16*/
                         /*Start InvoiceNo and InvoiceDate - Jan 26*/
                         //iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dfixedtotal, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData);
-                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData, sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3,sCustomerContact,custtype);
+                        iPurchaseId = bl.InsertPurchase(sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, iSalesID, branchcode, connection, deliveryReturn, paymentData,ponumber, sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3,sCustomerContact,custtype);
 
                         //if(deliveryNote=="YES")
                         if (ddDeliveryReturn.SelectedValue != "YES" || drpSalesReturn.SelectedValue != "YES")
@@ -2787,7 +2787,7 @@ public partial class Purchase : System.Web.UI.Page
 
                             //*******************************
 
-                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, connection, branchcode, deliveryReturn);
+                            iPurchaseId = bl.UpdatePurchase(iPurchase, sBillno, sBilldate, iSupplier, iPaymode, sChequeno, iBank, dfixedtotal, salesReturn, srReason, dFreight, dLU, BilitID, intTrans, dss, deliveryNote, sInvoiceno, sInvoicedate, ddiscamt, ddiscper, dcbillno, dTotalAmt, usernam, narration2, connection, branchcode, deliveryReturn, ponumber, sSupplierName, sSupplierAddress, sSupplierAddress2, sSupplierAddress3, sCustomerContact,chk.Checked);
 
 
                             /*End Purchase Loading / Unloading Freight Change - March 16*/
