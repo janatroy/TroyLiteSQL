@@ -182,7 +182,7 @@
         }
 
 
-        window.onload = function Showalert() {
+         <%--window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter1.ClientID %>");
@@ -192,14 +192,14 @@
                 // when the window is loaded, hide the button if the textbox is empty
             }
 
-        }
+        }--%>
 
         function PrintItem(ID) {
            
             window.showModalDialog('./ProductSalesBill.aspx?SID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
         }
 
-        function EnableDisableButton(sender, target) {
+     <%--   function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtSearch.ClientID %>');
 
             if (sender.value.length >= 1 && first.value.length >= 1) {
@@ -209,6 +209,24 @@
             if (sender.value.length < 1 && first.value.length < 1) {
                 document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
             }
+        }--%>
+
+        function Showalert() {
+
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter1.ClientID %>");
+            if (txt.value == "") {
+               //  alert("hide");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+            else {
+               //  alert("show");
+                btn.style.visibility = "visible";
+            }
+
         }
 
         function PrintItem(ID, BID) {
@@ -217,6 +235,18 @@
         }
 
         window.top.frames[index].location.reload(true);
+
+
+        function ShowModalPopup() {
+            $find("mpe").show();
+             // alert("show");
+            return false;
+        }
+        function HideModalPopup() {
+            $find("mpe").hide();
+            //  alert("hide");
+            return false;
+        }
 
     </script>
 
@@ -335,7 +365,7 @@
                         </div>--%>
                         <cc1:ModalPopupExtender ID="ModalPopupMethod" runat="server" BackgroundCssClass="modalBackground"
                             CancelControlID="CancelPopUpMethod" DynamicServicePath="" Enabled="True" PopupControlID="pnlMethod"
-                            TargetControlID="ShowPopUpMethod">
+                            TargetControlID="ShowPopUpMethod" BehaviorID="mpe">
                         </cc1:ModalPopupExtender>
                         <input id="ShowPopUpMethod" type="button" style="display: none" runat="server" />
                         <input id="CancelPopUpMethod" runat="server" style="display: none"
@@ -411,7 +441,7 @@
                                                                                         <td>
                                                                                             <asp:Panel ID="Panel5" runat="server" Width="120px">
                                                                                                 <asp:Button ID="cmdCancelMethod" runat="server" CssClass="cancelbutton6" OnClick="cmdCancelMethod_Click" CausesValidation="false"
-                                                                                                    EnableTheming="false" />
+                                                                                                    EnableTheming="false" OnClientClick="return HideModalPopup()" />
                                                                                             </asp:Panel>
                                                                                         </td>
                                                                                     </tr>
@@ -2088,7 +2118,7 @@
             <td style="width: 50%">
                 <div style="text-align: right;">
                     <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                        <asp:Button ID="lnkBtnAdd" ForeColor="White" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                        <asp:Button ID="lnkBtnAdd" ForeColor="White" runat="server" OnClick="lnkBtnAdd_Click" OnClientClick="return ShowModalPopup()" CssClass="ButtonAdd66"
                             EnableTheming="false" Width="80px" Font-Bold="True"></asp:Button>
                     </asp:Panel>
                 </div>

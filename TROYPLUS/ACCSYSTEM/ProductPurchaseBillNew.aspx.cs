@@ -16,6 +16,27 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
     public double dNet = 0;
     public double dQty = 0;
     public double sumVat = 0;
+    public double freight = 0;
+    public double loadunload = 0;
+    public double tot = 0;
+    public double disamt = 0;
+    public double disamnt = 0;
+    public double purchaserate=0;
+
+    public double vatinclusiverate3;
+    public double vatinclusiverate1;
+    public double vatinclusiverate5;
+    public double vatinclusiverate6;
+    public double vatinclusiverate7;
+    public double vatinclusiverate4;
+
+
+    public double vatinclusiverate3j;
+    public double vatinclusiverate1j;
+    public double vatinclusiverate5j;
+    public double vatinclusiverate6j;
+    public double vatinclusiverate7j;
+    public double vatinclusiverate4j;
 
     public double dDis = 0;
     public double dCST = 0;
@@ -37,6 +58,8 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
         {
             int iBillno = 0;
 
+          
+
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
 
             if (Request.Cookies["Company"] != null)
@@ -54,6 +77,33 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
             if (!Page.IsPostBack)
             {
                 loadDivisions();
+
+                DataSet companyInfo = new DataSet();
+                if (Request.Cookies["Company"] != null)
+                {
+                    companyInfo = bl.getCompanyInfo(Request.Cookies["Company"].Value);
+
+                    if (companyInfo != null)
+                    {
+                        if (companyInfo.Tables[0].Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in companyInfo.Tables[0].Rows)
+                            {
+                                lblTNGST.Text = Convert.ToString(dr["TINno"]);
+                                lblHead.Text = Convert.ToString(dr["CompanyName"]);
+                                // Label5.Text = Convert.ToString(dr["CompanyName"]);
+                                lblPhone.Text = Convert.ToString(dr["Phone"]);
+                                lblGSTno.Text = Convert.ToString(dr["GSTno"]);
+
+                                lblAddress.Text = Convert.ToString(dr["Address"]);
+                                lblCity.Text = Convert.ToString(dr["city"]) + "-" + Convert.ToString(dr["Pincode"]);
+                                // lblPincode.Text = Convert.ToString(dr["Pincode"]);
+                                lblState.Text = Convert.ToString(dr["state"]);
+
+                            }
+                        }
+                    }
+                }
 
                 if (ddDivsions.Items.Count == 1)
                 {
@@ -100,8 +150,8 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
 
     public void GetHeaderInfo()
     {
-        lblPurchaseOrder.Text = "";
-        lblPaymentDue.Text = "";
+
+
 
         double dFreight = 0;
         double dFr = 0;
@@ -133,14 +183,14 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 lblSupplierName.Text = Convert.ToString(dr["Customername"]);
                 lblSupplierNameEx.Text = Convert.ToString(dr["Customername"]);
 
-                lblShipToName.Text = Convert.ToString(dr["Customername"]);
+                //  lblShipToName.Text = Convert.ToString(dr["Customername"]);
                 lblShipToNameEx.Text = Convert.ToString(dr["Customername"]);
 
                 lblSupplierAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
                 lblSupplierAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
 
-                lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
-                lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
+                // lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
+                // lblShipToAddr1.Text = Convert.ToString(dr["CustomerAddress"]);
 
                 custAdd = Convert.ToString(dr["CustomerAddress"]);
                 string[] address = new string[3] { "", "", "" };
@@ -157,14 +207,14 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                     if (address[0] != string.Empty)
                     {
                         lblSupplierAddr1.Text = address[0];
-                        lblShipToAddr1.Text = address[0];
+                        // lblShipToAddr1.Text = address[0];
                     }
                 }
 
                 if (address2 != null)
                 {
                     lblSupplierAddr2.Text = address2;
-                    lblShipToAddr2.Text = address2;
+                    // lblShipToAddr2.Text = address2;
                 }
 
                 if (address3 != null)
@@ -175,7 +225,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 lblSupplierPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
                 lblSupplierPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
 
-                lblShipToPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
+                // lblShipToPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
                 lblShipToPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
 
                 lblBillDate.Text = Convert.ToString(dr["BillDate"]);
@@ -187,34 +237,41 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 lblCustomerID.Text = Convert.ToString(dr["CreditorID"]);
                 lblCustomerIDEx.Text = Convert.ToString(dr["CreditorID"]);
 
-                if (dr["paymode"].ToString() == "1")
-                {
-                    lblPayMode.Text = "Cash";
-                    divBankPaymode.Visible = false;
+                lblPaymentDue.Text = Convert.ToString(dr["Transno"]);
 
-                    lblPayModeEx.Text = "Cash";
-                    divBankPaymodeEx.Visible = false;
-                }
-                else if (dr["paymode"].ToString() == "2")
-                {
-                    lblPayMode.Text = "Bank / Credit Card";
-                    divBankPaymode.Visible = true;
-                    divCreditCardNo.InnerHtml = dr["CreditCardNo"].ToString();
-                    divBankName.InnerHtml = dr["Debtor"].ToString();
+                lblPurchaseOrder.Text = Convert.ToString(dr["ponumber"]);
 
-                    lblPayModeEx.Text = "Bank / Credit Card";
-                    divBankPaymodeEx.Visible = true;
-                    divCreditCardNoEx.InnerHtml = dr["CreditCardNo"].ToString();
-                    divBankNameEx.InnerHtml = dr["Debtor"].ToString();
-                }
-                else if (dr["paymode"].ToString() == "3")
-                {
-                    lblPayMode.Text = "Cheque";
-                    divBankPaymode.Visible = false;
 
-                    lblPayModeEx.Text = "Cheque";
-                    divBankPaymodeEx.Visible = false;
-                }
+                lblPayMode.Text = Convert.ToString(dr["narration2"]);
+
+                //if (dr["paymode"].ToString() == "1")
+                //{
+                //    lblPayMode.Text = "Cash";
+                //    divBankPaymode.Visible = false;
+
+                //    lblPayModeEx.Text = "Cash";
+                //    divBankPaymodeEx.Visible = false;
+                //}
+                //else if (dr["paymode"].ToString() == "2")
+                //{
+                //    lblPayMode.Text = "Bank / Credit Card";
+                //    divBankPaymode.Visible = true;
+                //    divCreditCardNo.InnerHtml = dr["ChequeNo"].ToString();
+                //    divBankName.InnerHtml = dr["Creditor"].ToString();
+
+                //    lblPayModeEx.Text = "Bank / Credit Card";
+                //    divBankPaymodeEx.Visible = true;
+                //    divCreditCardNoEx.InnerHtml = dr["ChequeNo"].ToString();
+                //    divBankNameEx.InnerHtml = dr["Creditor"].ToString();
+                //}
+                //else if (dr["paymode"].ToString() == "3")
+                //{
+                //    lblPayMode.Text = "Credit";
+                //    divBankPaymode.Visible = false;
+
+                //    lblPayModeEx.Text = "Credit";
+                //    divBankPaymodeEx.Visible = false;
+                //}
 
                 //if (dr["MultiPayment"].ToString() == "YES")
                 //{
@@ -377,6 +434,12 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
             dc = new DataColumn("Rods");
             dt.Columns.Add(dc);
 
+            //dc = new DataColumn("PurchaseDiscount");
+            //dt.Columns.Add(dc);
+
+            //dc = new DataColumn("discamt");
+            //dt.Columns.Add(dc);
+
             billDs.Tables.Add(dt);
 
             string itemCode = string.Empty;
@@ -392,6 +455,9 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
             double qty = 0;
             double dAmout = 0;
             double dVat = 0;
+            double rate1 = 0;
+            double rate2 = 0;
+            double rate3 = 0;
 
             double dFreight = 0;
             double dTotal = 0;
@@ -410,7 +476,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                     }
 
                     salesDs = bl.GetProductPurchaseBill(salesID, itemCode);
-                    
+
                     //qty = Convert.ToDouble(salesDs.Tables[0].Rows[0]["Quantity"]);
 
                     if (ds.Tables[0].Rows[i]["Qty"] != null)
@@ -427,11 +493,23 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                         dRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["PurchaseRate"]);
                     }
 
+                    if (salesDs.Tables[0].Rows[0]["PurchaseDiscount"] != null)
+                    {
+                        rate1 = Convert.ToInt32(salesDs.Tables[0].Rows[0]["PurchaseDiscount"]);
+                    }
+
+                    if (salesDs.Tables[0].Rows[0]["discamt"] != null)
+                    {
+                        rate2 = Convert.ToInt32(salesDs.Tables[0].Rows[0]["discamt"]);
+                    }
+
+                    rate3 = rate1 - rate2;
+
                     if (salesDs.Tables[0].Rows[0]["SumVat"] != null)
                     {
                         dNetRate = Convert.ToDouble(salesDs.Tables[0].Rows[0]["SumVat"]) / qty;
                     }
-                   
+
                     if (ds.Tables[0].Rows[i]["VAT"] != null)
                     {
                         dVAT = Convert.ToDouble(ds.Tables[0].Rows[i]["VAT"]);
@@ -439,7 +517,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
 
                     //if (ds.Tables[0].Rows[i]["VATAmount"] != null)
                     //{
-                    //    dVATAmt = Convert.ToDouble(ds.Tables[0].Rows[i]["VATAmount"]);
+                    dVATAmt = rate3 *dVAT/100;
                     //}
 
                     if (ds.Tables[0].Rows[i]["Discount"] != null)
@@ -464,7 +542,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                     drNew["ProductName"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]);
                     drNew["ProductDesc"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
 
-                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]);
+                    drNew["ProductItem"] = Convert.ToString(ds.Tables[0].Rows[i]["ProductDesc"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["CategoryName"]) + " - " + Convert.ToString(ds.Tables[0].Rows[i]["Model"]);
 
                     drNew["SalesPerson"] = GetEmployeeName(Convert.ToInt32(ds.Tables[0].Rows[i]["SupplierID"]));
 
@@ -473,7 +551,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                     //drNew["Bundles"] = Convert.ToString(ds.Tables[0].Rows[i]["Bundles"]);
                     //drNew["Rods"] = Convert.ToString(ds.Tables[0].Rows[i]["Rods"]);
                     drNew["Qty"] = Convert.ToString(qty);
-                    drNew["Unit"] = measureUnit;
+                   // drNew["Unit"] = measureUnit;
                     drNew["TotalPrice"] = dTotal.ToString("f2");
                     drNew["Amount"] = dTotal.ToString("f2");  //dTotal;
                     drNew["CST"] = Convert.ToString(ds.Tables[0].Rows[i]["CST"]);
@@ -558,11 +636,11 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 //    billDs.Tables[0].Rows.Add(drNew);
                 //}
 
-                if (billDs.Tables[0].Rows.Count < 10)
+                if (billDs.Tables[0].Rows.Count < 20)
                 {
                     int currRowCnt = billDs.Tables[0].Rows.Count;
 
-                    for (int i = currRowCnt; i < 10; i++)
+                    for (int i = currRowCnt; i < 20; i++)
                     {
                         drNew = dt.NewRow();
 
@@ -605,27 +683,147 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
         DataSet ds1 = new DataSet();
         BusinessLogic bl = new BusinessLogic(sDataSource);
 
-        ds = bl.GetPurchaseForId(BillNo, BranchCode);
+        ds = bl.GetPurchaseForIdnewprint(BillNo, BranchCode);
 
         //GetSalesItemsForIdRet - dicount , vatTotal, lblSubTotal(mrp) 
+        double sumNet = 0;
+        double dFr = 0;
+        double vat = 0;
+        double cst = 0;
+        double discount = 0;
+        double discamt = 0;
+        double purchaseRate = 0;
+        double currDis = 0;
+        double currVat = 0;
+        double disTotamt = 0;
 
+        // int payMode;
 
-        int payMode;
-        double tot;
+        //  double vat;
+       
+        // double cst;
+
+        // double loadunload;
+
+        double dis;
+        double qty;
         if ((ds != null) && (ds.Tables[0].Rows.Count > 0))
         {
+
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 tot = Convert.ToDouble(dr["TotalAmt"]);
+                freight = Convert.ToDouble(dr["Freight"]);
+                loadunload = Convert.ToDouble(dr["LoadUnLoad"]);
                 lblTotal.Text = tot.ToString("#0.00");// Convert.ToString(dr["Total"]);
                 lblTotalEx.Text = tot.ToString("#0.00");
-                payMode = Convert.ToInt32(dr["PayMode"]);
+                //  payMode = Convert.ToInt32(dr["PayMode"]);
+                vat = Convert.ToDouble(dr["VAT"]);
+                purchaserate =  Convert.ToDouble(dr["PurchaseRate"]);
+                cst = Convert.ToDouble(dr["CST"]);
+
+                disamnt = Convert.ToDouble(dr["discamount"]);
+                disamt = Convert.ToDouble(dr["discamt"]);
+                dis = Convert.ToDouble(dr["discount"]);
+                qty = Convert.ToDouble(dr["Qty"]);
+
+                currDis = GetDiscount(qty, purchaserate, dis, disamt);
+              
+                
+                dDis = dDis + currDis;
+               
+                
+                dCST = dCST + GetCSTVAT(currDis, cst);
+               
+                
+                disTot = disTot + ((qty * purchaserate) * (dis / 100));
+               
+                
+                disTotamt = disTotamt + disamt;
+               
+                
+                cstTotal = cstTotal + dCST;
+              
+                
+                currVat = GetCSTVAT(currDis, vat);
+               
+                
+                vatTotal = vatTotal + currVat;
+               
+                
+                amtTotal = amtTotal + GetSum(currDis, vat, cst);
+                // freight = freight + Convert.ToDouble(dr["Freight"]);
+                //  loadunload = loadunload + Convert.ToDouble(dr["Freight"]);
+
+
+                //   if (txtQty.Text == "") txtQty.Text = "0";
+                //   if (txtRtnQty.Text == "") txtRtnQty.Text = "0";
+                //  if (txtRate.Text == "") txtRate.Text = "0";
+                //  if (txtNLP.Text == "") txtNLP.Text = "0";
+                //  if (txtDisPre.Text == "") txtDisPre.Text = "0";
+                //  if (txtVATPre.Text == "") txtVATPre.Text = "0";
+                //  if (txtCSTPre.Text == "") txtCSTPre.Text = "0";
+                //  if (txtVATPre.Text == "0.00" && txtCSTPre.Text == "0.00") inpHide.Value = "1";
+
+
+                //  if (txtDiscAmt.Text == "") txtDiscAmt.Text = "0";
+                vatinclusiverate3 = vatinclusiverate3 + Convert.ToDouble(purchaserate) * Convert.ToDouble(qty);
+                vatinclusiverate1 = vatinclusiverate1 + Convert.ToDouble(vatinclusiverate3) - (Convert.ToDouble(vatinclusiverate3) * Convert.ToDouble(dis) / 100);
+                vatinclusiverate5 = vatinclusiverate5 + Convert.ToDouble(vatinclusiverate1) - Convert.ToDouble(disamt);
+                vatinclusiverate6 = vatinclusiverate6  + (Convert.ToDouble(vatinclusiverate5) * Convert.ToDouble(vat) / 100);
+                //vatinclusiverate7 = vatinclusiverate7 + (Convert.ToDouble(vatinclusiverate5) * Convert.ToDouble(cst) / 100);
+                //vatinclusiverate4 = vatinclusiverate4 + Convert.ToDouble(vatinclusiverate5) + Convert.ToDouble(vatinclusiverate6) + Convert.ToDouble(vatinclusiverate7);
+                // txtTotal.Text = vatinclusiverate4.ToString("#0.00");
+
+                //vatinclusiverate3j = vatinclusiverate3 + vatinclusiverate3;
+                //vatinclusiverate1j = vatinclusiverate1 + vatinclusiverate1;
+                //vatinclusiverate5j = vatinclusiverate5 + vatinclusiverate5;
+                //vatinclusiverate6j = vatinclusiverate6 + vatinclusiverate6;
+                //vatinclusiverate7j = vatinclusiverate7 + vatinclusiverate7;
+                //vatinclusiverate4j = vatinclusiverate4 + vatinclusiverate4;
+
+
+                if (dDis > 0)
+                    dvDiscountTotal.Visible = true;
+                else
+                    dvDiscountTotal.Visible = false;
+                //}
+                if (disTotamt > 0)
+                    DvDiscAmt.Visible = true;
+                else
+                    DvDiscAmt.Visible = false;
+
+                if (dCST > 0)
+                    dvCSTTotal.Visible = true;
+                else
+                    dvCSTTotal.Visible = false;
+
+                //if (Convert.ToDouble(lblGrandVat.Text) > 0)
+                 //   dvVatTotal.Visible = true;
+             //   else
+                 //   dvVatTotal.Visible = false;
+                
+                if ((freight > 0) || (loadunload > 0))
+                    dvFrgTotal.Visible = true;
+                else
+                    dvFrgTotal.Visible = false;
             }
+            lblAmt.Text = Convert.ToString(Convert.ToDouble(vatinclusiverate3));
+            lblGrandDiscount.Text = Convert.ToString(disTot);
+            lbldiscamt.Text = Convert.ToString(disTotamt);
+            lblGrandVat.Text =vatTotal.ToString("#0.00");
+            lblFg.Text = Convert.ToString(Convert.ToDouble(freight) + Convert.ToDouble(loadunload));
+            lblGrandCst.Text = Convert.ToString(dCST);
+            // Label6.Text=Convert.ToString(amtTotal);
+            Label8.Text = Convert.ToString(amtTotal);
+            dicsamntlbl.Text = Convert.ToString(disamnt);
         }
+
+
 
         ds1 = bl.GetSalesItemsForIdRet(BillNo, BranchCode); //change
 
-        
+
         if ((ds1 != null) && (ds1.Tables[0].Rows.Count > 0))
         {
             foreach (DataRow dr in ds1.Tables[0].Rows)
@@ -640,13 +838,32 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
 
     }
 
+    public double GetSum(double rate, double vat, double cst)
+    {
+        double tot = 0;
+        tot = rate + (rate * (vat / 100)) + (rate * (cst / 100));
+        return tot;
+    }
+    public double GetDiscount(double qty, double rate, double discount, double discamt)
+    {
+        double dis = 0;
+        dis = (qty * rate) - ((qty * rate) * (discount / 100)) - discamt;
+        return dis;
+    }
+    public double GetCSTVAT(double rate, double cst)
+    {
+
+        cst = (rate * (cst / 100));
+        return cst;
+    }
+
     protected void btnBack_Click(object sender, EventArgs e)
     {
         try
         {
-            Session["NEWSALES"] = "Y";
+            Session["NEWPURCHASE"] = "Y";
             //Session["BillDate"] = lblBillDate.Text;
-            Response.Redirect("CustomerSales.aspx");
+            Response.Redirect("purchase.aspx");
         }
         catch (Exception ex)
         {
@@ -789,13 +1006,13 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                     //discount = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Discount"));
                     if (isvalid != true)
                     {
-                        gvItem.Columns[7].Visible = false;
+                       // gvItem.Columns[7].Visible = false;
                     }
                     //discountLbl.Visible = false;
                 }
                 else
                 {
-                    gvItem.Columns[7].Visible = true;
+                   // gvItem.Columns[7].Visible = true;
                     isvalid = true;
                 }
 
@@ -815,7 +1032,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
 
                 if (isvalid == false)
                 {
-                    gvItem.Columns[7].Visible = false;
+                   // gvItem.Columns[7].Visible = false;
                     //  discountLbl.Visible = false;
                 }
 

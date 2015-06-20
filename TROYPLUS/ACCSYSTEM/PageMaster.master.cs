@@ -764,6 +764,217 @@ public partial class PageMaster : System.Web.UI.MasterPage
         {
             lnkChequeBook.Visible = false;
         }
+
+        //sales report
+
+        if (!this.Page.User.IsInRole("SLSRPT"))
+        {
+
+            dailysales1.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("TOTSAL"))
+        {
+
+            totalsales1.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("SALCOM"))
+        {
+
+            salecompherency.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("SLSUMRPT"))
+        {
+
+            salesummary.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("ZERORS"))
+        {
+
+            zeroosale.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("SALTURN"))
+        {
+
+            salesturnover.Visible = false;
+        }
+
+        if ((!this.Page.User.IsInRole("SLSRPT")) && (!this.Page.User.IsInRole("TOTSAL")) && (!this.Page.User.IsInRole("SALCOM")) && (!this.Page.User.IsInRole("SLSUMRPT")) && (!this.Page.User.IsInRole("ZERORS")) &&(!this.Page.User.IsInRole("SALTURN")))
+        {
+            reportblaocksales.Visible = false;
+        }
+
+        //purchase report
+
+        if (!this.Page.User.IsInRole("PURCOM"))
+        {
+
+            purcomp.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("PRSUMRPT"))
+        {
+
+            pursumay.Visible = false;
+        }
+
+        if ((!this.Page.User.IsInRole("PURCOM")) && (!this.Page.User.IsInRole("PRSUMRPT")))
+        {
+            reportpurblock.Visible = false;
+        }
+
+        //inventory report:-
+        if (!this.Page.User.IsInRole("STKRPT"))
+        {
+
+            curntstock.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("STKLEDRPT"))
+        {
+
+            stockledger.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("STKRECRPT"))
+        {
+
+            reconstoc.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("STKVERRPT"))
+        {
+
+            overallstock.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("OBSITEM"))
+        {
+            
+            obsstock.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("STKCOM"))
+        {
+
+            stocomp.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("STKLVL"))
+        {
+
+            stocklevel.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("STKAGE"))
+        {
+
+            ageingstock.Visible = false;
+        }
+
+        if ((!this.Page.User.IsInRole("STKRPT")) && (!this.Page.User.IsInRole("STKVERRPT")) && (!this.Page.User.IsInRole("STKLEDRPT")) && (!this.Page.User.IsInRole("STKRECRPT")) && (!this.Page.User.IsInRole("STKAGE")) && (!this.Page.User.IsInRole("STKCOM")) && (!this.Page.User.IsInRole("STKLVL")) && (!this.Page.User.IsInRole("OBSITEM")))
+        {
+            reportinventoryblock.Visible = false;
+        }
+
+        //banking report:-
+        if (!this.Page.User.IsInRole("BAKSTRPT"))
+        {
+
+            bakstatement.Visible = false;
+            bankrecon1.Visible = false;
+            reportbankblock1.Visible=false;
+        }
+      //  if (!this.Page.User.IsInRole("STKAGE"))
+      //  {
+
+           // bakstatement.Visible = false;
+       // }
+     //   if ((!this.Page.User.IsInRole("BAKSTRPT")) && (!this.Page.User.IsInRole("OUTAGE")))
+
+
+
+        //finance report
+        if (!this.Page.User.IsInRole("TRLBRPT"))
+        {
+
+            tralbal.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("BALSHTRPT"))
+        {
+
+            balshett.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("PLRPT"))
+        {
+
+            prfilos.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("SALTAX"))
+        {
+
+            saltax1.Visible = false;
+        }
+       // if (!this.Page.User.IsInRole("EXPRPT"))
+       // {
+
+          //  bakstatement.Visible = false;
+     //   }
+       // if (!this.Page.User.IsInRole("GPRPT"))
+      //  {
+
+          //  bankrecon1.Visible = false;
+      //  }
+        if (!this.Page.User.IsInRole("CACCRPT"))
+        {
+
+            cashacnt.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("LEDRPT"))
+        {
+
+            ledger12.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("DYBKRPT"))
+        {
+
+            daybook1.Visible = false;
+        }
+      //  if (!this.Page.User.IsInRole("GPSRPT"))
+      //  {
+
+        //    bankrecon1.Visible = false;
+       // }
+        if (!this.Page.User.IsInRole("CSTSMRPT"))
+        {
+
+            cstsuma.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("OUTRPT"))
+        {
+
+            outand.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("VATSUMRPT"))
+        {
+
+            vatsum.Visible = false;
+        }
+       // if (!this.Page.User.IsInRole("EXECOUT"))
+      //  {
+
+       //     bankrecon1.Visible = false;
+      //  }
+        if (!this.Page.User.IsInRole("VATRECON"))
+        {
+
+            vatrecn.Visible = false;
+        }
+        if (!this.Page.User.IsInRole("OUTAGE"))
+        {
+
+            outandage.Visible = false;
+        }
+       if((!this.Page.User.IsInRole("TRLBRPT")) && (!this.Page.User.IsInRole("BALSHTRPT")) && (!this.Page.User.IsInRole("PLRPT")) && (!this.Page.User.IsInRole("SALTAX"))
+           && (!this.Page.User.IsInRole("CACCRPT")) && (!this.Page.User.IsInRole("LEDRPT")) && (!this.Page.User.IsInRole("DYBKRPT"))
+           && (!this.Page.User.IsInRole("CSTSMRPT")) && (!this.Page.User.IsInRole("OUTRPT")) && (!this.Page.User.IsInRole("VATSUMRPT")) && (!this.Page.User.IsInRole("VATRECON"))
+           && (!this.Page.User.IsInRole("OUTAGE")))
+       {
+           reportfinanceblock.Visible = false;
+       }
+
+      //  reportblaocksales.Visible = false;
         
         //if ((!this.Page.User.IsInRole("STKRPT")) && (!this.Page.User.IsInRole("STKLEDRPT")) && (!this.Page.User.IsInRole("STKRECRPT")) && (!this.Page.User.IsInRole("STKAGE")) && (!this.Page.User.IsInRole("STKCOM")) && (!this.Page.User.IsInRole("STKLVL")) && (!this.Page.User.IsInRole("OBSITEM")))
         //{

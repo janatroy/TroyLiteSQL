@@ -7,6 +7,7 @@ using System.Data.OleDb;
 using System.Data;
 using System.Text;
 using System.Configuration;
+using System.Web;
 //using NLog;
 using DataAccessLayer;
 
@@ -24,6 +25,7 @@ public partial class BusinessLogic : IInternalTransferService
         manager.ConnectionString = sDataSource.ToLower();
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
+        string sAuditStr = string.Empty;
 
         try
         {
@@ -40,6 +42,23 @@ public partial class BusinessLogic : IInternalTransferService
             //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry.ToString());
+
+            string mac2 = string.Empty;
+            if (System.Web.HttpContext.Current.Session["macAddress"]== null)
+            {
+
+                mac2 = "Contact Administrator";
+            }
+            else
+            {
+                mac2 = System.Web.HttpContext.Current.Session["macAddress"].ToString();
+            }
+
+            
+
+            sAuditStr = "Internal Transfer Request : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + request.Status + " Qty :" + request.Quantity + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") + " MACAddress:" + mac2;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
 
@@ -65,6 +84,7 @@ public partial class BusinessLogic : IInternalTransferService
 
         string dbQ = string.Empty;
         DataSet dsd = new DataSet();
+        string sAuditStr = string.Empty;
 
         try
         {
@@ -76,7 +96,7 @@ public partial class BusinessLogic : IInternalTransferService
             //int BranchID = (Int32)manager.ExecuteScalar(CommandType.Text, "SELECT MAX(BranchID) FROM tblOfficeBranches");
             string completedDate = request.CompletedDate != null? request.CompletedDate.GetValueOrDefault().ToString("yyyy-MM-dd") : "null";
             dbQry = string.Format("UPDATE tblInternalTransferRequests SET CompletedUser='{0}', CompletedDate='{1}', Status='{2}' Where RequestID={3}",
-                request.UserID, completedDate , request.Status, request.RequestID);
+                request.CompletedUser, completedDate, request.Status, request.RequestID);
 
             //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
 
@@ -114,6 +134,21 @@ public partial class BusinessLogic : IInternalTransferService
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
+            string mac2 = string.Empty;
+            if (System.Web.HttpContext.Current.Session["macAddress"] == null)
+            {
+
+                mac2 = "Contact Administrator";
+            }
+            else
+            {
+                mac2 = System.Web.HttpContext.Current.Session["macAddress"].ToString();
+            }
+
+            sAuditStr = "Internal Transfer Approval : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + request.Status + " Qty :" + request.Quantity + " completed user :" + request.CompletedUser + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")+" MacAddress:"+ mac2;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Approved", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
 
 
 
@@ -140,6 +175,7 @@ public partial class BusinessLogic : IInternalTransferService
         manager.ConnectionString = sDataSource.ToLower();
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
+        string sAuditStr = string.Empty;
 
         string Status = "Reject";
 
@@ -155,11 +191,26 @@ public partial class BusinessLogic : IInternalTransferService
             DateTime completedDate = DateTime.Now;
 
             dbQry = string.Format("UPDATE tblInternalTransferRequests SET CompletedUser='{0}', CompletedDate='{1}', Status='{2}' Where RequestID={3}",
-                request.UserID, completedDate.ToString("yyyy-MM-dd"), Status, request.RequestID);
+                request.CompletedUser, completedDate.ToString("yyyy-MM-dd"), Status, request.RequestID);
 
             //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry.ToString());
+
+            string mac2 = string.Empty;
+            if (System.Web.HttpContext.Current.Session["macAddress"] == null)
+            {
+
+                mac2 = "Contact Administrator";
+            }
+            else
+            {
+                mac2 = System.Web.HttpContext.Current.Session["macAddress"].ToString();
+            }
+
+            sAuditStr = "Internal Transfer Approval : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + Status + " Qty :" + request.Quantity + " completed user :" + request.CompletedUser + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") + " MacAddress:" + mac2;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Rejected", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
 
@@ -577,6 +628,7 @@ public partial class BusinessLogic : IInternalTransferService
         manager.ConnectionString = sDataSource.ToLower();
         DataSet ds = new DataSet();
         string dbQry = string.Empty;
+        string sAuditStr = string.Empty;
 
         try
         {
@@ -593,6 +645,21 @@ public partial class BusinessLogic : IInternalTransferService
             //dbQry = "Insert into tblUserRole(UserName, Role) VALUES('Prashanth', 'Test')";
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry.ToString());
+
+            string mac2 = string.Empty;
+            if (System.Web.HttpContext.Current.Session["macAddress"] == null)
+            {
+
+                mac2 = "Contact Administrator";
+            }
+            else
+            {
+                mac2 = System.Web.HttpContext.Current.Session["macAddress"].ToString();
+            }
+
+            sAuditStr = "Internal Transfer Request : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + request.Status + " Qty :" + request.Quantity + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") + " MacAddress:" + mac2;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
 
@@ -614,6 +681,8 @@ public partial class BusinessLogic : IInternalTransferService
         DBManager manager = new DBManager(DataProvider.SqlServer);
         manager.ConnectionString = sDataSource.ToLower();
 
+        string sAuditStr = string.Empty;
+
         string dbQry = string.Empty;
 
         try
@@ -625,6 +694,23 @@ public partial class BusinessLogic : IInternalTransferService
             dbQry = string.Format("Delete From tblInternalTransferRequests Where RequestID={0}", RequestID);
 
             manager.ExecuteNonQuery(CommandType.Text, dbQry.ToString());
+
+            string mac2 = string.Empty;
+            if (System.Web.HttpContext.Current.Session["macAddress"] == null)
+            {
+
+                mac2 = "Contact Administrator";
+            }
+            else
+            {
+                mac2 = System.Web.HttpContext.Current.Session["macAddress"].ToString();
+            }
+
+            sAuditStr = "Internal Transfer Request : Requestedid : " + RequestID + " added. Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") +"MacAddress:"+ mac2;
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
+            manager.ExecuteNonQuery(CommandType.Text, dbQry);
+
+            manager.CommitTransaction();
 
             manager.CommitTransaction();
 

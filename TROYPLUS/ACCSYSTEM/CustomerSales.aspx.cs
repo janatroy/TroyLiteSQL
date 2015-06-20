@@ -48,7 +48,7 @@ public partial class CustomerSales : System.Web.UI.Page
             dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
             dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
 
-            Page.RegisterClientScriptBlock("FrameRefresh", "<script language='javascript'>window.top.frames[index].location.reload(true);</script>");
+         //   Page.RegisterClientScriptBlock("FrameRefresh", "<script language='javascript'>window.top.frames[index].location.reload(true);</script>");
             
 
             if (!IsPostBack)
@@ -6898,6 +6898,30 @@ public partial class CustomerSales : System.Web.UI.Page
     {
         try
         {
+            Session["Show"] = "No";
+            optionmethod.Text = optionmethod.SelectedValue;
+            Session["Method"] = "Add";
+
+
+
+            BusinessLogic bl1 = new BusinessLogic(sDataSource);
+
+            BillingMethod = bl1.getConfigInfoMethod();
+            if (BillingMethod == "VAT INCLUSIVE")
+            {
+                Labelll.Text = "VAT INCLUSIVE";
+            }
+            else
+            {
+                Labelll.Text = "VAT EXCLUSIVE";
+            }
+            loadBranch();
+            BranchEnable_Disable();
+            loadDropDowns();
+            loadManualSalesBooks();
+            FirstGridViewRow();
+            ModalPopupMethod.Show();
+
             if (IsPostBack)
             {
                 BusinessLogic objChk = new BusinessLogic(sDataSource);
@@ -7501,29 +7525,7 @@ public partial class CustomerSales : System.Web.UI.Page
     {
         try
         {
-            Session["Show"] = "No";
-            optionmethod.SelectedIndex = 0;
-            Session["Method"] = "Add";
-
-
-
-            BusinessLogic bl = new BusinessLogic(sDataSource);
-
-            BillingMethod = bl.getConfigInfoMethod();
-            if (BillingMethod == "VAT INCLUSIVE")
-            {
-                Labelll.Text = "VAT INCLUSIVE";
-            }
-            else
-            {
-                Labelll.Text = "VAT EXCLUSIVE";
-            }
-            loadBranch();
-            BranchEnable_Disable();
-            loadDropDowns();
-            loadManualSalesBooks();
-            FirstGridViewRow();
-            ModalPopupMethod.Show();
+          
             //ModalPopupExtender1.Show();
         }
         catch (Exception ex)

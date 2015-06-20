@@ -68,7 +68,7 @@ public partial class Login : System.Web.UI.Page
 
                 Session["CompanyList"] = listComp;
                 txtLogin.Focus();
-                GetMACAddress();
+              
 
             }
         }
@@ -84,6 +84,21 @@ public partial class Login : System.Web.UI.Page
         string filename = string.Empty;
         string appVersion = "1.1.1";
         string dbfileName = string.Empty;
+
+        string mac1 = string.Empty;
+
+        string mac = string.Empty;
+        //  GetMACAddress();
+        mac = macAddress.Value;
+
+       // 
+
+        Session["macAddress"] = mac;
+        mac1 = Session["macAddress"].ToString();
+      //  BusinessLogic bl1 = new BusinessLogic();
+       // bl1.macaddressretrive(mac);
+
+
 
         try
         {

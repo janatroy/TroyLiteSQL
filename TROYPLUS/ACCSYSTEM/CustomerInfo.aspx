@@ -34,31 +34,42 @@
     <script language="javascript" type="text/javascript">
 
 
-        window.onload = function Showalert() {
+        function Showalert() {
+            
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
             if (txt.value == "") {
+               // alert("show");
                 // alert(txt.value);
                 btn.style.visibility = "hidden";
                 // when the window is loaded, hide the button if the textbox is empty
             }
+            else
+            {
+              //  alert("hide");
+                btn.style.visibility = "visible";
+            }
 
         }
 
-        function EnableDisableButton(sender, target) {
+       <%-- function EnableDisableButton(sender,target) {
+            alert("visible");
             var first = document.getElementById('<%=txtSearch.ClientID %>');
 
             if (sender.value.length >= 1 && first.value.length >= 1) {
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
+                
 
             }
 
             if (sender.value.length < 1 && first.value.length < 1) {
+                alert("hidden");
 
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
+                
             }
-        }
+        }--%>
 
 
         //        protected void Page_Load(object sender, System.EventArgs e)
@@ -288,7 +299,7 @@
 
                                         <%--<asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />--%>
 
-                                        <asp:Button ID="BtnClearFilter" runat="server" onkeyup="EnableDisableButton(this,'BtnClearFilter')" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        <asp:Button ID="BtnClearFilter" runat="server" onkeyup="EnableDisableButton(this,'BtnClearFilter1')"  OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
 
                                     </td>
                                 </tr>
