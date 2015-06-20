@@ -6,8 +6,25 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <script language="javascript" type="text/javascript">
+        function Showalert() {
 
-        window.onload = function Showalert() {
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert("show");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+            else {
+                //  alert("hide");
+                btn.style.visibility = "visible";
+            }
+
+        }
+
+       <%-- window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -31,7 +48,7 @@
 
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
             }
-        }
+        }--%>
         /*@cc_on@*/
         /*@if (@_win32 && @_jscript_version>=5)
 

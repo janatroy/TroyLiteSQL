@@ -232,6 +232,8 @@
         function PrintItem(ID, BID) {
            // alert("hi");
             window.showModalDialog('./ProductSalesBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+
+           // window.open('./ProductSalesBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
         }
 
         window.top.frames[index].location.reload(true);
@@ -243,7 +245,13 @@
             return false;
         }
         function HideModalPopup() {
+           //optionmethod.value = "NormalSales";
             $find("mpe").hide();
+           // id = "ctl00_cplhControlPanel_optionmethod_0"
+            document.getElementById('ctl00_cplhControlPanel_optionmethod_0').checked = true;
+          //  alert(text);
+            
+           
             //  alert("hide");
             return false;
         }

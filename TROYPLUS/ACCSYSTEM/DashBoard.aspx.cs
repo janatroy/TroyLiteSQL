@@ -216,6 +216,12 @@ public partial class _DashBoard : System.Web.UI.Page
         var endDate = startDate.AddMonths(1).AddDays(-1);
         var end = endDate.ToString("yyyy-MM-dd");
 
+        int year = DateTime.Now.Year;
+        var firstDay = new DateTime(year, 1, 1);
+        var firstday1 = firstDay.ToString("yyyy-MM-dd");
+        var lastDay = new DateTime(year, 12, 31);
+        var lastday1 = lastDay.ToString("yyyy-MM-dd");
+
         string usernam = Request.Cookies["LoggedUserName"].Value;
         double Tottot = 0.00;
         double Totgp = 0.00;

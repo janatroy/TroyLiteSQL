@@ -13,8 +13,19 @@
             window.showModalDialog('PrintJournal.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
 
         }
+        function ShowModalPopup() {
+            $find("mpe").show();
+            // alert("show");
+            return false;
+        }
+        function HideModalPopup() {
+            $find("mpe").hide();
+            document.getElementById('ctl00_cplhControlPanel_optionmethod_0').checked = true;
+            //  alert("hide");
+            return false;
+        }
 
-        window.onload = function Showalert() {
+        <%--window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -38,6 +49,23 @@
 
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
             }
+        }--%>
+        function Showalert() {
+
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert("show");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+            else {
+                //  alert("hide");
+                btn.style.visibility = "visible";
+            }
+
         }
 
     </script>
@@ -141,7 +169,7 @@
 
                             <cc1:ModalPopupExtender ID="ModalPopupMethod" runat="server" BackgroundCssClass="modalBackground"
                                 CancelControlID="CancelPopUpMethod" DynamicServicePath="" Enabled="True" PopupControlID="pnlMethod"
-                                TargetControlID="ShowPopUpMethod">
+                                TargetControlID="ShowPopUpMethod" BehaviorID="mpe">
                             </cc1:ModalPopupExtender>
                             <input id="ShowPopUpMethod" type="button" style="display: none" runat="server" />
                             <input id="CancelPopUpMethod" runat="server" style="display: none"
@@ -222,7 +250,7 @@
                                                                                             <td>
                                                                                                 <asp:Panel ID="Panel5" runat="server" Width="120px">
                                                                                                     <asp:Button ID="cmdCancelMethod" runat="server" CssClass="cancelbutton6" OnClick="cmdCancelMethod_Click" CausesValidation="false"
-                                                                                                        EnableTheming="false" />
+                                                                                                       OnClientClick="return HideModalPopup()"  EnableTheming="false" />
                                                                                                 </asp:Panel>
                                                                                             </td>
                                                                                         </tr>
@@ -1555,7 +1583,7 @@
         <tr>
             <td style="width: 50%">
                 <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" OnClientClick="return ShowModalPopup()" CssClass="ButtonAdd66"
                         EnableTheming="false" Width="80px" Text=""></asp:Button>
                 </asp:Panel>
             </td>

@@ -7,7 +7,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
      <script language="javascript" type="text/javascript">
 
-         window.onload = function Showalert() {
+       <%--  window.onload = function Showalert() {
 
              var txt = document.getElementById("<%= txtSearch.ClientID %>");
              var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -26,35 +26,42 @@
              button.style.visibility = "hidden";
              //button.click();
 
-         }
+         }--%>
 
 
-         function EnableDisableButton(sender, target) {
+         <%--function EnableDisableButton(sender, target) {
              var first = document.getElementById('<%=txtSearch.ClientID %>');
-             //alert('test');
-             <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
+            
 
 
              if (sender.value.length >= 1 && first.value.length >= 1) {
-                 // alert(sender.value.length);
-                 // alert(first.value.length);
-                 //BtnClearFilter.disabled = false;
-                 <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+                
                  document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
                  // window.onload = function ();
              }
 
              if (sender.value.length < 1 && first.value.length < 1) {
-                 //alert(sender.value.length);
-                 // alert(first.value.length);
-                 //BtnClearFilter.disabled = true;
-                 <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+               
                  document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
              }
-             //else {
+            
+         }--%>
+         function Showalert() {
 
-             //    document.getElementById(target).disabled = false;
-             //}
+
+             var txt = document.getElementById("<%= txtSearch.ClientID %>");
+             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+             if (txt.value == "") {
+                 // alert("show");
+                 // alert(txt.value);
+                 btn.style.visibility = "hidden";
+                 // when the window is loaded, hide the button if the textbox is empty
+             }
+             else {
+                 //  alert("hide");
+                 btn.style.visibility = "visible";
+             }
+
          }
         </script>
     <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">

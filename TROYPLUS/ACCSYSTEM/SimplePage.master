@@ -32,7 +32,7 @@
                     <tr>
                         <td style="padding-left: 5px">
                             <div runat="server" id="divIP">
-                                MAC Address :
+                              
                                 <asp:Label ID="lblIP" runat="server"></asp:Label>
                                 <asp:HiddenField ID="hdMAC" runat="server" Value="0" />
                                 <asp:HiddenField ID="hdIsInternetExplorer" runat="server" Value="False" />

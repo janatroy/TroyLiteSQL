@@ -42,21 +42,36 @@
                 //window.open("close.htm", "_self"); 
             }
         }
-        function callme() {
-            var macAddress = "";
-            var ipAddress = "";
-            var computerName = "";
-            var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
-            e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));
-            for (; !e.atEnd() ; e.moveNext()) {
-                var s = e.item();
-                macAddress = s.MACAddress;
-                ipAddress = s.IPAddress(0);
-                computerName = s.DNSHostName;
-                alert(macAddress);
-                document.getElementById('ctl00_cplhControlPanel_macAddress').value = macAddress;
-            }
-        }
+
+        
+
+        //function callme() {
+
+        //    var xml;
+        //    if (window.DOMParser) { // Firefox, Chrome, Opera, etc.
+        //        parser = new DOMParser();
+        //        xmlDoc = parser.parseFromString(xml, "text/xml");
+        //    }
+        //    else // Internet Explorer
+        //    {
+        //        xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        //        xmlDoc.async = false;
+        //        xmlDoc.loadXML(xml);
+        //    }
+        //    var macAddress = "";
+        //    var ipAddress = "";
+        //    var computerName = "";
+        //    var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
+        //    e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));
+        //    for (; !e.atEnd() ; e.moveNext()) {
+        //        var s = e.item();
+        //        macAddress = s.MACAddress;
+        //        ipAddress = s.IPAddress(0);
+        //        computerName = s.DNSHostName;
+        //        alert(macAddress);
+        //        document.getElementById('ctl00_cplhControlPanel_macAddress').value = macAddress;
+        //    }
+        //}
 
         
     </script>
@@ -184,7 +199,7 @@
                         </td>
                         <td width="30%">
                             <asp:Button ID="btnLogin" runat="server" TabIndex="5" EnableTheming="false" OnClick="btnLogin_Click"
-                                OnClientClick="callme();" CssClass="loginbuttonbg" Text="Login" />
+                               CssClass="loginbuttonbg" Text="Login" />
                         </td>
                         <td width="30%">
                             <asp:Button ID="BtnReset" CssClass="loginbuttonbg" EnableTheming="false" CausesValidation="false"

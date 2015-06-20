@@ -21,6 +21,7 @@ public partial class Config : System.Web.UI.Page
 
         try
         {
+            ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
             if (!Page.IsPostBack)
