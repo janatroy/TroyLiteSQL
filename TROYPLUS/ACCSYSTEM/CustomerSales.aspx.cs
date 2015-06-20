@@ -48,8 +48,8 @@ public partial class CustomerSales : System.Web.UI.Page
             dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
             dbfileName = dbfileName.Remove(dbfileName.LastIndexOf(";Persist Security Info"));
 
-            Page.RegisterClientScriptBlock("FrameRefresh", "<script language='javascript'>window.top.frames[index].location.reload(true);</script>");
-
+         //   Page.RegisterClientScriptBlock("FrameRefresh", "<script language='javascript'>window.top.frames[index].location.reload(true);</script>");
+            
 
             if (!IsPostBack)
             {
@@ -208,7 +208,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 loadSupplier("Sundry Debtors");
                 loadCategories();
                 LoadProducts(this, null);
-
+                
                 rowmanual.Visible = false;
                 txtBillDate.Focus();
                 //BindGrid(0, 0);
@@ -593,7 +593,7 @@ public partial class CustomerSales : System.Web.UI.Page
         //string sDataSource = Server.MapPath(ConfigurationSettings.AppSettings["DataSource"].ToString());
         BusinessLogic bl = new BusinessLogic();
         DataSet ds = new DataSet();
-
+      
         string branch = drpBranch.SelectedValue;
 
         ds = bl.GetManualSalesBooks(sDataSource, branch);
@@ -1411,7 +1411,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         drpCustomerCategoryAdd.Enabled = false;
                         drpCustomerCategoryAdd_SelectedIndexChanged(sender, e);
                         //GridViewRowEventArgs e1=null;                       
-
+                     
                         //if (Session["SalesAddProductbindDs"] == null)
                         //{
                         //    ds111 = bl.ListProdForDynammicrow1(sDataSource, drpBranch.SelectedValue, drpCustomerCategoryAdd.SelectedValue);
@@ -1426,7 +1426,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         lblledgerCategory.Visible = false;
                         drpCustomerCategoryAdd.SelectedValue = "";
                     }
-
+                    
                     // krishnavelu 26 June
                     txtOtherCusName.Text = cmbCustomer.SelectedItem.Text;
 
@@ -3992,7 +3992,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 //string CName = txtCustomerName.Text;
                 //bool mobchk;
                 //string CustomerIdMobile = "0";
-              
+
 
                 string discType = GetDiscType();
 
@@ -6910,6 +6910,30 @@ public partial class CustomerSales : System.Web.UI.Page
     {
         try
         {
+            Session["Show"] = "No";
+            optionmethod.Text = optionmethod.SelectedValue;
+            Session["Method"] = "Add";
+
+
+
+            BusinessLogic bl1 = new BusinessLogic(sDataSource);
+
+            BillingMethod = bl1.getConfigInfoMethod();
+            if (BillingMethod == "VAT INCLUSIVE")
+            {
+                Labelll.Text = "VAT INCLUSIVE";
+            }
+            else
+            {
+                Labelll.Text = "VAT EXCLUSIVE";
+            }
+            loadBranch();
+            BranchEnable_Disable();
+            loadDropDowns();
+            loadManualSalesBooks();
+            FirstGridViewRow();
+            ModalPopupMethod.Show();
+
             if (IsPostBack)
             {
                 BusinessLogic objChk = new BusinessLogic(sDataSource);
@@ -7513,29 +7537,7 @@ public partial class CustomerSales : System.Web.UI.Page
     {
         try
         {
-            Session["Show"] = "No";
-            optionmethod.SelectedIndex = 0;
-            Session["Method"] = "Add";
 
-
-
-            BusinessLogic bl = new BusinessLogic(sDataSource);
-
-            BillingMethod = bl.getConfigInfoMethod();
-            if (BillingMethod == "VAT INCLUSIVE")
-            {
-                Labelll.Text = "VAT INCLUSIVE";
-            }
-            else
-            {
-                Labelll.Text = "VAT EXCLUSIVE";
-            }
-            loadBranch();
-            BranchEnable_Disable();
-            loadDropDowns();
-            loadManualSalesBooks();
-            FirstGridViewRow();
-            ModalPopupMethod.Show();
             //ModalPopupExtender1.Show();
         }
         catch (Exception ex)
@@ -8585,7 +8587,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             string scuscategory = string.Empty;
             loadBanksEdit();
-
+           
 
             if (ds != null)
             {
@@ -8595,31 +8597,31 @@ public partial class CustomerSales : System.Web.UI.Page
                     if (ds.Tables[0].Rows[0]["BillNo"] != null)
                         lblBillNo.Text = ds.Tables[0].Rows[0]["BillNo"].ToString();
 
+                   
+                        string Username = Request.Cookies["LoggedUserName"].Value;
 
-                    string Username = Request.Cookies["LoggedUserName"].Value;
+                        if ((Convert.ToInt32(ds.Tables[0].Rows[0]["Paymode"]) == 4))
+                        {                          
+                            DataSet rec = new DataSet();
+                            rec = bl.ListReceiptsForBillNoOrder(lblBillNo.Text, branchcode);
 
-                    if ((Convert.ToInt32(ds.Tables[0].Rows[0]["Paymode"]) == 4))
-                    {
-                        DataSet rec = new DataSet();
-                        rec = bl.ListReceiptsForBillNoOrder(lblBillNo.Text, branchcode);
-
-                        if (!bl.IsCustomerHadCheque(connection, rec, Username))
-                        {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please contact Administrator.')", true);
-                            return;
+                            if (!bl.IsCustomerHadCheque(connection, rec, Username))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please contact Administrator.')", true);
+                                return;
+                            }
                         }
-                    }
-                    else if ((Convert.ToInt32(ds.Tables[0].Rows[0]["Paymode"]) == 2))
-                    {
-                        int debtorid = Convert.ToInt32(ds.Tables[0].Rows[0]["Debtorid"]);
-
-                        if (!bl.IsCustomerHadChequeForId(connection, debtorid, Username))
+                        else if ((Convert.ToInt32(ds.Tables[0].Rows[0]["Paymode"]) == 2))
                         {
-                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please contact Administrator.')", true);
-                            return;
-                        }
-                    }
+                            int debtorid = Convert.ToInt32(ds.Tables[0].Rows[0]["Debtorid"]);
 
+                            if (!bl.IsCustomerHadChequeForId(connection, debtorid, Username))
+                            {
+                                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please contact Administrator.')", true);
+                                return;
+                            }
+                        }
+                   
 
 
                     if (ds.Tables[0].Rows[0]["Types"] != null)
@@ -8630,7 +8632,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     if (ds.Tables[0].Rows[0]["BillDate"] != null)
                         txtBillDate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["BillDate"]).ToString("dd/MM/yyyy");
 
-
+                    
 
                     if (ds.Tables[0].Rows[0]["InternalTransfer"] != null)
                     {
@@ -8802,7 +8804,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     //    //ListItem clie = drpManualSalesBook.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["bookid"]));
 
                     //    //if (clie != null) clie.Selected = true;
-
+                       
                     //}
 
 
@@ -9005,7 +9007,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                            where ((ListItem)i).Value.Contains(sCustomer)
                                            select i).FirstOrDefault() as ListItem;
 
-                            if (li != null) li.Selected = true;
+                            if (li != null) li.Selected = true;                           
 
                         }
 
@@ -11116,7 +11118,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     if (devvalue == 0)
                     {
                         //for brand deviation
-                        // DataSet dsrate = bl.getRateInfo(drpProduct.SelectedValue);
+                       // DataSet dsrate = bl.getRateInfo(drpProduct.SelectedValue);
                         DataSet dsrate = bl.getRateInfo(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                         double rate1 = 0;
                         double dp = 0;
@@ -11599,9 +11601,9 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
             if (cmdSave.Visible == true)
-            {
+            {               
 
-                // cmbCustomer_SelectedIndexChanged(sender,e);
+               // cmbCustomer_SelectedIndexChanged(sender,e);
                 if (Session["SalesAddProductbindDs"] == null)
                 {
                     ds111 = bl.ListProdForDynammicrow1(sDataSource, drpBranch.SelectedValue, drpCustomerCategoryAdd.SelectedValue);
@@ -13232,6 +13234,6 @@ public partial class CustomerSales : System.Web.UI.Page
     {
         Session["SalesAddProductbindDs"] = null;
         FirstGridViewRow();
-    }
+    }    
 }
 

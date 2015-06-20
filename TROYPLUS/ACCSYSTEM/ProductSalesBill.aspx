@@ -319,7 +319,7 @@
                                 </tr>
                             </table>
 
-                            <table border="0" cellpadding="2" cellspacing="0" class="lblFont" style="font-family: 'Trebuchet MS'; font-size: 14px; margin-left: 0px; height: 121px; width: 682px;"
+                            <table border="0" cellpadding="2" cellspacing="0" class="lblFont" style="font-family: 'Trebuchet MS'; font-size: 14px;  height: 121px; width: 682px;"
                                 align="center">
 
                                 <tr>

@@ -32,6 +32,8 @@ public partial class CustomerInfo : System.Web.UI.Page
             if (!Page.IsPostBack)
             {
                 sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+             //   ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+               // ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "EnableDisableButton();", true);
 
                 string connStr = string.Empty;
 
@@ -111,6 +113,15 @@ public partial class CustomerInfo : System.Web.UI.Page
         GridSource.SelectParameters.Add(new ControlParameter("txtSearch", TypeCode.String, txtSearch.UniqueID, "Text"));
         GridSource.SelectParameters.Add(new ControlParameter("dropDown", TypeCode.String, ddCriteria.UniqueID, "SelectedValue"));
         GridSource.SelectParameters.Add(new CookieParameter("branch", "Branch"));
+      //  UpdatePanelsearch.Visible = true;
+        //if (txtSearch.v == "")
+        //{
+        //    BtnClearFilter.Visible = false;
+        //}
+        //else
+        //{
+        //    BtnClearFilter.Visible = true;
+        //}
     }
 
     private string GetConnectionString()
@@ -136,6 +147,7 @@ public partial class CustomerInfo : System.Web.UI.Page
         {
             txtSearch.Text = "";
             ddCriteria.SelectedIndex = 0;
+        //    UpdatePanelsearch.Visible = false;
         }
         catch (Exception ex)
         {

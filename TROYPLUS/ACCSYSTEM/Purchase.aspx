@@ -182,7 +182,7 @@
                 }
             }
 
-            window.onload = function Showalert() {
+           <%-- window.onload = function Showalert() {
 
                 var txt = document.getElementById("<%= txtSearch.ClientID %>");
         var btn = document.getElementById("<%= BtnClearFilter1.ClientID %>");
@@ -206,15 +206,26 @@
 
                 document.getElementById('<%=BtnClearFilter1.ClientID %>').style.visibility = "Hidden";
             }
-        }
+        }--%>
 
         //function PrintItem(ID, BID) {
         //    window.showModalDialog('./ProductPurchaseBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
         //}
 
         function PrintItem(ID, RT, BID) {
-            //window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
-            window.showModalDialog('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+           // window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+           window.showModalDialog('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+        }
+
+        function ShowModalPopup() {
+            $find("mpe").show();
+          //  alert("show");
+            return false;
+        }
+        function HideModalPopup() {
+            $find("mpe").hide();
+          //  alert("hide");
+            return false;
         }
 
 
@@ -362,7 +373,7 @@
                             </div>
                             <cc1:ModalPopupExtender ID="ModalPopupMethod" runat="server" BackgroundCssClass="modalBackground"
                                 CancelControlID="CancelPopUpMethod" DynamicServicePath="" Enabled="True" PopupControlID="pnlMethod"
-                                TargetControlID="ShowPopUpMethod">
+                                TargetControlID="ShowPopUpMethod" BehaviorID="mpe">
                             </cc1:ModalPopupExtender>
                             <input id="ShowPopUpMethod" type="button" style="display: none" runat="server" />
                             <input id="CancelPopUpMethod" runat="server" style="display: none"
@@ -435,13 +446,13 @@
                                                                                                 <asp:Panel ID="Panel4" runat="server" Width="120px">
                                                                                                     <asp:Button ID="cmdMethod" runat="server" CssClass="Start6"
                                                                                                         EnableTheming="false" OnClick="cmdMethod_Click" Text=""
-                                                                                                        ValidationGroup="contact" />
+                                                                                                        ValidationGroup="contact"  />
                                                                                                 </asp:Panel>
                                                                                             </td>
                                                                                             <td>
                                                                                                 <asp:Panel ID="Panel5" runat="server" Width="120px">
                                                                                                     <asp:Button ID="cmdCancelMethod" runat="server" CssClass="cancelbutton6" OnClick="cmdCancelMethod_Click" CausesValidation="false"
-                                                                                                        EnableTheming="false" />
+                                                                                                        EnableTheming="false" OnClientClick="return HideModalPopup()" />
                                                                                                 </asp:Panel>
                                                                                             </td>
                                                                                         </tr>
@@ -1847,7 +1858,7 @@
         <tr>
             <td style="width: 50%">
                 <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" CssClass="ButtonAdd66"
+                    <asp:Button ID="lnkBtnAdd" runat="server" OnClick="lnkBtnAdd_Click" OnClientClick="return ShowModalPopup()" CssClass="ButtonAdd66"
                         EnableTheming="false" Width="80px" ForeColor="White"></asp:Button>
                 </asp:Panel>
             </td>

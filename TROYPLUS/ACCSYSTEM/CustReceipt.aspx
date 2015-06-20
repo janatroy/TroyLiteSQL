@@ -30,7 +30,7 @@
             }
 
         }--%>
-        function Show() {
+        <%--function Show() {
             document.getElementById("<%= BtnClearFilter.ClientID %>").style.visibility = "visible";
         }
 
@@ -39,7 +39,7 @@
             btn.style.visibility = "hidden";
             alert("hide");
             document.getElementById("<%= BtnClearFilter.ClientID %>").style.visibility = "Hidden";
-        }
+        }--%>
 
        <%-- function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtSearch.ClientID %>');
@@ -289,6 +289,24 @@
                     }
                 }
             }
+        }
+
+        function Showalert() {
+
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                //  alert("hide");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+            else {
+                //  alert("show");
+                btn.style.visibility = "visible";
+            }
+
         }
     </script>
 

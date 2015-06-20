@@ -33,9 +33,10 @@ public partial class Purchase : System.Web.UI.Page
     public DataTable CurrentTable; 
     protected void Page_Load(object sender, EventArgs e)
     {
-        ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
+       // ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "Showalert();", true);
         try
         {
+            
             sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
             string dbfileName = sDataSource.Remove(0, sDataSource.LastIndexOf(@"App_Data\") + 9);
@@ -1196,7 +1197,7 @@ public partial class Purchase : System.Web.UI.Page
                 if (txtLU.Text.Trim() != "")
                     dLU = Convert.ToDouble(txtLU.Text.Trim());
                 /*March18*/
-                //dTotalAmt = dTotalAmt + dFreight + dLU;
+               // dTotalAmt = dTotalAmt + dFreight + dLU;
 
                 dfixedtotal = Convert.ToDouble(txtfixedtotal.Text);
                 narration2 = txtnarr.Text;
@@ -1602,7 +1603,7 @@ public partial class Purchase : System.Web.UI.Page
                             {
                                 if (txtRtnQty.Text == "")
                                     txtRtnQty.Text = "0";
-                                                                drNew = dt.NewRow();
+                                drNew = dt.NewRow();
                                 drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0,drpProduct.SelectedItem.Value.IndexOf(" - "));                               
                                 if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                                 {
@@ -3874,6 +3875,15 @@ public partial class Purchase : System.Web.UI.Page
 
 
         //////////////////////////////////////////////////////////////////////
+        Session["Show"] = "No";
+
+        chk.Checked = true;
+        optionmethod.Text = optionmethod.SelectedValue;
+        //ModalPopupMethod.Show();
+        loadBanks();
+        loadBranch();
+        BranchEnable_Disable();
+        Session["Method"] = "Add";
 
         try
         {
@@ -4216,15 +4226,16 @@ public partial class Purchase : System.Web.UI.Page
     {
         try
         {
-            Session["Show"] = "No";
+          //  ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "ShowModalPopup();", true);
+            //Session["Show"] = "No";
 
-            chk.Checked = true;
-            optionmethod.SelectedIndex = 0;
-            ModalPopupMethod.Show();
-            loadBanks();
-            loadBranch();
-            BranchEnable_Disable();
-            Session["Method"] = "Add";
+            //chk.Checked = true;
+            //optionmethod.SelectedIndex = 0;
+            //ModalPopupMethod.Show();
+            //loadBanks();
+            //loadBranch();
+            //BranchEnable_Disable();
+            //Session["Method"] = "Add";
         }
         catch (Exception ex)
         {
@@ -7630,7 +7641,7 @@ public partial class Purchase : System.Web.UI.Page
 
             if (Session["PurchaseProductbindDs"] == null)
             {
-                ds = bl.ListProdForDynammicrowPurchase(sDataSource);
+            ds = bl.ListProdForDynammicrowPurchase(sDataSource);
                 Session["PurchaseProductbindDs"] = ds;
             }
 
