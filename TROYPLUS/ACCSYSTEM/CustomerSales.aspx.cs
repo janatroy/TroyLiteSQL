@@ -327,6 +327,7 @@ public partial class CustomerSales : System.Web.UI.Page
         BusinessLogic bl = new BusinessLogic(sDataSource);
         DataTable table = new DataTable();
         table = bl.ListCreditorDebitor_LvSearch(sDataSource, TextBox4.Text);
+
         //ListView2.DataSource = table;
         //ListView2.DataBind();
     }
@@ -595,7 +596,7 @@ public partial class CustomerSales : System.Web.UI.Page
       
         string branch = drpBranch.SelectedValue;
 
-        ds = bl.GetManualSalesBooks(sDataSource,branch);
+        ds = bl.GetManualSalesBooks(sDataSource, branch);
         drpManualSalesBook.Items.Clear();
         drpManualSalesBook.Items.Add(new ListItem("Select Book", "0"));
         drpManualSalesBook.DataTextField = "BookName";
@@ -612,7 +613,7 @@ public partial class CustomerSales : System.Web.UI.Page
         DataSet dsd = new DataSet();
         dsd = bl.ListCusCategory(connection);
         drpCustomerCategoryAdd.Items.Clear();
-        drpCustomerCategoryAdd.Items.Add(new ListItem("Select Customer Category", "0"));
+        //drpCustomerCategoryAdd.Items.Add(new ListItem("Select Customer Category", "0"));
         drpCustomerCategoryAdd.DataSource = dsd;
         drpCustomerCategoryAdd.DataBind();
         drpCustomerCategoryAdd.DataTextField = "CusCategory_Name";
@@ -1077,7 +1078,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             string receivedBill = "";
 
-            if (lblBillNo.Text != "Auto Generated.No need to enter")
+            if (lblBillNo.Text != "(Auto Generated Field. No need to enter data)")
             {
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
@@ -1364,7 +1365,7 @@ public partial class CustomerSales : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             connection = Request.Cookies["Company"].Value;
 
-            if (lblBillNo.Text != "Auto Generated.No need to enter")
+            if (lblBillNo.Text != "(Auto Generated Field. No need to enter data)")
             {
                 string receivedBill = "";
                 var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
@@ -1408,7 +1409,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         lblledgerCategory.Visible = false;
                         drpCustomerCategoryAdd.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["LedgerCategory"]);
                         drpCustomerCategoryAdd.Enabled = false;
-
+                        drpCustomerCategoryAdd_SelectedIndexChanged(sender, e);
                         //GridViewRowEventArgs e1=null;                       
                      
                         //if (Session["SalesAddProductbindDs"] == null)
@@ -1528,6 +1529,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             lblledgerCategory.Font.Bold = true;
                             lblledgerCategory.Visible = false;
                             drpCustomerCategoryAdd.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["LedgerCategory"]);
+                            drpCustomerCategoryAdd_SelectedIndexChanged(sender, e);
                         }
                         else
                         {
@@ -1677,7 +1679,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             BusinessLogic bl = new BusinessLogic(sDataSource);
 
-            if (lblBillNo.Text != "Auto Generated.No need to enter")
+            if (lblBillNo.Text != "(Auto Generated Field. No need to enter data)")
             {
                 string receivedBill = "";
                 var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
@@ -2642,6 +2644,8 @@ public partial class CustomerSales : System.Web.UI.Page
             //txtCustomerId.Visible = true;
             //drpMobile.Visible = false;
             drpCustomerCategoryAdd.Enabled = true;
+            Session["SalesAddProductbindDs"] = null;
+            FirstGridViewRow();
         }
         else
         {
@@ -2654,6 +2658,9 @@ public partial class CustomerSales : System.Web.UI.Page
             //drpMobile.Visible = true;
             //txtCustomerId.Visible = false;
             drpCustomerCategoryAdd.Enabled = false;
+
+            Session["SalesAddProductbindDs"] = null;
+            FirstGridViewRow();
         }
 
         txtAddress.Text = "";
@@ -3681,6 +3688,24 @@ public partial class CustomerSales : System.Web.UI.Page
                 bool mobchk;
                 string CustomerIdMobile = "0";
                 string usernam = Request.Cookies["LoggedUserName"].Value;
+
+                if (chk.Checked == false)
+                {
+                    if (txtCustPh.Text != "")
+                    {
+                        CustomerIdMobile = Convert.ToString(txtCustPh.Text);
+                    }
+                }
+                else
+                {
+                    if (txtCustPh.Text != "")
+                    {
+                        CustomerIdMobile = Convert.ToString(txtCustPh.Text);
+                    }
+                }
+
+
+
                 if (chk.Checked == false)
                 {
                     if (bl.IsLedgerAlreadyFound(connection, CName))
@@ -3967,20 +3992,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 //string CName = txtCustomerName.Text;
                 //bool mobchk;
                 //string CustomerIdMobile = "0";
-                if (chk.Checked == false)
-                {
-                    if (txtCustPh.Text != "")
-                    {
-                        CustomerIdMobile = Convert.ToString(txtCustPh.Text);
-                    }
-                }
-                else
-                {
-                    if (txtCustPh.Text != "")
-                    {
-                        CustomerIdMobile = Convert.ToString(txtCustPh.Text);
-                    }
-                }
+
 
                 string discType = GetDiscType();
 
@@ -4051,7 +4063,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                     }
                                 }
                             }
-                            else if (optionmethod.SelectedValue == "NormalSales" && optionmethod.SelectedValue == "ManualSales" && optionmethod.SelectedValue == "DeliveryNote")
+                            if (optionmethod.SelectedValue == "NormalSales" || optionmethod.SelectedValue == "ManualSales" || optionmethod.SelectedValue == "DeliveryNote")
                             {
                                 if (Convert.ToInt32(txtQty.Text) > Convert.ToInt32(txtStock.Text))
                                 {
@@ -4118,7 +4130,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                     return;
                                 }
                             }
-                            else if (optionmethod.SelectedValue == "PurchaseReturn" || optionmethod.SelectedValue == "DeliveryReturn")
+                            if (optionmethod.SelectedValue == "PurchaseReturn" || optionmethod.SelectedValue == "DeliveryReturn")
                             {
                                 if (txtRtnQty.Text == "")
                                 {
@@ -4178,7 +4190,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                     EXCLUSIVErate1 = Convert.ToDouble(ratewithqty);
                                 }
 
-                                DataSet dst = bl.ListProductMRPPrices(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                DataSet dst = bl.ListProductMRPPrices(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                 if (dst != null)
                                 {
                                     if (dst.Tables[0].Rows.Count > 0)
@@ -4209,7 +4221,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                 {
                                     double devvalue = 0;
 
-                                    DataSet dsd = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                    DataSet dsd = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                     if (dsd.Tables[0].Rows.Count > 0)
                                     {
                                         foreach (DataRow drt in dsd.Tables[0].Rows)
@@ -4220,7 +4232,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                                     if (devvalue == 0)
                                     {
-                                        DataSet dsrate = bl.getRateInfo(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                        DataSet dsrate = bl.getRateInfo(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                         double rate1 = 0;
                                         double dp = 0;
                                         double overall = 0;
@@ -4255,7 +4267,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                     }
                                     else
                                     {
-                                        DataSet dsrate = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                        DataSet dsrate = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                         double rate1 = 0;
                                         double dp = 0;
                                         double overall = 0;
@@ -4402,7 +4414,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                     txtRtnQty.Text = "0";
 
                                 drNew = dt.NewRow();
-                                drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                 drNew["Emp"] = Convert.ToString(drpIncharge.SelectedItem.Value);
                                 drNew["Emp1"] = Convert.ToString(drpIncharge.SelectedItem.Text);
                                 drNew["Desc"] = txtDesc.Text;
@@ -4534,7 +4546,7 @@ public partial class CustomerSales : System.Web.UI.Page
                                 if (Convert.ToInt32(txtRtnQty.Text) > 0)
                                 {
                                     drNew = dt.NewRow();
-                                    drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                    drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                     drNew["Emp"] = Convert.ToString(drpIncharge.SelectedItem.Value);
                                     drNew["Emp1"] = Convert.ToString(drpIncharge.SelectedItem.Text);
                                     drNew["Desc"] = txtDesc.Text;
@@ -5699,7 +5711,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             EXCLUSIVErate1 = Convert.ToDouble(ratewithqty);
                         }
 
-                        DataSet dst = bl.ListProductMRPPrices(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                        DataSet dst = bl.ListProductMRPPrices(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                         if (dst != null)
                         {
                             if (dst.Tables[0].Rows.Count > 0)
@@ -5731,7 +5743,7 @@ public partial class CustomerSales : System.Web.UI.Page
                         {
                             double devvalue = 0;
 
-                            DataSet dsd = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                            DataSet dsd = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                             if (dsd.Tables[0].Rows.Count > 0)
                             {
                                 foreach (DataRow drt in dsd.Tables[0].Rows)
@@ -5742,7 +5754,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
                             if (devvalue == 0)
                             {
-                                DataSet dsrate = bl.getRateInfo(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                DataSet dsrate = bl.getRateInfo(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                 double rate1 = 0;
                                 double dp = 0;
                                 double overall = 0;
@@ -5776,7 +5788,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             }
                             else
                             {
-                                DataSet dsrate = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                DataSet dsrate = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                 double rate1 = 0;
                                 double dp = 0;
                                 double overall = 0;
@@ -6195,7 +6207,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
 
                                 drNew = dt.NewRow();
-                                drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                                drNew["Prd"] = Convert.ToString(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                                 drNew["Emp"] = Convert.ToString(drpIncharge.SelectedItem.Value);
                                 drNew["Emp1"] = Convert.ToString(drpIncharge.SelectedItem.Text);
                                 drNew["Desc"] = txtDesc.Text;
@@ -6226,7 +6238,7 @@ public partial class CustomerSales : System.Web.UI.Page
                             //old code
                             //int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, Convert.ToInt32(executive), dFreight, dLU, dss, sOtherCusName, intTrans, userID, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, receiptData, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, MultiPayment, Types, snarr, cuscategory);
 
-                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile1, cuscategory, discType, branchcode, connection, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame, chkupdate,chk.Checked);
+                            int billNo = bl.UpdateSalesNew(hdSeries.Value, bill, sBilldate, sCustomerID, sCustomerName, sCustomerAddress, sCustomerContact, iPaymode, sCreditCardno, iBank, dTotalAmt, purchaseReturn, prReason, dFreight, dLU, dss, sOtherCusName, intTrans, userID, receiptData, MultiPayment, deliveryNote, sCustomerAddress2, sCustomerAddress3, executivename, despatchedfrom, fixedtotal, manualno, dTotalAmt, usernam, Types, snarr, DuplicateCopy, check, CustomerIdMobile1, cuscategory, discType, branchcode, connection, sCustomerDAddress1, sCustomerDAddress2, sCustomerDAddress3, chksame, chkupdate, chk.Checked);
 
 
                             if (billNo == -1)
@@ -6834,7 +6846,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
         try
         {
-            if (lblBillNo.Text != "Auto Generated.No need to enter")
+            if (lblBillNo.Text != "(Auto Generated Field. No need to enter data)")
             {
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
@@ -6985,7 +6997,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 lblTotalVAT.Text = "0";
                 lblTotalCST.Text = "0";
                 lblFreight.Text = "0";
-                lblBillNo.Text = "Auto Generated.No need to enter";
+                lblBillNo.Text = "(Auto Generated Field. No need to enter data)";
                 //txtBillDate.Focus();
                 //MyAccordion.Visible = false;
                 rowReason.Visible = false;
@@ -7525,7 +7537,7 @@ public partial class CustomerSales : System.Web.UI.Page
     {
         try
         {
-          
+
             //ModalPopupExtender1.Show();
         }
         catch (Exception ex)
@@ -7577,10 +7589,14 @@ public partial class CustomerSales : System.Web.UI.Page
         txtfixedtotal.Text = "0";
         txtdespatced.Text = "";
         txtnarr.Text = "";
-        chk.Checked = true;
+
+        chk.Checked = false;
+        CheckBox2.Visible = true;
+        CheckBox1.Visible = false;
         txtCustomerName.Text = "";
-        cmbCustomer.Visible = true;
-        txtCustomerName.Visible = false;
+        cmbCustomer.Visible = false;
+        txtCustomerName.Visible = true;
+
         //txtCustomerId.Text = "";
         //txtCustomerId.Visible = false;
         //drpMobile.Visible = true;
@@ -7930,7 +7946,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
             string receivedBill = "";
 
-            if (lblBillNo.Text != "Auto Generated.No need to enter")
+            if (lblBillNo.Text != "(Auto Generated Field. No need to enter data)")
             {
                 var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
 
@@ -8097,7 +8113,7 @@ public partial class CustomerSales : System.Web.UI.Page
         {
             string receivedBill = "";
 
-            if (lblBillNo.Text != "Auto Generated.No need to enter")
+            if (lblBillNo.Text != "(Auto Generated Field. No need to enter data)")
             {
                 var salesData = bl.GetSalesForId(int.Parse(lblBillNo.Text), drpBranch.SelectedValue);
 
@@ -8718,9 +8734,25 @@ public partial class CustomerSales : System.Web.UI.Page
                         //  txtCustomerId.Text = "";
 
                         if (Convert.ToString(ds.Tables[0].Rows[0]["Check1"]) == "Y")
+                        {
                             chk.Checked = true;
+
+                            cmbCustomer.Visible = true;
+                            txtCustomerName.Visible = false;
+                            CheckBox2.Visible = false;
+                            CheckBox1.Visible = true;
+                            drpCustomerCategoryAdd.Enabled = false;
+                        }
                         else
+                        {
                             chk.Checked = false;
+
+                            txtCustomerName.Visible = true;
+                            cmbCustomer.Visible = false;
+                            CheckBox2.Visible = true;
+                            CheckBox1.Visible = false;
+                            drpCustomerCategoryAdd.Enabled = true;
+                        }
 
                     if (ds.Tables[0].Rows[0]["CustomerAddress3"] != null)
                         txtAddress3.Text = Convert.ToString(ds.Tables[0].Rows[0]["CustomerAddress3"]);
@@ -8761,19 +8793,19 @@ public partial class CustomerSales : System.Web.UI.Page
                         rowmanual.Visible = true;
                     }
                     //loadManualSalesBooks();
-                    if (ds.Tables[0].Rows[0]["bookid"] != null)
-                    {
-                      string bookid = Convert.ToString(ds.Tables[0].Rows[0]["bookid"]);
-                        drpManualSalesBook.Visible = true;
-                        drpManualSalesBook.ClearSelection();
-                        ListItem li = drpManualSalesBook.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(bookid));
-                        if (li != null) li.Selected = true;
-                        //drpManualSalesBook.ClearSelection();
-                        //ListItem clie = drpManualSalesBook.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["bookid"]));
+                    //if (ds.Tables[0].Rows[0]["bookid"] != null)
+                    //{
+                    //  string bookid = Convert.ToString(ds.Tables[0].Rows[0]["bookid"]);
+                    //    drpManualSalesBook.Visible = true;
+                    //    drpManualSalesBook.ClearSelection();
+                    //    ListItem li = drpManualSalesBook.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(bookid));
+                    //    if (li != null) li.Selected = true;
+                    //    //drpManualSalesBook.ClearSelection();
+                    //    //ListItem clie = drpManualSalesBook.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["bookid"]));
 
-                        //if (clie != null) clie.Selected = true;
+                    //    //if (clie != null) clie.Selected = true;
                        
-                    }
+                    //}
 
 
                     //if (ds.Tables[0].Rows[0]["manual"] != null)
@@ -10900,6 +10932,7 @@ public partial class CustomerSales : System.Web.UI.Page
             TextBox txtPrBefVAT = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtPrBefVAT");
             TextBox txtRtVAT = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtRtVAT");
             TextBox txtTotal = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtTotal");
+            TextBox txtAvaStock = (TextBox)grvStudentDetails.Rows[vLoop].FindControl("txtAvaStock");
 
             int col = vLoop + 1;
 
@@ -10948,13 +10981,6 @@ public partial class CustomerSales : System.Web.UI.Page
             else if (txtQty.Text == "" || txtQty.Text == "0")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Quantity in row " + col + " ')", true);
-                txtQty.Focus();
-                checkflag = true;
-                return;
-            }
-            else if (Convert.ToInt32(txtQty.Text) > (Convert.ToInt32(txtStock.Text) + Convert.ToInt32(txtQty.Text)))
-            {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given qty is greater than stock in row " + col + " ')", true);
                 txtQty.Focus();
                 checkflag = true;
                 return;
@@ -11008,6 +11034,26 @@ public partial class CustomerSales : System.Web.UI.Page
                 return;
             }
 
+            if (cmdSave.Visible == true)
+            {
+                if (Convert.ToInt32(txtQty.Text) > (Convert.ToInt32(txtStock.Text)))
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given qty is greater than stock in row " + col + " ')", true);
+                    txtQty.Focus();
+                    checkflag = true;
+                    return;
+                }
+            }
+            //if (cmdUpdate.Visible == true)
+            //{
+            //    if (Convert.ToInt32(txtQty.Text) > (Convert.ToInt32(txtStock.Text) + Convert.ToInt32(txtAvaStock.Text)))
+            //    {
+            //        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Given qty is greater than stock in row " + col + " ')", true);
+            //        txtQty.Focus();
+            //        checkflag = true;
+            //        return;
+            //    }
+            //}
 
             if ((drpnormalsales.SelectedItem.Text == "YES") || (drpmanualsales.SelectedItem.Text == "YES"))
             {
@@ -11027,7 +11073,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     EXCLUSIVErate1 = Convert.ToDouble(ratewithqty);
                 }
 
-                DataSet dst = bl.ListProductMRPPrices(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                DataSet dst = bl.ListProductMRPPrices(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                 if (dst != null)
                 {
                     if (dst.Tables[0].Rows.Count > 0)
@@ -11060,7 +11106,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     double devvalue = 0;
                     // for product deviation
                     //DataSet dsd = bl.getRateInformation(drpProduct.SelectedValue);    
-                    DataSet dsd = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0,drpProduct.SelectedItem.Value.IndexOf("-")));
+                    DataSet dsd = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                     if (dsd.Tables[0].Rows.Count > 0)
                     {
                         foreach (DataRow drt in dsd.Tables[0].Rows)
@@ -11073,7 +11119,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         //for brand deviation
                        // DataSet dsrate = bl.getRateInfo(drpProduct.SelectedValue);
-                        DataSet dsrate = bl.getRateInfo(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                        DataSet dsrate = bl.getRateInfo(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                         double rate1 = 0;
                         double dp = 0;
                         double overall = 0;
@@ -11108,7 +11154,7 @@ public partial class CustomerSales : System.Web.UI.Page
                     else
                     {
                         //DataSet dsrate = bl.getRateInformation(drpProduct.SelectedValue);
-                        DataSet dsrate = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-")));
+                        DataSet dsrate = bl.getRateInformation(Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - ")));
                         double rate1 = 0;
                         double dp = 0;
                         double overall = 0;
@@ -11535,13 +11581,32 @@ public partial class CustomerSales : System.Web.UI.Page
             BusinessLogic bl = new BusinessLogic(sDataSource);
             DataSet ds = new DataSet();
             DataSet dsEmp = new DataSet();
+
+            //dsEmp = bl.ListExecutiveName(drpBranch.SelectedValue);
+            dsEmp = bl.ListExecutive();
+
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                var ddl1 = (DropDownList)e.Row.FindControl("drpIncharge");
+                ddl1.Items.Clear();
+                ListItem lifzzh1 = new ListItem("Select Employee", "0");
+                lifzzh1.Attributes.Add("style", "color:Black");
+                ddl1.Items.Add(lifzzh1);
+                ddl1.DataSource = dsEmp;
+                ddl1.Items[0].Attributes.Add("background-color", "color:#bce1fe");
+                ddl1.DataBind();
+                ddl1.DataTextField = "empFirstName";
+                ddl1.DataValueField = "empno";
+            }
+
+
             if (cmdSave.Visible == true)
             {               
 
                // cmbCustomer_SelectedIndexChanged(sender,e);
                 if (Session["SalesAddProductbindDs"] == null)
                 {
-                    ds111 = bl.ListProdForDynammicrow1(sDataSource, drpBranch.SelectedValue, "Customer");
+                    ds111 = bl.ListProdForDynammicrow1(sDataSource, drpBranch.SelectedValue, drpCustomerCategoryAdd.SelectedValue);
                     Session["SalesAddProductbindDs"] = ds111;
                 }
 
@@ -11563,7 +11628,7 @@ public partial class CustomerSales : System.Web.UI.Page
             {
                 if (Session["SalesEditProductbindDs"] == null)
                 {
-                    ds = bl.ListProdForDynammicroweditsales(sDataSource, drpBranch.SelectedValue, "Customer");
+                    ds = bl.ListProdForDynammicroweditsales(sDataSource, drpBranch.SelectedValue, drpCustomerCategoryAdd.SelectedValue);
                     Session["SalesEditProductbindDs"] = ds;
                 }
 
@@ -11582,23 +11647,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 }
             }
 
-            dsEmp = bl.ListExecutiveName(drpBranch.SelectedValue);
 
-            
-
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                var ddl1 = (DropDownList)e.Row.FindControl("drpIncharge");
-                ddl1.Items.Clear();
-                ListItem lifzzh1 = new ListItem("Select Employee", "0");
-                lifzzh1.Attributes.Add("style", "color:Black");
-                ddl1.Items.Add(lifzzh1);
-                ddl1.DataSource = dsEmp;
-                ddl1.Items[0].Attributes.Add("background-color", "color:#bce1fe");
-                ddl1.DataBind();
-                ddl1.DataTextField = "empFirstName";
-                ddl1.DataValueField = "empno";
-            }
 
             //if (optionmethod.SelectedValue != "NormalSales" && optionmethod.SelectedValue != "ManualSales" && optionmethod.SelectedValue != "DeliveryNote")
             if (optionmethod.SelectedValue != "NormalSales" && optionmethod.SelectedValue != "ManualSales")
@@ -12719,7 +12768,11 @@ public partial class CustomerSales : System.Web.UI.Page
                     {
                         sCustomer = Convert.ToString(itemDs.Tables[0].Rows[vLoop]["ItemCode"]);
                         drpProduct.ClearSelection();
-                        ListItem liw = drpProduct.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+
+                        ListItem liw = (from i in drpProduct.Items.Cast<ListItem>()
+                                        where ((ListItem)i).Value.Contains(sCustomer)
+                                        select i).FirstOrDefault() as ListItem;
+
                         if (liw != null) liw.Selected = true;
                     }
 
@@ -12943,6 +12996,7 @@ public partial class CustomerSales : System.Web.UI.Page
 
     protected void drpBranch_SelectedIndexChanged(object sender, EventArgs e)
     {
+        Session["SalesAddProductbindDs"] = null;
         if (optionmethod.SelectedValue == "NormalSales" || optionmethod.SelectedValue == "ManualSales")
         {
             loadDropDowns();
@@ -13175,6 +13229,11 @@ public partial class CustomerSales : System.Web.UI.Page
             chkDelRtn.Checked = false;
             BindGridWay(chkIntTrans.Text);
         }
+    }
+    protected void drpCustomerCategoryAdd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        Session["SalesAddProductbindDs"] = null;
+        FirstGridViewRow();
     }    
 }
 

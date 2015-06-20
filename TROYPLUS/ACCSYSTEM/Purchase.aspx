@@ -31,8 +31,8 @@
             var selectedText = drpPrd.options[drpPrd.selectedIndex].innerHTML;
             var selectedValue = drpPrd.options[drpPrd.selectedIndex].value;// drpPrd.value;
 
-            var split = drpPrd.options[drpPrd.selectedIndex].value.split('-');
-
+            var split = drpPrd.options[drpPrd.selectedIndex].value.split(' - ');
+            //alert(split);
             var itemcode = split[0];
             var model = split[1];
             var prdname = split[2];
@@ -42,7 +42,7 @@
             var cst = split[6];
             var nlc = split[7];
             var price = split[8];
-
+           // alert(vat);
             var GridId = "<%=grvStudentDetails.ClientID %>";
             var grid = document.getElementById(GridId);
             rowscount = grid.rows.length;
