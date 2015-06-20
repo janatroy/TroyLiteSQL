@@ -60,6 +60,6 @@ C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSL
 C:\Users\PRAKASH\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\bin\Debug\SMSLibrary.dll
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\bin\Debug\SMSLibrary.pdb
-C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.dll
 C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.pdb
+C:\Users\Acer\Documents\GitHub\TroyLiteSQL\TROYPLUS\SMSLibrary\obj\Debug\SMSLibrary.csprojResolveAssemblyReference.cache

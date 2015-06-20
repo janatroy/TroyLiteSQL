@@ -1196,7 +1196,7 @@ public partial class Purchase : System.Web.UI.Page
                 if (txtLU.Text.Trim() != "")
                     dLU = Convert.ToDouble(txtLU.Text.Trim());
                 /*March18*/
-                dTotalAmt = dTotalAmt + dFreight + dLU;
+                //dTotalAmt = dTotalAmt + dFreight + dLU;
 
                 dfixedtotal = Convert.ToDouble(txtfixedtotal.Text);
                 narration2 = txtnarr.Text;
@@ -1602,9 +1602,8 @@ public partial class Purchase : System.Web.UI.Page
                             {
                                 if (txtRtnQty.Text == "")
                                     txtRtnQty.Text = "0";
-
-                                drNew = dt.NewRow();
-                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0,drpProduct.SelectedItem.Value.IndexOf("-"));                               
+                                                                drNew = dt.NewRow();
+                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0,drpProduct.SelectedItem.Value.IndexOf(" - "));                               
                                 if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                                 {
                                     drNew["Qty"] = txtQty.Text;
@@ -1631,7 +1630,7 @@ public partial class Purchase : System.Web.UI.Page
                                 if (Convert.ToInt32(txtRtnQty.Text) > 0)
                                 {
                                     drNew = dt.NewRow();
-                                    drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-"));      
+                                    drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - "));      
                                     if (ddDeliveryReturn.SelectedValue != "YES" && drpSalesReturn.SelectedValue != "YES")
                                     {
                                         drNew["Qty"] = txtQty.Text;
@@ -2398,7 +2397,7 @@ public partial class Purchase : System.Web.UI.Page
                 if (txtLU.Text.Trim() != "")
                     dLU = Convert.ToDouble(txtLU.Text.Trim());
                 /*March18*/
-                dTotalAmt = dTotalAmt + dFreight + dLU;
+                //dTotalAmt = dTotalAmt + dFreight + dLU;
                 /*End Purchase Loading / Unloading Freight Change - March 16*/
                 int BilitID = int.Parse(ddBilts.SelectedValue);
 
@@ -2771,7 +2770,7 @@ public partial class Purchase : System.Web.UI.Page
 
 
                                 drNew = dt.NewRow();
-                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf("-"));   
+                                drNew["Prd"] = Convert.ToString(drpProduct.SelectedItem.Value).Substring(0, drpProduct.SelectedItem.Value.IndexOf(" - "));   
                                 drNew["Qty"] = txtQty.Text;
                                 drNew["Rate"] = txtRate.Text;
                                 drNew["NLP"] = txtNLP.Text;
@@ -7631,7 +7630,7 @@ public partial class Purchase : System.Web.UI.Page
 
             if (Session["PurchaseProductbindDs"] == null)
             {
-            ds = bl.ListProdForDynammicrowPurchase(sDataSource);
+                ds = bl.ListProdForDynammicrowPurchase(sDataSource);
                 Session["PurchaseProductbindDs"] = ds;
             }
 

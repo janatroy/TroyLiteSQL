@@ -22,13 +22,43 @@
 
     <script type="text/javascript">
 
+        function FillFields(box) {
+            if (box.checked == false) {
+                document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtDeliveryAddress1').value = "";
+                document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtDeliveryAddress2').value = "";
+                document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtDeliveryAddress3').value = "";
+            }
+            else {
+                document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtDeliveryAddress1').value = document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtAddress').value;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtDeliveryAddress2').value = document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtAddress2').value;
+                document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtDeliveryAddress3').value = document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtAddress3').value;
+            }
+        }
+
+        function ExistingCus(box) {
+            //if (box.checked == false) {                
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtCustomerName').style.visibility = 'visible';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_cmbCustomer').style.visibility = 'hidden';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_CheckBox1').style.visibility = 'hidden';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_CheckBox2').style.visibility = 'visible';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_drpCustomerCategoryAdd').enabled = 'enabled';
+            //}
+            //else {
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_txtCustomerName').style.visibility = 'hidden';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_cmbCustomer').style.visibility = 'hidden';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_CheckBox1').style.visibility = 'visible';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_CheckBox2').style.visibility = 'hidden';
+            //    document.getElementById('ctl00_cplhControlPanel_tabs2_tabMaster_drpCustomerCategoryAdd').enabled = 'enabled';
+            //}
+        }
+
         function GetSelectedTextValue(drpPrd) {
 
             var selectedText = drpPrd.options[drpPrd.selectedIndex].innerHTML;
             var selectedValue = drpPrd.options[drpPrd.selectedIndex].value;// drpPrd.value;
 
-            var split = drpPrd.options[drpPrd.selectedIndex].value.split('-');
-
+            var split = drpPrd.options[drpPrd.selectedIndex].value.split(' - ');
+            //alert(split);
             var itemcode = split[0];
             var prddsc = split[1];
             var price = split[2];
@@ -37,7 +67,7 @@
             var disc = split[5];
             var vat = split[6];
             var cst = split[7];
-          
+            //alert(stock);
 
             var GridId = "<%=grvStudentDetails.ClientID %>";
             var grid = document.getElementById(GridId);
@@ -47,7 +77,7 @@
             var row = drpPrd.parentNode.parentNode;
             var rowIndex = row.rowIndex - 1;
             //alert("Row index" + row + rowIndex);
-            
+
             //for (var i = rowIndex; i < rowscount; i++) {
             for (var i = rowIndex; i <= rowIndex; i++) {
                 var indexID = 02 + i;
@@ -61,11 +91,12 @@
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtDisPre').value = disc;
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtCSTPre').value = cst;
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRate').value = price;
-                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtQty').focus();
+
 
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtExeComm').value = "0";
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtDisPre').value = "0";
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtCSTPre').value = "0";
+                document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtQty').focus();
             }
 
             ChangeText(drpPrd);
@@ -78,16 +109,16 @@
             var GridId = "<%=grvStudentDetails.ClientID %>";
             var grid = document.getElementById(GridId);
             rowscount = grid.rows.length;
-             //alert(rowscount);
-            var vat = 0;     
+            //alert(rowscount);
+            var vat = 0;
             var row = drpPrd.parentNode.parentNode;
             var rowIndex = row.rowIndex - 1;
 
             var vat = document.getElementById('<%= inpVAT.ClientID %>');
             var disc = document.getElementById('<%= inpDisc.ClientID %>');
-           
+
             for (var i = rowIndex; i <= rowIndex; i++) {
-               
+
                 var indexID = 02 + i;
                 var TextBoxQty = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtQty').value
                 var TextBoxRate = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRate').value;
@@ -97,39 +128,36 @@
                 var TextBoxCSTPre = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtCSTPre').value
                 var txtPrBefVAT = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtPrBefVAT').value
                 var TextBoxVATAmt = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATAmt').value
-                var TextBoxRtVAT = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value               
+                var TextBoxRtVAT = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value
                 var TextBoxTotal = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTotal').value
-               
+
                 if (vat.value == "0") {
                     var toqty = TextBoxRate * TextBoxQty;
-                    
+
                     document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTotal').value = parseFloat(toqty).toFixed(2);
                     document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTot').value = parseFloat(toqty).toFixed(2);
                     document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value = parseFloat(toqty).toFixed(2);
-                    if (disc.value == "0")
-                    {
+                    if (disc.value == "0") {
                         caldisamt = toqty * TextBoxDisPre / 100;
                     }
-                    else
-                    {
+                    else {
                         caldisamt = TextBoxDisPre;
                     }
-                  
-                    var calnet = toqty - caldisamt;                   
-                    var vatper = TextBoxVATPre;                    
-                    var vatper1 = parseFloat(vatper) + 100;                   
+
+                    var calnet = toqty - caldisamt;
+                    var vatper = TextBoxVATPre;
+                    var vatper1 = parseFloat(vatper) + 100;
                     var vatinclusiverate = calnet * vatper / vatper1;
                     var sVatamount = calnet - vatinclusiverate;
-                   
+
                     document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATAmt').value = parseFloat(vatinclusiverate).toFixed(2);
-                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value =parseFloat(calnet).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value = parseFloat(calnet).toFixed(2);
                     document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtPrBefVAT').value = parseFloat(sVatamount).toFixed(2);
                     document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTotal').value = parseFloat(calnet).toFixed(2);
                 }
-                else if(vat.value == "1")
-                {
+                else if (vat.value == "1") {
                     var toqty = TextBoxRate * TextBoxQty;
-                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value =parseFloat(toqty).toFixed(2);
+                    document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtRtVAT').value = parseFloat(toqty).toFixed(2);
                     document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtTot').value = parseFloat(toqty).toFixed(2);
                     if (disc.value == "0") {
                         vatinclusiverate = toqty * TextBoxDisPre / 100;
@@ -138,7 +166,7 @@
                         vatinclusiverate = TextBoxDisPre;
                     }
 
-                    var vatinclusiverate3 = toqty - vatinclusiverate;                  
+                    var vatinclusiverate3 = toqty - vatinclusiverate;
                     var vatinclusiverate1 = vatinclusiverate3 * TextBoxVATPre / 100;
                     var vatinclusiverate2 = vatinclusiverate1 + vatinclusiverate3;
 
@@ -165,7 +193,7 @@
                     }
                     tot.value = parseFloat(total).toFixed(2);
                 }
-            }                   
+            }
         }
 
 
@@ -195,7 +223,7 @@
         }
 
         function PrintItem(ID) {
-           
+
             window.showModalDialog('./ProductSalesBill.aspx?SID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
         }
 
@@ -212,7 +240,7 @@
         }
 
         function PrintItem(ID, BID) {
-           // alert("hi");
+            // alert("hi");
             window.showModalDialog('./ProductSalesBill.aspx?Req=N&SID=' + ID + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
         }
 
@@ -270,11 +298,11 @@
                                                 <asp:DropDownList ID="ddCriteria" runat="server" BackColor="White" Width="149px" Height="24px" Style="text-align: center; border: 1px solid White">
                                                     <asp:ListItem Value="0">All</asp:ListItem>
                                                     <asp:ListItem Value="TransNo">Trans No</asp:ListItem>
-                                                    <asp:ListItem Value="BillNo">Bill No</asp:ListItem>                                                    
+                                                    <asp:ListItem Value="BillNo">Bill No</asp:ListItem>
                                                     <asp:ListItem Value="BillDate">Bill Date</asp:ListItem>
                                                     <asp:ListItem Value="CustomerName">Customer Name</asp:ListItem>
                                                     <%-- <asp:ListItem Value="PayMode">Payment mode</asp:ListItem>--%>
-                                                     <asp:ListItem Value="CustomerName">Ledger Name</asp:ListItem>
+                                                    <asp:ListItem Value="CustomerName">Ledger Name</asp:ListItem>
                                                     <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
@@ -529,19 +557,19 @@
                                                                                                                                 <tr>
                                                                                                                                     <td class="ControlLabelproject" style="width: 7%;">Bill No. </td>
                                                                                                                                     <td class="ControlTextBox3" style="width: 24%;">
-                                                                                                                                        <asp:Label ID="lblBillNo" runat="server" BackColor="#e7e7e7" Height="25px" Width="200px"></asp:Label>
+                                                                                                                                        <asp:Label ID="lblBillNo" runat="server" BackColor="#e7e7e7" Height="25px" Width="110%"></asp:Label>
                                                                                                                                         <asp:DropDownList ID="ddSeriesType" runat="server" AppendDataBoundItems="True" BackColor="#e7e7e7" Height="25px" SkinID="skinDdlBox" TabIndex="7" Width="100%">
                                                                                                                                         </asp:DropDownList>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 20%;"></td>
-                                                                                                                                   <td style="width: 15%;" class="ControlLabelproject">
+                                                                                                                                    <td style="width: 15%;" class="ControlLabelproject">
                                                                                                                                         <asp:CompareValidator ID="cvCustomer" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Customer Category. It Cannot be left blank. " Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>
                                                                                                                                         Customer Category *
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlDrpBorder" style="width: 24%">
                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
-                                                                                                                                                <asp:DropDownList ID="drpCustomerCategoryAdd" runat="server" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="300px">
+                                                                                                                                                <asp:DropDownList ID="drpCustomerCategoryAdd" runat="server" AutoPostBack="true" AppendDataBoundItems="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="CusCategory_Name" DataValueField="CusCategory_Value" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="300px" OnSelectedIndexChanged="drpCustomerCategoryAdd_SelectedIndexChanged">
                                                                                                                                                     <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer Category" Value="0"></asp:ListItem>
                                                                                                                                                 </asp:DropDownList>
                                                                                                                                             </ContentTemplate>
@@ -551,9 +579,7 @@
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                     </td>
-                                                                                                                                    <td align="left" style="width: 7%;">
-                                                                                                                                        
-                                                                                                                                    </td>
+                                                                                                                                    <td align="left" style="width: 7%;"></td>
                                                                                                                                 </tr>
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
@@ -606,21 +632,21 @@
                                                                                                                                     <td class="ControlDrpBorder" style="width: 24%;">
                                                                                                                                         <%--   <asp:TextBox ID="TextBox4" AutoPostBack="false" runat="server" Width="500px" onchange="OnChangetxt()"></asp:TextBox>--%>
 
-                                                                                                                                        <asp:DropDownList Visible="false" ID="cmbCustomer" runat="server" AppendDataBoundItems="true" AutoPostBack="true" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="LedgerName" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="cmbCustomer_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" ValidationGroup="salesval" Width="300px">
-                                                                                                                                            <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer" Value="0"></asp:ListItem>
+                                                                                                                                        <asp:DropDownList Visible="false" ID="cmbCustomer" runat="server" AppendDataBoundItems="true" AutoPostBack="true" EnableTheming="False" BackColor="#e7e7e7" CssClass="chzn-select" DataTextField="LedgerName" DataValueField="LedgerID" Height="26px" OnSelectedIndexChanged="cmbCustomer_SelectedIndexChanged" Style="border: 1px solid #e7e7e7" TabIndex="2" Width="300px">
+                                                                                                                                            <%-- <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer" Value="0"></asp:ListItem>--%>
                                                                                                                                         </asp:DropDownList>
                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel21" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
                                                                                                                                                 <asp:TextBox ID="TextBox4" AutoPostBack="true" runat="server" Width="99%" OnTextChanged="TextBox4_TextChanged" Visible="false"></asp:TextBox>
 
-                                                                                                                                                <asp:TextBox ID="txtCustomerName" runat="server" SkinID="skinTxtBoxGrid" Visible="false"></asp:TextBox>
+                                                                                                                                                <asp:TextBox ID="txtCustomerName" runat="server" AutoPostBack="true" SkinID="skinTxtBoxGrid" Visible="false"></asp:TextBox>
 
 
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="tabs2$TabPanel1$drpPurchaseReturn" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="chk" EventName="CheckedChanged" />
-                                                                                                                                                <%-- <asp:AsyncPostBackTrigger ControlID="drpMobile" EventName="SelectedIndexChanged" />--%>
+                                                                                                                                                <asp:AsyncPostBackTrigger ControlID="drpCustomerCategoryAdd" EventName="SelectedIndexChanged" />
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="TextBox4" EventName="TextChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
@@ -636,7 +662,7 @@
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 15%;">
-                                                                                                                                        <asp:CheckBox runat="server" ID="chk" Text="Existing Customer" OnCheckedChanged="chk_CheckedChanged" AutoPostBack="true" />
+                                                                                                                                        <asp:CheckBox runat="server" ID="chk" Text="Existing Customer" OnCheckedChanged="chk_CheckedChanged" Onclick="javascript:ExistingCus(this)" AutoPostBack="true" />
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlLabelproject" style="width: 10%;">Mode of Payment </td>
                                                                                                                                     <td class="ControlDrpBorder" style="width: 24%;">
@@ -650,7 +676,7 @@
                                                                                                                                                 </asp:DropDownList>
                                                                                                                                             </ContentTemplate>
                                                                                                                                         </asp:UpdatePanel>
-                                                                                                                                        
+
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 7%;"></td>
                                                                                                                                 </tr>
@@ -658,13 +684,12 @@
                                                                                                                                 </tr>
                                                                                                                                 <tr style="height: 5px;">
                                                                                                                                     <td class="ControlLabelproject" style="width: 7%;"></td>
-                                                                                                                                    <td class="ControlLabelNew123" style="width: 24%;">
-                                                                                                                                      Billing Address
+                                                                                                                                    <td class="ControlLabelNew123" style="width: 24%;">Billing Address
                                                                                                                                     </td>
-                                                                                                                                    <td style="width: 15%;"><asp:CheckBox runat="server" ID="CheckBox1" Text="Make Address changes permanent" Visible="false" /></td>
+                                                                                                                                    <td style="width: 15%;">
+                                                                                                                                        <asp:CheckBox runat="server" ID="CheckBox1" Text="Make Address changes permanent" Visible="true" /></td>
                                                                                                                                     <td class="ControlLabelproject" style="width: 15%;"></td>
-                                                                                                                                    <td class="ControlLabelNew123" style="width: 24%">
-                                                                                                                                        Delivery Address
+                                                                                                                                    <td class="ControlLabelNew123" style="width: 24%">Delivery Address
                                                                                                                                         
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 7%;"></td>
@@ -672,14 +697,12 @@
                                                                                                                                 <tr style="height: 2px;">
                                                                                                                                 </tr>
                                                                                                                                 <tr style="height: 5px;">
-                                                                                                                                    <td  style="width: 15%;"></td>
-                                                                                                                                    <td style="width: 24%;">
-                                                                                                                                      
-                                                                                                                                    </td>
                                                                                                                                     <td style="width: 15%;"></td>
-                                                                                                                                    <td  style="width: 15%;"></td>
-                                                                                                                                    <td  style="width: 24%">
-                                                                                                                                        <asp:CheckBox runat="server" ID="CheckBox2" Text="Same as Billing Address" Visible="false"  OnCheckedChanged="CheckBox2_CheckedChanged" AutoPostBack="true" />
+                                                                                                                                    <td style="width: 24%;"></td>
+                                                                                                                                    <td style="width: 15%;"></td>
+                                                                                                                                    <td style="width: 15%;"></td>
+                                                                                                                                    <td style="width: 24%">
+                                                                                                                                        <asp:CheckBox runat="server" ID="CheckBox2" Text="Same as Billing Address" Visible="true" onclick="FillFields(this)" AutoPostBack="true" />
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 7%;"></td>
                                                                                                                                 </tr>
@@ -729,7 +752,7 @@
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
-                                                                                                                                       
+
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 15%;"></td>
                                                                                                                                     <td style="width: 15%;" class="ControlLabelproject">Area
@@ -752,7 +775,7 @@
                                                                                                                                 <tr>
                                                                                                                                     <td class="ControlLabelproject" style="width: 7%;" valign="middle">City</td>
                                                                                                                                     <td class="ControlTextBox3" style="width: 24%;">
-                                                                                                                                       <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional">
+                                                                                                                                        <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
                                                                                                                                                 <asp:TextBox ID="txtAddress3" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" Width="500px"></asp:TextBox>
                                                                                                                                             </ContentTemplate>
@@ -761,13 +784,13 @@
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="cmbCustomer" EventName="SelectedIndexChanged" />
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
-                                                                                                                                       
+
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 15%;"></td>
                                                                                                                                     <td style="width: 15%;" class="ControlLabelproject">City
                                                                                                                                     </td>
                                                                                                                                     <td class="ControlTextBox3" style="width: 24%">
-                                                                                                                                       <asp:UpdatePanel ID="UpdatePanel12" runat="server" UpdateMode="Conditional">
+                                                                                                                                        <asp:UpdatePanel ID="UpdatePanel12" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
                                                                                                                                                 <asp:TextBox ID="txtDeliveryAddress3" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" Width="500px"></asp:TextBox>
                                                                                                                                             </ContentTemplate>
@@ -790,9 +813,9 @@
                                                                                                                                         <asp:TextBox ID="txtfixedtotal" runat="server" Text="0" BackColor="#e7e7e7" Visible="false" MaxLength="200" TabIndex="9" Width="500px"></asp:TextBox>
                                                                                                                                         <%--<cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender8" runat="server" FilterType="Custom, Numbers" TargetControlID="txtfixedtotal" ValidChars="." />--%>
 
-                                                                                                                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                                                                                                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                                                                                                             <ContentTemplate>
-                                                                                                                                                <asp:TextBox ID="txtCustPh" runat="server" BackColor="#e7e7e7" MaxLength="10" SkinID="skinTxtBoxGrid" TabIndex="6" Width="200px"></asp:TextBox>
+                                                                                                                                                <asp:TextBox ID="txtCustPh" runat="server" BackColor="#e7e7e7"  SkinID="skinTxtBoxGrid" TabIndex="6" Width="200px"></asp:TextBox>
                                                                                                                                                 <cc1:FilteredTextBoxExtender ID="FilteredTextBoxEx" runat="server" FilterType="Numbers" TargetControlID="txtCustPh" />
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
@@ -802,18 +825,18 @@
                                                                                                                                             </Triggers>
                                                                                                                                         </asp:UpdatePanel>
                                                                                                                                     </td>
-                                                                                                                                    <td style="width: 15%;"></td>
-                                                                                                                                    <td class="ControlLabelproject" style="width: 15%;" valign="middle">
-                                                                                                                                        
-                                                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtdespatced" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please Enter Despatched From. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
-                                                                                                                                        To be Despatched From * </td>
+                                                                                                                                        <td style="width: 15%;"></td>
+                                                                                                                                        <td class="ControlLabelproject" style="width: 15%;" valign="middle">
+
+                                                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtdespatced" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please Enter Despatched From. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                                                            To be Despatched From * </td>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 24%;" class="ControlTextBox3">
                                                                                                                                         <asp:TextBox ID="txtdespatced" runat="server" BackColor="#e7e7e7" MaxLength="10" SkinID="skinTxtBoxGrid" TabIndex="8" Width="200px"></asp:TextBox>
-                                                                                                                                        
+
                                                                                                                                         <asp:DropDownList ID="drpMobile1" runat="server" TabIndex="2" CssClass="chzn-select" Width="313px" Visible="false">
-                                                                                                                                                            <%-- <asp:DropDownList ID="drpMobile1" runat="server" TabIndex="2" CssClass="chzn-select" Width="313px">--%>
-                                                                                                                                                        </asp:DropDownList>
+                                                                                                                                            <%-- <asp:DropDownList ID="drpMobile1" runat="server" TabIndex="2" CssClass="chzn-select" Width="313px">--%>
+                                                                                                                                        </asp:DropDownList>
 
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 7%;"></td>
@@ -880,7 +903,7 @@
                                                                                                                             
                                                                                                                         </tr>--%>
 
-                                                                                                                               <%-- <tr style="height: 2px;">
+                                                                                                                                <%-- <tr style="height: 2px;">
                                                                                                                                 </tr>--%>
                                                                                                                                 <%--<tr>
                                                                                                                             <td class="ControlLabel" style="width: 25%;" valign="middle">
@@ -1399,8 +1422,8 @@
                                                                                                                                                                             <asp:TextBox ID="txtVATAmt" Style="text-align: right" runat="server" Enabled="false" ReadOnly="false" Width="70px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
-                                                                                                                                                                   <%-- <asp:TemplateField HeaderText="Rate with VAT" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">--%>
-                                                                                                                                                                     <asp:TemplateField HeaderText="" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">
+                                                                                                                                                                    <%-- <asp:TemplateField HeaderText="Rate with VAT" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">--%>
+                                                                                                                                                                    <asp:TemplateField HeaderText="" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">
                                                                                                                                                                         <ItemTemplate>
                                                                                                                                                                             <asp:TextBox ID="txtRtVAT" Style="text-align: right" runat="server" ReadOnly="false" Enabled="false" Width="0px" ForeColor="#0567AE" Font-Bold="false" Visible="true"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
@@ -1443,6 +1466,7 @@
                                                                                                                                     <asp:AsyncPostBackTrigger ControlID="cmdSaveProduct" EventName="Click" />
                                                                                                                                     <asp:AsyncPostBackTrigger ControlID="cmdUpdateProduct" EventName="Click" />
                                                                                                                                     <asp:AsyncPostBackTrigger ControlID="GrdViewItems" />
+                                                                                                                                    <asp:AsyncPostBackTrigger ControlID="grvStudentDetails" EventName="RowDataBound" />
                                                                                                                                     <%--<asp:AsyncPostBackTrigger ControlID="cmdUpdate" />--%>
                                                                                                                                 </Triggers>
                                                                                                                             </asp:UpdatePanel>
@@ -1728,7 +1752,7 @@
                                                                                                                         </td>
                                                                                                                         <td style="width: 25%">
                                                                                                                             <asp:DropDownList ID="drpManualSalesBook" runat="server" AutoPostBack="true" BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="border: 1px solid #e7e7e7" TabIndex="8" Width="100%" DataTextField="BookName" DataValueField="BookId" AppendDataBoundItems="true">
-                                                                                                                              <%--  <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>--%>
+                                                                                                                                <%--  <asp:ListItem Selected="True" Text="Select Book" Value="0"></asp:ListItem>--%>
                                                                                                                             </asp:DropDownList>
                                                                                                                         </td>
                                                                                                                         <td style="width: 15%"></td>
@@ -1829,7 +1853,7 @@
                                                                                                                                                     <td align="right" class="ControlDrp3" style="width: 20%;">
                                                                                                                                                         <asp:TextBox ID="TextBox2" runat="server" CssClass="cssTextBox" Text="0"></asp:TextBox>
                                                                                                                                                     </td>
-                                                                                                                                                    <td class="ControlDrp3" style="width: 20%;text-align: right">
+                                                                                                                                                    <td class="ControlDrp3" style="width: 20%; text-align: right">
                                                                                                                                                         <asp:TextBox ID="txtCashAmount" runat="server" AutoPostBack="true" CssClass="cssTextBox" OnTextChanged="txtRAmount_TextChanged" TabIndex="21" Width="97%"></asp:TextBox>
                                                                                                                                                         <cc1:FilteredTextBoxExtender ID="ftCash" runat="server" Enabled="True" FilterType="Custom, Numbers" TargetControlID="txtCashAmount" ValidChars="." />
                                                                                                                                                     </td>
@@ -1842,12 +1866,12 @@
                                                                                                                                                     <td style="width: 22%"></td>
                                                                                                                                                     <td style="width: 20%"></td>
                                                                                                                                                     <td class="ControlLabelproject" style="width: 20%; text-align: right">Total</td>
-                                                                                                                                                   <%-- <td class="tblLeft allPad" style="width: 20%; font-weight: bold; display: none">--%>
-                                                                                                                                                     <td style="width: 20%; font-weight: bold">
+                                                                                                                                                    <%-- <td class="tblLeft allPad" style="width: 20%; font-weight: bold; display: none">--%>
+                                                                                                                                                    <td style="width: 20%; font-weight: bold">
                                                                                                                                                         <asp:Label CssClass="ControlLabelproject" ID="lblReceivedTotal" ForeColor="Blue" runat="server"></asp:Label>
                                                                                                                                                     </td>
                                                                                                                                                     <td style="width: 9%"></td>
-                                                                                                                                                </tr>                                                                                                                                                
+                                                                                                                                                </tr>
                                                                                                                                             </table>
                                                                                                                                         </div>
                                                                                                                                         <div id="divListMPayments" runat="server" align="center" style="text-align: center">
