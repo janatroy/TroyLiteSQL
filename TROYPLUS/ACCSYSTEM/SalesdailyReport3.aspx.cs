@@ -199,7 +199,7 @@ public partial class SalesdailyReport3 : System.Web.UI.Page
 
                 // if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(purRet, intTrans, delNote, Branch);
+                  //  BillDs = bl.FirstLevelDaywise(purRet, intTrans, delNote, Branch);
 
                 }
               
@@ -1062,7 +1062,7 @@ public partial class SalesdailyReport3 : System.Web.UI.Page
                     //  string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
                     // string Branch = Request.QueryString["BranchCode"].ToString();
 
-                    ds = bl.getpricefordashboard(connection, billno, Branch);
+                //    ds = bl.getpricefordashboard(connection, billno, Branch);
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         foreach (DataRow drt in ds.Tables[0].Rows)

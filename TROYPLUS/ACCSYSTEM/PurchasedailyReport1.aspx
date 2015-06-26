@@ -435,6 +435,13 @@
                                     runat="server" Text='<%# Eval("Branchcode") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
+                        <asp:TemplateField ItemStyle-HorizontalAlign="Right"  ItemStyle-VerticalAlign="Top"
+                            HeaderText="Quantity">
+                            <ItemTemplate>
+                                <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblqtyy"
+                                    runat="server" Text='<%# Eval("Quantity") %>' />
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
                             HeaderText="Net Rate">
                             <ItemTemplate>

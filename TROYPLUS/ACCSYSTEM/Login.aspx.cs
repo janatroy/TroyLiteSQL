@@ -228,6 +228,13 @@ public partial class Login : System.Web.UI.Page
                 txtPassword.Focus();
                 HttpCookie cookie1 = new HttpCookie("Branch");
 
+                HttpCookie dash1 = new HttpCookie("dash");
+               
+
+                dash1.Value = ds1.Tables[0].Rows[0]["dashboard"].ToString();
+
+                Response.Cookies.Add(dash1);
+
 
                 if (ds1.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
                 {

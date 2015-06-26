@@ -12,7 +12,7 @@
             document.getElementById('ctl00_cplhControlPanel_txtCompany').value = "";
             document.getElementById('ctl00_cplhControlPanel_chkRemember').checked = false;
         }
-
+        
         function invokeMeMaster() {
             var chkPostBack = '<%= Page.IsPostBack ? "true" : "false" %>';
 

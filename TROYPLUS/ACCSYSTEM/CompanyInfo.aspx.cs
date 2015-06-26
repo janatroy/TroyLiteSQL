@@ -32,6 +32,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 BindDivisions();
                 GetCompanyInfo();
                 loadPriceList();
+               // loadPriceList1();
                 loadPriceListPurchase();
                 Label1.Text = Helper.GenerateUniqueIDForThisPC();
                 DisableForOffline();
@@ -90,6 +91,29 @@ public partial class CompanyInfo : System.Web.UI.Page
         }
     }
 
+    private void loadPriceList1()
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        DataSet ds = new DataSet();
+        string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
+
+        ManagementCalculation.Items.Clear();
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
+        ds = bl.ListPriceList(connection);
+        ManagementCalculation.DataSource = ds;
+        ManagementCalculation.DataTextField = "PriceName";
+        ManagementCalculation.DataValueField = "PriceName";
+        ManagementCalculation.DataBind();
+
+        Branchcalculation.Items.Clear();
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
+        //  ds = bl.ListPriceList(connection);
+        Branchcalculation.DataSource = ds;
+        Branchcalculation.DataTextField = "PriceName";
+        Branchcalculation.DataValueField = "PriceName";
+        Branchcalculation.DataBind();
+    }
+
 
     private void DisableForOffline()
     {
@@ -139,6 +163,22 @@ public partial class CompanyInfo : System.Web.UI.Page
         ddPriceList.DataBind();
         ddPriceList.DataTextField = "PriceName";
         ddPriceList.DataValueField = "PriceName";
+
+        ManagementCalculation.Items.Clear();
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
+     //   ds = bl.ListPriceList(connection);
+        ManagementCalculation.DataSource = ds;
+        ManagementCalculation.DataTextField = "PriceName";
+        ManagementCalculation.DataValueField = "PriceName";
+        ManagementCalculation.DataBind();
+
+        Branchcalculation.Items.Clear();
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
+        //  ds = bl.ListPriceList(connection);
+        Branchcalculation.DataSource = ds;
+        Branchcalculation.DataTextField = "PriceName";
+        Branchcalculation.DataValueField = "PriceName";
+        Branchcalculation.DataBind();
     }
 
     private void loadPriceListPurchase()
@@ -436,6 +476,21 @@ public partial class CompanyInfo : System.Web.UI.Page
                             if (dr["KeyValue"] != null)
                                txtSAPSupplierAccountCode.Text = dr["KeyValue"].ToString();
                     }
+                        else if (dr["KeyName"].ToString() == "SAPPROCESS")
+                        {
+                            if (dr["KeyValue"] != null)
+                                chksap.Text = dr["KeyValue"].ToString();
+                        }
+                        else if (dr["KeyName"].ToString() == "MGMTPRICE")
+                        {
+                            if (dr["KeyValue"] != null)
+                                ManagementCalculation.Text = dr["KeyValue"].ToString();
+                        }
+                        else if (dr["KeyName"].ToString() == "BRNCHPRICE")
+                        {
+                            if (dr["KeyValue"] != null)
+                                Branchcalculation.Text = dr["KeyValue"].ToString();
+                        }
                 }
             }
         }
@@ -573,6 +628,8 @@ public partial class CompanyInfo : System.Web.UI.Page
                 string pwdexpday = string.Empty;
                 string purchasepricelist = string.Empty;
                 string purchaseround = string.Empty;
+                string managamentprice = string.Empty;
+                string branchprice = string.Empty;
 
                 int SAPSupplierAccountCode=0;
                 int SAPCustomerAccountCode = 0;
@@ -611,6 +668,8 @@ public partial class CompanyInfo : System.Web.UI.Page
                 sapcheck = chksap.SelectedValue;
                 barcode = rdoBarcode.SelectedValue;
                 stockEdit = rdoStockEdit.SelectedValue;
+                managamentprice = ManagementCalculation.SelectedItem.Text;
+                branchprice = Branchcalculation.SelectedItem.Text;
 
                 autolock = dpautolock.SelectedValue;
 
@@ -647,7 +706,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
                 try
                 {
-                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround);
+                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround,sapcheck,managamentprice,branchprice);
 
                     System.Threading.Thread.Sleep(1000);
 

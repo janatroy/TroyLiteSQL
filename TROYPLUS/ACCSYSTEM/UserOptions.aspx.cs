@@ -370,6 +370,13 @@ public partial class UserOptions : System.Web.UI.Page
                 {
                     txtUser.Text = dsd.Tables[0].Rows[0]["username"].ToString();
                     txtUser.Enabled = false;
+                    string dash = dsd.Tables[0].Rows[0]["dashboard"].ToString();
+
+                    dashboard1.ClearSelection();
+                    ListItem pLi = dashboard1.Items.FindByValue(dash.Trim());
+                    if (pLi != null) pLi.Selected = true;
+                  //  hdPrevMode.Value = dashboard1.SelectedValue.Trim();
+                    //dashboard1.Text = pLi;
                     txtEmail.Text = dsd.Tables[0].Rows[0]["email"].ToString();
                     chkAccLocked.Checked = bool.Parse(dsd.Tables[0].Rows[0]["Locked"].ToString());
                     //txtpassword.Text = dsd.Tables[0].Rows[0]["userpwd"].ToString();
@@ -1830,6 +1837,7 @@ public partial class UserOptions : System.Web.UI.Page
             bool brncheck = chkBranch.Checked;
             bool Locked = chkAccLocked.Checked;
             bool DateLock = chkboxdatelock.Checked;
+            string dashboard= dashboard1.SelectedValue;
 
             if (txtUser.Text != string.Empty)
                 userName = txtUser.Text;
@@ -1907,7 +1915,7 @@ public partial class UserOptions : System.Web.UI.Page
 
                     if (Session["Show"] == "Add New")
                     {
-                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch, AllowCheque))
+                        if (objBL.InsertUserOptions(ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch, AllowCheque,dashboard))
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Created sucessfully. Thank you');", true);
                             //BindGrid();
@@ -2089,7 +2097,7 @@ public partial class UserOptions : System.Web.UI.Page
                     }
                     else if (Session["Show"] == "Edit")
                     {
-                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch, AllowCheque);
+                        objBL.UpdateUserOptions(connection, ds, Userna, userName, Email, Locked, DateLock, dsroles, txtpassword.Text, EmpNo, UserGroup, HideDeviation, dsBranch, brncheck, defaultbranch, AllowCheque,dashboard);
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('User And their Options Updated Successfully. Please Logout and login again to reflect the changes. Thank you');", true);
                         //BindGrid();
 
