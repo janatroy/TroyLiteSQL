@@ -975,6 +975,7 @@
 
                                                                                                                                                 <input id="inpVAT" type="hidden" runat="server" />
                                                                                                                                                 <input id="inpDisc" type="hidden" runat="server" />
+                                                                                                                                                <asp:HiddenField id="inManualNo" runat="server" />
                                                                                                                                             </ContentTemplate>
                                                                                                                                             <Triggers>
                                                                                                                                                 <asp:AsyncPostBackTrigger ControlID="drpPurID" EventName="SelectedIndexChanged" />

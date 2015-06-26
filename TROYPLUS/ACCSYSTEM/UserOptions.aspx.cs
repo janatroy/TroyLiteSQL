@@ -2460,4 +2460,47 @@ public partial class UserOptions : System.Web.UI.Page
         }
     }
 
+    protected void GrdViewItem_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        BusinessLogic bl = new BusinessLogic(sDataSource);
+        // string username = Convert.ToString(GrdViewCust.SelectedDataKey.Value);
+        string connection = Request.Cookies["Company"].Value;
+        DataSet ds = new DataSet();
+   
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            ds = bl.GetMasterRolesWithArea(System.Configuration.ConfigurationManager.ConnectionStrings[connection].ConnectionString, "SALES");
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                if (ds.Tables[0].Rows[i]["Role"].ToString() == "INTTRNSAPRL")
+                {
+                    //GrdViewItem.Rows[i].Cells[5].Enabled = false;
+
+                    //ctl00_cplhControlPanel_tabContol_tabCustomer_GrdViewItem_ctl18_chkboxAdd
+                    //CheckBox rdblst = (CheckBox)e.Row.FindControl("chkboxAdd");
+                    //rdblst.Enabled = false;
+
+
+                    //CheckBox checkBox = GrdViewItem.Rows[16].Cells[5].Controls[1] as CheckBox;
+                    //checkBox.Enabled = false;
+
+                    //GrdViewItem.Rows[i].Cells[5].Enabled = false;
+
+
+                    //CheckBox checkBox = e.Row.Cells[5].Controls[1] as CheckBox;
+                    //checkBox.Enabled = false;
+
+
+                    //GrdViewItem.Columns[5].Visible = false;
+
+                    //e.Row.Cells[5].Enabled = false;
+                    //e.Row.Cells[7].Enabled = false;
+                    //e.Row.Cells[8].Enabled = false; 
+
+                }
+            }
+            //GrdViewItem.DataSource = ds;
+            //GrdViewItem.DataBind();
+        }
+    }
 }
