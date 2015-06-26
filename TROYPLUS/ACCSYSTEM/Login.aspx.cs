@@ -19,11 +19,19 @@ using Microsoft.Practices.EnterpriseLibrary;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 
 public partial class Login : System.Web.UI.Page
 {
 
     private Hashtable listComp = new Hashtable();
+
+    [DllImport("Iphlpapi.dll")]
+    private static extern int SendARP(Int32 dest, Int32 host, ref Int64 mac, ref Int32 length);
+    [DllImport("Ws2_32.dll")]
+    private static extern Int32 inet_addr(string ip);
+
+    string mac_dest = "";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -31,6 +39,51 @@ public partial class Login : System.Web.UI.Page
         {
             //ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
             //scriptManager.RegisterPostBackControl(this.btnLogin); 
+          //  ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "callme();", true);
+            
+                string userip = Request.UserHostAddress;
+                string strClientIP = Request.UserHostAddress.ToString().Trim();
+                Int32 ldest = inet_addr(strClientIP);
+                Int32 lhost = inet_addr("");
+                Int64 macinfo = new Int64();
+                Int32 len = 6;
+                int res = SendARP(ldest, 0, ref macinfo, ref len);
+                string mac_src = macinfo.ToString("X");
+                if (mac_src == "0")
+                {
+                    if (userip == "127.0.0.1")
+                        Response.Write("visited Localhost!");
+                    else
+                        Response.Write("the IP from" + userip + "" + "<br>");
+                    return;
+                }
+
+                while (mac_src.Length < 12)
+                {
+                    mac_src = mac_src.Insert(0, "0");
+                }
+
+                
+
+                for (int i = 0; i < 11; i++)
+                {
+                    if (0 == (i % 2))
+                    {
+                        if (i == 10)
+                        {
+                            mac_dest = mac_dest.Insert(0, mac_src.Substring(i, 2));
+                        }
+                        else
+                        {
+                            mac_dest = "-" + mac_dest.Insert(0, mac_src.Substring(i, 2));
+                        }
+                    }
+                }
+
+                Response.Write("welcome" + userip + "<br>" + " MAC address :" + mac_dest + "."
+
+                 + "<br>");
+            
 
             if (!Page.IsPostBack)
             {
@@ -89,12 +142,14 @@ public partial class Login : System.Web.UI.Page
 
         string mac = string.Empty;
         //  GetMACAddress();
-        mac = macAddress.Value;
+      //  mac = macAddress.Value;
+        mac = mac_dest;
 
        // 
 
         Session["macAddress"] = mac;
         mac1 = Session["macAddress"].ToString();
+        
       //  BusinessLogic bl1 = new BusinessLogic();
        // bl1.macaddressretrive(mac);
 
@@ -172,6 +227,13 @@ public partial class Login : System.Web.UI.Page
                 if (li != null) li.Selected = true;
                 txtPassword.Focus();
                 HttpCookie cookie1 = new HttpCookie("Branch");
+
+                HttpCookie dash1 = new HttpCookie("dash");
+               
+
+                dash1.Value = ds1.Tables[0].Rows[0]["dashboard"].ToString();
+
+                Response.Cookies.Add(dash1);
 
 
                 if (ds1.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")

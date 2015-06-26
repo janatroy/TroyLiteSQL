@@ -865,6 +865,38 @@
                                                             </asp:RadioButtonList>
                                                             <%--</div>--%>
                                                         </td>
+                                                         <td style="width: 25%" class="ControlLabelproject">Management Profit Calculation
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlDrpBorder">
+                                                             <asp:DropDownList ID="ManagementCalculation" Width="100%" AppendDataBoundItems="True" CssClass="drpDownListMedium"
+                                                                BackColor="#e7e7e7" runat="server" DataTextField="PRICEname" DataValueField="PRICEname"
+                                                                ValidationGroup="product" Style="border: 1px solid #e7e7e7" Height="26px">
+                                                                <asp:ListItem Text="Select PriceList" Value="0"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                           
+                                                        </td>
+
+                                                        <%-- <td style="width: 20%">
+                                                                                        <asp:UpdatePanel runat="server" ID="upBranch">
+                                                                                            <ContentTemplate>
+                                                                                                <asp:CheckBox ID="chksap" runat="server" Text="SAP Process" Font-Size="15px" AutoPostBack="true" />
+                                                                                            </ContentTemplate>
+                                                                                        </asp:UpdatePanel>
+                                                                                    </td>--%>
+                                                    </tr>
+                                                     <tr style="height: 15px">
+                                                       
+                                                         <td style="width: 25%" class="ControlLabelproject">Branch Profit Calculation
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlDrpBorder">
+                                                             <asp:DropDownList ID="Branchcalculation" Width="100%" AppendDataBoundItems="True" CssClass="drpDownListMedium"
+                                                                BackColor="#e7e7e7" runat="server" DataTextField="PRICEname" DataValueField="PRICEname"
+                                                                ValidationGroup="product" Style="border: 1px solid #e7e7e7" Height="26px">
+                                                                <asp:ListItem Text="Select PriceList" Value="0"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                           
+                                                        </td>
+
                                                         <%-- <td style="width: 20%">
                                                                                         <asp:UpdatePanel runat="server" ID="upBranch">
                                                                                             <ContentTemplate>

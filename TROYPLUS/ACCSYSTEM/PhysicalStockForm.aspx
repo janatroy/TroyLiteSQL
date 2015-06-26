@@ -114,7 +114,7 @@
                                             <asp:TemplateField HeaderText="Stock" HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center">
                                                 <ItemStyle Width="10%" HorizontalAlign="Center" />
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtStock" Width="80px" runat="server" style="text-align:right" CssClass="cssTextBox" Text="<%#Bind('Stock')%>"></asp:TextBox>
+                                                    <asp:TextBox ID="txtStock" Width="80px" runat="server" style="text-align:center" CssClass="cssTextBox" Text="<%#Bind('Stock')%>"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ValidationGroup="salesval" ID="rq" runat="server" Display="Dynamic"
                                                         ControlToValidate="txtStock" ErrorMessage="Empty"></asp:RequiredFieldValidator>
                                                     <ajX:FilteredTextBoxExtender ID="FilteredTextBoxExtender41" runat="server" TargetControlID="txtStock"

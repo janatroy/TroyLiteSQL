@@ -47,9 +47,8 @@
             var ipAddress = "";
             var computerName = "";
             var wmi = GetObject("winmgmts:{impersonationLevel=impersonate}");
-            e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));          
+            e = new Enumerator(wmi.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True"));
             for (; !e.atEnd() ; e.moveNext()) {
-              
                 var s = e.item();
                 macAddress = s.MACAddress;
                 ipAddress = s.IPAddress(0);
@@ -185,7 +184,7 @@
                         </td>
                         <td width="30%">
                             <asp:Button ID="btnLogin" runat="server" TabIndex="5" EnableTheming="false" OnClick="btnLogin_Click"
-                                OnClientClick="callme();" CssClass="loginbuttonbg" Text="Login" />
+                               CssClass="loginbuttonbg" Text="Login" />
                         </td>
                         <td width="30%">
                             <asp:Button ID="BtnReset" CssClass="loginbuttonbg" EnableTheming="false" CausesValidation="false"

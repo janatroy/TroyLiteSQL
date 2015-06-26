@@ -17,6 +17,8 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
     double dSNetRate = 0;
     double dSVatRate = 0;
 
+    int qty1 = 0;
+
     double dSCSTRate = 0;
     double dSFrRate = 0;
     double dSLURate = 0;
@@ -130,6 +132,8 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
 
                 startDate = Convert.ToDateTime(stdt);
                 endDate = Convert.ToDateTime(etdt);
+                DateTime now = DateTime.Now;
+                int year = DateTime.Now.Year;
 
                 //if (Request.QueryString["category"] != null)
                 //{
@@ -150,10 +154,63 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
                 //}
 
                 string Branch = string.Empty;
+                string condi = string.Empty;
 
                 if (Request.QueryString["BranchCode"] != null)
                 {
                     Branch = Request.QueryString["BranchCode"].ToString();
+                }
+
+                if (Request.QueryString["command"] != null)
+                {
+                    string command = Request.QueryString["command"].ToString();
+
+                    if (command == "dailypurchase")
+                    {
+                        string todaydate = Convert.ToString(DateTime.Now.ToString("yyyy-MM-dd"));
+                        condi = "tblPurchase.billdate='" + todaydate + "'";
+
+                        lblHeading.Text = "Today's Purchases - Real-Time Summary Report - " + dtaa + " - " + Branch;
+                       // condii = "s.billdate='" + todaydate + "'";
+                      //  GroupBy1 = "billdate,";
+                    }
+
+                    if (command == "monthlypurchase")
+                    {
+                        string sMonth1 = DateTime.Now.ToString("MM");
+                        DateTime now1 = DateTime.Now;
+                        var startDate1 = new DateTime(now.Year, now.Month, 1);
+                        var start1 = startDate1.ToString("yyyy-MM-dd");
+                        var from = startDate1.ToString("dd-MM-yyyy");
+                        var endDate1 = startDate.AddMonths(1).AddDays(-1);
+                        var end1 = endDate1.ToString("yyyy-MM-dd");
+                        var endd = endDate1.ToString("dd-MM-yyyy");
+
+                        condi = "tblPurchase.billdate>='" + start1 + "' and tblPurchase.billdate<='" + end1 + "'";
+
+                        lblHeading.Text = "This month Purchases - Real-Time Summary Report - From " + from +" - End "+ endd +" - " + Branch;
+                      //  condii = "s.billdate>='" + start1 + "' and s.billdate<='" + end1 + "'";
+                       // GroupBy1 = "billdate,";
+
+                    }
+                    if (command == "annualpurchase")
+                    {
+                        int year1 = DateTime.Now.Year;
+                        var firstDay1 = new DateTime(year, 4, 1);
+                        var firstday11 = firstDay1.ToString("yyyy-MM-dd");
+                        var from1 = firstDay1.ToString("dd-MM-yyyy");
+                        int year11 = year1 + 1;
+                        var lastDay1 = new DateTime(year11, 3, 31);
+                        var lastday11 = lastDay1.ToString("yyyy-MM-dd");
+                        var endd1 = lastDay1.ToString("dd-MM-yyyy");
+
+                        condi = "tblPurchase.billdate>='" + firstday11 + "' and tblPurchase.billdate<='" + lastday11 + "'";
+
+                        lblHeading.Text = "Annual Purchases - Real-Time Summary Report - From " + from1 + " - End " + endd1 + " - " + Branch;
+                     //   condii = "s.billdate>='" + firstday11 + "' and s.billdate<='" + lastday11 + "'";
+                      //  GroupBy1 = "billdate,";
+
+                    }
                 }
 
                 DataSet BillDs = new DataSet();
@@ -161,9 +218,9 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
                 
 
               
-                    BillDs = bl.FirstLevelDaywisePurchase(salesRet, intTrans, delNote, Branch);
+                    BillDs = bl.FirstLevelDaywisePurchase(salesRet, intTrans, delNote, Branch,condi);
 
-                    lblHeading.Text = "Today's Purchases - Real-Time Summary Report - " + dtaa + " - " + Branch;
+                    
               
 
                // lblHeading.Text = "Purchase " + category + " Bill Summary Report";
@@ -795,6 +852,8 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
             double dFrRate = 0;
             double dLURate = 0;
             double dGrandRate = 0;
+            int qty = 0;
+           // int qty1 = 0;
             double dDiscountRate = 0;
             lblErr.Text = "";
             string category = string.Empty;
@@ -870,6 +929,8 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
             {
                 if (DataBinder.Eval(e.Row.DataItem, "NetPurchaseRate") != DBNull.Value)
                     dNetRate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "NetPurchaseRate"));
+                if (DataBinder.Eval(e.Row.DataItem, "Quantity") != DBNull.Value)
+                    qty = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Quantity"));
                 if (DataBinder.Eval(e.Row.DataItem, "ActualVat") != DBNull.Value)
                     dVatRate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "ActualVat"));
                 if (DataBinder.Eval(e.Row.DataItem, "ActualDiscount") != DBNull.Value)
@@ -888,6 +949,8 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
 
 
                 dGrandRate = dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
+
+                qty1 = qty1 + qty;
 
 
                 dSNetRate = dSNetRate + dNetRate;
@@ -1077,14 +1140,15 @@ public partial class PurchasedailyReport1 : System.Web.UI.Page
                 e.Row.Cells[6].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[7].HorizontalAlign = HorizontalAlign.Right;
                 /*End March 17 */
-                e.Row.Cells[2].Text = dSNetRate.ToString("f2");
-                e.Row.Cells[3].Text = dSDiscountRate.ToString("f2");
-                e.Row.Cells[4].Text = dSVatRate.ToString("f2");
-                e.Row.Cells[5].Text = dSCSTRate.ToString("f2");
+                e.Row.Cells[2].Text = qty1.ToString();
+                e.Row.Cells[3].Text = dSNetRate.ToString("f2");
+                e.Row.Cells[4].Text = dSDiscountRate.ToString("f2");
+                e.Row.Cells[5].Text = dSVatRate.ToString("f2");
+                e.Row.Cells[6].Text = dSCSTRate.ToString("f2");
                 /*Start March 17 */
-                e.Row.Cells[6].Text = dSFrRate.ToString("f2");
-                e.Row.Cells[7].Text = dSLURate.ToString("f2");
-                e.Row.Cells[8].Text = dSGrandRate.ToString("f2");
+                e.Row.Cells[7].Text = dSFrRate.ToString("f2");
+                e.Row.Cells[8].Text = dSLURate.ToString("f2");
+                e.Row.Cells[9].Text = dSGrandRate.ToString("f2");
                 /*End March 17 */
                 strBillno = "";
             }

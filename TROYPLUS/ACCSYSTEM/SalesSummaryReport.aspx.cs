@@ -292,9 +292,9 @@ public partial class SalesSummaryReport : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Discount Rate"));
         dt.Columns.Add(new DataColumn("Vat Rate"));
 
-        DataColumn colInt32Debitlll = new DataColumn("Vat Rate");
-        colInt32Debitlll.DataType = System.Type.GetType("System.Double");
-        dt.Columns.Add(colInt32Debitlll);
+     //   DataColumn colInt32Debitlll = new DataColumn("Vat Rate");
+       // colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+      //  dt.Columns.Add(colInt32Debitlll);
 
         dt.Columns.Add(new DataColumn("CST Rate"));
         dt.Columns.Add(new DataColumn("Freight"));
@@ -561,7 +561,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     }
                     else if ((cmbDisplayCat.SelectedItem.Text) == "Executivewise")
                     {
-                        fLvlValueTemp = dr["Executivename"].ToString().ToUpper().Trim();
+                        fLvlValueTemp = dr["empFirstName"].ToString().ToUpper().Trim();
                     }
                     else if ((cmbDisplayCat.SelectedItem.Text) == "Itemwise")
                     {

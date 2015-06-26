@@ -13,8 +13,26 @@
         }
     </style>
     <script language="javascript" type="text/javascript">
+
+        function Showalert() {
+
+
+            var txt = document.getElementById("<%= txtBillnoSrc.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert("show");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+            else {
+                //  alert("hide");
+                btn.style.visibility = "visible";
+            }
+
+        }
         
-        window.onload = function Showalert() {
+        <%--window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtBillnoSrc.ClientID %>");
                 var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -39,7 +57,7 @@
               
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
             }
-        }
+        }--%>
     </script>
     <asp:UpdatePanel ID="UpdatePnlMaster" runat="server" UpdateMode="Conditional">
         <ContentTemplate>

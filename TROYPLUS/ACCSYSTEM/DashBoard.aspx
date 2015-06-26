@@ -53,14 +53,15 @@
                                     </td>
                                     <td style="width: 13%; text-align: left"></td>
                                     <td style="width: 20%">
-                                         <asp:Button ID="dpshow" runat="server" Text="show-DP" Visible="false" OnClick="dpshow_Click" 
+                                         <asp:Button ID="dpshow" runat="server"  Text="show-DP" Visible="false" OnClick="dpshow_Click" 
                                             EnableTheming="false" ForeColor="white" BackColor="#ff9900" />
                                     </td>
                                     <td style="width: 10%">
-                                         <asp:Button ID="btnSearch" runat="server" Text="Refresh" Visible="false" OnClick="btnSearch_Click"
+                                         <asp:Button ID="btnSearch" runat="server" Text="Refresh"  OnClick="btnSearch_Click"
                                             EnableTheming="false" ForeColor="white" BackColor="#ff9900" />
                                     </td>
                                 </tr>
+                                
                             </table>
                         </div>
                     </div>
@@ -68,6 +69,20 @@
                 </td>
             </tr>
         </table>
+        <%-- <table cellspacing="2px" cellpadding="3px" border="0" width="99.8%" style="margin: -2px 0px 0px 1px;">
+                                <tr>
+                                    <td style="width: 4%"></td>
+                                     <td style=" border-left:solid 2px black; border-right:solid 2px black; width: 20%" align="center"> Today Sales</td>
+                                    <td style=" border-right:solid 2px black; width: 17%;" align="center">
+                                        Monthly sales
+                                    </td>
+                                    <td style="  border-right:solid 2px black; width: 20%" align="center">
+                                        Annual Sales
+                                    </td>
+                                   
+
+                                </tr>
+                                     </table>--%>
 
 
         <table width="100%" style="margin: -5px 0px 0px 0px;">
@@ -78,12 +93,12 @@
                             HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center" Width="100%" CssClass="someClass"
                             OnRowCreated="GrdWME_RowCreated"
                             OnSelectedIndexChanged="GrdWME_SelectedIndexChanged" EmptyDataText="No Project Details found."
-                            OnRowDataBound="GrdView_RowDataBound">
+                            OnRowDataBound="GrdView_RowDataBound" OnRowCommand="GrdWME_RowCommand">
                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="22px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                             <Columns>
                                 <asp:BoundField DataField="BranchCode" HeaderText="Branch" HeaderStyle-Width="15px" />
-                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Left" HeaderText="Branch Name" ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
+                                <asp:TemplateField Visible="false" FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Left" HeaderText="Branch Name" ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
                                     <ItemTemplate>
                                         <%--<asp:TextBox ID="txtPriceName" runat="server" Width="90%"  Text='<%# Eval("PriceName")%>' Enabled="false" Height="26px"
                                                                                                                         ></asp:TextBox>--%>
@@ -96,14 +111,23 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <%-- <asp:BoundField DataField="Branchname" HeaderText="Branchname" ItemStyle-HorizontalAlign="Left" HeaderStyle-Width="15px" />--%>
-                                <asp:BoundField DataField="DailySales" HeaderText="Today's sales" HeaderStyle-Width="15px" />               
-                                 <asp:BoundField DataField="DailySalesforgp" HeaderText="NLC-Gp" HeaderStyle-Width="15px" />
-                                 <asp:BoundField DataField="Todaysalesquantity" HeaderText="Today's salesQty" HeaderStyle-Width="15px" />
-                                <asp:BoundField DataField="MonthlySales" HeaderText="Monthly sales" HeaderStyle-Width="15px" />
+                                <asp:ButtonField DataTextField="DailySales" ItemStyle-ForeColor="Blue" CommandName="dailysales" HeaderText="Today's sales" HeaderStyle-Width="15px" />      
+                                <asp:BoundField DataField="Todaysalesquantity" HeaderText="Today's salesQty" HeaderStyle-Width="15px" />         
+                                 <asp:BoundField DataField="DailySalesforgp" HeaderText="Today Mgnt.prft" HeaderStyle-Width="15px" />
+                                <asp:BoundField DataField="DailySalesfordp" HeaderText="Today Branch.Prft" HeaderStyle-Width="15px" />
+                                 
+                                <asp:ButtonField DataTextField="MonthlySales" ItemStyle-ForeColor="Blue" CommandName="monthlysales" HeaderText="Monthly sales" HeaderStyle-Width="15px" />
+                                 <asp:BoundField DataField="monthlysalesquantity" HeaderText="Monthly salesQty" HeaderStyle-Width="15px" />
                                 
-                                 <asp:BoundField DataField="montlySalesforgp" HeaderText="NLC-GP" HeaderStyle-Width="15px" />
-                                <asp:BoundField DataField="monthlysalesquantity" HeaderText="Monthly salesQty" HeaderStyle-Width="15px" />
-                                <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="View Detailed report" HeaderStyle-BorderColor="Gray"
+                                 <asp:BoundField DataField="montlySalesforgp" HeaderText="Monthly Mgnt.prft" HeaderStyle-Width="15px" />
+                                 <asp:BoundField DataField="montlySalesfordp" HeaderText="Montly Branch.prft" HeaderStyle-Width="15px" />
+
+                                 <asp:ButtonField DataTextField="AnnualSales" ItemStyle-ForeColor="Blue" CommandName="annualsales"  HeaderText="Annual sales" HeaderStyle-Width="15px" />      
+                                <asp:BoundField DataField="Annualsalesquantity" HeaderText="Annual salesQty" HeaderStyle-Width="15px" />         
+                                 <asp:BoundField DataField="AnnualSalesforgp" HeaderText="annual Mgnt.prft" HeaderStyle-Width="15px" />
+                                <asp:BoundField DataField="AnnualSalesfordp" HeaderText="Annual Branch.Prft" HeaderStyle-Width="15px" />
+                               
+                                <asp:TemplateField Visible="false" ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="View Detailed report" HeaderStyle-BorderColor="Gray"
                                     ItemStyle-HorizontalAlign="Center">
                                     <%-- <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CommandName="Select" />
@@ -127,12 +151,12 @@
                             HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center" Width="100%" CssClass="someClass"
                             OnRowCreated="GrdWME_RowCreated"
                             OnSelectedIndexChanged="GridViewdp_SelectedIndexChanged" EmptyDataText="No Project Details found."
-                            OnRowDataBound="GridViewdp_RowDataBound">
+                            OnRowDataBound="GridViewdp_RowDataBound" OnRowCommand="GridViewdp_RowCommand">
                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="22px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                             <Columns>
                                 <asp:BoundField DataField="BranchCode" HeaderText="Branch" HeaderStyle-Width="15px" />
-                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Left" HeaderText="Branch Name" ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
+                                <asp:TemplateField Visible="false" FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Left" HeaderText="Branch Name" ItemStyle-HorizontalAlign="Left" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
                                     <ItemTemplate>
                                         <%--<asp:TextBox ID="txtPriceName" runat="server" Width="90%"  Text='<%# Eval("PriceName")%>' Enabled="false" Height="26px"
                                                                                                                         ></asp:TextBox>--%>
@@ -145,15 +169,19 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <%-- <asp:BoundField DataField="Branchname" HeaderText="Branchname" ItemStyle-HorizontalAlign="Left" HeaderStyle-Width="15px" />--%>
-                                <asp:BoundField DataField="DailySales" HeaderText="Today's sales" HeaderStyle-Width="15px" />
-                                
-                                <asp:BoundField DataField="DailySalesforgp" HeaderText="DP-Gp" HeaderStyle-Width="15px" />
-                                <asp:BoundField DataField="Todaysalesquantity" HeaderText="Today's salesQty" HeaderStyle-Width="15px" />
-                                <asp:BoundField DataField="MonthlySales" HeaderText="Monthly sales" HeaderStyle-Width="15px" />
-                                
-                                <asp:BoundField DataField="montlySalesforgp" HeaderText="DP-GP" HeaderStyle-Width="15px" />
+                                <asp:ButtonField DataTextField="DailySales" CommandName="dailysales" ItemStyle-ForeColor="Blue" HeaderText="Today's sales" HeaderStyle-Width="15px" />
+                                 <asp:BoundField DataField="Todaysalesquantity" HeaderText="Today's salesQty" HeaderStyle-Width="15px" />                           
+                               <asp:BoundField DataField="DailySalesfordp" HeaderText="Today Branch.Prft" HeaderStyle-Width="15px" />
+                               
+                                <asp:ButtonField DataTextField="MonthlySales" CommandName="monthlysales" ItemStyle-ForeColor="Blue" HeaderText="Monthly sales" HeaderStyle-Width="15px" />
                                 <asp:BoundField DataField="monthlysalesquantity" HeaderText="Monthly salesQty" HeaderStyle-Width="15px" />
-                                <asp:TemplateField ItemStyle-CssClass="command"  HeaderStyle-Width="50px" HeaderText="View Detailed report" HeaderStyle-BorderColor="Gray"
+                                <asp:BoundField DataField="montlySalesfordp" HeaderText="Montly Branch.prft" HeaderStyle-Width="15px" />
+                                
+                                   <asp:ButtonField DataTextField="AnnualSales" ItemStyle-ForeColor="Blue" CommandName="annualsales"  HeaderText="Annual sales" HeaderStyle-Width="15px" />      
+                                <asp:BoundField DataField="Annualsalesquantity" HeaderText="Annual salesQty" HeaderStyle-Width="15px" />      
+                                <asp:BoundField DataField="AnnualSalesfordp" HeaderText="Annual Branch.Prft" HeaderStyle-Width="15px" />
+
+                                <asp:TemplateField ItemStyle-CssClass="command" Visible="false"  HeaderStyle-Width="50px" HeaderText="View Detailed report" HeaderStyle-BorderColor="Gray"
                                     ItemStyle-HorizontalAlign="Center">
                                     <%-- <ItemTemplate>
                                                         <asp:ImageButton ID="btnEdit" runat="server" SkinID="edit" CommandName="Select" />
@@ -207,7 +235,7 @@
                                     <td style="width: 13%; text-align: left"></td>
                                     <td style="width: 20%"></td>
                                     <td style="width: 10%">
-                                         <asp:Button ID="Button1" runat="server" Text="Refresh" Visible="false" OnClick="Button1_Click"
+                                         <asp:Button ID="Button1" runat="server" Visible="false" Text="Refresh" OnClick="Button1_Click"
                                             EnableTheming="false" ForeColor="white" BackColor="#ff9900" />
                                     </td>
                                 </tr>
@@ -226,12 +254,12 @@
                             HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center" Width="100%" CssClass="someClass"
                             OnRowCreated="grdpurchase_RowCreated"
                             OnSelectedIndexChanged="grdpurchase_SelectedIndexChanged" EmptyDataText="No Project Details found."
-                            OnRowDataBound="grdpurchase_RowDataBound">
+                            OnRowDataBound="grdpurchase_RowDataBound" OnRowCommand="grdpurchase_RowCommand">
                             <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="15px" />
                             <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="22px" Font-Size="15px" CssClass="GrdItemForecolor" ForeColor="#414141" />
                             <Columns>
                                 <asp:BoundField DataField="BranchCode" HeaderText="Branch" HeaderStyle-Width="15px" />
-                                <asp:TemplateField FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Left" HeaderText="Branch Name" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
+                                <asp:TemplateField Visible="false"  FooterStyle-Font-Bold="True" HeaderStyle-HorizontalAlign="Left" HeaderText="Branch Name" HeaderStyle-BorderColor="Gray" HeaderStyle-Width="20%">
                                     <ItemTemplate>
                                         <%--<asp:TextBox ID="txtPriceName" runat="server" Width="90%"  Text='<%# Eval("PriceName")%>' Enabled="false" Height="26px"
                                                                                                                         ></asp:TextBox>--%>
@@ -243,11 +271,13 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <%-- <asp:BoundField DataField="Branchname" HeaderText="Branchname" ItemStyle-HorizontalAlign="Left" HeaderStyle-Width="15px" />--%>
-                                <asp:BoundField DataField="DailyPuchase" HeaderText="Today's purchase" HeaderStyle-Width="15px" />
+                                <asp:ButtonField DataTextField="DailyPuchase" ItemStyle-ForeColor="Blue" CommandName="dailypurchase" HeaderText="Today's purchase" HeaderStyle-Width="15px" />
                                 <asp:BoundField DataField="TodayPuchasequantity" HeaderText="Today's purchaseQty" HeaderStyle-Width="15px" />
-                                <asp:BoundField DataField="MonthlyPuchase" HeaderText="Monthly purchase" HeaderStyle-Width="15px" />
+                                <asp:ButtonField DataTextField="MonthlyPuchase" ItemStyle-ForeColor="Blue" CommandName="monthlypurchase" HeaderText="Monthly purchase" HeaderStyle-Width="15px" />
                                 <asp:BoundField DataField="monthlyPuchasequantity" HeaderText="Monthly purchaseQty" HeaderStyle-Width="15px" />
-                                <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="View Detailed report" HeaderStyle-BorderColor="Gray"
+                                <asp:ButtonField DataTextField="AnnualPuchase" ItemStyle-ForeColor="Blue" CommandName="annualpurchase" HeaderText="Annual purchase" HeaderStyle-Width="15px" />
+                                <asp:BoundField DataField="AnnualPuchasequantity" HeaderText="Annual purchaseQty" HeaderStyle-Width="15px" />
+                                <asp:TemplateField ItemStyle-CssClass="command" Visible="false" HeaderStyle-Width="50px" HeaderText="View Detailed report" HeaderStyle-BorderColor="Gray"
                                     ItemStyle-HorizontalAlign="Center">
                                     <ItemTemplate>
                                         <%--<a href='<%# DataBinder.Eval(Container, "DataItem.Billno", "javascript:PrintItem({0});") %>'>--%>

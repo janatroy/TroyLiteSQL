@@ -180,7 +180,25 @@
                         document.getElementById(control).value = "0";
                     }
                 }
+        }
+
+        function Showalert() {
+
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter1.ClientID %>");
+            if (txt.value == "") {
+                // alert("show");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
             }
+            else {
+                //  alert("hide");
+                btn.style.visibility = "visible";
+            }
+
+        }
 
            <%-- window.onload = function Showalert() {
 
@@ -224,6 +242,7 @@
         }
         function HideModalPopup() {
             $find("mpe").hide();
+            document.getElementById('ctl00_cplhControlPanel_optionmethod_0').checked = true;
           //  alert("hide");
             return false;
         }

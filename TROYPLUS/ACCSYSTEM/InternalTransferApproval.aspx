@@ -37,7 +37,7 @@
         function PrintItem(ID) {
             window.showModalDialog('./PrintPayment.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
         }
-        window.onload = function Showalert() {
+      <%--  window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -48,43 +48,51 @@
                 // when the window is loaded, hide the button if the textbox is empty
             }
 
-        }
+        }--%>
 
-        function clearfilterclick() {
+       <%-- function clearfilterclick() {
             var button = document.getElementById('<%=BtnClearFilter.ClientID %>');
             alert('clicent');
             button.style.visibility = "hidden";
             //button.click();
 
-        }
+        }--%>
 
 
-        function EnableDisableButton(sender, target) {
+        <%-- function EnableDisableButton(sender, target) {
             var first = document.getElementById('<%=txtSearch.ClientID %>');
-            //alert('test');
-            <%-- var second = document.getElementById('<%=txtText.ClientID %>');--%>
+        
 
 
             if (sender.value.length >= 1 && first.value.length >= 1) {
-                // alert(sender.value.length);
-                // alert(first.value.length);
-                //BtnClearFilter.disabled = false;
-                <%--  document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = false;--%>
+             
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "visible";
-                // window.onload = function ();
+              
             }
 
             if (sender.value.length < 1 && first.value.length < 1) {
-                //alert(sender.value.length);
-                // alert(first.value.length);
-                //BtnClearFilter.disabled = true;
-                <%-- document.getElementById('<%=BtnClearFilter.ClientID %>').disabled = true;--%>
+               
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
             }
-            //else {
+          
+        }--%>
 
-            //    document.getElementById(target).disabled = false;
-            //}
+        function Showalert() {
+
+
+            var txt = document.getElementById("<%= txtSearch.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert("show");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+            else {
+                //  alert("hide");
+                btn.style.visibility = "visible";
+            }
+
         }
 
 
@@ -92,7 +100,7 @@
         function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
 
 
-        window.onload = function Showalert() {
+       <%-- window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -116,8 +124,8 @@
 
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
             }
-        }
-
+        }--%>
+ 
     </script>
     <style id="Style1" runat="server">
         .fancy-green .ajax__tab_header {
@@ -141,17 +149,17 @@
         }
 
             .fancy .ajax__tab_active .ajax__tab_outer, .fancy .ajax__tab_header .ajax__tab_outer, .fancy .ajax__tab_hover .ajax__tab_outer {
-                height: 46px;
-            }
+            height: 46px;
+        }
 
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
-                height: 46px;
-                margin-left: 16px; /* offset the width of the left image */
-            }
+            height: 46px;
+            margin-left: 16px; /* offset the width of the left image */
+        }
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
-                margin: 16px 16px 0px 0px;
-            }
+            margin: 16px 16px 0px 0px;
+        }
 
         .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_active .ajax__tab_tab {
             color: #fff;
@@ -178,7 +186,7 @@
                                     <td style="width: 2%"></td>
                                     <td style="width: 40%; font-size: 22px; color: white;">Internal Transfer Approval
                                     </td>
-
+                                    
                                     <td style="width: 15%; color: white;" align="center">Search
                                         <asp:RequiredFieldValidator ID="rvSearch" runat="server" ControlToValidate="txtSearch"
                                             Display="Dynamic" EnableClientScript="False" Enabled="false">Search is mandatory</asp:RequiredFieldValidator>
@@ -188,15 +196,15 @@
                                     </td>
                                     <td style="width: 18%" class="NewBox">
                                         <div style="width: 160px; font-family: 'Trebuchet MS';">
-                                            <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="white"
+                                             <asp:DropDownList ID="ddCriteria" runat="server" Width="154px" BackColor="white"
                                                 Height="23px" Style="text-align: center; border: 1px solid White">
-                                                <asp:ListItem Value="ItemCode">Product Code</asp:ListItem>
-                                                <asp:ListItem Value="RequestID">Request ID</asp:ListItem>
-                                                <asp:ListItem Value="UserID">Req.User</asp:ListItem>
-                                                <asp:ListItem Value="RequestedDate">Request Date</asp:ListItem>
+                                               <asp:ListItem Value="ItemCode">Product Code</asp:ListItem>
+                                                 <asp:ListItem Value="RequestID">Request ID</asp:ListItem>
+                                                 <asp:ListItem Value="UserID">Req.User</asp:ListItem>
+                                                 <asp:ListItem Value="RequestedDate">Request Date</asp:ListItem>
                                                 <asp:ListItem Value="Status">Status</asp:ListItem>
                                                 <asp:ListItem Value="RequestedBranch">Requested Branch</asp:ListItem>
-                                                <asp:ListItem Value="BranchHasStock">BranchHasStock</asp:ListItem>
+                                                 <asp:ListItem Value="BranchHasStock">BranchHasStock</asp:ListItem>
                                                 <asp:ListItem Value="CompletedDate">Completed Date</asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
@@ -205,9 +213,9 @@
                                         <asp:Button ID="btnSearch" runat="server" onkeyup="EnableDisableButton(this,'BtnClearFilter')" Text="" CssClass="ButtonSearch6" EnableTheming="false"
                                             ForeColor="White" OnClick="btnSearch_Click" />
                                     </td>
-                                    <td style="width: 16%" class="tblLeftNoPad">
-                                        <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
-                                    </td>
+                                      <td style="width: 16%" class="tblLeftNoPad">
+                                            <asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        </td>
                                     <td style="width: 16%" class="tblLeftNoPad">&nbsp;
                                     </td>
                                 </tr>
@@ -248,18 +256,18 @@
                             <div id="Div1" runat="server" style="text-align: left">
                                 <table class="tblLeft" cellpadding="0" cellspacing="0" style="border: 0px solid #5078B3; background-color: #fff; color: #000; text-align: left"
                                     width="100%">
-
+                                    
                                     <tr>
                                         <td align="left">
                                             <div class="divArea" style="text-align: left">
-                                                <table cellpadding="1" cellspacing="3" style="border: 1px solid #86b2d1; width: 100%;">
-                                                    <tr>
+                                            <table cellpadding="1" cellspacing="3" style="border: 1px solid #86b2d1; width: 100%;">
+                                                <tr>
                                                         <td colspan="4" class="headerPopUp">Approval Details
                                                         </td>
                                                     </tr>
                                                     <tr style="height: 5px">
                                                     </tr>
-                                                    <tr>
+                                                <tr>
                                                         <td colspan="4" align="left">
                                                             <cc1:TabContainer ID="TabContainer2" runat="server" Style="width: 100%" ActiveTabIndex="0" CssClass="fancy fancy-green">
                                                                 <cc1:TabPanel ID="TabPanel2" runat="server" HeaderText="Request Details">
@@ -316,22 +324,22 @@
                                                                                 </td>
                                                                                 <td class="ControlDrpBorder" style="width: 22%;">
                                                                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                                                                        <ContentTemplate>
-                                                                                            <asp:TextBox ID="txtReqStock" runat="server" CssClass="cssTextBox" Enabled="false"
-                                                                                                Width="200px"></asp:TextBox>
-                                                                                        </ContentTemplate>
-                                                                                    </asp:UpdatePanel>
+                                                                                                                                <ContentTemplate>
+                                                                                   <asp:TextBox ID="txtReqStock" runat="server" CssClass="cssTextBox" Enabled="false"
+                                                                                        Width="200px"></asp:TextBox>
+                                                                                                                                    </ContentTemplate>
+                                                                                                                                    </asp:UpdatePanel>
                                                                                 </td>
                                                                                 <td class="ControlLabel" style="width: 3%;" align="left"></td>
                                                                                 <td class="ControlLabel" style="width: 26%;">Branch Has Stock Current Stock
                                                                                 </td>
                                                                                 <td class="ControlDrpBorder" style="width: 25%;">
                                                                                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
-                                                                                        <ContentTemplate>
-                                                                                            <asp:TextBox ID="txtHasStock" runat="server" CssClass="cssTextBox" Enabled="false"
-                                                                                                Width="200px"></asp:TextBox>
-                                                                                        </ContentTemplate>
-                                                                                    </asp:UpdatePanel>
+                                                                                                                                <ContentTemplate>
+                                                                                    <asp:TextBox ID="txtHasStock" runat="server" CssClass="cssTextBox" Enabled="false"
+                                                                                        Width="200px"></asp:TextBox>     
+                                                                                                                                    </ContentTemplate>
+                                                                                                                                    </asp:UpdatePanel>      
                                                                                 </td>
                                                                             </tr>
                                                                             <tr style="height: 3px">
@@ -363,7 +371,7 @@
                                                                                 <td class="ControlTextBox3" style="width: 22%;">
                                                                                     <asp:TextBox ID="TextBox3" Enabled="false" runat="server" Text='<%# Bind("RequestedDate") %>'
                                                                                         CssClass="cssTextBox" Width="100px"></asp:TextBox>
-
+                                                                                     
                                                                                 </td>
                                                                                 <td class="ControlLabel" style="width: 3%;" align="left"></td>
                                                                                 <td class="ControlLabel" style="width: 25%;">Completed Date:
@@ -382,52 +390,52 @@
                                                                 ValidationGroup="grpDetails" ShowSummary="false" HeaderText="Validation Messages"
                                                                 Font-Names="'Trebuchet MS'" Font-Size="12" runat="server" />
                                                         </td>
-                                                    </tr>
-                                                    <tr>
+                                                    </tr>    
+                                                <tr>
                                                         <td>
-                                                            <cc1:TabContainer ID="TabContainer1" runat="server" Width="100%" ActiveTabIndex="0"
-                                                                CssClass="fancy fancy-green">
-                                                                <cc1:TabPanel ID="TabPanel1" runat="server" HeaderText="Status Update">
-                                                                    <ContentTemplate>
+                                                <cc1:TabContainer ID="TabContainer1" runat="server" Width="100%" ActiveTabIndex="0"
+                                                    CssClass="fancy fancy-green">
+                                                    <cc1:TabPanel ID="TabPanel1" runat="server" HeaderText="Status Update">
+                                                        <ContentTemplate>
                                                                         <table style="width: 100%; border: 0px solid #86b2d1; vertical-align: text-top; text-align: left"
-                                                                            cellpadding="1" cellspacing="1">
-                                                                            <tr>
+                                                                cellpadding="1" cellspacing="1">
+                                                                <tr>
                                                                                 <td class="ControlLabel" style="width: 34%;">Status: *
-                                                                                </td>
-                                                                                <td class="ControlDrpBorder" style="width: 24%;">
-                                                                                    <asp:DropDownList ID="cmbApproveReject" runat="server" BackColor="#e7e7e7" AutoPostBack="true" CssClass="drpDownListMedium"
-                                                                                        Height="26px" Style="text-align: center; border: 1px solid #e7e7e7" Width="100%" OnSelectedIndexChanged="cmbApproveReject_SelectedIndexChanged">
+                                                                    </td>
+                                                                    <td class="ControlDrpBorder" style="width: 24%;">
+                                                                        <asp:DropDownList ID="cmbApproveReject" runat="server" BackColor="#e7e7e7" AutoPostBack="true" CssClass="drpDownListMedium"
+                                                                            Height="26px" Style="text-align: center; border: 1px solid #e7e7e7" Width="100%" OnSelectedIndexChanged="cmbApproveReject_SelectedIndexChanged">
                                                                                         <asp:ListItem Value="Approved">Approved</asp:ListItem>
                                                                                         <asp:ListItem Value="Rejected">Rejected</asp:ListItem>
-                                                                                    </asp:DropDownList>
-                                                                                </td>
+                                                                        </asp:DropDownList>
+                                                                    </td>
                                                                                 <td style="width: 42%; text-align: center">
-                                                                                    <asp:Button ID="btnSaveComments" runat="server" CausesValidation="True"
-                                                                                        CommandName="Insert" CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
-                                                                                        OnClick="SaveCommentsButton_Click"></asp:Button>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr runat="server" id="rowComments">
+                                                                        <asp:Button ID="btnSaveComments" runat="server" CausesValidation="True"
+                                                                            CommandName="Insert" CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
+                                                                            OnClick="SaveCommentsButton_Click"></asp:Button>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr runat="server" id="rowComments">
                                                                                 <td class="ControlLabel" style="width: 36%;">Comments:
                                                                         <asp:RequiredFieldValidator ID="rvComments" runat="server" ControlToValidate="txtComments"
                                                                             ErrorMessage="Comments is mandatory for Rejection" Enabled="false" Text="*" />
-                                                                                </td>
-                                                                                <td style="width: 22%;" class="ControlDrpBorder">
-                                                                                    <asp:TextBox ID="txtComments" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox"
-                                                                                        Height="23px" ValidationGroup="grpDetails" Width="115px"></asp:TextBox>
-                                                                                </td>
+                                                                    </td>
+                                                                    <td style="width: 22%;" class="ControlDrpBorder">
+                                                                        <asp:TextBox ID="txtComments" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox"
+                                                                            Height="23px" ValidationGroup="grpDetails" Width="115px"></asp:TextBox>
+                                                                    </td>
                                                                                 <td style="width: 38%; text-align: center">
-                                                                                    <asp:Button ID="btnCancelSaveComments" runat="server" CausesValidation="False" CommandName="Cancel"
+                                                                        <asp:Button ID="btnCancelSaveComments" runat="server" CausesValidation="False" CommandName="Cancel"
                                                                                         CssClass="cancelbutton6" EnableTheming="false" SkinID="skinBtnCancel" OnClick="btnCancelSaveComments_Click"></asp:Button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </ContentTemplate>
-                                                                </cc1:TabPanel>
-                                                            </cc1:TabContainer>
-                                                        </td>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </ContentTemplate>
+                                                    </cc1:TabPanel>
+                                                </cc1:TabContainer>
+                                                </td>
                                                     </tr>
-
+                                                
                                                 </table>
                                             </div>
                                         </td>
@@ -692,13 +700,13 @@
                 </tr>
                 <tr style="width: 100%">
                     <td style="width: 918px" align="left">
-                        <table align="center">
+                            <table align="center">
                             <tr>
                                 <td style="width: 50%">
-                                    <asp:Panel ID="pnlSearch" runat="server" Width="100px">
-                                        <asp:Button ID="lnkBtnAdd" CausesValidation="false" runat="server" OnClick="lnkBtnAdd_Click"
-                                            CssClass="ButtonAdd66" EnableTheming="false" Width="80px" Text="" Visible="false"></asp:Button>
-                                    </asp:Panel>
+                                     <asp:Panel ID="pnlSearch" runat="server" Width="100px">
+                                                <asp:Button ID="lnkBtnAdd" CausesValidation="false" runat="server" OnClick="lnkBtnAdd_Click"
+                                                    CssClass="ButtonAdd66" EnableTheming="false" Width="80px" Text="" Visible="false"></asp:Button>
+                                            </asp:Panel>
                                 </td>
                                 <td style="width: 50%"></td>
                             </tr>

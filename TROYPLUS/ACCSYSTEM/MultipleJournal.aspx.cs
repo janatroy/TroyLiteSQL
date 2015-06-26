@@ -2404,6 +2404,7 @@ public partial class MultipleJournal : System.Web.UI.Page
     {
         try
         {
+            ModalPopupMethod.Show();
             if (optionmethod.SelectedValue == "Single")
             {
                 txtRefnum.Text = "";
@@ -3247,8 +3248,8 @@ public partial class MultipleJournal : System.Web.UI.Page
     {
         try
         {
-            txtEntries.Text = "";
-            ModalPopupMethod.Show();
+           // txtEntries.Text = "";
+           // ModalPopupMethod.Show();
         }
         catch (Exception ex)
         {

@@ -62,7 +62,7 @@
         }
 
 
-        window.onload = function Showalert() {
+        <%--window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtUserName.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
@@ -86,6 +86,24 @@
 
                 document.getElementById('<%=BtnClearFilter.ClientID %>').style.visibility = "Hidden";
             }
+        }--%>
+
+        function Showalert() {
+
+
+            var txt = document.getElementById("<%= txtUserName.ClientID %>");
+            var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
+            if (txt.value == "") {
+                // alert("show");
+                // alert(txt.value);
+                btn.style.visibility = "hidden";
+                // when the window is loaded, hide the button if the textbox is empty
+            }
+            else {
+                //  alert("hide");
+                btn.style.visibility = "visible";
+            }
+
         }
 
     </script>
@@ -308,6 +326,32 @@
                                                                                     </td>
                                                                                     
                                                                                     <td style="width: 20%"><asp:CheckBox ID="CheckBox1" runat="server" Text="Allow Cheque Entries" Font-Size="15px" AutoPostBack="true" /></td>
+                                                                                   
+                                                                                    <td style="width: 20%"></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="ControlLabelproject" style="width: 20%">DashBoard
+                                                                                    </td>
+                                                                                    <td class="ControlDrpBorder" style="width: 20%">
+                                                                                        <asp:DropDownList ID="dashboard1" TabIndex="5" AppendDataBoundItems="True" AutoPostBack="True" CssClass="drpDownListMedium"
+                                                                                            runat="server" Width="100%" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px">
+                                                                                            <asp:ListItem Text="Select Dashboard" Value="0"></asp:ListItem>
+                                                                                             <asp:ListItem Text="Management" Value="1"></asp:ListItem>
+                                                                                             <asp:ListItem Text="General Sales and purchase" Value="2" Selected="True"></asp:ListItem>
+                                                                                             <asp:ListItem Text="General Sales" Value="3"></asp:ListItem>
+                                                                                             <asp:ListItem Text="General Purchases" Value="4"></asp:ListItem>
+                                                                                        </asp:DropDownList>
+                                                                                    </td>
+                                                                                    <td style="width: 20%">
+                                                                                         <asp:UpdatePanel ID="UpdatePanel11" runat="server" UpdateMode="Conditional">
+                                                                                                                                            <ContentTemplate>
+                                                                                                                                                <asp:HiddenField ID="hdPrevMode" runat="server" Value="0" />
+                                                                                                                                                </ContentTemplate>
+                                                                                             </asp:UpdatePanel>
+                                                                                       
+                                                                                    </td>
+                                                                                    
+                                                                                    <td style="width: 20%"></td>
                                                                                    
                                                                                     <td style="width: 20%"></td>
                                                                                 </tr>
