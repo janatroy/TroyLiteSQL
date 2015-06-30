@@ -231,8 +231,14 @@
         //}
 
         function PrintItem(ID, RT, BID) {
-           // window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
-           window.showModalDialog('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+            if (window.showModalDialog) {
+                // window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+                window.showModalDialog('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+            }
+            else
+            {
+                window.open('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+            }
         }
 
         function ShowModalPopup() {

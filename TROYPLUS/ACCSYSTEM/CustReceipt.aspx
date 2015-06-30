@@ -225,8 +225,19 @@
         }
 
 
-        function PrintItem(ID) {
-            window.showModalDialog('./PrintReceipt.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+        function PrintItem(ID)
+        {
+            if (window.showModalDialog)
+            {
+                var dialogArguments = new Object();
+                var _R = window.showModalDialog('./PrintReceipt.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+            }
+            else
+
+            {
+                window.open('./PrintReceipt.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+                winHandle.focus();
+            }
         }
 
         function ShowCreditSales() {
