@@ -222,6 +222,25 @@
                                     </td>
                                 </tr>
                             </table>
+                            <table cellspacing="0px" cellpadding="0px" border="0" width="100%" class="searchbg">
+                                <tr style="vertical-align: middle">
+                                    <td style="width: 10%; font-size: 14px; color: White;">
+                                        <asp:Label ID="lblView" runat="server" Text="Filter :"></asp:Label>
+                                    </td>
+                                    <td style="width: 7%; font-size: 14px; color: White;">
+                                        <asp:CheckBox ID="chkAll" Text="All" Checked="true" AutoPostBack="true" runat="server" OnCheckedChanged="chkAll_CheckedChanged" />
+                                    </td>
+                                    <td style="width: 13%; font-size: 14px; color: White;">
+                                        <asp:CheckBox ID="chkPending" Text="Pending" runat="server" AutoPostBack="true" OnCheckedChanged="chkPending_CheckedChanged" />
+                                    </td>
+                                    <td style="width: 13%; font-size: 14px; color: White;">
+                                        <asp:CheckBox ID="chkApproved" Text="Approved" runat="server" AutoPostBack="true" OnCheckedChanged="chkApproved_CheckedChanged" />
+                                    </td>
+                                    <td style="width: 15%; font-size: 14px; color: White;">
+                                        <asp:CheckBox ID="chkRejected" Text="Rejected" runat="server" AutoPostBack="true" OnCheckedChanged="chkRejected_CheckedChanged" />
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <input id="dummy" type="button" style="display: none" runat="server" />
                         <input id="Button1" type="button" style="display: none" runat="server" />
@@ -321,7 +340,7 @@
                                                                             align="center" cellpadding="1" cellspacing="1">
                                                                             <tr>
                                                                                 <td class="ControlLabel" style="width: 25%;">
-                                                                                    Product *
+                                                                                    Product Name*
                                                                                     <asp:CompareValidator ID="cvProduct" runat="server" ControlToValidate="cmbProd" Display="Dynamic"
                                                                                         ValidationGroup="grpDetails" ErrorMessage="Product is Mandatory" Operator="GreaterThan"
                                                                                         Text="*" ValueToCompare="0"></asp:CompareValidator>
@@ -355,7 +374,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td class="ControlLabel" style="width: 25%;">
-                                                                                    Requested Branch:*
+                                                                                    Requesting Branch:*
                                                                                     <asp:CompareValidator ID="cvRequestedBranch" runat="server" ControlToValidate="cmbRequestedBranch"
                                                                                         Display="Dynamic" ValidationGroup="grpDetails" ErrorMessage="RequestedBranch is Mandatory"
                                                                                         Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
@@ -365,7 +384,7 @@
                                                                                         DataTextField="BranchName" DataValueField="BranchCode" ValidationGroup="grpDetails"
                                                                                         BackColor="#e7e7e7" CssClass="drpDownListMedium" Height="26px" Style="text-align: center;
                                                                                         border: 1px solid #e7e7e7" Width="100%">
-                                                                                        <asp:ListItem Text="Select Requested Branch" Value="0"></asp:ListItem>
+                                                                                        <asp:ListItem Text="Select Requesting Branch" Value="0"></asp:ListItem>
                                                                                     </asp:DropDownList>
                                                                                 </td>
                                                                                 <td class="ControlLabel" style="width: 3%;" align="left">
@@ -390,7 +409,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td class="ControlLabel" style="width: 29%;">
-                                                                                  Requested Branch Current Stock
+                                                                                  Requesting Branch Current Stock
                                                                                 </td>
                                                                                 <td class="ControlDrpBorder" style="width: 22%;">
                                                                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
@@ -444,7 +463,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td class="ControlLabel" style="width: 15%;">
-                                                                                    RequestedDate: *
+                                                                                    Requested Date: *
                                                                                     <asp:RequiredFieldValidator ID="rvRequesteDate" runat="server" ValidationGroup="grpDetails"
                                                                                         ControlToValidate="txtRequestedDate" Text="*" ErrorMessage="RequestedDate is mandatory"
                                                                                         CssClass="rfv" Display="Dynamic"  EnableClientScript="True"></asp:RequiredFieldValidator>
@@ -497,7 +516,7 @@
                                                                             CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="UpdateButton_Click">
                                                                         </asp:Button>
                                                                         <asp:Button ID="InsertButton" runat="server" ValidationGroup="grpDetails" CausesValidation="True"
-                                                                            CommandName="Insert" CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
+                                                                            CommandName="Insert" CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                             OnClick="InsertButton_Click"></asp:Button>
                                                                     </td>
                                                                     <td align="center" style="width: 17%;">
@@ -548,11 +567,13 @@
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="RequestedBranch" ItemStyle-Font-Size="12px" HeaderText="Req.Branch" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="BranchHasStock" ItemStyle-Font-Size="12px" HeaderText="BranchHasStock" HeaderStyle-Wrap="false"
+                                                <asp:BoundField DataField="BranchHasStock" ItemStyle-Font-Size="12px" HeaderText="BrHasStock" HeaderStyle-Wrap="false"
                                                     HeaderStyle-BorderColor="Gray" />
                                                 <asp:BoundField DataField="Status" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Status" HeaderStyle-BorderColor="Gray" />
-                                                <asp:BoundField DataField="CompletedDate" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="CompletedDate" DataFormatString="{0:dd/MM/yyyy}"
+                                                  <asp:BoundField DataField="CompletedUser" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Comp.User"
                                                     HeaderStyle-BorderColor="Gray" />
+                                                <asp:BoundField DataField="CompletedDate" ItemStyle-Font-Size="12px" HeaderStyle-Wrap="false" HeaderText="Comp.Date" DataFormatString="{0:dd/MM/yyyy}"
+                                                    HeaderStyle-BorderColor="Gray" />                                               
                                                 <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="50px" HeaderText="Approve/Reject"
                                                     HeaderStyle-BorderColor="Gray" ItemStyle-HorizontalAlign="Center" Visible="false">
                                                     <ItemTemplate>

@@ -411,7 +411,7 @@
                                                                                     </cc1:TabPanel>
                                                                                     <cc1:TabPanel ID="tabCustomer" runat="server" HeaderText="Sales">
                                                                                         <ContentTemplate>
-                                                                                            <rwg:BulkEditGridView ID="GrdViewItem" AutoGenerateColumns="False" BorderWidth="1px"
+                                                                                            <rwg:BulkEditGridView ID="GrdViewItem" AutoGenerateColumns="False" BorderWidth="1px" OnRowDataBound="GrdViewItem_RowDataBound"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"
                                                                                                 Width="900px">
                                                                                                 <RowStyle CssClass="dataRow" />
@@ -432,7 +432,7 @@
                                                                                                     </asp:TemplateField>
                                                                                                     <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Add" HeaderStyle-BorderColor="Gray">
                                                                                                         <ItemTemplate>
-                                                                                                            <asp:CheckBox ID="chkboxAdd" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Add") %>'></asp:CheckBox>
+                                                                                                            <asp:CheckBox ID="chkboxAdd" runat="server" Style="color: Black" Text="" Font-Names="arial" Font-Size="11px" Checked='<%# Bind("Add") %>'></asp:CheckBox>                                                                                                            
                                                                                                         </ItemTemplate>
                                                                                                     </asp:TemplateField>
                                                                                                     <asp:TemplateField ItemStyle-CssClass="command" HeaderStyle-Width="60px" HeaderText="Edit" HeaderStyle-BorderColor="Gray">

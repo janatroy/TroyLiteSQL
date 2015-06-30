@@ -53,6 +53,22 @@ public partial class InternalTransfers : System.Web.UI.Page
             GrdViewRequestes.DataBind();
         }
     }
+
+    private void BindGridDataFiter(string filter)
+    {
+        string connection = Request.Cookies["Company"].Value;
+        IInternalTransferService bl = new BusinessLogic(connection);
+        string branch = Request.Cookies["Branch"].Value;
+        var dbData = bl.ListInternalRequests(connection, filter, "Status", branch);
+
+        if (dbData != null)
+        {
+            GrdViewRequestes.DataSource = dbData;
+            GrdViewRequestes.DataBind();
+        }
+    }
+
+
     protected void BtnClearFilter_Click(object sender, EventArgs e)
     {
         txtSearch.Text = "";
@@ -250,6 +266,21 @@ public partial class InternalTransfers : System.Web.UI.Page
             GrdViewRequestes.PageIndex = e.NewPageIndex;
 
             BindGridData();
+
+            if (chkPending.Checked == true)
+            {
+                BindGridDataFiter(chkPending.Text);
+            }
+
+            if (chkApproved.Checked == true)
+            {
+                BindGridDataFiter("Completed");
+            }
+
+            if (chkRejected.Checked == true)
+            {
+                BindGridDataFiter("Rejected");
+            }
         }
         catch (Exception ex)
         {
@@ -547,7 +578,7 @@ public partial class InternalTransfers : System.Web.UI.Page
 
     protected void cmbApproveReject_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (cmbApproveReject.SelectedValue == "Reject")
+        if (cmbApproveReject.SelectedValue == "Rejected")
         {
             if (txtComments.Text.Trim() == string.Empty)
             {
@@ -1038,6 +1069,47 @@ public partial class InternalTransfers : System.Web.UI.Page
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+
+    protected void chkAll_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkAll.Checked == true)
+        {
+            chkPending.Checked = false;
+            chkApproved.Checked = false;
+            chkRejected.Checked = false;
+            BindGridData();
+        }
+    }
+    protected void chkPending_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkPending.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkApproved.Checked = false;
+            chkRejected.Checked = false;
+            BindGridDataFiter(chkPending.Text);
+        }
+    }
+    protected void chkApproved_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkApproved.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkPending.Checked = false;
+            chkRejected.Checked = false;
+            BindGridDataFiter("Completed");
+        }
+    }
+    protected void chkRejected_CheckedChanged(object sender, EventArgs e)
+    {
+        if (chkRejected.Checked == true)
+        {
+            chkAll.Checked = false;
+            chkApproved.Checked = false;
+            chkPending.Checked = false;
+            BindGridDataFiter("Rejected");
         }
     }
 

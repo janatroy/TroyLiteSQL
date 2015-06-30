@@ -3368,11 +3368,15 @@ public partial class CustomerSales : System.Web.UI.Page
             return;
         }
 
-        if (!bl.IsManualSalesBillNoValid(sDataSource, txtmanual.Text.Trim(), bookId))
+        if (inManualNo.Value != txtmanual.Text)
         {
-            txtmanual.Text = string.Empty;
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid BillNo. Please correct and try again')", true);
-            return;
+
+            if (!bl.IsManualSalesBillNoValid(sDataSource, txtmanual.Text.Trim(), bookId))
+            {
+                txtmanual.Text = string.Empty;
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Invalid BillNo. Please correct and try again')", true);
+                return;
+            }
         }
 
     }
@@ -8578,7 +8582,7 @@ public partial class CustomerSales : System.Web.UI.Page
                 salesID = Convert.ToInt32(GrdViewSales.SelectedDataKey.Value.ToString());
             string branchcode = row.Cells[9].Text;
             loadBranch();
-            //loadManualSalesBooks();
+            loadManualSalesBooks();
 
             DataSet ds = bl.GetSalesForId(salesID, branchcode);
 
@@ -8790,22 +8794,23 @@ public partial class CustomerSales : System.Web.UI.Page
                     else if (ds.Tables[0].Rows[0]["manualNo"] != null)
                     {
                         txtmanual.Text = Convert.ToString(ds.Tables[0].Rows[0]["manualno"]);
+                        inManualNo.Value = txtmanual.Text;
                         rowmanual.Visible = true;
                     }
-                    //loadManualSalesBooks();
-                    //if (ds.Tables[0].Rows[0]["bookid"] != null)
-                    //{
-                    //  string bookid = Convert.ToString(ds.Tables[0].Rows[0]["bookid"]);
-                    //    drpManualSalesBook.Visible = true;
-                    //    drpManualSalesBook.ClearSelection();
-                    //    ListItem li = drpManualSalesBook.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(bookid));
-                    //    if (li != null) li.Selected = true;
-                    //    //drpManualSalesBook.ClearSelection();
-                    //    //ListItem clie = drpManualSalesBook.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["bookid"]));
+                    loadManualSalesBooks();
+                    if (ds.Tables[0].Rows[0]["bookid"] != null)
+                    {
+                        string bookid = Convert.ToString(ds.Tables[0].Rows[0]["bookid"]);
+                        drpManualSalesBook.Visible = true;
+                        drpManualSalesBook.ClearSelection();
+                        ListItem li = drpManualSalesBook.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(bookid));
+                        if (li != null) li.Selected = true;
+                        //drpManualSalesBook.ClearSelection();
+                        //ListItem clie = drpManualSalesBook.Items.FindByValue(Convert.ToString(ds.Tables[0].Rows[0]["bookid"]));
 
-                    //    //if (clie != null) clie.Selected = true;
-                       
-                    //}
+                        //if (clie != null) clie.Selected = true;
+
+                    }
 
 
                     //if (ds.Tables[0].Rows[0]["manual"] != null)
