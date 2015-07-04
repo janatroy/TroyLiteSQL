@@ -48,11 +48,12 @@ public partial class SalesReport : System.Web.UI.Page
                 lblBillDate.Text = DateTime.Now.ToShortDateString();
                 SalesPanel.Visible = false;
 
-                txtStartDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+              //  txtStartDate.Text = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
 
                 DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
                 string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
                 txtEndDate.Text = dtaa;
+                txtStartDate.Text = dtaa;
 
                 //txtEndDate.Text = DateTime.Now.ToShortDateString();
 
@@ -105,16 +106,28 @@ public partial class SalesReport : System.Web.UI.Page
             ds = bl.ListBranch();
            // lstBranch.Items.Add(new ListItem("All", "0"));
             CheckBoxList1.Visible = true;
+            lblbranch.Text = "Select Branch(es)";
+            single.Visible = false;
+            single1.Visible = false;
+           // div1.Visible = false;
         }
         else
         {
             ds = bl.ListDefaultBranch(brncode);
             CheckBoxList1.Visible = false;
+           // lblbranch.Text = "Select Branch";
+            multi.Visible = false;
+            select.Visible = false;
         }
         lstBranch.DataSource = ds;
         lstBranch.DataTextField = "BranchName";
         lstBranch.DataValueField = "Branchcode";
         lstBranch.DataBind();
+
+        CheckBoxList2.DataSource = ds;
+        CheckBoxList2.DataTextField = "BranchName";
+        CheckBoxList2.DataValueField = "Branchcode";
+        CheckBoxList2.DataBind();
     }
 
     private void BranchEnable_Disable()
@@ -129,6 +142,9 @@ public partial class SalesReport : System.Web.UI.Page
         lstBranch.ClearSelection();
         ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
         if (li != null) li.Selected = true;
+
+        ListItem li1 = CheckBoxList2.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li1 != null) li1.Selected = true;
 
     }
 
@@ -296,6 +312,11 @@ public partial class SalesReport : System.Web.UI.Page
         { 
             //MessageBox.Show(GetMacAddress().ToString());
             //ScriptManager.RegisterStartupScript(Page, typeof(Button), "MyScript", "alert('No Data Found "+ GetMacAddress().ToString()+"');", true);
+            if (lstBranch.SelectedIndex == -1)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
+                return;
+            }
             bindData();
             //Response.Redirect("SalesSummaryReport.aspx?myname=" + "NEWCUS",'Graph','height=700,width=1000,left=172,top=10');", true);
             //ResponseHelper.Redirect("SalesSummaryReport.aspx", "_blank", "menubar=0,width=100,height=100");
@@ -666,23 +687,28 @@ public partial class SalesReport : System.Web.UI.Page
 
     protected void lst_SelectedIndexChanged_1(object sender, EventArgs e)
     {
-        if (CheckBoxList1.Items[0].Selected == true)
-        {
-            foreach (ListItem ls in lstBranch.Items)
-            {
-                ls.Selected = true;
 
-            }
-
-        }
-        else
-        {
-            foreach (ListItem ls in lstBranch.Items)
-            {
-                ls.Selected = false;
-
-            }
-
-        }
     }
+    //{
+    //    if (CheckBoxList1.Items[0].Selected == true)
+    //    {
+    //        foreach (ListItem ls in lstBranch.Items)
+    //        {
+    //            ls.Selected = true;
+    //            return;
+
+    //        }
+
+    //    }
+    //    else
+    //    {
+    //        foreach (ListItem ls in lstBranch.Items)
+    //        {
+    //            ls.Selected = false;
+    //            return;
+
+    //        }
+
+    //    }
+    //}
 }

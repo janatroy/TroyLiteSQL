@@ -40,14 +40,14 @@
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
             if (txt.value == "") {
-               // alert("show");
+                alert("hide");
                 // alert(txt.value);
                 btn.style.visibility = "hidden";
                 // when the window is loaded, hide the button if the textbox is empty
             }
             else
             {
-              //  alert("hide");
+                alert("show");
                 btn.style.visibility = "visible";
             }
 
@@ -299,7 +299,7 @@
 
                                         <%--<asp:Button ID="BtnClearFilter" runat="server" OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />--%>
 
-                                        <asp:Button ID="BtnClearFilter" runat="server" onkeyup="EnableDisableButton(this,'BtnClearFilter1')"  OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
+                                        <asp:Button ID="BtnClearFilter" runat="server" OnClientClick="return Showalert();" onkeyup="EnableDisableButton(this,'BtnClearFilter1')"  OnClick="BtnClearFilter_Click" EnableTheming="false" Text="" CssClass="ClearFilter6" />
 
                                     </td>
                                 </tr>

@@ -1336,7 +1336,7 @@ public partial class SalesdailyReport4 : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans,"", delNote, cond);
 
                 }
                 else if (category == "Categorywise")

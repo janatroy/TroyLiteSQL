@@ -172,21 +172,21 @@
         </div>
         <div id="SalesPanel" runat="server">
             &nbsp;
-         <table width="600px">
+         <table width="900px">
              <tr>
                  <td colspan="4">
-                     <table width="100%">
+                     <table runat="server" visible="false" width="100%">
                          <tr>
                              <td style="width: 40%"></td>
                              <td style="width: 19%">
-                                 <input type="button" value="" id="Button1" runat="Server" onclick="javascript: CallPrint('divPrint')"
-                                     class="printbutton6" />
+                                
                              </td>
                              <td style="width: 10%">
                                  <asp:Button ID="btndet" CssClass="GoBack" EnableTheming="false" runat="server"
                                      OnClick="btndet_Click" Visible="False" />
                              </td>
-                             <td style="width: 31%"></td>
+                             
+                            
                          </tr>
                      </table>
                  </td>
@@ -195,8 +195,10 @@
             <br />
             <div id="divPrint" style="font-family: 'Trebuchet MS'; font-size: 11px;">
 
-                <table width="600px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
+                <table width="990px" border="0" style="font-family: Trebuchet MS; font-size: 14px;">
                     <tr>
+                        <td style="width: 15%" align="right">
+                            </td>
                         <td rowspan="5" width="140px">
                             <asp:Image ID="Image1" runat="server" />
                         </td>
@@ -204,15 +206,32 @@
                         <td />
                     </tr>
                     <tr>
+                       <td />
+                        <td align="center" width="560px" style="font-size: 20px;">
+                             <asp:Label ID="Label5" runat="server"></asp:Label>
+                        </td>
+                         <td >
+                             </td>
+                        <td >
+                             </td>
+                    </tr>
+                    <tr>
                         <td width="10px" align="left"><%--TIN#:
                         <asp:Label ID="lblTNGST" runat="server"></asp:Label>--%>
                         </td>
-                        <td align="center" width="560px" style="font-size: 20px;">
+                        <td align="center" width="560px" style="font-size: 17px;">
                             <asp:Label ID="lblCompany" runat="server"></asp:Label>
                         </td>
-                        <td width="140px" align="left">Ph:
-                        <asp:Label ID="lblPhone" runat="server"></asp:Label>
+                        <td width="140px" align="right">
+                       <%-- <asp:Label ID="lblPhone" runat="server"></asp:Label>--%>
+                            <input type="button" value="" id="Button1" runat="Server" onclick="javascript: CallPrint('divPrint')"
+                                     class="printbutton6" />
+                            
                         </td>
+                         <td style="width:103px">
+                                  <%--<input type="button" value="" id="Button1" runat="Server" onclick="javascript: CallPrint('divPrint')"
+                                     class="printbutton6" />--%>
+                             </td>
                     </tr>
                     <tr>
                         <td align="left"><%--GST#:
@@ -221,9 +240,11 @@
                         <td align="center">
                             <asp:Label ID="lblAddress" runat="server"></asp:Label>
                         </td>
-                        <td align="left">Date:
+                        <td align="center" >Date:
                         <asp:Label ID="lblBillDate" runat="server"></asp:Label>
                         </td>
+                        <td >
+                             </td>
                     </tr>
                     <tr>
                         <td>&nbsp;
@@ -240,27 +261,27 @@
                         <td>&nbsp;
                         </td>
                         <td align="center">
-                            <asp:Label ID="lblState" runat="server"> </asp:Label>
+                           
                         </td>
-                        <td>&nbsp;
+                        <td> <asp:Label ID="lblState" runat="server"> </asp:Label>
                         </td>
                     </tr>
-                    <tr>
+                    <%--<tr>
                         <td>&nbsp;
                         </td>
                         <td align="center">&nbsp;
                         </td>
                         <td>&nbsp;
                         </td>
-                    </tr>
-                    <tr>
+                    </tr>--%>
+                   <%-- <tr>
                         <td>&nbsp;
                         </td>
                         <td align="center">&nbsp;
                         </td>
                         <td>&nbsp;
                         </td>
-                    </tr>
+                    </tr>--%>
                  
                    
                 </table>
@@ -268,7 +289,7 @@
                      <tr>
                         <td colspan="3" align="center">
                             <br />
-                            <h5 style="font-size:large" >Sales Register From
+                            <h5 style="font-size:large" >Sales Report - Datewise - From
                             <asp:Label ID="lblStartDate" runat="server"> </asp:Label>
                                 To
                             <asp:Label ID="lblEndDate" runat="server"> </asp:Label></h5>
@@ -303,7 +324,7 @@
                                     Text='<%# Eval("Billno") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="Customername" HeaderText="Customer" ItemStyle-Width="20%" />
+                        <asp:BoundField DataField="Customername" ItemStyle-HorizontalAlign="Left" HeaderText="Customer" ItemStyle-Width="20%" />
                         <%--  <asp:BoundField DataField="BranchCode" HeaderText="BranchCode" ItemStyle-Width="20%" />--%>
                         <asp:TemplateField HeaderText="BranchCode">
                             <ItemTemplate>
@@ -323,14 +344,14 @@
                                 <br />
                                 <a href="javascript:switchViews('div<%# Eval("Billno") + "," + Eval("BranchCode")%>', 'imgdiv<%# Eval("Billno")%>');"
                                     style="text-decoration: none;">
-                                    <img id="imgdiv<%# Eval("Billno")%>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
+                                    <img id="imgdiv<%# Eval("Billno")%>" alt="Show"   border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
                                 </a>
                                 <%--<a style="text-decoration:none" href='BalanceSheetLevel2.aspx?HeadingName=<%# Eval("HeadingName") %>&HeadingID=<%# Eval("HeadingID") %>'><asp:Label style="font-family:'Trebuchet MS'; font-size:11px;  " ID="lblparticulars" runat="server" Text = '<%# Eval("HeadingName") %>' /></a>--%>
                             View Bill Summary
                             <br />
                                 <div id="div<%# Eval("Billno") + "," + Eval("BranchCode") %>" style="display: none; position: relative; left: 25px;">
                                     <wc:ReportGridView runat="server" BorderWidth="1" ID="gvProducts" ShowFooter="true"
-                                        AutoGenerateColumns="false" PrintPageSize="23" AllowPrintPaging="true" Width="90%"
+                                        AutoGenerateColumns="false" PrintPageSize="23" AllowPrintPaging="true" Width="95%"
                                         Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvProducts_RowDataBound">
                                         <HeaderStyle CssClass="ReportHeadataRow" />
                                         <RowStyle CssClass="ReportdataRow" />
@@ -346,25 +367,25 @@
                                                     <asp:Label ID="lblItemCode" runat="server" Text='<%# Eval("ItemCode") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Item Code" ItemStyle-Width="3%">
+                                            <asp:TemplateField Visible="false" ItemStyle-HorizontalAlign="Center" HeaderText="Branch Code" HeaderStyle-HorizontalAlign="Center" ItemStyle-Width="5%">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblBranchCode" runat="server" Text='<%# Eval("BranchCode") %>' />
+                                                    <asp:Label ID="lblBranchCode"  runat="server" Text='<%# Eval("BranchCode") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Product Name" ItemStyle-Width="57%">
+                                            <asp:TemplateField HeaderText="Product Name"  ItemStyle-VerticalAlign="Middle" ItemStyle-Width="57%">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblProductName" runat="server" Text='<%# Eval("ProductName") %>' /><br />
-                                                    <b>Model :</b>
-                                                    <asp:Label ID="lblModel" runat="server" Text='<%# Eval("Model") %>' /><br />
-                                                    <b>Description :</b><asp:Label ID="lblDes" runat="server" Text='<%# Eval("ProductDesc") %>' />
+                                                    <asp:Label ID="lblProductName"  runat="server" Text='<%#GetStatus(Eval("ProductDesc"),Eval("CategoryName"),Eval("Model")) %>' /><br />
+                                                  <%--  <b></b>--%>
+                                                    <%--<asp:Label Visible="false" ID="lblModel" runat="server" Text='<%# Eval("Model") %>' /><br />--%>
+                                                 <%--   <b></b><asp:Label Visible="false" ID="lblDes" runat="server" Text='<%# Eval("ProductDesc") %>' />--%>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Qty" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Right">
+                                            <asp:TemplateField HeaderText="Qty" ItemStyle-Width="5%" ItemStyle-HorizontalAlign="Center">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblQty" runat="server" Text='<%# Eval("Qty") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Rate" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Right">
+                                            <asp:TemplateField HeaderText="Rate" HeaderStyle-HorizontalAlign="Center" ItemStyle-Width="10%" ItemStyle-HorizontalAlign="Right">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblRate" runat="server" Text='<%# Eval("Rate","{0:f2}") %>' />
                                                 </ItemTemplate>
@@ -405,11 +426,15 @@
                     <PageFooterTemplate>
                     </PageFooterTemplate>
                 </wc:ReportGridView>
-                 <table>
+                 <table style="width:90%">
                      <tr>
-                        <td colspan="3" align="center">
+                         <td style="width:20%"></td>
+                         <td style="width:20%"></td>
+                         <td style="width:20%"></td>
+                        
+                        <td style="width:40%" align="right">
                             <br />
-                            <h5 style="font-size:large" >Total
+                            <h5  style="font-size:large" >Total:
                             <asp:Label ID="Label4" runat="server"> </asp:Label>
                               </h5>
                         </td>

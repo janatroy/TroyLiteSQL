@@ -145,6 +145,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                 string intTrans = "";
                 string purRet = "";
                 string delNote = "";
+                string oppt = "";
 
                 if (Request.QueryString["intTrans"] != null)
                 {
@@ -157,6 +158,10 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                 if (Request.QueryString["delNote"] != null)
                 {
                     delNote = Request.QueryString["delNote"].ToString();
+                }
+                if (Request.QueryString["option"] != null)
+                {
+                    oppt = Request.QueryString["option"].ToString();
                 }
                 //if (chkIntTrans.Checked)
                 //    intTrans = "YES";
@@ -181,7 +186,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
 
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote,oppt, cond);
 
                 }
                 else if (category == "Categorywise")
@@ -1002,7 +1007,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote,"false", cond);
 
                 }
                 else if (category == "Categorywise")
@@ -1080,6 +1085,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
             string intTrans = "";
             string purReturn = "";
             string delNote = "";
+            string opps="";
 
             if (chkIntTrans.Checked)
                 intTrans = "YES";
@@ -1107,6 +1113,10 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
             if (Request.QueryString["delNote"] != null)
             {
                 delNote = Request.QueryString["delNote"].ToString();
+            }
+            if (Request.QueryString["option"] != null)
+            {
+                opps = Request.QueryString["option"].ToString();
             }
 
 
@@ -1173,7 +1183,7 @@ public partial class SalesSummaryReport1 : System.Web.UI.Page
                     startDate = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName"));
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote,opps, brcode, lblBillNo.Text);
                     else if (secondLevel == "Modelwise")
                         ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Brandwise")

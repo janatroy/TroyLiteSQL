@@ -21,6 +21,8 @@ public partial class SalesReport1 : System.Web.UI.Page
     Double SumCashSales = 0.0d;
     BusinessLogic objBL;
     string cond;
+    double sumtotal1 = 0;
+   
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -50,6 +52,7 @@ public partial class SalesReport1 : System.Web.UI.Page
                 DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
                 string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
                 txtEndDate.Text = dtaa;
+                Label5.Text="Benit & Co";
 
                 //txtEndDate.Text = DateTime.Now.ToShortDateString();
 
@@ -65,7 +68,7 @@ public partial class SalesReport1 : System.Web.UI.Page
                             {
                                 //lblTNGST.Text = Convert.ToString(dr["TINno"]);
                                 lblCompany.Text = Convert.ToString(dr["CompanyName"]);
-                                lblPhone.Text = Convert.ToString(dr["Phone"]);
+                              //  lblPhone.Text = Convert.ToString(dr["Phone"]);
                                 //lblGSTno.Text = Convert.ToString(dr["GSTno"]);
 
                                 lblAddress.Text = Convert.ToString(dr["Address"]);
@@ -615,6 +618,7 @@ public partial class SalesReport1 : System.Web.UI.Page
             double cst = 0;
             double rate = 0;
             double qty = 0;
+            
 
            
 
@@ -634,6 +638,7 @@ public partial class SalesReport1 : System.Web.UI.Page
                 qty = Convert.ToDouble(lblQty.Text);
 
                 sumRateQty = rate * qty;
+                sumtotal1 = sumtotal1 + sumRateQty;
                 sumDis = sumRateQty - (sumRateQty * (discount / 100));
 
                 sumVat = sumDis * (vat / 100);
@@ -644,9 +649,21 @@ public partial class SalesReport1 : System.Web.UI.Page
                 lblValue.Text = sumRateQty.ToString("f2"); // sumValue.ToString("f2"); // Convert.ToString(sumValue);
 
                 tot = tot + Convert.ToDouble(lblValue.Text);
+
+               // sumtotal1 = sumtotal1 + tot;
+            }
+            else if (e.Row.RowType== DataControlRowType.Footer)
+            {
+                e.Row.Cells[6].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[7].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[8].HorizontalAlign = HorizontalAlign.Right;
+
+                e.Row.Cells[8].Text = sumtotal1.ToString("#0.00");
+                sumtotal1 = 0;
+
             }
 
-            Label4.Text = tot.ToString();
+            Label4.Text = tot.ToString("#0.00");
         }
         catch (Exception ex)
         {
@@ -680,7 +697,8 @@ public partial class SalesReport1 : System.Web.UI.Page
                 {
                     int billno = Convert.ToInt32(lblPurchaseID.Text);
                     string branch = "tblSalesItems.BranchCode='" + lblBranchCode.Text + "'";
-                    ReportsBL.ReportClass rptProduct = new ReportsBL.ReportClass();
+                  //  ReportsBL.ReportClass rptProduct = new ReportsBL.ReportClass();
+                    BusinessLogic rptProduct = new BusinessLogic();
                     if (Request.Cookies["Company"] != null)
                         sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
@@ -703,5 +721,9 @@ public partial class SalesReport1 : System.Web.UI.Page
         {
             TroyLiteExceptionManager.HandleException(ex);
         }
+    }
+    public string GetStatus(object Status1, object Status2,object status)
+    {
+        return (string)Status1 + " - " + (string)Status2 + " - "+(string)status;
     }
 }

@@ -112,7 +112,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
         if (brncode == "All")
         {
             ds = bl.ListBranch();
-            lstBranch.Items.Add(new ListItem("All", "0"));
+            //  lstBranch.Items.Add(new ListItem("All", "0"));
         }
         else
         {
@@ -292,9 +292,9 @@ public partial class SalesSummaryReport : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Discount Rate"));
         dt.Columns.Add(new DataColumn("Vat Rate"));
 
-     //   DataColumn colInt32Debitlll = new DataColumn("Vat Rate");
-       // colInt32Debitlll.DataType = System.Type.GetType("System.Double");
-      //  dt.Columns.Add(colInt32Debitlll);
+        //   DataColumn colInt32Debitlll = new DataColumn("Vat Rate");
+        // colInt32Debitlll.DataType = System.Type.GetType("System.Double");
+        //  dt.Columns.Add(colInt32Debitlll);
 
         dt.Columns.Add(new DataColumn("CST Rate"));
         dt.Columns.Add(new DataColumn("Freight"));
@@ -323,17 +323,17 @@ public partial class SalesSummaryReport : System.Web.UI.Page
         string purReturn = "";
         string delNote = "";
 
-        if (chkIntTrans.Checked)
+        if (optionmethod.SelectedItem.Text == "chkIntTrans")
             intTrans = "YES";
         else
             intTrans = "NO";
 
-        if (chkPurReturn.Checked)
+        if (optionmethod.SelectedItem.Text == "chkPurReturn")
             purReturn = "YES";
         else
             purReturn = "NO";
 
-        if (chkDelNote.Checked)
+        if (optionmethod.SelectedItem.Text == "chkDelNote")
             delNote = "YES";
         else
             delNote = "NO";
@@ -680,7 +680,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     dr_final12["CST Rate"] = (Convert.ToDouble(dr["Actualcst"]));
                     dr_final12["Freight"] = (Convert.ToDouble(dr["sumfreight"]));
                     dr_final12["Loading/Unloading"] = (Convert.ToDouble(dr["Loading"]));
-                    dr_final12["Total"] = (Convert.ToDouble(dr["NetRate"]))  - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"]));
+                    dr_final12["Total"] = (Convert.ToDouble(dr["NetRate"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"]));
 
                     brandTotal = brandTotal + ((Convert.ToDouble(dr["NetRate"])) - (Convert.ToDouble(dr["actualdiscount"])) + Convert.ToDouble(dr["Loading"]) + (Convert.ToDouble(dr["sumfreight"])));
                     load1Total = load1Total + (Convert.ToDouble(dr["Loading"]));
@@ -950,21 +950,38 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 string intTrans = "";
                 string purRet = "";
                 string delNote = "";
+                string options = "";
 
-                if (chkIntTrans.Checked)
+                if(optionmethod.SelectedItem.Text=="All")
+                {
+                    options = "true";
+                }
+                else
+                {
+                    options = "false";
+                }
+
+                if (optionmethod.SelectedItem.Text == "chkIntTrans")
                     intTrans = "YES";
                 else
                     intTrans = "NO";
 
-                if (chkPurReturn.Checked)
+                if (optionmethod.SelectedItem.Text == "chkPurReturn")
                     purRet = "YES";
                 else
                     purRet = "NO";
 
-                if (chkDelNote.Checked)
+                if (optionmethod.SelectedItem.Text == "chkDelNote")
                     delNote = "YES";
                 else
                     delNote = "NO";
+                if (optionmethod.SelectedItem.Text == "sales")
+                {
+                    purRet = "NO";
+                    delNote = "NO";
+                    intTrans = "NO";
+                }
+
 
                 string cond = "";
                 cond = getCond();
@@ -974,7 +991,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote,"false", cond);
 
                 }
                 else if (category == "Categorywise")
@@ -1015,7 +1032,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
 
                 divPrint.Visible = false;
                 divmain.Visible = false;
-                Response.Write("<script language='javascript'> window.open('SalesSummaryReport1.aspx?category=" + category + "&secondLevel=" + secondLevel + "&cond=" + Server.UrlEncode(cond) + "&purRet=" + purRet + "&intTrans=" + intTrans + "&delNote=" + delNote + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate) + " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
+                Response.Write("<script language='javascript'> window.open('SalesSummaryReport1.aspx?category=" + category + "&secondLevel=" + secondLevel + "&cond=" + Server.UrlEncode(cond) + "&purRet=" + purRet + "&intTrans=" + intTrans + "&delNote=" + delNote + "&startDate=" + Convert.ToDateTime(startDate) + "&endDate=" + Convert.ToDateTime(endDate)+ "&option=" + options +  " ' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
 
             }
         }
@@ -1046,17 +1063,17 @@ public partial class SalesSummaryReport : System.Web.UI.Page
             string purReturn = "";
             string delNote = "";
 
-            if (chkIntTrans.Checked)
+            if (optionmethod.SelectedItem.Text == "chkIntTrans")
                 intTrans = "YES";
             else
                 intTrans = "NO";
 
-            if (chkPurReturn.Checked)
+            if (optionmethod.SelectedItem.Text == "chkPurReturn")
                 purReturn = "YES";
             else
                 purReturn = "NO";
 
-            if (chkDelNote.Checked)
+            if (optionmethod.SelectedItem.Text == "chkDelNote")
                 delNote = "YES";
             else
                 delNote = "NO";
@@ -1084,7 +1101,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 if (DataBinder.Eval(e.Row.DataItem, "Loading") != DBNull.Value)
                     dLURate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Loading"));
 
-               // dGrandRate = dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
+                // dGrandRate = dDiscountRate + dVatRate + dCSTRate; // +dFrRate + dLURate;
                 dGrandRate = dNetRate;
 
 
@@ -1105,7 +1122,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     startDate = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName"));
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote, "", "");
+                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans,"false", delNote, "", "");
                     else if (secondLevel == "Modelwise")
                         ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Brandwise")
@@ -1179,7 +1196,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                     else if (secondLevel == "Customerwise")
                         ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "CustomerName", purReturn, intTrans, delNote, "", "");
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelBillWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductName", purReturn, intTrans, delNote,"");
+                        ds = bl.SecondLevelBillWiseItemWise(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")).Trim(), "BillNo", "ProductName", purReturn, intTrans, delNote, "");
                     else if (secondLevel == "Daywise")
                         ds = bl.SecondLevelGeneralSales(Convert.ToDateTime(txtStartDate.Text), Convert.ToDateTime(txtEndDate.Text), Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName")), "BillNo", "BillDate", purReturn, intTrans, delNote, "", "");
 
@@ -1388,7 +1405,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
 
 
 
-               // dGrandRate = dGrandRate + dDiscountRate + dVatRate + dCSTRate;
+                // dGrandRate = dGrandRate + dDiscountRate + dVatRate + dCSTRate;
 
                 dGrandRate = dNetRate;// +dFrRate + dLURate;
 
@@ -1399,7 +1416,7 @@ public partial class SalesSummaryReport : System.Web.UI.Page
                 dSCCSTRate = dSCCSTRate + dCSTRate;
 
 
-                dSCGrandRate = dSCGrandRate + dGrandRate ;
+                dSCGrandRate = dSCGrandRate + dGrandRate;
                 lblTotal.Text = dGrandRate.ToString("f2");
                 dGrandRate = 0;
                 //e.Row.Cells[6].Visible = false;
@@ -1496,15 +1513,25 @@ public partial class SalesSummaryReport : System.Web.UI.Page
 
     protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
     {
-        foreach (ListItem li in lstBranch.Items)
+        if (CheckBoxList1.Items[0].Selected == true)
         {
-            if (lstBranch.SelectedIndex == 0)
+            foreach (ListItem ls in lstBranch.Items)
             {
-                if (li.Text != "All")
-                {
-                    li.Selected = true;
-                }
+                ls.Selected = true;
+                // return;
+
             }
+
+        }
+        else
+        {
+            foreach (ListItem ls in lstBranch.Items)
+            {
+                ls.Selected = false;
+                //  return;
+
+            }
+
         }
     }
 

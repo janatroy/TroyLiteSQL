@@ -44,15 +44,58 @@
             }
         }
 
+        function CheckAll() {
+            //  alert("checkall");
+            var intIndex = 0;
+            var rowCount = document.getElementById('lstBranch').getElementsByTagName("input").length;
+            for (i = 0; i < rowCount; i++) {
+                if (document.getElementById('CheckBoxList1').checked == true) {
+                    if (document.getElementById("lstBranch" + "_" + i)) {
+                        if (document.getElementById("lstBranch" + "_" + i).disabled != true)
+                            document.getElementById("lstBranch" + "_" + i).checked = true;
+                    }
+                }
+                else {
+                    if (document.getElementById("lstBranch" + "_" + i)) {
+                        if (document.getElementById("lstBranch" + "_" + i).disabled != true)
+                            document.getElementById("lstBranch" + "_" + i).checked = false;
+                    }
+                }
+            }
+        }
+
+        function UnCheckAll() {
+            //   alert("uncheck");
+            var intIndex = 0;
+            var flag = 0;
+            var rowCount = document.getElementById('lstBranch').getElementsByTagName("input").length;
+            for (i = 0; i < rowCount; i++) {
+                if (document.getElementById("lstBranch" + "_" + i)) {
+                    if (document.getElementById("lstBranch" + "_" + i).checked == true) {
+                        flag = 1;
+                    }
+                    else {
+                        flag = 0;
+                        break;
+                    }
+                }
+            }
+            if (flag == 0)
+                document.getElementById('CheckBoxList1').checked = false;
+            else
+                document.getElementById('CheckBoxList1').checked = true;
+
+        }
+
     </script>
     <link rel="Stylesheet" href="App_Themes/DefaultTheme/DefaultTheme.css" />
 </head>
 <body style="font-family: 'Trebuchet MS'; font-size: 11px;">
     <form id="form1" runat="server">
-        <div align="center">
+        <div align="center" >
             <br />
             <div runat="server" id="div1">
-                <table cellpadding="0" cellspacing="1" border="0" style="border: 1px solid Blue; background-color: White; width: 500px">
+                <table  cellpadding="0" cellspacing="1" border="0"  style="border: 1px solid Blue; background-color: White; width:900px">
                     <%--<tr>--%>
                     <%--<td colspan="3" class="mainConHd">
                 <span>Sales Bill Summary Report</span>
@@ -74,56 +117,89 @@
                     </tr>
                     <tr style="height: 6px">
                     </tr>
-                    <tr>
+                    <tr style="width: 95%">
                         <td colspan="7">
                             <table width="100%">
                                 <tr>
-                                    <td align="left" style="width: 15%" />
-                                    <td style="width: 25%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
-                                    </td>
-                                    <td align="left" style="width: 15%" class="ControlTextBox3">
+                                    <td align="left" style="width: 9%">Start Date</td>
+                                    <td align="center" style="width: 12%" class="ControlTextBox3">
                                         <asp:TextBox ID="txtStartDate" Enabled="true" CssClass="cssTextBox" Width="100px" MaxLength="10"
                                             runat="server" />
-                                        &nbsp; &nbsp; &nbsp;
-                                    </td>
-                                    <td align="left" style="width: 0%">
-                                        <script type="text/javascript" language="JavaScript" style="float: left;">
-                                            new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
-                                    </td>
-                                    <td align="left" style="width: 5%">
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
                                             Display="None" CssClass="lblFont" ErrorMessage="Please Enter Start Date"></asp:RequiredFieldValidator>
                                     </td>
-                                    <td align="left" style="width: 55%" />
-                                </tr>
-                                <tr>
-                                    <td align="left" style="width: 15%" />
-                                    <td style="width: 25%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
+
+                                    <td align="left" style="width: 2%">
+                                        <script type="text/javascript" language="JavaScript" style="float: left;">
+                                            new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                                     </td>
-                                    <td align="left" class="ControlTextBox3" style="width: 15%">
+                                    <td align="left" style="width: 9%">End date
+                                      
+                                    </td>
+                                    <td align="left" class="ControlTextBox3" style="width: 12%">
                                         <asp:TextBox ID="txtEndDate" Enabled="true" CssClass="cssTextBox" Width="100px" MaxLength="10" runat="server" />
-                                        &nbsp; &nbsp;
-                                    </td>
-                                    <td align="left" style="width: 0%">
-                                        <script type="text/javascript" language="JavaScript">
-                                            new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
-                                    </td>
-                                    <td align="left" style="width: 5%">
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
                                             Display="None" ErrorMessage="Please Enter The End Date" CssClass="lblFont"></asp:RequiredFieldValidator>
                                         <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToCompare="txtStartDate"
                                             ControlToValidate="txtEndDate" Display="None" ErrorMessage="Start Date Should Be Less Than the End Date"
                                             CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                     </td>
-                                    <td align="left" style="width: 55%" />
+                                    <td align="left" style="width: 5%">
+                                        <script type="text/javascript" language="JavaScript">
+                                            new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
+                                    </td>
+                                     <td style="width: 10%" align="center">
+                                         Select Branch:
+                                    </td>
+
+
+                                </tr>
+                                <tr >
+                                    <td align="left" style="width: 5%" />
+                                    <td style="width: 10%">
+                                    </td>
+
+
+                                    <td align="left" style="width: 2%"></td>
+                                    <td align="left" style="width: 5%" ></td>
+                                     <td align="left" style="width: 10%" >
+                                          
+                                     </td>
+                                     <td align="left" style="width: 2%" >
+                                        
+                                     </td>
+                                   <td width="15%">
+                                        <div style="overflow-y: scroll;  height: 180px; width: 500px" align="left">
+                                            <%--<asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>--%>
+                                            <asp:CheckBoxList ID="CheckBoxList1"  runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lstBranch_SelectedIndexChanged">
+                                            <asp:ListItem Text="All" Value="0" />
+                                                </asp:CheckBoxList>
+
+                                            <asp:CheckBoxList ID="lstBranch"  runat="server" RepeatColumns="5" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" >
+                                                <%--  <asp:ListItem Text="All" Value="0" />--%>
+                                            </asp:CheckBoxList>
+                                        </div>
+                                       select Data mode:
+                                    </td>
+
                                 </tr>
                                 <tr>
-                                    <td align="left" style="width: 15%" />
-                                    <td style="width: 25%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Data Display Mode
+                                    <td align="left" style="width: 8%" />
+                                    <td style="width:12px" >
                                     </td>
-                                    <td align="left" style="width: 15%" class="ControlDrpBorder">
-                                        <asp:DropDownList TabIndex="1" ID="cmbDisplayCat" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
-                                            runat="server" Style="border: 1px solid #e7e7e7" Height="26px">
+                                    <td align="left" style="width: 2%">
+                                       
+                                    </td>
+                                    <td align="left" style="width: 8%">
+                                      <%--  <asp:RequiredFieldValidator CssClass="lblFont" ID="reqSuppllier" Text="Display Mode is mandatory"
+                                            InitialValue="0" ControlToValidate="cmbDisplayCat" runat="server" />--%>
+                                    </td>
+                                    <td align="left" style="width: 12%" />
+                                    <td align="left" style="width: 5%" />
+                                    <td  style="width: 10%" >
+                                         <div style="overflow-y: scroll;  height: 80px; width: 500px" align="left">
+                                         <asp:RadioButtonList TabIndex="1" Font-Bold="true" RepeatColumns="4" ID="cmbDisplayCat"  
+                                            runat="server"  Height="26px">
                                             <asp:ListItem Text="Daywise" Value="1"></asp:ListItem>
                                             <asp:ListItem Text="Categorywise" Value="2"></asp:ListItem>
                                             <asp:ListItem Text="Brandwise" Value="3"></asp:ListItem>
@@ -132,41 +208,42 @@
                                             <asp:ListItem Text="Customerwise" Value="6"></asp:ListItem>
                                             <asp:ListItem Text="Executivewise" Value="7"></asp:ListItem>
                                             <asp:ListItem Text="Itemwise" Value="8"></asp:ListItem>
-                                        </asp:DropDownList>
-                                    </td>
-                                    <td align="left" style="width: 0%">
-                                        <asp:RequiredFieldValidator CssClass="lblFont" ID="reqSuppllier" Text="Display Mode is mandatory"
-                                            InitialValue="0" ControlToValidate="cmbDisplayCat" runat="server" />
-                                    </td>
-                                    <td align="left" style="width: 5%" />
-                                    <td align="left" style="width: 55%" />
+                                        </asp:RadioButtonList>
+                                             </div>
+                                        Item Display Mode
+                                        </td>
                                 </tr>
-                                <tr>
-                                    <td align="left" style="width: 15%" />
-                                    <td style="width: 25%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Item Display Mode
+                                <tr >
+                                    <td align="left" style="width: 8%" />
+                                    <td style="width: 12%;">
                                     </td>
-                                    <td align="left" style="width: 15%" class="ControlDrpBorder">
-                                        <asp:DropDownList TabIndex="1" ID="cmbDisplayItem" Width="100%" CssClass="drpDownListMedium" BackColor="#e7e7e7"
-                                            runat="server" Style="border: 1px solid #e7e7e7" Height="26px">
+                                    <td align="left" style="width: 2%">
+                                        
+                                    </td>
+                                    <td align="left" style="width: 8%">
+                                        <%--<asp:RequiredFieldValidator CssClass="lblFont" ID="RequiredFieldValidator3" Text="Display Mode is mandatory"
+                                            InitialValue="0" ControlToValidate="cmbDisplayCat" runat="server" />--%>
+                                    </td>
+                                    <td align="left" style="width: 12%" />
+                                    <td align="left" style="width: 5%" />
+                                    <td align="left" style="width: 10%" >
+                                        <div style="overflow-y: scroll;  height: 60px; width: 500px" align="left">
+                                        <asp:RadioButtonList TabIndex="1" Font-Bold="true" RepeatColumns="5" ID="cmbDisplayItem"  
+                                            runat="server"  Height="26px">
                                             <asp:ListItem Text="Brandwise" Value="ProductDesc"></asp:ListItem>
                                             <asp:ListItem Text="Modelwise" Value="Model"></asp:ListItem>
                                             <asp:ListItem Text="Billwise" Value="BillNo"></asp:ListItem>
                                             <asp:ListItem Text="Customerwise" Value="CustomerName"></asp:ListItem>
                                             <asp:ListItem Text="Itemwise" Value="ItemCode"></asp:ListItem>
-                                        </asp:DropDownList>
-                                    </td>
-                                    <td align="left" style="width: 15%">
-                                        <asp:RequiredFieldValidator CssClass="lblFont" ID="RequiredFieldValidator3" Text="Display Mode is mandatory"
-                                            InitialValue="0" ControlToValidate="cmbDisplayCat" runat="server" />
-                                    </td>
-                                    <td align="left" style="width: 5%" />
-                                    <td align="left" style="width: 25%" />
+                                        </asp:RadioButtonList>
+                                            </div>
+                                        </td>
                                 </tr>
-                                <tr>
-                                    <td align="left" style="width: 15%" />
-                                    <td style="width: 25%"></td>
-                                    <td align="left" style="width: 15%" class="ControlTextBox3">
-                                        <asp:RadioButton GroupName="1" ID="chkPurReturn" name="1" runat="server" />
+                                <tr >
+                                    <td align="left" style="width: 8%" />
+                                    <td style="width:12%"></td>
+                                    <td align="left" style="width: 2%">
+                                      <%--  <asp:RadioButton GroupName="1" ID="chkPurReturn" name="1" runat="server" />
                                         Purchase Return
                     <br />
                                         <asp:RadioButton ID="chkIntTrans" GroupName="1" runat="server" />
@@ -174,28 +251,41 @@
                     <br />
                                         <asp:RadioButton ID="chkDelNote" GroupName="1" runat="server" />
                                         Delivery Note
-                    <br />
+                    <br />--%>
                                     </td>
-                                    <td align="left" style="width: 15%" />
+                                    <td align="left" style="width: 8%" />
+                                    <td align="left" style="width: 12%" />
                                     <td align="left" style="width: 5%" />
-                                    <td align="left" style="width: 25%" />
-                                </tr>
-                                <tr>
-                                    <td align="left" style="width: 15%" />
-                                    <td style="width: 25%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Select Branch
-                                    </td>
-                                    <td width="15%" class="ControlDrpBorder">
-                                        <div style="overflow-y: scroll; height: 150px; width: 150px" align="left">
-                                            <%--<asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>--%>
+                                    <td align="left" style="width: 10%" >
+                                         <table style="width: 100%">
+                            <tr>
+                                <td align="right">
+                                    <asp:RadioButtonList ID="optionmethod" runat="server" Style="font-size: 12px"
+                                        RepeatDirection="Horizontal" BackColor="#e7e7e7">
 
-                                            <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lstBranch_SelectedIndexChanged">
-                                                <%--  <asp:ListItem Text="All" Value="0" />--%>
-                                            </asp:CheckBoxList>
-                                        </div>
+                                        <asp:ListItem Value="sales" Selected="True">Sales</asp:ListItem>
+                                        <asp:ListItem Value="chkIntTrans">Internal Transfer</asp:ListItem>
+                                        <asp:ListItem Value="chkDelNote">Delivery Note</asp:ListItem>
+                                        <asp:ListItem Value="chkPurReturn">Purchase Return</asp:ListItem>
+                                        <asp:ListItem Value="All">All</asp:ListItem>
+                                    </asp:RadioButtonList>
+                                </td>
+                                <td style="width: 5%"></td>
+                            </tr>
+                        </table>
+                                        </td>
+                                </tr>
+                                <tr runat="server" visible="false">
+                                    <td align="left" style="width: 8%" />
+                                    <td style="width: 12%;">
                                     </td>
-                                    <td align="left" style="width: 15%" />
+                                    <td width="2%" class="ControlDrpBorder">
+                                      
+                                    </td>
+                                    <td align="left" style="width: 8%" />
+                                    <td align="left" style="width: 12%" />
                                     <td align="left" style="width: 5%" />
-                                    <td align="left" style="width: 25%" />
+                                    <td align="left" style="width: 10%" />
                                 </tr>
 
                             </table>
