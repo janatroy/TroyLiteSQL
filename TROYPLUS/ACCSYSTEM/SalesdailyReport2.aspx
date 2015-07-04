@@ -286,7 +286,7 @@
                         </table>
                         <h5 id="heading1" runat="server" style="font-size: large">
                             <asp:Label ID="head" runat="server"></asp:Label>
-                     <asp:Label ID="date" runat="server"> </asp:Label>
+                            <asp:Label ID="date" runat="server"> </asp:Label>
                             -
                             <asp:Label ID="lbl" runat="server"> </asp:Label></h5>
 
@@ -301,22 +301,30 @@
                         <FooterStyle CssClass="ReportFooterRow" />
                         <EmptyDataRowStyle CssClass="HeadataRow" Font-Bold="true" Height="25px" />
                         <Columns>
+                           
                             <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Wrap="false">
                                 <ItemTemplate>
                                     <div style="white-space: nowrap; width: auto;">
-                                        <a  href="javascript:switchViews('dv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo")  %>', 'imdiv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo") %>');"
+                                        <%--<a  href="javascript:switchViews('dv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo")  %>', 'imdiv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo") %>');"
                                             style="text-decoration: none;">
                                             <img id="imdiv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo")  %>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
+                                        </a>--%>
+                                        <a href="javascript:switchViews('dv<%# Eval("LinkName") + " " + Eval("BranchCode")  %>', 'imdiv<%# Eval("LinkName") + " " + Eval("BranchCode")   %>');"
+                                            style="text-decoration: none;">
+                                            <img id="imdiv<%# Eval("LinkName") + " " + Eval("BranchCode")  %>" alt="Show" border="0" src="App_Themes/DefaultTheme/Images/plus.gif" />
                                         </a>
-                                        <asp:Label ID="lblLink" runat="server" Text='<%# Eval("LinkName") %>'></asp:Label>
-                                        <%-- <asp:Label ID="lblBranchCode" runat="server" Text='<%# Eval("BranchCode") %>'></asp:Label>
-                                <asp:Label ID="lblBillNo" runat="server" Text='<%# Eval("BillNo") %>'></asp:Label>--%>
+
+                                        <%--<asp:Label ID="lblLink" runat="server" Text='<%# Eval("LinkName") %>'></asp:Label>--%>
+                                        <asp:HyperLink ID="lblLink" runat="server" Text='<%# Eval("LinkName") %>'></asp:HyperLink>
+
+
+
                                         <asp:Label ID="lblProductName" runat="server" Text=''></asp:Label>
                                         <br />
-                                        <div id="dv<%# Eval("LinkName") + " " + Eval("BranchCode") + " " + Eval("BillNo") %>" style="display: none; position: relative; left: 1px;">
+                                        <div id="dv<%# Eval("LinkName") + " " + Eval("BranchCode")  %>" style="display: none; position: relative; left: 1px;">
                                             <wc:ReportGridView runat="server" BorderWidth="1" ID="gvSecond" GridLines="Both"
                                                 AlternatingRowStyle-CssClass="even" AutoGenerateColumns="false" ShowFooter="true"
-                                                Width="70%" Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvSecond_RowDataBound">
+                                                Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvSecond_RowDataBound">
                                                 <FooterStyle CssClass="ReportFooterRow" />
                                                 <HeaderStyle CssClass="ReportHeadataRow" />
                                                 <RowStyle CssClass="ReportdataRow" />
@@ -326,21 +334,35 @@
                                                     <br />
                                                 </PageHeaderTemplate>
                                                 <Columns>
-                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Brand" ItemStyle-Width="5%">
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="BillDate" ItemStyle-Width="5%">
                                                         <ItemTemplate>
                                                             <b>
-                                                                <%# Eval("GroupItem") %>
+                                                                <%# Eval("Billdate","{0:dd-MM-yyyy}") %>
                                                             </b>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Category" ItemStyle-Width="5%">
+                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderText="BillNo" ItemStyle-Width="5%">
+                                                        <ItemTemplate>
+                                                            <b>
+                                                                <%# Eval("BillNo") %>
+                                                            </b>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>                                                      
+                                                        <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Brand" ItemStyle-Width="5%">
+                                                            <itemtemplate>
+                                                            <b>
+                                                                <%# Eval("GroupItem") %>
+                                                            </b>
+                                                        </itemtemplate>
+                                                        </asp:TemplateField>
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Category" ItemStyle-Width="5%">
                                                         <ItemTemplate>
                                                             <b>
                                                                 <%# Eval("CategoryName") %>
                                                             </b>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Model" ItemStyle-Width="5%">
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Model" ItemStyle-Width="5%">
                                                         <ItemTemplate>
                                                             <b>
                                                                 <%# Eval("Model") %>
@@ -348,28 +370,28 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
-                                                    <asp:TemplateField  Visible="false" ItemStyle-HorizontalAlign="Left" HeaderText="Model" ItemStyle-Width="5%">
+                                                    <asp:TemplateField Visible="false" ItemStyle-HorizontalAlign="Left" HeaderText="Model" ItemStyle-Width="5%">
                                                         <ItemTemplate>
                                                             <b>
                                                                 <%# Eval("item") %>
                                                             </b>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-
-                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
-                                                        ItemStyle-Font-Size="XX-Small" HeaderText="Sales Rate">
-                                                        <ItemTemplate>
-                                                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblRate" runat="server"
-                                                                Text='<%# Eval("SRate","{0:f2}") %>' />
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top"
                                                         ItemStyle-Font-Size="XX-Small" HeaderText="Qty">
                                                         <ItemTemplate>
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblSQty" runat="server"
                                                                 Text='<%# Eval("Quantity") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                                                        ItemStyle-Font-Size="XX-Small" HeaderText="Sales Value">
+                                                        <ItemTemplate>
+                                                            <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblRate" runat="server"
+                                                                Text='<%# Eval("SRate","{0:f2}") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                   
                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
                                                         HeaderText="Net Rate" ItemStyle-Width="10%">
                                                         <ItemTemplate>
@@ -418,40 +440,40 @@
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblTotal" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                      <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
                                                         HeaderText="DP" ItemStyle-Width="20%">
                                                         <ItemTemplate>
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblTotaldp" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                      <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
                                                         HeaderText="GP" ItemStyle-Width="20%">
                                                         <ItemTemplate>
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblTotalgp" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                     <asp:TemplateField Visible="false" ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                                                    <asp:TemplateField Visible="false" ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
                                                         HeaderText="NLC" ItemStyle-Width="20%">
                                                         <ItemTemplate>
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblTotalnlc" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                  
-                                                  
-                                                      <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
+
+
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
                                                         HeaderText="MRP" ItemStyle-Width="20%">
                                                         <ItemTemplate>
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblTotalmrp" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Right"  ItemStyle-VerticalAlign="Top"
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
                                                         HeaderText="Management Profit" ItemStyle-Width="20%">
                                                         <ItemTemplate>
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblmanagement" runat="server" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
-                                                     <asp:TemplateField ItemStyle-HorizontalAlign="Right"  ItemStyle-VerticalAlign="Top"
+                                                    <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
                                                         HeaderText="Branch Profit" ItemStyle-Width="20%">
                                                         <ItemTemplate>
                                                             <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblbranch" runat="server" />
@@ -464,42 +486,42 @@
                                     </div>
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                            <%--<asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top" Visible="false"
                                 HeaderText="BillNo">
                                 <ItemTemplate>
                                     <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblBillNo"
                                         runat="server" Text='<%# Eval("BillNo") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false"  ItemStyle-VerticalAlign="Top"
+                            </asp:TemplateField>--%>
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
                                 HeaderText="BranchCode">
                                 <ItemTemplate>
                                     <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblBranchCode"
                                         runat="server" Text='<%# Eval("BranchCode") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>                       
-                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
-                                HeaderText="Sales Values">
-                                <ItemTemplate>
-                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblVatRate1"
-                                        runat="server" Text='<%# Eval("billSales") %>' />
-                                </ItemTemplate>
                             </asp:TemplateField>
-                             <asp:TemplateField ItemStyle-HorizontalAlign="Right"  ItemStyle-VerticalAlign="Top"
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top"
                                 HeaderText="Sales Qty">
                                 <ItemTemplate>
                                     <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblqty"
                                         runat="server" Text='<%# Eval("Quantity") %>' />
                                 </ItemTemplate>
-                            </asp:TemplateField>    
-                               <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                            </asp:TemplateField>
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                                HeaderText="Sales Value">
+                                <ItemTemplate>
+                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblVatRate1"
+                                        runat="server" Text='<%# Eval("billSales") %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>                            
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
                                 HeaderText="Management Profit">
                                 <ItemTemplate>
                                     <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblVatRate2"
                                         runat="server" Text='<%# Eval("Managementprofit","{0:f2}") %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField ItemStyle-HorizontalAlign="Right"  ItemStyle-VerticalAlign="Top"
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
                                 HeaderText="Branch Profit">
                                 <ItemTemplate>
                                     <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblCSTRate"

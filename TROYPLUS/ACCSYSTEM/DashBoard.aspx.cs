@@ -1216,7 +1216,8 @@ public partial class _DashBoard : System.Web.UI.Page
            // clickpageevent(sender,e,branchcode);
         //   Response.Redirect("SalesdailyReport1.aspx?branchcode=" + branchcode + " ");
            string strScript = "<script> ";
-           strScript += "var newWindow = window.open('SalesdailyReport2.aspx?branchcode=" + branchcode +"&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+           //strScript += "var newWindow = window.open('SalesdailyReport2.aspx?branchcode=" + branchcode +"&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+           strScript += "var newWindow = window.open('SalesdailyReport2.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
            strScript += "</script>";
            Page.RegisterClientScriptBlock("strScript", strScript);
 
@@ -1245,7 +1246,7 @@ public partial class _DashBoard : System.Web.UI.Page
            //  string branch1 = dr["BranchCode"].ToString();
            // clickpageevent(sender,e,branchcode);
            string strScript = "<script> ";
-           strScript += "var newWindow = window.open('SalesdailyReport2.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+           strScript += "var newWindow = window.open('SalesdailyReport2.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
            strScript += "</script>";
            Page.RegisterClientScriptBlock("strScript", strScript);
        }
@@ -1270,7 +1271,7 @@ public partial class _DashBoard : System.Web.UI.Page
            }
 
            string strScript = "<script> ";
-           strScript += "var newWindow = window.open('SalesdailyReport2.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+           strScript += "var newWindow = window.open('SalesdailyReport2.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
            strScript += "</script>";
            Page.RegisterClientScriptBlock("strScript", strScript);
        }
@@ -1299,7 +1300,7 @@ public partial class _DashBoard : System.Web.UI.Page
             // clickpageevent(sender,e,branchcode);
             //   Response.Redirect("SalesdailyReport1.aspx?branchcode=" + branchcode + " ");
             string strScript = "<script> ";
-            strScript += "var newWindow = window.open('SalesdailyReport4.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+            strScript += "var newWindow = window.open('SalesdailyReport4.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
             strScript += "</script>";
             Page.RegisterClientScriptBlock("strScript", strScript);
 
@@ -1328,7 +1329,7 @@ public partial class _DashBoard : System.Web.UI.Page
             //  string branch1 = dr["BranchCode"].ToString();
             // clickpageevent(sender,e,branchcode);
             string strScript = "<script> ";
-            strScript += "var newWindow = window.open('SalesdailyReport4.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+            strScript += "var newWindow = window.open('SalesdailyReport4.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
             strScript += "</script>";
             Page.RegisterClientScriptBlock("strScript", strScript);
         }
@@ -1352,7 +1353,7 @@ public partial class _DashBoard : System.Web.UI.Page
                 return;
             }
             string strScript = "<script> ";
-            strScript += "var newWindow = window.open('SalesdailyReport4.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+            strScript += "var newWindow = window.open('SalesdailyReport4.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
             strScript += "</script>";
             Page.RegisterClientScriptBlock("strScript", strScript);
         }
@@ -1383,7 +1384,7 @@ public partial class _DashBoard : System.Web.UI.Page
             // clickpageevent(sender,e,branchcode);
             //   Response.Redirect("SalesdailyReport1.aspx?branchcode=" + branchcode + " ");
             string strScript = "<script> ";
-            strScript += "var newWindow = window.open('PurchasedailyReport1.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+            strScript += "var newWindow = window.open('PurchasedailyReport1.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
             strScript += "</script>";
             Page.RegisterClientScriptBlock("strScript", strScript);
 
@@ -1412,7 +1413,7 @@ public partial class _DashBoard : System.Web.UI.Page
             //  string branch1 = dr["BranchCode"].ToString();
             // clickpageevent(sender,e,branchcode);
             string strScript = "<script> ";
-            strScript += "var newWindow = window.open('PurchasedailyReport1.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+            strScript += "var newWindow = window.open('PurchasedailyReport1.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
             strScript += "</script>";
             Page.RegisterClientScriptBlock("strScript", strScript);
         }
@@ -1437,7 +1438,7 @@ public partial class _DashBoard : System.Web.UI.Page
             }
 
             string strScript = "<script> ";
-            strScript += "var newWindow = window.open('PurchasedailyReport1.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=600, center:yes, width=800, status=no, resizable= yes, menubar=no, toolbar=no, location=yes, scrollbars=yes, status=no');";
+            strScript += "var newWindow = window.open('PurchasedailyReport1.aspx?branchcode=" + branchcode + "&command=" + command + "', '_blank','height=screen.height, width=screen.width,  resizable= yes,left=0,top=0,fullscreen=yes,scrollbars=yes');";
             strScript += "</script>";
             Page.RegisterClientScriptBlock("strScript", strScript);
         }
