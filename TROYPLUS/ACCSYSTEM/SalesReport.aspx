@@ -67,6 +67,56 @@
             output = output + '</table>';
             document.getElementById("box").innerHTML = output;
         }
+
+
+
+
+
+        function CheckAll() {
+            //  alert("checkall");
+            var intIndex = 0;
+            var rowCount = document.getElementById('lstBranch').getElementsByTagName("input").length;
+            for (i = 0; i < rowCount; i++) {
+                if (document.getElementById('CheckBoxList1').checked == true) {
+                    if (document.getElementById("lstBranch" + "_" + i)) {
+                        if (document.getElementById("lstBranch" + "_" + i).disabled != true)
+                            document.getElementById("lstBranch" + "_" + i).checked = true;
+                    }
+                }
+                else {
+                    if (document.getElementById("lstBranch" + "_" + i)) {
+                        if (document.getElementById("lstBranch" + "_" + i).disabled != true)
+                            document.getElementById("lstBranch" + "_" + i).checked = false;
+                    }
+                }
+            }
+        }
+
+        function UnCheckAll() {
+            //   alert("uncheck");
+            var intIndex = 0;
+            var flag = 0;
+            var rowCount = document.getElementById('lstBranch').getElementsByTagName("input").length;
+            for (i = 0; i < rowCount; i++) {
+                if (document.getElementById("lstBranch" + "_" + i)) {
+                    if (document.getElementById("lstBranch" + "_" + i).checked == true) {
+                        flag = 1;
+                    }
+                    else {
+                        flag = 0;
+                        break;
+                    }
+                }
+            }
+            if (flag == 0)
+                document.getElementById('CheckBoxList1').checked = false;
+            else
+                document.getElementById('CheckBoxList1').checked = true;
+
+        }
+
+
+
     </script>
 
 </head>
@@ -74,10 +124,10 @@
     <form id="form1" runat="server">
         <br />
         <div id="div1" runat="server" align="center">
-            <table cellpadding="2" cellspacing="2" width="460px" border="0"
+            <table cellpadding="2" cellspacing="2" width="950px" border="0"
                 style="border: 1px solid blue; text-align: left;">
                 <tr>
-                    <td colspan="4" class="headerPopUp">Sales Report
+                    <td colspan="4" class="headerPopUp">Sales Report - Datewise
                     </td>
                 </tr>
                 <tr style="height: 6px">
@@ -86,25 +136,24 @@
                     <td colspan="4">
                         <table width="100%">
                             <tr>
-                                <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
+                                <td style="width: 12%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #0000FF; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">Start Date
                                 </td>
-                                <td style="width:20%" class="ControlTextBox3">
+                                <td style="width: 18%" class="ControlTextBox3">
                                     <asp:TextBox ID="txtStartDate" Enabled="true" runat="server" CssClass="cssTextBox"
                                         MaxLength="10" />
                                 </td>
-                                <td align="left" style="width:45%">
+                                <td align="left" style="width: 2%">
                                     <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtStartDate' });</script>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtStartDate"
                                         Display="None" ErrorMessage="Please Enter Start Date" CssClass="lblFont"></asp:RequiredFieldValidator>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
+                                <td style="width: 12%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #0000FF; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px">End Date
+                                
                                 </td>
-                                <td align="left" class="ControlTextBox3" style="width:20%">
+                                <td class="ControlTextBox3" style="width: 18%">
                                     <asp:TextBox ID="txtEndDate" Enabled="true" runat="server" CssClass="cssTextBox" MaxLength="10" />
                                 </td>
-                                <td align="left" style="width:45%">
+                                <td align="left" style="width: 8%">
                                     <script type="text/javascript" language="JavaScript">                        new tcal({ 'formname': 'form1', 'controlname': 'txtEndDate' });</script>
                                     <%--<a href="javascript:NewCal('txtEndDate','ddmmyyyy',false,24)"><img src="cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtEndDate"
@@ -113,21 +162,49 @@
                                         ControlToValidate="txtEndDate" Display="None" ErrorMessage="Start Date Should Be Less Than the End Date"
                                         CssClass="lblFont" Operator="GreaterThanEqual" SetFocusOnError="True" Type="Date"></asp:CompareValidator>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 35%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px"></td>
-                                <td align="left" style="width:20%">
-                                    <div style="overflow-y: scroll; height: 150px; width: 150px" runat="server">
-                                        <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server" Text="Select Branch:"></asp:Label>
-                                        <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode" OnSelectedIndexChanged="lst_SelectedIndexChanged_1">
-                                            <asp:ListItem Text="All" Value="0" />
-                                        </asp:CheckBoxList>
-                                        <asp:CheckBoxList ID="lstBranch" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
-                                        </asp:CheckBoxList>
 
+                                <td runat="server" id="select" align="center" style="width: 10%">
+                                    <asp:Label ID="lblbranch" CssClass="ControlLabelproject" runat="server"></asp:Label>
+                                </td>
+                                <td runat="server" style="font-size: 14px" align="center" id="single1">
+                                    <div runat="server" id="single" style="font-weight: bold; width: 500px">
+                                        <%--   <asp:updatepanel runat="server" ID="updatee">
+                                             <ContentTemplate>--%>
+                                        <asp:CheckBoxList ID="CheckBoxList2" Enabled="false" RepeatColumns="5" RepeatLayout="Table" runat="server" AutoPostBack="false" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                                        </asp:CheckBoxList>
+                                        <%-- </ContentTemplate>
+                                         </asp:updatepanel>--%>
                                     </div>
                                 </td>
-                                <td align="left" style="width:45%"></td>
+
+                            </tr>
+                            <tr>
+                            </tr>
+                            <tr>
+                                <td align="left" style="width: 8%"></td>
+                                <td align="left" style="width: 17%"></td>
+
+                                <td style="width: 2%; font-family: 'ARIAL'; font-size: 11px; font-weight: normal; color: #000000; text-align: right; text-decoration: none; padding-right: 5px; padding-left: 5px; padding-top: 5px;" height="27px"></td>
+
+
+                                <td align="center" style="width: 8%"></td>
+                                <td align="left" style="width: 17%"></td>
+                                <td align="left" style="width: 2%"></td>
+                                <td align="left" style="width: 35%">
+                                    <div id="multi" style="overflow-y: scroll; height: 240px; width: 500px" runat="server">
+                                        <asp:CheckBox ID="CheckBoxList1" runat="server" Text="All" onclick="CheckAll();" />
+                                        <%--  <asp:CheckBoxList ID="CheckBoxList1" onclick="CheckAll();" runat="server" AutoPostBack="true" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                                            <asp:ListItem Text="All" Value="0" />
+                                        </asp:CheckBoxList>--%>
+                                         <asp:CheckBoxList ID="lstBranch" onclick="UnCheckAll();" RepeatColumns="5" RepeatLayout="Table" runat="server"  SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="BranchName" DataValueField="Branchcode">
+                                        </asp:CheckBoxList>
+                                        
+
+                                    </div>
+
+                                </td>
+
+
                             </tr>
                         </table>
                     </td>
@@ -138,16 +215,18 @@
                     <td colspan="4">
                         <table style="width: 100%">
                             <tr>
-                                <td class="ControlTextBox3" style="width: 100%">
-                                    <asp:RadioButtonList ID="optionmethod" runat="server" Style="font-size: 12px" align="center" Font-Bold="true"
+                                <td align="right">
+                                    <asp:RadioButtonList ID="optionmethod" runat="server" Style="font-size: 12px"
                                         RepeatDirection="Horizontal" BackColor="#e7e7e7">
-                                        <asp:ListItem Selected="True">All</asp:ListItem>
-                                        <asp:ListItem>Sales</asp:ListItem>
+
+                                        <asp:ListItem Selected="True">Sales</asp:ListItem>
                                         <asp:ListItem>Internal Transfer</asp:ListItem>
                                         <asp:ListItem>Delivery Note</asp:ListItem>
                                         <asp:ListItem>Purchase Return</asp:ListItem>
+                                        <asp:ListItem>All</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
+                                <td style="width: 5%"></td>
                             </tr>
                         </table>
 
@@ -173,16 +252,17 @@
                         <table width="100%">
                             <tr>
                                 <td width="30%"></td>
-                                <td width="20%">
+                                <td width="10%" align="right">
                                     <asp:Button ID="btnReport" EnableTheming="false" runat="server" OnClick="btnReport_Click"
                                         Text="" CssClass="NewReport6" />
                                 </td>
 
-                                <td width="20%">
+                                <td width="10%" align="right">
                                     <asp:Button ID="btnExl" EnableTheming="false" runat="server" OnClick="btnExl_Click"
                                         Text="" CssClass="exportexl6" />
                                 </td>
-                                <td width="30%"></td>
+                                <td width="5%"></td>
+
                             </tr>
                         </table>
                     </td>

@@ -3793,12 +3793,12 @@ namespace ReportsBL
             /* Start DB Query Processing - Getting the Details of the Ledger int the Daybook */
             //sQry = "SELECT tblSalesItems.ItemCode,tblProductMaster.Model,tblProductMaster.ProductDesc, tblProductMaster.ProductName, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, tblSalesItems.Vat,tblSalesITems.cst, tblSalesItems.BillNo FROM tblSales INNER JOIN (tblProductMaster INNER JOIN tblSalesItems ON tblProductMaster.ItemCode = tblSalesItems.ItemCode) ON tblSales.BillNo = tblSalesItems.BillNo WHERE (((tblSalesItems.BillNo)=" + Billno + "));";
 
-            sQry = " SELECT tblSalesItems.ItemCode, tblProductMaster.ProductName,tblProductMaster.ProductDesc, tblProductMaster.Model, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, " +
+            sQry = " SELECT tblSalesItems.ItemCode,tblProductMaster.CategoryID,tblCategories.CategoryName, tblProductMaster.ProductName,tblProductMaster.ProductDesc, tblProductMaster.Model, tblSalesItems.Qty, tblSalesItems.Rate, tblSalesItems.Discount, " +
                  " tblSalesItems.Vat,tblSales.BillNo,tblSalesItems.BranchCode,tblSales.BranchCode,tblSalesItems.cst,tblSales.BillNo " +
                  " FROM tblSales INNER JOIN " +
                  " tblSalesItems ON tblSales.BillNo = tblSalesItems.BillNo AND tblSales.BranchCode = tblSalesItems.BranchCode INNER JOIN " +
                  " tblProductMaster ON tblSalesItems.ItemCode = tblProductMaster.ItemCode " +
-                 " where (" + branchcode + ") and tblSalesItems.BillNo=" + Billno;
+                 " inner join tblcategories on tblProductMaster.CategoryID=tblCategories.CategoryID where (" + branchcode + ") and tblSalesItems.BillNo=" + Billno;
 
 
             oleCmd.CommandText = sQry;

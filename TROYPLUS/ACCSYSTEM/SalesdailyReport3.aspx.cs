@@ -804,7 +804,7 @@ public partial class SalesdailyReport3 : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans,"", delNote, cond);
 
                 }
                 else if (category == "Categorywise")
@@ -995,7 +995,7 @@ public partial class SalesdailyReport3 : System.Web.UI.Page
                         ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
 
                     else if (secondLevel == "Modelwise")
-                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote,"", brcode, lblBillNo.Text);
                     else if (secondLevel == "Brandwise")
                         ds = bl.SecondLevelDaywiseBrandWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Customerwise")

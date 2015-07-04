@@ -156,7 +156,7 @@ public partial class StockSummaryReport1 : System.Web.UI.Page
 
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans,"", delNote, cond);
 
                 }
                 else if (category == "Categorywise")
@@ -977,7 +977,7 @@ public partial class StockSummaryReport1 : System.Web.UI.Page
                 BusinessLogic bl = new BusinessLogic(sDataSource);
                 if (category == "Daywise")
                 {
-                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelDaywise(startDate, endDate, purRet, intTrans,"", delNote, cond);
 
                 }
                 else if (category == "Categorywise")
@@ -1146,7 +1146,7 @@ public partial class StockSummaryReport1 : System.Web.UI.Page
                     startDate = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName"));
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote,"","");
+                        ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans,"", delNote,"","");
                     else if (secondLevel == "Modelwise")
                         ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote,"","");
                     else if (secondLevel == "Brandwise")
