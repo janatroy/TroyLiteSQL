@@ -225,7 +225,14 @@
 
 
         function PrintItem(ID) {
-            window.showModalDialog('./PrintPayment.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+            if (window.showModalDialog) {
+                window.showModalDialog('./PrintPayment.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+            }
+            else
+            {
+                window.open('./PrintPayment.aspx?ID=' + ID, self, 'dialogWidth:700px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
+
+            }
         }
 
         //        function ShowCreditSales() {
