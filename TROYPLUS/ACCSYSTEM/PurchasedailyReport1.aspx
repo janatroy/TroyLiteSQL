@@ -336,7 +336,7 @@
                                 <div id="dv<%# Eval("LinkName") +""+ Eval("Branchcode") %>" style="display: none; position: relative; left: 1px;">
                                     <wc:ReportGridView runat="server" BorderWidth="1" ID="gvSecond" GridLines="Both"
                                         AlternatingRowStyle-CssClass="even" AutoGenerateColumns="false" ShowFooter="true"
-                                        Width="80%" Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvSecond_RowDataBound">
+                                        Width="100%" Style="font-family: 'Trebuchet MS'; font-size: 11px;" OnRowDataBound="gvSecond_RowDataBound">
                                         <FooterStyle CssClass="ReportFooterRow" Font-Bold="true" />
                                         <HeaderStyle CssClass="ReportHeadataRow" />
                                         <RowStyle CssClass="ReportdataRow" />
@@ -346,7 +346,7 @@
                                             <br />
                                         </PageHeaderTemplate>
                                         <Columns>
-                                            <asp:TemplateField ItemStyle-HorizontalAlign="Left" ItemStyle-Width="5%">
+                                            <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Brand" ItemStyle-Width="5%">
                                                 <ItemTemplate>
                                                     <%# Eval("GroupItem")%>
                                                 </ItemTemplate>
@@ -368,11 +368,11 @@
                                                         Text='<%# Eval("PRate","{0:f2}") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                                            <asp:TemplateField ItemStyle-HorizontalAlign="Center" ItemStyle-VerticalAlign="Top"
                                                 ItemStyle-Font-Size="XX-Small" HeaderText="Qty">
                                                 <ItemTemplate>
                                                     <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblSQty" runat="server"
-                                                        Text='<%# Eval("Quantity","{0:f2}") %>' />
+                                                        Text='<%# Eval("Quantity") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
@@ -435,7 +435,7 @@
                                     runat="server" Text='<%# Eval("Branchcode") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField ItemStyle-HorizontalAlign="Right"  ItemStyle-VerticalAlign="Top"
+                        <asp:TemplateField ItemStyle-HorizontalAlign="Center"  ItemStyle-VerticalAlign="Top"
                             HeaderText="Quantity">
                             <ItemTemplate>
                                 <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblqtyy"

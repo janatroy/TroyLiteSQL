@@ -13,10 +13,11 @@ using System.Xml.Linq;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Management;
+using System.Globalization;
 
 public partial class SalesdailyReport2 : System.Web.UI.Page
 {
-   
+
     public string sDataSource = string.Empty;
     double dSNetRate = 0;
     double dSVatRate = 0;
@@ -32,6 +33,8 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
 
     double dSCDiscountRate = 0;
     double dSCNetRate = 0;
+    double dSCmgmtpfofit = 0;
+    double dSCranchprofit = 0;
     double dSCVatRate = 0;
 
     double dSCCSTRate = 0;
@@ -62,7 +65,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
                 txtEndDate.Text = dtaa;
 
-               
+
 
                 //txtEndDate.Text = DateTime.Now.ToShortDateString();
 
@@ -183,7 +186,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 //  cond = Request.QueryString["cond"].ToString();
                 // cond = Server.UrlDecode(cond);
 
-               // binddata1();
+                // binddata1();
 
                 string Branch = string.Empty;
 
@@ -192,12 +195,12 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                     Branch = Request.QueryString["BranchCode"].ToString();
                 }
 
-              //  lbl.Text = Branch;
-               // date.Text = dtaa;
+                //  lbl.Text = Branch;
+                // date.Text = dtaa;
 
-              bindDataDateWiseNormal();
+                bindDataDateWiseNormal();
 
-              //  BindWME("", "");
+                //  BindWME("", "");
 
                 //DataSet BillDs = new DataSet();        
                 //{
@@ -263,7 +266,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
 
         string Branch = string.Empty;
         string dtaa = string.Empty;
-     //   BusinessLogic bl = new BusinessLogic(sDataSource);
+        //   BusinessLogic bl = new BusinessLogic(sDataSource);
 
         string intTrans = "";
         string purRet = "";
@@ -281,17 +284,17 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
             if (command == "dailysales")
             {
                 string todaydate = Convert.ToString(DateTime.Now.ToString("yyyy-MM-dd"));
-                 condi = "tblsales.billdate='"+ todaydate +"'";
-                 condii = "s.billdate='" + todaydate + "'";
+                condi = "tblsales.billdate='" + todaydate + "'";
+                condii = "s.billdate='" + todaydate + "'";
                 GroupBy1 = "billdate,";
 
                 head.Text = "Today's Sales - Real-Time Summary Report -";
                 lbl.Text = Branch;
                 date.Text = todaydate;
-               
+
             }
 
-            if(command=="monthlysales")
+            if (command == "monthlysales")
             {
                 string sMonth1 = DateTime.Now.ToString("MM");
                 DateTime now1 = DateTime.Now;
@@ -302,7 +305,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 var end1 = endDate.ToString("yyyy-MM-dd");
                 var enddate2 = endDate1.ToString("dd-MM-yyyy");
 
-                condi = "tblsales.billdate>='" +start1 + "' and tblsales.billdate<='"+ end1 +"'";
+                condi = "tblsales.billdate>='" + start1 + "' and tblsales.billdate<='" + end1 + "'";
                 condii = "s.billdate>='" + start1 + "' and s.billdate<='" + end1 + "'";
                 GroupBy1 = "billdate,";
 
@@ -311,7 +314,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 date.Text = "Date From " + fromdate + " and end date " + enddate2 + "";
 
             }
-            if(command=="annualsales")
+            if (command == "annualsales")
             {
                 int year1 = DateTime.Now.Year;
                 var firstDay1 = new DateTime(year, 4, 1);
@@ -340,14 +343,14 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
         }
 
         lbl.Text = Branch;
-       // date.Text = dtaa;
+        // date.Text = dtaa;
 
-       
-      //  loadPriceList();
-      //  gvMain.DataSource = BillDs;
-      //  gvMain.DataBind();
 
-      //  div1.Visible = false;
+        //  loadPriceList();
+        //  gvMain.DataSource = BillDs;
+        //  gvMain.DataBind();
+
+        //  div1.Visible = false;
 
 
         string sCustomer = string.Empty;
@@ -356,9 +359,9 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
         // BusinessLogic bl = new BusinessLogic();
         DataSet dsd = bl.GetBranch(connection, usernam);
         DataSet ds = new DataSet();
-       // DataSet BillDs = new DataSet();
+        // DataSet BillDs = new DataSet();
         {
-            ds = bl.FirstLevelDaywise(purRet, intTrans, delNote, Branch,condi);
+            ds = bl.FirstLevelDaywise(purRet, intTrans, delNote, Branch, condi);
         }
         DataTable dt;
         DataRow drNew;
@@ -371,7 +374,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
         dt = new DataTable();
         dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("LinkName"));
-       // dt.Columns.Add(new DataColumn("TotalWORndOff"));
+        // dt.Columns.Add(new DataColumn("TotalWORndOff"));
         dt.Columns.Add(new DataColumn("Quantity"));
         dt.Columns.Add(new DataColumn("Managementprofit"));
         dt.Columns.Add(new DataColumn("BranchProfit"));
@@ -402,7 +405,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                     string branch1 = dr["BranchCode"].ToString();
 
                     //BusinessLogic bl = new BusinessLogic(sDataSource);
-                    DataSet db = bl.getdetailedsalesreport1(connection,dr["BranchCode"].ToString(),dr["BillNo"].ToString(),condii);
+                    DataSet db = bl.getdetailedsalesreport1(connection, dr["BranchCode"].ToString(), dr["BillNo"].ToString(), condii);
                     if (db != null)
                     {
                         if (ds.Tables[0].Rows.Count > 0)
@@ -411,7 +414,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                             {
                                 dr_final113["billSales"] = (Convert.ToDecimal(drd["billSales"])).ToString("#0.00");
                                 dr_final113["Managementprofit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drd["DailySalesforgp"]))).ToString("#0.00");
-                                DataSet db1 = bl.getdetailedsalesreport2(connection, dr["BranchCode"].ToString(), dr["BillNo"].ToString(),condii);
+                                DataSet db1 = bl.getdetailedsalesreport2(connection, dr["BranchCode"].ToString(), dr["BillNo"].ToString(), condii);
                                 if (db1 != null)
                                 {
                                     if (db1.Tables[0].Rows.Count > 0)
@@ -447,7 +450,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                     }
                     Tottot = Tottot + Convert.ToDouble(dr_final113["billSales"]);
                     dailysalestot = dailysalestot + Convert.ToDouble(dr_final113["Managementprofit"]);
-                   // dailyqty = dailyqty + Convert.ToDouble(dr_final113["BranchProfit"]);
+                    // dailyqty = dailyqty + Convert.ToDouble(dr_final113["BranchProfit"]);
                     //monthlyqty = monthlyqty + Convert.ToInt32(dr_final113["monthlysalesquantity"]);
                     Totgp = Totgp + (Convert.ToDouble(dr_final113["BranchProfit"]));
                     //Totdp = Totdp + (Convert.ToDouble(dr_final113["DailySalesfordp"]));
@@ -512,7 +515,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
 
         DataSet BillDs = new DataSet();
         {
-           // BillDs = bl.FirstLevelDaywise(purRet, intTrans, delNote, Branch);
+            // BillDs = bl.FirstLevelDaywise(purRet, intTrans, delNote, Branch);
         }
         loadPriceList();
         gvMain.DataSource = BillDs;
@@ -1400,7 +1403,19 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
             string category1 = string.Empty;
 
             category = Convert.ToString(cmbDisplayCat.SelectedItem.Text);
-            category1 = "datewise";
+
+            if (Request.QueryString["command"] != null)
+            {
+                string command = Request.QueryString["command"].ToString();
+                if (command != "annualsales")
+                {
+                    category1 = "Datewise";
+                }
+                else if(command == "annualsales")
+                {
+                    category1 = "Monthwise";
+                }
+            }
             var secondLevel = cmbDisplayItem.SelectedItem.Text.Trim();
 
             if (Request.QueryString["category"] != null)
@@ -1474,42 +1489,59 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
             }
             else if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                
-                    // To hide the first column
-                    string vToCheck = e.Row.Cells[0].ToString();
-                    if (string.IsNullOrEmpty(vToCheck))
-                    {
-                      //  gvMain.Columns[0].Visible = false;
-                        gvMain.Rows[0].Visible = false;
-                     
-                    }
 
+                // To hide the first column
+                string vToCheck = e.Row.Cells[0].ToString();
+                if (string.IsNullOrEmpty(vToCheck))
+                {
+                    //  gvMain.Columns[0].Visible = false;
+                    gvMain.Rows[0].Visible = false;
+                }
 
                 //    System.Web.UI.HtmlControls.HtmlImage Plus = (System.Web.UI.HtmlControls.HtmlImage)e.Row.FindControl("imdivTotal : 25/06/2015 00:00:00  ");
-                    // Image img = (Image)e.Row.FindControl("imdiv  ");
+                // Image img = (Image)e.Row.FindControl("imdiv  ");
 
-                    // img.ImageUrl = "Images/plus.gif";
-                  //  img.Visible = false;
-                  //  Plus.Visible = false;
+                // img.ImageUrl = "Images/plus.gif";
+                //  img.Visible = false;
+                //  Plus.Visible = false;
 
                 if (DataBinder.Eval(e.Row.DataItem, "billSales") != DBNull.Value)
                     dNetRate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "billSales"));
-                if(dNetRate == Convert.ToDouble("0.00"))
+
+
+                //e.Row.Cells[0].Controls[0].Visible = false;
+
+                if (dNetRate == Convert.ToDouble("0.00"))
                 {
+                    e.Row.Cells[0].Controls[0].Visible = false;
 
-                     System.Web.UI.HtmlControls.HtmlImage Plus = (System.Web.UI.HtmlControls.HtmlImage)e.Row.FindControl("imdivTotal : 25/06/2015 00:00:00  ");
-                   // Image img = (Image)e.Row.FindControl("imdiv  ");
 
-                   // img.ImageUrl = "Images/plus.gif";
-                 //   img.Visible = false;
+                    //System.Web.UI.WebControls.ImageButton imgBtnDelete = (System.Web.UI.WebControls.ImageButton)e.Row.FindControl("imdiv");
+                    //e.Row.FindControl("imgBtnDelete").Visible = false;
 
-                  //  Plus.Visible = false;
+                    //e.Row.Cells[0].Visible = false;
+
+                    //Image img = (Image)e.Row.FindControl("imdiv");
+                    //if (img != null)
+                    //{
+                    //    img.Visible = false;
+                    //}
+
+                    //System.Web.UI.HtmlControls.HtmlImage Plus = (System.Web.UI.HtmlControls.HtmlImage)e.Row.FindControl("imdiv TOTAL : ");
+                    //Image img = (Image)e.Row.FindControl("imdiv");
+                    //if (img != null)
+                    //{
+                    //    img.ImageUrl = "App_Themes/DefaultTheme/Images/plus.gif";
+                    //    img.Visible = false;
+                    //}
+
+                    //Plus.Visible = false;
                     //gvMain.Columns.Clear();
-                  //  gvMain.Rows.Count=
+                    //  gvMain.Rows.Count=
                     //  gvMain.Columns[0].Visible = false;
                     //gvMain.Rows[0].ID = false;
-                    
-                   // gvMain.Rows[3].Visible = false;
+
+                    // gvMain.Rows[3].Visible = false;
                 }
                 if (DataBinder.Eval(e.Row.DataItem, "Quantity") != DBNull.Value)
                     dVatRate = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Quantity"));
@@ -1529,15 +1561,15 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 dSDiscountRate = dSDiscountRate + dDisRate;
                 dSCSTRate = dSCSTRate + dDiscountRate;
 
-            //    dGrandRate = dNetRate - dDisRate;
+                //    dGrandRate = dNetRate - dDisRate;
                 // dGrandRate = dDiscountRate + dVatRate + dCSTRate;// +dFrRate + dLURate;
 
 
-                
+
 
                 GridView gv = e.Row.FindControl("gvSecond") as GridView;
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-                Label lblLink = (Label)e.Row.FindControl("lblLink");
+                HyperLink lblLink = (HyperLink)e.Row.FindControl("lblLink");
                 Label lblBranchCode = (Label)e.Row.FindControl("lblBranchCode");
                 Label lblBillNo = (Label)e.Row.FindControl("lblBillNo");
                 DataSet ds = new DataSet();
@@ -1546,10 +1578,10 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 {
                     string start1 = string.Empty;
                     DateTime startDate;
-                   // var start1 = startDate.ToString("yyyy-MM-dd");
-                   
-                        startDate = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName"));
-                    
+                    // var start1 = startDate.ToString("yyyy-MM-dd");
+
+                    startDate = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName"));
+
 
                     if (secondLevel == "Billwise")
                         ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
@@ -1561,12 +1593,38 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                     //else if (secondLevel == "Customerwise")
                     //    ds = bl.SecondLevelDaywiseCustWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Itemwise")
-                        ds = bl.SecondLevelDaywiseItemWisedashboard(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+
+                        if (Request.QueryString["command"] != null)
+                        {
+                            string command = Request.QueryString["command"].ToString();
+                            if (command != "annualsales")
+                            {
+                                ds = bl.SecondLevelDaywiseItemWisedashboardNEW(startDate, purReturn, intTrans, delNote, brcode, startDate);
+                            }
+                            else if (command == "annualsales")
+                            {                                
+                                var endDate1 = startDate.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                                ds = bl.SecondLevelDaywiseItemWisedashboardNEWAnnual(startDate, purReturn, intTrans, delNote, brcode, startDate, lastDayOfTheMonth);
+                            }
+                        }
                     //else if (secondLevel == "Daywise")
                     //    ds = bl.SecondLevelDaywiseDayWise(startDate, purReturn, intTrans, delNote, cond);
 
-                    lblLink.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName", "{0:dd/MM/yyyy}"));
-                }        
+                    if (Request.QueryString["command"] != null)
+                    {
+                        string command = Request.QueryString["command"].ToString();
+                        if (command == "annualsales")
+                        {
+                            DateTime thisMonth = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName", "{0:dd/MM/yyyy}"));
+                            lblLink.Text = thisMonth.ToString("MMMM", new CultureInfo("en-GB"));
+                        }
+                        else if (command != "annualsales")
+                        {
+                            lblLink.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName", "{0:dd/MM/yyyy}"));
+                        }
+                    }
+                }
                 if (ds != null)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
@@ -1590,28 +1648,28 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 dSCFrRate = 0;
                 dSCLURate = 0;
 
-              
+
 
             }
             else if (e.Row.RowType == DataControlRowType.Footer)
             {
                 e.Row.Cells[1].HorizontalAlign = HorizontalAlign.Right;
-                e.Row.Cells[2].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[2].HorizontalAlign = HorizontalAlign.Center;
                 e.Row.Cells[3].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[4].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[5].HorizontalAlign = HorizontalAlign.Right;
-                e.Row.Cells[6].HorizontalAlign = HorizontalAlign.Right;
-               // e.Row.Cells[7].HorizontalAlign = HorizontalAlign.Right;
-              // e.Row.Cells[8].HorizontalAlign = HorizontalAlign.Right;
-               // e.Row.Cells[9].HorizontalAlign = HorizontalAlign.Right;
+                //e.Row.Cells[6].HorizontalAlign = HorizontalAlign.Right;
+                // e.Row.Cells[7].HorizontalAlign = HorizontalAlign.Right;
+                // e.Row.Cells[8].HorizontalAlign = HorizontalAlign.Right;
+                // e.Row.Cells[9].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[0].Text = "Grand Total ";
                 e.Row.Cells[3].Text = totalll.Value;
-                e.Row.Cells[4].Text = qtyy.Value;
-                e.Row.Cells[5].Text = mangg.Value;
-                e.Row.Cells[6].Text = brnchh.Value;
-              //  e.Row.Cells[7].Text = dSFrRate.ToString("f2");
-               // e.Row.Cells[8].Text = dSLURate.ToString("f2");
-               // e.Row.Cells[9].Text = dSGrandRate.ToString("f2");
+                e.Row.Cells[2].Text = qtyy.Value;
+                e.Row.Cells[4].Text = mangg.Value;
+                e.Row.Cells[5].Text = brnchh.Value;
+                //  e.Row.Cells[7].Text = dSFrRate.ToString("f2");
+                // e.Row.Cells[8].Text = dSLURate.ToString("f2");
+                // e.Row.Cells[9].Text = dSGrandRate.ToString("f2");
                 strBillno = "";
             }
         }
@@ -1634,7 +1692,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
             double bnch = 0;
             double dQuantity = 0;
             double dGrandRate = 0;
-            string itemcode=string.Empty;
+            string itemcode = string.Empty;
             string itemcode1 = string.Empty;
             string second1 = string.Empty;
             int billno = 0;
@@ -1648,7 +1706,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
 
             secondLevel = "Itemwise";
 
-             second1 = "Brandwise";
+            second1 = "BillDatewise";
 
             if (Request.QueryString["secondLevel"] != null)
             {
@@ -1685,18 +1743,18 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 //    mana = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "Managementprofit"));
                 //if (DataBinder.Eval(e.Row.DataItem, "BranchProfit") != DBNull.Value)
                 //    bnch = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "BranchProfit"));
-             
+
 
 
                 Label lblTotal = (Label)e.Row.FindControl("lblTotal");
                 Label lblTotal1 = (Label)e.Row.FindControl("lblTotalmrp");
                 Label lblTotal2 = (Label)e.Row.FindControl("lblTotaldp");
-               // Label lblTotal3 = (Label)e.Row.FindControl("lblTotalnlc");//lblTotalgp
+                // Label lblTotal3 = (Label)e.Row.FindControl("lblTotalnlc");//lblTotalgp
                 Label lblTotalgp = (Label)e.Row.FindControl("lblTotalgp");
                 Label lblFreightRate = (Label)e.Row.FindControl("lblFreightRate");
                 Label lblLURate = (Label)e.Row.FindControl("lblLURate");
-                  Label management = (Label)e.Row.FindControl("lblmanagement");
-                  Label branch = (Label)e.Row.FindControl("lblbranch");
+                Label management = (Label)e.Row.FindControl("lblmanagement");
+                Label branch = (Label)e.Row.FindControl("lblbranch");
 
                 dGrandRate = dNetRate - dDisRate;// +dFrRate + dLURate;
 
@@ -1710,10 +1768,10 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 dSCGrandRate = dSCGrandRate + dGrandRate - dSCDiscountRate;
                 lblTotal.Text = dGrandRate.ToString("f2");
                 //foreach (string str2 in dLURate2)
-               
 
 
-               
+
+
                 /*
                 if ( (DataBinder.Eval(e.Row.DataItem, "GroupItem")).ToString().Trim() == tempBillno)
                 {
@@ -1746,9 +1804,9 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 DataSet ds = new DataSet();
                 BusinessLogic bl = new BusinessLogic();
                 string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
-               string Branch = Request.QueryString["BranchCode"].ToString();
+                string Branch = Request.QueryString["BranchCode"].ToString();
 
-                ds = bl.getpricefordashboard(connection,billno, Branch,itemcode1);
+                ds = bl.getpricefordashboard(connection, billno, Branch, itemcode1);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow drt in ds.Tables[0].Rows)
@@ -1759,11 +1817,12 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                         int bill = Convert.ToInt32(drt["billno"].ToString());
                         int originalprice = Convert.ToInt32(drt["TotalMrp"].ToString());
 
-                      
+
                         string item123 = pricename;
                         if ((itemcode1 == item) && (billno == bill))
                         {
                             management.Text = Convert.ToDouble(originalprice - price).ToString("#0.00");
+                            dSCmgmtpfofit = dSCmgmtpfofit + Convert.ToDouble(management.Text);
                         }
                         DataSet ds1 = bl.getpricefordashboard1(connection, billno, Branch, itemcode1);
                         if (ds1.Tables[0].Rows.Count > 0)
@@ -1781,6 +1840,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                                 if ((itemcode1 == item1) && (billno == bill1))
                                 {
                                     branch.Text = Convert.ToDouble(originalprice1 - price1).ToString("#0.00");
+                                    dSCranchprofit = dSCranchprofit + Convert.ToDouble(branch.Text);
                                 }
                             }
                         }
@@ -1791,11 +1851,11 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                             {
                                 lblTotal1.Text = Convert.ToString(drt["Price"].ToString());
                             }
-                           // if (item123 == "NLC")
-                          //  {
+                            // if (item123 == "NLC")
+                            //  {
                             //    lblTotal3.Text = Convert.ToString(drt["Price"].ToString());
-                             //   lblTotalgp.Text = Convert.ToString(dGrandRate - (price * dQuantity));
-                          //  }
+                            //   lblTotalgp.Text = Convert.ToString(dGrandRate - (price * dQuantity));
+                            //  }
                             if (item123 == "DP")
                             {
                                 lblTotal2.Text = Convert.ToString(drt["Price"].ToString());
@@ -1832,9 +1892,9 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
 
 
                 // dGrandRate = dGrandRate + dDiscountRate + dVatRate + dCSTRate;
-               
-                
-              //  lblTotal1.Text = dLURate1.ToString("f2");
+
+
+                //  lblTotal1.Text = dLURate1.ToString("f2");
                 dGrandRate = 0;
                 //e.Row.Cells[6].Visible = false;
                 //e.Row.Cells[7].Visible = false;
@@ -1845,7 +1905,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
             {
 
 
-                e.Row.Cells[6].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[6].HorizontalAlign = HorizontalAlign.Center;
                 e.Row.Cells[7].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[8].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[9].HorizontalAlign = HorizontalAlign.Right;
@@ -1854,16 +1914,20 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 e.Row.Cells[12].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[13].HorizontalAlign = HorizontalAlign.Right;
                 e.Row.Cells[14].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[19].HorizontalAlign = HorizontalAlign.Right;
+                e.Row.Cells[20].HorizontalAlign = HorizontalAlign.Right;
                 //dSCGrandRate = dSCGrandRate + dSCFrRate + dSCLURate;
 
-                e.Row.Cells[6].Text = dSQty.ToString("f2");
+                e.Row.Cells[6].Text = dSQty.ToString();
                 e.Row.Cells[7].Text = dSCNetRate.ToString("f2");
                 e.Row.Cells[8].Text = dSCDiscountRate.ToString("f2");
-                e.Row.Cells[9].Text = dSCVatRate.ToString("f2");
+                e.Row.Cells[9].Text =  dSCVatRate.ToString("f2");
                 e.Row.Cells[10].Text = dSCCSTRate.ToString("f2");
                 e.Row.Cells[11].Text = dSCFrRate.ToString("f2");
-                e.Row.Cells[12].Text = dSCLURate.ToString("f2");
+                e.Row.Cells[12].Text =  dSCLURate.ToString("f2");
                 e.Row.Cells[13].Text = dSCGrandRate.ToString("f2");
+                e.Row.Cells[19].Text = dSCmgmtpfofit.ToString("f2");// dSCGrandRate.ToString("f2");
+                e.Row.Cells[20].Text = dSCranchprofit.ToString("f2");
 
                 dSCDiscountRate = 0;
                 dSCNetRate = 0;
@@ -1873,7 +1937,8 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 //dSCFrRate = 0;
                 //dSCLURate = 0;
                 dSCGrandRate = 0;
-
+                dSCmgmtpfofit = 0;
+                dSCranchprofit = 0;
 
             }
         }
@@ -1910,10 +1975,13 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
         }
     }
 
+    DateTime firstDayOfTheMonth;
+    DateTime lastDayOfTheMonth;
 
     public void bindDataDateWiseNormal()
     {
         DataSet ds = new DataSet();
+        DataSet ds1 = new DataSet();
         DataTable dt = new DataTable("sales report");
         DateTime startDate, endDate;
 
@@ -1954,6 +2022,12 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
         string condi = string.Empty;
         string condii = string.Empty;
 
+        string connection = Request.Cookies["Company"].Value;
+        connection = Request.Cookies["Company"].Value;
+        string usernam = Request.Cookies["LoggedUserName"].Value;
+        usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+
         if (Request.QueryString["BranchCode"] != null)
         {
             Branch = Request.QueryString["BranchCode"].ToString();
@@ -1961,6 +2035,20 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
         if (Request.QueryString["command"] != null)
         {
             string command = Request.QueryString["command"].ToString();
+            string intTrans = "";
+            string purRet = "";
+            string delNote = "";
+            intTrans = "NO";
+            purRet = "NO";
+            delNote = "NO";
+            //  startDate = Convert.ToDateTime(txtstdate.Text);
+            //  endDate = Convert.ToDateTime(txteddate.Text);
+            string Types = string.Empty;
+
+            Types = "DateWise";
+            string options = string.Empty;
+            string sCustomer = string.Empty;
+
 
             if (command == "dailysales")
             {
@@ -1971,7 +2059,13 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
 
                 head.Text = "Today's Sales - Real-Time Summary Report -";
                 lbl.Text = Branch;
-                date.Text = todaydate;
+                date.Text = Convert.ToString(DateTime.Now.ToString("dd-MM-yyyy"));
+
+                DataSet dsd = bl.GetBranch(connection, usernam);
+                {
+                    ds = bl.FirstLevelDaywise(connection, purRet, intTrans, delNote, Branch, condi);
+                }
+                objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
             }
 
@@ -1990,9 +2084,16 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 condii = "s.billdate>='" + start1 + "' and s.billdate<='" + end1 + "'";
                 GroupBy1 = "billdate,";
 
-                head.Text = "This Month Sales - Real-Time Summary Report -";
+                head.Text = "This Month's Sales - Real-Time Summary Report -";
                 lbl.Text = Branch;
-                date.Text = "Date From " + fromdate + " and end date " + enddate2 + "";
+                date.Text = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(now1.Month) + ", " + now1.Year; 
+                //date.Text = "Date From " + fromdate + " and end date " + enddate2 + "";
+
+                DataSet dsd = bl.GetBranch(connection, usernam);
+                {
+                    ds = bl.FirstLevelDaywise(connection, purRet, intTrans, delNote, Branch, condi);
+                }
+                objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
 
             }
             if (command == "annualsales")
@@ -2007,50 +2108,99 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 var enddate22 = lastDay1.ToString("dd-MM-yyyy");
 
 
+
+                //
+
                 condi = "tblsales.billdate>='" + firstday11 + "' and tblsales.billdate<='" + lastday11 + "'";
                 condii = "s.billdate>='" + firstday11 + "' and s.billdate<='" + lastday11 + "'";
                 GroupBy1 = "billdate,";
 
                 head.Text = "Annual Sales - Real-Time Summary Report -";
                 lbl.Text = Branch;
-                date.Text = "Date From " + start11 + " and end date " + enddate22 + "";
+                //date.Text = "Date From " + start11 + " and end date " + enddate22 + "";
+                date.Text = Convert.ToString(firstDay1.Year);
 
+                DataSet dmon = bl.GetMonth(connection, Convert.ToDateTime(firstday11), Convert.ToDateTime(lastday11));
+
+                if (dmon.Tables[0].Rows.Count > 0)
+                {
+                    for (int k = 0; k < dmon.Tables[0].Rows.Count; k++)
+                    {
+                        int year12 = DateTime.Now.Year;
+
+                        int year13 = year12 + 1;
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "April")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 04, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "May")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 05, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "June")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 06, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "July")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 07, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "August")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 08, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "September")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 09, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "October")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 10, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "November")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 11, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "December")
+                        {
+                            firstDayOfTheMonth = new DateTime(year12, 12, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "January")
+                        {
+                            firstDayOfTheMonth = new DateTime(year13, 01, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "February")
+                        {
+                            firstDayOfTheMonth = new DateTime(year13, 02, 1);
+                        }
+
+                        if (dmon.Tables[0].Rows[k]["MonthName"].ToString() == "March")
+                        {
+                            firstDayOfTheMonth = new DateTime(year13, 03, 1);
+                        }
+
+                        ds1 = bl.FirstLevelDaywiseAnnual(connection, purRet, intTrans, delNote, Branch, Convert.ToDateTime(firstDayOfTheMonth.ToString("yyyy-MM-dd")));
+                        if (ds1 != null)
+                        {
+                            ds.Merge(ds1);
+                        }
+                    }
+                }
             }
         }
-        string intTrans = "";
-        string purRet = "";
-        string delNote = "";
-        intTrans = "NO";
-        purRet = "NO";
-        delNote = "NO";
-      //  startDate = Convert.ToDateTime(txtstdate.Text);
-      //  endDate = Convert.ToDateTime(txteddate.Text);
-        string Types = string.Empty;
 
-        Types = "DateWise";
-        string options = string.Empty;
-        
-
-      
-        
-
-
-        string sCustomer = string.Empty;
-        string connection = Request.Cookies["Company"].Value;
-        connection = Request.Cookies["Company"].Value;
-        string usernam = Request.Cookies["LoggedUserName"].Value;
-        usernam = Request.Cookies["LoggedUserName"].Value;
-         BusinessLogic bl = new BusinessLogic();
-        DataSet dsd = bl.GetBranch(connection, usernam);
-      //  DataSet ds = new DataSet();
-        // DataSet BillDs = new DataSet();
-        {
-            ds = bl.FirstLevelDaywise(connection,purRet, intTrans, delNote, Branch, condi);
-        }
-     //   options = opttype.SelectedItem.Text;
-        objBL = new BusinessLogic(ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString());
-
-        dt.Columns.Add(new DataColumn("BillNo"));
+        ////dt.Columns.Add(new DataColumn("BillNo"));
         dt.Columns.Add(new DataColumn("LinkName"));
         // dt.Columns.Add(new DataColumn("TotalWORndOff"));
         dt.Columns.Add(new DataColumn("Quantity"));
@@ -2059,180 +2209,387 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("BranchCode"));
         dt.Columns.Add(new DataColumn("billSales"));
 
-       
-      
-     //   string Branch = string.Empty;
-     //   Branch = DropDownList1.SelectedValue;
 
-       // ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
 
-      //  ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
+        //   string Branch = string.Empty;
+        //   Branch = DropDownList1.SelectedValue;
+
+        // ds = objBL.getSaleslistNormal(startDate, endDate, Types, options, salrettype, Branch);
+
+        //  ds = objBL.getallhistoryrate(sDataSource, ds, Branch);
 
         if (ds != null)
         {
             if (ds.Tables[0].Rows.Count > 0)
             {
-             //   DataRow dr_final11 = dt.NewRow();
-              //  dt.Rows.Add(dr_final11);
-
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                //   DataRow dr_final11 = dt.NewRow();
+                //  dt.Rows.Add(dr_final11);
+                if (Request.QueryString["command"] != null)
                 {
-                    fLvlValueTemp = dr["LinkName"].ToString();
-                    if (fLvlValue != "" && fLvlValue != fLvlValueTemp)
+                    string command = Request.QueryString["command"].ToString();
+                    if (command != "annualsales")
                     {
-                       // DataRow dr_final8886 = dt.NewRow();
-                      //  dt.Rows.Add(dr_final8886);
-
-                        DataRow dr_final8 = dt.NewRow();
-                        dr_final8["LinkName"] = "     TOTAL :   " + fLvlValue;
-                        dr_final8["billSales"] = Tottot;
-                        dr_final8["Managementprofit"] = dailysalestot;
-                        //   dr_final89["DailySalesfordp"] = "";
-                        dr_final8["BranchProfit"] = Totgp;
-                        dr_final8["Quantity"] = rateTotal;
-
-                        //gpformrpTotal = gpformrpTotal + Tottot;
-
-
-                        Tottot = 0;
-                        dailysalestot = 0;
-                        Totgp = 0;
-                        dpvalueTotal = 0;
-                      //  gpformrpTotal = 0;
-                      //  gpfornlcTotal = 0;
-                       // gpfordpTotal = 0;
-                       // qtyTotal = 0;
-                        rateTotal = 0;
-
-                        dt.Rows.Add(dr_final8);
-
-                      //  DataRow dr_final888 = dt.NewRow();
-                      //  dt.Rows.Add(dr_final888);
-                    }
-
-                    fLvlValue = fLvlValueTemp;
-                    DataRow dr_final113 = dt.NewRow();
-
-                    dr_final113["BillNo"] = dr["BillNo"].ToString();
-                    dr_final113["LinkName"] = dr["LinkName"].ToString();
-                    dr_final113["BranchCode"] = dr["BranchCode"].ToString();
-                    string branch1 = dr["BranchCode"].ToString();
-
-                    //BusinessLogic bl = new BusinessLogic(sDataSource);
-                    DataSet db = bl.getdetailedsalesreport1(connection, dr["BranchCode"].ToString(), dr["BillNo"].ToString(), condii);
-                    if (db != null)
-                    {
-                        if (ds.Tables[0].Rows.Count > 0)
+                        foreach (DataRow dr in ds.Tables[0].Rows)
                         {
-                            foreach (DataRow drd in db.Tables[0].Rows)
+                            fLvlValueTemp = dr["LinkName"].ToString();
+                            if (fLvlValue != "" && fLvlValue != fLvlValueTemp)
                             {
-                                dr_final113["billSales"] = (Convert.ToDecimal(drd["billSales"])).ToString("#0.00");
-                                dr_final113["Managementprofit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drd["DailySalesforgp"]))).ToString("#0.00");
-                                DataSet db1 = bl.getdetailedsalesreport2(connection, dr["BranchCode"].ToString(), dr["BillNo"].ToString(), condii);
-                                if (db1 != null)
+                                // DataRow dr_final8886 = dt.NewRow();
+                                //  dt.Rows.Add(dr_final8886);
+
+                                DataRow dr_final8 = dt.NewRow();
+                                // dr_final8["LinkName"] = "     TOTAL :   ";// "     TOTAL :   " + fLvlValue;
+                                //dr_final8["billSales"] = Tottot;
+                                //dr_final8["Managementprofit"] = dailysalestot;
+                                ////   dr_final89["DailySalesfordp"] = "";
+                                //dr_final8["BranchProfit"] = Totgp;
+                                //dr_final8["Quantity"] = rateTotal;
+
+                                //gpformrpTotal = gpformrpTotal + Tottot;
+
+
+                                Tottot = 0;
+                                dailysalestot = 0;
+                                Totgp = 0;
+                                dpvalueTotal = 0;
+                                //  gpformrpTotal = 0;
+                                //  gpfornlcTotal = 0;
+                                // gpfordpTotal = 0;
+                                // qtyTotal = 0;
+                                rateTotal = 0;
+
+                                dt.Rows.Add(dr_final8);
+
+                                //  DataRow dr_final888 = dt.NewRow();
+                                //  dt.Rows.Add(dr_final888);
+                            }
+
+                            fLvlValue = fLvlValueTemp;
+                            DataRow dr_final113 = dt.NewRow();
+
+                            ////dr_final113["BillNo"] = dr["BillNo"].ToString();
+                            dr_final113["LinkName"] = dr["LinkName"].ToString();
+                            dr_final113["BranchCode"] = dr["BranchCode"].ToString();
+                            string branch1 = dr["BranchCode"].ToString();
+
+                            //BusinessLogic bl = new BusinessLogic(sDataSource);
+                            DataSet db = bl.getdetailedsalesreport1NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(dr["LinkName"].ToString()));
+                            if (db != null)
+                            {
+                                if (ds.Tables[0].Rows.Count > 0)
                                 {
-                                    if (db1.Tables[0].Rows.Count > 0)
+                                    foreach (DataRow drd in db.Tables[0].Rows)
                                     {
-                                        foreach (DataRow drdd in db1.Tables[0].Rows)
+                                        dr_final113["billSales"] = (Convert.ToDecimal(drd["billSales"])).ToString("#0.00");
+                                        dr_final113["Managementprofit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drd["DailySalesforgp"]))).ToString("#0.00");
+                                        DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(dr["LinkName"].ToString()));
+                                        if (db1 != null)
                                         {
-                                            dr_final113["BranchProfit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drdd["DailySalesfordp"]))).ToString("#0.00");
+                                            if (db1.Tables[0].Rows.Count > 0)
+                                            {
+                                                foreach (DataRow drdd in db1.Tables[0].Rows)
+                                                {
+                                                    dr_final113["BranchProfit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drdd["DailySalesfordp"]))).ToString("#0.00");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                dr_final113["DailySalesfordp"] = 0;
+                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        dr_final113["DailySalesfordp"] = 0;
+                                        dr_final113["Quantity"] = drd["Todaysalesquantity"].ToString();
                                     }
                                 }
-                                dr_final113["Quantity"] = drd["Todaysalesquantity"].ToString();
+                                else
+                                {
+                                    dr_final113["DailySales"] = 0;
+                                    dr_final113["DailySalesforgp"] = 0;
+                                    dr_final113["DailySalesfordp"] = 0;
+                                    dr_final113["Todaysalesquantity"] = 0;
+                                }
                             }
-                        }
-                        else
-                        {
-                            dr_final113["DailySales"] = 0;
-                            dr_final113["DailySalesforgp"] = 0;
-                            dr_final113["DailySalesfordp"] = 0;
-                            dr_final113["Todaysalesquantity"] = 0;
+
+                            else
+                            {
+                                dr_final113["DailySales"] = 0;
+                                dr_final113["DailySalesforgp"] = 0;
+                                dr_final113["DailySalesfordp"] = 0;
+                                dr_final113["Todaysalesquantity"] = 0;
+                            }
+                            Tottot = Tottot + Convert.ToDouble(dr_final113["billSales"]);
+                            gpformrpTotal = gpformrpTotal + Convert.ToDouble(dr_final113["billSales"]);
+                            dailysalestot = dailysalestot + Convert.ToDouble(dr_final113["Managementprofit"]);
+                            gpfornlcTotal = gpfornlcTotal + Convert.ToDouble(dr_final113["Managementprofit"]);
+                            qtyTotal = qtyTotal + Convert.ToInt32(dr_final113["Quantity"]);
+                            rateTotal = rateTotal + Convert.ToInt32(dr_final113["Quantity"]);
+                            // dailyqty = dailyqty + Convert.ToDouble(dr_final113["BranchProfit"]);
+                            //monthlyqty = monthlyqty + Convert.ToInt32(dr_final113["monthlysalesquantity"]);
+                            Totgp = Totgp + (Convert.ToDouble(dr_final113["BranchProfit"]));
+                            gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr_final113["BranchProfit"]));
+                            //Totdp = Totdp + (Convert.ToDouble(dr_final113["DailySalesfordp"]));
+                            //totgpmon = totgpmon + (Convert.ToDouble(dr_final113["montlySalesforgp"]));
+                            //totdpmon = totdpmon + (Convert.ToDouble(dr_final113["montlySalesfordp"]));
+                            dt.Rows.Add(dr_final113);
+
                         }
                     }
-
-                    else
+                    else if (command == "annualsales")
                     {
-                        dr_final113["DailySales"] = 0;
-                        dr_final113["DailySalesforgp"] = 0;
-                        dr_final113["DailySalesfordp"] = 0;
-                        dr_final113["Todaysalesquantity"] = 0;
-                    }
-                    Tottot = Tottot + Convert.ToDouble(dr_final113["billSales"]);
-                    gpformrpTotal = gpformrpTotal + Convert.ToDouble(dr_final113["billSales"]);
-                    dailysalestot = dailysalestot + Convert.ToDouble(dr_final113["Managementprofit"]);
-                    gpfornlcTotal = gpfornlcTotal + Convert.ToDouble(dr_final113["Managementprofit"]);
-                    qtyTotal = qtyTotal + Convert.ToInt32(dr_final113["Quantity"]);
-                    rateTotal = rateTotal + Convert.ToInt32(dr_final113["Quantity"]);
-                    // dailyqty = dailyqty + Convert.ToDouble(dr_final113["BranchProfit"]);
-                    //monthlyqty = monthlyqty + Convert.ToInt32(dr_final113["monthlysalesquantity"]);
-                    Totgp = Totgp + (Convert.ToDouble(dr_final113["BranchProfit"]));
-                    gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr_final113["BranchProfit"]));
-                    //Totdp = Totdp + (Convert.ToDouble(dr_final113["DailySalesfordp"]));
-                    //totgpmon = totgpmon + (Convert.ToDouble(dr_final113["montlySalesforgp"]));
-                    //totdpmon = totdpmon + (Convert.ToDouble(dr_final113["montlySalesfordp"]));
-                    dt.Rows.Add(dr_final113);
+                        foreach (DataRow dr in ds.Tables[0].Rows)
+                        {
+                            fLvlValueTemp = dr["LinkName"].ToString();
+                            if (fLvlValue != "" && fLvlValue != fLvlValueTemp)
+                            {
+                                // DataRow dr_final8886 = dt.NewRow();
+                                //  dt.Rows.Add(dr_final8886);
 
+                                DataRow dr_final8 = dt.NewRow();
+                                // dr_final8["LinkName"] = "     TOTAL :   ";// "     TOTAL :   " + fLvlValue;
+                                //dr_final8["billSales"] = Tottot;
+                                //dr_final8["Managementprofit"] = dailysalestot;
+                                ////   dr_final89["DailySalesfordp"] = "";
+                                //dr_final8["BranchProfit"] = Totgp;
+                                //dr_final8["Quantity"] = rateTotal;
+
+                                //gpformrpTotal = gpformrpTotal + Tottot;
+
+
+                                Tottot = 0;
+                                dailysalestot = 0;
+                                Totgp = 0;
+                                dpvalueTotal = 0;
+                                //  gpformrpTotal = 0;
+                                //  gpfornlcTotal = 0;
+                                // gpfordpTotal = 0;
+                                // qtyTotal = 0;
+                                rateTotal = 0;
+
+                                dt.Rows.Add(dr_final8);
+
+                                //  DataRow dr_final888 = dt.NewRow();
+                                //  dt.Rows.Add(dr_final888);
+                            }
+
+                            fLvlValue = fLvlValueTemp;
+                            DataRow dr_final113 = dt.NewRow();
+                            string monthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(dr["LinkName"].ToString()));
+                            ////dr_final113["BillNo"] = dr["BillNo"].ToString();
+                            int year12 = DateTime.Now.Year;
+                            int year13 = year12 + 1;
+
+
+
+                            if (monthName == "April")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 04, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "May")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 05, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "June")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 06, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "July")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 07, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "August")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 08, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "September")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 09, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "October")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 10, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "November")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 11, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "December")
+                            {
+                                firstDayOfTheMonth = new DateTime(year12, 12, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "January")
+                            {
+                                firstDayOfTheMonth = new DateTime(year13, 01, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "February")
+                            {
+                                firstDayOfTheMonth = new DateTime(year13, 02, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+                            if (monthName == "March")
+                            {
+                                firstDayOfTheMonth = new DateTime(year13, 03, 1);
+                                var endDate1 = firstDayOfTheMonth.AddMonths(1).AddDays(-1);
+                                lastDayOfTheMonth = Convert.ToDateTime(endDate1.ToString("yyyy-MM-dd"));
+                            }
+
+
+                            dr_final113["LinkName"] = firstDayOfTheMonth;// dr["LinkName"].ToString();
+                            dr_final113["BranchCode"] = dr["BranchCode"].ToString();
+                            string branch1 = dr["BranchCode"].ToString();
+
+                            //BusinessLogic bl = new BusinessLogic(sDataSource);
+                            DataSet db = bl.getdetailedsalesreport1NEWAnnual(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(firstDayOfTheMonth.ToString("yyyy-MM-dd")), Convert.ToDateTime(lastDayOfTheMonth.ToString("yyyy-MM-dd")));
+                            if (db != null)
+                            {
+                                if (ds.Tables[0].Rows.Count > 0)
+                                {
+                                    foreach (DataRow drd in db.Tables[0].Rows)
+                                    {
+                                        dr_final113["billSales"] = (Convert.ToDecimal(drd["billSales"])).ToString("#0.00");
+                                        dr_final113["Managementprofit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drd["DailySalesforgp"]))).ToString("#0.00");
+                                        //DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(dr["LinkName"].ToString()));
+                                        DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(firstDayOfTheMonth.ToString("yyyy-MM-dd")));
+                                        if (db1 != null)
+                                        {
+                                            if (db1.Tables[0].Rows.Count > 0)
+                                            {
+                                                foreach (DataRow drdd in db1.Tables[0].Rows)
+                                                {
+                                                    dr_final113["BranchProfit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drdd["DailySalesfordp"]))).ToString("#0.00");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                dr_final113["DailySalesfordp"] = 0;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            dr_final113["BranchProfit"] = 0;
+                                        }
+                                        dr_final113["Quantity"] = drd["Todaysalesquantity"].ToString();
+                                    }
+                                }
+                                else
+                                {
+                                    dr_final113["billSales"] = 0;
+                                    dr_final113["Managementprofit"] = 0;
+                                    dr_final113["BranchProfit"] = 0;
+                                    dr_final113["Quantity"] = 0;
+                                }
+                            }
+
+                            else
+                            {
+                                dr_final113["billSales"] = 0;
+                                dr_final113["Managementprofit"] = 0;
+                                dr_final113["BranchProfit"] = 0;
+                                dr_final113["Quantity"] = 0;
+                            }
+                            Tottot = Tottot + Convert.ToDouble(dr_final113["billSales"]);
+                            gpformrpTotal = gpformrpTotal + Convert.ToDouble(dr_final113["billSales"]);
+                            dailysalestot = dailysalestot + Convert.ToDouble(dr_final113["Managementprofit"]);
+                            gpfornlcTotal = gpfornlcTotal + Convert.ToDouble(dr_final113["Managementprofit"]);
+                            qtyTotal = qtyTotal + Convert.ToInt32(dr_final113["Quantity"]);
+                            rateTotal = rateTotal + Convert.ToInt32(dr_final113["Quantity"]);
+                            // dailyqty = dailyqty + Convert.ToDouble(dr_final113["BranchProfit"]);
+                            //monthlyqty = monthlyqty + Convert.ToInt32(dr_final113["monthlysalesquantity"]);
+                            Totgp = Totgp + (Convert.ToDouble(dr_final113["BranchProfit"]));
+                            gpfordpTotal = gpfordpTotal + (Convert.ToDouble(dr_final113["BranchProfit"]));
+                            //Totdp = Totdp + (Convert.ToDouble(dr_final113["DailySalesfordp"]));
+                            //totgpmon = totgpmon + (Convert.ToDouble(dr_final113["montlySalesforgp"]));
+                            //totdpmon = totdpmon + (Convert.ToDouble(dr_final113["montlySalesfordp"]));
+                            dt.Rows.Add(dr_final113);
+
+                        }
+                    }
                 }
             }
 
-         //   DataRow dr_final879 = dt.NewRow();
-          //  dt.Rows.Add(dr_final879);
+            //   DataRow dr_final879 = dt.NewRow();
+            //  dt.Rows.Add(dr_final879);
 
             DataRow dr_final89 = dt.NewRow();
-            dr_final89["LinkName"] = "     TOTAL :   " + fLvlValueTemp;
-            dr_final89["billSales"] = Tottot;
-            dr_final89["Managementprofit"] = dailysalestot;
-         //   dr_final89["DailySalesfordp"] = "";
-            dr_final89["BranchProfit"] = Totgp;
-            dr_final89["Quantity"] = rateTotal;
-         //   dr_final89["Itemcode"] = "";
-          //  dr_final89["BillNo"] = "";
+            //dr_final89["LinkName"] = "     TOTAL :   ";// "     TOTAL :   " + fLvlValueTemp;
+            //dr_final89["billSales"] = Tottot;
+            //dr_final89["Managementprofit"] = dailysalestot;
+            //   dr_final89["DailySalesfordp"] = "";
+            //dr_final89["BranchProfit"] = Totgp;
+            //dr_final89["Quantity"] = rateTotal;
+            //   dr_final89["Itemcode"] = "";
+            //  dr_final89["BillNo"] = "";
 
 
             Totgp = 0;
             dailysalestot = 0;
             Tottot = 0;
             dpvalueTotal = 0;
-           // gpformrpTotal = 0;
-          //  gpfornlcTotal = 0;
-           // gpfordpTotal = 0;
-           // qtyTotal = 0;
+            // gpformrpTotal = 0;
+            //  gpfornlcTotal = 0;
+            // gpfordpTotal = 0;
+            // qtyTotal = 0;
             rateTotal = 0;
-            dt.Rows.Add(dr_final89);
+            //dt.Rows.Add(dr_final89);
 
-          //  DataRow dr_final8709 = dt.NewRow();
-          //  dt.Rows.Add(dr_final8709);
+            //  DataRow dr_final8709 = dt.NewRow();
+            //  dt.Rows.Add(dr_final8709);
 
 
-          //  DataRow dr_final789 = dt.NewRow();
-           // dr_final789["LinkName"] = "Grand Total : ";
-         //   dr_final789["billSales"] = gpformrpTotal;
-          //  dr_final789["Managementprofit"] = gpfornlcTotal;
-          //  dr_final789["BranchProfit"] = gpfordpTotal;
-         //   dr_final789["Quantity"] = qtyTotal;
-         //   dr_final789["Model"] = "";
-          //  dr_final789["Itemcode"] = "";
-          //  dr_final789["BillNo"] = "";
-            totalll.Value =Convert.ToString(gpformrpTotal);
+            //  DataRow dr_final789 = dt.NewRow();
+            // dr_final789["LinkName"] = "Grand Total : ";
+            //   dr_final789["billSales"] = gpformrpTotal;
+            //  dr_final789["Managementprofit"] = gpfornlcTotal;
+            //  dr_final789["BranchProfit"] = gpfordpTotal;
+            //   dr_final789["Quantity"] = qtyTotal;
+            //   dr_final789["Model"] = "";
+            //  dr_final789["Itemcode"] = "";
+            //  dr_final789["BillNo"] = "";
+            totalll.Value = Convert.ToString(gpformrpTotal.ToString("f2"));
             qtyy.Value = Convert.ToString(qtyTotal);
-            mangg.Value = Convert.ToString(gpfornlcTotal);
-            brnchh.Value = Convert.ToString(gpfordpTotal);
+            mangg.Value = Convert.ToString(gpfornlcTotal.ToString("f2"));
+            brnchh.Value = Convert.ToString(gpfordpTotal.ToString("f2"));
 
-           
 
-          //  dt.Rows.Add(dr_final789);
+
+            //  dt.Rows.Add(dr_final789);
             DataSet dst = new DataSet();
             dst.Tables.Add(dt);
             gvMain.DataSource = dst;
             gvMain.DataBind();
             div1.Visible = false;
 
-           // ExportToExcel(dt);
+            // ExportToExcel(dt);
         }
         else
         {
