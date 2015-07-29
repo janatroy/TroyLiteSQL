@@ -6408,16 +6408,16 @@ public partial class ReportExlStock : System.Web.UI.Page
 
     protected void lstBranch_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //foreach (ListItem li in lstBranch.Items)
-        //{
-        //    if (lstBranch.SelectedIndex == 0)
-        //    {
-        //        if (li.Text != "All")
-        //        {
-        //            li.Selected = true;
-        //        }
-        //    }
-        //}
+        foreach (ListItem li in lstBranch.Items)
+        {
+            if (lstBranch.SelectedIndex == 0)
+            {
+                if (li.Text != "All")
+                {
+                    li.Selected = true;
+                }
+            }
+        }
 
     }
     protected void lstPricelist_SelectedIndexChanged(object sender, EventArgs e)

@@ -50,7 +50,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="mainConBody">
+                <div style="margin-top:4px;">
                     <table style="width: 100%; height: 10%">
                         <tr>
                             <td style="width: 1%"></td>
@@ -890,6 +890,16 @@
                                                         </td>
                                                         <td style="width: 20%" class="ControlDrpBorder">
                                                              <asp:DropDownList ID="Branchcalculation" Width="100%" AppendDataBoundItems="True" CssClass="drpDownListMedium"
+                                                                BackColor="#e7e7e7" runat="server" DataTextField="PRICEname" DataValueField="PRICEname"
+                                                                ValidationGroup="product" Style="border: 1px solid #e7e7e7" Height="26px">
+                                                                <asp:ListItem Text="Select PriceList" Value="0"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                           
+                                                        </td>
+                                                          <td style="width: 25%" class="ControlLabelproject">Current Stock Price
+                                                        </td>
+                                                        <td style="width: 20%" class="ControlDrpBorder">
+                                                             <asp:DropDownList ID="stockprice" Width="100%" AppendDataBoundItems="True" CssClass="drpDownListMedium"
                                                                 BackColor="#e7e7e7" runat="server" DataTextField="PRICEname" DataValueField="PRICEname"
                                                                 ValidationGroup="product" Style="border: 1px solid #e7e7e7" Height="26px">
                                                                 <asp:ListItem Text="Select PriceList" Value="0"></asp:ListItem>

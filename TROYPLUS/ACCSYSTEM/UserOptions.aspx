@@ -364,7 +364,7 @@
                                                                         <td colspan="5">
                                                                             <div id="div" runat="server" style="height: 307px; overflow: scroll">
                                                                                 <cc1:TabContainer ID="tabContol" runat="server" Width="100%" ActiveTabIndex="0" CssClass="fancy fancy-green">
-                                                                                      <cc1:TabPanel ID="TabPanel1" runat="server" HeaderText="Dashboard">
+                                                                                      <cc1:TabPanel ID="TabPanel1" Visible="false" runat="server" HeaderText="Dashboard">
                                                                                         <ContentTemplate>
                                                                                             <rwg:BulkEditGridView ID="Griddashborad" AutoGenerateColumns="False" BorderWidth="1px"
                                                                                                 BorderStyle="Solid" GridLines="Both" SaveButtonID="SaveButton" runat="server" CssClass="someClass"

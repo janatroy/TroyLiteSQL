@@ -301,6 +301,24 @@
             return false;
         }
 
+        function ClientSideClick(myButton) {
+            // alert(myButton);
+
+            if (typeof (Page_ClientValidate) == 'function') {
+                if (Page_ClientValidate() == false)
+                { return false; }
+            }
+
+
+            if (myButton.getAttribute('type') == 'button') {
+
+                myButton.disabled = true;
+                myButton.className = "btn-inactive";
+                myButton.value = "processing...";
+
+            }
+        }
+
     </script>
 
     <style id="Style1" runat="server">
@@ -526,7 +544,7 @@
                                                             <asp:Panel ID="pnlSalesForm" runat="server" Style="width: 99%; height: 90%; display: none">
                                                                 <asp:UpdatePanel ID="updatePnlSales" runat="server" UpdateMode="Conditional">
                                                                     <ContentTemplate>
-                                                                        <div id="Div1" style="background-color: white; width: 95%">
+                                                                        <div id="Div1" style="background-color: white; width: 100%">
                                                                             <table style="width: 100%;" align="center">
                                                                                 <tr style="width: 100%">
                                                                                     <td style="width: 100%">
@@ -883,7 +901,7 @@
                                                                                                                                         <td style="width: 15%;"></td>
                                                                                                                                         <td class="ControlLabelproject" style="width: 15%;" valign="middle">
 
-                                                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtdespatced" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please Enter Despatched From. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
+                                                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" Visible="false" runat="server" ControlToValidate="txtdespatced" CssClass="lblFont" Display="Dynamic" ErrorMessage="Please Enter Despatched From. It cannot be left blank." Text="*" ValidationGroup="salesval"></asp:RequiredFieldValidator>
                                                                                                                                             To be Despatched From * </td>
                                                                                                                                     </td>
                                                                                                                                     <td style="width: 24%;" class="ControlTextBox3">
@@ -1479,14 +1497,14 @@
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <%-- <asp:TemplateField HeaderText="Rate with VAT" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">--%>
-                                                                                                                                                                    <asp:TemplateField HeaderText="" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">
+                                                                                                                                                                    <asp:TemplateField HeaderText="" ItemStyle-Width="30px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black" Visible="true">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtRtVAT" Style="text-align: right" runat="server" ReadOnly="false" Enabled="false" Width="0px" ForeColor="#0567AE" Font-Bold="false" Visible="true"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtRtVAT" Style="text-align: right" runat="server" ReadOnly="false" Enabled="false" Width="2px" ForeColor="#0567AE" Font-Bold="false" Visible="true"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="AvaStock" ItemStyle-Width="0px" ItemStyle-Font-Size="10px" Visible="false" HeaderStyle-ForeColor="Black">
                                                                                                                                                                         <ItemTemplate>
-                                                                                                                                                                            <asp:TextBox ID="txtAvaStock" Style="text-align: right" ReadOnly="true" Visible="false" runat="server" Width="30px" ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
+                                                                                                                                                                            <asp:TextBox ID="txtAvaStock" Style="text-align: right" ReadOnly="true" Visible="false" runat="server"  ForeColor="#0567AE" Font-Bold="false"></asp:TextBox>
                                                                                                                                                                         </ItemTemplate>
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:TemplateField HeaderText="Row Total" ItemStyle-Width="80px" ItemStyle-Font-Size="10px" HeaderStyle-ForeColor="Black">
@@ -1976,10 +1994,10 @@
                                                                                                                     Width="28px" Height="27px" Visible="false" />
                                                                                                             </td>
                                                                                                             <td style="width: 16%">
-                                                                                                                <asp:Button ID="cmdUpdate" runat="server" Enabled="false" OnClick="cmdUpdate_Click"
-                                                                                                                    OnClientClick="javascript:Mobile_Validator();ConfirmSMSUpdate();" SkinID="Updatebutton1231"
+                                                                                                                <asp:Button ID="cmdUpdate" runat="server" Enabled="false" OnClick="cmdUpdate_Click" UseSubmitBehavior="false"
+                                                                                                                    OnClientClick="ClientSideClick(this);" SkinID="Updatebutton1231"
                                                                                                                     CssClass="Updatebutton1231" EnableTheming="false" Text="" ValidationGroup="salesval" />
-                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click"
+                                                                                                                <asp:Button ID="cmdSave" runat="server" OnClick="cmdSave_Click" onclientclick="ClientSideClick(this)" UseSubmitBehavior="false"
                                                                                                                     SkinID="skinBtnSave" Text="" ValidationGroup="salesval" CssClass="savebutton1231"
                                                                                                                     EnableTheming="false" />
                                                                                                             </td>

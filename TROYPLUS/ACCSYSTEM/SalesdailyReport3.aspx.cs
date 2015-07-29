@@ -809,32 +809,32 @@ public partial class SalesdailyReport3 : System.Web.UI.Page
                 }
                 else if (category == "Categorywise")
                 {
-                    BillDs = bl.FirstLevelCategorywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelCategorywise(startDate, endDate, purRet, intTrans, delNote,"", cond);
                 }
                 else if (category == "Brandwise")
                 {
-                    BillDs = bl.FirstLevelBrandwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelBrandwise(startDate, endDate, purRet, intTrans, delNote,"", cond);
                 }
                 else if (category == "Modelwise")
                 {
-                    BillDs = bl.FirstLevelModelwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelModelwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 else if (category == "Billwise")
                 {
-                    BillDs = bl.FirstLevelBillwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelBillwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 else if (category == "Customerwise")
                 {
-                    BillDs = bl.FirstLevelCustomerwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelCustomerwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 else if (category == "Executivewise")
                 {
-                    BillDs = bl.FirstLevelExecutivewise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelExecutivewise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 /*Start Itemwise*/
                 else if (category == "Itemwise")
                 {
-                    BillDs = bl.FirstLevelItemwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelItemwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 /*End Itemwise*/
                 gvMain.DataSource = BillDs;
@@ -992,18 +992,18 @@ public partial class SalesdailyReport3 : System.Web.UI.Page
                     startDate = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "LinkName"));
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+                        ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, "", brcode, lblBillNo.Text);
 
                     else if (secondLevel == "Modelwise")
                         ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote,"", brcode, lblBillNo.Text);
                     else if (secondLevel == "Brandwise")
-                        ds = bl.SecondLevelDaywiseBrandWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+                        ds = bl.SecondLevelDaywiseBrandWise(startDate, purReturn, intTrans, delNote, "", brcode, lblBillNo.Text);
                     else if (secondLevel == "Customerwise")
-                        ds = bl.SecondLevelDaywiseCustWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+                        ds = bl.SecondLevelDaywiseCustWise(startDate, purReturn, intTrans, delNote, "", brcode, lblBillNo.Text);
                     else if (secondLevel == "Itemwise")
                         ds = bl.SecondLevelDaywiseItemWisedashboard(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
                     else if (secondLevel == "Daywise")
-                        ds = bl.SecondLevelDaywiseDayWise(startDate, purReturn, intTrans, delNote, cond);
+                        ds = bl.SecondLevelDaywiseDayWise(startDate, purReturn, intTrans, delNote, "", cond);
 
                     lblLink.Text = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "LinkName", "{0:dd/MM/yyyy}"));
                 }

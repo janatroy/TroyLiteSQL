@@ -1394,7 +1394,7 @@
                                                     <ProgressTemplate>
                                                         <progresstemplate>        
                                             <div id="divLoading" class="divCenter" >
-                                                <img id="imgLoading" src="App_Themes/DefaultTheme/Images/main-loader.gif" align="absmiddle" vspace="0" hspace="0" style="vertical-align:middle" />    
+                                                <img id="imgLoading" src="App_Themes/DefaultTheme/Images/main-loader.gif" align="middle" vspace="0" hspace="0" style="vertical-align:middle" />    
                                                 <%--<table border="0" cellpadding="0" cellspacing="0" align="center" width="95%" height="95%">
                                                     <tr>
                                                         <td class="style1">Please Wait....</td>

@@ -933,6 +933,7 @@ public partial class SuppPayment : System.Web.UI.Page
         //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select any one')", true);
         //    return;
         //}
+       // Button4.Enabled = false;
 
         string connection = string.Empty;
         connection = Request.Cookies["Company"].Value;
@@ -949,6 +950,7 @@ public partial class SuppPayment : System.Web.UI.Page
         if (txtDate.Text == "")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Date. It cannot be left blank.')", true);
+           // Button4.Enabled = true;
             return;
 
         }
@@ -1976,6 +1978,7 @@ public partial class SuppPayment : System.Web.UI.Page
 
     protected void UpdButton_Click(object sender, EventArgs e)
     {
+        UpdButton.Enabled = false;
         //if ((chkcard.Checked == false) && (chkcheque.Checked == false) && ( chkcash.Checked == false))
         //{
         //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select any one')", true);
@@ -1997,6 +2000,7 @@ public partial class SuppPayment : System.Web.UI.Page
         if (txtDate.Text == "")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Date. It cannot be left blank.')", true);
+            UpdButton.Enabled = true;
             return;
 
         }
@@ -2004,12 +2008,14 @@ public partial class SuppPayment : System.Web.UI.Page
         if (!bl.IsValidDate(connection, Convert.ToDateTime(txtDate.Text)))
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Date is invalid')", true);
+            UpdButton.Enabled = true;
             return;
         }
 
         if (DropDownList1.SelectedValue == "0")
         {
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Branch. It cannot be left blank.')", true);
+            UpdButton.Enabled = true;
             return;
 
         }
@@ -2019,6 +2025,7 @@ public partial class SuppPayment : System.Web.UI.Page
             if (drpLedger.SelectedValue == "0")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Supplier name. It cannot be left blank.')", true);
+                UpdButton.Enabled = true;
                 return;
 
             }
@@ -2029,6 +2036,7 @@ public partial class SuppPayment : System.Web.UI.Page
             if ((txtCustomerName.Text == "") || (txtCustomerName.Text == " ") || (txtCustomerName.Text == null))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter Supplier name. It cannot be left blank.')", true);
+                UpdButton.Enabled = true;
                 return;
             }
         }
@@ -2055,16 +2063,19 @@ public partial class SuppPayment : System.Web.UI.Page
             if (txttt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill RefNo in row " + col + " ')", true);
+                UpdButton.Enabled = true;
                 return;
             }
             else if (txt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Amount in row " + col + " ')", true);
+                UpdButton.Enabled = true;
                 return;
             }
             else if (txtt.Text == "")
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Narration in row " + col + " ')", true);
+                UpdButton.Enabled = true;
                 return;
             }
             else if (txttd.SelectedValue == "0")
@@ -2072,6 +2083,7 @@ public partial class SuppPayment : System.Web.UI.Page
                 if (txtttd.SelectedItem.Text != "Cash")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select Bank in row " + col + " ')", true);
+                    UpdButton.Enabled = true;
                     return;
                 }
             }
@@ -2080,6 +2092,7 @@ public partial class SuppPayment : System.Web.UI.Page
                 if (txtttd.SelectedItem.Text != "Cash")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please fill Cheque No in row " + col + " ')", true);
+                    UpdButton.Enabled = true;
                     return;
                 }
             }
@@ -2118,6 +2131,7 @@ public partial class SuppPayment : System.Web.UI.Page
                         if (itemc == txt1.Text)
                         {
                             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Cheque/Card No - " + itemcd + " - cannot be duplicate.');", true);
+                            UpdButton.Enabled = true;
                             return;
                         }
                     }
@@ -2162,6 +2176,7 @@ public partial class SuppPayment : System.Web.UI.Page
                             if (txt1.SelectedItem.Text == "Cash")
                             {
                                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Receipt Mode - " + itemcdz + " - cannot be duplicate.');", true);
+                                UpdButton.Enabled = true;
                                 return;
                             }
                         }
@@ -2194,6 +2209,7 @@ public partial class SuppPayment : System.Web.UI.Page
             if (Convert.ToDouble(txttd.Text) < Convert.ToDouble(txttdd.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Adjust Amount can not be greater than Amount in row " + coll + " ')", true);
+                UpdButton.Enabled = true;
                 return;
             }
 
@@ -2206,6 +2222,7 @@ public partial class SuppPayment : System.Web.UI.Page
             if (tot > Convert.ToDouble(txt.Text))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Total Adjust Amount can not be greater than total receipt Amount ')", true);
+                UpdButton.Enabled = true;
                 return;
             }
         }
@@ -2488,6 +2505,7 @@ public partial class SuppPayment : System.Web.UI.Page
             if (bl.IsLedgerAlreadyFound(connection, CName))
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Supplier " + CName + " with this name already exists.');", true);
+                UpdButton.Enabled = true;
                 return;
             }
 
@@ -3008,6 +3026,7 @@ public partial class SuppPayment : System.Web.UI.Page
 
 
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Payments Saved Successfully.');", true);
+        UpdButton.Enabled = true;
 
         ModalPopupExtender1.Hide();
         ModalPopupExtender2.Hide();

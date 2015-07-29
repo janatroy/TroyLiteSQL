@@ -3416,6 +3416,8 @@ public partial class CustomerSales : System.Web.UI.Page
         {
             string checkdate = txtBillDate.Text.Trim();
 
+            
+
 
             //if (checkdate == "01/12/2013")
             //{
@@ -3528,6 +3530,12 @@ public partial class CustomerSales : System.Web.UI.Page
                         cmdSave.Enabled = true;
                         return;
                     }
+                }
+                if (txtdespatced.Text=="")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter Despatched from. It cannot be Left blank.')", true);
+                    cmdSave.Enabled = true;
+                    return;
                 }
 
                 //if (Convert.ToDouble(txtfixedtotal.Text) == 0 || txtfixedtotal.Text == "")
@@ -5733,6 +5741,21 @@ public partial class CustomerSales : System.Web.UI.Page
         try
         {
             string checkdate = txtBillDate.Text.Trim(); ;
+
+            string check23 = DateTime.Now.ToString("dd/MM/yyyy").Trim();
+
+            DateTime dt1 = DateTime.Now.Date;
+            DateTime dt2 = Convert.ToDateTime(txtBillDate.Text.Trim()).Date;
+            if (dt1 >= dt2)
+            {
+               
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bill Date Cannot be Future Date. ')", true);
+                   return;
+
+            }
 
             //if (checkdate == "01/12/2013")
             //{

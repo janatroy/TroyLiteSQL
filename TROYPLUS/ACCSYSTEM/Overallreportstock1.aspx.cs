@@ -350,6 +350,8 @@ public partial class Overallreportstock1 : System.Web.UI.Page
             cond6 = Request.QueryString["cond6"].ToString();
             cond6 = cond6.ToString();
         }
+
+      
         refDate = Convert.ToDateTime(stdt);
 
         lblbranch.Text = cond;

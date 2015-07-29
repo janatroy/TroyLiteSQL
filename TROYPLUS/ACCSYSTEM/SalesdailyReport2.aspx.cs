@@ -1341,32 +1341,32 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
                 }
                 else if (category == "Categorywise")
                 {
-                    BillDs = bl.FirstLevelCategorywise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelCategorywise(startDate, endDate, purRet, intTrans, delNote,"", cond);
                 }
                 else if (category == "Brandwise")
                 {
-                    BillDs = bl.FirstLevelBrandwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelBrandwise(startDate, endDate, purRet, intTrans, delNote,"", cond);
                 }
                 else if (category == "Modelwise")
                 {
-                    BillDs = bl.FirstLevelModelwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelModelwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 else if (category == "Billwise")
                 {
-                    BillDs = bl.FirstLevelBillwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelBillwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 else if (category == "Customerwise")
                 {
-                    BillDs = bl.FirstLevelCustomerwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelCustomerwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 else if (category == "Executivewise")
                 {
-                    BillDs = bl.FirstLevelExecutivewise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelExecutivewise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 /*Start Itemwise*/
                 else if (category == "Itemwise")
                 {
-                    BillDs = bl.FirstLevelItemwise(startDate, endDate, purRet, intTrans, delNote, cond);
+                    BillDs = bl.FirstLevelItemwise(startDate, endDate, purRet, intTrans, delNote, "", cond);
                 }
                 /*End Itemwise*/
                 gvMain.DataSource = BillDs;
@@ -1584,7 +1584,7 @@ public partial class SalesdailyReport2 : System.Web.UI.Page
 
 
                     if (secondLevel == "Billwise")
-                        ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);
+                        ds = bl.SecondLevelDaywiseModelWise(startDate, purReturn, intTrans, delNote, "", brcode, lblBillNo.Text);
 
                     //else if (secondLevel == "Modelwise")
                     //    ds = bl.SecondLevelDaywiseBillWise(startDate, purReturn, intTrans, delNote, brcode, lblBillNo.Text);

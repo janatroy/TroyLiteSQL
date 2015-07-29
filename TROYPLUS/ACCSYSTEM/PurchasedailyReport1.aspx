@@ -361,6 +361,13 @@
                                                     <%# Eval("ProductDesc") %>
                                                 </ItemTemplate>
                                             </asp:TemplateField>--%>
+                                           <%-- <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
+                                                ItemStyle-Font-Size="XX-Small" HeaderText="Billdate">
+                                                <ItemTemplate>
+                                                    <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblPRate12" runat="server"
+                                                        Text='<%# Eval("Billdate") %>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>--%>
                                             <asp:TemplateField ItemStyle-HorizontalAlign="Right" ItemStyle-VerticalAlign="Top"
                                                 ItemStyle-Font-Size="XX-Small" HeaderText="Purchase Rate">
                                                 <ItemTemplate>
@@ -428,7 +435,7 @@
                                 </div>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField ItemStyle-HorizontalAlign="Right" Visible="false" ItemStyle-VerticalAlign="Top"
+                        <asp:TemplateField ItemStyle-HorizontalAlign="Right"  ItemStyle-VerticalAlign="Top"
                             HeaderText="Branch">
                             <ItemTemplate>
                                 <asp:Label Style="font-family: 'Trebuchet MS'; font-size: 11px;" ID="lblBranch"

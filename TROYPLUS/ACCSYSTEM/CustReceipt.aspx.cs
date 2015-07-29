@@ -6854,6 +6854,7 @@ public partial class CustReceipt : System.Web.UI.Page
             //clickedbutton.Enabled = false;
 
             DataSet dsData = (DataSet)Session["BillData"];
+            SaveButton.Enabled = false;
 
             string ChequeNot = string.Empty;
             ChequeNot = txtChequeNo.Text;
@@ -6902,6 +6903,7 @@ public partial class CustReceipt : System.Web.UI.Page
 
             if (Page.IsValid)
             {
+              //  Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "ClientSideClick(this)", true);
 
                 int CreditorID = int.Parse(ddReceivedFrom.SelectedValue);
 

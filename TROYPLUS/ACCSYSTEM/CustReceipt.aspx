@@ -319,6 +319,24 @@
             }
 
         }
+
+        function ClientSideClick(myButton) {
+             // alert(myButton);
+
+            if (typeof (Page_ClientValidate) == 'function') {
+                if (Page_ClientValidate() == false)
+                { return false; }
+            }
+
+
+            if (myButton.getAttribute('type') == 'button') {
+
+                myButton.disabled = true;
+                myButton.className = "btn-inactive";
+                myButton.value = "processing...";
+
+            }
+        }
     </script>
 
     <style id="Style1" runat="server">
@@ -919,9 +937,9 @@
                                                                                         EnableTheming="false"></asp:Button>
                                                                                 </td>
                                                                                 <td style="width: 18%">
-                                                                                    <asp:Button ID="UpdateButton" runat="server" SkinID="skinBtnSave" OnClientClick="javascript:CheckDate();CheckPendingBill();EditMobile_Validator();ConfirmSMS();"
+                                                                                    <asp:Button ID="UpdateButton" runat="server" CausesValidation="true" SkinID="skinBtnSave" 
                                                                                         OnClick="UpdateButton_Click" CssClass="Updatebutton1231" EnableTheming="false"></asp:Button>
-                                                                                    <asp:Button ID="SaveButton" runat="server" SkinID="skinBtnSave" OnClientClick="javascript:CheckDate();CheckPendingBill();EditMobile_Validator();ConfirmSMS();"
+                                                                                    <asp:Button ID="SaveButton" runat="server" SkinID="skinBtnSave" CausesValidation="true" 
                                                                                         OnClick="SaveButton_Click" CssClass="savebutton1231" EnableTheming="false"></asp:Button>
                                                                                 </td>
                                                                                 <td style="width: 18%">
@@ -1738,10 +1756,10 @@
                                                                                                                                         <td style="width: 40%;"></td>
                                                                                                                                         <td style="width: 15%;">
                                                                                                                                             <asp:Button ID="UpdButton" runat="server" CausesValidation="true"
-                                                                                                                                                CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave"
+                                                                                                                                                CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave" onclientclick="ClientSideClick(this)" UseSubmitBehavior="false"
                                                                                                                                                 OnClick="UpdButton_Click"></asp:Button>
                                                                                                                                             <asp:Button ID="Button4" runat="server" CausesValidation="true"
-                                                                                                                                                CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
+                                                                                                                                                CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave" onclientclick="ClientSideClick(this)" UseSubmitBehavior="false"
                                                                                                                                                 OnClick="Button4_Click"></asp:Button>
                                                                                                                                         </td>
                                                                                                                                         <td style="width: 15%;">

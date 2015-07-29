@@ -87,7 +87,7 @@
             var cst = split[6];
             var nlc = split[7];
             var price = split[8];
-            // alert(vat);
+           // alert(vat);
             var GridId = "<%=grvStudentDetails.ClientID %>";
             var grid = document.getElementById(GridId);
             rowscount = grid.rows.length;
@@ -218,13 +218,13 @@
                 var x = confirm("VAT(%) and CST(%) are Zeros(0).Do you want to Save?");
                 var control = '<%=inpHide.ClientID%>';
 
-                if (x == true) {
-                    document.getElementById(control).value = "1";
+                    if (x == true) {
+                        document.getElementById(control).value = "1";
+                    }
+                    else {
+                        document.getElementById(control).value = "0";
+                    }
                 }
-                else {
-                    document.getElementById(control).value = "0";
-                }
-            }
         }
 
         function Showalert() {
@@ -278,23 +278,42 @@
         function PrintItem(ID, RT, BID) {
             if (window.showModalDialog) {
                 // window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
-                window.showModalDialog('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+                window.showModalDialog('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;maximize:yes;');
             }
-            else {
-                window.open('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
+            else
+            {
+                window.open('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;maximize:yes;');
             }
         }
 
         function ShowModalPopup() {
             $find("mpe").show();
-            //  alert("show");
+          //  alert("show");
             return false;
         }
         function HideModalPopup() {
             $find("mpe").hide();
             document.getElementById('ctl00_cplhControlPanel_optionmethod_0').checked = true;
-            //  alert("hide");
+          //  alert("hide");
             return false;
+        }
+
+        function ClientSideClick(myButton) {
+            // alert(myButton);
+
+            if (typeof (Page_ClientValidate) == 'function') {
+                if (Page_ClientValidate() == false)
+                { return false; }
+            }
+
+
+            if (myButton.getAttribute('type') == 'button') {
+
+                myButton.disabled = true;
+                myButton.className = "btn-inactive";
+                myButton.value = "processing...";
+
+            }
         }
 
 
@@ -623,8 +642,8 @@
                                                                                                                     </tr>
                                                                                                                     <tr>
                                                                                                                         <td class="ControlLabelproject" style="width: 25%;">Invoice No. *
-                                                                                                       <%-- <asp:RequiredFieldValidator ID="rvBill" runat="server" 
-                                                                                                            CssClass="lblFont" Display="Dynamic" ErrorMessage="Bill No. is mandatory" >*</asp:RequiredFieldValidator>--%>
+                                                                                                        <asp:RequiredFieldValidator ID="rvBill" runat="server" ControlToValidate="txtBillno"
+                                                                                                            CssClass="lblFont" Display="Dynamic" ErrorMessage="Bill No. is mandatory" ValidationGroup="purchaseval">*</asp:RequiredFieldValidator>
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 19%;">
                                                                                                                             <asp:TextBox ID="txtBillno" runat="server" MaxLength="8" CssClass="cssTextBox" BackColor="#e7e7e7" Width="80%"
@@ -779,14 +798,14 @@
                                                                                                                         </td>
                                                                                                                         <td style="width: 14%;"></td>
                                                                                                                         <td class="ControlLabelproject" style="width: 18%;">
-                                                                                                                            <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtponumber"
+                                                                                                                             <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtponumber"
                                                                                                                                                     ErrorMessage="Purchase Order Number is mandatory. It cannot be Left blank" Text="*" ValidationGroup="purchaseval"></asp:RequiredFieldValidator>--%>
                                                                                                                             Purchase Order number
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 19%">
-
+                                                                                                                            
                                                                                                                             <asp:TextBox ID="txtponumber" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" Width="500px"></asp:TextBox>
-                                                                                                                            <%--  <asp:TextBox ID="txtfixedtotal" runat="server" CssClass="cssTextBox" ValidationGroup="product" Text="0" Width="100%" BackColor="#e7e7e7"></asp:TextBox>--%>
+                                                                                                                          <%--  <asp:TextBox ID="txtfixedtotal" runat="server" CssClass="cssTextBox" ValidationGroup="product" Text="0" Width="100%" BackColor="#e7e7e7"></asp:TextBox>--%>
                                                                                                                         </td>
                                                                                                                         <td style="width: 13%"></td>
                                                                                                                     </tr>
@@ -1764,10 +1783,9 @@
                                                                                                                     Width="28px" Height="27px" Visible="false" />
                                                                                                             </td>
                                                                                                             <td style="width: 17%">
-
-                                                                                                                <asp:Button ID="cmdUpdate" ValidationGroup="purchaseval" runat="server" Text="" CssClass="Updatebutton1231" OnClientClick="return ConfirmNEW();"
+                                                                                                                <asp:Button ID="cmdUpdate" ValidationGroup="purchaseval" runat="server" Text="" CssClass="Updatebutton1231" OnClientClick="ConfirmIt();"
                                                                                                                     EnableTheming="false" OnClick="cmdUpdate_Click" SkinID="skinBtnSave" />
-                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231" OnClientClick="return ConfirmNEW();"
+                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231" OnClientClick="ConfirmIt();"
                                                                                                                     EnableTheming="false" OnClick="cmdSave_Click" SkinID="skinBtnSave" />
                                                                                                             </td>
                                                                                                             <td style="width: 17%">
@@ -1778,7 +1796,7 @@
                                                                                                                 <asp:Button ID="cmdPrint" CausesValidation="false" runat="server" Text="" Enabled="false"
                                                                                                                     CssClass="printbutton6" EnableTheming="false" OnClick="cmdPrint_Click" SkinID="skinBtnPrint" />
                                                                                                             </td>
-                                                                                                            <td style="width: 24%"></td>                                                                                                           
+                                                                                                            <td style="width: 24%"></td>
                                                                                                         </tr>
                                                                                                     </table>
                                                                                                 </td>
@@ -1835,7 +1853,7 @@
                                                         HeaderStyle-Width="50px" />
                                                     <asp:BoundField DataField="Billno" HeaderText="Bill No." HeaderStyle-Width="60px" HeaderStyle-BorderColor="Gray"
                                                         HeaderStyle-Wrap="false" />
-                                                    <asp:BoundField DataField="InvoiceDate" HeaderText="Voucher Date" HeaderStyle-Width="65px" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="InvoiceDate" HeaderText="Pur Entry Date" HeaderStyle-Width="65px" HeaderStyle-BorderColor="Gray" />
                                                     <asp:TemplateField HeaderText="Payment Mode" HeaderStyle-BorderColor="Gray">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblPaymode" runat="server"></asp:Label>
