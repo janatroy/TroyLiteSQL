@@ -2070,17 +2070,19 @@ public partial class ExpPayment : System.Web.UI.Page
                 {
                     CreditorID = 1;
                     Paymode = "Cash";
+                    ChequeNo = "";
                 }
                 else if (chkPayTo.SelectedValue == "Cheque")
                 {
                     CreditorID = int.Parse(ddBanks.SelectedValue);
                     Paymode = "Cheque";
+                    ChequeNo = cmbChequeNo.SelectedItem.Text;
                 }
                 //#eae9e9;
                 Amount = double.Parse(txtAmount.Text);
                 Narration = txtNarration.Text;
                 VoucherType = "Payment";
-                ChequeNo = cmbChequeNo.SelectedItem.Text;
+               
 
                 BusinessLogic bl = new BusinessLogic();
 

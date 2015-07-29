@@ -225,8 +225,7 @@
                                                         </td>
                                                         <td valign="top" align="right" class="auto-style24">
 
-                                                            <table border="0" style="font-family: Verdana, Geneva, Tahoma, sans-serif; width: 210px; height: 90px;">
-
+                                                            <table border="0" style="font-family: Verdana, Geneva, Tahoma, sans-serif; width: 210px; height: 90px;">                                                               
                                                                 <tr id="tr1" runat="server">
                                                                     <td align="center" class="auto-style16" style="font-weight: 600; font-size: 25px;">
                                                                         <asp:Label ID="Label4" Text="Benit & Co" runat="server" />

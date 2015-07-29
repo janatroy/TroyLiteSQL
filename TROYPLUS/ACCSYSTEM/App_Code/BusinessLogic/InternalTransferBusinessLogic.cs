@@ -57,7 +57,7 @@ public partial class BusinessLogic : IInternalTransferService
             
 
             sAuditStr = "Internal Transfer Request : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + request.Status + " Qty :" + request.Quantity + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") + " MACAddress:" + mac2;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -146,7 +146,7 @@ public partial class BusinessLogic : IInternalTransferService
             }
 
             sAuditStr = "Internal Transfer Approval : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + request.Status + " Qty :" + request.Quantity + " completed user :" + request.CompletedUser + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")+" MacAddress:"+ mac2;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Approved", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Approved", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -209,7 +209,7 @@ public partial class BusinessLogic : IInternalTransferService
             }
 
             sAuditStr = "Internal Transfer Approval : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + Status + " Qty :" + request.Quantity + " completed user :" + request.CompletedUser + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") + " MacAddress:" + mac2;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Rejected", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Rejected", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -725,7 +725,7 @@ public partial class BusinessLogic : IInternalTransferService
             }
 
             sAuditStr = "Internal Transfer Request : Itemcode : " + request.ItemCode + " added. Record Details :  User :" + request.UserID + " Requested Branch :" + request.RequestedBranch + " Branch Has Stock :" + request.BranchHasStock + " Status :" + request.Status + " Qty :" + request.Quantity + " Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") + " MacAddress:" + mac2;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -774,7 +774,7 @@ public partial class BusinessLogic : IInternalTransferService
             }
 
             sAuditStr = "Internal Transfer Request : Requestedid : " + RequestID + " added. Time: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss") +"MacAddress:"+ mac2;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();

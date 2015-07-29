@@ -9,16 +9,61 @@
 
     <script type="text/javascript">
         function Confirm() {
+
             var confirm_value = document.createElement("INPUT");
             confirm_value.type = "hidden";
             confirm_value.name = "confirm_value";
+            var hide1 = document.getElementById('<%= HiddenField1.ClientID%>');
+
             if (confirm("VAT(%) and CST(%) are Zeros(0).Do you want to Save?")) {
+                return true;
                 confirm_value.value = "Yes";
-            } else {
-                confirm_value.value = "No";
+                hide1.value = 1;
+                return hide1;
             }
+            else {
+                return false;
+                confirm_value.value = "No";
+                hide1.value = 0;
+                return hide1;
+            }
+
             document.forms[0].appendChild(confirm_value);
         }
+
+        function ConfirmNEW() {
+
+            if (Page_ClientValidate())  {
+
+                var GridId = "<%=grvStudentDetails.ClientID %>";
+                var grid = document.getElementById(GridId);
+                rowscount = grid.rows.length;
+
+                // var row = drpPrd.parentNode.parentNode;
+                // var rowIndex = row.rowIndex - 1;
+                // for (var i = rowIndex; i <= rowIndex; i++) {
+
+                for (var i = 1; i < rowscount; i++) {
+                    //alert(i);
+                    var indexID = 01 + i;
+
+                    var vatch = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtVATPre').value;
+                    var cstch = document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtCSTPre').value;
+                    //alert(vatch);
+                    if ((vatch != "" && vatch <= 0) && (cstch != "" && cstch <= 0)) {
+                        if (confirm("VAT(%) and CST(%) are Zeros(0) in row" + i + ".Do you want to Continue?")) {
+
+                            return true;
+                        }
+                        else {
+
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
 
         function GetCountryDetails() {
             var parm = document.getElementById("drpPrd");
@@ -42,7 +87,7 @@
             var cst = split[6];
             var nlc = split[7];
             var price = split[8];
-           // alert(vat);
+            // alert(vat);
             var GridId = "<%=grvStudentDetails.ClientID %>";
             var grid = document.getElementById(GridId);
             rowscount = grid.rows.length;
@@ -173,13 +218,13 @@
                 var x = confirm("VAT(%) and CST(%) are Zeros(0).Do you want to Save?");
                 var control = '<%=inpHide.ClientID%>';
 
-                    if (x == true) {
-                        document.getElementById(control).value = "1";
-                    }
-                    else {
-                        document.getElementById(control).value = "0";
-                    }
+                if (x == true) {
+                    document.getElementById(control).value = "1";
                 }
+                else {
+                    document.getElementById(control).value = "0";
+                }
+            }
         }
 
         function Showalert() {
@@ -235,21 +280,20 @@
                 // window.showModalDialog('./ProductPurchaseBill.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
                 window.showModalDialog('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
             }
-            else
-            {
+            else {
                 window.open('./ProductPurchaseBillNew.aspx?SID=' + ID + '&RT=' + RT + '&BID=' + BID, self, 'dialogWidth:800px;dialogHeight:530px;status:no;dialogHide:yes;unadorned:no;');
             }
         }
 
         function ShowModalPopup() {
             $find("mpe").show();
-          //  alert("show");
+            //  alert("show");
             return false;
         }
         function HideModalPopup() {
             $find("mpe").hide();
             document.getElementById('ctl00_cplhControlPanel_optionmethod_0').checked = true;
-          //  alert("hide");
+            //  alert("hide");
             return false;
         }
 
@@ -349,7 +393,7 @@
                                                         <asp:ListItem Value="0">All</asp:ListItem>
                                                         <asp:ListItem Value="BillNo">Bill No</asp:ListItem>
                                                         <asp:ListItem Value="TransNo">Trans No</asp:ListItem>
-                                                        <asp:ListItem Value="VoucherNo">Voucher No</asp:ListItem>
+                                                        <asp:ListItem Value="VoucherNo">Purchase ID</asp:ListItem>
                                                         <asp:ListItem Value="Date">Bill Date</asp:ListItem>
                                                         <asp:ListItem Value="VoucherDate">Voucher Date</asp:ListItem>
                                                         <asp:ListItem Value="SupplierName">Supplier Name</asp:ListItem>
@@ -471,7 +515,7 @@
                                                                                                 <asp:Panel ID="Panel4" runat="server" Width="120px">
                                                                                                     <asp:Button ID="cmdMethod" runat="server" CssClass="Start6"
                                                                                                         EnableTheming="false" OnClick="cmdMethod_Click" Text=""
-                                                                                                        ValidationGroup="contact"  />
+                                                                                                        ValidationGroup="contact" />
                                                                                                 </asp:Panel>
                                                                                             </td>
                                                                                             <td>
@@ -558,7 +602,7 @@
                                                                                                                             <asp:Label ID="lblSalRtn" runat="server" Text="Sales Invoice No">                                                                                                                                      
                                                                                                                             </asp:Label>
                                                                                                                             <asp:Label ID="SalInNo" runat="server">
-                                                                                                                                <asp:CheckBox runat="server" ID="chkSalInNo" Text="Delivery Return" AutoPostBack="true" OnCheckedChanged="chkSalInNo_CheckedChanged" />
+                                                                                                                                <asp:CheckBox runat="server" ID="chkSalInNo" Text="DC Sales Return" AutoPostBack="true" OnCheckedChanged="chkSalInNo_CheckedChanged" />
                                                                                                                             </asp:Label>
                                                                                                                         </td>
                                                                                                                         <td class="ControlDrpBorder" style="width: 19%;" id="salinvno" runat="server">
@@ -579,12 +623,12 @@
                                                                                                                     </tr>
                                                                                                                     <tr>
                                                                                                                         <td class="ControlLabelproject" style="width: 25%;">Invoice No. *
-                                                                                                        <asp:RequiredFieldValidator ID="rvBill" runat="server" ControlToValidate="txtBillno"
-                                                                                                            CssClass="lblFont" Display="Dynamic" ErrorMessage="Bill No. is mandatory" ValidationGroup="purchaseval">*</asp:RequiredFieldValidator>
+                                                                                                       <%-- <asp:RequiredFieldValidator ID="rvBill" runat="server" 
+                                                                                                            CssClass="lblFont" Display="Dynamic" ErrorMessage="Bill No. is mandatory" >*</asp:RequiredFieldValidator>--%>
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 19%;">
                                                                                                                             <asp:TextBox ID="txtBillno" runat="server" MaxLength="8" CssClass="cssTextBox" BackColor="#e7e7e7" Width="80%"
-                                                                                                                                ValidationGroup="purchaseval" BorderStyle="NotSet" Height="23px"></asp:TextBox>
+                                                                                                                                BorderStyle="NotSet" Height="23px"></asp:TextBox>
                                                                                                                             <%-- <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender9" runat="server" FilterType="Numbers" TargetControlID="txtBillno" />--%>
                                                                                                                         </td>
                                                                                                                         <td style="width: 14%;"></td>
@@ -735,14 +779,14 @@
                                                                                                                         </td>
                                                                                                                         <td style="width: 14%;"></td>
                                                                                                                         <td class="ControlLabelproject" style="width: 18%;">
-                                                                                                                             <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtponumber"
+                                                                                                                            <%-- <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="txtponumber"
                                                                                                                                                     ErrorMessage="Purchase Order Number is mandatory. It cannot be Left blank" Text="*" ValidationGroup="purchaseval"></asp:RequiredFieldValidator>--%>
                                                                                                                             Purchase Order number
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 19%">
-                                                                                                                            
+
                                                                                                                             <asp:TextBox ID="txtponumber" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="200" SkinID="skinTxtBox" Width="500px"></asp:TextBox>
-                                                                                                                          <%--  <asp:TextBox ID="txtfixedtotal" runat="server" CssClass="cssTextBox" ValidationGroup="product" Text="0" Width="100%" BackColor="#e7e7e7"></asp:TextBox>--%>
+                                                                                                                            <%--  <asp:TextBox ID="txtfixedtotal" runat="server" CssClass="cssTextBox" ValidationGroup="product" Text="0" Width="100%" BackColor="#e7e7e7"></asp:TextBox>--%>
                                                                                                                         </td>
                                                                                                                         <td style="width: 13%"></td>
                                                                                                                     </tr>
@@ -761,7 +805,7 @@
                                                                                                                                             </tr>
                                                                                                                                             <tr>
                                                                                                                                                 <td class="ControlLabelproject" style="width: 25%;">
-                                                                                                                                                    <asp:RequiredFieldValidator ID="rvbank" runat="server" ControlToValidate="cmbBankName" CssClass="lblFont" EnableClientScript="true" Enabled="false" ErrorMessage="Bank is mandatory" InitialValue="0" Text="*" ValidationGroup="purchaseval" />
+                                                                                                                                                    <asp:RequiredFieldValidator ID="rvbank" runat="server" ControlToValidate="cmbBankName" CssClass="lblFont" Display="Dynamic" EnableClientScript="true" Enabled="false" ErrorMessage="Bank is mandatory" InitialValue="0" Text="*" ValidationGroup="purchaseval" />
                                                                                                                                                     Bank name * </td>
                                                                                                                                                 <td class="ControlDrpBorder" style="width: 19%;"><%--<asp:Panel ID="Panel21" runat="server" Width="20%">--%>
                                                                                                                                                     <asp:DropDownList ID="cmbBankName" runat="server" AppendDataBoundItems="true" AutoPostBack="true" AutoCompleteMode="Suggest" OnSelectedIndexChanged="cmbBankName_SelectedIndexChanged" BackColor="#e7e7e7" CssClass="drpDownListMedium" DataTextField="LedgerName" DataValueField="LedgerID" Height="26px" Style="border: 1px solid #e7e7e7" ValidationGroup="purchaseval" Width="100%">
@@ -770,7 +814,7 @@
                                                                                                                                                     <%--</asp:Panel> --%></td>
                                                                                                                                                 <td style="width: 14%;"></td>
                                                                                                                                                 <td class="ControlLabelproject" style="width: 14%">
-                                                                                                                                                    <asp:RequiredFieldValidator ID="rvCheque" runat="server" ControlToValidate="cmbChequeNo" EnableClientScript="true" Enabled="false" ErrorMessage="Cheque No. is mandatory" Text="*" ValidationGroup="purchaseval" />
+                                                                                                                                                    <asp:RequiredFieldValidator ID="rvCheque" runat="server" ControlToValidate="cmbChequeNo" EnableClientScript="true" Enabled="false" Display="Dynamic" ErrorMessage="Cheque No. is mandatory" Text="*" ValidationGroup="purchaseval" />
                                                                                                                                                     Cheque / Credit Card No.* </td>
                                                                                                                                                 <td class="ControlDrpBorder" style="width: 19%;"><%--<asp:Panel ID="Panel21" runat="server" Width="20%">--%>
                                                                                                                                                     <asp:TextBox ID="txtChequeNo" runat="server" BackColor="#e7e7e7" CssClass="cssTextBox" MaxLength="1" Width="0%" Visible="false"></asp:TextBox>
@@ -834,6 +878,7 @@
                                                                                                                         <td align="center" colspan="4">
                                                                                                                             <input id="inpHide" type="hidden" runat="server" />
                                                                                                                             <input id="inpHide1" type="hidden" runat="server" />
+                                                                                                                            <input id="HiddenField1" type="hidden" runat="server" />
                                                                                                                             <asp:HiddenField ID="hdRole" runat="server" Value="N" />
                                                                                                                             <asp:HiddenField ID="hdStock" runat="server" Value="0" />
                                                                                                                             <asp:HiddenField ID="hdPurchase" runat="server" Value="0" />
@@ -1235,6 +1280,7 @@
                                                                                                                                                 <td colspan="4">
                                                                                                                                                     <div style="height: 250px; width: 1190px; overflow: scroll">
                                                                                                                                                         <center>
+
                                                                                                                                                             <asp:GridView ID="grvStudentDetails" runat="server" Width="50%" EnableViewState="true"
                                                                                                                                                                 ShowFooter="True" AutoGenerateColumns="False" OnRowDeleting="grvStudentDetails_RowDeleting" OnRowDataBound="grvStudentDetails_RowDataBound"
                                                                                                                                                                 CellPadding="1"
@@ -1314,7 +1360,7 @@
                                                                                                                                                                     </asp:TemplateField>
                                                                                                                                                                     <asp:CommandField ShowDeleteButton="True" ButtonType="Button" />
                                                                                                                                                                 </Columns>
-                                                                                                                                                                <%-- <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                                                                                                                                                <%-- <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" /> OnClientClick="return ConfirmNEW(this);"
                                                                                                                                                         <RowStyle BackColor="#EFF3FB" />
                                                                                                                                                         <EditRowStyle BackColor="#2461BF" />
                                                                                                                                                         <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
@@ -1322,6 +1368,7 @@
                                                                                                                                                         <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                                                                                                                                         <AlternatingRowStyle BackColor="White" />--%>
                                                                                                                                                             </asp:GridView>
+
                                                                                                                                                         </center>
                                                                                                                                                     </div>
                                                                                                                                                 </td>
@@ -1544,7 +1591,7 @@
                                                                                                             <ContentTemplate>
                                                                                                                 <table class="tblLeft" width="1200px" cellpadding="0" cellspacing="1">
                                                                                                                     <tr>
-                                                                                                                        <td style="width: 20%" class="ControlLabelproject">Voucher No. 
+                                                                                                                        <td style="width: 20%" class="ControlLabelproject">Purchase ID. 
                                                                                                                         </td>
                                                                                                                         <td class="ControlTextBox3" style="width: 23%">
                                                                                                                             <asp:Label ID="txtInvoiveNo" runat="server" Height="30px" BackColor="#e7e7e7"></asp:Label>
@@ -1650,8 +1697,8 @@
                                                                                                                                         </tr>
                                                                                                                                         <tr>
                                                                                                                                             <td class="ControlLabelproject" style="width: 19.7%">
-                                                                                                                                                <asp:RequiredFieldValidator ID="rqSalesReturn" runat="server" ErrorMessage="Reason is mandatory"
-                                                                                                                                                    Text="*" Enabled="false" ControlToValidate="txtSRReason" ValidationGroup="purchaseval" />
+                                                                                                                                               <%-- <asp:RequiredFieldValidator ID="rqSalesReturn" runat="server" ErrorMessage="Reason is mandatory" Display="Dynamic"
+                                                                                                                                                    Text="*" Enabled="false" ControlToValidate="txtSRReason" ValidationGroup="purchaseval" />--%>
                                                                                                                                                 Sales Return Reason *
                                                                                                                                             </td>
                                                                                                                                             <td style="width: 23.5%" class="ControlTextBox3">
@@ -1681,7 +1728,7 @@
                                                                                                                                     <table runat="server" id="rowdcnum" cellpadding="0" cellspacing="0" width="100%">
                                                                                                                                         <tr>
                                                                                                                                             <td style="width: 19.7%" class="ControlLabelproject">
-                                                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Dc No is mandatory"
+                                                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Dc No is mandatory" Display="Dynamic"
                                                                                                                                                     Text="*" Enabled="false" ControlToValidate="txtdcbillno" ValidationGroup="purchaseval" />
                                                                                                                                                 DC Bill No *
                                                                                                                                             </td>
@@ -1717,9 +1764,10 @@
                                                                                                                     Width="28px" Height="27px" Visible="false" />
                                                                                                             </td>
                                                                                                             <td style="width: 17%">
-                                                                                                                <asp:Button ID="cmdUpdate" ValidationGroup="purchaseval" runat="server" Text="" CssClass="Updatebutton1231" OnClientClick="ConfirmIt();"
+
+                                                                                                                <asp:Button ID="cmdUpdate" ValidationGroup="purchaseval" runat="server" Text="" CssClass="Updatebutton1231" OnClientClick="return ConfirmNEW();"
                                                                                                                     EnableTheming="false" OnClick="cmdUpdate_Click" SkinID="skinBtnSave" />
-                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231" OnClientClick="ConfirmIt();"
+                                                                                                                <asp:Button ID="cmdSave" ValidationGroup="purchaseval" runat="server" Text="" CssClass="savebutton1231" OnClientClick="return ConfirmNEW();"
                                                                                                                     EnableTheming="false" OnClick="cmdSave_Click" SkinID="skinBtnSave" />
                                                                                                             </td>
                                                                                                             <td style="width: 17%">
@@ -1730,7 +1778,7 @@
                                                                                                                 <asp:Button ID="cmdPrint" CausesValidation="false" runat="server" Text="" Enabled="false"
                                                                                                                     CssClass="printbutton6" EnableTheming="false" OnClick="cmdPrint_Click" SkinID="skinBtnPrint" />
                                                                                                             </td>
-                                                                                                            <td style="width: 24%"></td>
+                                                                                                            <td style="width: 24%"></td>                                                                                                           
                                                                                                         </tr>
                                                                                                     </table>
                                                                                                 </td>
@@ -1782,7 +1830,7 @@
                                                 <HeaderStyle Height="30px" HorizontalAlign="Center" Font-Bold="true" BackColor="#cccccc" BorderColor="Gray" Font-Size="Small" />
                                                 <RowStyle Font-Bold="true" HorizontalAlign="Center" Height="30px" Font-Size="Small" CssClass="GrdItemForecolor" ForeColor="#414141" />
                                                 <Columns>
-                                                    <asp:BoundField DataField="PurchaseID" HeaderText="Voucher No" HeaderStyle-Width="50px" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
+                                                    <asp:BoundField DataField="PurchaseID" HeaderText="Purchase ID" HeaderStyle-Width="50px" HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray" />
                                                     <asp:BoundField DataField="TransNo" HeaderText="Trans. No." HeaderStyle-Wrap="false" HeaderStyle-BorderColor="Gray"
                                                         HeaderStyle-Width="50px" />
                                                     <asp:BoundField DataField="Billno" HeaderText="Bill No." HeaderStyle-Width="60px" HeaderStyle-BorderColor="Gray"

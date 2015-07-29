@@ -53,7 +53,7 @@
         }
 
         function GetSelectedTextValue(drpPrd) {
-
+            alert("test");
             var selectedText = drpPrd.options[drpPrd.selectedIndex].innerHTML;
             var selectedValue = drpPrd.options[drpPrd.selectedIndex].value;// drpPrd.value;
 
@@ -83,6 +83,7 @@
                 var indexID = 02 + i;
 
                 //alert((indexID < 10) ? '0' + indexID.toString() : indexID.toString());
+               
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_drpPrd').value = drpPrd.options[drpPrd.selectedIndex].value;
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtDesc').value = prddsc;
                 document.getElementById('ctl00_cplhControlPanel_tabs2_TabPanel2_grvStudentDetails_ctl' + ((indexID < 10) ? '0' + indexID.toString() : indexID.toString()) + '_txtStock').value = stock;
@@ -584,7 +585,7 @@
                                                                                                                                         <%--  <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="drpCustomerCategoryAdd" Display="Dynamic" ErrorMessage="Please Select Purchase InvoiceNo. It cannot be left blank. " Operator="GreaterThan" Text="*" ValidationGroup="salesval" ValueToCompare="0"></asp:CompareValidator>--%>
 
                                                                                                                                         <asp:Label ID="PurInNo" runat="server">
-                                                                                                                                            <asp:CheckBox runat="server" ID="chkPurInNo" Text="Delivery Return" AutoPostBack="true" OnCheckedChanged="chkPurInNo_CheckedChanged" />
+                                                                                                                                            <asp:CheckBox runat="server" ID="chkPurInNo" Text="DC Purchase Return" AutoPostBack="true" OnCheckedChanged="chkPurInNo_CheckedChanged" />
                                                                                                                                         </asp:Label>
 
                                                                                                                                     </td>

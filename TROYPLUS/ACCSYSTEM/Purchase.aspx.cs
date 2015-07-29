@@ -341,13 +341,31 @@ public partial class Purchase : System.Web.UI.Page
             //else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) <= 0) && (Convert.ToDouble(txtCSTPre.Text) <= 0)) || ((Convert.ToDouble(txtVATPre.Text) > 0) && (Convert.ToDouble(txtCSTPre.Text) > 0)))
             else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) == 0) && (Convert.ToDouble(txtCSTPre.Text) == 0)))
             {
+                //HiddenField1.Value = "";
                 //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter either VAT(%) or CST(%) in row " + col + " ')", true);
                 //checkflag = true;
                 //return;
-
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Alert! VAT(%) and CST(%) are Zeros(0) in row " + col + ". ')", true);
-                checkflag = false;
+                //ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "Confirm", "Confirm('Text U want to display');", true);
+               // ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>a=Confirm(); alert(a);</script>", false);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Alert! VAT(%) and CST(%) are Zeros(0) in row " + col + ". ')", true);
+                //checkflag = false;                
                 //return;
+
+
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>var a=Confirm();alert(a);</script>", false);
+
+                //if (HiddenField1.Value == "true")
+                //{
+                //    checkflag = false;
+                //}
+                //else if (HiddenField1.Value == "")
+                //{
+                //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>var a=Confirm();alert(a);</script>", false);
+                //    checkflag = true;
+                //   // ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>var a=Confirm();alert(a);</script>", false);
+                //   // checkflag = true;                  
+                //    //return;
+                //}
 
             }
             //else if ((txtVATPre.Text == "" && txtCSTPre.Text == "") || ((Convert.ToDouble(txtVATPre.Text) <= 0) && (Convert.ToDouble(txtCSTPre.Text) <= 0)) || ((Convert.ToDouble(txtVATPre.Text) > 0) && (Convert.ToDouble(txtCSTPre.Text) > 0)))
@@ -917,6 +935,12 @@ public partial class Purchase : System.Web.UI.Page
                 //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please select the products before save')", true);
                 //    return;
                 //}
+                if (txtBillno.Text == "")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter InvoiceNo')", true);
+                    cmdSave.Enabled = true;
+                    return;
+                }
 
                 if (txtfixedtotal.Text == "")
                 {
@@ -1125,6 +1149,16 @@ public partial class Purchase : System.Web.UI.Page
                     if (ponumber == "")
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter Purchase order number.It cannot be left blank.')", true);
+                        cmdSave.Enabled = true;
+                        return;
+                    }
+                }
+
+                if(salesReturn == "YES")
+                {
+                    if(srReason=="")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter Sales return reason.')", true);
                         cmdSave.Enabled = true;
                         return;
                     }
@@ -1659,7 +1693,7 @@ public partial class Purchase : System.Web.UI.Page
                         DataSet ds1 = bl.generateOutStandingforAdjust(2, sDataSource, branchcode, iSupplier);
                         if (ds1.Tables[0].Rows.Count > 0)
                         {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>Confirm();</script>", false);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>Confirm1();</script>", false);
                             string confirmValue = Request.Form["confirm_value"];
 
                             if (confirmValue == "Yes")
@@ -2212,6 +2246,13 @@ public partial class Purchase : System.Web.UI.Page
                     return;
                 }
 
+                if (txtBillno.Text == "")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter InvoiceNo')", true);
+                    cmdSave.Enabled = true;
+                    return;
+                }
+
                 if (txtfixedtotal.Text == "")
                 {
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter FixedTotal')", true);
@@ -2266,6 +2307,16 @@ public partial class Purchase : System.Web.UI.Page
                     if (ponumber == "")
                     {
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter Purchase order number.It cannot be left blank.')", true);
+                        cmdSave.Enabled = true;
+                        return;
+                    }
+                }
+
+                if (salesReturn == "YES")
+                {
+                    if (srReason == "")
+                    {
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Enter Sales return reason.')", true);
                         cmdSave.Enabled = true;
                         return;
                     }
@@ -4008,7 +4059,7 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
                 if (clii != null) clii.Selected = true;
 
-                rqSalesReturn.Enabled = false;
+                //rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = false;
                 rowSalesRet.Visible = false;
                 RequiredFieldValidator2.Enabled = false;
@@ -4049,7 +4100,7 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("YES"));
                 if (clii != null) clii.Selected = true;
 
-                rqSalesReturn.Enabled = false;
+                //rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = false;
                 rowSalesRet.Visible = false;
                 RequiredFieldValidator2.Enabled = false;
@@ -4089,7 +4140,7 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
                 if (clii != null) clii.Selected = true;
 
-                rqSalesReturn.Enabled = false;
+               // rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = false;
                 rowSalesRet.Visible = false;
                 RequiredFieldValidator2.Enabled = false;
@@ -4124,7 +4175,7 @@ public partial class Purchase : System.Web.UI.Page
                 if (clii != null) clii.Selected = true;
 
                 RequiredFieldValidator2.Enabled = true;
-                rqSalesReturn.Enabled = false;
+               // rqSalesReturn.Enabled = false;
                 rowdcnum.Visible = true;
                 rowSalesRet.Visible = false;
                 drpIntTrans.Enabled = false;
@@ -4174,7 +4225,7 @@ public partial class Purchase : System.Web.UI.Page
                 ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("NO"));
                 if (clii != null) clii.Selected = true;
 
-                rqSalesReturn.Enabled = true;
+                //rqSalesReturn.Enabled = true;
                 rowdcnum.Visible = false;
                 rowSalesRet.Visible = true;
                 RequiredFieldValidator2.Enabled = false;
@@ -6065,13 +6116,13 @@ public partial class Purchase : System.Web.UI.Page
         {
             if (drpSalesReturn.SelectedItem.Text == "NO")
             {
-                rqSalesReturn.Enabled = false;
+               // rqSalesReturn.Enabled = false;
                 rowSalesRet.Visible = false;
                 loadSupplier("Sundry Creditors");
             }
             else
             {
-                rqSalesReturn.Enabled = true;
+                //rqSalesReturn.Enabled = true;
                 rowSalesRet.Visible = true;
                 loadSupplier("Sundry Debtors");
             }
@@ -8473,7 +8524,7 @@ public partial class Purchase : System.Web.UI.Page
             if (clii != null) clii.Selected = true;
 
             RequiredFieldValidator2.Enabled = true;
-            rqSalesReturn.Enabled = false;
+           // rqSalesReturn.Enabled = false;
             rowdcnum.Visible = true;
             rowSalesRet.Visible = false;
             drpIntTrans.Enabled = false;
@@ -8524,7 +8575,7 @@ public partial class Purchase : System.Web.UI.Page
             ListItem clii = ddDeliveryNote.Items.FindByValue(Convert.ToString("YES"));
             if (clii != null) clii.Selected = true;
 
-            rqSalesReturn.Enabled = false;
+           // rqSalesReturn.Enabled = false;
             rowdcnum.Visible = false;
             rowSalesRet.Visible = false;
 

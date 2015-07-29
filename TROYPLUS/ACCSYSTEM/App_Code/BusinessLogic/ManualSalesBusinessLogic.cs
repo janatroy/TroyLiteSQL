@@ -79,7 +79,7 @@ public partial class BusinessLogic
             if (Types == "New")
             {
                 sAuditStr = "Manual Sales Book For : " + BookName + " added. Record Details :  User :" + Username;
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 
@@ -206,7 +206,7 @@ public partial class BusinessLogic
             if (Types == "Delete")
             {
                 sAuditStr = "Manual Sale Book For : " + BookId + " deleted. Record Details :  User :" + Username;
-                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',{2})", sAuditStr, "Delete", DateTime.Now.ToShortDateString());
+                dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}',{2})", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 manager.ExecuteNonQuery(CommandType.Text, dbQry);
             }
 

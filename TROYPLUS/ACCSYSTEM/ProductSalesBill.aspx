@@ -15,24 +15,25 @@
     <link rel="Stylesheet" href="App_Themes/DefaultTheme/DefaultTheme.css" />
     <script type="text/javascript">
         function CallPrint() {
-
+            
             var strid;
             var printType = document.getElementById("PrintDropDownList");
-            if (printType[printType.selectedIndex].value == "1") {
+            //if (printType[printType.selectedIndex].value == "1") {
 
-                //document.getElementById("divPrint").visible = "true";
-                //document.getElementById("divPrintEx").visible = "false";
+            //    //document.getElementById("divPrint").visible = "true";
+            //    //document.getElementById("divPrintEx").visible = "false";
 
-                strid = 'divPrint';
-            }
-            else if (printType[printType.selectedIndex].value == "2") {
+            //    strid = 'divPrint';
+            //}
+            //else if (printType[printType.selectedIndex].value == "2") {
 
-                //document.getElementById("divPrint").visible = "false";
-                //document.getElementById("divPrintEx").visible = "true";
+            //    //document.getElementById("divPrint").visible = "false";
+            //    //document.getElementById("divPrintEx").visible = "true";
 
-                strid = 'divPrintEx';
-            }
-
+            //    strid = 'divPrintEx';
+            //}
+            strid = 'divPrint';
+           
             var prtContent = document.getElementById(strid);
             var WinPrint = window.open('', '', 'letf=0,top=0,width=700,height=400,toolbar=0,scrollbars=1,status=0');
             WinPrint.document.write(prtContent.innerHTML);
@@ -168,7 +169,7 @@
                                             <b>Sales Bill Details Entry</b>
                                         </td>
                                     </tr>
-                                    <tr>
+                                     <tr runat="server" visible="false">
                                         <td style="width: 10%">Copy
                                         </td>
                                         <td style="width: 40%">&nbsp;&nbsp;<asp:TextBox ID="txtCopy" runat="server" Text="Customer Copy" CssClass="cssTextBox"
@@ -187,7 +188,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr runat="server" visible="false">
                                         <td>Print Type :</td>
                                         <td>
                                             <asp:DropDownList ID="PrintDropDownList" runat="server" BackColor="#90c9fc" Style="border: 1px solid Blue" Height="24px"
@@ -226,13 +227,14 @@
                                                 <table style="font-family: 'Trebuchet MS'; font-size: 14px; width: 700px;">
                                                     <tr>
                                                         <td class="auto-style12">
-                                                           <asp:Image ID="Image4" runat="server" ImageUrl="~/img/Benit-Icon.png" Width="120px" Height="114px" />
+                                                           <asp:Image ID="Image4" runat="server" ImageUrl="~/img/Benit-Icon.png" Width="100px" Height="114px" />
                                                            <%--  <asp:Image ID="Image4" runat="server" ImageUrl="~/img/Logo-Varunavi Enterprises.jpg" Width="120px" Height="114px" />--%>
+                                                        </td>
+                                                        <td class="auto-style12" style="width:100px">
                                                         </td>
                                                         <td valign="top" align="left" class="auto-style24">
 
                                                             <table border="0" style="font-family: Verdana, Geneva, Tahoma, sans-serif; width: 210px; height: 90px;">
-
                                                                 <tr id="tr1" runat="server">
                                                                     <td align="center" class="auto-style16" style="font-weight: 600; font-size: 25px;">
                                                                         <asp:Label ID="Label4" Text="Benit & Co" runat="server" />
@@ -262,45 +264,46 @@
                                                             </table>
 
                                                         </td>
-
+                                                        <%-- <td class="auto-style12" style="width:50px">
+                                                        </td>--%>
                                                         <td align="right" width="150px" valign="top">
 
                                                             <asp:Panel BackColor="#c0c0c0" Height="95px"
                                                                 runat="server" ID="MainPanel" Width="100%" HorizontalAlign="Center" Style="margin-left: 0px">
                                                                 <table style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-weight: bold; text-align: left; font-size: 10px;">
                                                                     <tr>
-                                                                        <td class="auto-style12">
+                                                                        <td align="left" class="auto-style12">
                                                                             <asp:Label ID="lblCompany" runat="server"></asp:Label>,
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="auto-style12">
+                                                                        <td align="left" class="auto-style12">
                                                                             <asp:Label ID="lblAddress1" runat="server"></asp:Label>,
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="auto-style12">
+                                                                        <td align="left" class="auto-style12">
                                                                             <asp:Label ID="lblAddress2" runat="server" />,
                                                                         </td>
                                                                     </tr>
                                                                     <tr id="address3" runat="server">
-                                                                        <td class="auto-style12">
+                                                                        <td align="left" class="auto-style12">
                                                                             <asp:Label ID="lblAddress3" runat="server"> </asp:Label>,
                                                                         </td>
                                                                     </tr>
 
                                                                     <tr>
-                                                                        <td class="auto-style12">
+                                                                        <td align="left" class="auto-style12">
                                                                             <asp:Label ID="lblLocation" runat="server"> </asp:Label>.
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="auto-style12">
+                                                                        <td align="left" class="auto-style12">
                                                                             <asp:Label ID="lblMob1" runat="server"> </asp:Label>.
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="auto-style12">
+                                                                        <td align="left" class="auto-style12">
                                                                             <asp:Label ID="lblEmail" runat="server"> </asp:Label>.
                                                                         </td>
                                                                     </tr>
@@ -319,7 +322,7 @@
                                 </tr>
                             </table>
 
-                            <table border="0" cellpadding="2" cellspacing="0" class="lblFont" style="font-family: 'Trebuchet MS'; font-size: 14px;  height: 121px; width: 682px;"
+                            <table border="0" cellpadding="2" cellspacing="0" class="lblFont" style="font-family: 'Trebuchet MS'; font-size: 14px;  height: 121px; width:682px;"
                                 align="center">
 
                                 <tr>
@@ -378,14 +381,15 @@
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                     </td>
-
+                                     <td class="auto-style12" style="width:50px">
+                                                        </td>
                                     <td class="auto-style18">
                                         <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Always">
                                             <ContentTemplate>
                                                 <table border="0" cellpadding="2" cellspacing="0" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; width: 230px;">
 
                                                     <tr style="text-align: left; color: black; font-size: 14px;">
-                                                        <td style="padding-left: 5px; padding-bottom: 5px; padding-top: 5px;"><strong>Delivery Address: </strong></td>
+                                                        <td align="left" class="auto-style6" style="font-weight: bold;"><strong>Delivery Address: </strong></td>
                                                     </tr>
 
                                                     <tr runat="server">
@@ -434,7 +438,7 @@
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                     </td>
-
+                                    
                                     <td class="auto-style7">
                                         <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Always">
                                             <ContentTemplate>
@@ -462,9 +466,9 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="auto-style26" style="text-align: right; width: 100%">Purchase Order #: </td>
+                                                        <td class="auto-style26" style="text-align: right; width: 100%">Transaction No: </td>
                                                         <td class="auto-style33" style="font-weight: bold; border-bottom: 2px solid #999999; border-left: 2px solid #999999; border-right: 2px solid #999999;">
-                                                            <asp:Label ID="lblPurchaseOrder" runat="server"></asp:Label>
+                                                            <asp:Label ID="lblTransno" runat="server"></asp:Label>
                                                         </td>
                                                     </tr>
 
@@ -947,8 +951,8 @@
                                             <ContentTemplate>
                                                 <table border="0" cellpadding="2" cellspacing="0" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; width: 230px;">
 
-                                                    <tr style="text-align: left; color: #FFFFFF; font-size: 14px;">
-                                                        <td style="padding-left: 5px; padding-bottom: 5px; padding-top: 5px;"><strong>Billing Address: </strong></td>
+                                                    <tr style="text-align: left; color: black; font-size: 14px;">
+                                                        <td align="left" class="auto-style6" style="font-weight: bold;"><strong>Billing Address: </strong></td>
                                                     </tr>
 
                                                     <tr runat="server">
@@ -1001,8 +1005,8 @@
                                             <ContentTemplate>
                                                 <table border="0" cellpadding="2" cellspacing="0" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; width: 230px;">
 
-                                                    <tr style="text-align: left; color: #FFFFFF; font-size: 14px;">
-                                                        <td style="padding-left: 5px; padding-bottom: 5px; padding-top: 5px;"><strong>Delivery Address: </strong></td>
+                                                    <tr style="text-align: left; color: black; font-size: 14px;">
+                                                        <td align="left" class="auto-style6" style="font-weight: bold;"><strong>Delivery Address: </strong></td>
                                                     </tr>
 
                                                     <tr runat="server">

@@ -2281,7 +2281,8 @@ public partial class SalesdailyReport4 : System.Web.UI.Page
                                     {
                                         dr_final113["billSales"] = (Convert.ToDecimal(drd["billSales"])).ToString("#0.00");
                                         dr_final113["Managementprofit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drd["DailySalesforgp"]))).ToString("#0.00");
-                                        DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(dr["LinkName"].ToString()));
+                                        //DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(dr["LinkName"].ToString()));
+                                        DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(dr["LinkName"].ToString()), Convert.ToDateTime(dr["LinkName"].ToString()));
                                         if (db1 != null)
                                         {
                                             if (db1.Tables[0].Rows.Count > 0)
@@ -2478,7 +2479,8 @@ public partial class SalesdailyReport4 : System.Web.UI.Page
                                         dr_final113["billSales"] = (Convert.ToDecimal(drd["billSales"])).ToString("#0.00");
                                         dr_final113["Managementprofit"] = ((Convert.ToDecimal(drd["billSales"])) - (Convert.ToDecimal(drd["DailySalesforgp"]))).ToString("#0.00");
                                         //DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(dr["LinkName"].ToString()));
-                                        DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(firstDayOfTheMonth.ToString("yyyy-MM-dd")));
+                                        //DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(firstDayOfTheMonth.ToString("yyyy-MM-dd")));
+                                        DataSet db1 = bl.getdetailedsalesreport2NEW(connection, dr["BranchCode"].ToString(), Convert.ToDateTime(firstDayOfTheMonth.ToString("yyyy-MM-dd")), Convert.ToDateTime(lastDayOfTheMonth.ToString("yyyy-MM-dd")));
                                         if (db1 != null)
                                         {
                                             if (db1.Tables[0].Rows.Count > 0)

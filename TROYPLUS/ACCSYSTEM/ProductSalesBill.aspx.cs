@@ -136,7 +136,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
 
     public void GetHeaderInfo()
     {
-        lblPurchaseOrder.Text = "";
+       // lblPurchaseOrder.Text = "";
         lblPaymentDue.Text = "";
 
         double dFreight = 0;
@@ -249,6 +249,7 @@ public partial class ProductSalesBill : System.Web.UI.Page
                 lblInvoiceEx.Text = branchCode + "-" + Convert.ToString(dr["BillNo"]);
 
                 lblCustomerID.Text = Convert.ToString(dr["CustomerID"]);
+                lblTransno.Text = Convert.ToString(dr["Transno"]);
                 lblCustomerIDEx.Text = Convert.ToString(dr["CustomerID"]);
 
                 if (dr["paymode"].ToString() == "1")

@@ -630,7 +630,7 @@ public class LeadBusinessLogic : BaseLogic
 
             sAuditStr = "Lead Rererence Text Value: " + TextValue + " got edited. Record Details : User: " + username;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -682,7 +682,7 @@ public class LeadBusinessLogic : BaseLogic
 
             sAuditStr = "Lead Rererence Text Value: " + TextValue + " added. Record Details : User: " + username;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -720,7 +720,7 @@ public class LeadBusinessLogic : BaseLogic
 
 
             sAuditStr = "Lead Reference Lead No: " + ID + " Deleted. Record Details : User: " + username;
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Delete", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
             manager.CommitTransaction();
@@ -909,7 +909,7 @@ public class LeadBusinessLogic : BaseLogic
 
             sAuditStr = "Lead Management Lead Name: " + LeadName + " added. Record Details : User: " + username;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Add New", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);
 
 
@@ -1349,7 +1349,7 @@ public class LeadBusinessLogic : BaseLogic
 
             sAuditStr = "Lead Management LeadNo: " + LeadNo + " got edited. Old Record Details : Lead No=" + OldTransNo + " Bp Name=" + OldCustomer + ", Lead Name = " + OldContact + ", Start Date=" + Olddcreationdate + " DateTime:" + DateTime.Now.ToString("yyyy-MM-dd") + " User: " + usernam;
 
-            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd"));
+            dbQry = string.Format("INSERT INTO  tblAudit(Description,Command,auditdate) VALUES('{0}','{1}','{2}')", sAuditStr, "Edit and Update", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             manager.ExecuteNonQuery(CommandType.Text, dbQry);           
 
             manager.CommitTransaction();
