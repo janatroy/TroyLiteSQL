@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Management;
+using System.Security.Cryptography;
 using System.Text;
 using System.IO;
 using System.Xml;
@@ -32,57 +33,69 @@ public partial class Login : System.Web.UI.Page
     private static extern Int32 inet_addr(string ip);
 
     string mac_dest = "";
+    private static string fingerPrint = string.Empty;
+    string mac1 = string.Empty;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
+            
             //ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
             //scriptManager.RegisterPostBackControl(this.btnLogin); 
           //  ScriptManager.RegisterStartupScript(this, GetType(), "displayalertmessage", "callme();", true);
             
-                string userip = Request.UserHostAddress;
-                string strClientIP = Request.UserHostAddress.ToString().Trim();
-                Int32 ldest = inet_addr(strClientIP);
-                Int32 lhost = inet_addr("");
-                Int64 macinfo = new Int64();
-                Int32 len = 6;
-                int res = SendARP(ldest, 0, ref macinfo, ref len);
-                string mac_src = macinfo.ToString("X");
-                if (mac_src == "0")
-                {
-                    if (userip == "127.0.0.1")
-                        Response.Write("visited Localhost!");
-                    else
-                        Response.Write("the IP from" + userip + "" + "<br>");
-                    return;
-                }
+                //string userip = Request.UserHostAddress;
+                //string strClientIP = Request.UserHostAddress.ToString().Trim();
+                //Int32 ldest = inet_addr(strClientIP);
+                //Int32 lhost = inet_addr("");
+                //Int64 macinfo = new Int64();
+                //Int32 len = 6;
+                //int res = SendARP(ldest, 0, ref macinfo, ref len);
+                //string mac_src = macinfo.ToString("X");
+                //if (mac_src == "0")
+                //{
+                //    if (userip == "127.0.0.1")
+                //        Response.Write("visited Localhost!");
+                //    else
+                //        Response.Write("the IP from" + userip + "" + "<br>");
+                //    return;
+                //}
 
-                while (mac_src.Length < 12)
-                {
-                    mac_src = mac_src.Insert(0, "0");
-                }
+                //while (mac_src.Length < 12)
+                //{
+                //    mac_src = mac_src.Insert(0, "0");
+                //}
 
                 
 
-                for (int i = 0; i < 11; i++)
-                {
-                    if (0 == (i % 2))
-                    {
-                        if (i == 10)
-                        {
-                            mac_dest = mac_dest.Insert(0, mac_src.Substring(i, 2));
-                        }
-                        else
-                        {
-                            mac_dest = "-" + mac_dest.Insert(0, mac_src.Substring(i, 2));
-                        }
-                    }
-                }
+                //for (int i = 0; i < 11; i++)
+                //{
+                //    if (0 == (i % 2))
+                //    {
+                //        if (i == 10)
+                //        {
+                //            mac_dest = mac_dest.Insert(0, mac_src.Substring(i, 2));
+                //        }
+                //        else
+                //        {
+                //            mac_dest = "-" + mac_dest.Insert(0, mac_src.Substring(i, 2));
+                //        }
+                //    }
+                //}
 
-                Response.Write("welcome" + userip + "<br>" + " MAC address :" + mac_dest + "."
+                //Response.Write("welcome" + userip + "<br>" + " MAC address :" + mac_dest + "."
 
-                 + "<br>");
+                // + "<br>");
+
+
+                Value();
+                GetHash(fingerPrint);
+
+                Response.Write("welcome" + fingerPrint + "<br>");
+               
+               
+
             
 
             if (!Page.IsPostBack)
@@ -138,12 +151,12 @@ public partial class Login : System.Web.UI.Page
         string appVersion = "1.1.1";
         string dbfileName = string.Empty;
 
-        string mac1 = string.Empty;
+       
 
         string mac = string.Empty;
         //  GetMACAddress();
       //  mac = macAddress.Value;
-        mac = mac_dest;
+        mac = fingerPrint;
 
        // 
 
@@ -366,7 +379,12 @@ public partial class Login : System.Web.UI.Page
 
                 if (!(CheckPasswordExpiry(txtLogin.Text)))
                 {
-                    Response.Redirect("PasswordExpiry.aspx");
+                    
+                    
+                    Response.Redirect("PasswordExpiry.aspx",false);
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('welcome' + '" + fingerPrint + "');", true);
+                    return;
+                    
                 }
 
                 int expdays = 10;
@@ -381,12 +399,14 @@ public partial class Login : System.Web.UI.Page
                     if (dr == DialogResult.Yes)
                     {
                         Response.Redirect("ChangePassword.aspx");
+                       // ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('welcome' + '" + fingerPrint + "');", true);
                     }
                     else
                     {
                         if (!bl.GetSalesRole(Request.Cookies["Company"].Value, txtLogin.Text))
                         {
                             Response.Redirect("Default.aspx");
+                          //  ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('welcome' + '" + fingerPrint + "');", true);
                         }
                         else
                         {
@@ -399,6 +419,7 @@ public partial class Login : System.Web.UI.Page
                     if (!bl.GetSalesRole(Request.Cookies["Company"].Value, txtLogin.Text))
                     {
                         Response.Redirect("Default.aspx");
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('welcome' + '" + fingerPrint + "');", true);
                     }
                     else
                     {
@@ -419,6 +440,7 @@ public partial class Login : System.Web.UI.Page
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('welcome' + '" + fingerPrint + "');", true);
             return;
         }
 
@@ -718,7 +740,8 @@ public partial class Login : System.Web.UI.Page
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                if (ds.Tables[0].Rows[i]["IP"].ToString() == macAddress.Value)
+                string macc = ds.Tables[0].Rows[i]["IP"].ToString();
+                if (macc.Trim() == mac1.Trim())  //"6C39-EBAB-463B-0963-7B61-C850-E9B5-D6A1")// mac1.Trim())
                     return true;
             }
         }
@@ -822,5 +845,166 @@ public partial class Login : System.Web.UI.Page
     //drpBranch.DataTextField = "BranchName";
     //drpBranch.DataValueField = "Branchcode";
     //}
+   
+    /// <summary>
+    /// Generates a 16 byte Unique Identification code of a computer
+    /// Example: 4876-8DB5-EE85-69D3-FE52-8CF7-395D-2EA9
+    /// </summary>
+   
+    
+            public static string Value()
+        {
+            if (string.IsNullOrEmpty(fingerPrint))
+            {
+                fingerPrint = GetHash("CPU >> " + cpuId() + "\nBIOS >> " + 
+			biosId() + "\nBASE >> " + baseId());
+            }
+            return fingerPrint;
+        }
+        private static string GetHash(string s)
+        {
+            MD5 sec = new MD5Cng();
+            ASCIIEncoding enc = new ASCIIEncoding();
+            byte[] bt = enc.GetBytes(s);
+            return GetHexString(sec.ComputeHash(bt));
+        }
+        private static string GetHexString(byte[] bt)
+        {
+            string s = string.Empty;
+            for (int i = 0; i < bt.Length; i++)
+            {
+                byte b = bt[i];
+                int n, n1, n2;
+                n = (int)b;
+                n1 = n & 15;
+                n2 = (n >> 4) & 15;
+                if (n2 > 9)
+                    s += ((char)(n2 - 10 + (int)'A')).ToString();
+                else
+                    s += n2.ToString();
+                if (n1 > 9)
+                    s += ((char)(n1 - 10 + (int)'A')).ToString();
+                else
+                    s += n1.ToString();
+                if ((i + 1) != bt.Length && (i + 1) % 2 == 0) s += "-";
+            }
+            return s;
+        }
+        #region Original Device ID Getting Code
+        //Return a hardware identifier
+        private static string identifier
+		(string wmiClass, string wmiProperty, string wmiMustBeTrue)
+        {
+            string result = "";
+            System.Management.ManagementClass mc = 
+		new System.Management.ManagementClass(wmiClass);
+            System.Management.ManagementObjectCollection moc = mc.GetInstances();
+            foreach (System.Management.ManagementObject mo in moc)
+            {
+                if (mo[wmiMustBeTrue].ToString() == "True")
+                {
+                    //Only get the first one
+                    if (result == "")
+                    {
+                        try
+                        {
+                            result = mo[wmiProperty].ToString();
+                            break;
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        //Return a hardware identifier
+        private static string identifier(string wmiClass, string wmiProperty)
+        {
+            string result = "";
+            System.Management.ManagementClass mc = 
+		new System.Management.ManagementClass(wmiClass);
+            System.Management.ManagementObjectCollection moc = mc.GetInstances();
+            foreach (System.Management.ManagementObject mo in moc)
+            {
+                //Only get the first one
+                if (result == "")
+                {
+                    try
+                    {
+                        result = mo[wmiProperty].ToString();
+                        break;
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            return result;
+        }
+        private static string cpuId()
+        {
+            //Uses first CPU identifier available in order of preference
+            //Don't get all identifiers, as it is very time consuming
+            string retVal = identifier("Win32_Processor", "UniqueId");
+            if (retVal == "") //If no UniqueID, use ProcessorID
+            {
+                retVal = identifier("Win32_Processor", "ProcessorId");
+                if (retVal == "") //If no ProcessorId, use Name
+                {
+                    retVal = identifier("Win32_Processor", "Name");
+                    if (retVal == "") //If no Name, use Manufacturer
+                    {
+                        retVal = identifier("Win32_Processor", "Manufacturer");
+                    }
+                    //Add clock speed for extra security
+                    retVal += identifier("Win32_Processor", "MaxClockSpeed");
+                }
+            }
+            return retVal;
+        }
+        //BIOS Identifier
+        private static string biosId()
+        {
+            return identifier("Win32_BIOS", "Manufacturer")
+            + identifier("Win32_BIOS", "SMBIOSBIOSVersion")
+            + identifier("Win32_BIOS", "IdentificationCode")
+            + identifier("Win32_BIOS", "SerialNumber")
+            + identifier("Win32_BIOS", "ReleaseDate")
+            + identifier("Win32_BIOS", "Version");
+        }
+        //Main physical hard drive ID
+        private static string diskId()
+        {
+            return identifier("Win32_DiskDrive", "Model")
+            + identifier("Win32_DiskDrive", "Manufacturer")
+            + identifier("Win32_DiskDrive", "Signature")
+            + identifier("Win32_DiskDrive", "TotalHeads");
+        }
+        //Motherboard ID
+        private static string baseId()
+        {
+            return identifier("Win32_BaseBoard", "Model")
+            + identifier("Win32_BaseBoard", "Manufacturer")
+            + identifier("Win32_BaseBoard", "Name")
+            + identifier("Win32_BaseBoard", "SerialNumber");
+        }
+        //Primary video controller ID
+        private static string videoId()
+        {
+            return identifier("Win32_VideoController", "DriverVersion")
+            + identifier("Win32_VideoController", "Name");
+        }
+        //First enabled network card ID
+        private static string macId()
+        {
+            return identifier("Win32_NetworkAdapterConfiguration", 
+				"MACAddress", "IPEnabled");
+        }
+        #endregion
+    
+    
+
 
 }

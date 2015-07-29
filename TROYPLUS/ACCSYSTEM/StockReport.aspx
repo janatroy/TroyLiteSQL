@@ -97,7 +97,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div style="overflow-y: scroll; height: 150px; width: 250px">
+                                        <div id="pricelists" runat="server" style="overflow-y: scroll; height: 150px; width: 250px">
                                             <asp:Label ID="Label1" CssClass="ControlLabelproject" runat="server" Text="Select Pricelist:"></asp:Label>
 
                                             <asp:RadioButtonList ID="lstPricelist" AutoPostBack="true" runat="server" SelectionMode="Multiple" AppendDataBoundItems="true" DataTextField="PriceName" DataValueField="PriceName">

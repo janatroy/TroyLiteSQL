@@ -134,7 +134,7 @@
                                         <asp:CheckBox ID="chkRemember" runat="server" TabIndex="4" Style="margin-left: 10px;" />
                                     </td>
                                     <td>
-                                        &nbsp;
+                                        &nbsp;&nbsp;
                                     </td>
                                     <td class=" rememberme" style="width:90%">
                                         Remember Me

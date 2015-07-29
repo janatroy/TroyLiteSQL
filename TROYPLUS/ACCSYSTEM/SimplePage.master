@@ -59,7 +59,7 @@
                                 <ProgressTemplate>
                                     <progresstemplate>        
                                                 <div id="divLoading" class="divCenter" >
-                                                    <img id="imgLoading" src="App_Themes/DefaultTheme/Images/main-loader.gif" align="absmiddle" vspace="0" hspace="0" style="vertical-align:middle" />                                                      
+                                                    <img id="imgLoading" src="App_Themes/DefaultTheme/Images/main-loader.gif" align="middle" vspace="0" hspace="0" style="vertical-align:middle" />                                                      
                                                 </div>     
                                             </progresstemplate>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</ProgressTemplate>

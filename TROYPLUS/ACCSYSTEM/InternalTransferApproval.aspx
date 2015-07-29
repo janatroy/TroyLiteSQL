@@ -95,6 +95,24 @@
 
         }
 
+        function ClientSideClick(myButton) {
+            // alert(myButton);
+
+            if (typeof (Page_ClientValidate) == 'function') {
+                if (Page_ClientValidate() == false)
+                { return false; }
+            }
+
+
+            if (myButton.getAttribute('type') == 'button') {
+
+                myButton.disabled = true;
+                myButton.className = "btn-inactive";
+                myButton.value = "processing...";
+
+            }
+        }
+
 
         Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
         function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
@@ -410,7 +428,7 @@
                                                                         </asp:DropDownList>
                                                                     </td>
                                                                                 <td style="width: 42%; text-align: center">
-                                                                        <asp:Button ID="btnSaveComments" runat="server" CausesValidation="True"
+                                                                        <asp:Button ID="btnSaveComments" runat="server" CausesValidation="True" OnClientClick="ClientSideClick(this);" UseSubmitBehavior="false"
                                                                             CommandName="Insert" CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                             OnClick="SaveCommentsButton_Click"></asp:Button>
                                                                     </td>
@@ -467,7 +485,7 @@
                                                                             <tr>
                                                                                 <td class="ControlLabel" style="width: 25%;">Product *
                                                                                     <asp:CompareValidator ID="cvProduct" runat="server" ControlToValidate="cmbProd" Display="Dynamic"
-                                                                                        ValidationGroup="grpDetails" ErrorMessage="Product is Mandatory" Operator="GreaterThan"
+                                                                                        ValidationGroup="grpDetails" Visible="false" ErrorMessage="Product is Mandatory" Operator="GreaterThan"
                                                                                         Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                 </td>
                                                                                 <td class="ControlDrpBorder" style="width: 25%;">
@@ -480,8 +498,8 @@
                                                                                 <td class="ControlLabel" style="width: 25%;">Quantity: *
                                                                                     <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtQtyAdd"
                                                                                         Display="Dynamic" ErrorMessage="Product Qty. must be greater than Zero" Operator="GreaterThan"
-                                                                                        Text="*" ValidationGroup="grpDetails" ValueToCompare="0"></asp:CompareValidator>
-                                                                                    <asp:RequiredFieldValidator ID="rvQty" runat="server" ControlToValidate="txtQtyAdd"
+                                                                                        Text="*" ValidationGroup="grpDetails" Visible="false" ValueToCompare="0"></asp:CompareValidator>
+                                                                                    <asp:RequiredFieldValidator ID="rvQty" runat="server" Visible="false" ControlToValidate="txtQtyAdd"
                                                                                         ErrorMessage="Qty. is mandatory" Text="*" ValidationGroup="grpDetails" />
                                                                                 </td>
                                                                                 <td class="ControlTextBox3">
@@ -496,7 +514,7 @@
                                                                             <tr>
                                                                                 <td class="ControlLabel" style="width: 25%;">Requested Branch:*
                                                                                     <asp:CompareValidator ID="cvRequestedBranch" runat="server" ControlToValidate="cmbRequestedBranch"
-                                                                                        Display="Dynamic" ValidationGroup="grpDetails" ErrorMessage="RequestedBranch is Mandatory"
+                                                                                        Display="Dynamic" Visible="false" ValidationGroup="grpDetails" ErrorMessage="RequestedBranch is Mandatory"
                                                                                         Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                 </td>
                                                                                 <td class="ControlDrpBorder" style="width: 25%;">
@@ -509,7 +527,7 @@
                                                                                 </td>
                                                                                 <td class="ControlLabel" style="width: 15%;">Branch Has Stock: *
                                                                                     <asp:CompareValidator ID="cvBranchHasStock" runat="server" ControlToValidate="cmbBranchHasStock"
-                                                                                        Display="Dynamic" ValidationGroup="grpDetails" ErrorMessage="BranchHasStock is Mandatory"
+                                                                                        Display="Dynamic" Visible="false" ValidationGroup="grpDetails" ErrorMessage="BranchHasStock is Mandatory"
                                                                                         Operator="GreaterThan" Text="*" ValueToCompare="0"></asp:CompareValidator>
                                                                                 </td>
                                                                                 <td class="ControlDrpBorder" style="width: 25%;">
@@ -541,7 +559,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td class="ControlLabel" style="width: 15%;">RequestedDate: *
-                                                                                    <asp:RequiredFieldValidator ID="rvRequesteDate" runat="server" ValidationGroup="grpDetails"
+                                                                                    <asp:RequiredFieldValidator ID="rvRequesteDate" Visible="false" runat="server" ValidationGroup="grpDetails"
                                                                                         ControlToValidate="txtRequestedDate" Text="*" ErrorMessage="RequestedDate is mandatory"
                                                                                         CssClass="rfv" Display="Dynamic" EnableClientScript="True"></asp:RequiredFieldValidator>
                                                                                 </td>
@@ -560,7 +578,7 @@
                                                                     </ContentTemplate>
                                                                 </cc1:TabPanel>
                                                             </cc1:TabContainer>
-                                                            <asp:ValidationSummary ID="valSum" DisplayMode="BulletList" ShowMessageBox="true"
+                                                            <asp:ValidationSummary ID="valSum" Visible="false" DisplayMode="BulletList" ShowMessageBox="true"
                                                                 ValidationGroup="grpDetails" ShowSummary="false" HeaderText="Validation Messages"
                                                                 Font-Names="'Trebuchet MS'" Font-Size="12" runat="server" />
                                                         </td>
@@ -580,7 +598,7 @@
                                                                     <td align="center" style="width: 17%;">
                                                                         <asp:Button ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
                                                                             CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="UpdateButton_Click"></asp:Button>
-                                                                        <asp:Button ID="InsertButton" runat="server" ValidationGroup="grpDetails" CausesValidation="True"
+                                                                        <asp:Button ID="InsertButton" runat="server" Visible="false" ValidationGroup="grpDetails" CausesValidation="True"
                                                                             CommandName="Insert" CssClass="Updatebutton1231" EnableTheming="false" SkinID="skinBtnSave"
                                                                             OnClick="InsertButton_Click"></asp:Button>
                                                                     </td>

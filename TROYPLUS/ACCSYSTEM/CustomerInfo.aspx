@@ -40,14 +40,14 @@
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
             var btn = document.getElementById("<%= BtnClearFilter.ClientID %>");
             if (txt.value == "") {
-                alert("hide");
+              //  alert("hide");
                 // alert(txt.value);
                 btn.style.visibility = "hidden";
                 // when the window is loaded, hide the button if the textbox is empty
             }
             else
             {
-                alert("show");
+               // alert("show");
                 btn.style.visibility = "visible";
             }
 
@@ -169,7 +169,8 @@
 
 
 
-        function CheckMode() {
+        function CheckMode(e) {
+            if (!e) var e = window.event;
             var ctr = document.getElementById('ctl00_cplhControlPanel_frmViewAdd_tablInsert_tabInsMain_drpModeofContactAdd');
 
             var ctrMobile = document.getElementById('ctl00_cplhControlPanel_frmViewAdd_tablInsert_tabInsMain_txtMobileAdd');
@@ -1350,7 +1351,7 @@
                                                                             <td style="width: 18%">
                                                                                 <asp:Button ID="InsertButton" TabIndex="17" CssClass="savebutton1231" EnableTheming="false"
                                                                                     runat="server" CausesValidation="True" CommandName="Insert" SkinID="skinBtnSave"
-                                                                                    OnClientClick="Mobile_Validator();CheckMode();" OnClick="InsertButton_Click"></asp:Button>
+                                                                                    OnClientClick="Mobile_Validator();CheckMode(this);" OnClick="InsertButton_Click"></asp:Button>
                                                                             </td>
                                                                             <td style="width: 18%">
                                                                                 <asp:Button ID="InsertCancelButton" CssClass="cancelbutton6" EnableTheming="false"

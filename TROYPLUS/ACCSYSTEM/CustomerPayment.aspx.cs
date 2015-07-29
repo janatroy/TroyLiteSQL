@@ -1939,6 +1939,10 @@ public partial class CustomerPayment : System.Web.UI.Page
     }
     protected void InsertButton_Click(object sender, EventArgs e)
     {
+       // ((Button)this.frmViewAdd.FindControl("InsertButton")).Visible=false;
+      //  System.Threading.Thread.Sleep(2000);
+    //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ajax", "<script language='javascript'>ClientSideClick();</script>", false);
+        System.Threading.Thread.Sleep(2000);
         try
         {
             frmViewAdd.ChangeMode(FormViewMode.Insert);
@@ -1961,6 +1965,7 @@ public partial class CustomerPayment : System.Web.UI.Page
                 //if (table != null)
                 //    table.Attributes.Add("class", "hidden");
             }
+            
         }
         catch (Exception ex)
         {

@@ -169,7 +169,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         //}
 
 
-        btnSaveComments.Enabled = true; 
+    //    btnSaveComments.Enabled = true; 
 
         BindDropdowns();
 
@@ -830,7 +830,7 @@ public partial class InternalTransferApproval : System.Web.UI.Page
     protected void SaveCommentsButton_Click(object sender, EventArgs e)
     {
         DataSet paymentdata = null;
-        btnSaveComments.Enabled = false; 
+      //  btnSaveComments.Enabled = false; 
       
         if (cmbApproveReject.SelectedValue == "Approved")
         {
@@ -902,7 +902,11 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             else
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Insufficent stock, please check the Branch if it has sufficient stock available.');", true);
-                btnSaveComments.Enabled = true; 
+                modalPopupApproveReject.Show();
+                return;
+              //  modalPopupApproveReject.Show();
+             //   modalPopupApproveReject.Hide();
+               // btnSaveComments.Enabled = true; 
             }
 
             BindGridData();
@@ -912,6 +916,8 @@ public partial class InternalTransferApproval : System.Web.UI.Page
         else if (cmbApproveReject.SelectedValue == "Rejected")
         {
             string connection1 = Request.Cookies["Company"].Value;
+            string UserID = Request.Cookies["LoggedUserName"].Value;
+            
             
 
             string RequestID = hdRequestID.Value;
@@ -921,10 +927,11 @@ public partial class InternalTransferApproval : System.Web.UI.Page
             {
                 modalPopupApproveReject.Show();
                  ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please enter rejected reason.it cannot be left blank.');", true);
-                 btnSaveComments.Enabled = true; 
+                // btnSaveComments.Enabled = true; 
                 return;
             }
             InternalTransferRequest request1 = transferService.GetInternalTransferRequest(connection1, int.Parse(RequestID));
+            request1.CompletedUser = UserID;
           //  string connection1;
            // string RequestID = hdRequestID.Value;
            // IInternalTransferService transferService1 = new BusinessLogic(connection);

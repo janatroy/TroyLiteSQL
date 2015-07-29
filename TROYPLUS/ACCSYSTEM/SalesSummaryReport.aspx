@@ -200,7 +200,7 @@
                                          <div style="overflow-y: scroll;  height: 80px; width: 500px" align="left">
                                          <asp:RadioButtonList TabIndex="1" Font-Bold="true" RepeatColumns="4" ID="cmbDisplayCat"  
                                             runat="server"  Height="26px">
-                                            <asp:ListItem Text="Daywise" Value="1"></asp:ListItem>
+                                            <asp:ListItem Text="Daywise" Selected="True" Value="1"></asp:ListItem>
                                             <asp:ListItem Text="Categorywise" Value="2"></asp:ListItem>
                                             <asp:ListItem Text="Brandwise" Value="3"></asp:ListItem>
                                             <asp:ListItem Text="Modelwise" Value="4"></asp:ListItem>
@@ -230,7 +230,7 @@
                                         <div style="overflow-y: scroll;  height: 60px; width: 500px" align="left">
                                         <asp:RadioButtonList TabIndex="1" Font-Bold="true" RepeatColumns="5" ID="cmbDisplayItem"  
                                             runat="server"  Height="26px">
-                                            <asp:ListItem Text="Brandwise" Value="ProductDesc"></asp:ListItem>
+                                            <asp:ListItem Text="Brandwise" Selected="True" Value="ProductDesc"></asp:ListItem>
                                             <asp:ListItem Text="Modelwise" Value="Model"></asp:ListItem>
                                             <asp:ListItem Text="Billwise" Value="BillNo"></asp:ListItem>
                                             <asp:ListItem Text="Customerwise" Value="CustomerName"></asp:ListItem>

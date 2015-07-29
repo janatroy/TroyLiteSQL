@@ -177,11 +177,12 @@
                                     </asp:DropDownList>
                                                                                                                                     
                             </td>
-                            <td  style="width: 5%">
+                            <td  style="width: 5%">product
                                 
                             </td>
                             <td>
-                            
+                             <asp:DropDownList ID="drpPrd" Width="230px" runat="server" AppendDataBoundItems="true" BackColor="White" ForeColor="#0567AE" Font-Bold="false" AutoPostBack="true" CssClass="chzn-select" DataTextField="ProductName1" DataValueField="Retrieve" OnSelectedIndexChanged="drpPrd_SelectedIndexChanged" onchange="GetSelectedTextValue(this)">
+                                                                                                                                                                            </asp:DropDownList>
                             </td>
                             <td style="width: 25%">
                                 <asp:CheckBox ID="chkvalue" runat="server" style="color:Black" Text="With Value" Font-Names="arial" Font-Size="12px" AutoPostBack="true" Font-Bold="True" />

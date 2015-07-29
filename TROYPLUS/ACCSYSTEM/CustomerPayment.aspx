@@ -7,7 +7,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cplhControlPanel" runat="Server">
     <script language="javascript" type="text/javascript">
-      
+
 
         function Showalert() {
 
@@ -26,6 +26,53 @@
             }
 
         }
+        function ClientSideClick() {
+            //alert(myButton);
+            //// Client side validation
+            //if (typeof (Page_ClientValidate) == 'function'){
+            //   // alert(myButton); {
+
+            //    if (Page_ClientValidate() == false)
+            //    { return true; }
+            //}
+            alert("fire");
+
+            //document.getElementById('ctl00_cplhControlPanel_frmViewAdd_InsertButton').disabled=true;
+            alert(document.getElementById('ctl00_cplhControlPanel_frmViewAdd_InsertButton'));
+            btn.disabled = true;
+            btn.className = "btn-inactive";
+            btn.value = "processing...";
+            //make sure the button is not of type "submit" but "button"
+            if (btn.getAttribute('type') == 'button') {
+                // disable the button
+
+
+                // return false;
+            }
+            // alert(myButton);
+            // return true;
+        }
+
+        <%--function DisableButton() {
+            document.getElementById("<%=InsertButton.ClientID %>").disabled = true;
+        }
+        window.onbeforeunload = DisableButton;--%>
+
+        //var submit = 0;
+        //function CheckIsRepeat() {
+        //  //  alert(submit);
+        //    if (++submit > 1)
+        //    {
+        //        alert(submit);
+        //        alert('An attempt was made to submit this form more than once; this extra attempt will be ignored.');
+        //        $find("ime").show();
+        //       // return false;
+        //        Page_IsValid = false;
+        //      //  $find("ctl00_cplhControlPanel_ModalPopupExtender1").show();
+        //        return window.event.returnValue = false;
+        //       // return false;
+        //    }
+        //}
        <%-- window.onload = function Showalert() {
 
             var txt = document.getElementById("<%= txtSearch.ClientID %>");
@@ -85,8 +132,7 @@
             if (window.showModalDialog) {
                 window.showModalDialog('./PrintPayment.aspx?ID=' + ID, self, 'dialogWidth:800px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
             }
-            else
-            {
+            else {
                 window.open('./PrintPayment.aspx?ID=' + ID, self, 'dialogWidth:800px;dialogHeight:430px;status:no;dialogHide:yes;unadorned:yes;');
             }
         }
@@ -173,9 +219,78 @@
                 }
             }
         }
+
+
+        function disableBtn(btnID, newText) {
+            alert(btnID);
+            alert(newText);
+            //initialize to avoid 'Page_IsValid is undefined' JavaScript error
+            Page_IsValid = null;
+            //check if the page request any validation   
+            // if yes, check if the page was valid
+            //if (typeof (Page_ClientValidate) == 'function') {
+            //    Page_ClientValidate();
+            //    //you can pass in the validation group name also
+            //}
+            //variables
+            var btn = document.getElementById(btnID);
+            var isValidationOk = Page_IsValid;
+            alert(isValidationOk);
+            /********NEW UPDATE************************************/
+            //if not IE then enable the button on unload before redirecting/ rendering   
+            if (navigator.appName !== 'Microsoft Internet Explorer') {
+                EnableOnUnload(btnID, btn.value);
+            }
+            /***********END UPDATE ****************************/
+            // isValidationOk is not null
+            if (isValidationOk !== null) {
+                //page was valid
+                if (isValidationOk) {
+                    btn.disabled = true;
+                    btn.value = newText;
+                    btn.style.background = 'url(~/images/ajax-loader.gif)';
+                }
+                else {//page was not valid
+                    btn.disabled = false;
+                }
+            }
+            else {//the page don't have any validation request
+                setTimeout("setImage('" + btnID + "')", 10);
+                btn.disabled = true;
+                btn.value = newText;
+            }
+        }
+
+        //set the background image of the button
+        function setImage(btnID) {
+            var btn = document.getElementById(btnID);
+            btn.style.background = 'url(images/loading.gif)';
+        }
+
+        //enable the button and restore the original text value
+        function EnableOnUnload(btnID, btnText) {
+            window.onunload = function () {
+                var btn = document.getElementById(btnID);
+                btn.disabled = false;
+                btn.value = btnText;
+            }
+        }
+
     </script>
 
     <style id="Style1" runat="server">
+        .divWaiting {
+            position: absolute;
+            background-color: black;
+            z-index: 2147483647 !important;
+            opacity: 0.6;
+            overflow: hidden;
+            text-align: center;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
         /*.fancy-green .ajax__tab_header {
             background: url(App_Themes/NewTheme/Images/green_bg_Tab.gif) repeat-x;
             cursor: pointer;
@@ -203,7 +318,7 @@
             .fancy .ajax__tab_active .ajax__tab_inner, .fancy .ajax__tab_header .ajax__tab_inner, .fancy .ajax__tab_hover .ajax__tab_inner {
                 height: 46px;
                 margin-left: 16px; /* offset the width of the left image */
-            /*}
+        /*}
 
             .fancy .ajax__tab_active .ajax__tab_tab, .fancy .ajax__tab_hover .ajax__tab_tab, .fancy .ajax__tab_header .ajax__tab_tab {
                 margin: 16px 16px 0px 0px;
@@ -262,28 +377,28 @@
                                     </td>
                                     <td style="width: 20%" class="NewBox">
                                         <asp:TextBox ID="txtSearch" runat="server" SkinID="skinTxtBoxSearch"></asp:TextBox>
-                                         <cc1:CalendarExtender ID="txtdatet" runat="server"
+                                        <cc1:CalendarExtender ID="txtdatet" runat="server"
                                             Enabled="false" TargetControlID="txtSearch" Format="dd/MM/yyyy">
                                         </cc1:CalendarExtender>
                                     </td>
                                     <td style="width: 20%" class="NewBox">
                                         <div style="width: 150px; font-family: 'Trebuchet MS';">
-                                            
-                                            <asp:DropDownList ID="ddCriteria" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" AutoPostBack="true"  runat="server" Width="156px" BackColor="White" Height="21px" Style="text-align: center; border: 1px solid White">
+
+                                            <asp:DropDownList ID="ddCriteria" OnSelectedIndexChanged="ddCriteria_SelectedIndexChanged" AutoPostBack="true" runat="server" Width="156px" BackColor="White" Height="21px" Style="text-align: center; border: 1px solid White">
                                                 <asp:ListItem Value="TransNo">Trans. No.</asp:ListItem>
                                                 <asp:ListItem Value="RefNo">Ref. No.</asp:ListItem>
-                                                <asp:ListItem Value="TransDate" >Transaction Date</asp:ListItem>
+                                                <asp:ListItem Value="TransDate">Transaction Date</asp:ListItem>
                                                 <asp:ListItem Value="LedgerName">Customer Name</asp:ListItem>
                                                 <asp:ListItem Value="AutoLedgerID">Customer ID</asp:ListItem>
                                                 <asp:ListItem Value="Narration">Narration</asp:ListItem>
                                                 <asp:ListItem Value="BranchCode">Branch</asp:ListItem>
                                             </asp:DropDownList>
-                                                                                                                
+
                                         </div>
                                     </td>
                                     <td style="width: 21%">
                                         <asp:Button ID="btnSearch" runat="server" CssClass="ButtonSearch6" EnableTheming="false" ForeColor="White" />
-                                       
+
 
                                     </td>
                                     <td style="width: 20%">
@@ -297,7 +412,7 @@
                         <input id="Button1" type="button" style="display: none" runat="server" />
                         <cc1:ModalPopupExtender ID="ModalPopupExtender1" runat="server" BackgroundCssClass="modalBackground"
                             CancelControlID="Button1" DynamicServicePath="" Enabled="True" PopupControlID="popUp"
-                            TargetControlID="dummy">
+                            TargetControlID="dummy" BehaviorID="ime">
                         </cc1:ModalPopupExtender>
 
                         <asp:Panel runat="server" ID="popUp" Style="width: 60%">
@@ -338,12 +453,12 @@
                                                                         Operator="GreaterThan" ValueToCompare="0">*</asp:CompareValidator>
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 24%">
-                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%"  CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                            <asp:DropDownList ID="drpBranch" TabIndex="10" SelectedValue='<%# Bind("BranchCode") %>' DataSourceID="srcBranch" OnDataBound="drpBranch_DataBound" DataTextField="BranchName" DataValueField="BranchCode" Enabled="false" Width="100%" CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                 runat="server">
                                                                                                 <asp:ListItem Text="Select Branch" Value="0"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                         </td>
-                                                                                       <td class="ControlLabelproject" style="width: 15%">
+                                                                                        <td class="ControlLabelproject" style="width: 15%">
 
                                                                                             <asp:RequiredFieldValidator ID="rvStock" runat="server" ControlToValidate="txtTransDate"
                                                                                                 Text="*" ErrorMessage="Ref Date is mandatory" Display="Dynamic" EnableClientScript="True"></asp:RequiredFieldValidator>
@@ -400,27 +515,26 @@
                                                                                                 Operator="GreaterThan" ValueToCompare="0"></asp:CompareValidator>
                                                                                         </td>
                                                                                         <td class="ControlDrpBorder" style="width: 25%">
-                                                                                            <asp:DropDownList ID="ComboBox2" runat="server"  CssClass="chzn-select" Style="border: 1px solid #e7e7e7" Height="26px" BackColor="#e7e7e7" Width="100%" AutoPostBack="False"
+                                                                                            <asp:DropDownList ID="ComboBox2" runat="server" CssClass="chzn-select" Style="border: 1px solid #e7e7e7" Height="26px" BackColor="#e7e7e7" Width="100%" AutoPostBack="False"
                                                                                                 AppendDataBoundItems="true" OnDataBound="ComboBox2_DataBound">
                                                                                                 <asp:ListItem style="background-color: #e7e7e7" Text="Select Customer" Value="0"></asp:ListItem>
                                                                                             </asp:DropDownList>
                                                                                         </td>
-                                                                                         <td class="ControlLabelproject" style="width: 15%">
-                                                                                             Payment Made By *
+                                                                                        <td class="ControlLabelproject" style="width: 15%">Payment Made By *
                                                                                             <asp:RequiredFieldValidator ID="rvBDate" runat="server" ControlToValidate="chkPayTo"
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="Please Select Item Name. It cannot be left blank.">*</asp:RequiredFieldValidator>
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 25%">
-                                                                                             <asp:RadioButtonList ID="chkPayTo" onclick="javascript:AdvancedTest(this.id);" runat="server"
+                                                                                            <asp:RadioButtonList ID="chkPayTo" onclick="javascript:AdvancedTest(this.id);" runat="server"
                                                                                                 AutoPostBack="false" Width="100%" OnDataBound="chkPayTo_DataBound" OnSelectedIndexChanged="chkPayTo_SelectedIndexChanged">
                                                                                                 <asp:ListItem Text="Cash" Selected="true"></asp:ListItem>
                                                                                                 <asp:ListItem Text="Cheque"></asp:ListItem>
                                                                                             </asp:RadioButtonList>
                                                                                         </td>
-                                                                                       
+
                                                                                     </tr>
-                                                                                    
-                                                                                    
+
+
                                                                                     <tr>
                                                                                         <td colspan="4" width="100%">
                                                                                             <asp:UpdatePanel ID="upedit" runat="server">
@@ -428,7 +542,7 @@
                                                                                                     <asp:Panel ID="PanelBank" runat="server">
                                                                                                         <table width="100%" id="tblBank" runat="server" cellpadding="0" cellspacing="0">
                                                                                                             <tr style="height: 3px">
-                                                                                    </tr>
+                                                                                                            </tr>
                                                                                                             <tr>
                                                                                                                 <td class="ControlLabelproject" style="width: 25%">
                                                                                                                     <asp:CompareValidator ID="cvBank" runat="server" ControlToValidate="ddBanks" Display="Dynamic"
@@ -439,7 +553,7 @@
                                                                                                                 <td style="width: 25%" class="ControlDrpBorder">
                                                                                                                     <asp:DropDownList ID="ddBanks" runat="server" OnDataBound="ddBanks_DataBound" DataSourceID="srcBanks" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                         DataTextField="LedgerName" DataValueField="LedgerID" AppendDataBoundItems="True" OnSelectedIndexChanged="ddBanks_SelectedIndexChanged" AutoPostBack="true"
-                                                                                                                         CssClass="chzn-select" BackColor="#e7e7e7" Width="200px">
+                                                                                                                        CssClass="chzn-select" BackColor="#e7e7e7" Width="200px">
                                                                                                                         <asp:ListItem Selected="True" style="background-color: #e7e7e7" Value="0">Select Bank</asp:ListItem>
                                                                                                                     </asp:DropDownList>
                                                                                                                 </td>
@@ -450,7 +564,7 @@
                                                                                                                 </td>
                                                                                                                 <td class="ControlDrpBorder" style="width: 25%">
                                                                                                                     <asp:TextBox ID="txtChequeNo" runat="server" Text='<%# Bind("ChequeNo") %>' SkinID="skinTxtBoxGridBank" MaxLength="10" Visible="false"></asp:TextBox>
-                                                                                                                    <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo"  CssClass="chzn-select" Height="26px" Style="border: 1px solid #e7e7e7" Width="200px" OnDataBound="cmbChequeNo_DataBound">
+                                                                                                                    <asp:DropDownList ID="cmbChequeNo" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="chzn-select" Height="26px" Style="border: 1px solid #e7e7e7" Width="200px" OnDataBound="cmbChequeNo_DataBound">
                                                                                                                         <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                                     </asp:DropDownList>
                                                                                                                 </td>
@@ -466,17 +580,16 @@
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td class="ControlLabelproject" style="width: 24%">
-                                                                                            Narration *
+                                                                                        <td class="ControlLabelproject" style="width: 24%">Narration *
                                                                                             <asp:RequiredFieldValidator ID="rvNarration" runat="server" ControlToValidate="txtNarration"
                                                                                                 ErrorMessage="Please enter Narration. It cannot be left blank." Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                                         </td>
                                                                                         <td style="width: 25%" class="ControlTextBox3">
-                                                                                           
+
                                                                                             <asp:TextBox ID="txtNarration" runat="server" Height="30px" TextMode="MultiLine"
                                                                                                 Text='<%# Bind("Narration") %>' SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
-                                                                                       
+
                                                                                         <td class="ControlLabelproject" style="width: 19%"></td>
                                                                                         <td style="width: 25%"></td>
                                                                                     </tr>
@@ -636,13 +749,13 @@
                                                                                         <td class="ControlDrpBorder" style="width: 25.2%">
                                                                                             <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional">
                                                                                                 <ContentTemplate>
-                                                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" AutoPostBack="true" Width="100%"  CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
+                                                                                                    <asp:DropDownList ID="drpBranchAdd" TabIndex="10" OnSelectedIndexChanged="drpBranchAdd_SelectedIndexChanged" AutoPostBack="true" Width="100%" CssClass="chzn-select" AppendDataBoundItems="true" BackColor="#e7e7e7" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                         runat="server">
                                                                                                     </asp:DropDownList>
                                                                                                 </ContentTemplate>
                                                                                             </asp:UpdatePanel>
                                                                                         </td>
-                                                                                       <td style="width: 15%" class="ControlLabelproject">
+                                                                                        <td style="width: 15%" class="ControlLabelproject">
                                                                                             <%--<asp:Label ID="Label1" runat="server"
                                                                                                         Width="120px" Text="" ></asp:Label>--%>
 
@@ -673,12 +786,12 @@
                                                                                             <asp:RequiredFieldValidator ID="rvRefNoAdd" runat="server" ControlToValidate="txtRefNoAdd"
                                                                                                 ErrorMessage="Please enter Ref. No. It cannot be left blank." Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" runat="server" FilterType="Numbers"
-                                                                        TargetControlID="txtRefNoAdd" />
+                                                                                                TargetControlID="txtRefNoAdd" />
                                                                                         </td>
                                                                                         <td style="width: 25.2%" class="ControlTextBox3">
                                                                                             <asp:TextBox ID="txtRefNoAdd" runat="server" Text='<%# Bind("RefNo") %>' SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
-                                                                                         <td class="ControlLabelproject" style="width: 15%">Amount *
+                                                                                        <td class="ControlLabelproject" style="width: 15%">Amount *
                                                                                             <asp:RequiredFieldValidator ID="rvModelAdd" runat="server" ControlToValidate="txtAmountAdd"
                                                                                                 ErrorMessage="Please enter Amount. It cannot be left blank." Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                                             <cc1:FilteredTextBoxExtender ID="fltAmtAdd" runat="server" TargetControlID="txtAmountAdd"
@@ -687,7 +800,7 @@
                                                                                         <td class="ControlTextBox3" style="width: 25%">
                                                                                             <asp:TextBox ID="txtAmountAdd" runat="server" Text='<%# Bind("Amount") %>' SkinID="skinTxtBoxGrid"></asp:TextBox>
                                                                                         </td>
-                                                                                        
+
                                                                                     </tr>
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
@@ -700,7 +813,7 @@
                                                                                         <td style="width: 25%" class="ControlDrpBorder">
                                                                                             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                                                                 <ContentTemplate>
-                                                                                                    <asp:DropDownList ID="ComboBox2Add" runat="server" Style="border: 1px solid #e7e7e7" Height="26px"  CssClass="chzn-select" BackColor="#e7e7e7" AutoPostBack="false"
+                                                                                                    <asp:DropDownList ID="ComboBox2Add" runat="server" Style="border: 1px solid #e7e7e7" Height="26px" CssClass="chzn-select" BackColor="#e7e7e7" AutoPostBack="false"
                                                                                                         Width="100%"
                                                                                                         AppendDataBoundItems="true">
                                                                                                         <%--<asp:ListItem Text="Select Customer" Value="0"></asp:ListItem>--%>
@@ -711,11 +824,10 @@
                                                                                                 </Triggers>
                                                                                             </asp:UpdatePanel>
                                                                                         </td>
-                                                                                           <td class="ControlLabelproject" style="width: 19%">
-                                                                                               Payment Made By *
+                                                                                        <td class="ControlLabelproject" style="width: 19%">Payment Made By *
                                                                                             <asp:RequiredFieldValidator ID="rvBDateAdd" runat="server" ControlToValidate="chkPayToAdd"
                                                                                                 Display="Dynamic" EnableClientScript="True" ErrorMessage="Please select Payment Made By. It cannot be left blank.">*</asp:RequiredFieldValidator>
-                                                                                               
+
                                                                                         </td>
                                                                                         <td class="ControlTextBox3" style="width: 25%">
                                                                                             <asp:RadioButtonList ID="chkPayToAdd" runat="server" OnDataBound="chkPayToAdd_DataBound"
@@ -724,27 +836,27 @@
                                                                                                 <asp:ListItem Text="Cash" Selected="true"></asp:ListItem>
                                                                                                 <asp:ListItem Text="Cheque"></asp:ListItem>
                                                                                             </asp:RadioButtonList>
-                                                                                            
+
                                                                                         </td>
-                                                                                       
+
                                                                                     </tr>
-                                                                                    
-                                                                                   
+
+
                                                                                     <tr>
                                                                                         <td colspan="4" align="center">
                                                                                             <%-- <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                                                                 <ContentTemplate>--%>
                                                                                             <asp:Panel ID="PanelBankAdd" runat="server">
                                                                                                 <table width="100%" id="tblBankAdd" cellpadding="0" cellspacing="0" runat="server">
-                                                                                                     <tr style="height: 3px">
-                                                                                    </tr>
+                                                                                                    <tr style="height: 3px">
+                                                                                                    </tr>
                                                                                                     <tr>
                                                                                                         <td class="ControlLabelproject" style="width: 24%">Bank Name *
                                                                                                         </td>
                                                                                                         <td class="ControlDrpBorder" style="width: 25%">
                                                                                                             <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional">
                                                                                                                 <ContentTemplate>
-                                                                                                                    <asp:DropDownList ID="ddBanksAdd" runat="server" AutoPostBack="true"  CssClass="chzn-select" OnSelectedIndexChanged="ddBanksAdd_SelectedIndexChanged" BackColor="#e7e7e7" SelectedValue='<%# Bind("CreditorID") %>'
+                                                                                                                    <asp:DropDownList ID="ddBanksAdd" runat="server" AutoPostBack="true" CssClass="chzn-select" OnSelectedIndexChanged="ddBanksAdd_SelectedIndexChanged" BackColor="#e7e7e7" SelectedValue='<%# Bind("CreditorID") %>'
                                                                                                                         DataSourceID="srcBanksAdd" DataTextField="LedgerName" Width="200px" Style="border: 1px solid #e7e7e7" Height="26px"
                                                                                                                         DataValueField="LedgerID" AppendDataBoundItems="True">
                                                                                                                         <asp:ListItem Selected="True" style="background-color: #e7e7e7" Value="0">Select Bank</asp:ListItem>
@@ -761,7 +873,7 @@
                                                                                                             <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Conditional">
                                                                                                                 <ContentTemplate>
                                                                                                                     <asp:TextBox ID="txtChequeNoAdd" Visible="false" runat="server" Text='<%# Bind("ChequeNo") %>' SkinID="skinTxtBoxGridBank" MaxLength="10"></asp:TextBox>
-                                                                                                                    <asp:DropDownList ID="cmbChequeNo1" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo"  CssClass="chzn-select" Height="26px" Style="border: 1px solid #e7e7e7" Width="200px">
+                                                                                                                    <asp:DropDownList ID="cmbChequeNo1" runat="server" AppendDataBoundItems="True" AutoPostBack="true" BackColor="#e7e7e7" DataTextField="ChequeNo" DataValueField="ChequeNo" CssClass="chzn-select" Height="26px" Style="border: 1px solid #e7e7e7" Width="200px">
                                                                                                                         <asp:ListItem Selected="True" style="height: 1px; background-color: #e7e7e7" Value="0">Select Cheque No</asp:ListItem>
                                                                                                                     </asp:DropDownList>
                                                                                                                 </ContentTemplate>
@@ -777,8 +889,7 @@
                                                                                     <tr style="height: 3px">
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td class="ControlLabelproject" style="width: 24%">
-                                                                                            Narration *
+                                                                                        <td class="ControlLabelproject" style="width: 24%">Narration *
                                                                                             <asp:RequiredFieldValidator ID="rvNarrationAdd" runat="server" ControlToValidate="txtNarrationAdd"
                                                                                                 ErrorMessage="Please enter Narration. It cannot be left blank." Display="Dynamic" EnableClientScript="True">*</asp:RequiredFieldValidator>
                                                                                         </td>
@@ -788,7 +899,7 @@
                                                                                         </td>
                                                                                         <td class="ControlLabelproject" style="width: 15%"></td>
                                                                                         <td style="width: 25%"></td>
-                                                                                     
+
                                                                                     </tr>
                                                                                 </table>
                                                                             </ContentTemplate>
@@ -823,8 +934,21 @@
                                                                         <tr>
                                                                             <td align="right" style="width: 25%;"></td>
                                                                             <td align="right" style="width: 25%;">
-                                                                                <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
-                                                                                    CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="InsertButton_Click"></asp:Button>
+
+                                                                                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                                                                    <ContentTemplate>
+                                                                                        <asp:Button ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
+                                                                                            CssClass="savebutton1231" EnableTheming="false" SkinID="skinBtnSave" OnClick="InsertButton_Click"></asp:Button>
+                                                                                       
+                                                                                        <asp:UpdateProgress ID="UpdWaitImage" runat="server" DynamicLayout="true" AssociatedUpdatePanelID="UpdatePanel2">
+                                                                                            <ProgressTemplate>
+                                                                                                <asp:Image ID="imgProgress" ImageUrl="App_Themes/DefaultTheme/Images/main-loader.gif" runat="server" />
+                                                                                                Please Wait...
+                                                                                            </ProgressTemplate>
+                                                                                        </asp:UpdateProgress>
+
+                                                                                    </ContentTemplate>
+                                                                                </asp:UpdatePanel>
                                                                             </td>
                                                                             <td align="center" style="width: 20%;">
                                                                                 <asp:Button ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName=""

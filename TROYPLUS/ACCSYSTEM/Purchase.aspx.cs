@@ -910,6 +910,12 @@ public partial class Purchase : System.Web.UI.Page
                     cmdSave.Enabled = true;
                     return;
                 }
+                if(txtBillno.Text=="")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bill No. is mandatory.')", true);
+                    cmdSave.Enabled = true;
+                    return;
+                }
 
 
                 //if (Session["PurchaseProductDs"] == null)
@@ -2149,7 +2155,12 @@ public partial class Purchase : System.Web.UI.Page
                 //    }
                 //}
 
-
+                if (txtBillno.Text == "")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Bill No. is mandatory.')", true);
+                    cmdSave.Enabled = true;
+                    return;
+                }
 
                 if (checkdate2 < checkdate3)
                 {

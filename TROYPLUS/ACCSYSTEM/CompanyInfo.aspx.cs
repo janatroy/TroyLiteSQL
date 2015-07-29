@@ -112,6 +112,14 @@ public partial class CompanyInfo : System.Web.UI.Page
         Branchcalculation.DataTextField = "PriceName";
         Branchcalculation.DataValueField = "PriceName";
         Branchcalculation.DataBind();
+
+        stockprice.Items.Clear();
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
+        //  ds = bl.ListPriceList(connection);
+        stockprice.DataSource = ds;
+        stockprice.DataTextField = "PriceName";
+        stockprice.DataValueField = "PriceName";
+        stockprice.DataBind();
     }
 
 
@@ -179,6 +187,14 @@ public partial class CompanyInfo : System.Web.UI.Page
         Branchcalculation.DataTextField = "PriceName";
         Branchcalculation.DataValueField = "PriceName";
         Branchcalculation.DataBind();
+
+        stockprice.Items.Clear();
+        //lstPricelist.Items.Add(new ListItem("All", "0"));
+        //  ds = bl.ListPriceList(connection);
+        stockprice.DataSource = ds;
+        stockprice.DataTextField = "PriceName";
+        stockprice.DataValueField = "PriceName";
+        stockprice.DataBind();
     }
 
     private void loadPriceListPurchase()
@@ -491,6 +507,11 @@ public partial class CompanyInfo : System.Web.UI.Page
                             if (dr["KeyValue"] != null)
                                 Branchcalculation.Text = dr["KeyValue"].ToString();
                         }
+                        else if (dr["KeyName"].ToString() == "STCKPRICE")
+                        {
+                            if (dr["KeyValue"] != null)
+                                stockprice.Text = dr["KeyValue"].ToString();
+                        }
                 }
             }
         }
@@ -630,6 +651,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 string purchaseround = string.Empty;
                 string managamentprice = string.Empty;
                 string branchprice = string.Empty;
+                string stockprice1 = string.Empty;
 
                 int SAPSupplierAccountCode=0;
                 int SAPCustomerAccountCode = 0;
@@ -670,6 +692,7 @@ public partial class CompanyInfo : System.Web.UI.Page
                 stockEdit = rdoStockEdit.SelectedValue;
                 managamentprice = ManagementCalculation.SelectedItem.Text;
                 branchprice = Branchcalculation.SelectedItem.Text;
+                stockprice1 = stockprice.SelectedItem.Text;
 
                 autolock = dpautolock.SelectedValue;
 
@@ -706,7 +729,7 @@ public partial class CompanyInfo : System.Web.UI.Page
 
                 try
                 {
-                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround,sapcheck,managamentprice,branchprice);
+                    bl.InsertSettings(itemCode, strIP, strQtyReturn, strDate, strBillFormat, currency, dealer, barcode, stockEdit, smsRequired, blitRequired, strOwnerMob, strVATReconDate, strVATAmount, discType, exceedLimit, strBillMethod, strobsolute, droundoff, dsalesseries, autolock, savelog, enablevat, emailRequired, macaddress, tinnoman, enabledate, salesdiscount, openingbalance, deviationprice, pwdexpday, purchasepricelist, purchaseround,sapcheck,managamentprice,branchprice,stockprice1);
 
                     System.Threading.Thread.Sleep(1000);
 

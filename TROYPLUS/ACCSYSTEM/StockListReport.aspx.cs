@@ -15,6 +15,7 @@ using System.IO;
 public partial class StockListReport : System.Web.UI.Page
 {
     public string sDataSource = string.Empty;
+    DataSet ds111 = new DataSet();
     
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -37,11 +38,14 @@ public partial class StockListReport : System.Web.UI.Page
                 sDataSource = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
                 DataSet companyInfo = new DataSet();
                 BusinessLogic bl = new BusinessLogic(sDataSource);
-
+                Session["SalesAddProductbindDs"] = null;
                 LoadProducts(this, null);
                 loadCategories();
-
                 loadBranch();
+                BranchEnable_Disable();
+                drpPrd_SelectedIndexChanged(sender, e);
+
+                
 
                 if (Request.Cookies["Company"] != null)
                 {
@@ -1106,6 +1110,45 @@ public partial class StockListReport : System.Web.UI.Page
         catch (Exception ex)
         {
             TroyLiteExceptionManager.HandleException(ex);
+        }
+    }
+    protected void drpPrd_SelectedIndexChanged(object sender, EventArgs e)
+    {
+       
+        BusinessLogic bl = new BusinessLogic();
+       // if (Session["SalesAddProductbindDs"] == null)
+       // {
+            ds111 = bl.ListProdForDynammicroweditsales1(sDataSource);
+         //   Session["SalesAddProductbindDs"] = ds111;
+
+            drpPrd.Items.Clear();
+            drpPrd.DataSource = ds111;
+            drpPrd.DataTextField = "ProductName1";
+            drpPrd.DataValueField = "Retrieve";
+            drpPrd.DataBind();
+      //  }
+    }
+
+    private void BranchEnable_Disable()
+    {
+        string sCustomer = string.Empty;
+      string  connection = Request.Cookies["Company"].Value;
+       string usernam = Request.Cookies["LoggedUserName"].Value;
+        BusinessLogic bl = new BusinessLogic();
+        DataSet dsd = bl.GetBranch(connection, usernam);
+
+        sCustomer = Convert.ToString(dsd.Tables[0].Rows[0]["DefaultBranchCode"]);
+        drpBranchAdd.ClearSelection();
+        ListItem li = drpBranchAdd.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
+        if (li != null) li.Selected = true;
+
+        if (dsd.Tables[0].Rows[0]["BranchCheck"].ToString() == "True")
+        {
+            drpBranchAdd.Enabled = true;
+        }
+        else
+        {
+            drpBranchAdd.Enabled = false;
         }
     }
 }

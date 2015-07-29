@@ -6417,6 +6417,7 @@ public partial class ReportExlStock : System.Web.UI.Page
                     li.Selected = true;
                 }
             }
+         
         }
 
     }

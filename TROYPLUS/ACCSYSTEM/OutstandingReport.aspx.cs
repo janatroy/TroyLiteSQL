@@ -247,6 +247,7 @@ public partial class OutstandingReport : System.Web.UI.Page
             string datet = string.Empty;
 
             string nme = string.Empty;
+            string nme1 = string.Empty;
             string op = string.Empty;
             string connStr = string.Empty;
             if (Request.Cookies["Company"] != null)
@@ -259,7 +260,8 @@ public partial class OutstandingReport : System.Web.UI.Page
             {
                 DataTable dt = new DataTable("Outstanding List Report");
                 dt.Columns.Add(new DataColumn("Ledgername"));
-                dt.Columns.Add(new DataColumn("Bill No"));
+                dt.Columns.Add(new DataColumn("Trans No"));
+                dt.Columns.Add(new DataColumn("Bill NO"));
                 dt.Columns.Add(new DataColumn("Bill Date"));
                 dt.Columns.Add(new DataColumn("Mobile"));
                 dt.Columns.Add(new DataColumn("BranchCode"));
@@ -328,9 +330,10 @@ public partial class OutstandingReport : System.Web.UI.Page
                         }
                         for (int i = 0; i < dsSales.Tables[0].Rows.Count; i++)
                         {
-                            if (nme == "")
+                            if (nme == "" || nme1=="")
                             {
                                 nme = dsSales.Tables[0].Rows[i]["BillNo"].ToString();
+                                nme1 = dsSales.Tables[0].Rows[i]["Bill"].ToString();
                                 Transdt = Convert.ToDateTime(dsSales.Tables[0].Rows[i]["BillDate"]);
                                 //datet = Convert.ToDateTime(dsSales.Tables[0].Rows[i]["BillDate"]).ToString();
 
@@ -346,16 +349,23 @@ public partial class OutstandingReport : System.Web.UI.Page
 
 
                                 nme = nme + " , " + dsSales.Tables[0].Rows[i]["BillNo"].ToString();
+
+                                nme1 = nme1 + " , " + dsSales.Tables[0].Rows[i]["Bill"].ToString();
+                               
+                               
                                 //datet = datet + " , " + dsSales.Tables[0].Rows[i]["BillDate"].ToString();
                                 //datet = datet + " , " + Convert.ToDateTime(dsSales.Tables[0].Rows[i]["BillDate"]).ToString();
                             }
-
+                           
                             op = dsSales.Tables[0].Rows[i]["op"].ToString();
 
+
                         }
-                        dr_export["Bill No"] = nme + " " + op;
+                        dr_export["Trans No"] = nme + " " + op;
+                        dr_export["Bill No"] = nme1;
                         dr_export["Bill Date"] = datet;
                         nme = string.Empty;
+                        nme1 = string.Empty;
                         datet = string.Empty;
                     }
 
@@ -379,6 +389,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 //dr_lastexport1["Debit"] = "";
                 //dr_lastexport1["Credit"] = "";
                 dr_lastexport1["Balance"] = "";
+                dr_lastexport1["Trans No"] = "";
                 dr_lastexport1["Bill No"] = "";
                 dr_lastexport1["Bill Date"] = "";
                 dr_lastexport1["Mobile"] = "";
@@ -391,6 +402,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 dr_lastexport2["Credit"] = camt;
                 dr_lastexport2["Balance"] = "";
                 dr_lastexport2["Bill No"] = "";
+                dr_lastexport2["Trans No"] = "";
                 dr_lastexport2["Bill Date"] = "";
                 dr_lastexport2["Mobile"] = "";
                 dt.Rows.Add(dr_lastexport2);
@@ -402,6 +414,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 //dr_lastexport3["Credit"] = "";
                 dr_lastexport3["Balance"] = "";
                 dr_lastexport3["Bill No"] = "";
+                dr_lastexport3["Trans No"] = "";
                 dr_lastexport3["Bill Date"] = "";
                 dr_lastexport3["Mobile"] = "";
                 dt.Rows.Add(dr_lastexport3);
@@ -420,6 +433,7 @@ public partial class OutstandingReport : System.Web.UI.Page
                 }
                 dr_de["Balance"] = "";
                 dr_de["Bill No"] = "";
+                dr_de["Trans No"] = "";
                 dr_de["Bill Date"] = "";
                 dr_de["Mobile"] = "";
                 dr_de["BranchCode"] = "";

@@ -329,6 +329,13 @@ public partial class Overallreportstock : System.Web.UI.Page
        // string cond6;
         cond6 = getCond6();
 
+        if(cond=="")
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Please Select Single Branch.Thank You.');", true);
+            return;
+
+        }
+
         //if (Request.QueryString["refDate"] != null)
         //{
         //    stdt = Convert.ToDateTime(Request.QueryString["refDate"].ToString());
@@ -468,8 +475,10 @@ public partial class Overallreportstock : System.Web.UI.Page
         {
             if (lstBranch.SelectedIndex == 0)
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Please Select any one branch.Not to select All.')", true);
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert(' Please Select Single Branch.Thank You.');", true);
+                return;
             }
+            
             //else if (lstPricelist.SelectedIndex == -1)
             //{
             //    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any PriceList')", true);

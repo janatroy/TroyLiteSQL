@@ -60,15 +60,19 @@ public partial class StockReport : System.Web.UI.Page
                         }
                     }
                 }
+               
                 loadBranch();
                 BranchEnable_Disable();
                 loadPriceList();
+
+
+
 
                 txtStartDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
             }
 
             lblBillDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
-           
+
 
             //DateTime indianStd = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "India Standard Time");
             //string dtaa = Convert.ToDateTime(indianStd).ToString("dd/MM/yyyy");
@@ -93,7 +97,7 @@ public partial class StockReport : System.Web.UI.Page
         string connection = ConfigurationManager.ConnectionStrings[Request.Cookies["Company"].Value].ToString();
 
         lstBranch.Items.Clear();
-        
+
         brncode = Request.Cookies["Branch"].Value;
         if (brncode == "All")
         {
@@ -110,9 +114,15 @@ public partial class StockReport : System.Web.UI.Page
         lstBranch.DataBind();
     }
 
+    string sCustomer1 = string.Empty;
+
+
+
+
     private void BranchEnable_Disable()
     {
         string sCustomer = string.Empty;
+
         connection = Request.Cookies["Company"].Value;
         usernam = Request.Cookies["LoggedUserName"].Value;
         BusinessLogic bl = new BusinessLogic();
@@ -122,6 +132,15 @@ public partial class StockReport : System.Web.UI.Page
         lstBranch.ClearSelection();
         ListItem li = lstBranch.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer));
         if (li != null) li.Selected = true;
+        if (brncode == "All")
+        {
+            pricelists.Visible = true;
+        }
+        else
+        {
+            pricelists.Visible = false;
+        }
+
 
     }
 
@@ -163,13 +182,34 @@ public partial class StockReport : System.Web.UI.Page
     protected string getCond1()
     {
         string cond1 = "";
+        BusinessLogic bl = new BusinessLogic();
         foreach (ListItem listItem1 in lstPricelist.Items)
         {
-            if (listItem1.Text != "All")
+            string brncode1 = Request.Cookies["Branch"].Value;
+            //  string cust = Request.Cookies["KeyValue"].Value;
+            if (brncode1 == "All")
             {
-                if (listItem1.Selected)
+                if (listItem1.Text != "All")
                 {
-                    cond1 += "  tblPriceList.PriceName='" + listItem1.Value + "' ,";
+                    if (listItem1.Selected)
+                    {
+                        cond1 += "  tblPriceList.PriceName='" + listItem1.Value + "' ,";
+                    }
+                }
+            }
+            else
+            {
+                DataSet dsdd = bl.Getstockreporprice(connection, usernam);
+                sCustomer1 = Convert.ToString(dsdd.Tables[0].Rows[0]["KeyValue"]);
+                if (sCustomer1 == listItem1.Text)
+                {
+                   
+                    lstPricelist.ClearSelection();
+                    ListItem li1 = lstPricelist.Items.FindByValue(System.Web.HttpUtility.HtmlDecode(sCustomer1));
+                    if (li1 != null) li1.Selected = true;
+                    pricelists.Visible = false;
+
+                    cond1 += "  tblPriceList.PriceName='" + sCustomer1 + "' ,";
                 }
             }
         }
@@ -227,6 +267,7 @@ public partial class StockReport : System.Web.UI.Page
                 if (listItem.Selected)
                 {
                     cond4 += " SI.BranchCode='" + listItem.Value + "' ,";
+                    pricelists.Visible = false;
                 }
             }
         }
@@ -260,6 +301,7 @@ public partial class StockReport : System.Web.UI.Page
         string cond6 = "";
         foreach (ListItem listItem1 in lstPricelist.Items)
         {
+           
             if (listItem1.Text != "All")
             {
                 if (listItem1.Selected)
@@ -309,7 +351,7 @@ public partial class StockReport : System.Web.UI.Page
             string cond6 = "";
             cond6 = getCond6();
 
-           // DataSet ds = new DataSet();
+            // DataSet ds = new DataSet();
             DataSet ddd = new DataSet();
             DateTime refDate = DateTime.Parse(txtStartDate.Text);
             DateTime stdt = Convert.ToDateTime(txtStartDate.Text);
@@ -346,7 +388,7 @@ public partial class StockReport : System.Web.UI.Page
                 {
                     dt.Columns.Add(new DataColumn("Brand"));
                     dt.Columns.Add(new DataColumn("ItemCode"));
-                    dt.Columns.Add(new DataColumn("ProductName"));                  
+                    dt.Columns.Add(new DataColumn("ProductName"));
                     dt.Columns.Add(new DataColumn("Model"));
                     dt.Columns.Add(new DataColumn("CategoryName"));
                     //dt.Columns.Add(new DataColumn("Rol"));
@@ -480,7 +522,7 @@ public partial class StockReport : System.Web.UI.Page
             TroyLiteExceptionManager.HandleException(ex);
         }
     }
-    
+
 
     public void ExportToExcel(DataTable dt)
     {
@@ -511,14 +553,19 @@ public partial class StockReport : System.Web.UI.Page
     {
         try
         {
+            string brncode12 = Request.Cookies["Branch"].Value;
             if (lstBranch.SelectedIndex == -1)
             {
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any Branch')", true);
-            }
-            else if(lstPricelist.SelectedIndex == -1)
-            {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any PriceList')", true);
-            }
+            }         
+         //   else if ()
+          //  {
+            else if (lstPricelist.SelectedIndex == -1 && brncode12 == "All")
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "alert('Select any PriceList')", true);
+                    pricelists.Visible = true;
+                }
+          //  }
             else
             {
                 DateTime refDate = DateTime.Parse(txtStartDate.Text);
@@ -537,6 +584,9 @@ public partial class StockReport : System.Web.UI.Page
                 cond5 = getCond5();
                 string cond6 = "";
                 cond6 = getCond6();
+                if(brncode12=="All")               
+                    pricelists.Visible = true;
+                
                 //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
                 //Response.Write("<script language='javascript'> window.open('StockReport1.aspx?refDate=" + refDate + "&cond=" + Server.UrlEncode(cond) + "&cond1=" + Server.UrlEncode(cond1) + "&cond2=" + Server.UrlEncode(cond2) + "&cond3=" + Server.UrlEncode(cond3) + "&cond4=" + Server.UrlEncode(cond4) + "&cond5=" + cond5 + "&cond6=" + cond6 + "' , 'window','height=700,width=1000,left=172,top=10,toolbar=yes,scrollbars=yes,resizable=yes');</script>");
 
@@ -652,5 +702,5 @@ public partial class StockReport : System.Web.UI.Page
             //}
         }
     }
-  
+
 }

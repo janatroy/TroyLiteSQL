@@ -228,18 +228,25 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 // lblShipToPhn.Text = Convert.ToString(dr["CustomerIdMobile"]);
                 lblShipToPhnEx.Text = Convert.ToString(dr["CustomerIdMobile"]);
 
-                lblBillDate.Text = Convert.ToString(dr["BillDate"]);
+                lblBillDate.Text = Convert.ToDateTime(dr["billdate"]).ToString("dd/MM/yyyy");
                 lblBillDateEx.Text = Convert.ToString(dr["BillDate"]);
 
                 lblInvoice.Text = branchCode + "-" + Convert.ToString(dr["BillNo"]);
                 lblInvoiceEx.Text = branchCode + "-" + Convert.ToString(dr["BillNo"]);
 
-                lblCustomerID.Text = Convert.ToString(dr["CreditorID"]);
-                lblCustomerIDEx.Text = Convert.ToString(dr["CreditorID"]);
+                lblCustomerID.Text = Convert.ToDateTime(dr["Invoicedate"]).ToString("dd/MM/yyyy");
+                lblCustomerIDEx.Text = Convert.ToString(dr["Invoicedate"]);
+
+              //  lblCustomerID.Text = Convert.ToString(dr["CreditorID"]);
+               // lblCustomerIDEx.Text = Convert.ToString(dr["CreditorID"]);
 
                 lblPaymentDue.Text = Convert.ToString(dr["Transno"]);
 
                 lblPurchaseOrder.Text = Convert.ToString(dr["ponumber"]);
+
+                lblpurchaseid.Text = Convert.ToString(dr["PurchaseId"]);
+
+                Label62.Text = "(Used for DC Pur Ret)";
 
 
                 lblPayMode.Text = Convert.ToString(dr["narration2"]);
@@ -555,7 +562,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                     drNew["TotalPrice"] = dTotal.ToString("f2");
                     drNew["Amount"] = dTotal.ToString("f2");  //dTotal;
                     drNew["CST"] = Convert.ToString(ds.Tables[0].Rows[i]["CST"]);
-                    drNew["VAT"] = dVAT.ToString("#0.00");  //Convert.ToString(dr["VAT"]);;
+                    drNew["VAT"] = dVAT.ToString("f1");  //Convert.ToString(dr["VAT"]);;
                     drNew["VATAmount"] = dVATAmt.ToString("f2");
 
                     drNew["Discount"] = Convert.ToString(ds.Tables[0].Rows[i]["Discount"]);// dDisc.ToString("f2");
@@ -696,6 +703,7 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
         double currDis = 0;
         double currVat = 0;
         double disTotamt = 0;
+        double damt = 0;
 
         // int payMode;
 
@@ -726,6 +734,33 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 disamt = Convert.ToDouble(dr["discamt"]);
                 dis = Convert.ToDouble(dr["discount"]);
                 qty = Convert.ToDouble(dr["Qty"]);
+
+                damt = ((Convert.ToDouble(dr["TotalWORndOff"]) - Convert.ToDouble(dr["discamount"])));
+
+                damt = (((Convert.ToDouble(dr["TotalWORndOff"]) - Convert.ToDouble(dr["discamount"])) * (Convert.ToDouble(dr["discper"]) / 100)));
+
+                if (Convert.ToString(dr["internaltransfer"]) == "YES")
+                {
+                    Label10.Text = "Internal Transfer Purchase Note";
+                    Label11.Text = "Original";
+                }
+                else if (Convert.ToString(dr["DeliveryNote"]) == "YES")
+                {
+                    Label10.Text = "Delivery Note";
+                    Label11.Text = "Original";
+
+                }
+                else if (Convert.ToString(dr["SalesReturn"]) == "YES")
+                {
+                    Label10.Text = "Sales Return";
+                    Label11.Text = "Original";
+
+                }
+                else
+                {
+                    Label10.Text = "Purchase Invoice";
+                    Label11.Text = "Original";
+                }
 
                 currDis = GetDiscount(qty, purchaserate, dis, disamt);
               
@@ -798,6 +833,25 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 else
                     dvCSTTotal.Visible = false;
 
+                if (damt == -1)
+                {
+                    Label4.Text = "0";
+                    Div6.Visible = false;
+                }
+                else
+                {
+                    if (Convert.ToDouble(damt) > 0)
+                    {
+                        Label8.Text = damt.ToString("#0.00");
+                        Div6.Visible = true;
+                        Label7.Text = Convert.ToString(dr["discper"]) + " %)";
+                    }
+                    else
+                    {
+                        Div6.Visible = false;
+                    }
+                }
+
                 //if (Convert.ToDouble(lblGrandVat.Text) > 0)
                  //   dvVatTotal.Visible = true;
              //   else
@@ -808,16 +862,17 @@ public partial class ProductPurchaseBillNew : System.Web.UI.Page
                 else
                     dvFrgTotal.Visible = false;
             }
-            lblAmt.Text = Convert.ToString(Convert.ToDouble(vatinclusiverate3));
-            lblGrandDiscount.Text = Convert.ToString(disTot);
-            lbldiscamt.Text = Convert.ToString(disTotamt);
+            lblAmt.Text = vatinclusiverate3.ToString("#0.00");
+            lblGrandDiscount.Text =disTot.ToString("#0.00");
+            lbldiscamt.Text = disTotamt.ToString("#0.00");
             lblGrandVat.Text =vatTotal.ToString("#0.00");
-            lblFg.Text = Convert.ToString(Convert.ToDouble(freight) + Convert.ToDouble(loadunload));
+            lblFg.Text =(Convert.ToDouble(freight) + Convert.ToDouble(loadunload)).ToString("#0.00");
             lblGrandCst.Text = Convert.ToString(dCST);
             // Label6.Text=Convert.ToString(amtTotal);
-            Label8.Text = Convert.ToString(amtTotal);
-            dicsamntlbl.Text = Convert.ToString(disamnt);
+         //   Label8.Text = Convert.ToString(amtTotal);
+            dicsamntlbl.Text = disamnt.ToString("#0.00");
         }
+        
 
 
 

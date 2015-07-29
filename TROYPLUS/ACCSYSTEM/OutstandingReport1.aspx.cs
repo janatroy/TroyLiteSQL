@@ -63,7 +63,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                 endDate = Convert.ToDateTime(etdt);
                 lblStartDate.Text = startDate.ToString("dd/MM/yyyy");
                 lblEndDate.Text = endDate.ToString("dd/MM/yyyy");
-                lblBranchcode.Text ="BranchCode : " + sBranch.ToString();
+               
                 if (Request.Cookies["Company"] != null)
                 {
                     companyInfo = bl.getCompanyInfo(Request.Cookies["Company"].Value);
@@ -139,6 +139,7 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     }
 
                     lblSundry.Text = sGroupName;
+                   
                     rptOutstandingReport = new ReportsBL.ReportClass();
                     ds = rptOutstandingReport.generateOutStandingReportDS(iGroupID, sDataSource);
                     gvLedger.DataSource = ds;
@@ -177,6 +178,10 @@ public partial class OutstandingReport1 : System.Web.UI.Page
                     //    endDate = Request.QueryString["endDate"].ToString();
                     //}
                     lblSundry.Text = sGroupName;
+                    if (lblSundry.Text == "Sundry Debtors")
+                    {
+                        lblBranchcode.Text = "For BranchCode : " + sBranch.ToString();
+                    }
                     ds = bl.generateOutStandingReportDSe(iGroupID, sDataSource, startDate, endDate, sBranch);
 
                     gvLedger.DataSource = ds;
